@@ -1,0 +1,42 @@
+Word tree:
+        context aware traversal 
+        
+        (3 words history vs 7 words history)(batch_size )
+        word_embedding lenght = 365
+        
+        updating a few neurons at a time.
+        torch
+
+        
+        
+        
+traversal  at (infrence time ):
+
+    single branch :
+        follow the max context agreement
+        
+    multi brach :
+        (How to select and destroy branches ?)
+        take top n = {3,5} context branching options (above an threshold)
+        recusicely travrse all branches
+        select brach based on moving avrage of context agreement
+        
+        default (tops 5 ,with depth 3)
+        
+        
+get and set
+        
+update at training :
+    context_pathL_length
+
+    weight += 1 / ln(update_count) * gradient
+    
+    
+    
+contrastive learning :
+
+ignore other sibling connections during training
+
+    
+    
+character level connection mapping
