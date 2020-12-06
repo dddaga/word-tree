@@ -2,7 +2,7 @@ import pymongo
 
 
 
-EXPERIMENT_NAME = 'EXP_2'
+EXPERIMENT_NAME = 'EXP_3'
 CORPUS_PATH = 'data/pride_and_prejudice_cleaned.txt'
 
 TRAINING_WINDOW    = 3
@@ -21,13 +21,8 @@ collection = mydb.parallel_trainging
 
 '''
 Experiment details:
-
-contrastive_loss magnitude get up to 50-100 time the primary loss
-Set CONTRASTIVE_WEIGHT to 0.001 in next experiment.
-
-Rutime is directly proportional to TRAINING_WINDOW 
-Set TRAINING_WINDOW = 3 (to experiment with )
-
+Parallel training
+3 parallel instances
 
 
 
