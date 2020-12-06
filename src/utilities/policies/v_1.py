@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from src.utilities.graph_oprations_db import touch_connection_db, find_word, update_graph_context
+from src.utilities.graph_oprations.mongo_db import touch_connection_db, find_word, update_graph_context
 from config import DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE
 
 

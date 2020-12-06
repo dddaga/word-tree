@@ -11,6 +11,10 @@ def train_step_genrator(indices, window_size = TRAINING_WINDOW):
 def load_corpus():
     corpus_text = open(CORPUS_PATH).read()
     corpus_text = corpus_text.replace('\n', '')
+    corpus_text = corpus_text.replace('.', '')
+    corpus_text = corpus_text.replace(';', '')
+    corpus_text = corpus_text.replace(',', '')
+    
     match = re.search('  ', corpus_text)
     while match is not None:
         corpus_text = corpus_text.replace('  ', ' ')
