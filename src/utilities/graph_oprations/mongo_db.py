@@ -1,17 +1,6 @@
 import numpy as np
 import pandas as pd
-from config import CONTEXT_DIMENSIN, collection
-
-
-def get_ngram(indices, window_size=2):
-    ngrams = []
-    count = 0
-    for token in indices[:len(indices)-window_size+1]:
-        ngrams.append(indices[count:count+window_size])
-        count = count+1
-    return ngrams
-
-
+from config import CONTEXT_DIMENSION, collection
 
 
 
@@ -23,7 +12,8 @@ def touch_connection_db(word_1, word_2):
     find_connection = collection.find_one({'word': word_1, 'connection': word_2})
     if find_connection is None:
         # print('connection {} {} is new'.format(word_1,word_2))
-        context_vector = np.random.rand(CONTEXT_DIMENSIN)
+        context_vector = np.random.rand(CONTEXT_DIMENSION)
+        context_vector = context_vector - context_vector.mean()	
         unit_context_vector = context_vector / np.linalg.norm(context_vector)
         connection = {'word': word_1,
                       'connection': word_2,
@@ -36,24 +26,26 @@ def touch_connection_db(word_1, word_2):
         return connection
     else:
         # print('connection {} {} is old'.format(word_1,word_2))
-        find_connection['frequency'] +=  1
-        frequecny = find_connection['frequency']
+        #find_connection['frequency'] +=  1
+        #frequecny = find_connection['frequency']
         
-        collection.update_one({'word': word_1, 'connection': word_2},
-                              {'$set': {'frequency': frequecny}})
+        #collection.update_one({'word': word_1, 'connection': word_2},
+        #                      {'$set': {'frequency': frequecny}})
         
         return find_connection
         
 
 def update_graph_context(x,update_count=False):
+    context_vector = x['updated_context']
+    unit_context_vector = context_vector / np.linalg.norm(context_vector)
     
     if update_count :
         collection.update_one({'word': x['word'], 'connection': x['connection']},
-                              {'$set': {'context':list(x['updated_context']),'update_count':x['update_count']+1 }})
+                              {'$set': {'context':list(unit_context_vector),'update_count':x['update_count']+1 }})
     else :
         
         collection.update_one({'word': x['word'], 'connection': x['connection']},
-                              {'$set': {'context':list(x['updated_context']) }})
+                              {'$set': {'context':list(unit_context_vector) }})
 
 
 def update_graph_db(corpus):
@@ -63,4 +55,14 @@ def update_graph_db(corpus):
         word_2 = corpus[pair[1]]
         touch_connection_db(word_1, word_2)
         if pair_index %100 is 0:
-        	print((pair_index / len(corpus)) * 100)
+            print((pair_index / len(corpus)) * 100)
+
+
+def get_ngram(indices, window_size=2):
+    ngrams = []
+    count = 0
+    for token in indices[:len(indices)-window_size+1]:
+        ngrams.append(indices[count:count+window_size])
+        count = count+1
+    return ngrams
+

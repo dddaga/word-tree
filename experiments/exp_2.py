@@ -5,17 +5,17 @@ import pymongo
 EXPERIMENT_NAME = 'EXP_2'
 CORPUS_PATH = 'data/pride_and_prejudice_cleaned.txt'
 
-TRAINING_WINDOW    = 3
-CONTEXT_DIMENSION  = 64
+TRAINING_WINDOW    = 7
+CONTEXT_DIMENSION  = 256
 CONTEXT_DECAY      = 0.5
-CONTRASTIVE_WEIGHT = 0.001
+CONTRASTIVE_WEIGHT = 0.1
 LEANING_RATE       = 1
 DROPOUT            = 0.1
 
 
 myclient   = pymongo.MongoClient('mongodb://localhost:27017')
 mydb       = myclient["mydatabase"]
-collection = mydb.parallel_trainging
+collection = mydb.train_1
 
 
 
