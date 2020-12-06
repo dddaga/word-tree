@@ -1,1 +1,6 @@
-from src.services import exp_1
+from src.services import train
+
+
+
+
+train.train_context()
