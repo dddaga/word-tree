@@ -1,11 +1,10 @@
 import numpy as np
-import pandas as pd
 from config import CONTEXT_DIMENSION, collection
 
 
 
 def find_word(word):
-    return pd.DataFrame(collection.find({'word':word}))
+    return list(collection.find({'word':word}))
 
 
 def touch_connection_db(word_1, word_2):
@@ -17,7 +16,6 @@ def touch_connection_db(word_1, word_2):
         unit_context_vector = context_vector / np.linalg.norm(context_vector)
         connection = {'word': word_1,
                       'connection': word_2,
-                      'frequency': 1,
                       'context': list(unit_context_vector),
                       'update_count': 0,
                       'lock': False}
@@ -25,13 +23,6 @@ def touch_connection_db(word_1, word_2):
         collection.insert_one(connection)
         return connection
     else:
-        # print('connection {} {} is old'.format(word_1,word_2))
-        #find_connection['frequency'] +=  1
-        #frequecny = find_connection['frequency']
-        
-        #collection.update_one({'word': word_1, 'connection': word_2},
-        #                      {'$set': {'frequency': frequecny}})
-        
         return find_connection
         
 
