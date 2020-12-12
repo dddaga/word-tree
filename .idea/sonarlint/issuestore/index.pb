@@ -23,3 +23,13 @@ F
 experiments/train_1.py,1/c/1c953734137cea0af5482a53b5572eb1053d1d39
 X
 (experiments/connections_stats_p_and_p.py,e/3/e33e766fc7361faf6bfdb7bf8126c73ba39af74c
+]
+-experiments/5_neighbour_aware_context_init.py,c/5/c5884d0cc54d5f41ea6340447a41228b8c3a2481
+Y
+)src/utilities/graph_operations/locking.py,7/3/73f7c34d47558c64401db9809a6507ab56424b91
+T
+$data/pride_and_prejudice_cleaned.txt,1/7/17d7ddae7b09c3e7d7a577d15c9f9cc89c1c9bf6
+W
+'src/utilities/graph_operations/redis.py,c/0/c096ebd46ff1eb3fcf0ac1558a475386ef9de183
+Y
+)src/utilities/graph_operations/mongodb.py,7/f/7fb1b7841f84755e368961b1035e8f2d2c62f1ff

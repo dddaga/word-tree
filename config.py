@@ -1,31 +1,40 @@
-import pymongo
 import numpy as np
 
 
 
-EXPERIMENT_NAME = 'EXP_4'
+
+EXPERIMENT_NAME = 'EXP_11'
 CORPUS_PATH = 'data/pride_and_prejudice_cleaned.txt'
 
-TRAINING_WINDOW      = 3
+TRAINING_WINDOW      = 8
 CONTEXT_DIMENSION    = 64
 LEANING_RATE         = 1
-DROPOUT              = 0.1
-CONTEXT_DECAY        = 1/np.exp(1)
-CONTRASTIVE_WEIGHT   = 0.001
-NEGATIVE_SAMPLE_SIZE = 10
+DROPOUT              = 0.25
+CONTEXT_DECAY        = 0.5
+CONTRASTIVE_WEIGHT   = 0.1
+NEGATIVE_SAMPLE_SIZE =  100#int(np.exp(1) * TRAINING_WINDOW)
 
 
-myclient   = pymongo.MongoClient('mongodb://localhost:27017')
-mydb       = myclient["mydatabase"]
-collection = mydb.parallel_trainging
+DB = 'MONGO'
 
+
+if DB == 'MONGO':
+    import pymongo
+    myclient   = pymongo.MongoClient('mongodb://localhost:27017')
+    mydb       = myclient["mydatabase"]
+    collection = mydb.train_1#neighbour_aware_context_initilization_train_window_8
+
+if DB == 'REDIS':
+    import redis
+    collection = redis.Redis(db=9)
+    key_collection= redis.Redis(db=10)
 
 
 '''
 Experiment details:
-randomly sample a few sibling connections rather than selecting all (to reduce run time per iteration)
+Incread CONTRASTIVE_WEIGHT to 0.1 and drop out to 0.25
 
 To do :
-For contrastive loss:
+increase contrastive weight, increase drop out
 '''
 

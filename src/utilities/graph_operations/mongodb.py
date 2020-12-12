@@ -10,9 +10,18 @@ def find_word(word):
 def touch_connection_db(word_1, word_2):
     find_connection = collection.find_one({'word': word_1, 'connection': word_2})
     if find_connection is None:
-        # print('connection {} {} is new'.format(word_1,word_2))
-        context_vector = np.random.rand(CONTEXT_DIMENSION)
-        context_vector = context_vector - context_vector.mean()	
+        print('connection {} {} is new'.format(word_1,word_2))
+        neigbours = find_word(word_1)
+        if len(neigbours)== 0 :
+            context_vector = np.random.rand(CONTEXT_DIMENSION)
+        #To efficiently use context dimensions spereding the conntext vectors (neighbour aware context initilization)
+        else:
+            avrage_context = 0
+            for connection in neigbours:
+                avrage_context += np.array(connection['context'])
+            context_vector  =  -1 * avrage_context
+
+        context_vector = context_vector - context_vector.mean()
         unit_context_vector = context_vector / np.linalg.norm(context_vector)
         connection = {'word': word_1,
                       'connection': word_2,
@@ -26,17 +35,56 @@ def touch_connection_db(word_1, word_2):
         return find_connection
         
 
-def update_graph_context(x,update_count=False):
-    context_vector = x['updated_context']
-    unit_context_vector = context_vector / np.linalg.norm(context_vector)
-    
+def update_graph_context(updates,update_count=False):
+
     if update_count :
-        collection.update_one({'word': x['word'], 'connection': x['connection']},
+        for x in updates:
+            context_vector = x['updated_context']
+            unit_context_vector = context_vector / np.linalg.norm(context_vector)
+            collection.update_one({'word': x['word'], 'connection': x['connection']},
                               {'$set': {'context':list(unit_context_vector),'update_count':x['update_count']+1 }})
     else :
-        
-        collection.update_one({'word': x['word'], 'connection': x['connection']},
+        for x in updates:
+            context_vector = x['updated_context']
+            unit_context_vector = context_vector / np.linalg.norm(context_vector)
+            collection.update_one({'word': x['word'], 'connection': x['connection']},
                               {'$set': {'context':list(unit_context_vector) }})
+
+
+class Lock:
+
+    def __init__(self,sub_graph):
+        self.sub_graph   = sub_graph
+        self.locked = False
+
+    def check_status(self):
+        connection_index=0
+        self.locked = False
+        path_size = len(self.sub_graph)
+        while  (not self.locked) and (connection_index < path_size):
+            node = collection.find_one({'word':self.sub_graph[connection_index][0] ,'connection': self.sub_graph[connection_index][1] })
+            connection_index += 1
+            if node is not None:
+                self.locked = node['lock'] or self.locked
+
+        return self.locked
+
+    def set_lock(self):
+        for connection in self.sub_graph:
+            collection.update_one({'word': connection[0] ,'connection' : connection[1]} ,{'$set' :{'lock':True} } )
+
+    def release_lock(self):
+        for connection in self.sub_graph:
+            collection.update_one({'word': connection[0], 'connection': connection[1]}, {'$set': {'lock': False}})
+
+
+
+
+def unlock_graph():
+    locked_nodes = list(collection.find({'lock':True}))
+    for node in locked_nodes :
+        collection.update_one({'word': node['word'], 'connection': node['connection']}, {'$set': {'lock': False}})
+
 
 
 def update_graph_db(corpus):
