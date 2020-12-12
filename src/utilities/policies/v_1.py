@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import random
-from src.utilities.graph_oprations.mongodb import touch_connection_db, find_word, update_graph_context
+from src.utilities.graph_operations.mongodb import touch_connection_db, find_word, update_graph_context
 from config import DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE, NEGATIVE_SAMPLE_SIZE
 
 
