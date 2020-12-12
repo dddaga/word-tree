@@ -12,6 +12,7 @@ def load_corpus():
     corpus_text = open(CORPUS_PATH).read()
     corpus_text = corpus_text.replace('\n', '')
     corpus_text = corpus_text.replace('.', '')
+    corpus_text = corpus_text.replace(':', '')
     corpus_text = corpus_text.replace(';', '')
     corpus_text = corpus_text.replace(',', '')
     

@@ -1,7 +1,8 @@
 import torch
 import numpy as np
-from src.utilities.graph_oprations.mongo_db import touch_connection_db, find_word, update_graph_context
-from config import DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE
+import random
+from src.utilities.graph_oprations.mongodb import touch_connection_db, find_word, update_graph_context
+from config import DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE, NEGATIVE_SAMPLE_SIZE
 
 
 drop = torch.nn.Dropout(p=DROPOUT)
@@ -27,18 +28,23 @@ def train_graph(context_history,target,running_context):
     primary_loss   =  primary_error.square().sum()
 
     #secondary error
-    connection_df = find_word(target[0])
-    connection_count = len(connection_df)
-    negative_df = connection_df.loc[connection_df['connection'] != target[1]]
-    negative_tensors = []
-    contrastive_loss = 0
-    for index, negative in negative_df.iterrows():
-        c = torch.tensor(negative['context'],requires_grad=True)
-        negative_tensors.append(c)
-        contrast_error = drop(running_context) - c
-        contrastive_loss += contrast_error.square().sum()
+    connection_list = find_word(target[0])
+    connection_count = len(connection_list)
+    sampling_size    = min(NEGATIVE_SAMPLE_SIZE,connection_count)
+    connection_list   = random.sample(connection_list,sampling_size)
 
-    loss = primary_loss - CONTRASTIVE_WEIGHT * (contrastive_loss / connection_count)
+    negative_tensors =  []
+    negative_neighbours= []
+    contrastive_loss = 0
+    for index, negative in connection_list:
+        if negative['connection'] != target[1]:
+            negative_neighbours.append(negative)
+            c = torch.tensor(negative['context'],requires_grad=True)
+            negative_tensors.append(c)
+            contrast_error = drop(running_context) - c
+            contrastive_loss += contrast_error.square().sum()
+
+    loss = primary_loss - CONTRASTIVE_WEIGHT * (contrastive_loss / sampling_size)
 
     # Updating weights ########################################################################################
     loss.backward()
@@ -61,9 +67,11 @@ def train_graph(context_history,target,running_context):
                              LEANING_RATE * (1/np.sqrt(traget_update_count))*target_gradient
     update_graph_context(target_connection,update_count=True)
 
-    negative_df['tensors'] = negative_tensors
-    negative_df['updated_context'] = negative_df['context'] - \
-                                     LEANING_RATE * negative_df['tensors'].apply(lambda x :x.grad.numpy())
-    negative_df.apply(update_graph_context,axis=1)
+
+    for negative_index,negative_connction in enumerate(negative_neighbours):
+        upate_count = negative_connction['update_count']
+        negative_gradient = negative_tensors[negative_index].grad.numpy()
+        negative_connction['updated_context'] = negative_connction['context']  - LEANING_RATE *(1 / np.sqrt(update_count + 1))* negative_gradient
+        update_graph_context(negative_connction)
 
     return torch.tensor(context_trajectory[0]['updated_context'])
