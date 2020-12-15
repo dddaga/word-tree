@@ -1,12 +1,19 @@
 import numpy as np
 from config import CONTEXT_DIMENSION, collection, key_collection
+import random
 
 
-
-def find_word(word):
+def find_word(word,sample='all'):
     #connections = list(collection.scan_iter(match=word + ':*'))
     connections   =key_collection.smembers(word)
     neighbours = []
+    if sample == 'all':
+        pass
+    else :
+        connection_count = len(connections)
+        sampling_size = min(sample, connection_count)
+        connections = random.sample(connections, sampling_size)
+
     for con in connections:
         connection_key = bytes(word,'utf-8') + b':' + con
         connection               = con.decode("utf-8")
