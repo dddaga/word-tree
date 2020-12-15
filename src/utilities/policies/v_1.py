@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import random
-from config import DB, DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE, NEGATIVE_SAMPLE_SIZE
+from config import DB, DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE, NEGATIVE_SAMPLE_SIZE,CONEXT_INERTIA
 
 if DB == 'MONGO':
     from src.utilities.graph_operations.mongodb import touch_connection_db, find_word, update_graph_context
@@ -14,7 +14,7 @@ drop = torch.nn.Dropout(p=DROPOUT)
 def train_graph(context_history,target,running_context):
 
     # Building graph  ################################################################################################
-
+    running_context = drop(running_context)
     connection_tensors = []
     context_trajectory = []
     for neighbour in context_history:
@@ -22,7 +22,7 @@ def train_graph(context_history,target,running_context):
         a = torch.tensor(connection['context'] ,requires_grad=True)
         connection_tensors.append(a)
         context_trajectory.append(connection)
-        context_step = a.add(drop(running_context))
+        context_step =  running_context * CONEXT_INERTIA + a   #a.add(running_context)
         running_context = context_step / context_step.norm()
 
     target_connection = touch_connection_db(target[0] ,target[1])
@@ -31,11 +31,8 @@ def train_graph(context_history,target,running_context):
     primary_loss   =  primary_error.square().sum()
 
     #secondary error
-    connection_list = find_word(target[0])
+    connection_list = find_word(target[0],sample=NEGATIVE_SAMPLE_SIZE)
     connection_count = len(connection_list)
-    sampling_size    = min(NEGATIVE_SAMPLE_SIZE,connection_count)
-    connection_list   = random.sample(connection_list,sampling_size)
-
     negative_tensors =  []
     negative_neighbours= []
     contrastive_loss = 0
@@ -44,10 +41,10 @@ def train_graph(context_history,target,running_context):
             negative_neighbours.append(negative)
             c = torch.tensor(negative['context'],requires_grad=True)
             negative_tensors.append(c)
-            contrast_error = drop(running_context) - c
+            contrast_error = running_context - c
             contrastive_loss += contrast_error.square().sum()
 
-    loss = primary_loss - CONTRASTIVE_WEIGHT * (contrastive_loss / sampling_size)
+    loss = primary_loss - CONTRASTIVE_WEIGHT * (contrastive_loss / connection_count)
 
     # Updating weights ########################################################################################
     loss.backward()

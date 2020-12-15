@@ -3,19 +3,23 @@ import numpy as np
 
 
 
-EXPERIMENT_NAME = 'EXP_11'
-CORPUS_PATH = 'data/pride_and_prejudice_cleaned.txt'
-
-TRAINING_WINDOW      = 8
-CONTEXT_DIMENSION    = 64
+EXPERIMENT_NAME = 'EXP_12'
+CORPUS_PATH = '/home/dhiraj/Documents/stuff/data/wiki_en.txt'
+TRAINING_WINDOW      = 10
+CONTEXT_DIMENSION    = 128
 LEANING_RATE         = 1
-DROPOUT              = 0.25
-CONTEXT_DECAY        = 0.5
+DROPOUT              = 0.05
+CONTEXT_DECAY        =  1 - TRAINING_WINDOW ** -0.5
 CONTRASTIVE_WEIGHT   = 0.1
-NEGATIVE_SAMPLE_SIZE =  100#int(np.exp(1) * TRAINING_WINDOW)
+NEGATIVE_SAMPLE_SIZE = TRAINING_WINDOW ** 2
+CONEXT_INERTIA       =  np.sqrt(TRAINING_WINDOW)
 
 
-DB = 'MONGO'
+THREADS  = 5
+CHUNK_SIZE = 10000
+
+
+DB = 'REDIS'
 
 
 if DB == 'MONGO':
@@ -26,8 +30,12 @@ if DB == 'MONGO':
 
 if DB == 'REDIS':
     import redis
-    collection = redis.Redis(db=9)
-    key_collection= redis.Redis(db=10)
+    collection = redis.Redis(db=13) #11
+    key_collection= redis.Redis(db=14) #12
+    #import redisai
+    # collection = redisai.Client(db=14)
+    # key_collection = redisai.Client(db=15)
+
 
 
 '''

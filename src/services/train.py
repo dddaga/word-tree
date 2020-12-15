@@ -12,11 +12,11 @@ if DB == 'REDIS':
 
 
 
-def train_context():
+def train_context(corpus=load_corpus()):
     running_context = torch.zeros(CONTEXT_DIMENSION)
 
     start_time = time.time()
-    for step in train_step_genrator(load_corpus()):
+    for step in train_step_genrator(corpus):
         neighbours = get_ngram(step, 2)
         context_history = neighbours[:-1]
         target = neighbours[-1]
