@@ -104,4 +104,23 @@ class Lock:
             connection_key = connection[0] + ':' + connection[1]
             if collection.exists(connection_key):
                 collection.hset(connection_key, 'lock', 0)
+                
+                
+
+
+
+def rlease_db_lock(unlock=False):
+	if unlock:
+		with collection.pipeline() as pipe:
+	 		for key in collection.keys():       
+		        	pipe.hset(key,b'lock',0)
+            		pipe.execute()
+			
+
+
+               
+
+               
+               
+                
 
