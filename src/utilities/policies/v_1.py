@@ -33,6 +33,7 @@ def train_graph(context_history,target,running_context):
     #secondary error
     connection_list = find_word(target[0],sample=NEGATIVE_SAMPLE_SIZE)
     connection_count = len(connection_list)
+    #print('This node has {} connections'.format(connection_count) )         
     negative_tensors =  []
     negative_neighbours= []
     contrastive_loss = 0
