@@ -4,9 +4,9 @@ import numpy as np
 
 
 EXPERIMENT_NAME = 'EXP_12'
-CORPUS_PATH = '/home/dhiraj/Documents/stuff/data/wiki_en.txt'
-TRAINING_WINDOW      = 10
-CONTEXT_DIMENSION    = 128
+CORPUS_PATH = '/home/dddhiraj/Documents/stuff/data/wiki_en.txt'
+TRAINING_WINDOW      = 7
+CONTEXT_DIMENSION    = 64
 LEANING_RATE         = 1
 DROPOUT              = 0.05
 CONTEXT_DECAY        =  1 - TRAINING_WINDOW ** -0.5
@@ -15,7 +15,7 @@ NEGATIVE_SAMPLE_SIZE = TRAINING_WINDOW ** 2
 CONEXT_INERTIA       =  np.sqrt(TRAINING_WINDOW)
 
 
-THREADS  = 5
+THREADS  = 3
 CHUNK_SIZE = 10000
 
 
@@ -30,8 +30,8 @@ if DB == 'MONGO':
 
 if DB == 'REDIS':
     import redis
-    collection = redis.Redis(db=13) #11
-    key_collection= redis.Redis(db=14) #12
+    collection = redis.Redis(db=1) #11
+    key_collection= redis.Redis(db=2) #12
     #import redisai
     # collection = redisai.Client(db=14)
     # key_collection = redisai.Client(db=15)
