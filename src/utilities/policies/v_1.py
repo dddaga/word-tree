@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import random
+from numba import jit
 from config import DB, DROPOUT,CONTRASTIVE_WEIGHT,CONTEXT_DECAY,LEANING_RATE, NEGATIVE_SAMPLE_SIZE,CONEXT_INERTIA
 
 if DB == 'MONGO':
@@ -10,13 +11,14 @@ if DB == 'REDIS':
 
 drop = torch.nn.Dropout(p=DROPOUT)
 
-
+#@jit(nopython=True)
 def train_graph(context_history,target,running_context):
 
     # Building graph  ################################################################################################
     running_context = drop(running_context)
     connection_tensors = []
     context_trajectory = []
+
     for neighbour in context_history:
         connection = touch_connection_db(neighbour[0], neighbour[1])
         a = torch.tensor(connection['context'] ,requires_grad=True)
