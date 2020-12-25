@@ -109,12 +109,12 @@ class Lock:
 
 
 
-def rlease_db_lock(unlock=False):
-	if unlock:
-		with collection.pipeline() as pipe:
-	 		for key in collection.keys():       
-		        	pipe.hset(key,b'lock',0)
-            		pipe.execute()
+def release_db_lock(unlock=False):
+    if unlock:
+        with collection.pipeline() as pipe:
+            for key in collection.keys():
+                pipe.hset(key,b'lock',0)
+            pipe.execute()
 			
 
 

@@ -1,5 +1,6 @@
 import torch
 import time
+from numba import jit
 from src.utilities.graph_operations.in_memory import  get_ngram
 from config import CONTEXT_DIMENSION, DB
 from src.services.get_corpus import load_corpus, train_step_genrator
@@ -11,7 +12,7 @@ if DB == 'REDIS':
     from src.utilities.graph_operations.redis import Lock
 
 
-
+#@jit(nopython=True)
 def train_context(corpus=load_corpus()):
     running_context = torch.zeros(CONTEXT_DIMENSION)
 
