@@ -26,8 +26,8 @@ def find_word(word,sample='all'):
 
 def touch_connection_db(word_1, word_2):
     connection_key = word_1 + ':' + word_2
-    find_connection = collection.hgetall(connection_key)
-    if find_connection == {}:
+    check_context = collection.hget(connection_key,'context')
+    if check_context == None:
         print('connection {} {} is new'.format(word_1,word_2))
         neigbours = find_word(word_1)
         if len(neigbours) == 0:
@@ -42,14 +42,13 @@ def touch_connection_db(word_1, word_2):
         unit_context_vector = context_vector / np.linalg.norm(context_vector)
         connection = {'connection_key': connection_key ,'context': unit_context_vector,
                       'update_count': 0}
-
         collection.hset( connection_key,mapping ={'context': unit_context_vector.tobytes(),
                       'update_count': 0,
                       'lock': 0})
         key_collection.sadd(word_1,word_2)
-
         return connection
     else:
+  	find_connection = collection.hgetall(connection_key)
         update_count = int(find_connection[b'update_count'])
         context = np.frombuffer(find_connection[b'context'])
 
@@ -90,7 +89,6 @@ class Lock:
             connection_index += 1
             if node_status is not None:
                 self.locked = int(node_status) or self.locked
-
         return self.locked
 
     def set_lock(self):
@@ -105,9 +103,7 @@ class Lock:
             if collection.exists(connection_key):
                 collection.hset(connection_key, 'lock', 0)
                 
-                
-
-
+               
 
 def release_db_lock(unlock=False):
     if unlock:

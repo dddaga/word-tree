@@ -1,31 +1,14 @@
 
 type object
     properies :
-      words
-        type: object
-        ref : $word
-
-word :
-    type : object
-    properies:
-        frequency:
-            type float
-            description : occurance_count
-        connections:
-            type: object:
-            properies:
-                next_word 
-                    type : object
-                    properies
-                        frequency :
-                            type  : int
-                        context_vector:
-                            type : array
-                            description : vextor of dimension 75.
-                        update_count : 
-                            type :int
-                            description : coun of weight updateds made at this connection 
-                            
-                        lock:
-                            type : bool
-                            decription : locking weight in case of distributed training
+      word:
+        type: string
+        description: node of the graph
+     connection:
+        type : string
+        description: edge 
+    context:
+        type: array
+        item :
+            type: float
+            
