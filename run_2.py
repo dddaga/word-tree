@@ -31,10 +31,10 @@ if __name__ == '__main__':
         while train_queue.qsize() < THREADS :
             chunk , corpus_null = get_chunk(corpus,CHUNK_SIZE)
             train_queue.put(chunk)
-            time.sleep(1)
+            time.sleep(.1)
             print('chunks in queue: {}'.format(train_queue.qsize()))
             
-        time.sleep(10)
+        time.sleep(0.5)
         if corpus_null:
             break
         
