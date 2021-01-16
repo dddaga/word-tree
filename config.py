@@ -15,7 +15,7 @@ NEGATIVE_SAMPLE_SIZE = TRAINING_WINDOW ** 2
 CONEXT_INERTIA       = np.sqrt(CONTEXT_DIMENSION)
 
 
-THREADS  = 5
+THREADS  = 6
 CHUNK_SIZE = 256
 
 
@@ -26,7 +26,7 @@ if DB == 'MONGO':
     import pymongo
     myclient   = pymongo.MongoClient('mongodb://localhost:27017')
     mydb       = myclient["mydatabase"]
-    collection = mydb.train_4#neighbour_aware_context_initilization_train_window_8
+    collection = mydb.train_5#neighbour_aware_context_initilization_train_window_8
     collection.create_index('word')
 if DB == 'REDIS':
     import redis
@@ -46,6 +46,20 @@ Decoupled context and update vector
 added context inertia
 
 change in loss funciton(v3 policy)
+
+
+
+number of connections created pre min :
+
+1 thread  = 2252
+3 thread =  2374
+5 thread =  2362
+
+1 process =  1802
+3 process = 5519
+5 process = 7336
+7 process =  8647
+9 process = 9008
 
 '''
 
