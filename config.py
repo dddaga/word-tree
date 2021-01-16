@@ -15,7 +15,7 @@ NEGATIVE_SAMPLE_SIZE = TRAINING_WINDOW ** 2
 CONEXT_INERTIA       = np.sqrt(CONTEXT_DIMENSION)
 
 
-THREADS  = 6
+THREADS  = 3
 CHUNK_SIZE = 256
 
 
@@ -26,8 +26,9 @@ if DB == 'MONGO':
     import pymongo
     myclient   = pymongo.MongoClient('mongodb://localhost:27017')
     mydb       = myclient["mydatabase"]
-    collection = mydb.train_5#neighbour_aware_context_initilization_train_window_8
+    collection = mydb.train_6#neighbour_aware_context_initilization_train_window_8
     collection.create_index('word')
+    collection.create_index([('word',pymongo.DESCENDING), ('connection', pymongo.ASCENDING )])
 if DB == 'REDIS':
     import redis
     collection = redis.Redis(db=5) #11
