@@ -28,9 +28,16 @@ def touch_connection_db(word_1, word_2):
 
         context_vector = context_vector - context_vector.mean()
         unit_context_vector = context_vector / np.linalg.norm(context_vector)
+        unit_update_vector = orhto(unit_context_vector)
+        weight_vector      = np.random.rand(CONTEXT_DIMENSION)
+        unit_weight_vector = weight_vector / np.linalg.norm(weight_vector)
+
+
         connection = {'word': word_1,
                       'connection': word_2,
                       'context': list(unit_context_vector),
+                      'update_vector':list(unit_update_vector),
+                      'weight_vector':list(unit_weight_vector),
                       'update_count': 0,
                       'lock': False}
 
@@ -54,6 +61,19 @@ def update_graph_context(updates,update_count=False):
             unit_context_vector = context_vector / np.linalg.norm(context_vector)
             collection.update_one({'word': x['word'], 'connection': x['connection']},
                               {'$set': {'context':list(unit_context_vector) }})
+
+
+def update_graph_node(updates):
+    for x in updates:
+        update_vector = x['update_vector']
+        weight_vector = x['weight_vector']
+
+        unit_update_vector = update_vector /np.linalg.norm(update_vector)
+        unit_weight_vector = weight_vector / np.linalg.norm(weight_vector)
+
+        collection.update_one({'word': x['word'], 'connection': x['connection']},
+                              {'$set': {'update_vector':list(unit_update_vector),'weight_vector':list(unit_weight_vector) }})
+   
 
 
 class Lock:
@@ -109,4 +129,11 @@ def get_ngram(indices, window_size=2):
         ngrams.append(indices[count:count+window_size])
         count = count+1
     return ngrams
+
+def orhto(n):
+    half_len = np.ones(int(len(n)/2))
+    other_half = -np.ones(len(n) - len(half_len))
+    mask = np.concatenate( [half_len, other_half])
+    return np.multiply(np.flip(n),mask)
+
 
