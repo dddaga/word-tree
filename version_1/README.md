@@ -27,14 +27,6 @@ The architecture is modular, facilitating future expansions and adaptations, suc
 (This was written before LLMs and there usecases were lesser known, so this is a bit outdated)
 
 ## References and Learning Materials
-For those interested in delving deeper into the concepts and methodologies used in this project, the following resources are recommended:
-
-- **Knowledge Circuits in Pretrained Transformers**: This paper provides insights into the internal mechanisms of LLMs, offering valuable context for understanding the project's approach.
-- **PyTorch Documentation**: A comprehensive resource for learning about tensor operations and deep learning frameworks.
-- **Graph Databases**: Explore Neo4j and other graph databases to understand their advantages in handling complex relationships and queries.
-
-## Resources
-
 - **Graphs**: [Google Drive](https://drive.google.com/drive/folders/1P16RkA4j0zzuuEf3Fin2fO6m4qPoIQBm?usp=sharing)
 - **LASER (Python Library)**: [Engati Blog](https://www.engati.com/blog/laser-for-nlp-tasks-part-ii)
 - **Corpus Sources**: [KDnuggets](https://www.kdnuggets.com/2017/11/building-wikipedia-text-corpus-nlp.html)
