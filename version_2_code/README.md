@@ -20,15 +20,7 @@ This project is focused on developing a scalable and efficient model for sequenc
 
 ### Graph-Based Model
 
-The model uses a graph to represent sequences at the subword level, enabling efficient context propagation and weight updates. This approach improves scalability by only retrieving and processing relevant subgraphs during inference.
-
-### Tensor Operations
-
-The training process involves advanced tensor operations using PyTorch, allowing for flexible and performant manipulation of word connections and contexts.
-
-### Training and Inference
-
-The training system is designed to handle large corpora efficiently, processing data in chunks and utilizing multiprocessing for parallel execution. Inference is managed through a FastAPI server, providing real-time sequence generation capabilities.
+The model uses a graph to represent sequences at the subword level, enforcing context aware weight distribution by design. This approach aims to improves scalability by only retrieving and processing relevant subgraphs during inference.
 
 ## Context and Related Work
 
@@ -36,7 +28,7 @@ The training system is designed to handle large corpora efficiently, processing 
 [Release details](https://docs.google.com/document/d/1lg0FeP-rpvj5-Kgj6b_QxpQNCK_ZBVrRksyGeA_LB9k/edit?usp=sharing)
 (This was written before LLMs and there usecases were lesser known, so the trageted usecase may seem outdated)
 
-This version focuses on enabling scalability of training via hyper distributed computing, establishing a foundation for graph-based sequence modeling.
+This version focused on enabling scalability of training via hyper distributed computing, establishing a foundation for graph-based sequence modeling.
 
 
 ### Literature Survey
@@ -49,4 +41,4 @@ The concept of a word tree is central to this project, where sequences are broke
 
 ## Future Directions
 
-The project is designed with modularity in mind, allowing for future expansions such as porting the model to other platforms like mobile devices for real-time, federated learning.
+The project is designed with modularity as a priority, allowing for future expansions such as porting the model to other platforms like mobile devices for real-time, federated learning.
