@@ -17,28 +17,16 @@ The project explores using a Directed Acyclic Graph (DAG) to represent sequences
 ## Work Done
 
 ### Graph-Based Sequence Modeling
+This version focuses on enabling scalability of training via hyper distributed computing, establishing a foundation for graph-based sequence modeling. Future releases aim to enhance accuracy and adaptability, with plans to explore deployment on mobile platforms and experiments with federated learning.
 
-In Version 1, we laid the groundwork for graph-based sequence modeling using MongoDB and Redis for graph operations. These tools, while effective for initial development, were identified as suboptimal for complex graph manipulations, leading to improvements in subsequent versions.
-
-### Tensor Operations
-
-The system utilizes PyTorch for tensor operations, providing a flexible and performant framework for manipulating word connections and contexts. This setup allows for efficient context propagation and sequence prediction.
-
-## System Capabilities
-
-- **Scalability**: The model is designed to handle large-scale operations efficiently, adapting dynamically to the data it processes.
-- **Real-Time Processing**: With a focus on real-time responsiveness, the system can manage sequence predictions swiftly and accurately.
-- **Modular Design**: The architecture is modular, facilitating future expansions and adaptations, such as porting to mobile platforms for federated learning.
+The architecture is modular, facilitating future expansions and adaptations, such as porting to mobile platforms for federated learning.
 
 ## Releases and Future Directions
 
 [Release details](https://docs.google.com/document/d/1lg0FeP-rpvj5-Kgj6b_QxpQNCK_ZBVrRksyGeA_LB9k/edit?usp=sharing)
 (This was written before LLMs and there usecases were lesser known, so this is a bit outdated)
 
-This version focuses on enabling scalability of training via hyper distributed computing, establishing a foundation for graph-based sequence modeling. Future releases aim to enhance accuracy and adaptability, with plans to explore deployment on mobile platforms and experiments with federated learning.
-
 ## References and Learning Materials
-
 For those interested in delving deeper into the concepts and methodologies used in this project, the following resources are recommended:
 
 - **Knowledge Circuits in Pretrained Transformers**: This paper provides insights into the internal mechanisms of LLMs, offering valuable context for understanding the project's approach.
