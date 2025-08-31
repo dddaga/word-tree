@@ -1,0 +1,91 @@
+# Modular NeuroGraph Configuration
+# Comprehensive redesign with high-resolution discrete computation
+
+system:
+  mode: "modular"  # vs "legacy"
+  version: "2.0"
+  description: "High-resolution modular NeuroGraph with gradient accumulation"
+
+architecture:
+  total_nodes: 1000
+  input_nodes: 200
+  output_nodes: 10
+  intermediate_nodes: 790  # total - input - output
+  vector_dim: 5
+  seed: 42
+
+resolution:
+  phase_bins: 64      # 8x increase from current 8 bins
+  mag_bins: 1024      # 4x increase from current 256 bins
+  resolution_increase: 16  # 8 * 4 = 16x total increase
+
+graph_structure:
+  cardinality: 6      # Static connections per node
+  top_k_neighbors: 6  # Dynamic radiation neighbors
+  use_radiation: true
+
+input_processing:
+  adapter_type: "linear_projection"  # vs "pca"
+  input_dim: 784      # MNIST flattened
+  learnable: true
+  normalization: "layer_norm"
+  dropout: 0.1
+
+class_encoding:
+  type: "orthogonal"  # vs "random"
+  num_classes: 10
+  encoding_dim: 5     # Same as vector_dim
+  orthogonality_threshold: 0.1
+
+loss_function:
+  type: "categorical_crossentropy"  # vs "mse"
+  temperature: 1.0    # For softmax temperature scaling
+  label_smoothing: 0.0
+
+training:
+  gradient_accumulation:
+    enabled: true
+    accumulation_steps: 8
+    lr_scaling: "sqrt"  # √8 ≈ 2.83x scaling
+    buffer_size: 1000   # Max nodes to buffer
+  
+  optimizer:
+    type: "discrete_sgd"
+    base_learning_rate: 0.01
+    warmup_epochs: 25
+    num_epochs: 60
+    batch_size: 5  # Samples per epoch in single-sample mode
+
+forward_pass:
+  max_timesteps: 35
+  decay_factor: 0.925
+  min_activation_strength: 0.01
+  min_output_activation_timesteps: 3
+
+activation_balancing:
+  enabled: true
+  strategy: "round_robin"
+  max_activations_per_epoch: 20
+  min_activations_per_epoch: 5
+  force_activation_probability: 0.5
+
+multi_output_loss:
+  enabled: true
+  continue_timesteps_after_first: 3
+  max_outputs_to_train: 4
+
+paths:
+  graph_path: "config/modular_static_graph.pkl"
+  log_path: "logs/modular/"
+  checkpoint_path: "checkpoints/modular/"
+
+fallback:
+  enable_legacy_mode: true
+  legacy_config_path: "config/default.yaml"
+  auto_fallback_on_error: true
+
+debugging:
+  verbose_logging: false
+  save_intermediate_states: false
+  plot_training_curves: true
+  evaluation_samples: 300

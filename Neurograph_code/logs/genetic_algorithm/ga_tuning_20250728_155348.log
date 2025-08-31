@@ -1,0 +1,2 @@
+2025-07-28 15:53:48,730 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:53:48,730 - INFO - GA Parameters: crossover_rate=0.3, mutation_rate=0.2, elite_percentage=0.5

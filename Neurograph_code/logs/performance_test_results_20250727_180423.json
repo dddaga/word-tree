@@ -1,0 +1,46 @@
+{
+  "device_management": {
+    "device": "cuda:0",
+    "memory_management": "working",
+    "tensor_operations": "working"
+  },
+  "activation_table": {
+    "injection_rate": 6982.33733198824,
+    "decay_time": 0.03812718391418457,
+    "memory_usage": {
+      "active_nodes": 500,
+      "max_nodes": 1000,
+      "utilization": 0.5,
+      "estimated_memory_mb": 0.08106231689453125,
+      "stats": {
+        "total_injections": 500,
+        "total_decays": 1,
+        "memory_cleanups": 0,
+        "peak_active_nodes": 500,
+        "tensor_reallocations": 0
+      },
+      "device": "cuda:0",
+      "next_free_index": 250
+    }
+  },
+  "radiation_system": {
+    "cold_time": 0.05888223648071289,
+    "warm_time": 0.000110626220703125,
+    "speedup": 532.2629310344828,
+    "neighbors_found": 10
+  },
+  "gradient_accumulator": {
+    "accumulation_time": 0.2189474105834961,
+    "buffer_utilization": 0.06666666666666667,
+    "total_gradients": 1600
+  },
+  "performance_monitoring": {
+    "samples_processed": 5,
+    "epochs_completed": 1,
+    "timing_data_available": true
+  },
+  "integrated_training": {
+    "training_context": "failed",
+    "error": "'ModularTrainContext' object has no attribute 'train_loader'"
+  }
+}

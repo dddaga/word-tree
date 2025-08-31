@@ -1,0 +1,82 @@
+2025-07-30 19:17:31,557 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:17:31,557 - INFO - No existing cache found, starting with empty cache
+2025-07-30 19:17:31,557 - INFO - GA Parameters: generations=2, elite_percentage=0.4, crossover_rate=0.7, mutation_rate=0.1
+2025-07-30 19:17:31,557 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:17:31,557 - INFO - Starting GA hyperparameter search:
+2025-07-30 19:17:31,557 - INFO -   Generations: 2
+2025-07-30 19:17:31,557 - INFO -   Population size: 6
+2025-07-30 19:17:31,557 - INFO -   Top-k: 2
+2025-07-30 19:17:31,557 - INFO -   Search space: 10 parameters
+2025-07-30 19:17:31,557 - INFO - Initializing random population...
+2025-07-30 19:17:31,557 - INFO - 
+=== Generation 1/2 ===
+2025-07-30 19:17:31,557 - INFO - Evaluating population fitness...
+2025-07-30 19:17:31,557 - INFO - Evaluating individual 1/6
+2025-07-30 19:17:31,559 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=16, mag_bins=64, cardinality=4, learning_rate=0.0001, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.05, batch_size=5
+2025-07-30 19:17:31,559 - INFO - Individual fitness: 0.3723 (cached)
+2025-07-30 19:17:31,559 - INFO - Evaluating individual 2/6
+2025-07-30 19:17:31,561 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=64, mag_bins=512, cardinality=5, learning_rate=0.0005, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.2, batch_size=10
+2025-07-30 19:17:31,561 - INFO - Individual fitness: 0.1821 (cached)
+2025-07-30 19:17:31,561 - INFO - Evaluating individual 3/6
+2025-07-30 19:17:31,563 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=64, mag_bins=512, cardinality=7, learning_rate=0.001, decay_factor=0.925, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.5, batch_size=8
+2025-07-30 19:17:31,563 - INFO - Individual fitness: 0.8388 (cached)
+2025-07-30 19:17:31,563 - INFO - Evaluating individual 4/6
+2025-07-30 19:17:31,565 - INFO - Cache MISS - Training individual: vector_dim=10, phase_bins=16, mag_bins=128, cardinality=7, learning_rate=0.0001, decay_factor=0.975, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.01, batch_size=5
+2025-07-30 19:17:31,565 - INFO - Individual fitness: 0.1321 (cached)
+2025-07-30 19:17:31,565 - INFO - Evaluating individual 5/6
+2025-07-30 19:17:31,567 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=32, mag_bins=128, cardinality=4, learning_rate=0.0005, decay_factor=0.925, orthogonality_threshold=0.15, warmup_epochs=5, min_activation_strength=0.05, batch_size=8
+2025-07-30 19:17:31,567 - INFO - Individual fitness: 0.1451 (cached)
+2025-07-30 19:17:31,567 - INFO - Evaluating individual 6/6
+2025-07-30 19:17:31,569 - INFO - Cache MISS - Training individual: vector_dim=10, phase_bins=16, mag_bins=1024, cardinality=5, learning_rate=0.0005, decay_factor=0.9, orthogonality_threshold=0.15, warmup_epochs=8, min_activation_strength=0.2, batch_size=10
+2025-07-30 19:17:31,569 - INFO - Individual fitness: 0.3171 (cached)
+2025-07-30 19:17:31,569 - INFO - Generation 1 Results:
+2025-07-30 19:17:31,569 - INFO -   Best fitness: 0.8388
+2025-07-30 19:17:31,569 - INFO -   Average fitness: 0.3313
+2025-07-30 19:17:31,569 - INFO -   Worst fitness: 0.1321
+2025-07-30 19:17:31,569 - INFO -   Best config: {'vector_dim': 5, 'phase_bins': 64, 'mag_bins': 512, 'cardinality': 7, 'learning_rate': 0.001, 'decay_factor': 0.925, 'orthogonality_threshold': 0.1, 'warmup_epochs': 3, 'min_activation_strength': 0.5, 'batch_size': 8, 'fitness': 0.8388408371200687, 'generation': 1}
+2025-07-30 19:17:31,569 - INFO - Creating next generation...
+2025-07-30 19:17:31,569 - INFO - Preserving 2 elite individuals (40.0%)
+2025-07-30 19:17:31,570 - INFO - Using top 2 survivors for breeding (40.0%)
+2025-07-30 19:17:31,570 - INFO - 
+=== Generation 2/2 ===
+2025-07-30 19:17:31,570 - INFO - Evaluating population fitness...
+2025-07-30 19:17:31,570 - INFO - Evaluating individual 1/6
+2025-07-30 19:17:31,570 - INFO - Cache HIT for individual: vector_dim=5, phase_bins=64, mag_bins=512, cardinality=7, learning_rate=0.001, decay_factor=0.925, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.5, batch_size=8
+2025-07-30 19:17:31,570 - INFO - Cached fitness: 0.8388
+2025-07-30 19:17:31,570 - INFO - Evaluating individual 2/6
+2025-07-30 19:17:31,570 - INFO - Cache HIT for individual: vector_dim=5, phase_bins=16, mag_bins=64, cardinality=4, learning_rate=0.0001, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.05, batch_size=5
+2025-07-30 19:17:31,570 - INFO - Cached fitness: 0.3723
+2025-07-30 19:17:31,570 - INFO - Evaluating individual 3/6
+2025-07-30 19:17:31,572 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=64, mag_bins=512, cardinality=7, learning_rate=0.001, decay_factor=0.975, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.5, batch_size=8
+2025-07-30 19:17:31,572 - INFO - Individual fitness: 0.5480 (cached)
+2025-07-30 19:17:31,572 - INFO - Evaluating individual 4/6
+2025-07-30 19:17:31,572 - INFO - Cache HIT for individual: vector_dim=5, phase_bins=16, mag_bins=64, cardinality=4, learning_rate=0.0001, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.05, batch_size=5
+2025-07-30 19:17:31,572 - INFO - Cached fitness: 0.3723
+2025-07-30 19:17:31,572 - INFO - Evaluating individual 5/6
+2025-07-30 19:17:31,574 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=64, mag_bins=512, cardinality=4, learning_rate=0.001, decay_factor=0.925, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.5, batch_size=5
+2025-07-30 19:17:31,574 - INFO - Individual fitness: 0.3192 (cached)
+2025-07-30 19:17:31,574 - INFO - Evaluating individual 6/6
+2025-07-30 19:17:31,575 - INFO - Cache MISS - Training individual: vector_dim=5, phase_bins=16, mag_bins=64, cardinality=7, learning_rate=0.0001, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=3, min_activation_strength=0.05, batch_size=8
+2025-07-30 19:17:31,575 - INFO - Individual fitness: 0.8131 (cached)
+2025-07-30 19:17:31,576 - INFO - Generation 2 Results:
+2025-07-30 19:17:31,576 - INFO -   Best fitness: 0.8388
+2025-07-30 19:17:31,576 - INFO -   Average fitness: 0.5440
+2025-07-30 19:17:31,576 - INFO -   Worst fitness: 0.3192
+2025-07-30 19:17:31,576 - INFO -   Best config: {'vector_dim': 5, 'phase_bins': 64, 'mag_bins': 512, 'cardinality': 7, 'learning_rate': 0.001, 'decay_factor': 0.925, 'orthogonality_threshold': 0.1, 'warmup_epochs': 3, 'min_activation_strength': 0.5, 'batch_size': 8, 'fitness': 0.8388408371200687, 'generation': 2}
+2025-07-30 19:17:31,576 - INFO - 
+Selecting top-2 individuals from all generations...
+2025-07-30 19:17:31,576 - INFO - Cache saved: 9 entries
+2025-07-30 19:17:31,576 - INFO - 
+=== Cache Statistics ===
+2025-07-30 19:17:31,576 - INFO -   Cache hits: 3
+2025-07-30 19:17:31,576 - INFO -   Cache misses: 9
+2025-07-30 19:17:31,576 - INFO -   Hit rate: 25.0%
+2025-07-30 19:17:31,576 - INFO -   Total evaluations: 9
+2025-07-30 19:17:31,576 - INFO -   Cached configurations: 9
+2025-07-30 19:17:31,577 - INFO - Results saved to:
+2025-07-30 19:17:31,577 - INFO -   Top individuals: results/genetic_algorithm/top_individuals_20250730_191731.json
+2025-07-30 19:17:31,577 - INFO -   Generation stats: results/genetic_algorithm/generation_stats_20250730_191731.json
+2025-07-30 19:17:31,577 - INFO - 
+=== Final Results ===
+2025-07-30 19:17:31,577 - INFO - Rank 1: Fitness = 0.8388, Generation = 1
+2025-07-30 19:17:31,577 - INFO - Rank 2: Fitness = 0.8388, Generation = 2

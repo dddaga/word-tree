@@ -1,0 +1,42 @@
+[
+  {
+    "generation": 1,
+    "best_fitness": 0.6386927834811635,
+    "avg_fitness": 0.525939636539643,
+    "worst_fitness": 0.41163610395675165,
+    "best_individual": {
+      "vector_dim": 10,
+      "phase_bins": 128,
+      "mag_bins": 64,
+      "cardinality": 4,
+      "learning_rate": 0.0001,
+      "decay_factor": 0.925,
+      "orthogonality_threshold": 0.05,
+      "warmup_epochs": 5,
+      "min_activation_strength": 0.5,
+      "batch_size": 10,
+      "fitness": 0.6386927834811635,
+      "generation": 1
+    }
+  },
+  {
+    "generation": 2,
+    "best_fitness": 0.6736820910549499,
+    "avg_fitness": 0.5702353126185411,
+    "worst_fitness": 0.4234410740820215,
+    "best_individual": {
+      "vector_dim": 10,
+      "phase_bins": 128,
+      "mag_bins": 64,
+      "cardinality": 3,
+      "learning_rate": 0.0001,
+      "decay_factor": 0.925,
+      "orthogonality_threshold": 0.05,
+      "warmup_epochs": 5,
+      "min_activation_strength": 0.5,
+      "batch_size": 10,
+      "fitness": 0.6736820910549499,
+      "generation": 2
+    }
+  }
+]

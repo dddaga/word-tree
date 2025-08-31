@@ -1,0 +1,35 @@
+SPECIALIZED NeuroGraph Evaluation Results
+==========================================
+Configuration: config/optimized.yaml
+Total samples: 200
+Most Confident Method: 0.1100 (11.00%)
+Voting Method: 0.1100 (11.00%)
+Best Method: Voting
+Best Accuracy: 0.1100 (11.00%)
+Improvement over random: 0.0100
+Improvement over previous: -0.0700
+Final training loss: 1.6686
+
+Node Specializations:
+n45: digits [0]
+n42: digits [1]
+n44: digits [2]
+n40: digits [3]
+n41: digits [4]
+n46: digits [5]
+n48: digits [6]
+n49: digits [7]
+n47: digits [8]
+n43: digits [9]
+
+Prediction distribution:
+Digit 0:  12 (  6.0%)
+Digit 1:  28 ( 14.0%)
+Digit 2:  10 (  5.0%)
+Digit 3:  15 (  7.5%)
+Digit 4:  34 ( 17.0%)
+Digit 5:   7 (  3.5%)
+Digit 6:  25 ( 12.5%)
+Digit 7:  42 ( 21.0%)
+Digit 8:   8 (  4.0%)
+Digit 9:  18 (  9.0%)

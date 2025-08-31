@@ -1,0 +1,18 @@
+2025-07-30 19:17:13,641 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:17:13,641 - INFO - No existing cache found, starting with empty cache
+2025-07-30 19:17:13,641 - INFO - GA Parameters: generations=1, elite_percentage=0.5, crossover_rate=0.7, mutation_rate=0.1
+2025-07-30 19:17:13,641 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:17:13,643 - INFO - Cache MISS - Training individual: vector_dim=8, phase_bins=32, mag_bins=256, cardinality=5, learning_rate=0.001, decay_factor=0.95, orthogonality_threshold=0.1, warmup_epochs=5, min_activation_strength=0.1, batch_size=5
+2025-07-30 19:17:13,643 - INFO - Individual fitness: 0.6115 (cached)
+2025-07-30 19:17:13,643 - INFO - Cache HIT for individual: vector_dim=8, phase_bins=32, mag_bins=256, cardinality=5, learning_rate=0.001, decay_factor=0.95, orthogonality_threshold=0.1, warmup_epochs=5, min_activation_strength=0.1, batch_size=5
+2025-07-30 19:17:13,643 - INFO - Cached fitness: 0.6115
+2025-07-30 19:17:13,643 - INFO - Cache saved: 1 entries
+2025-07-30 19:17:13,644 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:17:13,644 - INFO - No existing cache found, starting with empty cache
+2025-07-30 19:17:13,644 - INFO - GA Parameters: generations=1, elite_percentage=0.5, crossover_rate=0.3, mutation_rate=0.2
+2025-07-30 19:17:13,644 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:17:13,644 - INFO - Loaded 1 cached fitness evaluations
+2025-07-30 19:17:13,644 - INFO - Cache HIT for individual: vector_dim=8, phase_bins=32, mag_bins=256, cardinality=5, learning_rate=0.001, decay_factor=0.95, orthogonality_threshold=0.1, warmup_epochs=5, min_activation_strength=0.1, batch_size=5
+2025-07-30 19:17:13,644 - INFO - Cached fitness: 0.6115
+2025-07-30 19:17:13,646 - INFO - Cache MISS - Training individual: vector_dim=10, phase_bins=32, mag_bins=256, cardinality=5, learning_rate=0.001, decay_factor=0.95, orthogonality_threshold=0.1, warmup_epochs=5, min_activation_strength=0.1, batch_size=5
+2025-07-30 19:17:13,646 - INFO - Individual fitness: 0.6115 (cached)

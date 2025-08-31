@@ -1,0 +1,51 @@
+{
+  "vectorized_propagation": {
+    "avg_original_time_ms": 2068.458218700016,
+    "avg_vectorized_time_ms": 1025.104895999948,
+    "speedup": 2.017801521357792,
+    "samples_tested": 20
+  },
+  "batched_evaluation": {
+    "1": {
+      "accuracy": 0.08,
+      "total_samples": 50,
+      "correct_predictions": 4,
+      "total_time": 101.26597949499956,
+      "samples_per_second": 0.4937492359165791,
+      "avg_batch_time": 2.025093889860018,
+      "num_batches": 50,
+      "batch_size": 1
+    },
+    "4": {
+      "accuracy": 0.06,
+      "total_samples": 50,
+      "correct_predictions": 3,
+      "total_time": 112.53386501300065,
+      "samples_per_second": 0.44431069699973136,
+      "avg_batch_time": 8.655874634076868,
+      "num_batches": 13,
+      "batch_size": 4
+    },
+    "8": {
+      "accuracy": 0.14,
+      "total_samples": 50,
+      "correct_predictions": 7,
+      "total_time": 103.22929716199997,
+      "samples_per_second": 0.4843586208044594,
+      "avg_batch_time": 14.745910621000023,
+      "num_batches": 7,
+      "batch_size": 8
+    },
+    "16": {
+      "accuracy": 0.14,
+      "total_samples": 50,
+      "correct_predictions": 7,
+      "total_time": 107.3850104209996,
+      "samples_per_second": 0.4656143329872256,
+      "avg_batch_time": 26.84460655600037,
+      "num_batches": 4,
+      "batch_size": 16
+    }
+  },
+  "error": "'torch._C._CudaDeviceProperties' object has no attribute 'max_threads_per_block'"
+}

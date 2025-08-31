@@ -1,0 +1,42 @@
+# 1000-node network configuration for enhanced MNIST learning
+# Implements 200 input nodes with PCA higher dimensions approach
+
+# Graph structure - Large scale network
+total_nodes: 1000
+num_input_nodes: 200  # 40x increase from current 5 nodes
+num_output_nodes: 10  # One per digit class
+vector_dim: 5
+phase_bins: 8
+mag_bins: 256
+cardinality: 6  # Increased connectivity for richer representations
+seed: 42
+
+# Forward pass behavior - adjusted for larger network
+decay_factor: 0.925
+min_activation_strength: 0.01
+max_timesteps: 35  # More timesteps for larger network propagation
+min_output_activation_timesteps: 3
+top_k_neighbors: 6  # More radiation neighbors
+use_radiation: true
+
+# Learning parameters - optimized for large network
+learning_rate: 0.03  # Slightly reduced for stability with more nodes
+warmup_epochs: 25    # Extended warmup for complex network
+num_epochs: 60       # Balanced for capacity vs training time
+batch_size: 5        # Used as samples_per_epoch in single-sample mode
+
+# Activation balancing - essential for large networks
+enable_activation_balancing: true
+balancing_strategy: "round_robin"  # Most effective strategy
+max_activations_per_epoch: 20  # Increased for larger network
+min_activations_per_epoch: 5
+force_activation_probability: 0.5
+
+# Multi-output loss - enabled
+enable_multi_output_loss: true
+continue_timesteps_after_first: 3
+max_outputs_to_train: 4
+
+# Paths
+graph_path: config/large_1000_static_graph.pkl
+log_path: logs/large_1000/

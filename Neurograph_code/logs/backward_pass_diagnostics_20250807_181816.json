@@ -1,0 +1,634 @@
+{
+  "gradient_stats": {
+    "upstream_count": [
+      10,
+      10,
+      7,
+      7,
+      3
+    ],
+    "upstream_mean_norm": [
+      0.32039197385311124,
+      0.44573461562395095,
+      0.36867549802575794,
+      0.34034980620656696,
+      0.1425735503435135
+    ],
+    "upstream_max_norm": [
+      0.8567756414413452,
+      0.8626300096511841,
+      0.7570310831069946,
+      0.702182948589325,
+      0.18490292131900787
+    ],
+    "upstream_min_norm": [
+      0.14423207938671112,
+      0.21403320133686066,
+      0.1398407369852066,
+      0.1652272492647171,
+      0.08889363706111908
+    ],
+    "upstream_std_norm": [
+      0.18858997536549799,
+      0.19200861347159912,
+      0.20660222673006615,
+      0.16664257724159223,
+      0.04000893045245081
+    ],
+    "upstream_mean_mean": [
+      -0.0971304727718234,
+      -0.12546341924462467,
+      -0.12979111847068583,
+      -0.1185488747432828,
+      -0.036622454722722374
+    ],
+    "upstream_mean_std": [
+      0.11239821054041385,
+      0.15836361199617385,
+      0.10187641850539617,
+      0.10032666581017631,
+      0.0563842256863912
+    ],
+    "discrete_phase_count": [
+      10,
+      10,
+      7,
+      7,
+      3
+    ],
+    "discrete_phase_mean_norm": [
+      0.29035434052348136,
+      0.39187558069825174,
+      0.3434118117604937,
+      0.1799109567488943,
+      0.11078535268704097
+    ],
+    "discrete_phase_max_norm": [
+      0.9381812810897827,
+      0.9457042813301086,
+      1.1429798603057861,
+      0.35115230083465576,
+      0.17271405458450317
+    ],
+    "discrete_phase_min_norm": [
+      0.09816119074821472,
+      0.09351900219917297,
+      0.08901900798082352,
+      0.08961860090494156,
+      0.042527563869953156
+    ],
+    "discrete_phase_std_norm": [
+      0.24894796490729804,
+      0.30271784822284425,
+      0.34046250189963656,
+      0.07855490435672599,
+      0.053336501554248544
+    ],
+    "discrete_phase_mean_mean": [
+      0.011929156695259735,
+      -0.022631558289867827,
+      -0.024898051550345763,
+      -0.03841074393962377,
+      0.018721315699319046
+    ],
+    "discrete_phase_mean_std": [
+      0.13536301106214524,
+      0.17616306245326996,
+      0.15603775956801005,
+      0.07559496217540332,
+      0.04712576046586037
+    ],
+    "discrete_mag_count": [
+      10,
+      10,
+      7,
+      7,
+      3
+    ],
+    "discrete_mag_mean_norm": [
+      0.43055223375558854,
+      0.44666135162115095,
+      0.40089161161865505,
+      0.47935640811920166,
+      0.1707198272148768
+    ],
+    "discrete_mag_max_norm": [
+      1.6085273027420044,
+      1.157498836517334,
+      0.9108580350875854,
+      1.1884803771972656,
+      0.2636834681034088
+    ],
+    "discrete_mag_min_norm": [
+      0.14575336873531342,
+      0.20318087935447693,
+      0.0731511041522026,
+      0.22718116641044617,
+      0.0764637142419815
+    ],
+    "discrete_mag_std_norm": [
+      0.40865159137529394,
+      0.26605762055025733,
+      0.27083556123676,
+      0.31848744877692003,
+      0.07643760820455683
+    ],
+    "discrete_mag_mean_mean": [
+      -0.039561743196099994,
+      0.002505570836365223,
+      -0.016054801576371704,
+      -0.02353519227887903,
+      0.02078868301274876
+    ],
+    "discrete_mag_mean_std": [
+      0.19153436422348022,
+      0.19363996274769307,
+      0.18530981402312005,
+      0.2164182886481285,
+      0.07917480294903119
+    ],
+    "phase_mag_mean_correlation": [
+      -0.2282053381204605,
+      -0.27790727764368056,
+      -0.11937261692115239,
+      -0.006531731358596257,
+      -0.2782421410083771
+    ],
+    "phase_mag_std_correlation": [
+      0.5540111633292334,
+      0.5832770533914452,
+      0.3801005772355208,
+      0.4462736418202644,
+      0.45817931598346984
+    ],
+    "phase_mag_max_correlation": [
+      0.7175621390342712,
+      0.7991005182266235,
+      0.3836965262889862,
+      0.6045463681221008,
+      0.3208548128604889
+    ],
+    "phase_mag_min_correlation": [
+      -0.94115149974823,
+      -0.9241411685943604,
+      -0.6624014377593994,
+      -0.7034234404563904,
+      -0.7915768623352051
+    ],
+    "accumulation_total_gradients_accumulated": [
+      0,
+      10,
+      20,
+      27,
+      34
+    ],
+    "accumulation_total_updates_applied": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "accumulation_average_gradient_norm": [
+      0.0,
+      0.32264614660219776,
+      0.4966698586888512,
+      0.5250628632613108,
+      0.5110519341266381
+    ],
+    "accumulation_nodes_updated_per_cycle": [
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "accumulation_gradient_variance": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accumulation_effective_learning_rate": [
+      "base_lr \u00d7 2.83",
+      "base_lr \u00d7 2.83",
+      "base_lr \u00d7 2.83",
+      "base_lr \u00d7 2.83",
+      "base_lr \u00d7 2.83"
+    ],
+    "accumulation_accumulation_efficiency": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "parameter_updates": {
+    "avg_phase_change": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "avg_mag_change": [
+      0.3000000059604645,
+      0.3800000071525574,
+      0.34285715009484974,
+      0.314285723226411,
+      0.06666666766007741
+    ],
+    "num_updated_nodes": [
+      10,
+      10,
+      7,
+      7,
+      3
+    ],
+    "learning_rate": [
+      0.008485281374238571,
+      0.008485281374238571,
+      0.008485281374238571,
+      0.008485281374238571,
+      0.008485281374238571
+    ]
+  },
+  "loss_decomposition": {
+    "total_loss": [
+      2.1946358680725098,
+      2.3878672122955322,
+      2.335815668106079,
+      2.1590991020202637,
+      2.2314653396606445
+    ],
+    "logit_max_logit": [
+      0.018039770424365997,
+      0.009433694183826447,
+      -0.052986908704042435,
+      -0.0005839072982780635,
+      -0.07610442489385605
+    ],
+    "logit_min_logit": [
+      -0.1387496292591095,
+      -0.34606021642684937,
+      -0.28022587299346924,
+      -0.29395878314971924,
+      -0.3168907165527344
+    ],
+    "logit_mean_logit": [
+      -0.09110849350690842,
+      -0.26087766885757446,
+      -0.16914883255958557,
+      -0.16581660509109497,
+      -0.2141313999891281
+    ],
+    "logit_std_logit": [
+      0.04858880862593651,
+      0.10992956161499023,
+      0.06749767810106277,
+      0.09898838400840759,
+      0.06877360492944717
+    ],
+    "logit_target_logit": [
+      0.018039770424365997,
+      -0.33977583050727844,
+      -0.20009833574295044,
+      -0.017363904044032097,
+      -0.14061903953552246
+    ],
+    "logit_logit_range": [
+      0.1567893922328949,
+      0.3554939031600952,
+      0.2272389680147171,
+      0.2933748662471771,
+      0.24078628420829773
+    ],
+    "logit_max_prob": [
+      0.11139911413192749,
+      0.13020336627960205,
+      0.11206185817718506,
+      0.11738230288028717,
+      0.11452630162239075
+    ],
+    "logit_target_prob": [
+      0.11139911413192749,
+      0.09182532131671906,
+      0.09673154354095459,
+      0.11542905867099762,
+      0.10737098008394241
+    ],
+    "logit_entropy": [
+      2.3013672828674316,
+      2.2958550453186035,
+      2.3003017902374268,
+      2.297556161880493,
+      2.3001651763916016
+    ],
+    "signal_num_active_outputs": [
+      10,
+      10,
+      7,
+      7,
+      3
+    ],
+    "signal_mean_signal_strength": [
+      2.230973535776138,
+      1.588881069421768,
+      2.1641799892698015,
+      2.212033782686506,
+      3.234640121459961
+    ],
+    "signal_max_signal_strength": [
+      2.8458025455474854,
+      2.6294217109680176,
+      3.3848962783813477,
+      3.055144786834717,
+      3.4871954917907715
+    ],
+    "signal_min_signal_strength": [
+      0.6962797045707703,
+      0.781963050365448,
+      0.8636226654052734,
+      1.0309298038482666,
+      2.753011465072632
+    ],
+    "confidence_predicted_class": [
+      5.0,
+      3.0,
+      5.0,
+      5.0,
+      3.0
+    ],
+    "confidence_max_confidence": [
+      0.11139911413192749,
+      0.13020336627960205,
+      0.11206185817718506,
+      0.11738230288028717,
+      0.11452630162239075
+    ],
+    "confidence_target_confidence": [
+      0.11139911413192749,
+      0.09182532131671906,
+      0.09673154354095459,
+      0.11542905867099762,
+      0.10737098008394241
+    ],
+    "confidence_correct_prediction": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "confidence_confidence_gap": [
+      0.0,
+      0.038378044962882996,
+      0.015330314636230469,
+      0.0019532442092895508,
+      0.007155321538448334
+    ]
+  },
+  "timing_stats": {
+    "total_backward_pass": [
+      11.727668313997128,
+      14.736932013001933,
+      12.31127520299924,
+      10.202786662997823,
+      8.737555007999617
+    ],
+    "loss_computation_percentage": [
+      0.10553417498002564,
+      0.00573041932807961,
+      0.005662963334365937,
+      0.006364173052194135,
+      0.0054819111138576775
+    ],
+    "upstream_gradients_percentage": [
+      0.009756406546169816,
+      0.008135696072293516,
+      0.006010205983048539,
+      0.007361165392777439,
+      0.005892517984739017
+    ],
+    "discrete_gradients_percentage": [
+      0.0640126818083763,
+      0.028435050100802575,
+      0.02514082375029242,
+      0.02942255971917422,
+      0.0186372961021019
+    ],
+    "parameter_updates_percentage": [
+      0.01918211649133834,
+      0.013321700851657244,
+      0.01133487779956259,
+      0.013380295486403038,
+      0.006977569778754777
+    ]
+  },
+  "convergence_metrics": {
+    "phase_gradient_trend": [
+      0.10152124017477032,
+      0.02652873561850612,
+      -0.03797939202615192,
+      -0.05711025996222381
+    ],
+    "mag_gradient_trend": [
+      0.016109117865562295,
+      -0.014830311068466774,
+      0.010064278308834378,
+      -0.04869697565833726
+    ],
+    "loss_trend": [
+      0.19323134422302202,
+      0.0705899000167845,
+      -0.015866184234619128,
+      -0.015510916709899635
+    ],
+    "parameter_stability": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stability_counts": {
+    "gradient_explosion_count": 0,
+    "parameter_stagnation_count": 0,
+    "unstable_updates_count": 0
+  },
+  "config": {
+    "system": {
+      "mode": "modular",
+      "version": "3.0",
+      "description": "Production-optimized NeuroGraph with batch evaluation",
+      "device": "auto"
+    },
+    "architecture": {
+      "total_nodes": 1000,
+      "input_nodes": 200,
+      "output_nodes": 10,
+      "intermediate_nodes": 790,
+      "vector_dim": 5,
+      "seed": 42
+    },
+    "resolution": {
+      "phase_bins": 64,
+      "mag_bins": 512,
+      "resolution_increase": 16
+    },
+    "graph_structure": {
+      "cardinality": 6,
+      "top_k_neighbors": 6,
+      "use_radiation": true
+    },
+    "radiation": {
+      "batch_size": 128,
+      "cache_enabled": true,
+      "max_cache_size": 1000,
+      "quantization_level": 4
+    },
+    "input_processing": {
+      "adapter_type": "linear_projection",
+      "input_dim": 784,
+      "learnable": true,
+      "normalization": "layer_norm",
+      "dropout": 0.1
+    },
+    "class_encoding": {
+      "type": "orthogonal",
+      "num_classes": 10,
+      "encoding_dim": 5,
+      "orthogonality_threshold": 0.1,
+      "cache_encodings": true
+    },
+    "loss_function": {
+      "type": "categorical_crossentropy",
+      "temperature": 1.0,
+      "label_smoothing": 0.0
+    },
+    "training": {
+      "gradient_accumulation": {
+        "enabled": true,
+        "accumulation_steps": 8,
+        "lr_scaling": "sqrt",
+        "buffer_size": 1500
+      },
+      "optimizer": {
+        "type": "discrete_sgd",
+        "base_learning_rate": 0.003,
+        "effective_learning_rate": 0.008485281374238571,
+        "warmup_epochs": 3,
+        "num_epochs": 15,
+        "batch_size": 8,
+        "gradient_clipping": 1.0
+      },
+      "quick_mode": {
+        "epochs": 5,
+        "warmup_epochs": 2,
+        "batch_size": 4
+      }
+    },
+    "forward_pass": {
+      "max_timesteps": 40,
+      "decay_factor": 0.6,
+      "min_activation_strength": 1.0,
+      "min_output_activation_timesteps": 2,
+      "verbose": true
+    },
+    "activation_balancing": {
+      "enabled": true,
+      "strategy": "round_robin",
+      "max_activations_per_epoch": 12,
+      "min_activations_per_epoch": 3,
+      "force_activation_probability": 0.25
+    },
+    "multi_output_loss": {
+      "enabled": true,
+      "continue_timesteps_after_first": 2,
+      "max_outputs_to_train": 3
+    },
+    "batch_evaluation": {
+      "enabled": true,
+      "batch_size": 16,
+      "cache_class_encodings": true,
+      "use_torch_no_grad": true,
+      "precompute_cosine_targets": true,
+      "tensor_pool_size": 32,
+      "streaming_mode": true
+    },
+    "performance": {
+      "gpu_profiling": true,
+      "memory_monitoring": true,
+      "cache_statistics": true,
+      "timing_decorators": false
+    },
+    "paths": {
+      "graph_path": "cache/production_graph.pkl",
+      "log_path": "logs/production/",
+      "checkpoint_path": "checkpoints/production/",
+      "results_path": "results/production/"
+    },
+    "memory": {
+      "max_gpu_memory_fraction": 0.8,
+      "enable_memory_growth": true,
+      "clear_cache_frequency": 100,
+      "garbage_collection": true
+    },
+    "device_optimization": {
+      "cuda": {
+        "enable_cudnn_benchmark": true,
+        "enable_cudnn_deterministic": false,
+        "enable_tf32": true,
+        "memory_pool": true
+      },
+      "cpu": {
+        "num_threads": 4,
+        "enable_mkldnn": true
+      }
+    },
+    "debugging": {
+      "verbose_logging": false,
+      "save_intermediate_states": false,
+      "plot_training_curves": false,
+      "evaluation_samples": 100,
+      "final_evaluation_samples": 100,
+      "enable_profiling": false
+    },
+    "fallback": {
+      "enable_legacy_mode": false,
+      "auto_fallback_on_error": false,
+      "legacy_config_path": null
+    },
+    "validation": {
+      "frequency": 5,
+      "samples": 200,
+      "use_batch_evaluation": true,
+      "early_stopping": false
+    },
+    "export": {
+      "save_best_model": true,
+      "save_final_model": true,
+      "export_onnx": false,
+      "save_training_curves": true,
+      "save_performance_stats": true
+    },
+    "production": {
+      "optimize_for_inference": true,
+      "disable_debug_info": true,
+      "enable_fast_math": true,
+      "use_mixed_precision": false,
+      "compile_model": false
+    },
+    "device": "cuda"
+  },
+  "alert_thresholds": {
+    "gradient_explosion_threshold": 10.0,
+    "gradient_vanishing_threshold": 1e-06,
+    "parameter_stagnation_threshold": 1e-08,
+    "loss_spike_threshold": 2.0,
+    "memory_usage_threshold": 1000.0
+  },
+  "timestamp": "2025-08-07T18:18:16.776117"
+}

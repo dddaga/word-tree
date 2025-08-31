@@ -1,0 +1,101 @@
+# Optimized Production Training Configuration for NeuroGraph
+# Balanced for performance and learning effectiveness
+
+system:
+  mode: "modular"
+  version: "2.0"
+  description: "Optimized production training with performance monitoring"
+
+architecture:
+  total_nodes: 1000
+  input_nodes: 200
+  output_nodes: 10
+  intermediate_nodes: 790
+  vector_dim: 5  # Reduced from 8 for better performance
+  seed: 42
+
+resolution:
+  phase_bins: 32  # Reduced from 64 for better performance
+  mag_bins: 512   # Reduced from 1024 for better performance
+  resolution_increase: 8
+
+graph_structure:
+  cardinality: 6
+  top_k_neighbors: 6
+  use_radiation: true
+
+radiation:
+  batch_size: 128  # Increased for better GPU utilization
+  cache_enabled: true
+
+input_processing:
+  adapter_type: "linear_projection"
+  input_dim: 784
+  learnable: true
+  normalization: "layer_norm"
+  dropout: 0.1
+
+class_encoding:
+  type: "orthogonal"
+  num_classes: 10
+  encoding_dim: 5
+  orthogonality_threshold: 0.1
+
+loss_function:
+  type: "categorical_crossentropy"
+  temperature: 1.0
+  label_smoothing: 0.0
+
+training:
+  gradient_accumulation:
+    enabled: true
+    accumulation_steps: 8  # Restored for better stability
+    lr_scaling: "sqrt"
+    buffer_size: 1500  # Increased buffer size
+  
+  optimizer:
+    type: "discrete_sgd"
+    base_learning_rate: 0.015  # Slightly higher to compensate for reduced accumulation
+    warmup_epochs: 3     # Reduced warmup
+    num_epochs: 15       # Moderate number of epochs
+    batch_size: 8        # Increased batch size for efficiency
+  
+  quick_mode:
+    epochs: 5
+    warmup_epochs: 1
+
+forward_pass:
+  max_timesteps: 25    # Reduced from 35
+  decay_factor: 0.9    # Slightly faster decay
+  min_activation_strength: 0.05  # Higher threshold
+  min_output_activation_timesteps: 2
+
+activation_balancing:
+  enabled: true
+  strategy: "round_robin"
+  max_activations_per_epoch: 15  # Reduced
+  min_activations_per_epoch: 3
+  force_activation_probability: 0.3
+
+multi_output_loss:
+  enabled: true
+  continue_timesteps_after_first: 2  # Reduced
+  max_outputs_to_train: 3
+
+paths:
+  graph_path: "config/production_graph.pkl"
+  log_path: "logs/production/"
+  checkpoint_path: "checkpoints/production/"
+  training_curves_path: "logs/production/training_curves.png"
+
+fallback:
+  enable_legacy_mode: true
+  legacy_config_path: "config/default.yaml"
+  auto_fallback_on_error: true
+
+debugging:
+  verbose_logging: false
+  save_intermediate_states: false
+  plot_training_curves: true
+  evaluation_samples: 200  # Reduced for faster evaluation
+  final_evaluation_samples: 300

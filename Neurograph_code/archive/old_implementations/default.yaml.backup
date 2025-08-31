@@ -1,0 +1,40 @@
+# Enhanced Large Graph Configuration - Optimized for balanced training
+# Graph structure - 4x larger for reduced topology bias
+total_nodes: 200
+num_input_nodes: 5
+num_output_nodes: 10
+vector_dim: 5
+phase_bins: 8
+mag_bins: 256
+cardinality: 4  # Higher connectivity for better path diversity
+seed: 42
+
+# Forward pass behavior
+decay_factor: 0.925
+min_activation_strength: 0.01
+max_timesteps: 25  # More timesteps for larger graph
+min_output_activation_timesteps: 3  # Allow more propagation time
+top_k_neighbors: 6  # More radiation neighbors for larger graph
+use_radiation: true
+
+# Learning - Optimized for enhanced system
+learning_rate: 0.001
+warmup_epochs: 15  # Extended warmup for better balance
+num_epochs: 30  # Fewer epochs needed with better training
+batch_size: 3  # Smaller batches for larger graph
+
+# Activation balancing - ENABLED by default
+enable_activation_balancing: true
+balancing_strategy: "round_robin"  # Most effective strategy
+max_activations_per_epoch: 15
+min_activations_per_epoch: 3
+force_activation_probability: 0.5
+
+# Multi-output loss - ENABLED by default
+enable_multi_output_loss: true
+continue_timesteps_after_first: 3
+max_outputs_to_train: 4
+
+# Paths
+graph_path: config/large_static_graph.pkl
+log_path: logs/
