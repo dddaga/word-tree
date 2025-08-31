@@ -1,0 +1,16 @@
+2025-07-28 15:41:32,465 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:41:32,466 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:41:32,466 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:41:32,466 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:41:54,931 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-28 15:41:54,932 - INFO - Starting GA hyperparameter search:
+2025-07-28 15:41:54,932 - INFO -   Generations: 1
+2025-07-28 15:41:54,932 - INFO -   Population size: 2
+2025-07-28 15:41:54,932 - INFO -   Top-k: 2
+2025-07-28 15:41:54,932 - INFO -   Search space: 10 parameters
+2025-07-28 15:41:54,932 - INFO - Initializing random population...
+2025-07-28 15:41:54,932 - INFO - 
+=== Generation 1/1 ===
+2025-07-28 15:41:54,932 - INFO - Evaluating population fitness...
+2025-07-28 15:41:54,932 - INFO - Evaluating individual 1/2
+2025-07-28 15:41:54,934 - INFO - Evaluating individual: vector_dim=10, phase_bins=128, mag_bins=256, cardinality=7, learning_rate=0.001, decay_factor=0.9, orthogonality_threshold=0.1, warmup_epochs=10, min_activation_strength=0.2, batch_size=8

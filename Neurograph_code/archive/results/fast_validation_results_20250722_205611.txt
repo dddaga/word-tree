@@ -1,0 +1,12 @@
+1000-Node NeuroGraph Fast Validation Results
+==================================================
+Validation Status: SUCCESS
+Final accuracy: 11.5%
+Best accuracy: 20.0%
+Initial accuracy: 11.0%
+Training time: 15.7 minutes
+Average epoch time: 38.27 seconds
+Samples processed: 25
+Integration success: True
+Training losses: [np.float64(2.2954084396362306), np.float64(2.3188262939453126), np.float64(2.3092142581939696), np.float64(2.3029574394226073), np.float64(2.3347225189208984)]
+Training accuracies: [np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.2)]

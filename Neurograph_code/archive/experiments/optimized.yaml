@@ -1,0 +1,42 @@
+# Optimized configuration for improved accuracy
+# Based on test results showing single-sample training works better
+
+# Graph structure - Smaller for faster convergence
+total_nodes: 50
+num_input_nodes: 5
+num_output_nodes: 10
+vector_dim: 5
+phase_bins: 8
+mag_bins: 256
+cardinality: 4
+seed: 42
+
+# Forward pass behavior
+decay_factor: 0.925
+min_activation_strength: 0.01
+max_timesteps: 15
+min_output_activation_timesteps: 3
+top_k_neighbors: 4
+use_radiation: true
+
+# Learning - OPTIMIZED based on test results
+learning_rate: 0.05  # Increased from 0.01 for more effective discrete updates
+warmup_epochs: 20    # Extended warmup to ensure all nodes learn
+num_epochs: 80       # More epochs for single-sample training
+batch_size: 5        # Used as samples_per_epoch in single-sample mode
+
+# Activation balancing - ENABLED with optimized settings
+enable_activation_balancing: true
+balancing_strategy: "round_robin"  # Most balanced strategy
+max_activations_per_epoch: 15
+min_activations_per_epoch: 3
+force_activation_probability: 0.5  # Higher probability to ensure activation
+
+# Multi-output loss - ENABLED
+enable_multi_output_loss: true
+continue_timesteps_after_first: 3
+max_outputs_to_train: 4
+
+# Paths
+graph_path: config/optimized_static_graph.pkl
+log_path: logs/optimized/

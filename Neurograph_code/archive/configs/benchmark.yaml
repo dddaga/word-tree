@@ -1,0 +1,75 @@
+
+# NeuroGraph Benchmark Configuration
+# Optimized for quick performance testing
+
+# System Configuration
+device: "cpu"  # Use CPU for consistent benchmarking
+mode: "benchmark"
+
+# Architecture
+architecture:
+  total_nodes: 1000
+  input_nodes: 200
+  output_nodes: 10
+  intermediate_nodes: 790
+  vector_dim: 5
+  seed: 42
+
+# High-Resolution Discrete Computation
+resolution:
+  phase_bins: 64
+  mag_bins: 1024
+
+# Graph Structure
+graph_structure:
+  cardinality: 8
+  connection_strategy: "random"
+
+# Input Processing
+input_processing:
+  adapter_type: "linear_projection"
+  input_dim: 784  # MNIST
+  normalization: "layer_norm"
+  dropout: 0.1
+  learnable: true
+
+# Class Encoding
+class_encoding:
+  type: "orthogonal"
+  num_classes: 10
+  encoding_dim: 5
+  orthogonality_threshold: 0.1
+
+# Loss Function
+loss_function:
+  type: "categorical_crossentropy"
+  temperature: 1.0
+  label_smoothing: 0.0
+
+# Training Configuration
+training:
+  optimizer:
+    base_learning_rate: 0.01
+    effective_learning_rate: 0.0354  # √8 scaling for 8-step accumulation
+    num_epochs: 3  # Few epochs for benchmarking
+    batch_size: 10  # Small batch for quick testing
+    warmup_epochs: 0
+  
+  gradient_accumulation:
+    enabled: true
+    accumulation_steps: 8
+    lr_scaling: "sqrt_n"
+    buffer_size: 1000
+
+# Forward Pass
+forward_pass:
+  max_timesteps: 10
+  decay_factor: 0.9
+  min_activation_strength: 0.1
+  radiation_threshold: 0.5
+
+# Paths
+paths:
+  graph_path: "cache/benchmark_graph.pkl"
+  checkpoint_dir: "checkpoints/benchmark/"
+  log_dir: "logs/benchmark/"

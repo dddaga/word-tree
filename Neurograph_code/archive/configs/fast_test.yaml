@@ -1,0 +1,99 @@
+# Fast Test Configuration for NeuroGraph
+# Optimized for quick validation of continuous gradient approximation
+
+system:
+  mode: "modular"
+  version: "2.0"
+  description: "Fast test config for continuous gradient validation"
+
+architecture:
+  total_nodes: 100      # 10x reduction from 1000
+  input_nodes: 20       # 10x reduction from 200  
+  output_nodes: 10      # Keep same for MNIST
+  intermediate_nodes: 70 # total - input - output
+  vector_dim: 5
+  seed: 42
+
+resolution:
+  phase_bins: 32        # 2x reduction from 64
+  mag_bins: 512         # 2x reduction from 1024
+  resolution_increase: 4 # 32 * 512 / (8 * 256) = 8x vs legacy
+
+graph_structure:
+  cardinality: 4        # Reduced from 6
+  top_k_neighbors: 3    # Reduced from 6
+  use_radiation: true
+
+input_processing:
+  adapter_type: "linear_projection"
+  input_dim: 784
+  learnable: true
+  normalization: "layer_norm"
+  dropout: 0.1
+
+class_encoding:
+  type: "orthogonal"
+  num_classes: 10
+  encoding_dim: 5
+  orthogonality_threshold: 0.1
+  cache_encodings: true  # NEW: Enable caching
+
+loss_function:
+  type: "categorical_crossentropy"
+  temperature: 1.0
+  label_smoothing: 0.0
+
+training:
+  gradient_accumulation:
+    enabled: true
+    accumulation_steps: 4  # Reduced from 8
+    lr_scaling: "sqrt"     # √4 = 2x scaling
+    buffer_size: 100       # Reduced from 1000
+  
+  optimizer:
+    type: "discrete_sgd"
+    base_learning_rate: 0.02  # Slightly higher for faster convergence
+    warmup_epochs: 10         # Reduced from 25
+    num_epochs: 30            # Reduced from 60
+    batch_size: 5
+
+forward_pass:
+  max_timesteps: 20      # Reduced from 35
+  decay_factor: 0.925
+  min_activation_strength: 0.01
+  min_output_activation_timesteps: 2  # Reduced from 3
+  verbose: true          # Enable detailed logging
+
+activation_balancing:
+  enabled: true
+  strategy: "round_robin"
+  max_activations_per_epoch: 15  # Reduced from 20
+  min_activations_per_epoch: 3   # Reduced from 5
+  force_activation_probability: 0.5
+
+multi_output_loss:
+  enabled: true
+  continue_timesteps_after_first: 2  # Reduced from 3
+  max_outputs_to_train: 3            # Reduced from 4
+
+paths:
+  graph_path: "config/fast_test_graph.pkl"
+  log_path: "logs/fast_test/"
+  checkpoint_path: "checkpoints/fast_test/"
+
+fallback:
+  enable_legacy_mode: false
+  auto_fallback_on_error: false
+
+debugging:
+  verbose_logging: true      # Enable detailed logging
+  save_intermediate_states: false
+  plot_training_curves: true
+  evaluation_samples: 50     # Reduced from 300
+  
+# Performance monitoring
+performance:
+  log_timing: true
+  log_memory_usage: true
+  log_gradient_norms: true
+  log_parameter_changes: true

@@ -1,0 +1,9 @@
+Fast NeuroGraph Training Results
+========================================
+Final accuracy: 11.0%
+Best accuracy: 20.0% (epoch 2)
+Training time: 103.0 seconds
+Average epoch time: 1.93 seconds
+Average gradient norm: 11.1994
+Training losses: [np.float64(2.3123226165771484), np.float64(2.278812217712402), np.float64(2.251302480697632), np.float64(2.3659599304199217), np.float64(2.345488691329956), np.float64(2.35624098777771), np.float64(2.258030414581299), np.float64(2.3104748725891113), np.float64(2.3585142135620116), np.float64(2.243771123886108), np.float64(2.269996929168701), np.float64(2.3826128005981446), np.float64(2.38700647354126), np.float64(2.302302885055542), np.float64(2.3324738502502442), np.float64(2.27235951423645), np.float64(2.3472510814666747), np.float64(2.2606248378753664), np.float64(2.315848445892334), np.float64(2.3836588859558105), np.float64(2.3639039039611816), np.float64(2.2424497604370117), np.float64(2.3729557037353515), np.float64(2.3373742580413817), np.float64(2.333391523361206), np.float64(2.288490915298462), np.float64(2.32693772315979), np.float64(2.3594379901885985), np.float64(2.2673597812652586), np.float64(2.2938381671905517)]
+Training accuracies: [np.float64(0.0), np.float64(0.2), np.float64(0.2), np.float64(0.0), np.float64(0.0), np.float64(0.2), np.float64(0.0), np.float64(0.2), np.float64(0.2), np.float64(0.0), np.float64(0.2), np.float64(0.0), np.float64(0.0), np.float64(0.2), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.2), np.float64(0.2), np.float64(0.0), np.float64(0.0), np.float64(0.2), np.float64(0.0), np.float64(0.2), np.float64(0.2), np.float64(0.0), np.float64(0.0), np.float64(0.2), np.float64(0.0), np.float64(0.0)]

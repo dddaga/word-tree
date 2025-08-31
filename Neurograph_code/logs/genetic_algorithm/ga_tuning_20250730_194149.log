@@ -1,0 +1,152 @@
+2025-07-30 19:41:49,422 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:41:49,423 - WARNING - Cache invalidated due to fixed parameter mismatch
+2025-07-30 19:41:49,481 - INFO - MNIST dataset loaded:
+2025-07-30 19:41:49,482 - INFO -   Training samples: 60000
+2025-07-30 19:41:49,482 - INFO -   Test samples: 10000
+2025-07-30 19:41:55,613 - INFO - Training data class distribution:
+2025-07-30 19:41:55,613 - INFO -   Class 0: 5923 samples
+2025-07-30 19:41:55,613 - INFO -   Class 1: 6742 samples
+2025-07-30 19:41:55,613 - INFO -   Class 2: 5958 samples
+2025-07-30 19:41:55,613 - INFO -   Class 3: 6131 samples
+2025-07-30 19:41:55,613 - INFO -   Class 4: 5842 samples
+2025-07-30 19:41:55,614 - INFO -   Class 5: 5421 samples
+2025-07-30 19:41:55,614 - INFO -   Class 6: 5918 samples
+2025-07-30 19:41:55,614 - INFO -   Class 7: 6265 samples
+2025-07-30 19:41:55,614 - INFO -   Class 8: 5851 samples
+2025-07-30 19:41:55,614 - INFO -   Class 9: 5949 samples
+2025-07-30 19:41:56,618 - INFO - Fixed test set created: 500 samples
+2025-07-30 19:41:56,669 - INFO - Test set class distribution: {0: 50, 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50}
+2025-07-30 19:41:56,669 - INFO - StratifiedDataManager initialized:
+2025-07-30 19:41:56,669 - INFO -   Training samples per run: 500
+2025-07-30 19:41:56,669 - INFO -   Test samples (fixed): 500
+2025-07-30 19:41:56,669 - INFO -   Samples per class: 50
+2025-07-30 19:41:56,669 - INFO -   Classes available: 10
+2025-07-30 19:41:56,669 - INFO - MultiRunFitnessEvaluator initialized:
+2025-07-30 19:41:56,669 - INFO -   Number of runs per candidate: 5
+2025-07-30 19:41:56,669 - INFO -   Training samples per run: 500
+2025-07-30 19:41:56,669 - INFO -   Fixed test samples: 500
+2025-07-30 19:41:56,669 - INFO -   Samples per class: 50
+2025-07-30 19:41:56,669 - INFO - GA Parameters: generations=2, elite_percentage=0.5, crossover_rate=0.3, mutation_rate=0.2
+2025-07-30 19:41:56,669 - INFO - Multi-run evaluation: 5 runs per candidate
+2025-07-30 19:41:56,669 - INFO - Stratified sampling: 500 samples per run
+2025-07-30 19:41:56,669 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:41:56,676 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:41:56,676 - WARNING - Cache invalidated due to fixed parameter mismatch
+2025-07-30 19:41:56,738 - INFO - MNIST dataset loaded:
+2025-07-30 19:41:56,738 - INFO -   Training samples: 60000
+2025-07-30 19:41:56,738 - INFO -   Test samples: 10000
+2025-07-30 19:42:02,873 - INFO - Training data class distribution:
+2025-07-30 19:42:02,873 - INFO -   Class 0: 5923 samples
+2025-07-30 19:42:02,873 - INFO -   Class 1: 6742 samples
+2025-07-30 19:42:02,873 - INFO -   Class 2: 5958 samples
+2025-07-30 19:42:02,873 - INFO -   Class 3: 6131 samples
+2025-07-30 19:42:02,873 - INFO -   Class 4: 5842 samples
+2025-07-30 19:42:02,873 - INFO -   Class 5: 5421 samples
+2025-07-30 19:42:02,873 - INFO -   Class 6: 5918 samples
+2025-07-30 19:42:02,873 - INFO -   Class 7: 6265 samples
+2025-07-30 19:42:02,873 - INFO -   Class 8: 5851 samples
+2025-07-30 19:42:02,873 - INFO -   Class 9: 5949 samples
+2025-07-30 19:42:03,910 - INFO - Fixed test set created: 500 samples
+2025-07-30 19:42:03,962 - INFO - Test set class distribution: {0: 50, 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50}
+2025-07-30 19:42:03,962 - INFO - StratifiedDataManager initialized:
+2025-07-30 19:42:03,962 - INFO -   Training samples per run: 500
+2025-07-30 19:42:03,963 - INFO -   Test samples (fixed): 500
+2025-07-30 19:42:03,963 - INFO -   Samples per class: 50
+2025-07-30 19:42:03,963 - INFO -   Classes available: 10
+2025-07-30 19:42:03,963 - INFO - MultiRunFitnessEvaluator initialized:
+2025-07-30 19:42:03,963 - INFO -   Number of runs per candidate: 5
+2025-07-30 19:42:03,963 - INFO -   Training samples per run: 500
+2025-07-30 19:42:03,963 - INFO -   Fixed test samples: 500
+2025-07-30 19:42:03,963 - INFO -   Samples per class: 50
+2025-07-30 19:42:03,963 - INFO - GA Parameters: generations=1, elite_percentage=0.5, crossover_rate=0.3, mutation_rate=0.2
+2025-07-30 19:42:03,963 - INFO - Multi-run evaluation: 5 runs per candidate
+2025-07-30 19:42:03,963 - INFO - Stratified sampling: 500 samples per run
+2025-07-30 19:42:03,963 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:42:03,969 - INFO - Genetic Algorithm Hyperparameter Tuner initialized
+2025-07-30 19:42:03,970 - WARNING - Cache invalidated due to fixed parameter mismatch
+2025-07-30 19:42:04,026 - INFO - MNIST dataset loaded:
+2025-07-30 19:42:04,026 - INFO -   Training samples: 60000
+2025-07-30 19:42:04,026 - INFO -   Test samples: 10000
+2025-07-30 19:42:10,139 - INFO - Training data class distribution:
+2025-07-30 19:42:10,139 - INFO -   Class 0: 5923 samples
+2025-07-30 19:42:10,139 - INFO -   Class 1: 6742 samples
+2025-07-30 19:42:10,139 - INFO -   Class 2: 5958 samples
+2025-07-30 19:42:10,139 - INFO -   Class 3: 6131 samples
+2025-07-30 19:42:10,139 - INFO -   Class 4: 5842 samples
+2025-07-30 19:42:10,139 - INFO -   Class 5: 5421 samples
+2025-07-30 19:42:10,139 - INFO -   Class 6: 5918 samples
+2025-07-30 19:42:10,139 - INFO -   Class 7: 6265 samples
+2025-07-30 19:42:10,139 - INFO -   Class 8: 5851 samples
+2025-07-30 19:42:10,139 - INFO -   Class 9: 5949 samples
+2025-07-30 19:42:11,140 - INFO - Fixed test set created: 500 samples
+2025-07-30 19:42:11,190 - INFO - Test set class distribution: {0: 50, 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50}
+2025-07-30 19:42:11,190 - INFO - StratifiedDataManager initialized:
+2025-07-30 19:42:11,190 - INFO -   Training samples per run: 500
+2025-07-30 19:42:11,190 - INFO -   Test samples (fixed): 500
+2025-07-30 19:42:11,190 - INFO -   Samples per class: 50
+2025-07-30 19:42:11,190 - INFO -   Classes available: 10
+2025-07-30 19:42:11,190 - INFO - MultiRunFitnessEvaluator initialized:
+2025-07-30 19:42:11,190 - INFO -   Number of runs per candidate: 5
+2025-07-30 19:42:11,190 - INFO -   Training samples per run: 500
+2025-07-30 19:42:11,190 - INFO -   Fixed test samples: 500
+2025-07-30 19:42:11,190 - INFO -   Samples per class: 50
+2025-07-30 19:42:11,190 - INFO - GA Parameters: generations=2, elite_percentage=0.5, crossover_rate=0.3, mutation_rate=0.2
+2025-07-30 19:42:11,190 - INFO - Multi-run evaluation: 5 runs per candidate
+2025-07-30 19:42:11,190 - INFO - Stratified sampling: 500 samples per run
+2025-07-30 19:42:11,190 - INFO - Fitness cache loaded: 0 cached evaluations
+2025-07-30 19:42:11,190 - INFO - Starting GA hyperparameter search:
+2025-07-30 19:42:11,190 - INFO -   Generations: 2
+2025-07-30 19:42:11,190 - INFO -   Population size: 4
+2025-07-30 19:42:11,190 - INFO -   Top-k: 2
+2025-07-30 19:42:11,191 - INFO -   Search space: 10 parameters
+2025-07-30 19:42:11,191 - INFO - Initializing random population...
+2025-07-30 19:42:11,191 - INFO - 
+=== Generation 1/2 ===
+2025-07-30 19:42:11,191 - INFO - Evaluating population fitness...
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 1/4
+2025-07-30 19:42:11,191 - INFO - Mock fitness for individual: 0.4116
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 2/4
+2025-07-30 19:42:11,191 - INFO - Mock fitness for individual: 0.5083
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 3/4
+2025-07-30 19:42:11,191 - INFO - Mock fitness for individual: 0.6387
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 4/4
+2025-07-30 19:42:11,191 - INFO - Mock fitness for individual: 0.5451
+2025-07-30 19:42:11,191 - INFO - Generation 1 Results:
+2025-07-30 19:42:11,191 - INFO -   Best fitness: 0.6387
+2025-07-30 19:42:11,191 - INFO -   Average fitness: 0.5259
+2025-07-30 19:42:11,191 - INFO -   Worst fitness: 0.4116
+2025-07-30 19:42:11,191 - INFO -   Best config: {'vector_dim': 10, 'phase_bins': 128, 'mag_bins': 64, 'cardinality': 4, 'learning_rate': 0.0001, 'decay_factor': 0.925, 'orthogonality_threshold': 0.05, 'warmup_epochs': 5, 'min_activation_strength': 0.5, 'batch_size': 10, 'fitness': 0.6386927834811635, 'generation': 1}
+2025-07-30 19:42:11,191 - INFO - Creating next generation...
+2025-07-30 19:42:11,191 - INFO - Preserving 2 elite individuals (50.0%)
+2025-07-30 19:42:11,191 - INFO - Using top 2 survivors for breeding (50.0%)
+2025-07-30 19:42:11,191 - INFO - 
+=== Generation 2/2 ===
+2025-07-30 19:42:11,191 - INFO - Evaluating population fitness...
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 1/4
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 2/4
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 3/4
+2025-07-30 19:42:11,191 - INFO - Mock fitness for individual: 0.6737
+2025-07-30 19:42:11,191 - INFO - Evaluating individual 4/4
+2025-07-30 19:42:11,192 - INFO - Mock fitness for individual: 0.4234
+2025-07-30 19:42:11,192 - INFO - Generation 2 Results:
+2025-07-30 19:42:11,192 - INFO -   Best fitness: 0.6737
+2025-07-30 19:42:11,192 - INFO -   Average fitness: 0.5702
+2025-07-30 19:42:11,192 - INFO -   Worst fitness: 0.4234
+2025-07-30 19:42:11,192 - INFO -   Best config: {'vector_dim': 10, 'phase_bins': 128, 'mag_bins': 64, 'cardinality': 3, 'learning_rate': 0.0001, 'decay_factor': 0.925, 'orthogonality_threshold': 0.05, 'warmup_epochs': 5, 'min_activation_strength': 0.5, 'batch_size': 10, 'fitness': 0.6736820910549499, 'generation': 2}
+2025-07-30 19:42:11,192 - INFO - 
+Selecting top-2 individuals from all generations...
+2025-07-30 19:42:11,193 - INFO - Cache saved: 6 entries
+2025-07-30 19:42:11,193 - INFO - 
+=== Cache Statistics ===
+2025-07-30 19:42:11,193 - INFO -   Cache hits: 2
+2025-07-30 19:42:11,193 - INFO -   Cache misses: 6
+2025-07-30 19:42:11,193 - INFO -   Hit rate: 25.0%
+2025-07-30 19:42:11,193 - INFO -   Total evaluations: 6
+2025-07-30 19:42:11,194 - INFO -   Cached configurations: 6
+2025-07-30 19:42:11,194 - INFO - Results saved to:
+2025-07-30 19:42:11,194 - INFO -   Top individuals: results/genetic_algorithm/top_individuals_20250730_194211.json
+2025-07-30 19:42:11,194 - INFO -   Generation stats: results/genetic_algorithm/generation_stats_20250730_194211.json
+2025-07-30 19:42:11,194 - INFO - 
+=== Final Results ===
+2025-07-30 19:42:11,194 - INFO - Rank 1: Fitness = 0.6737, Generation = 2
+2025-07-30 19:42:11,194 - INFO - Rank 2: Fitness = 0.6387, Generation = 1

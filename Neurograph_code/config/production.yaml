@@ -1,0 +1,228 @@
+# NeuroGraph Production Configuration
+# Optimized for RTX 3050 GPU with 5-10x evaluation speedup
+# Single source of truth for all production training and evaluation
+
+system:
+  mode: "modular"
+  version: "3.0"
+  description: "Production-optimized NeuroGraph with batch evaluation"
+  device: "auto"  # Auto-detect CUDA/CPU
+
+# Core Architecture - Optimized for discrete signal processing
+architecture:
+  total_nodes: 1000
+  input_nodes: 200
+  output_nodes: 10
+  intermediate_nodes: 790
+  vector_dim: 5  # Optimal balance of expressiveness and performance
+  seed: 42
+
+# Resolution Settings - High resolution for maximum gradient effectiveness
+resolution:
+  phase_bins: 512   # Dramatically increased for gradient effectiveness
+  mag_bins: 1024    # Increased for finer magnitude control
+  resolution_increase: 128  # 128x improvement over legacy (512*1024 vs 8*256)
+
+# Graph Structure - Optimized connectivity
+graph_structure:
+  cardinality: 6
+  top_k_neighbors: 6
+  use_radiation: true
+
+# Radiation System - Maximized for GPU throughput
+radiation:
+  batch_size: 128        # Increased for better GPU utilization
+  top_k_neighbors: 4     # Dynamic radiation neighbors
+  cache_enabled: true
+  max_cache_size: 1000   # Optimized cache size
+  quantization_level: 4  # Phase signature quantization
+
+# Input Processing - Linear projection for best performance
+input_processing:
+  adapter_type: "linear_projection"
+  input_dim: 784
+  learnable: true
+  normalization: "layer_norm"
+  dropout: 0.1
+
+# Class Encoding - Orthogonal for maximum separation
+class_encoding:
+  type: "orthogonal"
+  num_classes: 10
+  encoding_dim: 5
+  orthogonality_threshold: 0.1
+  cache_encodings: true  # Critical for evaluation speed
+
+# Loss Function - Standard categorical cross-entropy
+loss_function:
+  type: "categorical_crossentropy"
+  temperature: 1.0
+  label_smoothing: 0.0
+
+# Training Configuration - Dual learning rates for maximum effectiveness
+training:
+  gradient_accumulation:
+    enabled: false            # DISABLED - using direct dual learning rates
+    accumulation_steps: 8     # Kept for reference
+    lr_scaling: "sqrt"        # Not used with dual rates
+    buffer_size: 1500         # Not used with dual rates
+  
+  optimizer:
+    type: "discrete_sgd"
+    base_learning_rate: 0.01     # Increased for better gradient utilization
+    
+    # Dual Learning Rate System - NEW
+    dual_learning_rates:
+      enabled: true
+      phase_learning_rate: 0.015     # Aggressive for phase updates
+      magnitude_learning_rate: 0.012 # Balanced for magnitude updates
+      phase_lr_ratio: 1.5            # 1.5x base rate
+      magnitude_lr_ratio: 1.2        # 1.2x base rate
+    
+    warmup_epochs: 0             # Warmup disabled - consistent training throughout
+    num_epochs: 15               # Production training length
+    batch_size: 200              # Increased for meaningful training (was 8)
+    gradient_clipping: 1.0       # Prevent exploding gradients in deep network
+  
+  # Quick evaluation mode for development
+  quick_mode:
+    epochs: 5                    # Increased for better testing
+    warmup_epochs: 0             # Warmup disabled - consistent with main training
+    batch_size: 100              # Increased for meaningful testing (was 4)
+
+# Forward Pass - Quality-focused signal propagation with high strength threshold
+forward_pass:
+  max_timesteps: 40                    # Increased from 25 for better propagation
+  decay_factor: 0.6                    # Very aggressive decay to prevent overflow
+  min_activation_strength: 1.0         # High threshold - only strong signals survive
+  min_output_activation_timesteps: 2   # Early termination
+  verbose: true                        # Enable verbose logging for diagnostics
+
+# Activation Balancing - Prevents dead nodes
+activation_balancing:
+  enabled: true
+  strategy: "round_robin"
+  max_activations_per_epoch: 12   # Reduced for efficiency
+  min_activations_per_epoch: 3
+  force_activation_probability: 0.25
+
+# Multi-Output Loss - Optimized for discrete signals
+multi_output_loss:
+  enabled: true
+  continue_timesteps_after_first: 2
+  max_outputs_to_train: 3
+
+# Batch Evaluation - NEW: High-performance evaluation system
+batch_evaluation:
+  enabled: true
+  batch_size: 16              # Optimal for RTX 3050
+  cache_class_encodings: true # Critical optimization
+  use_torch_no_grad: true     # Essential for evaluation speed
+  precompute_cosine_targets: true
+  tensor_pool_size: 32        # Pre-allocated tensors
+  streaming_mode: true        # Memory-efficient processing
+
+# Performance Monitoring
+performance:
+  gpu_profiling: true
+  memory_monitoring: true
+  cache_statistics: true
+  timing_decorators: false    # Disable in production for speed
+
+# File Paths - Simplified structure
+paths:
+  graph_path: "cache/production_graph.pkl"
+  log_path: "logs/production/"
+  checkpoint_path: "checkpoints/production/"
+  results_path: "results/production/"
+
+# Memory Management - Optimized for RTX 3050 (4GB)
+memory:
+  max_gpu_memory_fraction: 0.8  # Leave 20% for system
+  enable_memory_growth: true
+  clear_cache_frequency: 100    # Clear every 100 samples
+  garbage_collection: true
+
+# Device-Specific Optimizations
+device_optimization:
+  cuda:
+    enable_cudnn_benchmark: true
+    enable_cudnn_deterministic: false  # Faster but less deterministic
+    enable_tf32: true                  # Faster on Ampere GPUs
+    memory_pool: true
+  
+  cpu:
+    num_threads: 4
+    enable_mkldnn: true
+
+# Debugging and Development (disabled in production)
+debugging:
+  verbose_logging: false
+  save_intermediate_states: false
+  plot_training_curves: false
+  evaluation_samples: 100      # Reduced to 100 for faster evaluation
+  final_evaluation_samples: 100   # Reduced to 100 for faster evaluation
+  enable_profiling: false
+
+# Evaluation Settings - Centralized sample counts and parameters
+evaluation:
+  default_samples: 100         # Default evaluation sample count
+  quick_samples: 50           # Quick evaluation sample count
+  comprehensive_samples: 500   # Comprehensive evaluation sample count
+  validation_samples: 200     # Validation sample count
+  test_samples: 300          # Test sample count
+  benchmark_samples: 1000    # Benchmark evaluation sample count
+
+# Visualization Settings - Plotting and output parameters
+visualization:
+  dpi: 300                   # Plot resolution
+  figure_width: 10           # Figure width in inches
+  figure_height: 6           # Figure height in inches
+  line_width: 2              # Plot line width
+  grid_alpha: 0.3            # Grid transparency
+  font_size_title: 14        # Title font size
+  font_size_label: 12        # Label font size
+  font_size_legend: 10       # Legend font size
+  bbox_inches: "tight"       # Bounding box for saved plots
+
+# Fallback Configuration
+fallback:
+  enable_legacy_mode: false    # Disabled in production
+  auto_fallback_on_error: false
+  legacy_config_path: null
+
+# Validation Settings
+validation:
+  frequency: 5                 # Validate every 5 epochs
+  samples: 200                 # Quick validation
+  use_batch_evaluation: true   # Use optimized evaluation
+  early_stopping: false       # Disabled for full training
+
+# Export Settings
+export:
+  save_best_model: true
+  save_final_model: true
+  export_onnx: false          # Disabled for discrete models
+  save_training_curves: true
+  save_performance_stats: true
+
+# Diagnostics Configuration - Comprehensive backward pass monitoring
+diagnostics:
+  enabled: true                           # Enable diagnostic system
+  alerts_enabled: true                    # Enable stability alerts
+  gradient_explosion_threshold: 10.0      # Alert if gradient norm > 10.0
+  gradient_vanishing_threshold: 1e-6      # Alert if gradient norm < 1e-6
+  parameter_stagnation_threshold: 1e-8    # Alert if parameter changes < 1e-8
+  loss_spike_threshold: 2.0               # Alert if loss increases by 2x
+  memory_usage_threshold: 1000.0          # Alert if memory usage > 1000MB
+  save_diagnostic_data: true              # Save diagnostic data to files
+  print_per_sample_diagnostics: true      # Print diagnostics for each sample
+  verbose_backward_pass: true             # Detailed backward pass logging
+
+# Production Flags
+production:
+  optimize_for_inference: true
+  disable_debug_info: true
+  enable_fast_math: true
+  use_mixed_precision: false   # Not beneficial for discrete operations
+  compile_model: false         # JIT compilation issues with discrete ops

@@ -1,0 +1,47 @@
+{
+  "optimized_results": {
+    "status": "success",
+    "timestamp": "2025-07-27T18:09:58.738123",
+    "config": {
+      "total_nodes": 1000,
+      "vector_dim": 5,
+      "resolution": "64x1024",
+      "epochs": 3,
+      "batch_size": 10
+    },
+    "timing": {
+      "initialization_time": 0.5023966239996298,
+      "training_time": 74.94371937000005,
+      "evaluation_time": 111.88594363199991,
+      "total_time": 187.3320596259996
+    },
+    "performance": {
+      "samples_processed": 30,
+      "samples_per_second": 0.40030038877425916,
+      "final_accuracy": 0.12,
+      "final_loss": 2.291764569282532
+    },
+    "memory": {
+      "estimated_usage_mb": 6.058837890625,
+      "total_parameters": 1584000
+    },
+    "detailed_stats": {
+      "compute_loss": {
+        "count": 30,
+        "total_time": 0.28444184099816994,
+        "avg_time": 0.009481394699938998,
+        "min_time": 0.006743204000031255,
+        "max_time": 0.03669026999978087,
+        "std_time": 0.005166788524746995
+      }
+    },
+    "cache_stats": {}
+  },
+  "expected_improvements": {
+    "vectorized_intermediate_credit": 0.8,
+    "jit_lookup_tables": 0.25,
+    "radiation_caching": 0.4,
+    "overall_expected": 0.5
+  },
+  "status": "success"
+}

@@ -1,0 +1,67 @@
+{
+  "cache_metadata": {
+    "created": "2025-07-30T19:43:13.209277",
+    "last_updated": "2025-07-30T19:43:13.209283",
+    "total_evaluations": 12,
+    "cache_hits": 2,
+    "cache_misses": 6,
+    "fixed_params": {
+      "accumulation_steps": 8,
+      "total_training_samples": 500,
+      "validation_samples": 500,
+      "num_evaluation_runs": 5,
+      "samples_per_class": 50,
+      "stratified_sampling": true
+    }
+  },
+  "fitness_cache": {
+    "1adb0c749ba7759f93d7d26d4bd9455653018862c443656c7e70b293458063fe": {
+      "fitness": 0.41163610395675165,
+      "timestamp": "2025-07-30T19:43:13.209287"
+    },
+    "22fae63db227faaf541035adedb86ec22d68c7120eea596414cf2995d0151c67": {
+      "fitness": 0.5083043568646277,
+      "timestamp": "2025-07-30T19:43:13.209289"
+    },
+    "78d7f325aa94be36981a8fa0fc73859ce5eb46c593c3a8a00ba883f0f08959b3": {
+      "fitness": 0.6386927834811635,
+      "timestamp": "2025-07-30T19:43:13.209291"
+    },
+    "87482f443188453a4988db2d34d5716ffbffeaf4228dd3dcef94aa4f3581d25c": {
+      "fitness": 0.5451253018560293,
+      "timestamp": "2025-07-30T19:43:13.209293"
+    },
+    "3ff497bdc4042a22ba52d6c7c83ac04726b05301de5740a1860d13178cc5439d": {
+      "fitness": 0.6736820910549499,
+      "timestamp": "2025-07-30T19:43:13.209294"
+    },
+    "1b9a32c2eb4b44824abd528ef31f056741961baa1d062c2e83a48f94da2030ec": {
+      "fitness": 0.4234410740820215,
+      "timestamp": "2025-07-30T19:43:13.209296"
+    },
+    "dbedecf88f67877e21f16cee040d95421de22f408f210205950332254a1cc261": {
+      "fitness": 0.3642913932852425,
+      "timestamp": "2025-07-30T19:43:13.209297"
+    },
+    "16a493831dac2d4d636ab479fced49bde0b6fe9a29a1b2aef66cf1c7f660e532": {
+      "fitness": 0.5186219840400572,
+      "timestamp": "2025-07-30T19:43:13.209299"
+    },
+    "bd96a652fd83763f0ccd0ff3b258191ad342f404eda5ecfcb1a20af8319c6d07": {
+      "fitness": 0.8750785227582237,
+      "timestamp": "2025-07-30T19:43:13.209301"
+    },
+    "6df292a7b4ec824e81ea27d15e44deb40d408dde1cfe536b181c1e88822ebf26": {
+      "fitness": 0.8644880103722569,
+      "timestamp": "2025-07-30T19:43:13.209303"
+    },
+    "b38a8f4797c2e1187ca55c76249d1447eda23be5b86c93871016c10f50e2b2b0": {
+      "fitness": 0.41841291334577374,
+      "timestamp": "2025-07-30T19:43:13.209304"
+    },
+    "49869d3c46bfa452fa3177c6ba1e9c20edf5aae79eec29b92e35717ea6b2aea8": {
+      "fitness": 1.0,
+      "timestamp": "2025-07-30T19:43:13.209306"
+    }
+  }
+}
