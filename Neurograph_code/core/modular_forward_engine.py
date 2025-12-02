@@ -213,9 +213,9 @@ class VectorizedForwardEngine:
         decay_factor: float ,
         min_strength: float ,
         top_k_neighbors: int ,
-        use_radiation: bool = True,
         radiation_batch_size: int ,
         min_output_activation_timesteps: int ,
+        use_radiation: bool = True,
         device: str = 'auto',
         verbose: bool = False
     ):
