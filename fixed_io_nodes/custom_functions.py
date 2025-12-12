@@ -1,5 +1,4 @@
 from torch import autograd
-import torch
 from lookup_table import LookupTable
 
 #not used
