@@ -159,7 +159,6 @@ class GNN(nn.Module):
 
         #fetch radiation targets 
         radiation_targets = self._compute_radiation_targets(set(self.active_nodes.values()))
-        print("radiation_targets: ", list(radiation_targets.keys()))
         
         #Find the nodes to which we would have to propagate values to.
         #and thus fetch those nodes. (for both direct and radiation connections)
