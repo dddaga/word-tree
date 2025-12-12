@@ -124,7 +124,7 @@ class GNN(nn.Module):
         Returns: None
         """
 
-        if self.verbose:
+        if self.verbose: #TODO: print logs
             pass
         
 
@@ -134,7 +134,7 @@ class GNN(nn.Module):
 
 
         
-        #TODO: currently time series data is not handled
+        #input data is fed into the input nodes before propagation of remaining network
         if input_values is not None:
 
 
@@ -159,10 +159,11 @@ class GNN(nn.Module):
 
         #fetch radiation targets 
         radiation_targets = self._compute_radiation_targets(set(self.active_nodes.values()))
+        print("radiation_targets: ", list(radiation_targets.keys()))
         
         #Find the nodes to which we would have to propagate values to.
         #and thus fetch those nodes. (for both direct and radiation connections)
-        new_active_nodes_ids = set(self.active_nodes.keys())
+        new_active_nodes_ids = set(int(i) for i in self.active_nodes.keys())
         for node in self.active_nodes.values():
             new_active_nodes_ids.update(node.outgoing_connections)
         for _, targets in radiation_targets.items(): 
@@ -170,7 +171,7 @@ class GNN(nn.Module):
 
 
         #get the node ids that we need to fetch from qdrant
-        nodes_to_fetch_ids = new_active_nodes_ids - self.active_nodes.keys()
+        nodes_to_fetch_ids = new_active_nodes_ids - set(int(i) for i in self.active_nodes.keys())
         nodes_to_fetch_ids = list(nodes_to_fetch_ids)
 
         #fetch the nodes from qdrant
@@ -235,9 +236,11 @@ class GNN(nn.Module):
         output_signals = {}
         
         for node_id in self.output_nodeids:
+            node_id = str(node_id)
             if node_id in self.active_nodes:
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
+                print("Node not active: ", node_id)
                 output_signals[node_id] = torch.tensor(0.).requires_grad_(True)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
