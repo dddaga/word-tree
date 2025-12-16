@@ -129,7 +129,21 @@ class Node(nn.Module):
             print("===")
 
 
+    def reset(self):
+        """
+        Reset the node to initial state. 
+        """
+        #reset weights' gradients
+        self.phase_weight.grad = None
+        self.mag_weight.grad = None
 
+        #reset activations back to start
+        self.phase_activation = self.phase_weight.clone()
+        self.mag_activation = self.mag_weight.clone()
+
+        #recalculate activation strength
+        self.calculate_activation_strength()
+        
 
         
         

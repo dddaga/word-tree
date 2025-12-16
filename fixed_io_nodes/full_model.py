@@ -24,6 +24,17 @@ class Model(nn.Module):
 
         out = self.gnn(phases)
         return out
+
+    def reset(self):
+        """
+        Reset the model to initial state.
+        """
+        self.gnn.reset(fetch_weights=True)
+        
+        for p in self.input_adapter.parameters():
+            p.grad = None
+
+        #nothing to reset for quantizer
     
 def initialize_model(
     input_dim:int, 

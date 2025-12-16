@@ -245,7 +245,23 @@ class GNN(nn.Module):
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         return output_signals
 
+    def reset(self, fetch_weights:bool=False):
+        """
+        Reset the model to initial state. 
+        1) Resets the active nodes to input nodes. (this is enough to consider the model as reset)
+        2) If fetch_weights is True, fetches the input node weights from qdrant, otherwise uses the same weights
+        """
 
+        if fetch_weights:
+            for _, n in self.input_nodes.items():
+                n.load_values()
+
+
+        self.active_nodes = self.input_nodes.copy()
+        for _, n in self.active_nodes.items():
+            n.reset()
+
+        self.active_nodes = MyModuleDict(self.active_nodes)
         
         
         

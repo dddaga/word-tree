@@ -1,0 +1,18 @@
+{
+    "adapter_hidden_dims": [512, 256],
+    "adapter_dropout": 0.2,
+    "adapter_normalization_layer": "layer_norm",
+
+    "input_dim": 784,
+    "cardinality": 5,
+    "radiation_targets": 5,
+    "total_nodes": 500,
+    "input_nodes": 100,
+    "output_nodes": 10,
+    "phase_bins": 256,
+    "mag_bins": 256,
+    "vector_dim": 64,
+    "iterations": 3,
+    "activation_threshold": 0.05,
+    "gamma": 1.0
+}

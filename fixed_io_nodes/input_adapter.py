@@ -29,8 +29,8 @@ class LinearInputAdapter(nn.Module):
 
             layers.append(nn.ReLU())
 
-            #dropout (not on last hidden layer) (why?, it was done in prev code)
-            if dropout > 0 and i<len(hidden_dims)-1:
+            #dropout (not on last hidden layer)
+            if dropout > 0 and i<len(hidden_dims):
                 layers.append(nn.Dropout(dropout))
             
             prev_dim = hidden_dim
