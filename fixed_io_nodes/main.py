@@ -1,19 +1,21 @@
 import threading
 import queue
-
 import time
 
 from gradient_accumulator import GradientAccumulator
 from nodestore import NodeStore
-from full_model import Model
+from full_model import Model, initialize_model
 from lookup_table import LookupTable
 from gnn_model import GNN
 
 from torch.utils.data import Dataset, DataLoader
 from torch import nn
+import torch
+import torchvision
+import torchvision.transforms as transforms
 
 
-train_queue = queue.Queue()
+data_queue = queue.Queue()
 gradient_queue = queue.Queue()
 
 #to be defined in config or elsewhere
@@ -30,9 +32,8 @@ MAG_BINS = 256
 GAMMA = 1.
 
 ACCUMULATION_STEPS = 8
+TIMEOUT = 60
 
-import torchvision
-import torchvision.transforms as transforms
 
 
 def loss_function(out, target):
@@ -41,7 +42,7 @@ def loss_function(out, target):
 
 
 
-def worker_thread(node_store: NodeStore):
+def worker_thread_fn(node_store: NodeStore, timeout:int=60):
 
     model = Model(
         input_dim=28*28,
@@ -66,21 +67,26 @@ def worker_thread(node_store: NodeStore):
     )
 
     while True:
-        data, target = train_queue.get(block=True)
+        try:
+            data, target = data_queue.get(block=True, timeout=timeout) #wait for sometime to get data
+        except queue.Empty:
+            return #if no data, consider training to be over
 
         out = model(data)
 
         loss = loss_function(out, target)
         loss.backward()
 
-        #TODO: put gradients in gradient_queue
-        raise NotImplementedError("Queueing of gradients into gradient_queue is not implemented yet")
+        gradients = {name: param.grad for name, param in model.named_parameters()}
 
         gradient_queue.put(gradients)
+        model.reset()
+
+    
 
 
 
-def data_loader_thread(dataset: Dataset, shuffle:bool=True):
+def data_loader_thread_fn(dataset: Dataset, epochs:int=1, shuffle:bool=True, ):
     """
     Load the data from dataset into the training queue.
     The queue is read by worker threads to fetch the data and train the model.
@@ -89,16 +95,22 @@ def data_loader_thread(dataset: Dataset, shuffle:bool=True):
     dataloader = DataLoader(dataset, batch_size=1, shuffle=shuffle)
     data_iterator = iter(dataloader)
 
+    epochs_completed = 0
+
     while True:
 
-        if train_queue.qsize() < THREAD_COUNT:
+        if data_queue.qsize() < THREAD_COUNT:
 
             try:
                 x, y = next(data_iterator)
             except StopIteration:
-                return #basically training only for 1 epoch
+                epochs_completed += 1
+                if epochs_completed >= epochs:
+                    return
+                data_iterator = iter(dataloader)
+                
 
-            train_queue.put((x, y))
+            data_queue.put((x, y))
             time.sleep(1) # why? 
         
         time.sleep(10) #wait for 10 seconds before checking again
@@ -107,7 +119,7 @@ def data_loader_thread(dataset: Dataset, shuffle:bool=True):
             
 
 
-def gradient_accumulator_thread(node_store: NodeStore, accumulation_steps:int):
+def gradient_accumulator_thread_fn(node_store: NodeStore, accumulation_steps:int):
 
     accumulator = GradientAccumulator(
         phase_bins=node_store.phase_bins,
@@ -134,7 +146,7 @@ if __name__ == "__main__":
 
     #create dataloader thread
     dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
-    data_thread = threading.Thread(target=data_loader_thread, args=(dataset, True))
+    data_thread = threading.Thread(target=data_loader_thread_fn, args=(dataset, True))
 
     #create gradient accumulator thread
 
@@ -154,11 +166,11 @@ if __name__ == "__main__":
 
     node_store = create_node_store()
     
-    gradient_accumulator_thread = threading.Thread(target=gradient_accumulator_thread, args=(node_store, ACCUMULATION_STEPS))
+    gradient_accumulator_thread = threading.Thread(target=gradient_accumulator_thread_fn, args=(node_store, ACCUMULATION_STEPS))
 
 
     #create worker threads
-    worker_threads = [threading.Thread(target=worker_thread, args=(create_node_store(),)) for _ in range(THREAD_COUNT)]
+    worker_threads = [threading.Thread(target=worker_thread_fn, args=(node_store, TIMEOUT)) for _ in range(THREAD_COUNT)]
 
     #start all threads
     data_thread.start()
