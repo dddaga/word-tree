@@ -27,9 +27,8 @@ class GradientAccumulator(nn.Module):
         
 
         #maintain the non-gnn parameters
-        self.parameters = {name:param for name, param in named_parameters if 'gnn' not in name}
+        self.parameters = {name:param for name, param in named_parameters if param.requires_grad} #only update the parameters that require gradients
         self.parameter_grads = {name:[] for name in self.parameters.keys()}
-        self.parameter_update_count = 0  #all the non-gn parameters are updated at the same time
 
 
         self.phase_bins = phase_bins
@@ -38,11 +37,7 @@ class GradientAccumulator(nn.Module):
         self.accumulation_steps = accumulation_steps
         self.node_store = node_store
 
-        self.num_nodes = num_nodes = node_store.total_nodes
-        self.update_count = torch.zeros((num_nodes,)) 
-
-        self.phase_grads = {node_id:[] for node_id in range(num_nodes)}
-        self.mag_grads = {node_id:[] for node_id in range(num_nodes)}
+        self.num_nodes = node_store.total_nodes
 
     def receive_gradients(
             self,
@@ -53,30 +48,14 @@ class GradientAccumulator(nn.Module):
         The gradients are expected as Dict[str, torch.Tensor] with the keys as the parameter names              
         """
 
-
         for name, grad in named_grads.items():
             if name in self.parameters.keys():
+                if torch.allclose(grad, torch.zeros_like(grad), atol=1e-8): #skip if the gradient is all zeros
+                    continue 
+
                 self.parameter_grads[name].append(grad)
-                self.parameter_update_count += 1
-            elif 'phase' in name:
-                phase_grad = grad
-            elif 'mag' in name:
-                mag_grad = grad
             else:
                 raise ValueError(f"Gradient {name} not found in the parameters")
-        
-
-
-
-        # assert phase_grad.keys() == mag_grad.keys(), "gradients must be recieved for both phase and magnitude"
-
-        for n_id in range(self.num_nodes):
-
-            if not torch.allclose(phase_grad[n_id], torch.zeros_like(phase_grad[n_id])):
-                self.phase_grads[n_id].append(phase_grad[n_id])
-                self.mag_grads[n_id].append(mag_grad[n_id])
-                self.update_count[n_id] += 1
-        
 
     def step(self, min_update_steps:int=None):
         """
