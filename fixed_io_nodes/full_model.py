@@ -13,11 +13,28 @@ class Model(nn.Module):
         super().__init__()
         self.gnn = gnn
         self.input_adapter = input_adapter
+        self.input_adapter_loaded = False
         self.quantizer = quantizer
+
+        try:
+            with open("models/adapter.pth", "rb") as f:
+                self.input_adapter.load_state_dict(torch.load(f))
+                self.input_adapter_loaded = True
+                for p in self.input_adapter.parameters(): #freeze the adapter parameters
+                    p.requires_grad = False
+                self.input_adapter.eval()
+            print("Adapter model loaded")
+        except:
+            self.input_adapter_loaded = False
+            print("Adapter model not found, using random weights")
 
     def forward(self, x):
         
-        out = self.input_adapter(x)
+        if self.input_adapter_loaded:
+            with torch.no_grad():
+                out = self.input_adapter(x)
+        else:
+            out = self.input_adapter(x)
 
         out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
         phases = self.quantizer(out)
