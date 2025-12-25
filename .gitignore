@@ -5,3 +5,4 @@ qdrant_storage/
 *.dfs #files store dby qdrantdb
 fixed_io_nodes/main.ipynb
 *.pth
+data/

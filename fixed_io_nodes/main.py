@@ -7,6 +7,7 @@ from nodestore import NodeStore
 from full_model import Model, initialize_model
 from lookup_table import LookupTable
 from gnn_model import GNN
+from quantization import Quantizer
 
 from torch.utils.data import Dataset, DataLoader
 from torch import nn
@@ -20,20 +21,21 @@ gradient_queue = queue.Queue()
 
 #to be defined in config or elsewhere
 THREAD_COUNT = 4 
-COLLECTION_NAME = 'new'
+COLLECTION_NAME = 'final0'
 QDRANT_URL = 'http://localhost:6333'
 TOTAL_NODES = 500
-INPUT_NODES = 100
+INPUT_NODES = 14
 OUTPUT_NODES = 10
 CARDINALITY = 5
-VECTOR_DIM = 64
+VECTOR_DIM = 56
 PHASE_BINS = 256
 MAG_BINS = 256
 GAMMA = 1.
 
 ACCUMULATION_STEPS = 8
 TIMEOUT = 60
-
+ITERATIONS = 3
+ACTIVATION_THRESHOLD = 0.05
 
 
 def loss_function(out, target):
@@ -44,27 +46,36 @@ def loss_function(out, target):
 
 def worker_thread_fn(node_store: NodeStore, timeout:int=60):
 
-    model = Model(
-        input_dim=28*28,
-        adapter_hidden_dims=[512, 256],
-        adapter_dropout=0.2,
+    gnn = GNN(
+        # input_dim=28*28,
+        # adapter_hidden_dims=[512, 256],
+        # adapter_dropout=0.2,
 
         node_store=node_store,
-        cardinality=5,
-        radiation_targets=5,
-        total_nodes=500,
-        input_nodes=100,
-        output_nodes=10,
-        phase_bins=256,
-        mag_bins=256,
-        vector_dim=64,
-        iterations=3,
-        activation_threshold=0.05,
-        gamma=1.,
+        cardinality=CARDINALITY,
+        radiation_targets=CARDINALITY,
+        total_nodes=TOTAL_NODES,
+        input_nodes=INPUT_NODES,
+        output_nodes=OUTPUT_NODES,
+        phase_bins=PHASE_BINS,
+        mag_bins=MAG_BINS,
+        vector_dim=VECTOR_DIM,
+        iterations=ITERATIONS,
+        activation_threshold=ACTIVATION_THRESHOLD,
+        gamma=GAMMA,
         device='cuda' if torch.cuda.is_available() else 'cpu',
         verbose=True,
-        adapter_normalization_layer='layer_norm',
     )
+    
+    quantizer = Quantizer(
+        phase_bins=PHASE_BINS,
+        mag_bins=MAG_BINS,
+        lookup_table=gnn.lookup_table,
+        vector_dim=VECTOR_DIM,
+        input_node_count=INPUT_NODES,
+    )
+
+    model = Model(gnn, quantizer)
 
     while True:
         try:
@@ -103,6 +114,8 @@ def data_loader_thread_fn(dataset: Dataset, epochs:int=1, shuffle:bool=True, ):
 
             try:
                 x, y = next(data_iterator)
+                x = x.squeeze() #remove batch dimension
+                y = y.squeeze() #TODO: check if this is needed
             except StopIteration:
                 epochs_completed += 1
                 if epochs_completed >= epochs:
@@ -122,8 +135,6 @@ def data_loader_thread_fn(dataset: Dataset, epochs:int=1, shuffle:bool=True, ):
 def gradient_accumulator_thread_fn(node_store: NodeStore, accumulation_steps:int):
 
     accumulator = GradientAccumulator(
-        phase_bins=node_store.phase_bins,
-        mag_bins=node_store.mag_bins,
         accumulation_steps=accumulation_steps,
         node_store=node_store,
         lr=1e-3,
@@ -145,26 +156,30 @@ if __name__ == "__main__":
     lookup_table = LookupTable(PHASE_BINS, MAG_BINS, GAMMA)
 
     #create dataloader thread
-    dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
-    data_thread = threading.Thread(target=data_loader_thread_fn, args=(dataset, True))
+
+    transformations = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.flatten())   
+    ])
+    dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transformations)
+    data_thread = threading.Thread(target=data_loader_thread_fn, args=(dataset,))
+
 
     #create gradient accumulator thread
+    node_store = NodeStore(
+        qdrant_url=QDRANT_URL,
+        collection_name=COLLECTION_NAME,
+        lookup_table=lookup_table,
+        num_total_nodes=TOTAL_NODES,
+        num_input_nodes=INPUT_NODES,
+        num_output_nodes=OUTPUT_NODES,
+        cardinality=CARDINALITY,
+        vector_dim=VECTOR_DIM,
+        phase_bins=PHASE_BINS,
+        mag_bins=MAG_BINS,
+    )
 
-    def create_node_store(): #this reuses the same lookup table for all node stores, but other values need to be different for
-        return NodeStore(
-            qdrant_url=QDRANT_URL,
-            collection_name=COLLECTION_NAME,
-            lookup_table=lookup_table,
-            total_nodes=TOTAL_NODES,
-            input_nodes=INPUT_NODES,
-            output_nodes=OUTPUT_NODES,
-            cardinality=CARDINALITY,
-            vector_dim=VECTOR_DIM,
-            phase_bins=PHASE_BINS,
-            mag_bins=MAG_BINS,
-        )
-
-    node_store = create_node_store()
+    
     
     gradient_accumulator_thread = threading.Thread(target=gradient_accumulator_thread_fn, args=(node_store, ACCUMULATION_STEPS))
 

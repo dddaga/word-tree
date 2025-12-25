@@ -2,39 +2,29 @@ import torch
 from torch import nn
 from typing import List
 from gnn_model import GNN
-from input_adapter import LinearInputAdapter
+# from input_adapter import LinearInputAdapter
 from quantization import Quantizer
 from nodestore import NodeStore
 
 class Model(nn.Module):
 
-    def __init__(self, gnn:GNN, input_adapter:LinearInputAdapter, quantizer:Quantizer):
+    def __init__(self, gnn:GNN, quantizer:Quantizer):
 
         super().__init__()
         self.gnn = gnn
-        self.input_adapter = input_adapter
-        self.input_adapter_loaded = False
+        # self.input_adapter = input_adapter
+        # self.input_adapter_loaded = False
         self.quantizer = quantizer
 
-        try:
-            with open("models/adapter.pth", "rb") as f:
-                self.input_adapter.load_state_dict(torch.load(f))
-                self.input_adapter_loaded = True
-                for p in self.input_adapter.parameters(): #freeze the adapter parameters
-                    p.requires_grad = False
-                self.input_adapter.eval()
-            print("Adapter model loaded")
-        except:
-            self.input_adapter_loaded = False
-            print("Adapter model not found, using random weights")
+    
 
     def forward(self, x):
         
-        if self.input_adapter_loaded:
-            with torch.no_grad():
-                out = self.input_adapter(x)
-        else:
-            out = self.input_adapter(x)
+        # if self.input_adapter_loaded:
+        #     with torch.no_grad():
+        #         out = self.input_adapter(x)
+        # else:
+        out = x
 
         out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
         phases = self.quantizer(out)
@@ -48,15 +38,15 @@ class Model(nn.Module):
         """
         self.gnn.reset(fetch_weights=True)
         
-        for p in self.input_adapter.parameters():
-            p.grad = None
+        # for p in self.input_adapter.parameters():
+        #     p.grad = None
 
         #nothing to reset for quantizer
     
 def initialize_model(
-    input_dim:int, 
-    adapter_hidden_dims:List[int],
-    adapter_dropout:float,
+    # input_dim:int, 
+    # adapter_hidden_dims:List[int],
+    # adapter_dropout:float,
 
 
     node_store:NodeStore,
@@ -75,11 +65,11 @@ def initialize_model(
     verbose:bool=False,
 
 
-    adapter_normalization_layer:str='layer_norm',
+    # adapter_normalization_layer:str='layer_norm',
 
 ):
 
-    input_adapter = LinearInputAdapter(input_dim, output_dim=input_nodes*vector_dim, hidden_dims=adapter_hidden_dims, dropout=adapter_dropout, normalization_layer=adapter_normalization_layer)
+    # input_adapter = LinearInputAdapter(input_dim, output_dim=input_nodes*vector_dim, hidden_dims=adapter_hidden_dims, dropout=adapter_dropout, normalization_layer=adapter_normalization_layer)
 
     gnn = GNN(
         node_store=node_store,
@@ -106,4 +96,4 @@ def initialize_model(
         input_node_count=input_nodes,
     )
 
-    return Model(gnn, input_adapter, quantizer)
+    return Model(gnn, quantizer)
