@@ -49,9 +49,9 @@ class NodeStore(nn.Module):
         collection_name: name of the collection to be created in Qdrant
 
         Graph Parameters:
-        total_nodes: total number of nodes in the graph
-        input_nodes: number of input nodes in the graph
-        output_nodes: number of output nodes in the graph
+        num_total_nodes: total number of nodes in the graph
+        num_input_nodes: number of input nodes in the graph
+        num_output_nodes: number of output nodes in the graph
         cardinality: cardinality of the graph
         vector_dim: dimension of the vector
         phase_bins: number of bins for the phase
