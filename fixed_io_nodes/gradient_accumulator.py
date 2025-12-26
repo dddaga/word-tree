@@ -9,7 +9,7 @@ class GradientAccumulator(nn.Module):
     """
     Gradient accumulator specifically for GNN parameters only
     """
-    def __init__(self, accumulation_steps:int, node_store:NodeStore, lr:float):
+    def __init__(self, accumulation_steps:int, node_store:NodeStore, lr:float, verbose:bool=False):
 
         super().__init__()
 
@@ -20,7 +20,7 @@ class GradientAccumulator(nn.Module):
         self.accumulation_steps = accumulation_steps
         self.node_store = node_store
         self.lr = lr
-
+        self.verbose = verbose
         self.phase_grads = {node_id:[] for node_id in range(self.total_nodes)}
         self.mag_grads = {node_id:[] for node_id in range(self.total_nodes)}
 
@@ -60,6 +60,8 @@ class GradientAccumulator(nn.Module):
 
         node_ids_to_update = list(node_ids_to_update)
         nodes_to_update = self.node_store.get_node(node_ids_to_update)
+        old_phase_values = {node.id: torch.tensor(node.vector['phase'], dtype=torch.float16) for node in nodes_to_update}
+        old_mag_values = {node.id: torch.tensor(node.vector['mag'], dtype=torch.float16) for node in nodes_to_update}
 
         new_phase_values = {}
         new_mag_values = {}
@@ -69,23 +71,31 @@ class GradientAccumulator(nn.Module):
                 phase_grad = torch.stack(self.phase_grads[node_id]).mean(dim=0)
                 self.phase_grads[node_id] = [] #reset the gradients for the next step
             else:
-                phase_grad = 0 #if the number of gradients isn't enough, then don't update it (achieved by setting grad to 0)
+                phase_grad = torch.tensor(0, dtype=torch.float16) #if the number of gradients isn't enough, then don't update it (achieved by setting grad to 0)
 
             if len(self.mag_grads[node_id]) >= min_update_steps:
                 mag_grad = torch.stack(self.mag_grads[node_id]).mean(dim=0)
                 self.mag_grads[node_id] = [] #same as phase_grads
             else:
-                mag_grad = 0
+                mag_grad = torch.tensor(0, dtype=torch.float16)
 
-            phase_vector = nodes_to_update[node_id].vector['phase'] #phase retrived from qdrant
-            mag_vector = nodes_to_update[node_id].vector['mag'] #magnitude retrived from qdrant
+            phase_vector = old_phase_values[node_id] #phase retrived from qdrant
+            mag_vector = old_mag_values[node_id] #magnitude retrived from qdrant
             new_phase_values[node_id] = (phase_vector.to(phase_grad.dtype) - self.lr * phase_grad).round().long()%self.phase_bins
             new_mag_values[node_id] = (mag_vector.to(mag_grad.dtype) - self.lr * mag_grad).round().long()%self.mag_bins
 
             
 
-        final_values = {node_id: {'phase': new_phase_values[node_id], 'mag': new_mag_values[node_id]} for node_id in node_ids_to_update}
-        self.node_store.update_vectors(final_values)
+        final_values = {node_id: {'phase': new_phase_values[node_id].tolist(), 'mag': new_mag_values[node_id].tolist()} for node_id in node_ids_to_update}
+
+        if final_values:
+            try:
+                self.node_store.update_vectors(final_values)
+            except Exception as e:
+                print(f"Error updating vectors: {e}")
+                print(f"Final values: {final_values}")
+            if self.verbose:
+                print(f"Updated {len(node_ids_to_update)} nodes")
 
 
 class OldGradientAccumulator(nn.Module):

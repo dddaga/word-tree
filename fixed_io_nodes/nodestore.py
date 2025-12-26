@@ -364,7 +364,7 @@ class NodeStore(nn.Module):
             points=[
                 models.PointVectors(
                     id=node_id,
-                    vectors={
+                    vector={
                         'phase': values[node_id]['phase'],
                         'mag': values[node_id]['mag'],
                         'phase_values': torch.cat([self.lookup_table.lookup_phase(values[node_id]['phase']), self.lookup_table.lookup_phase_sin(values[node_id]['phase'])], dim=-1).tolist(),
