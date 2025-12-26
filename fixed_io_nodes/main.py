@@ -20,8 +20,8 @@ data_queue = queue.Queue()
 gradient_queue = queue.Queue()
 
 #to be defined in config or elsewhere
-THREAD_COUNT = 4 
-COLLECTION_NAME = 'final0'
+THREAD_COUNT = 8
+COLLECTION_NAME = 'final1'
 QDRANT_URL = 'http://localhost:6333'
 TOTAL_NODES = 500
 INPUT_NODES = 14
@@ -32,7 +32,7 @@ PHASE_BINS = 256
 MAG_BINS = 256
 GAMMA = 1.
 
-ACCUMULATION_STEPS = 8
+ACCUMULATION_STEPS = 4
 TIMEOUT = 60
 ITERATIONS = 3
 ACTIVATION_THRESHOLD = 0.05
@@ -44,7 +44,7 @@ def loss_function(out, target):
 
 
 
-def worker_thread_fn(node_store: NodeStore, timeout:int=60):
+def worker_thread_fn(node_store: NodeStore,  worker_id:int, timeout:int=60,):
 
     gnn = GNN(
         # input_dim=28*28,
@@ -88,7 +88,9 @@ def worker_thread_fn(node_store: NodeStore, timeout:int=60):
         loss = loss_function(out, target)
         loss.backward()
 
-        gradients = {name: param.grad for name, param in model.named_parameters()}
+        print(f"Worker {worker_id} training loss: {loss.item():.4f}")
+
+        gradients = model.gnn.get_grads()
 
         gradient_queue.put(gradients)
         model.reset()
@@ -138,6 +140,7 @@ def gradient_accumulator_thread_fn(node_store: NodeStore, accumulation_steps:int
         accumulation_steps=accumulation_steps,
         node_store=node_store,
         lr=1e-3,
+        verbose=True,
     )
 
     while True:
@@ -145,7 +148,8 @@ def gradient_accumulator_thread_fn(node_store: NodeStore, accumulation_steps:int
         grads = gradient_queue.get(block=True)
 
         #store gradients into accumulator
-        accumulator.receive_gradients(grads)
+        phase_grads, mag_grads = grads
+        accumulator.receive_gradients(phase_grads, mag_grads)
 
         #apply accumulated updates
         accumulator.step()
@@ -185,7 +189,7 @@ if __name__ == "__main__":
 
 
     #create worker threads
-    worker_threads = [threading.Thread(target=worker_thread_fn, args=(node_store, TIMEOUT)) for _ in range(THREAD_COUNT)]
+    worker_threads = [threading.Thread(target=worker_thread_fn, args=(node_store, worker_id, TIMEOUT)) for worker_id in range(THREAD_COUNT)]
 
     #start all threads
     data_thread.start()

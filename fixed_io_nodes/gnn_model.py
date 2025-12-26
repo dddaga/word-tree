@@ -74,16 +74,16 @@ class GNN(nn.Module):
         self.output_nodeids = self.node_store.output_nodeids
         self.input_nodeids = self.node_store.input_nodeids
 
-        if self.verbose:
-            print(f"==================GNN Configuration=====================")
-            print(f"Initialized GNN with {total_nodes} nodes, {input_nodes} input nodes, {output_nodes} output nodes")
-            print(f"Phase bins: {phase_bins}, Mag bins: {mag_bins}")
-            print(f"Vector dimension: {vector_dim}")
-            print(f"Iterations: {iterations}")
-            print(f"Activation threshold: {activation_threshold}")
-            print(f"Gamma: {gamma}")
-            print(f"Device: {device}")
-            print(f"=====================================")
+        # if self.verbose:
+        #     print(f"==================GNN Configuration=====================")
+        #     print(f"Initialized GNN with {total_nodes} nodes, {input_nodes} input nodes, {output_nodes} output nodes")
+        #     print(f"Phase bins: {phase_bins}, Mag bins: {mag_bins}")
+        #     print(f"Vector dimension: {vector_dim}")
+        #     print(f"Iterations: {iterations}")
+        #     print(f"Activation threshold: {activation_threshold}")
+        #     print(f"Gamma: {gamma}")
+        #     print(f"Device: {device}")
+        #     print(f"=====================================")
 
 
 
@@ -224,13 +224,13 @@ class GNN(nn.Module):
     def forward(self, input_values:torch.Tensor=None):
 
         self.one_step_forward(input_values)
-        if self.verbose:
-            print(f"first pass done")
+        # if self.verbose:
+        #     print(f"first pass done")
 
         for iteration in range(self.iterations-1):
             self.one_step_forward()
-            if self.verbose:
-                print(f"Iteration {iteration+2} done")
+            # if self.verbose:
+                # print(f"Iteration {iteration+2} done")
 
         output_signals = {}
         
@@ -239,13 +239,13 @@ class GNN(nn.Module):
             if node_id in self.active_nodes:
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
-                print("Node not active: ", node_id)
+                # print("Node not active: ", node_id)
                 output_signals[node_id] = torch.tensor(0.).requires_grad_(True)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         return output_signals
 
-    def reset(self, fetch_weights:bool=False):
+    def reset(self, fetch_weights:bool=True):
         """
         Reset the model to initial state. 
         1) Resets the active nodes to input nodes. (this is enough to consider the model as reset)
