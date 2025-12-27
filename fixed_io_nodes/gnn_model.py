@@ -1,7 +1,6 @@
 from torch import nn
 import torch
-from lookup_table import LookupTable
-from custom_functions import signal_forward, phase_forward, mag_forward
+from custom_functions import signal_forward
 
 from typing import List, Union
 
@@ -40,6 +39,7 @@ class GNN(nn.Module):
     ):
         super().__init__()
 
+        self.device = device
         self.node_store = node_store
         self.cardinality = cardinality
         self.radiation_targets = radiation_targets
@@ -61,6 +61,7 @@ class GNN(nn.Module):
                 node_store=self.node_store, 
                 lookup_table=self.lookup_table,
                 node_id=n_id,
+                device=self.device,
                 ) for n_id in self.node_store.input_nodeids
         }
         self.input_nodes = self.active_nodes.copy()
@@ -177,7 +178,7 @@ class GNN(nn.Module):
         new_nodes_values = self.node_store.get_node(nodes_to_fetch_ids)
 
         #this just creates the Node objects, doesn't load the values into them
-        new_nodes = [Node(node_store=self.node_store, lookup_table=self.lookup_table) for _ in new_nodes_values]
+        new_nodes = [Node(node_store=self.node_store, lookup_table=self.lookup_table, device=self.device) for _ in new_nodes_values]
         
         for i, new_node_value in enumerate(new_nodes_values):
             new_nodes[i].load_values(new_node_value) #loads the values into the Node objects
@@ -230,7 +231,7 @@ class GNN(nn.Module):
         for iteration in range(self.iterations-1):
             self.one_step_forward()
             # if self.verbose:
-                # print(f"Iteration {iteration+2} done")
+            #     print(f"Iteration {iteration+2} done")
 
         output_signals = {}
         
@@ -240,7 +241,7 @@ class GNN(nn.Module):
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
                 # print("Node not active: ", node_id)
-                output_signals[node_id] = torch.tensor(0.).requires_grad_(True)
+                output_signals[node_id] = torch.tensor(0., device=self.device).requires_grad_(True)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         return output_signals

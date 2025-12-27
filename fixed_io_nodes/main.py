@@ -21,7 +21,7 @@ gradient_queue = queue.Queue()
 
 #to be defined in config or elsewhere
 THREAD_COUNT = 8
-COLLECTION_NAME = 'final1'
+COLLECTION_NAME = 'final2'
 QDRANT_URL = 'http://localhost:6333'
 TOTAL_NODES = 500
 INPUT_NODES = 14
@@ -31,11 +31,14 @@ VECTOR_DIM = 56
 PHASE_BINS = 256
 MAG_BINS = 256
 GAMMA = 1.
+LEARNING_RATE = 10
 
 ACCUMULATION_STEPS = 4
 TIMEOUT = 60
 ITERATIONS = 3
 ACTIVATION_THRESHOLD = 0.05
+
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
 def loss_function(out, target):
@@ -116,8 +119,8 @@ def data_loader_thread_fn(dataset: Dataset, epochs:int=1, shuffle:bool=True, ):
 
             try:
                 x, y = next(data_iterator)
-                x = x.squeeze() #remove batch dimension
-                y = y.squeeze() #TODO: check if this is needed
+                x = x.squeeze().to(DEVICE) #remove batch dimension
+                y = y.squeeze().to(DEVICE) #TODO: check if this is needed
             except StopIteration:
                 epochs_completed += 1
                 if epochs_completed >= epochs:
@@ -139,7 +142,7 @@ def gradient_accumulator_thread_fn(node_store: NodeStore, accumulation_steps:int
     accumulator = GradientAccumulator(
         accumulation_steps=accumulation_steps,
         node_store=node_store,
-        lr=1e-3,
+        lr=LEARNING_RATE,
         verbose=True,
     )
 

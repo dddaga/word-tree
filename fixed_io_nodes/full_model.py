@@ -94,6 +94,7 @@ def initialize_model(
         lookup_table=gnn.lookup_table,
         vector_dim=vector_dim,
         input_node_count=input_nodes,
+        device=device,
     )
 
     return Model(gnn, quantizer)

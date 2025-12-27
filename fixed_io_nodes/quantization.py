@@ -110,7 +110,8 @@ def quantize_magnitude(values: torch.Tensor, mag_bins: int, lookup_table: Lookup
 
 class Quantizer(nn.Module):
     
-    def __init__(self, phase_bins:int, mag_bins:int, lookup_table:LookupTable, vector_dim:int, input_node_count:int):
+    def __init__(self, phase_bins:int, mag_bins:int, lookup_table:LookupTable, vector_dim:int, input_node_count:int,
+    device:str='cuda' if torch.cuda.is_available() else 'cpu'):
         """
         phase_bins: number of bins for the phase
         mag_bins: number of bins for the magnitude
@@ -124,20 +125,17 @@ class Quantizer(nn.Module):
         self.lookup_table = lookup_table
         self.vector_dim = vector_dim
         self.input_node_count = input_node_count
+        self.device = device
 
     def forward(self, x):
         """
         x of shape (node_count * vector_dim)   
         """
-
-        phases = torch.empty((self.input_node_count, self.vector_dim))
-        # mags = torch.empty((self.input_node_count, self.vector_dim))
+        x = x.to(self.device)
 
         phases = quantize_phase(x, self.phase_bins, self.lookup_table)
-        # mags = quantize_magnitude(x[1], self.mag_bins, self.lookup_table)
 
         phases = phases.reshape(self.input_node_count, self.vector_dim)
-        # mags = mags.reshape(self.input_node_count, self.vector_dim)
 
         return phases
 
