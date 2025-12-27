@@ -22,8 +22,10 @@ class Node(nn.Module):
         activation_strength:int=None,
         incoming_connections:List[int]=None,
         outgoing_connections:List[int]=None,
+        device:str='cuda' if torch.cuda.is_available() else 'cpu',
     ):
         super().__init__()
+        self.device = device
         self.node_id = node_id
         self.lookup_table = lookup_table 
         self.node_store = node_store
@@ -31,11 +33,11 @@ class Node(nn.Module):
 
         #TODO: phase/mag weights should be initialized as nn.Parameters
         if phase_weight is None:
-            phase_weight = torch.tensor(1.).requires_grad_(True)
+            phase_weight = torch.tensor(1.)
         if mag_weight is None:
-            mag_weight = torch.tensor(1.).requires_grad_(True)
-        self.phase_weight = nn.Parameter(phase_weight)
-        self.mag_weight = nn.Parameter(mag_weight)
+            mag_weight = torch.tensor(1.)
+        self.phase_weight = nn.Parameter(phase_weight.to(self.device).requires_grad_(True), requires_grad=True)
+        self.mag_weight = nn.Parameter(mag_weight.to(self.device).requires_grad_(True), requires_grad=True)
 
         self.phase_activation = phase_activation
         self.mag_activation = mag_activation
@@ -61,8 +63,8 @@ class Node(nn.Module):
         self.id = node.id
 
         
-        self.phase_weight = nn.Parameter(torch.tensor(node.vector['phase'], dtype=torch.float16).requires_grad_(True))
-        self.mag_weight = nn.Parameter(torch.tensor(node.vector['mag'], dtype=torch.float16).requires_grad_(True))
+        self.phase_weight = nn.Parameter(torch.tensor(node.vector['phase'], dtype=torch.float16, device=self.device).requires_grad_(True))
+        self.mag_weight = nn.Parameter(torch.tensor(node.vector['mag'], dtype=torch.float16, device=self.device).requires_grad_(True))
 
 
         self.incoming_connections = node.payload['incoming_connections']
@@ -79,7 +81,7 @@ class Node(nn.Module):
         """
         Calculate the activation strength of the node.
         """
-        self.activation_strength = activation_stength_forward(self.phase_activation, self.mag_activation, self.lookup_table)
+        self.activation_strength = activation_stength_forward(self.phase_activation, self.mag_activation, self.lookup_table).to(self.device)
         return self.activation_strength
 
         
@@ -107,6 +109,9 @@ class Node(nn.Module):
             mag_activations = mag_activations.reshape(1, -1)
         elif activation_strengths.dim() == 0:
             activation_strengths = activation_strengths.reshape(1)
+        phase_activations = phase_activations.to(self.device)
+        mag_activations = mag_activations.to(self.device)
+        activation_strengths = activation_strengths.to(self.device)
         
         #add current node's phase/mag activations to the input activations to process them together
         

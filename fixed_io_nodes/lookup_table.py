@@ -2,7 +2,8 @@ from torch import nn
 import torch
 
 class LookupTable(nn.Module):        
-    def __init__(self, phase_bins:int, mag_bins:int, gamma=1, device:str='cpu'):
+    def __init__(self, phase_bins:int, mag_bins:int, gamma=1,
+    device:str='cuda' if torch.cuda.is_available() else 'cpu'):
         super().__init__()
         self.N = phase_bins
         self.phase_bins = phase_bins
@@ -16,7 +17,7 @@ class LookupTable(nn.Module):
 
     def setup_phase_tables(self):
 
-        phase_values = torch.linspace(0, 2 * torch.pi, self.N + 1)[:-1]  # Exclude 2π
+        phase_values = torch.linspace(0, 2 * torch.pi, self.N + 1, device=self.device)[:-1]  # Exclude 2π
 
         self.register_buffer('phase_cos_table', torch.cos(phase_values))
         self.register_buffer('phase_sin_table', torch.sin(phase_values))
@@ -28,7 +29,7 @@ class LookupTable(nn.Module):
         magnitude has discrete values of exp(gamma * sin(x)) where x is in the range [-pi, pi]
         """
 
-        mag_range = torch.linspace(-torch.pi, torch.pi, self.M)        
+        mag_range = torch.linspace(-torch.pi, torch.pi, self.M, device=self.device)        
         mag_exp_sin_table = torch.exp(gamma*torch.sin(mag_range))
         self.register_buffer('mag_exp_sin_table', mag_exp_sin_table)
 
