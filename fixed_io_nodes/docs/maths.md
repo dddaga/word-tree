@@ -1,6 +1,6 @@
 ### Terminologies
 
-* Phase values - The actual numertical value of phase, denoted by $\Theta$
+* Phase values - The actual numertical value of phase, denoted by $\Phi$
 * Mag Values - The actual numerical value of magnitude, denoted by $M$
 * Phases - The indices for phase, integer in $[0, 255]$, denoted by $\theta$
 * Mags - indices for magnitude,  integer in $[0, 255]$, denoted by $m$
@@ -14,7 +14,7 @@ $\newline$
 <!-- Stores the mapping from Phases/Mags to Phase Values/Mag Values. The stored values are defined as following: -$\newline$ -->
 
 $$\begin{equation}
-\Theta = \cos{(\frac{2\pi}{N}\theta)} 
+\Phi = \cos{(\frac{2\pi}{N}\theta)} 
 \end{equation}$$
 
 
@@ -25,7 +25,7 @@ M = e^{\gamma  \sin{(\frac{2\pi}{N}(m-\frac{N}{2}))}}
 Consequently, we can define gradients to store as well, 
 
 $$\begin{equation}
-\frac{d\Theta}{d\theta}  = -\frac{2\pi}{N} \cdot \sin{(\frac{2\pi}{N}\theta)}
+\frac{d\Phi}{d\theta}  = -\frac{2\pi}{N} \cdot \sin{(\frac{2\pi}{N}\theta)}
 \end{equation}$$
 
 $$\begin{equation}
@@ -81,7 +81,7 @@ So the HNSW index will return the node having the highest value for equation (5)
 
 
 $$
-a = \Theta \cdot M 
+a = \Phi \cdot M 
 \newline
 = \sum_{i=1}^N M_i \cos{(\frac{2\pi}{N}\theta_i)}
 $$
@@ -130,3 +130,27 @@ For two complex numbers, multiplying them is akin to rotation of one vector by t
 $$
 A_1 e^{i\theta_1} \cdot A_2 e^{i\theta_2} = A_1A_2e^{i(\theta_1+\theta_2)}
 $$
+
+
+## Some hyperparameter decisions
+
+
+
+<details>
+<summary>Why is LR a much higher value than standard architecture?</summary>
+
+Let's analyse the operation of "phase lookup" from lookup table. It can be described as below, 
+
+$$
+\Phi = \cos(\frac{2\pi}{N}\theta)
+$$$$
+\frac{d\Phi}{d\theta} = -\sin(\frac{2\pi}{N}\theta)\cdot\frac{2\pi}{N}
+$$$$
+\frac{dJ}{d\theta} = \frac{dJ}{d\Phi}\frac{d\Phi}{d\theta} = - \frac{dJ}{d\Phi} \cdot \sin(\frac{2\pi}{N}\theta)\cdot\frac{2\pi}{N}
+$$
+
+What's worth noting here is, $\frac{2\pi}{N} \approx 0.025$ for $N=256$, which makes the gradients quite small, so we would need atleast 40 gradient sums to make one discrete change, that is without accounting for $\frac{dJ}{d\Phi}$, and taking LR=1. 
+
+So I figured it would be better to take LR much higher, hence making the updates more frequent.
+
+</details>

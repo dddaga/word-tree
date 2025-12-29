@@ -65,8 +65,9 @@ class GNN(nn.Module):
                 ) for n_id in self.node_store.input_nodeids
         }
         self.input_nodes = self.active_nodes.copy()
-        for _, n in self.active_nodes.items():
-            n.load_values()
+        node_values = self.node_store.get_node(self.node_store.input_nodeids)
+        for n_value in node_values:
+            self.active_nodes[n_value.id].load_values(n_value)
 
         self.active_nodes = MyModuleDict(self.active_nodes)
         
@@ -74,18 +75,6 @@ class GNN(nn.Module):
         
         self.output_nodeids = self.node_store.output_nodeids
         self.input_nodeids = self.node_store.input_nodeids
-
-        # if self.verbose:
-        #     print(f"==================GNN Configuration=====================")
-        #     print(f"Initialized GNN with {total_nodes} nodes, {input_nodes} input nodes, {output_nodes} output nodes")
-        #     print(f"Phase bins: {phase_bins}, Mag bins: {mag_bins}")
-        #     print(f"Vector dimension: {vector_dim}")
-        #     print(f"Iterations: {iterations}")
-        #     print(f"Activation threshold: {activation_threshold}")
-        #     print(f"Gamma: {gamma}")
-        #     print(f"Device: {device}")
-        #     print(f"=====================================")
-
 
 
     def _compute_radiation_targets(self, nodes:List[Node], k:int=None):
@@ -106,14 +95,22 @@ class GNN(nn.Module):
 
         topk_indices = {}
 
-        #TODO: this can be optimized to do combined search for all nodes at once
-        for node in nodes:
-            query_vector = node.phase_activation
-            node_id = node.id
-            nodes = self.node_store.search_nodes(query_vector.tolist(), vector_name='phase', with_payload=False, with_vectors=False)
-            topk_indices[node_id] = [node.id for node in nodes]
+        
+        query_vectors = [node.phase_activation for node in nodes]
+        batch_results = self.node_store.search_nodes_batch(
+            query_vectors, 
+            vector_name='phase', 
+            limit=k,
+            with_payload=False, 
+            with_vectors=False
+        )
+
+        # Map results back to the corresponding node IDs
+        for i, node in enumerate(nodes):
+            topk_indices[node.id] = [found_point.id for found_point in batch_results[i]]
         
         return topk_indices
+
     
 
     def one_step_forward(self, input_values:torch.Tensor=None):
@@ -244,6 +241,7 @@ class GNN(nn.Module):
                 output_signals[node_id] = torch.tensor(0., device=self.device).requires_grad_(True)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
+        output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed
         return output_signals
 
     def reset(self, fetch_weights:bool=True):
@@ -254,8 +252,9 @@ class GNN(nn.Module):
         """
 
         if fetch_weights:
-            for _, n in self.input_nodes.items():
-                n.load_values()
+            node_values = self.node_store.get_node(self.input_nodeids)
+            for n_value in node_values:
+                self.input_nodes[n_value.id].load_values(n_value)
 
 
         self.active_nodes = MyModuleDict(self.input_nodes.copy())

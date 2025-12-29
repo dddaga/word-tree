@@ -6,3 +6,7 @@ qdrant_storage/
 fixed_io_nodes/main.ipynb
 *.pth
 data/
+
+#don't push logs
+*.csv
+training_logs/

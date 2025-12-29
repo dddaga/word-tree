@@ -5,6 +5,7 @@ from gnn_model import GNN
 # from input_adapter import LinearInputAdapter
 from quantization import Quantizer
 from nodestore import NodeStore
+from lookup_table import LookupTable
 
 class Model(nn.Module):
 
@@ -69,7 +70,6 @@ def initialize_model(
 
 ):
 
-    # input_adapter = LinearInputAdapter(input_dim, output_dim=input_nodes*vector_dim, hidden_dims=adapter_hidden_dims, dropout=adapter_dropout, normalization_layer=adapter_normalization_layer)
 
     gnn = GNN(
         node_store=node_store,
@@ -98,3 +98,70 @@ def initialize_model(
     )
 
     return Model(gnn, quantizer)
+
+def initialize_model_and_nodestore(
+
+    qdrant_url:str,
+    collection_name:str,
+
+    total_nodes:int,
+    input_nodes:int,
+    output_nodes:int,
+    cardinality:int,
+    radiation_targets:int,
+
+    vector_dim:int,
+    phase_bins:int,
+    mag_bins:int,
+    iterations:int,
+    activation_threshold:float,
+    gamma:float=1.,
+
+    device:str='cuda' if torch.cuda.is_available() else 'cpu',
+    verbose:bool=False,
+):
+    """
+    returns model, node_store
+    """
+
+    lookup_table = LookupTable(
+        phase_bins=phase_bins,
+        mag_bins=mag_bins,
+        gamma=gamma,
+        device=device,
+    )
+
+
+    node_store = NodeStore(
+        qdrant_url=qdrant_url,
+        collection_name=collection_name,
+        lookup_table=lookup_table,
+        num_total_nodes=total_nodes,
+        num_input_nodes=input_nodes,
+        num_output_nodes=output_nodes,
+        cardinality=cardinality,
+        vector_dim=vector_dim,
+        phase_bins=phase_bins,
+        mag_bins=mag_bins,
+    )
+
+    model = initialize_model(
+        node_store=node_store,
+        cardinality=cardinality,
+        radiation_targets=radiation_targets,
+        total_nodes=total_nodes,
+        input_nodes=input_nodes,
+        output_nodes=output_nodes,
+        phase_bins=phase_bins,
+        mag_bins = mag_bins,
+        vector_dim = vector_dim,
+        iterations = iterations,
+        activation_threshold = activation_threshold,
+        gamma = gamma,
+        device = device,
+        verbose = verbose,
+    )
+
+    return model, node_store
+
+    

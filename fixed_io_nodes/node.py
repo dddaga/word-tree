@@ -56,6 +56,7 @@ class Node(nn.Module):
         """
 
         if node is None:
+            print(f"Warning: Loading node {self.node_id} from qdrant. This is not efficient and should be avoided.") 
             node = self.node_store.get_node(self.node_id)[0]
         else:
             self.node_id = node.id
@@ -130,8 +131,8 @@ class Node(nn.Module):
         self.mag_activation = mag_activations.sum(dim=0)%self.lookup_table.mag_bins
         self.calculate_activation_strength() 
 
-        if not self.phase_activation.requires_grad:
-            print("===")
+        # if not self.phase_activation.requires_grad:
+        #     print("===")
 
 
     def reset(self):
