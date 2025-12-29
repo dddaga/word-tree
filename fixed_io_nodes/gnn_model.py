@@ -238,7 +238,7 @@ class GNN(nn.Module):
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
                 # print("Node not active: ", node_id)
-                output_signals[node_id] = torch.tensor(0., device=self.device).requires_grad_(True)
+                output_signals[node_id] = torch.tensor(-torch.inf, device=self.device).requires_grad_(True)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed

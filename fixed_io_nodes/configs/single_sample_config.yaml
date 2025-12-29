@@ -1,0 +1,36 @@
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "single_sample0"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 200
+  input_nodes: 14
+  output_nodes: 10
+  cardinality: 5
+  radiation_targets: 5
+
+# --- Model Architecture ---
+model:
+  vector_dim: 14
+  phase_bins: 256
+  mag_bins: 256
+  gamma: 1.0
+  iterations: 3
+  activation_threshold: 0.05
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.01
+  worker_count: 1
+  timeout: 300 #time to wait for data from queue
+
+
+# --- System & Logging ---
+system:
+  device: "cpu"
+  logging:
+    log_path: "training_logs/single_sample_log0.csv"
+    save_interval_seconds: 10
