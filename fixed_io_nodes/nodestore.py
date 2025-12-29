@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from collections import deque
+import time
 
 from typing import List, Dict, Union, Set
 
@@ -8,10 +8,9 @@ import torch
 import torch.nn as nn
 
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, OptimizersConfig, VectorParams
-from qdrant_client.models import PointStruct, Datatype
+from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import Datatype
 from qdrant_client import models
-import qdrant_client
 
 from lookup_table import LookupTable
 
@@ -115,12 +114,6 @@ class NodeStore(nn.Module):
             #however, we still to assign self.input_nodeids and self.output_nodeids
             self.input_nodeids = set(range(num_input_nodes))
             self.output_nodeids = set(range(num_total_nodes - num_output_nodes, num_total_nodes))
-
-
-        
-
-
-        
 
     def _initialize_nodeids(self,
         num_total_nodes:int,
@@ -431,8 +424,9 @@ class NodeStore(nn.Module):
         #TODO: make this return a list of Node objects instead of qdrant points
 
         if vector_name == 'phase_values': #phase values means the first half of vector is cos, 2nd half is sin
-            query_vector = torch.tensor(query_vector).tolist()
+            query_vector = torch.tensor(query_vector)
             query_vector[self.vector_dim:] = -query_vector[self.vector_dim:]
+            query_vector = query_vector.tolist()
 
         elif vector_name == 'phase': #case where input is just the phase_indices, it converts it to phase_values
             query_vector = torch.concat([self.lookup_table.lookup_phase(query_vector), -self.lookup_table.lookup_phase_sin(query_vector)], dim=-1).tolist()
@@ -450,6 +444,44 @@ class NodeStore(nn.Module):
             with_payload=with_payload,
         ).points
     
+    def search_nodes_batch(self, query_vectors, vector_name='phase_values', limit=3, with_vectors=False, with_payload=True):
+        
+        requests = []
+
+        for q_vec in query_vectors:
+
+            if not isinstance(q_vec, torch.Tensor):
+                q_vec = torch.tensor(q_vec, device=self.lookup_table.device)
+            
+            if vector_name == 'phase':
+                # Transform indices to Cos/Sin vectors (Conjugate logic)
+                # We negate the Sin part for complex number rotation simulation (a * b* pattern)
+                q_vec = torch.cat([
+                    self.lookup_table.lookup_phase(q_vec), 
+                    -self.lookup_table.lookup_phase_sin(q_vec)
+                ], dim=-1).tolist()
+                
+                target_name = 'phase_values'
+            else:
+                raise NotImplementedError(f"Vector name: {vector_name} not implemented")
+
+
+            requests.append(
+                models.SearchRequest(
+                    vector=models.NamedVector(name=target_name, vector=q_vec),
+                    limit=limit,
+                    with_payload=with_payload,
+                    with_vector=with_vectors
+                )
+            )
+
+        # Send 1 BIG request instead of N small ones
+        search_results = self.client.search_batch(
+            collection_name=self.collection_name,
+            requests=requests
+        )
+        return search_results
+
 
     def is_input(self, node_id):
         return node_id in self.input_nodeids
