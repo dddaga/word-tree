@@ -12,6 +12,7 @@ import os
 import time
 import random
 from pathlib import Path
+import numpy as np
 
 os.environ["PYTHONWARNINGS"] = "ignore"
 
@@ -228,6 +229,9 @@ def gradient_accumulator_process_fn(
 
 
 if __name__ == "__main__":
+    torch.manual_seed(42)
+    random.seed(42)
+    np.random.seed(42)
 
     warnings.filterwarnings('ignore')
 
