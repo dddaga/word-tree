@@ -92,7 +92,11 @@ def worker_process_fn(
     log_queue:mp.Queue,
     config:dict,
 ):
-    device = config['system']['device']
+    # Determine best device for this worker's computation
+    # We use get_best_device() to allow MPS/CUDA usage inside the worker
+    # even if the main process (and config) is set to CPU for multiprocessing safety
+    device = get_best_device()
+    
     # Stagger worker initialization to avoid overwhelming Qdrant with simultaneous connections
     # Each worker waits a different amount of time (3s per worker + random jitter)
     stagger_delay = worker_id * 3.0 + random.uniform(1.0, 2.0)
@@ -116,7 +120,7 @@ def worker_process_fn(
         iterations=config['model']['iterations'],
         activation_threshold=config['model']['activation_threshold'],
         gamma=config['model']['gamma'],
-        device=config['system']['device'],
+        device=device,  # Use local worker device (e.g. MPS)
     )
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -127,6 +131,7 @@ def worker_process_fn(
     while True:
         try:
             data, target = data_queue.get(block=True, timeout=60) #wait for 60 seconds for data to arrive
+            # Data comes from queue (CPU), move to worker device
             data = data.to(device)
             target = target.to(device)
         except queue.Empty:
@@ -148,8 +153,9 @@ def worker_process_fn(
         # SAFE TENSOR PASSING:
         # We must .detach() to cut the computation graph and .clone() to 
         # ensure the memory is safe to send to another process.
-        clean_phase_grads = {k: v.detach().clone() for k, v in phase_grads.items() if v is not None}
-        clean_mag_grads = {k: v.detach().clone() for k, v in mag_grads.items() if v is not None}
+        # CRITICAL: Move to CPU before putting in queue to avoid MPS/multiprocessing errors
+        clean_phase_grads = {k: v.detach().cpu().clone() for k, v in phase_grads.items() if v is not None}
+        clean_mag_grads = {k: v.detach().cpu().clone() for k, v in mag_grads.items() if v is not None}
 
         # Send gradients to gradient accumulator and reset model
         gradient_queue.put((clean_phase_grads, clean_mag_grads))
@@ -280,14 +286,9 @@ if __name__ == "__main__":
     
     worker_count = config['training']['worker_count']
     
-    # Optimize worker count based on device if not explicitly set
-    if config['training'].get('auto_workers', False):
-        if device in ['cuda', 'mps']:
-            worker_count = max(worker_count, 5)  # Use more workers for GPU
-            print(f"📊 Optimized workers for GPU: {worker_count}")
-        else:
-            worker_count = min(worker_count, 2)  # Use fewer workers for CPU (limit to 2)
-            print(f"📊 Optimized workers for CPU: {worker_count}")
+    # User requested to respect config worker_count irrespective of device
+    # We remove the auto-optimization that limits CPU workers
+    # if config['training'].get('auto_workers', False): ...
     
     log_path = config['system']['logging']['log_path']
     tensorboard_dir = config['system']['logging'].get('tensorboard_dir', 'training_logs/tensorboard')
