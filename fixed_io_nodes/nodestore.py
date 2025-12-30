@@ -140,8 +140,10 @@ class NodeStore(nn.Module):
 
     @retry_on_connection_error(max_retries=5, base_delay=0.5)
     def _init_client_with_retry(self, qdrant_url):
-        """Initialize Qdrant client with retry logic."""
-        return QdrantClient(url=qdrant_url)
+        """Initialize Qdrant client with retry logic and gRPC optimization."""
+        # Enable gRPC for better throughput
+        # If url is http://localhost:6333, it will try to use gRPC on port 6334 by default if prefer_grpc=True
+        return QdrantClient(url=qdrant_url, prefer_grpc=True, timeout=100)
     
     @retry_on_connection_error(max_retries=5, base_delay=0.5)
     def _check_collection_exists_with_retry(self):
@@ -494,9 +496,9 @@ class NodeStore(nn.Module):
     def search_nodes_batch(self, query_vectors, vector_name='phase_values', limit=3, with_vectors=False, with_payload=True):
         """
         Search for nearest neighbors for multiple query vectors.
-        Note: Using individual query_points calls instead of query_batch due to API changes in qdrant-client.
+        Uses query_batch_points for high throughput.
         """
-        search_results = []
+        requests = []
 
         for q_vec in query_vectors:
 
@@ -515,29 +517,30 @@ class NodeStore(nn.Module):
             else:
                 raise NotImplementedError(f"Vector name: {vector_name} not implemented")
 
-            # Use query_points for each vector with retry logic
-            result = self._query_points_with_retry(
-                query=q_vec,
-                target_name=target_name,
-                limit=limit,
-                with_payload=with_payload,
-                with_vectors=with_vectors
+            requests.append(
+                models.QueryRequest(
+                    query=q_vec,
+                    using=target_name,
+                    limit=limit,
+                    with_payload=with_payload,
+                    with_vector=with_vectors
+                )
             )
-            # query_points returns QueryResponse, extract points
-            search_results.append(result.points)
+
+        # Send 1 BIG request instead of N small ones
+        batch_results = self._query_batch_points_with_retry(
+            requests=requests
+        )
         
-        return search_results
+        # Extract points from QueryResponse objects
+        return [result.points for result in batch_results]
     
     @retry_on_connection_error(max_retries=3, base_delay=0.2)
-    def _query_points_with_retry(self, query, target_name, limit, with_payload, with_vectors):
-        """Query points with retry logic for connection errors."""
-        return self.client.query_points(
+    def _query_batch_points_with_retry(self, requests):
+        """Query batch points with retry logic."""
+        return self.client.query_batch_points(
             collection_name=self.collection_name,
-            query=query,
-            using=target_name,
-            limit=limit,
-            with_payload=with_payload,
-            with_vectors=with_vectors
+            requests=requests
         )
 
 
