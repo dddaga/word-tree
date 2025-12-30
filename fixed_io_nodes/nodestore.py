@@ -15,6 +15,29 @@ from qdrant_client import models
 from lookup_table import LookupTable
 
 
+def retry_on_connection_error(max_retries=5, base_delay=0.5):
+    """Decorator to retry Qdrant operations on connection errors."""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attempt in range(max_retries):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    error_msg = str(e).lower()
+                    is_connection_error = any(x in error_msg for x in ['connection', 'reset', 'refused', 'timeout'])
+                    
+                    if attempt < max_retries - 1 and is_connection_error:
+                        delay = base_delay * (2 ** attempt) + random.uniform(0, 0.5)
+                        print(f"Qdrant connection error (attempt {attempt + 1}/{max_retries}): {e}")
+                        print(f"Retrying in {delay:.2f}s...")
+                        time.sleep(delay)
+                    else:
+                        raise
+            return None
+        return wrapper
+    return decorator
+
+
 class NodeStore(nn.Module):
     def __init__(
         self, 
@@ -72,8 +95,8 @@ class NodeStore(nn.Module):
         """
         super().__init__()
 
-
-        self.client = QdrantClient(url=qdrant_url)
+        # Initialize Qdrant client with retry logic
+        self.client = self._init_client_with_retry(qdrant_url)
         self.collection_name = collection_name
         self.lookup_table = lookup_table
 
@@ -88,7 +111,7 @@ class NodeStore(nn.Module):
 
 
         #create collection and initialize graph
-        if not self.client.collection_exists(self.collection_name):
+        if not self._check_collection_exists_with_retry():
             self._create_collection(
                 collection_name=self.collection_name,
                 distance_metric=distance_metric,
@@ -114,6 +137,16 @@ class NodeStore(nn.Module):
             #however, we still to assign self.input_nodeids and self.output_nodeids
             self.input_nodeids = set(range(num_input_nodes))
             self.output_nodeids = set(range(num_total_nodes - num_output_nodes, num_total_nodes))
+
+    @retry_on_connection_error(max_retries=5, base_delay=0.5)
+    def _init_client_with_retry(self, qdrant_url):
+        """Initialize Qdrant client with retry logic."""
+        return QdrantClient(url=qdrant_url)
+    
+    @retry_on_connection_error(max_retries=5, base_delay=0.5)
+    def _check_collection_exists_with_retry(self):
+        """Check if collection exists with retry logic."""
+        return self.client.collection_exists(self.collection_name)
 
     def _initialize_nodeids(self,
         num_total_nodes:int,
@@ -351,19 +384,24 @@ class NodeStore(nn.Module):
         Helps when doing gradient descent, where we only need to update the vectors, and not the payload
         
         """
-        
+        points = [
+            models.PointVectors(
+                id=node_id,
+                vector={
+                    'phase': values[node_id]['phase'],
+                    'mag': values[node_id]['mag'],
+                    'phase_values': torch.cat([self.lookup_table.lookup_phase(values[node_id]['phase']), self.lookup_table.lookup_phase_sin(values[node_id]['phase'])], dim=-1).tolist(),
+                }
+            ) for node_id in values
+        ]
+        return self._update_vectors_with_retry(points)
+    
+    @retry_on_connection_error(max_retries=3, base_delay=0.2)
+    def _update_vectors_with_retry(self, points):
+        """Update vectors with retry logic."""
         return self.client.update_vectors(
             collection_name=self.collection_name,
-            points=[
-                models.PointVectors(
-                    id=node_id,
-                    vector={
-                        'phase': values[node_id]['phase'],
-                        'mag': values[node_id]['mag'],
-                        'phase_values': torch.cat([self.lookup_table.lookup_phase(values[node_id]['phase']), self.lookup_table.lookup_phase_sin(values[node_id]['phase'])], dim=-1).tolist(),
-                    }
-                ) for node_id in values
-            ],
+            points=points,
             wait=True,
         )
 
@@ -412,9 +450,18 @@ class NodeStore(nn.Module):
         #TODO: make this return a list of Node objects instead of qdrant points
         if isinstance(node_ids, int):
             node_ids = [node_ids]
+        return self._retrieve_with_retry(
+            ids=node_ids,
+            with_payload=with_payload,
+            with_vectors=with_vectors
+        )
+    
+    @retry_on_connection_error(max_retries=3, base_delay=0.2)
+    def _retrieve_with_retry(self, ids, with_payload, with_vectors):
+        """Retrieve points with retry logic."""
         return self.client.retrieve(
             collection_name=self.collection_name,
-            ids=node_ids,
+            ids=ids,
             with_payload=with_payload,
             with_vectors=with_vectors,
         )
@@ -468,11 +515,10 @@ class NodeStore(nn.Module):
             else:
                 raise NotImplementedError(f"Vector name: {vector_name} not implemented")
 
-            # Use query_points for each vector (connection pooling makes this efficient)
-            result = self.client.query_points(
-                collection_name=self.collection_name,
+            # Use query_points for each vector with retry logic
+            result = self._query_points_with_retry(
                 query=q_vec,
-                using=target_name,  # Specify which named vector to use
+                target_name=target_name,
                 limit=limit,
                 with_payload=with_payload,
                 with_vectors=with_vectors
@@ -481,6 +527,18 @@ class NodeStore(nn.Module):
             search_results.append(result.points)
         
         return search_results
+    
+    @retry_on_connection_error(max_retries=3, base_delay=0.2)
+    def _query_points_with_retry(self, query, target_name, limit, with_payload, with_vectors):
+        """Query points with retry logic for connection errors."""
+        return self.client.query_points(
+            collection_name=self.collection_name,
+            query=query,
+            using=target_name,
+            limit=limit,
+            with_payload=with_payload,
+            with_vectors=with_vectors
+        )
 
 
     def is_input(self, node_id):
