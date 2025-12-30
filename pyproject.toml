@@ -1,0 +1,9 @@
+[tool.uv]
+# Note: ExFAT filesystem (T9 drive) doesn't support operations UV requires
+# Cache and venvs must be on APFS/HFS+ filesystem (local drive)
+# UV cache will use default location: ~/.cache/uv or can be customized below
+# cache-dir = "$HOME/.cache/uv"
+
+# Virtual environments are created in: $HOME/.virtualenvs/word-tree
+# Or use .venv in project directory on local drive
+

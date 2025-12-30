@@ -1,0 +1,21 @@
+# UV Environment Configuration
+# Source this file or add these to your ~/.zshrc
+
+# ExFAT (T9 drive) doesn't support filesystem operations UV requires
+# All UV directories must be on local APFS/HFS+ filesystem
+
+# Force all temporary operations to local drive
+export TMPDIR="$HOME/tmp"
+mkdir -p "$TMPDIR"
+
+# Keep default locations (all on local drive):
+# export UV_CACHE_DIR="$HOME/.cache/uv"
+# export UV_TOOL_DIR="$HOME/.local/share/uv/tools"
+# export UV_PYTHON_INSTALL_DIR="$HOME/.local/share/uv/python"
+
+# Virtual environment for this project
+export UV_PROJECT_ENVIRONMENT="$HOME/.virtualenvs/word-tree"
+
+# Quick activation alias
+alias activate-word-tree="source $HOME/.virtualenvs/word-tree/bin/activate"
+

@@ -21,6 +21,7 @@ from gradient_accumulator import GradientAccumulator
 from nodestore import NodeStore
 from full_model import initialize_model_and_nodestore
 from lookup_table import LookupTable
+from device_utils import get_best_device
 
 # Helper to load config
 def load_config(path):
@@ -76,7 +77,9 @@ def worker_process_fn(
     config:dict,
 ):
     device = config['system']['device']
-    time.sleep(random.expovariate(2.0)) 
+    time.sleep(random.expovariate(2.0))
+    
+    print(f"Worker {worker_id}: Initializing on {device}...") 
 
     #the node store is used internally by model. It is returned just for convenience.
     model, node_store = initialize_model_and_nodestore(
@@ -165,23 +168,21 @@ def data_loader_process_fn(
     epochs_completed = 0
 
     while True:
+        # Note: qsize() not available on macOS, so we continuously feed data
+        # The maxsize parameter on the queue will handle backpressure
+        try:
+            x, y = next(data_iterator)
+            x = x.squeeze()
+            y = y.squeeze()
+        except StopIteration:
+            epochs_completed += 1
+            if epochs_completed >= epochs:
+                return
+            data_iterator = iter(dataloader)
+            continue #restart the iterator
 
-        if data_queue.qsize() < num_workers*2:
-            try:
-                x, y = next(data_iterator)
-                x = x.squeeze()
-                y = y.squeeze()
-            except StopIteration:
-                epochs_completed += 1
-                if epochs_completed >= epochs:
-                    return
-                data_iterator = iter(dataloader)
-                continue #restart the iterator
-
-            data_queue.put((x, y))
-        
-        else:
-            time.sleep(0.1)
+        # put() will block when queue is full (maxsize), providing natural backpressure
+        data_queue.put((x, y))
 
 
 
@@ -190,6 +191,11 @@ def gradient_accumulator_process_fn(
     config:dict,
     lookup_table:LookupTable,
 ):
+    device = config['system']['device']
+    
+    # Move lookup table to target device in this process
+    lookup_table = lookup_table.to_device(device)
+    print(f"Accumulator: Moved LookupTable to {device}")
     
     node_store = NodeStore(
         lookup_table=lookup_table,
@@ -208,10 +214,10 @@ def gradient_accumulator_process_fn(
         node_store=node_store,
         lr=config['training']['lr'],
         verbose=True,
-        device=config['system']['device']
+        device=device
     )
 
-    print("Accumulator: Ready.")
+    print(f"Accumulator: Ready on {device}.")
 
     while True:
 
@@ -238,16 +244,38 @@ if __name__ == "__main__":
     mp.set_start_method('spawn', force=True)
 
     config = load_config('configs/config.yaml')
+    
+    # Auto-detect device if set to "auto"
     device = config['system']['device']
+    if device == 'auto':
+        device = get_best_device()
+        config['system']['device'] = device  # Update config with detected device
+    else:
+        print(f"🎯 Using configured device: {device}")
+    
     worker_count = config['training']['worker_count']
+    
+    # Optimize worker count based on device if not explicitly set
+    if config['training'].get('auto_workers', False):
+        if device in ['cuda', 'mps']:
+            worker_count = max(worker_count, 5)  # Use more workers for GPU
+            print(f"📊 Optimized workers for GPU: {worker_count}")
+        else:
+            worker_count = min(worker_count, 2)  # Use fewer workers for CPU
+            print(f"📊 Optimized workers for CPU: {worker_count}")
+    
     log_path = config['system']['logging']['log_path']
 
+    # IMPORTANT: LookupTable must be on CPU for multiprocessing
+    # MPS/CUDA tensors cannot be shared between processes
+    # Each worker will move it to their device internally
     lookup_table = LookupTable(
         phase_bins=config['model']['phase_bins'],
         mag_bins=config['model']['mag_bins'],
         gamma=config['model']['gamma'],
-        device=device
+        device='cpu'  # Always CPU for sharing between processes
     )
+    print(f"📋 LookupTable created on CPU for multiprocessing compatibility")
     
 
     #initialize queues

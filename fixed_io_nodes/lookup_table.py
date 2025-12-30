@@ -49,4 +49,9 @@ class LookupTable(nn.Module):
 
     def lookup_magnitude_grad(self, mag_indices):
         return self.mag_exp_sin_grad_table[torch.tensor(mag_indices, dtype=torch.int64)]
+    
+    def to_device(self, device):
+        """Move lookup table to specified device."""
+        self.device = device
+        return self.to(device)
         
