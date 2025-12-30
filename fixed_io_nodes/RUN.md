@@ -107,19 +107,16 @@ training:
 
 ## Output
 
-During training you'll see:
-```
-Logger: Writing logs to training_logs/log0.csv
-Accumulator: Ready.
-Worker 0: Ready on cuda.
-Worker 1: Ready on cuda.
-...
-Worker 0: Loss: 2.3456
-Worker 1: Loss: 2.1234
-...
-```
+During training you'll see logs in the terminal.
 
-Training logs are saved to: `training_logs/log0.csv`
+- **CSV Logs**: `training_logs/log0.csv`
+- **TensorBoard**: `training_logs/tensorboard`
+
+To view TensorBoard:
+```bash
+tensorboard --logdir training_logs/tensorboard
+```
+Then open http://localhost:6006
 
 ## Stopping Training
 

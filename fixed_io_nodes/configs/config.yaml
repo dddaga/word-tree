@@ -36,4 +36,5 @@ system:
                  # Use CPU for stable training, GPU support needs architecture refactor
   logging:
     log_path: "training_logs/log0.csv"
+    tensorboard_dir: "training_logs/tensorboard"
     save_interval_seconds: 10

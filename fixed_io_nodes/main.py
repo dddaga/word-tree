@@ -13,6 +13,7 @@ import time
 import random
 from pathlib import Path
 import numpy as np
+from torch.utils.tensorboard import SummaryWriter
 
 os.environ["PYTHONWARNINGS"] = "ignore"
 
@@ -29,9 +30,9 @@ def load_config(path):
         return yaml.safe_load(f)
 
 
-def logger_process_fn(log_queue:mp.Queue, log_path:str):
+def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None):
     """
-    Consumer process that writes logs to a CSV file.
+    Consumer process that writes logs to a CSV file and TensorBoard.
     Opens file once for performance, flushes often for safety.
     """
     # Check if file exists to decide whether to write header
@@ -40,33 +41,48 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str):
     #create the folder if it doesn't exist
     path_obj = Path(log_path)
     path_obj.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Initialize TensorBoard writer
+    writer = None
+    if tensorboard_dir:
+        writer = SummaryWriter(log_dir=tensorboard_dir)
+        print(f"Logger: TensorBoard logging enabled at {tensorboard_dir}")
 
     
     # Open file once
     with open(log_path, mode='a', newline='') as f:
 
         fieldnames = ['worker_id', 'loss']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer_csv = csv.DictWriter(f, fieldnames=fieldnames)
         
         # If its a new file, write the header
         if not file_exists:
-            writer.writeheader()
+            writer_csv.writeheader()
             f.flush() 
         
         print(f"Logger: Writing logs to {log_path}")
         
+        global_step = 0
         while True:
             try:
                 record = log_queue.get(block=True, timeout=120) #wait for 120 seconds for a record to arrive                
                 
-                writer.writerow(record)
-                
+                writer_csv.writerow(record)
                 f.flush() #flush the buffer to disk immediately to ensure data is not lost if the script crashes
+                
+                # Log to TensorBoard
+                if writer:
+                    writer.add_scalar('Training/Loss', record['loss'], global_step)
+                    # You can add more metrics here if record contains them
+                    global_step += 1
             
             except queue.Empty:
                 break
             except Exception as e:
                 print(f"Logger Error: {e}")
+    
+    if writer:
+        writer.close()
 
 
 def worker_process_fn(
@@ -274,6 +290,7 @@ if __name__ == "__main__":
             print(f"📊 Optimized workers for CPU: {worker_count}")
     
     log_path = config['system']['logging']['log_path']
+    tensorboard_dir = config['system']['logging'].get('tensorboard_dir', 'training_logs/tensorboard')
 
     # IMPORTANT: LookupTable must be on CPU for multiprocessing
     # MPS/CUDA tensors cannot be shared between processes
@@ -295,7 +312,11 @@ if __name__ == "__main__":
     worker_processes = []
 
     #Start Logger Process
-    logger_process = mp.Process(target=logger_process_fn, args=(log_queue, log_path), name='logger')
+    logger_process = mp.Process(
+        target=logger_process_fn, 
+        args=(log_queue, log_path, tensorboard_dir), 
+        name='logger'
+    )
     logger_process.start()
 
     #Start Accumulator Process
