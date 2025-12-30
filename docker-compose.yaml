@@ -7,11 +7,16 @@ services:
       - "6333:6333"
       - "6334:6334"
     volumes:
-      - ./qdrant_storage:/qdrant/storage
+      # CHANGED: Use a named volume instead of a local path
+      - qdrant_data:/qdrant/storage
+    restart: always
 
-  
+
   dragonfly:
     image: docker.dragonflydb.io/dragonflydb/dragonfly:latest 
     container_name: dragonfly_db
     ports:
       - "6379:6379"   
+
+volumes:
+  qdrant_data:
