@@ -31,7 +31,9 @@ training:
 
 # --- System & Logging ---
 system:
-  device: "auto"  # Options: "auto" (detect best), "cuda", "mps", "cpu"
+  device: "cpu"  # Options: "auto" (detect best), "cuda", "mps", "cpu"
+                 # Note: MPS/CUDA have multiprocessing issues with current architecture
+                 # Use CPU for stable training, GPU support needs architecture refactor
   logging:
     log_path: "training_logs/log0.csv"
     save_interval_seconds: 10
