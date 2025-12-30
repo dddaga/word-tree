@@ -18,7 +18,3 @@ $\newline$
 * `node.py` - defines Node, used for representing a single Node in the graph. Manages loading of weights, incoming activations and activation strength
 * `nodestore.py` - The node store used by each individual worker. 
 * `main.py` - Training functions for defining different workers and the training script
-
-$\newline$
-
-* `initialization.py` - Functions for initializing the graph. (Not used anywhere else, they're re-defined in `nodestore.py`)
