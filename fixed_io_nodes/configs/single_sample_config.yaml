@@ -1,7 +1,7 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "single_sample0"
+  collection_name: "single_sample1"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -23,7 +23,7 @@ model:
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.01
+  lr: 0.1
   worker_count: 1
   timeout: 300 #time to wait for data from queue
 
@@ -32,5 +32,5 @@ training:
 system:
   device: "cpu"
   logging:
-    log_path: "training_logs/single_sample_log0.csv"
+    log_path: "training_logs/single_sample_log1.csv"
     save_interval_seconds: 10

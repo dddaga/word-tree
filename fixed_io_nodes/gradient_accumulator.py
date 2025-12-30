@@ -110,7 +110,7 @@ class GradientAccumulator(nn.Module):
                 print(f"Error updating vectors: {e}")
                 print(f"Final values: {final_values}")
             if self.verbose:
-                print(f"Updated {len(node_ids_to_update)} nodes")
+                print(f"Updated {len(node_ids_to_update)} nodes: {node_ids_to_update}")
 
     def if_update_needed(self, grad:torch.Tensor):
         """

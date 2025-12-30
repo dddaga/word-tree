@@ -1,10 +1,10 @@
 graph_db
 .idea
 __pycache__/
-qdrant_storage/
+qdrant_storage/*
 *.dfs #files store dby qdrantdb
-fixed_io_nodes/main.ipynb
-*.pth
+
+*.pth #model weights
 data/
 
 #don't push logs
