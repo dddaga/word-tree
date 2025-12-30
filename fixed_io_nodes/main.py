@@ -181,6 +181,11 @@ def data_loader_process_fn(
             data_iterator = iter(dataloader)
             continue #restart the iterator
 
+        # IMPORTANT: Ensure tensors are on CPU before sending through queue
+        # MPS/CUDA tensors cannot be shared between processes
+        x = x.cpu()
+        y = y.cpu()
+        
         # put() will block when queue is full (maxsize), providing natural backpressure
         data_queue.put((x, y))
 

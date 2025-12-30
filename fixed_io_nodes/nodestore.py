@@ -445,8 +445,11 @@ class NodeStore(nn.Module):
         ).points
     
     def search_nodes_batch(self, query_vectors, vector_name='phase_values', limit=3, with_vectors=False, with_payload=True):
-        
-        requests = []
+        """
+        Search for nearest neighbors for multiple query vectors.
+        Note: Using individual query_points calls instead of query_batch due to API changes in qdrant-client.
+        """
+        search_results = []
 
         for q_vec in query_vectors:
 
@@ -465,21 +468,18 @@ class NodeStore(nn.Module):
             else:
                 raise NotImplementedError(f"Vector name: {vector_name} not implemented")
 
-
-            requests.append(
-                models.SearchRequest(
-                    vector=models.NamedVector(name=target_name, vector=q_vec),
-                    limit=limit,
-                    with_payload=with_payload,
-                    with_vector=with_vectors
-                )
+            # Use query_points for each vector (connection pooling makes this efficient)
+            result = self.client.query_points(
+                collection_name=self.collection_name,
+                query=q_vec,
+                using=target_name,  # Specify which named vector to use
+                limit=limit,
+                with_payload=with_payload,
+                with_vectors=with_vectors
             )
-
-        # Send 1 BIG request instead of N small ones
-        search_results = self.client.search_batch(
-            collection_name=self.collection_name,
-            requests=requests
-        )
+            # query_points returns QueryResponse, extract points
+            search_results.append(result.points)
+        
         return search_results
 
 
