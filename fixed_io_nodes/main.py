@@ -78,8 +78,8 @@ def worker_process_fn(
 ):
     device = config['system']['device']
     # Stagger worker initialization to avoid overwhelming Qdrant with simultaneous connections
-    # Each worker waits a different amount of time
-    stagger_delay = worker_id * 2.0 + random.uniform(0.5, 1.5)
+    # Each worker waits a different amount of time (3s per worker + random jitter)
+    stagger_delay = worker_id * 3.0 + random.uniform(1.0, 2.0)
     print(f"Worker {worker_id}: Waiting {stagger_delay:.1f}s before initialization...")
     time.sleep(stagger_delay)
     
@@ -270,7 +270,7 @@ if __name__ == "__main__":
             worker_count = max(worker_count, 5)  # Use more workers for GPU
             print(f"📊 Optimized workers for GPU: {worker_count}")
         else:
-            worker_count = min(worker_count, )  # Use fewer workers for CPU
+            worker_count = min(worker_count, 2)  # Use fewer workers for CPU (limit to 2)
             print(f"📊 Optimized workers for CPU: {worker_count}")
     
     log_path = config['system']['logging']['log_path']
