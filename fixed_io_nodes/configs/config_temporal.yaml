@@ -1,0 +1,51 @@
+# Configuration for Temporal Signal Classification Task
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "temporal_signals_v1"
+
+# --- Synthetic Data Configuration ---
+data:
+  num_classes: 5           # Number of different signal types
+  seq_length: 50           # Length of each signal sequence  
+  num_samples_per_class: 200  # Samples per class
+  noise_level: 0.1         # Gaussian noise std
+  input_window: 10         # Past timesteps used as input
+  predict_ahead: 1         # Timesteps ahead to predict
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 100         # Total nodes in the graph
+  input_nodes: 10          # Input nodes (matches input_window)
+  output_nodes: 5          # Output nodes (matches num_classes)
+  cardinality: 3           # Max incoming connections per node
+  radiation_targets: 2     # Dynamic similarity-based connections
+
+# --- Model Architecture ---
+model:
+  vector_dim: 1            # Dimension per input node (10 nodes * 1 dim = 10 inputs)
+  phase_bins: 256          # Legacy parameter (not used in continuous mode)
+  mag_bins: 256            # Legacy parameter (not used in continuous mode)
+  gamma: 2.0               # Magnitude scaling factor
+  iterations: 3            # GNN propagation iterations
+  activation_threshold: 0.1  # Minimum activation strength
+  temporal_decay: 0.8      # Decay factor for activation strength
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.01                 # Learning rate
+  momentum: 0.9            # SGD momentum
+  batch_size: 32           # Gradient accumulation batch size
+  worker_count: 3          # Number of parallel workers
+  auto_workers: false      # Don't auto-adjust workers
+  timeout: 300             # Queue timeout in seconds
+
+# --- System & Logging ---
+system:
+  device: "cpu"            # "auto", "cuda", "mps", or "cpu"
+  logging:
+    log_path: "training_logs/temporal_log.csv"
+    tensorboard_dir: "training_logs/temporal_tensorboard"
+    save_interval_seconds: 10
+

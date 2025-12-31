@@ -1,0 +1,54 @@
+# Configuration for Autoregressive Temporal Training
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "autoregressive_v1"
+
+# --- Synthetic Data Configuration ---
+data:
+  num_classes: 5           # Number of different signal types
+  seq_length: 50           # Length of each signal sequence  
+  num_samples_per_class: 5 # Small number for testing (5 sequences per class = 25 total)
+  noise_level: 0.05        # Low noise for easier learning
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 80          # Total nodes in the graph
+  input_nodes: 5           # Input nodes = window_size (each node gets one timestep from window)
+  output_nodes: 5          # Output nodes (matches num_classes)
+  cardinality: 3           # Max incoming connections per node
+  radiation_targets: 2     # Dynamic similarity-based connections
+
+# --- Model Architecture ---
+model:
+  vector_dim: 1            # Dimension per input node (5 nodes * 1 dim = 5, matches window)
+  phase_bins: 256          # Legacy parameter (not used in continuous mode)
+  mag_bins: 256            # Legacy parameter (not used in continuous mode)
+  gamma: 2.0               # Magnitude scaling factor
+  iterations: 3            # GNN propagation iterations per window
+  activation_threshold: 0.1  # Minimum activation strength
+  temporal_decay: 0.85     # Decay factor applied BETWEEN windows (older activations weaken)
+  
+  # Input Adapter Configuration
+  adapter_hidden_dims: [16, 8]  # Hidden layers: window_size → 16 → 8 → input_nodes*vector_dim
+  adapter_dropout: 0.1          # Dropout in adapter
+
+# --- Training Hyperparameters ---
+training:
+  window_size: 5           # Sliding window size (input nodes represent this many timesteps)
+  lr: 0.01                 # Learning rate
+  momentum: 0.9            # SGD momentum
+  batch_size: 16           # Gradient accumulation batch size
+  warmup_steps: 5          # Number of initial windows for warm-up (forward only)
+  num_sequences: 10        # Number of sequences to train on (for testing)
+  timeout: 300             # Queue timeout in seconds (not used in single-worker mode)
+
+# --- System & Logging ---
+system:
+  device: "cpu"            # "auto", "cuda", "mps", or "cpu"
+  logging:
+    log_path: "training_logs/autoregressive_log.csv"
+    tensorboard_dir: "training_logs/autoregressive_tensorboard"
+    save_interval_seconds: 10
+
