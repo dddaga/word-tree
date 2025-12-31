@@ -52,6 +52,7 @@ class GNN(nn.Module):
         self.vector_dim = vector_dim
         self.iterations = iterations
         self.activation_threshold = activation_threshold
+        self.gamma = gamma
         self.temporal_decay = temporal_decay
         self.verbose = verbose
 
