@@ -1,7 +1,7 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "final17"
+  collection_name: "continuous_fp16_v1"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -18,13 +18,13 @@ model:
   phase_bins: 256
   mag_bins: 256
   gamma: 4.0
-  iterations: 3
+  iterations: 5
   activation_threshold: 0.1
   temporal_decay: 0.5  # Decay factor for activation strength (older signals become weaker)
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.001
+  lr: 0.01
   batch_size: 32  # Number of gradient samples to accumulate before updating weights
   worker_count: 10 # Base worker count (optimized automatically based on device)
   auto_workers: true  # Automatically adjust workers: 5+ for GPU, 2 for CPU

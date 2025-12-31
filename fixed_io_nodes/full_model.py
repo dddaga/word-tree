@@ -15,14 +15,14 @@ class Model(nn.Module):
         """
         x: input tensor of shape (batch, features) or flattened
         
-        The input is normalized to [0, 2π] range to represent continuous phase values.
+        The input is normalized to [-π/2, π/2] range to represent continuous phase values.
         """
         # Reshape to match GNN input expectations
         out = x.reshape(self.gnn.input_node_count, self.gnn.vector_dim)
         
-        # Normalize input to [0, 2π] range for phase representation
-        # This maps pixel values [0, 1] to phase angles [0, 2π]
-        phases = out * (2 * torch.pi)
+        # Normalize input to [-π/2, π/2] range for phase representation
+        # This maps pixel values [0, 1] to phase angles [-π/2, π/2]
+        phases = (out - 0.5) * torch.pi  # [0,1] -> [-0.5, 0.5] -> [-π/2, π/2]
 
         out = self.gnn(phases)
         return out
