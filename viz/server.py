@@ -46,7 +46,8 @@ class ConfigUpdate(BaseModel):
 
 
 class SetTargetsRequest(BaseModel):
-    targets: Dict[str, float]  # {node_id: target_phase}
+    targets: Dict[str, float]  # {node_id: target_value}
+    target_type: str = "intensity"  # "intensity" (default) or "phase"
 
 
 class InjectRequest(BaseModel):
@@ -115,13 +116,18 @@ async def inject_sequence(data: dict):
 
 @app.post("/api/set_targets")
 async def set_targets(req: SetTargetsRequest):
-    """Set target phases for output nodes."""
+    """Set target values for output nodes.
+    
+    Args:
+        targets: {node_id: target_value}
+        target_type: "intensity" (sum of real component magnitudes) or "phase"
+    """
     session = get_session()
     if not session.network:
         return {"error": "Network not initialized"}
     
-    session.set_targets(req.targets)
-    return {"status": "ok", "targets_set": len(req.targets)}
+    session.set_targets(req.targets, req.target_type)
+    return {"status": "ok", "targets_set": len(req.targets), "target_type": req.target_type}
 
 
 @app.get("/api/state")

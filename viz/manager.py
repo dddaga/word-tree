@@ -31,8 +31,13 @@ class Node:
     mag_activation: np.ndarray    # Shape: (vector_dim,)
     activation_strength: float = 0.0  # Computed intensity (scalar)
     
+    # Output node specific: accumulated real intensity from radiation
+    # Output value = sum of |cos(φ) × A| from all radiated waves
+    accumulated_real_intensity: float = 0.0
+    
     # Training state
     target_phase: Optional[np.ndarray] = None
+    target_intensity: Optional[float] = None  # Target for output node value
     gradient_phase: Optional[np.ndarray] = None
     gradient_magnitude: Optional[np.ndarray] = None
     accumulated_grad_phase: Optional[np.ndarray] = None
@@ -400,6 +405,12 @@ class SimpleNeuroGraph:
         phase_contributions = {}  # target_id -> List[np.ndarray]
         mag_contributions = {}    # target_id -> List[np.ndarray]
         contribution_strengths = {}  # target_id -> List[float]
+        real_intensity_contributions = {}  # target_id -> List[float] (for output nodes)
+        
+        # Reset accumulated real intensity for output nodes
+        for node in self.nodes.values():
+            if node.role == "output":
+                node.accumulated_real_intensity = 0.0
         
         for source in active_nodes:
             energy_conducted[source.id] = 0.0
@@ -438,13 +449,30 @@ class SimpleNeuroGraph:
                     contribution_strengths[edge.target_id].append(float(signal_strength))
             
             # 2. IMAGINARY COMPONENT → Radiation (phase-aligned nodes)
+            # Imaginary component (sin) drives radiation strength
             imaginary_component = np.sin(source.phase_activation) * source.mag_activation
+            # Real component (cos) - this is what accumulates at output nodes
+            real_component = np.cos(source.phase_activation) * source.mag_activation
             
             radiation_targets = self._get_radiation_neighbors(source)
             for target_id, alignment_score in radiation_targets:
-                # Radiation signal strength
+                # Radiation signal strength (driven by imaginary component)
                 signal_strength = np.sum(np.abs(imaginary_component)) * alignment_score
                 energy_radiated[source.id] += signal_strength
+                
+                # Compute real intensity for output nodes
+                # Real intensity = |cos(φ) × A| summed over vector dimensions
+                real_intensity = np.sum(np.abs(real_component)) * alignment_score
+                
+                # If target is an output node, accumulate real intensity
+                target_node = self.nodes.get(target_id)
+                if target_node and target_node.role == "output":
+                    target_node.accumulated_real_intensity += real_intensity
+                    
+                    # Track for debugging/visualization
+                    if target_id not in real_intensity_contributions:
+                        real_intensity_contributions[target_id] = []
+                    real_intensity_contributions[target_id].append(real_intensity)
                 
                 # No edge-based phase shift for radiation (direct broadcast)
                 arriving_phase = source.phase_activation
@@ -501,11 +529,16 @@ class SimpleNeuroGraph:
             node.mag_activation = np.clip(node.mag_activation, -3*np.pi, 3*np.pi)
             
             # Compute new activation strength (intensity)
-            node.activation_strength = self._compute_activation_strength(
-                node.phase_activation,
-                node.mag_activation,
-                self.config.gamma
-            )
+            if node.role == "output":
+                # For output nodes: activation = accumulated real intensity from radiation
+                node.activation_strength = node.accumulated_real_intensity
+            else:
+                # For other nodes: use wave interference intensity
+                node.activation_strength = self._compute_activation_strength(
+                    node.phase_activation,
+                    node.mag_activation,
+                    self.config.gamma
+                )
         
         # 4. Energy conservation: Apply depletion
         for node in self.nodes.values():
@@ -649,6 +682,9 @@ class SimpleNeuroGraph:
                     "gradient": float(np.mean(n.gradient_phase)) if n.gradient_phase is not None else 0.0,
                     "accumulator": float(np.mean(n.accumulated_grad_phase)) if n.accumulated_grad_phase is not None else 0.0,
                     "target_phase": float(np.mean(n.target_phase)) if n.target_phase is not None else None,
+                    "target_intensity": float(n.target_intensity) if n.target_intensity is not None else None,
+                    # Output node specific: accumulated real intensity (the "output value")
+                    "output_value": float(n.accumulated_real_intensity) if n.role == "output" else None,
                     "label": f"{n.role[:3].upper()}\nφ:{np.mean(n.phase_activation):.2f}",
                     "group": n.role,
                     # Full vectors for detailed inspection
@@ -683,34 +719,50 @@ class SimpleNeuroGraph:
     
     def compute_loss(self) -> float:
         """
-        Compute average phase error loss for output nodes.
+        Compute loss for output nodes based on accumulated real intensity.
         
-        Returns circular distance between target and actual phase.
+        For output nodes, the value is the sum of real component intensities
+        from radiated waves. Loss is the difference between target and actual.
         """
         total_error = 0.0
         count = 0
         
         for node in self.nodes.values():
-            if node.role == "output" and node.target_phase is not None:
-                # Average phase for comparison
-                actual = float(np.mean(node.phase_activation))
-                target = float(np.mean(node.target_phase))
-                
-                # Circular distance
-                error = abs(target - actual)
-                if error > np.pi:
-                    error = 2 * np.pi - error
-                
-                total_error += error
-                count += 1
+            if node.role == "output":
+                # Use intensity-based loss if target_intensity is set
+                if node.target_intensity is not None:
+                    actual = node.accumulated_real_intensity
+                    target = node.target_intensity
+                    error = abs(target - actual)
+                    total_error += error
+                    count += 1
+                # Fallback to phase-based loss
+                elif node.target_phase is not None:
+                    actual = float(np.mean(node.phase_activation))
+                    target = float(np.mean(node.target_phase))
+                    error = abs(target - actual)
+                    if error > np.pi:
+                        error = 2 * np.pi - error
+                    total_error += error
+                    count += 1
         
         return total_error / count if count > 0 else 0.0
     
-    def set_target(self, node_id: str, target_phase: float):
-        """Set target phase for a specific node."""
+    def set_target(self, node_id: str, target_value: float, target_type: str = "intensity"):
+        """
+        Set target for a specific output node.
+        
+        Args:
+            node_id: The node to set target for
+            target_value: Target value (intensity or phase depending on target_type)
+            target_type: "intensity" (default) or "phase"
+        """
         if node_id in self.nodes:
             node = self.nodes[node_id]
-            node.target_phase = np.full(self.config.vector_dim, target_phase)
+            if target_type == "intensity":
+                node.target_intensity = target_value
+            else:
+                node.target_phase = np.full(self.config.vector_dim, target_value)
     
     def update_config(self, **kwargs):
         for key, value in kwargs.items():
@@ -749,11 +801,11 @@ class VizSession:
         if self.network:
             self.network.inject_temporal_sequence(sequence, timestep)
     
-    def set_targets(self, targets: Dict[str, float]):
-        """Set target phases for output nodes."""
+    def set_targets(self, targets: Dict[str, float], target_type: str = "intensity"):
+        """Set targets for output nodes."""
         if self.network:
-            for node_id, target_phase in targets.items():
-                self.network.set_target(node_id, target_phase)
+            for node_id, target_value in targets.items():
+                self.network.set_target(node_id, target_value, target_type)
     
     def update_config(self, **kwargs):
         if self.network:

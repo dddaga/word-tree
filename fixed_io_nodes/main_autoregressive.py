@@ -92,15 +92,30 @@ class AutoregressiveTrainer:
         path_obj = Path(self.log_path)
         path_obj.parent.mkdir(parents=True, exist_ok=True)
         
-        self.log_file = open(self.log_path, mode='a', newline='')
-        fieldnames = ['sequence_id', 'timestep', 'phase', 'loss', 'target']
+        self.log_file = open(self.log_path, mode='w', newline='')  # 'w' to overwrite
+        fieldnames = ['epoch', 'sequence_id', 'timestep', 'phase', 'loss', 'target']
         self.csv_writer = csv.DictWriter(self.log_file, fieldnames=fieldnames)
+        self.csv_writer.writeheader()
+        self.log_file.flush()
         
-        if not os.path.isfile(self.log_path):
-            self.csv_writer.writeheader()
-            self.log_file.flush()
+        self.current_epoch = 0  # Track current epoch for logging
         
         print(f"📊 Logging to {self.log_path}")
+    
+    def _detach_activations(self):
+        """
+        Detach all node activations from the computation graph.
+        This implements Truncated Backpropagation Through Time (TBPTT):
+        - Activation VALUES persist (temporal continuity)
+        - But graph links are broken (prevent explosion)
+        """
+        for node in self.model.gnn.active_nodes.values():
+            if node.phase_activation is not None and node.phase_activation.requires_grad:
+                node.phase_activation = node.phase_activation.detach()
+            if node.mag_activation is not None and node.mag_activation.requires_grad:
+                node.mag_activation = node.mag_activation.detach()
+            if node.activation_strength is not None and node.activation_strength.requires_grad:
+                node.activation_strength = node.activation_strength.detach()
     
     def process_window(self, window, compute_gradients=True):
         """
@@ -189,10 +204,12 @@ class AutoregressiveTrainer:
                 })
                 continue
             
-            # Backward pass
-            # Use retain_graph=True because activations persist across windows
-            # and we need the computation graph for subsequent windows
-            loss.backward(retain_graph=True)
+            # Backward pass (no retain_graph needed now)
+            loss.backward()
+            
+            # Gradient clipping to prevent explosion
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+            torch.nn.utils.clip_grad_norm_(self.input_adapter.parameters(), max_norm=1.0)
             
             # Extract gradients from GNN
             phase_grads, mag_grads = self.model.gnn.get_grads()
@@ -213,6 +230,9 @@ class AutoregressiveTrainer:
                     'loss': loss.item(),
                     'target': target_class
                 })
+                # Zero gradients before continuing
+                self.model.zero_grad()
+                self.input_adapter.zero_grad()
                 continue
             
             # Send gradients to accumulator (move to CPU first)
@@ -222,10 +242,19 @@ class AutoregressiveTrainer:
             self.accumulator.receive_gradients(clean_phase_grads, clean_mag_grads)
             self.accumulator.step()  # Update weights if batch is full
             
-            # Activations persist across windows within sequence
+            # IMPORTANT: Zero out gradients after each window
+            # Activations persist, but gradients are reset to prevent explosion
+            self.model.zero_grad()
+            self.input_adapter.zero_grad()
+            
+            # CRITICAL: Detach activations from computation graph
+            # This breaks the link to previous windows while keeping activation values
+            # (Truncated Backpropagation Through Time)
+            self._detach_activations()
             
             # Log
             self.csv_writer.writerow({
+                'epoch': self.current_epoch,
                 'sequence_id': sequence_id,
                 'timestep': window_start,
                 'phase': 'training',
@@ -244,38 +273,78 @@ class AutoregressiveTrainer:
         
         return avg_loss
     
-    def train(self, dataset, num_sequences=None):
+    def train(self, dataset, epochs=1, sequences_per_epoch=None):
         """
-        Train on dataset autoregressively.
+        Train on dataset autoregressively for multiple epochs.
         
         dataset: SyntheticSignalDataset
-        num_sequences: number of sequences to train on (None = all)
+        epochs: number of epochs to train
+        sequences_per_epoch: number of sequences to train on per epoch (None = all)
         """
         print(f"\n{'='*60}")
         print(f"🚀 Starting autoregressive training")
         print(f"{'='*60}")
+        print(f"Epochs: {epochs}")
+        print(f"Sequences per epoch: {sequences_per_epoch or len(dataset)}")
         print(f"Warm-up steps: {self.warmup_steps}")
         print(f"Batch size: {self.config['training']['batch_size']}")
         print(f"Learning rate: {self.config['training']['lr']}")
         print(f"{'='*60}\n")
         
-        num_sequences = num_sequences or len(dataset)
+        sequences_per_epoch = sequences_per_epoch or len(dataset)
+        epoch_losses = []
         
-        for seq_idx in range(num_sequences):
-            sequence, target_class = dataset[seq_idx]
+        for epoch in range(epochs):
+            self.current_epoch = epoch + 1  # Set for logging
             
-            print(f"\n📊 Processing sequence {seq_idx+1}/{num_sequences} (class {target_class})")
+            print(f"\n{'='*60}")
+            print(f"📅 EPOCH {epoch+1}/{epochs}")
+            print(f"{'='*60}\n")
             
-            try:
-                avg_loss = self.train_sequence(sequence, target_class.item(), seq_idx)
-            except Exception as e:
-                print(f"❌ Error processing sequence {seq_idx}: {e}")
-                import traceback
-                traceback.print_exc()
-                continue
+            epoch_start_time = time.time()
+            epoch_loss_sum = 0.0
+            epoch_seq_count = 0
+            
+            # Randomly sample sequences for this epoch (with replacement)
+            indices = np.random.choice(len(dataset), size=min(sequences_per_epoch, len(dataset)), replace=False)
+            
+            for idx, seq_idx in enumerate(indices):
+                sequence, target_class = dataset[seq_idx]
+                
+                print(f"\n📊 Sequence {idx+1}/{len(indices)} (dataset idx={seq_idx}, class={target_class})")
+                
+                try:
+                    avg_loss = self.train_sequence(sequence, target_class.item(), seq_idx)
+                    if not np.isnan(avg_loss):
+                        epoch_loss_sum += avg_loss
+                        epoch_seq_count += 1
+                except Exception as e:
+                    print(f"❌ Error processing sequence {seq_idx}: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    continue
+            
+            # Calculate epoch statistics
+            epoch_avg_loss = epoch_loss_sum / epoch_seq_count if epoch_seq_count > 0 else float('nan')
+            epoch_time = time.time() - epoch_start_time
+            epoch_losses.append(epoch_avg_loss)
+            
+            print(f"\n{'='*60}")
+            print(f"📊 EPOCH {epoch+1} SUMMARY")
+            print(f"{'='*60}")
+            print(f"Average Loss: {epoch_avg_loss:.4f}")
+            print(f"Time: {epoch_time:.2f}s")
+            if len(epoch_losses) > 1:
+                loss_delta = epoch_losses[-1] - epoch_losses[-2]
+                print(f"Loss Change: {loss_delta:+.4f} ({'↓ improving' if loss_delta < 0 else '↑ degrading'})")
+            print(f"{'='*60}\n")
         
         print(f"\n{'='*60}")
         print(f"✅ Training complete!")
+        print(f"{'='*60}")
+        print(f"\n📈 Loss per epoch:")
+        for i, loss in enumerate(epoch_losses):
+            print(f"  Epoch {i+1}: {loss:.4f}")
         print(f"{'='*60}\n")
     
     def cleanup(self):
@@ -312,7 +381,9 @@ def main():
     
     # Train
     try:
-        trainer.train(dataset, num_sequences=config['training'].get('num_sequences', 10))
+        epochs = config['training'].get('epochs', 1)
+        sequences_per_epoch = config['training'].get('sequences_per_epoch', 10)
+        trainer.train(dataset, epochs=epochs, sequences_per_epoch=sequences_per_epoch)
     finally:
         trainer.cleanup()
 

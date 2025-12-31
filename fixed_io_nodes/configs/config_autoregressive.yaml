@@ -9,7 +9,7 @@ qdrant:
 data:
   num_classes: 5           # Number of different signal types
   seq_length: 50           # Length of each signal sequence  
-  num_samples_per_class: 5 # Small number for testing (5 sequences per class = 25 total)
+  num_samples_per_class: 20 # More training data (20 sequences per class = 100 total)
   noise_level: 0.05        # Low noise for easier learning
 
 # --- Graph Structure & Node Initialization ---
@@ -36,12 +36,13 @@ model:
 
 # --- Training Hyperparameters ---
 training:
+  epochs: 10               # Number of training epochs
   window_size: 5           # Sliding window size (input nodes represent this many timesteps)
-  lr: 0.01                 # Learning rate
+  lr: 0.0005               # Learning rate (lower for stability)
   momentum: 0.9            # SGD momentum
   batch_size: 16           # Gradient accumulation batch size
   warmup_steps: 5          # Number of initial windows for warm-up (forward only)
-  num_sequences: 10        # Number of sequences to train on (for testing)
+  sequences_per_epoch: 50  # Number of sequences to train on per epoch
   timeout: 300             # Queue timeout in seconds (not used in single-worker mode)
 
 # --- System & Logging ---

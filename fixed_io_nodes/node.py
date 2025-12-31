@@ -125,19 +125,29 @@ class Node(nn.Module):
         vector_dim = phase_activations.shape[-1]
         scaled_strengths = activation_strengths / (vector_dim ** 0.5)
         
+        # Clamp to prevent softmax overflow/underflow
+        scaled_strengths = torch.clamp(scaled_strengths, min=-20.0, max=20.0)
+        
         #calculate weights for the input activations
         weights = F.softmax(scaled_strengths, dim=-1).reshape(-1, 1)
 
         # Weighted sum of incoming activations with node's own weights
-        phase_activations = weights * (phase_activations + self.phase_weight.reshape(1, -1))
-        mag_activations = weights * (mag_activations + self.mag_weight.reshape(1, -1))
+        # Clamp weights to prevent extreme values
+        phase_weight_clamped = torch.clamp(self.phase_weight, min=-3*math.pi, max=3*math.pi)
+        mag_weight_clamped = torch.clamp(self.mag_weight, min=-3*math.pi, max=3*math.pi)
+        
+        phase_activations = weights * (phase_activations + phase_weight_clamped.reshape(1, -1))
+        mag_activations = weights * (mag_activations + mag_weight_clamped.reshape(1, -1))
 
-        # Sum to get new activations (continuous values, no modulo wrapping)
+        # Sum to get new activations (continuous values)
         self.phase_activation = phase_activations.sum(dim=0)
         self.mag_activation = mag_activations.sum(dim=0)
         
-        # Keep phase in [0, 2π] range for interpretability (optional, but helps with numerical stability)
-        self.phase_activation = self.phase_activation % (2 * math.pi)
+        # Keep phase in [0, 2π] range for numerical stability
+        self.phase_activation = torch.remainder(self.phase_activation, 2 * math.pi)
+        
+        # Clamp magnitude to prevent extreme values
+        self.mag_activation = torch.clamp(self.mag_activation, min=-3*math.pi, max=3*math.pi)
         
         self.calculate_activation_strength()
 

@@ -195,3 +195,4 @@ if __name__ == "__main__":
     print(f"Window shape: {window.shape}")
     print(f"Window label: {label}")
 
+

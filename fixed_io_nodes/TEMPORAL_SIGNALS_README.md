@@ -116,3 +116,4 @@ To switch back to MNIST:
 python main.py  # Uses configs/config.yaml
 ```
 
+

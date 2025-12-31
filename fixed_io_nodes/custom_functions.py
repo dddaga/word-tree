@@ -14,11 +14,17 @@ def activation_strength_forward(phases, mags, gamma=1.0):
     phase_values = torch.cos(phases)
     
     # Magnitude component: exponential of sine-transformed values
-    # Maps magnitude to exponential weighting (as in original lookup table)
-    mag_values = torch.exp(gamma * torch.sin(mags))
+    # Clamp the exponent to prevent numerical overflow
+    mag_exponent = gamma * torch.sin(mags)
+    mag_exponent = torch.clamp(mag_exponent, min=-10.0, max=10.0)  # Prevent exp overflow
+    mag_values = torch.exp(mag_exponent)
     
     # Activation strength is the dot product
     signal = (phase_values * mag_values).sum(dim=-1)
+    
+    # Add small epsilon to prevent exactly zero signals
+    signal = signal + 1e-8
+    
     return signal
 
 #backward compatibility

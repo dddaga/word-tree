@@ -141,58 +141,50 @@ function generateTargetControls(state) {
     outputNodes.sort((a, b) => a.id.localeCompare(b.id));
     
     for (const node of outputNodes) {
-        targetValues[node.id] = Math.PI; // Default target (π)
+        // Default target intensity (output value = sum of real component intensities)
+        targetValues[node.id] = 1.0;
         
         const row = document.createElement('div');
         row.className = 'target-slider-row';
         row.innerHTML = `
             <label>${node.id}</label>
-            <input type="range" id="target-${node.id}" min="0" max="628" value="314">
-            <span class="value" id="target-val-${node.id}">π</span>
+            <input type="range" id="target-${node.id}" min="0" max="500" value="100">
+            <span class="value" id="target-val-${node.id}">1.00</span>
         `;
         container.appendChild(row);
         
-        // Indicator showing current vs target
+        // Indicator showing current output value vs target
         const indicator = document.createElement('div');
         indicator.className = 'target-indicator';
         indicator.id = `indicator-${node.id}`;
+        const currentVal = node.output_value !== undefined ? node.output_value : 0;
         indicator.innerHTML = `
-            <span class="current">Current: ${node.phase.toFixed(2)}</span>
+            <span class="current">Output: ${currentVal.toFixed(3)}</span>
             <span>→</span>
-            <span class="target">Target: π</span>
+            <span class="target">Target: 1.00</span>
         `;
         container.appendChild(indicator);
         
-        // Event listener
+        // Event listener - intensity target (0 to 5.0 range)
         const slider = row.querySelector('input');
         slider.addEventListener('input', (e) => {
-            const val = parseInt(e.target.value) / 100; // 0 to 2π
+            const val = parseInt(e.target.value) / 100; // 0 to 5.0
             targetValues[node.id] = val;
-            const label = formatPhase(val);
-            document.getElementById(`target-val-${node.id}`).textContent = label;
-            updateTargetIndicator(node.id, node.phase, val);
+            document.getElementById(`target-val-${node.id}`).textContent = val.toFixed(2);
+            updateTargetIndicator(node.id, currentVal, val);
         });
     }
 }
 
-function formatPhase(rad) {
-    // Format radians as π fractions
-    const piRatio = rad / Math.PI;
-    if (Math.abs(piRatio) < 0.01) return '0';
-    if (Math.abs(piRatio - 1) < 0.01) return 'π';
-    if (Math.abs(piRatio - 2) < 0.01) return '2π';
-    if (Math.abs(piRatio - 0.5) < 0.01) return 'π/2';
-    if (Math.abs(piRatio - 1.5) < 0.01) return '3π/2';
-    return `${piRatio.toFixed(2)}π`;
-}
-
-function updateTargetIndicator(nodeId, currentPhase, targetPhase) {
+function updateTargetIndicator(nodeId, currentOutput, targetIntensity) {
     const indicator = document.getElementById(`indicator-${nodeId}`);
     if (indicator) {
+        const currentVal = typeof currentOutput === 'number' ? currentOutput : 0;
+        const targetVal = typeof targetIntensity === 'number' ? targetIntensity : 0;
         indicator.innerHTML = `
-            <span class="current">Current: ${currentPhase.toFixed(2)}</span>
+            <span class="current">Output: ${currentVal.toFixed(3)}</span>
             <span>→</span>
-            <span class="target">Target: ${formatPhase(targetPhase)}</span>
+            <span class="target">Target: ${targetVal.toFixed(2)}</span>
         `;
     }
 }
@@ -231,7 +223,12 @@ async function setRandomInputs() {
 }
 
 async function setTargets() {
-    await apiCall('/api/set_targets', { targets: targetValues });
+    // Set intensity targets for output nodes
+    // Output value = sum of |cos(φ) × A| from radiated waves
+    await apiCall('/api/set_targets', { 
+        targets: targetValues,
+        target_type: "intensity"
+    });
     
     // Fetch updated state to see loss
     const state = await apiCall('/api/state');
@@ -406,10 +403,11 @@ function renderState(state, reset = false) {
     renderLossChart();
     updateMetrics(state);
     
-    // Update target indicators with current values
+    // Update target indicators with current output values
     for (const [nodeId, node] of Object.entries(state.nodes)) {
         if (node.role === 'output' && targetValues[nodeId] !== undefined) {
-            updateTargetIndicator(nodeId, node.phase, targetValues[nodeId]);
+            const outputVal = node.output_value !== undefined ? node.output_value : 0;
+            updateTargetIndicator(nodeId, outputVal, targetValues[nodeId]);
         }
     }
 }
@@ -434,10 +432,29 @@ function updateInspector(node) {
         </div>
     `;
     
-    if (node.target_phase !== null) {
+    // Show output value for output nodes
+    if (node.role === 'output' && node.output_value !== undefined) {
         html += `
             <div class="section">
-                <h3>Target</h3>
+                <h3>Output Value</h3>
+                <div class="inspect-row"><span>Accumulated Real Intensity:</span> <span class="inspect-val">${node.output_value.toFixed(4)}</span></div>
+            </div>
+        `;
+    }
+    
+    // Show target (intensity for output nodes, phase for others)
+    if (node.target_intensity !== null && node.target_intensity !== undefined) {
+        html += `
+            <div class="section">
+                <h3>Target (Intensity)</h3>
+                <div class="inspect-row"><span>Target Value:</span> <span class="value">${node.target_intensity.toFixed(4)}</span></div>
+                <div class="inspect-row"><span>Error:</span> <span class="inspect-grad">${(node.target_intensity - (node.output_value || 0)).toFixed(4)}</span></div>
+            </div>
+        `;
+    } else if (node.target_phase !== null && node.target_phase !== undefined) {
+        html += `
+            <div class="section">
+                <h3>Target (Phase)</h3>
                 <div class="inspect-row"><span>Target Phase:</span> <span class="value">${node.target_phase.toFixed(4)}</span></div>
                 <div class="inspect-row"><span>Error:</span> <span class="inspect-grad">${(node.target_phase - node.phase).toFixed(4)}</span></div>
             </div>

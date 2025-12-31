@@ -1,36 +1,38 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "single_sample1"
-
+  collection_name: "single_sample_mnist_v2"
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 200
-  input_nodes: 14
-  output_nodes: 10
-  cardinality: 5
-  radiation_targets: 5
+  total_nodes: 400          # moderate size for fast iteration
+  input_nodes: 49           # 7x7 MNIST image (more manageable)
+  output_nodes: 10          # 10 digit classes
+  cardinality: 8            # connections per node
+  radiation_targets: 8      # radiation search targets
 
 # --- Model Architecture ---
 model:
-  vector_dim: 14
-  phase_bins: 256
-  mag_bins: 256
-  gamma: 1.0
-  iterations: 3
+  vector_dim: 4             # 4 features per node (more expressiveness)
+  phase_bins: null          # legacy, not used with continuous weights
+  mag_bins: null            # legacy, not used with continuous weights
+  gamma: 0.5                # reduced gamma for stability
+  iterations: 4             # propagation iterations
   activation_threshold: 0.05
+  temporal_decay: 1.0       # no decay for single sample
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.1
+  lr: 0.01                  # reduced lr for stability
+  batch_size: 1             # single sample training
+  momentum: 0.9
   worker_count: 1
-  timeout: 300 #time to wait for data from queue
-
+  timeout: 300              # time to wait for data from queue
 
 # --- System & Logging ---
 system:
-  device: "cpu"
+  device: "auto"            # auto-detect best device
   logging:
-    log_path: "training_logs/single_sample_log1.csv"
+    log_path: "training_logs/single_sample_log.csv"
+    tensorboard_dir: "training_logs/tensorboard"
     save_interval_seconds: 10
