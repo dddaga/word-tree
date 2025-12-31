@@ -244,6 +244,159 @@
             margin-bottom: 6px;
             font-size: 0.85rem;
         }
+        
+        /* Loss highlight */
+        .loss-highlight {
+            background: rgba(255, 0, 85, 0.15);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .loss-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff0055;
+        }
+        
+        /* Input/Target Controls */
+        .input-slider-row, .target-slider-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .input-slider-row label, .target-slider-row label {
+            min-width: 50px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .input-slider-row input[type="range"], .target-slider-row input[type="range"] {
+            flex: 1;
+            margin: 0;
+        }
+        
+        .input-slider-row .value, .target-slider-row .value {
+            min-width: 45px;
+            text-align: right;
+            font-size: 0.8rem;
+        }
+        
+        .target-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        
+        .target-indicator .current {
+            color: #00d4ff;
+        }
+        
+        .target-indicator .target {
+            color: #ff00aa;
+        }
+        
+        /* Loss Container */
+        #loss-container {
+            position: absolute;
+            bottom: 0;
+            left: 360px;
+            right: 20px;
+            height: 14vh;
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 8px;
+            border: 1px solid #444;
+            padding: 10px;
+            z-index: 10;
+        }
+        
+        .loss-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .loss-header h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ff0055;
+        }
+        
+        .loss-controls {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .loss-controls select {
+            background: #333;
+            color: #ddd;
+            border: 1px solid #555;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+        
+        .loss-controls button {
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            background: #333;
+            border: 1px solid #555;
+            color: #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .loss-controls button:hover {
+            background: #444;
+        }
+        
+        #loss-canvas {
+            width: 100%;
+            height: calc(100% - 50px);
+            display: block;
+        }
+        
+        .loss-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .loss-stats span {
+            display: flex;
+            gap: 4px;
+        }
+        
+        #loss-trend {
+            font-weight: bold;
+        }
+        
+        .trend-down { color: #00ff88; }
+        .trend-up { color: #ff0055; }
+        .trend-flat { color: #888; }
+        
+        /* Adjust table container */
+        #table-container {
+            position: absolute;
+            bottom: 15vh;
+            left: 360px;
+            right: 20px;
+            height: 23vh;
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 8px;
+            overflow-y: auto;
+            border: 1px solid #444;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -309,22 +462,25 @@
         </div>
         
         <div class="section">
-            <h3>Temporal Sequence</h3>
-            <label>Input Sequence:</label>
-            <input type="text" id="inp-sequence" placeholder="0.5, 0.8, 0.3" value="0.5, 0.8, 0.3" style="width: 100%; padding: 4px; background: #222; border: 1px solid #555; color: #ddd; border-radius: 3px; margin-bottom: 8px;">
-            
-            <div class="btn-group">
-                <button id="btn-inject-seq" class="primary">Inject & Step</button>
-                <button id="btn-auto-seq">Auto Mode</button>
+            <h3>Input Values</h3>
+            <div id="input-controls">
+                <!-- Dynamically generated input sliders -->
             </div>
-            
+            <div class="btn-group">
+                <button id="btn-inject-inputs" class="primary">Inject</button>
+                <button id="btn-random-inputs">Random</button>
+            </div>
             <div style="margin-top: 8px; font-size: 0.85rem;">
                 <div>Timestep: <span id="timestep-count" class="value">0</span></div>
-                <div>Period: <span id="val-period" class="value">40</span> steps</div>
             </div>
-            
-            <label>Temporal Period:</label>
-            <input type="range" id="inp-period" min="10" max="100" value="40" step="10">
+        </div>
+        
+        <div class="section">
+            <h3>Target Values (Output)</h3>
+            <div id="target-controls">
+                <!-- Dynamically generated target sliders -->
+            </div>
+            <button id="btn-set-targets" class="primary" style="width: 100%;">Set Targets</button>
         </div>
         
         <div class="section">
@@ -337,7 +493,19 @@
         </div>
         
         <div class="section">
-            <h3>Metrics</h3>
+            <h3>Training Metrics</h3>
+            <div class="metric-row loss-highlight">
+                <span>Current Loss:</span>
+                <span id="metric-loss" class="value loss-value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Avg Loss (last 20):</span>
+                <span id="metric-avg-loss" class="value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Min Loss:</span>
+                <span id="metric-min-loss" class="value">--</span>
+            </div>
             <div class="metric-row">
                 <span>Static Edges:</span>
                 <span id="metric-edges" class="value">--</span>
@@ -350,6 +518,18 @@
                 <span>Avg Gradient:</span>
                 <span id="metric-grad" class="value">--</span>
             </div>
+        </div>
+        
+        <div class="section">
+            <h3>Advanced Parameters</h3>
+            <label>Temporal Decay: <span id="val-decay" class="value">0.40</span></label>
+            <input type="range" id="inp-decay" min="10" max="90" value="40">
+            
+            <label>Conductance Eff: <span id="val-cond" class="value">0.90</span></label>
+            <input type="range" id="inp-cond" min="50" max="100" value="90">
+            
+            <label>Radiation Eff: <span id="val-rad-eff" class="value">0.95</span></label>
+            <input type="range" id="inp-rad-eff" min="50" max="100" value="95">
         </div>
     </div>
     
@@ -383,17 +563,25 @@
         </table>
     </div>
     
-    <!-- Timeline View -->
-    <div id="timeline-container">
-        <div class="timeline-header">
-            <h3>Temporal Evolution</h3>
-            <select id="timeline-metric">
-                <option value="phase">Phase</option>
-                <option value="activation">Activation</option>
-                <option value="gradient">Gradient</option>
-            </select>
+    <!-- Loss Evolution View -->
+    <div id="loss-container">
+        <div class="loss-header">
+            <h3>Loss Evolution</h3>
+            <div class="loss-controls">
+                <select id="timeline-metric">
+                    <option value="loss">Loss</option>
+                    <option value="phase">Phase</option>
+                    <option value="activation">Activation</option>
+                    <option value="gradient">Gradient</option>
+                </select>
+                <button id="btn-clear-history" title="Clear History">⟲</button>
+            </div>
         </div>
-        <canvas id="timeline-canvas"></canvas>
+        <canvas id="loss-canvas"></canvas>
+        <div class="loss-stats">
+            <span>Steps: <span id="loss-steps">0</span></span>
+            <span>Trend: <span id="loss-trend">--</span></span>
+        </div>
     </div>
 
     <script src="/static/script.js"></script>

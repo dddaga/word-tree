@@ -46,6 +46,14 @@ let autoSeqInterval = null;
 let temporalPeriod = 40;
 let lastState = null;
 
+// Loss tracking
+let lossHistory = [];
+const MAX_LOSS_HISTORY = 100;
+
+// Current input/target values
+let inputValues = {};
+let targetValues = {};
+
 // === API ===
 
 async function apiCall(endpoint, body = {}) {
@@ -78,12 +86,157 @@ async function initNetwork() {
     // Reset temporal state
     timestep = 0;
     nodeHistory = {};
+    lossHistory = [];
     document.getElementById('timestep-count').textContent = '0';
     
     const state = await apiCall('/api/init', config);
     if (state) {
         renderState(state, true);
         updateModeUI();
+        generateInputControls(state);
+        generateTargetControls(state);
+    }
+}
+
+// === Dynamic Control Generation ===
+
+function generateInputControls(state) {
+    const container = document.getElementById('input-controls');
+    container.innerHTML = '';
+    inputValues = {};
+    
+    // Find input nodes
+    const inputNodes = Object.values(state.nodes).filter(n => n.role === 'input');
+    inputNodes.sort((a, b) => a.id.localeCompare(b.id));
+    
+    for (const node of inputNodes) {
+        inputValues[node.id] = 0.5; // Default value
+        
+        const row = document.createElement('div');
+        row.className = 'input-slider-row';
+        row.innerHTML = `
+            <label>${node.id}</label>
+            <input type="range" id="inp-val-${node.id}" min="0" max="100" value="50">
+            <span class="value" id="val-${node.id}">0.50</span>
+        `;
+        container.appendChild(row);
+        
+        // Event listener
+        const slider = row.querySelector('input');
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value) / 100;
+            inputValues[node.id] = val;
+            document.getElementById(`val-${node.id}`).textContent = val.toFixed(2);
+        });
+    }
+}
+
+function generateTargetControls(state) {
+    const container = document.getElementById('target-controls');
+    container.innerHTML = '';
+    targetValues = {};
+    
+    // Find output nodes
+    const outputNodes = Object.values(state.nodes).filter(n => n.role === 'output');
+    outputNodes.sort((a, b) => a.id.localeCompare(b.id));
+    
+    for (const node of outputNodes) {
+        targetValues[node.id] = Math.PI; // Default target (π)
+        
+        const row = document.createElement('div');
+        row.className = 'target-slider-row';
+        row.innerHTML = `
+            <label>${node.id}</label>
+            <input type="range" id="target-${node.id}" min="0" max="628" value="314">
+            <span class="value" id="target-val-${node.id}">π</span>
+        `;
+        container.appendChild(row);
+        
+        // Indicator showing current vs target
+        const indicator = document.createElement('div');
+        indicator.className = 'target-indicator';
+        indicator.id = `indicator-${node.id}`;
+        indicator.innerHTML = `
+            <span class="current">Current: ${node.phase.toFixed(2)}</span>
+            <span>→</span>
+            <span class="target">Target: π</span>
+        `;
+        container.appendChild(indicator);
+        
+        // Event listener
+        const slider = row.querySelector('input');
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value) / 100; // 0 to 2π
+            targetValues[node.id] = val;
+            const label = formatPhase(val);
+            document.getElementById(`target-val-${node.id}`).textContent = label;
+            updateTargetIndicator(node.id, node.phase, val);
+        });
+    }
+}
+
+function formatPhase(rad) {
+    // Format radians as π fractions
+    const piRatio = rad / Math.PI;
+    if (Math.abs(piRatio) < 0.01) return '0';
+    if (Math.abs(piRatio - 1) < 0.01) return 'π';
+    if (Math.abs(piRatio - 2) < 0.01) return '2π';
+    if (Math.abs(piRatio - 0.5) < 0.01) return 'π/2';
+    if (Math.abs(piRatio - 1.5) < 0.01) return '3π/2';
+    return `${piRatio.toFixed(2)}π`;
+}
+
+function updateTargetIndicator(nodeId, currentPhase, targetPhase) {
+    const indicator = document.getElementById(`indicator-${nodeId}`);
+    if (indicator) {
+        indicator.innerHTML = `
+            <span class="current">Current: ${currentPhase.toFixed(2)}</span>
+            <span>→</span>
+            <span class="target">Target: ${formatPhase(targetPhase)}</span>
+        `;
+    }
+}
+
+// === Input/Target API Functions ===
+
+async function injectInputValues() {
+    // Convert input values to sequence
+    const inputNodes = Object.keys(inputValues).sort();
+    const sequence = inputNodes.map(id => inputValues[id]);
+    
+    await apiCall('/api/inject_sequence', {
+        sequence: sequence,
+        timestep: timestep
+    });
+    
+    timestep++;
+    document.getElementById('timestep-count').textContent = timestep;
+    
+    // Step forward
+    await stepForward();
+}
+
+async function setRandomInputs() {
+    // Generate random values and update sliders
+    for (const nodeId of Object.keys(inputValues)) {
+        const randomVal = Math.random();
+        inputValues[nodeId] = randomVal;
+        
+        const slider = document.getElementById(`inp-val-${nodeId}`);
+        if (slider) slider.value = randomVal * 100;
+        
+        const label = document.getElementById(`val-${nodeId}`);
+        if (label) label.textContent = randomVal.toFixed(2);
+    }
+}
+
+async function setTargets() {
+    await apiCall('/api/set_targets', { targets: targetValues });
+    
+    // Fetch updated state to see loss
+    const state = await apiCall('/api/state');
+    if (state) {
+        renderState(state, false);
     }
 }
 
@@ -247,11 +400,18 @@ function renderState(state, reset = false) {
     // Store for history tracking
     lastState = state;
     
-    // Update table and timeline
+    // Update table and loss chart
     renderTable(state);
     updateHistory(state);
-    renderTimeline();
+    renderLossChart();
     updateMetrics(state);
+    
+    // Update target indicators with current values
+    for (const [nodeId, node] of Object.entries(state.nodes)) {
+        if (node.role === 'output' && targetValues[nodeId] !== undefined) {
+            updateTargetIndicator(nodeId, node.phase, targetValues[nodeId]);
+        }
+    }
 }
 
 // === Inspection ===
@@ -467,9 +627,23 @@ function selectNodeFromTable(nodeId) {
     }
 }
 
-// === Timeline Rendering ===
+// === Loss & Timeline Rendering ===
 
 function updateHistory(state) {
+    // Track loss
+    if (state.loss !== undefined) {
+        lossHistory.push({
+            loss: state.loss,
+            step: state.step_number
+        });
+        
+        // Keep last MAX_LOSS_HISTORY entries
+        if (lossHistory.length > MAX_LOSS_HISTORY) {
+            lossHistory.shift();
+        }
+    }
+    
+    // Track node history
     for (const [nodeId, node] of Object.entries(state.nodes)) {
         if (!nodeHistory[nodeId]) nodeHistory[nodeId] = [];
         
@@ -489,23 +663,104 @@ function updateHistory(state) {
     }
 }
 
-function renderTimeline() {
-    const canvas = document.getElementById('timeline-canvas');
+function renderLossChart() {
+    const canvas = document.getElementById('loss-canvas');
     if (!canvas) return;
     
     const ctx = canvas.getContext('2d');
     const width = canvas.width = canvas.offsetWidth;
-    const height = canvas.height = canvas.offsetHeight - 30;
+    const height = canvas.height = canvas.offsetHeight;
     
     ctx.clearRect(0, 0, width, height);
     
+    const metric = document.getElementById('timeline-metric').value;
+    
+    if (metric === 'loss') {
+        renderLossLine(ctx, width, height);
+    } else {
+        renderNodeMetric(ctx, width, height, metric);
+    }
+}
+
+function renderLossLine(ctx, width, height) {
+    if (lossHistory.length < 2) {
+        ctx.fillStyle = '#555';
+        ctx.font = '12px monospace';
+        ctx.fillText('Run forward/backward to see loss...', 20, height / 2);
+        return;
+    }
+    
+    // Find min/max for scaling
+    const losses = lossHistory.map(l => l.loss);
+    const maxLoss = Math.max(...losses, 0.1);
+    const minLoss = Math.min(...losses);
+    
+    // Draw grid lines
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 4; i++) {
+        const y = (i / 4) * height;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+    }
+    
+    // Draw loss line
+    ctx.strokeStyle = '#ff0055';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    
+    lossHistory.forEach((entry, i) => {
+        const x = (i / MAX_LOSS_HISTORY) * width;
+        const normalizedLoss = (entry.loss - minLoss) / (maxLoss - minLoss + 0.001);
+        const y = height - (normalizedLoss * height * 0.9) - height * 0.05;
+        
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    
+    ctx.stroke();
+    
+    // Draw moving average (last 10)
+    if (lossHistory.length > 10) {
+        ctx.strokeStyle = '#00d4ff';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        
+        for (let i = 10; i < lossHistory.length; i++) {
+            const avgLoss = lossHistory.slice(i - 10, i).reduce((sum, e) => sum + e.loss, 0) / 10;
+            const x = (i / MAX_LOSS_HISTORY) * width;
+            const normalizedLoss = (avgLoss - minLoss) / (maxLoss - minLoss + 0.001);
+            const y = height - (normalizedLoss * height * 0.9) - height * 0.05;
+            
+            if (i === 10) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+    
+    // Draw current value
+    const currentLoss = lossHistory[lossHistory.length - 1].loss;
+    ctx.fillStyle = '#ff0055';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillText(`Loss: ${currentLoss.toFixed(4)}`, 5, 15);
+    
+    // Update stats
+    document.getElementById('loss-steps').textContent = lossHistory.length;
+    updateLossTrend();
+}
+
+function renderNodeMetric(ctx, width, height, metric) {
     // Select representative nodes from each layer
     const selectedNodes = ['in_0', 'inc_0', 'mid_0', 'out_0']
         .filter(id => nodeHistory[id] && nodeHistory[id].length > 1);
     
     if (selectedNodes.length === 0) return;
     
-    const metric = document.getElementById('timeline-metric').value;
     const rowHeight = height / selectedNodes.length;
     
     selectedNodes.forEach((nodeId, idx) => {
@@ -549,12 +804,47 @@ function renderTimeline() {
     });
 }
 
+function updateLossTrend() {
+    const trendEl = document.getElementById('loss-trend');
+    if (!trendEl || lossHistory.length < 5) {
+        trendEl.textContent = '--';
+        trendEl.className = '';
+        return;
+    }
+    
+    // Compare last 5 to previous 5
+    const recent = lossHistory.slice(-5).reduce((s, e) => s + e.loss, 0) / 5;
+    const previous = lossHistory.slice(-10, -5).reduce((s, e) => s + e.loss, 0) / 5;
+    
+    const diff = recent - previous;
+    const pct = ((diff / previous) * 100).toFixed(1);
+    
+    if (diff < -0.001) {
+        trendEl.textContent = `↓ ${Math.abs(pct)}%`;
+        trendEl.className = 'trend-down';
+    } else if (diff > 0.001) {
+        trendEl.textContent = `↑ ${pct}%`;
+        trendEl.className = 'trend-up';
+    } else {
+        trendEl.textContent = '→ flat';
+        trendEl.className = 'trend-flat';
+    }
+}
+
 function getNodeColor(nodeId) {
     if (nodeId.startsWith('in_')) return '#0066ff';
     if (nodeId.startsWith('inc_')) return '#9600ff';
     if (nodeId.startsWith('mid_')) return '#640096';
     if (nodeId.startsWith('out_')) return '#00ff66';
     return '#ffffff';
+}
+
+function clearHistory() {
+    lossHistory = [];
+    nodeHistory = {};
+    renderLossChart();
+    document.getElementById('loss-steps').textContent = '0';
+    document.getElementById('loss-trend').textContent = '--';
 }
 
 // === Architecture Toggle ===
@@ -595,55 +885,6 @@ function updateModeUI() {
     }
 }
 
-// === Temporal Sequence Injection ===
-
-async function injectSequence() {
-    const input = document.getElementById('inp-sequence').value;
-    const sequence = input.split(',').map(v => parseFloat(v.trim()) || 0);
-    
-    await apiCall('/api/inject_sequence', {
-        sequence: sequence,
-        timestep: timestep
-    });
-    
-    timestep++;
-    document.getElementById('timestep-count').textContent = timestep;
-    
-    // Step forward
-    await stepForward();
-}
-
-function startAutoSequence() {
-    if (autoSeqInterval) {
-        stopAutoSequence();
-        return;
-    }
-    
-    document.getElementById('btn-auto-seq').textContent = "Stop Auto";
-    document.getElementById('btn-auto-seq').classList.add('danger');
-    
-    autoSeqInterval = setInterval(async () => {
-        const numInputs = parseInt(document.getElementById('inp-n-in').value);
-        const sequence = Array(numInputs).fill(0).map((_, i) => {
-            return Math.sin((timestep * 0.1) + (i * 0.5)) * 0.5 + 0.5;
-        });
-        
-        document.getElementById('inp-sequence').value = 
-            sequence.map(v => v.toFixed(2)).join(', ');
-        
-        await injectSequence();
-    }, 600);
-}
-
-function stopAutoSequence() {
-    if (autoSeqInterval) {
-        clearInterval(autoSeqInterval);
-        autoSeqInterval = null;
-        document.getElementById('btn-auto-seq').textContent = "Auto Mode";
-        document.getElementById('btn-auto-seq').classList.remove('danger');
-    }
-}
-
 // === Metrics ===
 
 function updateMetrics(state) {
@@ -655,6 +896,30 @@ function updateMetrics(state) {
     document.getElementById('metric-edges').textContent = numEdges;
     document.getElementById('metric-active').textContent = activeNodes;
     document.getElementById('metric-grad').textContent = avgGrad.toFixed(5);
+    
+    // Loss metrics
+    const currentLoss = state.loss !== undefined ? state.loss : 0;
+    document.getElementById('metric-loss').textContent = currentLoss.toFixed(4);
+    
+    // Style loss value based on magnitude
+    const lossEl = document.getElementById('metric-loss');
+    if (currentLoss > 1.5) {
+        lossEl.style.color = '#ff0055'; // High loss - red
+    } else if (currentLoss > 0.5) {
+        lossEl.style.color = '#ffaa00'; // Medium loss - orange  
+    } else {
+        lossEl.style.color = '#00ff88'; // Low loss - green
+    }
+    
+    // Average and min loss
+    if (lossHistory.length > 0) {
+        const recentLosses = lossHistory.slice(-20).map(l => l.loss);
+        const avgLoss = recentLosses.reduce((a, b) => a + b, 0) / recentLosses.length;
+        const minLoss = Math.min(...lossHistory.map(l => l.loss));
+        
+        document.getElementById('metric-avg-loss').textContent = avgLoss.toFixed(4);
+        document.getElementById('metric-min-loss').textContent = minLoss.toFixed(4);
+    }
 }
 
 // === Event Listeners ===
@@ -662,21 +927,49 @@ function updateMetrics(state) {
 document.getElementById('btn-mode-flat').addEventListener('click', switchToFlat);
 document.getElementById('btn-mode-hierarchical').addEventListener('click', switchToHierarchical);
 
-document.getElementById('btn-inject-seq').addEventListener('click', injectSequence);
-document.getElementById('btn-auto-seq').addEventListener('click', startAutoSequence);
+// Input/Target controls
+document.getElementById('btn-inject-inputs').addEventListener('click', injectInputValues);
+document.getElementById('btn-random-inputs').addEventListener('click', setRandomInputs);
+document.getElementById('btn-set-targets').addEventListener('click', setTargets);
 
-document.getElementById('inp-period').addEventListener('input', (e) => {
-    temporalPeriod = parseInt(e.target.value);
-    document.getElementById('val-period').textContent = temporalPeriod;
-});
+// Loss chart controls
+document.getElementById('timeline-metric').addEventListener('change', renderLossChart);
+document.getElementById('btn-clear-history').addEventListener('click', clearHistory);
 
+// Beam width
 document.getElementById('inp-beam').addEventListener('change', (e) => {
     const beamWidth = parseInt(e.target.value);
     document.getElementById('val-beam').textContent = beamWidth;
     apiCall('/api/config', { beam_width: beamWidth });
 });
 
-document.getElementById('timeline-metric').addEventListener('change', renderTimeline);
+// Advanced parameter sliders
+document.getElementById('inp-decay').addEventListener('input', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    document.getElementById('val-decay').textContent = val.toFixed(2);
+});
+document.getElementById('inp-decay').addEventListener('change', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    apiCall('/api/config', { temporal_decay: val });
+});
+
+document.getElementById('inp-cond').addEventListener('input', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    document.getElementById('val-cond').textContent = val.toFixed(2);
+});
+document.getElementById('inp-cond').addEventListener('change', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    apiCall('/api/config', { conductance_efficiency: val });
+});
+
+document.getElementById('inp-rad-eff').addEventListener('input', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    document.getElementById('val-rad-eff').textContent = val.toFixed(2);
+});
+document.getElementById('inp-rad-eff').addEventListener('change', (e) => {
+    const val = parseInt(e.target.value) / 100;
+    apiCall('/api/config', { radiation_efficiency: val });
+});
 
 // Start
 initNetwork();

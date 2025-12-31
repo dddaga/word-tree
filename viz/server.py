@@ -38,6 +38,15 @@ class ConfigUpdate(BaseModel):
     gamma: Optional[float] = None
     beam_width: Optional[int] = None
     architecture_mode: Optional[str] = None
+    
+    # Energy conservation parameters
+    temporal_decay: Optional[float] = None
+    conductance_efficiency: Optional[float] = None
+    radiation_efficiency: Optional[float] = None
+
+
+class SetTargetsRequest(BaseModel):
+    targets: Dict[str, float]  # {node_id: target_phase}
 
 
 class InjectRequest(BaseModel):
@@ -102,6 +111,26 @@ async def inject_sequence(data: dict):
     
     session.network.inject_temporal_sequence(sequence, timestep)
     return {"status": "injected", "timestep": timestep}
+
+
+@app.post("/api/set_targets")
+async def set_targets(req: SetTargetsRequest):
+    """Set target phases for output nodes."""
+    session = get_session()
+    if not session.network:
+        return {"error": "Network not initialized"}
+    
+    session.set_targets(req.targets)
+    return {"status": "ok", "targets_set": len(req.targets)}
+
+
+@app.get("/api/state")
+async def get_state():
+    """Get current network state including loss."""
+    session = get_session()
+    if not session.network:
+        return {"error": "Network not initialized"}
+    return session.get_state()
 
 
 if __name__ == "__main__":

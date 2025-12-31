@@ -120,7 +120,9 @@ class StepResult:
     active_signals: List[dict]
     radiation_paths: List[dict]
     step_number: int
-    mode: str = "forward" # or "backward"
+    mode: str = "forward"  # or "backward"
+    loss: float = 0.0  # Average phase error for output nodes
+    target_values: Dict[str, float] = field(default_factory=dict)  # node_id -> target phase
 
 
 class SimpleNeuroGraph:
@@ -629,6 +631,12 @@ class SimpleNeuroGraph:
 
     def _get_state(self, mode: str) -> StepResult:
         """Serialize state for frontend (aggregate vectors to scalars for viz)."""
+        # Compute target values dict for output nodes
+        target_values = {}
+        for n in self.nodes.values():
+            if n.role == "output" and n.target_phase is not None:
+                target_values[n.id] = float(np.mean(n.target_phase))
+        
         return StepResult(
             nodes={
                 n.id: {
@@ -668,8 +676,41 @@ class SimpleNeuroGraph:
             ],
             radiation_paths=[],
             step_number=int(self.step_count),  # FIX: Convert to Python int
-            mode=mode
+            mode=mode,
+            loss=float(self.compute_loss()),  # Add loss computation
+            target_values=target_values  # Add target values
         )
+    
+    def compute_loss(self) -> float:
+        """
+        Compute average phase error loss for output nodes.
+        
+        Returns circular distance between target and actual phase.
+        """
+        total_error = 0.0
+        count = 0
+        
+        for node in self.nodes.values():
+            if node.role == "output" and node.target_phase is not None:
+                # Average phase for comparison
+                actual = float(np.mean(node.phase_activation))
+                target = float(np.mean(node.target_phase))
+                
+                # Circular distance
+                error = abs(target - actual)
+                if error > np.pi:
+                    error = 2 * np.pi - error
+                
+                total_error += error
+                count += 1
+        
+        return total_error / count if count > 0 else 0.0
+    
+    def set_target(self, node_id: str, target_phase: float):
+        """Set target phase for a specific node."""
+        if node_id in self.nodes:
+            node = self.nodes[node_id]
+            node.target_phase = np.full(self.config.vector_dim, target_phase)
     
     def update_config(self, **kwargs):
         for key, value in kwargs.items():
@@ -707,6 +748,12 @@ class VizSession:
     def inject_temporal_sequence(self, sequence: List[float], timestep: int):
         if self.network:
             self.network.inject_temporal_sequence(sequence, timestep)
+    
+    def set_targets(self, targets: Dict[str, float]):
+        """Set target phases for output nodes."""
+        if self.network:
+            for node_id, target_phase in targets.items():
+                self.network.set_target(node_id, target_phase)
     
     def update_config(self, **kwargs):
         if self.network:
