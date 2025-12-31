@@ -12,8 +12,6 @@ from qdrant_client.models import Distance, VectorParams
 from qdrant_client.models import Datatype
 from qdrant_client import models
 
-from lookup_table import LookupTable
-
 
 def retry_on_connection_error(max_retries=5, base_delay=0.5):
     """Decorator to retry Qdrant operations on connection errors."""
@@ -43,15 +41,14 @@ class NodeStore(nn.Module):
         self, 
         qdrant_url, 
         collection_name:str, 
-        lookup_table:LookupTable,
 
         num_total_nodes:int, 
         num_input_nodes:int, 
         num_output_nodes:int, 
         cardinality:int, 
         vector_dim:int, 
-        phase_bins:int, 
-        mag_bins:int,
+        phase_bins:int=None,  # Legacy parameter, kept for compatibility but not used
+        mag_bins:int=None,    # Legacy parameter, kept for compatibility but not used
 
         m: int=16,
         ef_construct: int=100,
@@ -76,8 +73,8 @@ class NodeStore(nn.Module):
         num_output_nodes: number of output nodes in the graph
         cardinality: cardinality of the graph
         vector_dim: dimension of the vector
-        phase_bins: number of bins for the phase
-        mag_bins: number of bins for the mag
+        phase_bins: (deprecated) kept for backward compatibility
+        mag_bins: (deprecated) kept for backward compatibility
 
         HNSW Parameters:
         m: number of edges per node in the index graph. Larger the value - more accurate the search, more space required to store the index.
@@ -98,15 +95,14 @@ class NodeStore(nn.Module):
         # Initialize Qdrant client with retry logic
         self.client = self._init_client_with_retry(qdrant_url)
         self.collection_name = collection_name
-        self.lookup_table = lookup_table
 
         self.total_nodes = num_total_nodes
         self.input_nodes = num_input_nodes
         self.output_nodes = num_output_nodes
         self.cardinality = cardinality
         self.vector_dim = vector_dim
-        self.phase_bins = phase_bins
-        self.mag_bins = mag_bins
+        self.phase_bins = phase_bins  # Kept for legacy compatibility
+        self.mag_bins = mag_bins      # Kept for legacy compatibility
         self.collection_name = collection_name
 
 
@@ -201,11 +197,9 @@ class NodeStore(nn.Module):
             
     def _initialize_phases(self, node_ids:Union[Set[str], List[str]], connections:Dict[str, Dict[str, List[str]]]):
 
-        ### TODO: implement a method to initialize phases, such that neighbouring nodes have orthogonal phases
-        ## challenge faced in this currently: the node values are discrete. also need to take that into account
-        
+        ### Initialize phases as continuous values in [0, 2π]
         phases = {
-            node_id: np.random.randint(0, self.phase_bins, (self.vector_dim), dtype=np.uint8).tolist() 
+            node_id: (np.random.uniform(0, 2*np.pi, (self.vector_dim))).astype(np.float32).tolist() 
             for node_id in node_ids
         }
 
@@ -213,8 +207,9 @@ class NodeStore(nn.Module):
 
     def _initialize_mags(self, node_ids:Union[Set[str], List[str]], connections:Dict[str, Dict[str, List[str]]]):
 
+        ### Initialize magnitudes as continuous values in [-π, π]
         mags = {
-            node_id: np.random.randint(0, self.mag_bins, (self.vector_dim), dtype=np.uint8).tolist() 
+            node_id: (np.random.uniform(-np.pi, np.pi, (self.vector_dim))).astype(np.float32).tolist() 
             for node_id in node_ids
         }
         return mags
@@ -250,9 +245,9 @@ class NodeStore(nn.Module):
         #so we need to store the phase values in the database. 
         #creating a mapping of node_id -> phase_values here
         for n_id in phases:
-            phase_indices = phases[n_id]
-            cos_values = self.lookup_table.lookup_phase(phase_indices)
-            sin_values = self.lookup_table.lookup_phase_sin(phase_indices)
+            phase_continuous = torch.tensor(phases[n_id], dtype=torch.float32)
+            cos_values = torch.cos(phase_continuous)
+            sin_values = torch.sin(phase_continuous)
             phase_values[n_id] = torch.cat([cos_values, sin_values], dim=-1)
 
 
@@ -352,7 +347,7 @@ class NodeStore(nn.Module):
 
         vector_config = {
             'phase_values': VectorParams(
-                size=self.vector_dim*2, #stores values instead of indices for proper indexing
+                size=self.vector_dim*2, #stores cos/sin values for vector search
                 distance=distance_metric,
                 hnsw_config=models.HnswConfigDiff(
                     m=m,
@@ -363,13 +358,13 @@ class NodeStore(nn.Module):
                 size=self.vector_dim,
                 distance=Distance.DOT,
                 on_disk=True,
-                datatype=Datatype.UINT8,
+                # Using float16 for continuous magnitude values
             ),
             "phase": VectorParams(
                 size=self.vector_dim,
                 distance=Distance.DOT,
                 on_disk=True,
-                datatype=Datatype.UINT8,
+                # Using float16 for continuous phase values
             )
         }
 
@@ -381,7 +376,7 @@ class NodeStore(nn.Module):
             on_disk_payload=on_disk_payload, #this makes the payload to be stored on disk, not RAM
         )
 
-    def update_vectors(self, values:Dict[int, Dict[str, List[int]]]):
+    def update_vectors(self, values:Dict[int, Dict[str, List[float]]]):
         """
         Update just the vectors for the given node ids
         Helps when doing gradient descent, where we only need to update the vectors, and not the payload
@@ -393,7 +388,10 @@ class NodeStore(nn.Module):
                 vector={
                     'phase': values[node_id]['phase'],
                     'mag': values[node_id]['mag'],
-                    'phase_values': torch.cat([self.lookup_table.lookup_phase(values[node_id]['phase']), self.lookup_table.lookup_phase_sin(values[node_id]['phase'])], dim=-1).tolist(),
+                    'phase_values': torch.cat([
+                        torch.cos(torch.tensor(values[node_id]['phase'])), 
+                        torch.sin(torch.tensor(values[node_id]['phase']))
+                    ], dim=-1).tolist(),
                 }
             ) for node_id in values
         ]
@@ -478,8 +476,8 @@ class NodeStore(nn.Module):
             query_vector[self.vector_dim:] = -query_vector[self.vector_dim:]
             query_vector = query_vector.tolist()
 
-        elif vector_name == 'phase': #case where input is just the phase_indices, it converts it to phase_values
-            query_vector = torch.concat([self.lookup_table.lookup_phase(query_vector), -self.lookup_table.lookup_phase_sin(query_vector)], dim=-1).tolist()
+        elif vector_name == 'phase': #case where input is continuous phase values, convert to phase_values
+            query_vector = torch.cat([torch.cos(query_vector), -torch.sin(query_vector)], dim=-1).tolist()
             vector_name = 'phase_values'
         else:
             raise NotImplementedError(f"Vector name: {vector_name} not implemented")
@@ -504,14 +502,14 @@ class NodeStore(nn.Module):
         for q_vec in query_vectors:
 
             if not isinstance(q_vec, torch.Tensor):
-                q_vec = torch.tensor(q_vec, device=self.lookup_table.device)
+                q_vec = torch.tensor(q_vec)
             
             if vector_name == 'phase':
-                # Transform indices to Cos/Sin vectors (Conjugate logic)
+                # Transform continuous phase values to Cos/Sin vectors (Conjugate logic)
                 # We negate the Sin part for complex number rotation simulation (a * b* pattern)
                 q_vec = torch.cat([
-                    self.lookup_table.lookup_phase(q_vec), 
-                    -self.lookup_table.lookup_phase_sin(q_vec)
+                    torch.cos(q_vec), 
+                    -torch.sin(q_vec)
                 ], dim=-1).tolist()
                 
                 target_name = 'phase_values'

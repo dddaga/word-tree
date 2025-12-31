@@ -2,33 +2,27 @@ import torch
 from torch import nn
 from typing import List
 from gnn_model import GNN
-# from input_adapter import LinearInputAdapter
-from quantization import Quantizer
 from nodestore import NodeStore
-from lookup_table import LookupTable
 
 class Model(nn.Module):
 
-    def __init__(self, gnn:GNN, quantizer:Quantizer):
+    def __init__(self, gnn:GNN):
 
         super().__init__()
         self.gnn = gnn
-        # self.input_adapter = input_adapter
-        # self.input_adapter_loaded = False
-        self.quantizer = quantizer
-
-    
 
     def forward(self, x):
+        """
+        x: input tensor of shape (batch, features) or flattened
         
-        # if self.input_adapter_loaded:
-        #     with torch.no_grad():
-        #         out = self.input_adapter(x)
-        # else:
-        out = x
-
-        out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
-        phases = self.quantizer(out)
+        The input is normalized to [0, 2π] range to represent continuous phase values.
+        """
+        # Reshape to match GNN input expectations
+        out = x.reshape(self.gnn.input_node_count, self.gnn.vector_dim)
+        
+        # Normalize input to [0, 2π] range for phase representation
+        # This maps pixel values [0, 1] to phase angles [0, 2π]
+        phases = out * (2 * torch.pi)
 
         out = self.gnn(phases)
         return out
@@ -57,34 +51,84 @@ class Model(nn.Module):
         #nothing to reset for quantizer
     
 def initialize_model(
-    # input_dim:int, 
-    # adapter_hidden_dims:List[int],
-    # adapter_dropout:float,
-
-
     node_store:NodeStore,
     cardinality:int, 
     radiation_targets:int,
     total_nodes:int,
     input_nodes:int, 
     output_nodes:int,
-    phase_bins:int,
-    mag_bins:int,
-    vector_dim:int,
-    iterations:int,
-    activation_threshold:float,
+    phase_bins:int=None,  # Legacy, kept for compatibility
+    mag_bins:int=None,    # Legacy, kept for compatibility
+    vector_dim:int=None,
+    iterations:int=None,
+    activation_threshold:float=None,
     gamma:float=1.,
     temporal_decay:float=1.0,
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
-
-
-    # adapter_normalization_layer:str='layer_norm',
-
 ):
 
-
     gnn = GNN(
+        node_store=node_store,
+        cardinality=cardinality,
+        radiation_targets=radiation_targets,
+        total_nodes=total_nodes,
+        input_nodes=input_nodes,
+        output_nodes=output_nodes,
+        phase_bins=phase_bins,  # Passed but not used internally
+        mag_bins=mag_bins,      # Passed but not used internally
+        vector_dim=vector_dim,
+        iterations=iterations,
+        activation_threshold=activation_threshold,
+        gamma=gamma,
+        temporal_decay=temporal_decay,
+        device=device,
+        verbose=verbose,
+    )
+
+    return Model(gnn)
+
+def initialize_model_and_nodestore(
+
+    qdrant_url:str,
+    collection_name:str,
+
+    total_nodes:int,
+    input_nodes:int,
+    output_nodes:int,
+    cardinality:int,
+    radiation_targets:int,
+
+    vector_dim:int,
+    phase_bins:int=None,  # Legacy, kept for compatibility
+    mag_bins:int=None,    # Legacy, kept for compatibility
+    iterations:int=None,
+    activation_threshold:float=None,
+    gamma:float=1.,
+    temporal_decay:float=1.0,
+
+    device:str='cuda' if torch.cuda.is_available() else 'cpu',
+    verbose:bool=False,
+):
+    """
+    Initialize model and node store without quantization.
+    
+    Returns: model, node_store
+    """
+
+    node_store = NodeStore(
+        qdrant_url=qdrant_url,
+        collection_name=collection_name,
+        num_total_nodes=total_nodes,
+        num_input_nodes=input_nodes,
+        num_output_nodes=output_nodes,
+        cardinality=cardinality,
+        vector_dim=vector_dim,
+        phase_bins=phase_bins,  # Legacy parameter
+        mag_bins=mag_bins,      # Legacy parameter
+    )
+
+    model = initialize_model(
         node_store=node_store,
         cardinality=cardinality,
         radiation_targets=radiation_targets,
@@ -102,82 +146,4 @@ def initialize_model(
         verbose=verbose,
     )
 
-    quantizer = Quantizer(
-        phase_bins=phase_bins,
-        mag_bins=mag_bins,
-        lookup_table=gnn.lookup_table,
-        vector_dim=vector_dim,
-        input_node_count=input_nodes,
-        device=device,
-    )
-
-    return Model(gnn, quantizer)
-
-def initialize_model_and_nodestore(
-
-    qdrant_url:str,
-    collection_name:str,
-
-    total_nodes:int,
-    input_nodes:int,
-    output_nodes:int,
-    cardinality:int,
-    radiation_targets:int,
-
-    vector_dim:int,
-    phase_bins:int,
-    mag_bins:int,
-    iterations:int,
-    activation_threshold:float,
-    gamma:float=1.,
-    temporal_decay:float=1.0,
-
-    device:str='cuda' if torch.cuda.is_available() else 'cpu',
-    verbose:bool=False,
-):
-    """
-    returns model, node_store
-    """
-
-    lookup_table = LookupTable(
-        phase_bins=phase_bins,
-        mag_bins=mag_bins,
-        gamma=gamma,
-        device=device,
-    )
-
-
-    node_store = NodeStore(
-        qdrant_url=qdrant_url,
-        collection_name=collection_name,
-        lookup_table=lookup_table,
-        num_total_nodes=total_nodes,
-        num_input_nodes=input_nodes,
-        num_output_nodes=output_nodes,
-        cardinality=cardinality,
-        vector_dim=vector_dim,
-        phase_bins=phase_bins,
-        mag_bins=mag_bins,
-    )
-
-    model = initialize_model(
-        node_store=node_store,
-        cardinality=cardinality,
-        radiation_targets=radiation_targets,
-        total_nodes=total_nodes,
-        input_nodes=input_nodes,
-        output_nodes=output_nodes,
-        phase_bins=phase_bins,
-        mag_bins = mag_bins,
-        vector_dim = vector_dim,
-        iterations = iterations,
-        activation_threshold = activation_threshold,
-        gamma = gamma,
-        temporal_decay = temporal_decay,
-        device = device,
-        verbose = verbose,
-    )
-
     return model, node_store
-
-    

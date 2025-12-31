@@ -1,51 +1,26 @@
-from torch import autograd
-from lookup_table import LookupTable
+import torch
 
-#not used
-def phase_forward(x, y, phase_bins:int):
-    return (x+y)%phase_bins
-
-#not used
-def mag_forward(x, y, mag_bins:int): 
-    return (x+y)%mag_bins
-
-class PhaseLookup(autograd.Function):
-    @staticmethod
-    def forward(ctx, indices, lookup_table:LookupTable):
-        ctx.save_for_backward(indices)
-        ctx.lookup_table = lookup_table
-
-        values = lookup_table.lookup_phase(indices.int())
-        return values
+def activation_strength_forward(phases, mags, gamma=1.0):
+    """
+    Compute activation strength from continuous phase and magnitude values.
     
-    @staticmethod
-    def backward(ctx, grad):
-        indices = ctx.saved_tensors[0]
-        value_grad = grad * ctx.lookup_table.lookup_phase_grad(indices.int())
-        return value_grad, None
-
-class MagLookup(autograd.Function):
-    @staticmethod
-    def forward(ctx, indices, lookup_table:LookupTable=None):
-        ctx.save_for_backward(indices)
-        ctx.lookup_table = lookup_table
-        values = lookup_table.lookup_mag(indices.int())
-        return values
+    phases: tensor of phase values (in radians, typically [0, 2π])
+    mags: tensor of magnitude values (in range suitable for exp(gamma*sin(mag)))
+    gamma: scaling factor for magnitude exponential
     
-    @staticmethod
-    def backward(ctx, grad):
-        indices = ctx.saved_tensors[0]
-        value_grad = grad * ctx.lookup_table.lookup_magnitude_grad(indices.int())
-        return value_grad, None
-
-def activation_stength_forward(phases, mags, lookup_table:LookupTable):
-
-    phase_values = PhaseLookup.apply(phases, lookup_table)
-    mag_values = MagLookup.apply(mags, lookup_table)
-    signal = (phase_values*mag_values).sum(dim=-1)
+    Returns: scalar activation strength = sum(cos(phase) * exp(gamma*sin(mag)))
+    """
+    # Phase component: cosine values
+    phase_values = torch.cos(phases)
+    
+    # Magnitude component: exponential of sine-transformed values
+    # Maps magnitude to exponential weighting (as in original lookup table)
+    mag_values = torch.exp(gamma * torch.sin(mags))
+    
+    # Activation strength is the dot product
+    signal = (phase_values * mag_values).sum(dim=-1)
     return signal
-    
-    
+
 #backward compatibility
-signal_forward = activation_stength_forward
+signal_forward = activation_strength_forward
 

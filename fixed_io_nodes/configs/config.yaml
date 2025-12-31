@@ -1,22 +1,22 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "final16"
+  collection_name: "final17"
 
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 100
+  total_nodes: 500
   input_nodes: 28
   output_nodes: 10
-  cardinality: 3
+  cardinality: 5
   radiation_targets: 2
 
 # --- Model Architecture ---
 model:
   vector_dim: 28
-  phase_bins: 16
-  mag_bins: 16
+  phase_bins: 256
+  mag_bins: 256
   gamma: 4.0
   iterations: 3
   activation_threshold: 0.1
@@ -24,8 +24,9 @@ model:
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.01
-  worker_count: 13 # Base worker count (optimized automatically based on device)
+  lr: 0.001
+  batch_size: 32  # Number of gradient samples to accumulate before updating weights
+  worker_count: 10 # Base worker count (optimized automatically based on device)
   auto_workers: true  # Automatically adjust workers: 5+ for GPU, 2 for CPU
   timeout: 300 #time to wait for data from queue
 

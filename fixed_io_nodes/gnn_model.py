@@ -1,6 +1,6 @@
 from torch import nn
 import torch
-from custom_functions import signal_forward
+from custom_functions import activation_strength_forward
 
 from typing import List, Union
 
@@ -55,13 +55,11 @@ class GNN(nn.Module):
         self.temporal_decay = temporal_decay
         self.verbose = verbose
 
-        self.lookup_table = node_store.lookup_table
-
         #input nodes are considered active from the start
         self.active_nodes = {
             n_id: Node(
                 node_store=self.node_store, 
-                lookup_table=self.lookup_table,
+                gamma=gamma,
                 node_id=n_id,
                 device=self.device,
                 ) for n_id in self.node_store.input_nodeids
@@ -145,13 +143,16 @@ class GNN(nn.Module):
         #input data is fed into the input nodes before propagation of remaining network
         if input_values is not None:
 
-
             assert input_values.shape == (self.input_node_count, self.vector_dim), f"expected input_values of shape ({self.input_node_count}, {self.vector_dim}), but got {input_values.shape}"
 
-            #this is assumed to be quantized, i.e. indices from lookup table
+            # Input values are continuous phase values (in radians)
             input_phases = input_values
-            input_mags = torch.zeros((self.input_node_count, self.vector_dim)) 
-            activation_strengths = signal_forward(input_phases, input_mags, self.lookup_table)
+            input_mags = torch.zeros((self.input_node_count, self.vector_dim), device=input_values.device) 
+            
+            # Calculate activation strengths for all input nodes
+            activation_strengths = torch.zeros(self.input_node_count, device=input_values.device)
+            for i in range(self.input_node_count):
+                activation_strengths[i] = activation_strength_forward(input_phases[i], input_mags[i], self.gamma)
 
             #inject input values into input nodes    
             for n_id, node in self.input_nodes.items():
@@ -185,7 +186,7 @@ class GNN(nn.Module):
         new_nodes_values = self.node_store.get_node(nodes_to_fetch_ids)
 
         #this just creates the Node objects, doesn't load the values into them
-        new_nodes = [Node(node_store=self.node_store, lookup_table=self.lookup_table, device=self.device) for _ in new_nodes_values]
+        new_nodes = [Node(node_store=self.node_store, gamma=self.gamma, device=self.device) for _ in new_nodes_values]
         
         for i, new_node_value in enumerate(new_nodes_values):
             new_nodes[i].load_values(new_node_value) #loads the values into the Node objects
@@ -298,7 +299,7 @@ class GNN(nn.Module):
                     # Create new node (shouldn't happen for input nodes, but handle gracefully)
                     new_node = Node(
                         node_store=self.node_store,
-                        lookup_table=self.lookup_table,
+                        gamma=self.gamma,
                         device=self.device
                     )
                     new_node.load_values(n_value)

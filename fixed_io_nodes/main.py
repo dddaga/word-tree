@@ -21,7 +21,6 @@ os.environ["PYTHONWARNINGS"] = "ignore"
 from gradient_accumulator import GradientAccumulator
 from nodestore import NodeStore
 from full_model import initialize_model_and_nodestore
-from lookup_table import LookupTable
 from device_utils import get_best_device
 
 # Helper to load config
@@ -288,16 +287,10 @@ def data_loader_process_fn(
 def gradient_accumulator_process_fn(
     gradient_queue:mp.Queue,
     config:dict,
-    lookup_table:LookupTable,
 ):
     device = config['system']['device']
     
-    # Move lookup table to target device in this process
-    lookup_table = lookup_table.to_device(device)
-    print(f"Accumulator: Moved LookupTable to {device}")
-    
     node_store = NodeStore(
-        lookup_table=lookup_table,
         qdrant_url=config['qdrant']['url'],
         collection_name=config['qdrant']['collection_name'],
         num_total_nodes=config['graph']['total_nodes'],
@@ -305,22 +298,24 @@ def gradient_accumulator_process_fn(
         num_output_nodes=config['graph']['output_nodes'],
         cardinality=config['graph']['cardinality'],
         vector_dim=config['model']['vector_dim'],
-        phase_bins=config['model']['phase_bins'],
-        mag_bins=config['model']['mag_bins'],
+        phase_bins=config['model'].get('phase_bins'),  # Legacy parameter
+        mag_bins=config['model'].get('mag_bins'),      # Legacy parameter
     )
 
     accumulator = GradientAccumulator(
         node_store=node_store,
         lr=config['training']['lr'],
+        batch_size=config['training']['batch_size'],
+        momentum=config['training'].get('momentum', 0.9),
         verbose=True,
         device=device
     )
 
-    print(f"Accumulator: Ready on {device}.")
+    print(f"Accumulator: Ready on {device} with batch_size={config['training']['batch_size']}.")
 
     while True:
 
-        grads = gradient_queue.get(block=True, timeout=config['training']['timeout']) #wait for 60 seconds for gradients to arrive
+        grads = gradient_queue.get(block=True, timeout=config['training']['timeout']) #wait for timeout seconds for gradients to arrive
 
         if grads is None:
             break
@@ -329,7 +324,7 @@ def gradient_accumulator_process_fn(
         phase_grads, mag_grads = grads
         accumulator.receive_gradients(phase_grads, mag_grads)
 
-        # Apply updates (Accumulator handles the step logic internally)
+        # Apply updates when batch is full (Accumulator handles the step logic internally)
         accumulator.step()
 
 
@@ -360,19 +355,14 @@ if __name__ == "__main__":
     
     log_path = config['system']['logging']['log_path']
     tensorboard_dir = config['system']['logging'].get('tensorboard_dir', 'training_logs/tensorboard')
-
-    # IMPORTANT: LookupTable must be on CPU for multiprocessing
-    # MPS/CUDA tensors cannot be shared between processes
-    # Each worker will move it to their device internally
-    lookup_table = LookupTable(
-        phase_bins=config['model']['phase_bins'],
-        mag_bins=config['model']['mag_bins'],
-        gamma=config['model']['gamma'],
-        device='cpu'  # Always CPU for sharing between processes
-    )
-    print(f"📋 LookupTable created on CPU for multiprocessing compatibility")
     
-
+    # Create unique run ID based on timestamp for separate TensorBoard runs
+    run_id = time.strftime("%Y%m%d-%H%M%S")
+    tensorboard_run_dir = os.path.join(tensorboard_dir, run_id)
+    print(f"📊 TensorBoard run: {run_id}")
+    print(f"📦 Using continuous FP16 weights (no quantization)")
+    print(f"📊 Batch size: {config['training']['batch_size']}")
+    
     #initialize queues
     data_queue = mp.Queue(maxsize=worker_count*4)
     gradient_queue = mp.Queue()
@@ -383,7 +373,7 @@ if __name__ == "__main__":
     #Start Logger Process
     logger_process = mp.Process(
         target=logger_process_fn, 
-        args=(log_queue, log_path, tensorboard_dir), 
+        args=(log_queue, log_path, tensorboard_run_dir), 
         name='logger'
     )
     logger_process.start()
@@ -391,7 +381,7 @@ if __name__ == "__main__":
     #Start Accumulator Process
     accumulator_process = mp.Process(
         target=gradient_accumulator_process_fn, 
-        args=(gradient_queue, config, lookup_table), 
+        args=(gradient_queue, config), 
         name='accumulator'
     )
     accumulator_process.start()
