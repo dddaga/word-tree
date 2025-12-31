@@ -25,100 +25,137 @@ class GradientAccumulator(nn.Module):
         self.lr = lr
         self.verbose = verbose
 
-        #we store the sum of all the gradients yet, and the number of gradients received
-        self.phase_grads = {node_id:None for node_id in range(self.total_nodes)}
-        self.phase_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
-        self.mag_grads = {node_id:None for node_id in range(self.total_nodes)}
-        self.mag_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
+        # Use sparse dictionaries - only store gradients for active nodes
+        # This prevents memory waste for large graphs with sparse activations
+        self.phase_grads = {}
+        self.phase_grad_counts = {}
+        self.mag_grads = {}
+        self.mag_grad_counts = {}
 
 
     def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor]):
         """
-        This recieves the grads from other workers who are updating the graph. 
-        The gradients are expected as Dict[str, torch.Tensor] with the keys as the parameter names              
+        This receives the grads from other workers who are updating the graph. 
+        The gradients are expected as Dict[int, torch.Tensor] with the keys as the node IDs.
+        
+        Gradients are accumulated in internal dictionaries until they meet the update threshold.
         """
-        for node_id, phase_grad  in phase_grads.items():
-            if phase_grad is None or torch.allclose(phase_grad, torch.zeros_like(phase_grad), atol=1e-8): #skip if the gradient is all zeros
+        for node_id, phase_grad in phase_grads.items():
+            if phase_grad is None or torch.allclose(phase_grad, torch.zeros_like(phase_grad), atol=1e-8):
                 continue 
-            if self.phase_grads[node_id] is None:
-                self.phase_grads[node_id] = phase_grad
+            
+            # Safety check: reject inf/nan gradients
+            if torch.isinf(phase_grad).any() or torch.isnan(phase_grad).any():
+                print(f"Warning: Invalid phase gradient for node {node_id}, skipping")
+                continue
+            
+            # Sparse storage: only create entry if gradient exists
+            # Apply learning rate during accumulation for efficient threshold checking
+            if node_id not in self.phase_grads:
+                self.phase_grads[node_id] = self.lr * phase_grad.to(self.device)
+                self.phase_grad_counts[node_id] = 1
             else:
-                self.phase_grads[node_id] += phase_grad
-            self.phase_grad_counts[node_id] += 1
+                self.phase_grads[node_id] += self.lr * phase_grad.to(self.device)
+                self.phase_grad_counts[node_id] += 1
 
-        for node_id, mag_grad  in mag_grads.items():
-            if mag_grad is None or torch.allclose(mag_grad, torch.zeros_like(mag_grad), atol=1e-8): #skip if the gradient is all zeros
+        for node_id, mag_grad in mag_grads.items():
+            if mag_grad is None or torch.allclose(mag_grad, torch.zeros_like(mag_grad), atol=1e-8):
                 continue 
-            if self.mag_grads[node_id] is None:
-                self.mag_grads[node_id] = mag_grad
+            
+            # Safety check: reject inf/nan gradients
+            if torch.isinf(mag_grad).any() or torch.isnan(mag_grad).any():
+                print(f"Warning: Invalid mag gradient for node {node_id}, skipping")
+                continue
+            
+            # Sparse storage: only create entry if gradient exists
+            # Apply learning rate during accumulation for efficient threshold checking
+            if node_id not in self.mag_grads:
+                self.mag_grads[node_id] = self.lr * mag_grad.to(self.device)
+                self.mag_grad_counts[node_id] = 1
             else:
-                self.mag_grads[node_id] += mag_grad
-            self.mag_grad_counts[node_id] += 1
+                self.mag_grads[node_id] += self.lr * mag_grad.to(self.device)
+                self.mag_grad_counts[node_id] += 1
 
     def step(self):
         """
-        min_update_steps: The minimum number of updates required for a parameter, such that it is considered 
-        for gradient descent in the current step. 
-        The gradient used for gradient descent takes mean across all the available gradients.
+        Apply gradient updates only when the accumulated gradient exceeds the threshold (0.8).
+        Round gradients to nearest integer before applying updates.
+        Increment version numbers for updated nodes.
         """
-        # if min_update_steps is None:
-        #     min_update_steps = self.accumulation_steps
-
-
-        node_ids_to_update = set() #set of node ids to update
-        for node_id, phase_grads in self.phase_grads.items():
-            if self.if_update_needed(phase_grads):
+        node_ids_to_update = set()
+        
+        # Check which nodes meet the update threshold (max(abs(grad)) > 0.8)
+        # Sparse storage: only iterate over nodes with accumulated gradients
+        for node_id, phase_grad in self.phase_grads.items():
+            if torch.max(torch.abs(phase_grad)) > 0.8:
                 node_ids_to_update.add(node_id)
-        for node_id, mag_grads in self.mag_grads.items():
-            if self.if_update_needed(mag_grads):
+        
+        for node_id, mag_grad in self.mag_grads.items():
+            if torch.max(torch.abs(mag_grad)) > 0.8:
                 node_ids_to_update.add(node_id)
 
+        if not node_ids_to_update:
+            return  # No nodes to update
+        
         node_ids_to_update = list(node_ids_to_update)
+        
+        # Fetch current node values and versions
         nodes_to_update = self.node_store.get_node(node_ids_to_update)
         old_phase_values = {node.id: torch.tensor(node.vector['phase'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
         old_mag_values = {node.id: torch.tensor(node.vector['mag'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
+        old_versions = {node.id: node.payload.get('version', 0) for node in nodes_to_update}
 
         new_phase_values = {}
         new_mag_values = {}
+        
         for node_id in node_ids_to_update:
-
-            if self.if_update_needed(self.phase_grads[node_id]):
-                phase_grad = self.phase_grads[node_id]
-                self.phase_grads[node_id] = None #reset the gradients for the next step
+            # Get phase gradient and round it (sparse storage: check if key exists)
+            if node_id in self.phase_grads and torch.max(torch.abs(self.phase_grads[node_id])) > 0.8:
+                phase_grad = torch.round(self.phase_grads[node_id])  # Round to nearest integer
+                del self.phase_grads[node_id]  # Remove from sparse dict after use
+                if node_id in self.phase_grad_counts:
+                    del self.phase_grad_counts[node_id]
             else:
-                phase_grad = torch.tensor(0, dtype=torch.float16) #if the number of gradients isn't enough, then don't update it (achieved by setting grad to 0)
+                phase_grad = torch.tensor(0, dtype=torch.float16, device=self.device)
 
-            if self.if_update_needed(self.mag_grads[node_id]):
-                mag_grad = self.mag_grads[node_id]
-                self.mag_grads[node_id] = None 
+            # Get magnitude gradient and round it (sparse storage: check if key exists)
+            if node_id in self.mag_grads and torch.max(torch.abs(self.mag_grads[node_id])) > 0.8:
+                mag_grad = torch.round(self.mag_grads[node_id])  # Round to nearest integer
+                del self.mag_grads[node_id]  # Remove from sparse dict after use
+                if node_id in self.mag_grad_counts:
+                    del self.mag_grad_counts[node_id]
             else:
-                mag_grad = torch.tensor(0, dtype=torch.float16)
+                mag_grad = torch.tensor(0, dtype=torch.float16, device=self.device)
 
-            phase_vector = old_phase_values[node_id] #phase retrived from qdrant
-            mag_vector = old_mag_values[node_id] #magnitude retrived from qdrant
-            new_phase_values[node_id] = (phase_vector.to(phase_grad.dtype) - self.lr * phase_grad).round().long()%self.phase_bins
-            new_mag_values[node_id] = (mag_vector.to(mag_grad.dtype) - self.lr * mag_grad).round().long()%self.mag_bins
+            # Apply gradient descent with rounded gradients
+            # Note: lr already applied during accumulation, so just subtract the scaled gradient
+            phase_vector = old_phase_values[node_id]
+            mag_vector = old_mag_values[node_id]
+            new_phase_values[node_id] = (phase_vector.to(phase_grad.dtype) - phase_grad).round().long() % self.phase_bins
+            new_mag_values[node_id] = (mag_vector.to(mag_grad.dtype) - mag_grad).round().long() % self.mag_bins
 
-            
-
-        final_values = {node_id: {'phase': new_phase_values[node_id].tolist(), 'mag': new_mag_values[node_id].tolist()} for node_id in node_ids_to_update}
+        # Prepare final values for update
+        final_values = {
+            node_id: {
+                'phase': new_phase_values[node_id].tolist(), 
+                'mag': new_mag_values[node_id].tolist()
+            } 
+            for node_id in node_ids_to_update
+        }
 
         if final_values:
             try:
+                # Update vectors in DB
                 self.node_store.update_vectors(final_values)
+                
+                # Increment versions for updated nodes
+                new_versions = [old_versions[node_id] + 1 for node_id in node_ids_to_update]
+                self.node_store.update_node_versions(node_ids_to_update, new_versions)
+                
+                if self.verbose:
+                    print(f"Updated {len(node_ids_to_update)} nodes: {node_ids_to_update}")
+                    #print(f"Version increments: {dict(zip(node_ids_to_update, new_versions))}")
             except Exception as e:
                 print(f"Error updating vectors: {e}")
                 print(f"Final values: {final_values}")
-            if self.verbose:
-                print(f"Updated {len(node_ids_to_update)} nodes: {node_ids_to_update}")
-
-    def if_update_needed(self, grad:torch.Tensor):
-        """
-        Checks if the update if needed for a particular weight
-        """
-        # 0.5 is the minimum change required for any integer value to be changed. 
-        # for example, for a value of 10, when you add 0.5, it will become 10.5, and then rounded to 11.
-        # if any single value in the change tensor is greater than 0.5, then the update is needed
-
-        return grad is not None and torch.any(torch.abs(self.lr*grad ) >= 0.5)
 

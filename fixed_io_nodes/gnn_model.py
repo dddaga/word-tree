@@ -34,6 +34,7 @@ class GNN(nn.Module):
         iterations:int,
         activation_threshold:float,
         gamma:float=1.,
+        temporal_decay:float=1.0,
         device:str='cuda' if torch.cuda.is_available() else 'cpu',
         verbose:bool=False,
     ):
@@ -51,6 +52,7 @@ class GNN(nn.Module):
         self.vector_dim = vector_dim
         self.iterations = iterations
         self.activation_threshold = activation_threshold
+        self.temporal_decay = temporal_decay
         self.verbose = verbose
 
         self.lookup_table = node_store.lookup_table
@@ -71,6 +73,14 @@ class GNN(nn.Module):
 
         self.active_nodes = MyModuleDict(self.active_nodes)
         
+        # Cache for version tracking - stores nodes across resets
+        self.node_cache = {}
+        for n_id, node in self.input_nodes.items():
+            self.node_cache[n_id] = node
+        
+        # Counter for periodic cache cleanup
+        self._forward_pass_count = 0
+        self._cache_cleanup_interval = 100  # Clean cache every 100 forward passes
 
         
         self.output_nodeids = self.node_store.output_nodeids
@@ -216,7 +226,15 @@ class GNN(nn.Module):
         for node in new_nodes:
             self.active_nodes[node.id] = node
 
+        # Apply temporal decay to all active nodes (except input nodes on first step)
+        # This makes older activations weaker than recent ones
+        if input_values is None:  # Only decay when not receiving new input
+            for node in self.active_nodes.values():
+                node.decay_activations(self.temporal_decay)
         
+        # Explicitly delete temporary dictionaries to prevent memory leaks
+        del phase_activations, mag_activations, activation_strengths, incoming_connections
+        del new_nodes, new_nodes_values, radiation_targets
 
 
     def forward(self, input_values:torch.Tensor=None):
@@ -242,24 +260,97 @@ class GNN(nn.Module):
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed
+        
+        # Periodic cache cleanup to prevent memory leaks
+        self._forward_pass_count += 1
+        if self._forward_pass_count >= self._cache_cleanup_interval:
+            self._cleanup_node_cache()
+            self._forward_pass_count = 0
+        
         return output_signals
 
-    def reset(self, fetch_weights:bool=True):
+    def sync_weights(self):
         """
-        Reset the model to initial state. 
-        1) Resets the active nodes to input nodes. (this is enough to consider the model as reset)
-        2) If fetch_weights is True, fetches the input node weights from qdrant, otherwise uses the same weights
+        Check versions and fetch only updated weights from DB.
+        Called BEFORE forward pass to ensure latest weights are used.
         """
-
-        if fetch_weights:
-            node_values = self.node_store.get_node(self.input_nodeids)
+        # Smart version check: only fetch nodes that have been updated
+        input_ids = list(self.input_nodeids)
+        
+        # Get current versions from DB
+        db_versions = self.node_store.get_node_versions(input_ids)
+        
+        # Determine which nodes need updating
+        ids_to_fetch = []
+        for node_id in input_ids:
+            # Fetch if: not in cache OR version mismatch
+            if node_id not in self.node_cache or self.node_cache[node_id].version != db_versions.get(node_id, 0):
+                ids_to_fetch.append(node_id)
+        
+        # Fetch and update only changed nodes
+        if ids_to_fetch:
+            node_values = self.node_store.get_node(ids_to_fetch)
             for n_value in node_values:
-                self.input_nodes[n_value.id].load_values(n_value)
-
-
+                if n_value.id in self.node_cache:
+                    # Update existing node
+                    self.node_cache[n_value.id].load_values(n_value)
+                else:
+                    # Create new node (shouldn't happen for input nodes, but handle gracefully)
+                    new_node = Node(
+                        node_store=self.node_store,
+                        lookup_table=self.lookup_table,
+                        device=self.device
+                    )
+                    new_node.load_values(n_value)
+                    self.node_cache[n_value.id] = new_node
+            
+            # Update input_nodes from cache
+            self.input_nodes = {n_id: self.node_cache[n_id] for n_id in input_ids}
+    
+    def _cleanup_node_cache(self):
+        """
+        Cleanup node_cache to prevent memory leaks.
+        Keeps only input nodes in the cache and removes any others that may have accumulated.
+        """
+        # Get current cache size for logging
+        cache_size_before = len(self.node_cache)
+        
+        # Keep only input nodes
+        input_ids = set(self.input_nodeids)
+        nodes_to_remove = [nid for nid in self.node_cache.keys() if nid not in input_ids]
+        
+        for nid in nodes_to_remove:
+            del self.node_cache[nid]
+        
+        if len(nodes_to_remove) > 0 and self.verbose:
+            print(f"GNN: Cleaned node_cache: {cache_size_before} -> {len(self.node_cache)} nodes (removed {len(nodes_to_remove)})")
+    
+    def reset_activations(self):
+        """
+        Reset activations to initial state.
+        Called AFTER forward pass completes to prepare for next sample.
+        Weights are NOT fetched - they're kept as-is.
+        """
+        # Clear active nodes completely to free memory from non-input nodes
+        self.active_nodes.clear()
+        
+        # Reset active nodes to input nodes only
         self.active_nodes = MyModuleDict(self.input_nodes.copy())
+        
+        # Reset each node's activations (not weights)
         for _, n in self.active_nodes.items():
             n.reset()
+    
+    def reset(self, fetch_weights:bool=True):
+        """
+        Full reset (backward compatibility).
+        Reset the model to initial state. 
+        1) Optionally syncs weights from DB (if fetch_weights=True)
+        2) Resets activations to initial state
+        """
+        if fetch_weights:
+            self.sync_weights()
+        self.reset_activations()
 
         
         

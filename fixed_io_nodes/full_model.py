@@ -44,6 +44,18 @@ class Model(nn.Module):
 
         #nothing to reset for quantizer
     
+    def reset_activations(self):
+        """
+        Reset activations only (keep weights).
+        Called after each forward/backward pass.
+        """
+        self.gnn.reset_activations()
+        
+        # for p in self.input_adapter.parameters():
+        #     p.grad = None
+        
+        #nothing to reset for quantizer
+    
 def initialize_model(
     # input_dim:int, 
     # adapter_hidden_dims:List[int],
@@ -62,6 +74,7 @@ def initialize_model(
     iterations:int,
     activation_threshold:float,
     gamma:float=1.,
+    temporal_decay:float=1.0,
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
 
@@ -84,6 +97,7 @@ def initialize_model(
         iterations=iterations,
         activation_threshold=activation_threshold,
         gamma=gamma,
+        temporal_decay=temporal_decay,
         device=device,
         verbose=verbose,
     )
@@ -116,6 +130,7 @@ def initialize_model_and_nodestore(
     iterations:int,
     activation_threshold:float,
     gamma:float=1.,
+    temporal_decay:float=1.0,
 
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
@@ -158,6 +173,7 @@ def initialize_model_and_nodestore(
         iterations = iterations,
         activation_threshold = activation_threshold,
         gamma = gamma,
+        temporal_decay = temporal_decay,
         device = device,
         verbose = verbose,
     )

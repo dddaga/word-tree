@@ -279,7 +279,8 @@ class NodeStore(nn.Module):
                         'incoming_connections': connections[id]['incoming'],
                         'outgoing_connections': connections[id]['outgoing'],
                         'update_count': 0,
-                        'activation_count': 0
+                        'activation_count': 0,
+                        'version': 0  # Initialize version counter for tracking updates
                     },
                     vector={
                         #dtype based on number of bins
@@ -550,3 +551,52 @@ class NodeStore(nn.Module):
     def is_output(self, node_id):
         return node_id in self.output_nodeids
     
+    def get_node_versions(self, node_ids: Union[int, List[int]]):
+        """
+        Retrieve only the version payload for given node IDs.
+        Efficient for checking if weights need to be updated.
+        
+        Returns: Dict[node_id, version]
+        """
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+        
+        points = self._retrieve_with_retry(
+            ids=node_ids,
+            with_payload=['version'],
+            with_vectors=False
+        )
+        
+        return {p.id: p.payload.get('version', 0) for p in points}
+    
+    def update_node_versions(self, node_ids: Union[int, List[int]], versions: Union[int, List[int]]):
+        """
+        Update version numbers for given node IDs.
+        
+        node_ids: single ID or list of IDs
+        versions: single version or list of versions (must match node_ids length)
+        """
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+            versions = [versions]
+        
+        if len(node_ids) != len(versions):
+            raise ValueError("node_ids and versions must have the same length")
+        
+        # Update payload for each node
+        for node_id, version in zip(node_ids, versions):
+            self._set_payload_with_retry(
+                node_id=node_id,
+                payload={'version': version}
+            )
+    
+    @retry_on_connection_error(max_retries=3, base_delay=0.2)
+    def _set_payload_with_retry(self, node_id, payload):
+        """Set payload for a single node with retry logic."""
+        return self.client.set_payload(
+            collection_name=self.collection_name,
+            payload=payload,
+            points=[node_id],
+            wait=True
+        )
+

@@ -52,7 +52,7 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None
     # Open file once
     with open(log_path, mode='a', newline='') as f:
 
-        fieldnames = ['worker_id', 'loss']
+        fieldnames = ['worker_id', 'loss', 'skipped']
         writer_csv = csv.DictWriter(f, fieldnames=fieldnames)
         
         # If its a new file, write the header
@@ -63,18 +63,32 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None
         print(f"Logger: Writing logs to {log_path}")
         
         global_step = 0
+        total_samples = 0
+        skipped_samples = 0
+        
         while True:
             try:
-                record = log_queue.get(block=True, timeout=120) #wait for 120 seconds for a record to arrive                
+                record = log_queue.get(block=True, timeout=120) #wait for 120 seconds for a record to arrive
+                
+                # Track skip statistics
+                total_samples += 1
+                if record.get('skipped', False):
+                    skipped_samples += 1
                 
                 writer_csv.writerow(record)
                 f.flush() #flush the buffer to disk immediately to ensure data is not lost if the script crashes
                 
-                # Log to TensorBoard
-                if writer:
+                # Log to TensorBoard (only valid losses)
+                if writer and not record.get('skipped', False):
                     writer.add_scalar('Training/Loss', record['loss'], global_step)
-                    # You can add more metrics here if record contains them
                     global_step += 1
+                
+                # Periodically report skip rate
+                if total_samples % 100 == 0 and skipped_samples > 0:
+                    skip_rate = (skipped_samples / total_samples) * 100
+                    print(f"Logger: Skip rate: {skip_rate:.2f}% ({skipped_samples}/{total_samples})")
+                    if writer:
+                        writer.add_scalar('Training/SkipRate', skip_rate, global_step)
             
             except queue.Empty:
                 break
@@ -83,6 +97,11 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None
     
     if writer:
         writer.close()
+        
+    # Final statistics
+    if total_samples > 0:
+        final_skip_rate = (skipped_samples / total_samples) * 100
+        print(f"Logger: Final statistics - {skipped_samples}/{total_samples} samples skipped ({final_skip_rate:.2f}%)")
 
 
 def worker_process_fn(
@@ -120,6 +139,7 @@ def worker_process_fn(
         iterations=config['model']['iterations'],
         activation_threshold=config['model']['activation_threshold'],
         gamma=config['model']['gamma'],
+        temporal_decay=config['model'].get('temporal_decay', 1.0),
         device=device,  # Use local worker device (e.g. MPS)
     )
 
@@ -128,6 +148,9 @@ def worker_process_fn(
     print(f"Worker {worker_id}: Ready on {device}.")
 
     # 2. Training Loop
+    sample_count = 0
+    cache_clear_interval = 50  # Clear GPU cache every N samples
+    
     while True:
         try:
             data, target = data_queue.get(block=True, timeout=60) #wait for 60 seconds for data to arrive
@@ -138,17 +161,47 @@ def worker_process_fn(
             print(f"Worker {worker_id}: Queue empty (timeout), shutting down.")
             break
 
-        # Forward Pass
+        # 1. FIRST: Check versions and fetch updated weights (before forward pass)
+        # This ensures we use the latest weights while reusing them across all iterations
+        model.gnn.sync_weights()
         
+        # 2. Forward Pass (uses latest weights, activations accumulate across iterations)
         out = model(data)
         loss = criterion(out, target)
-        # print(f"Worker {worker_id}: Loss: {loss.item():.4f}, Target: {target.item()}, Output: {out}")
         
-        # Backward Pass
+        # Validate loss before backward pass
+        if torch.isinf(loss) or torch.isnan(loss):
+            print(f"Worker {worker_id}: Invalid loss ({loss.item()}), skipping sample")
+            log_queue.put({
+                'worker_id': worker_id,
+                'loss': float('nan'),
+                'skipped': True
+            })
+            model.reset_activations()
+            continue
+        
+        # 3. Backward Pass
         loss.backward()
 
         # Extract Gradients
         phase_grads, mag_grads = model.gnn.get_grads()
+
+        # Validate gradients before sending to accumulator
+        valid_grads = True
+        for grad in list(phase_grads.values()) + list(mag_grads.values()):
+            if grad is not None and (torch.isinf(grad).any() or torch.isnan(grad).any()):
+                valid_grads = False
+                break
+        
+        if not valid_grads:
+            print(f"Worker {worker_id}: Invalid gradients detected, skipping sample")
+            log_queue.put({
+                'worker_id': worker_id,
+                'loss': loss.item(),
+                'skipped': True
+            })
+            model.reset_activations()
+            continue
 
         # SAFE TENSOR PASSING:
         # We must .detach() to cut the computation graph and .clone() to 
@@ -157,16 +210,31 @@ def worker_process_fn(
         clean_phase_grads = {k: v.detach().cpu().clone() for k, v in phase_grads.items() if v is not None}
         clean_mag_grads = {k: v.detach().cpu().clone() for k, v in mag_grads.items() if v is not None}
 
-        # Send gradients to gradient accumulator and reset model
+        # Send gradients to gradient accumulator (only if valid)
         gradient_queue.put((clean_phase_grads, clean_mag_grads))
-        model.reset()
+        
+        # 4. LAST: Reset activations (clear activations, keep weights for next sample)
+        model.reset_activations()
 
         # Send results to logger
         log_queue.put({
             'worker_id': worker_id,
-            'loss': loss.item()
+            'loss': loss.item(),
+            'skipped': False
         })
-        print(f"Worker {worker_id}: Loss: {loss.item():.4f}")
+
+        print(f"Worker {worker_id}: Loss: {loss.item():.4f}") #  , Target: {target.item()}, Output: {out}")
+        
+        # Periodic GPU memory cleanup to prevent fragmentation
+        sample_count += 1
+        if sample_count % cache_clear_interval == 0:
+            if device in ['cuda', 'mps']:
+                if device == 'cuda' and torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                elif device == 'mps' and torch.backends.mps.is_available():
+                    torch.mps.empty_cache()
+                if sample_count % (cache_clear_interval * 10) == 0:  # Log every 500 samples
+                    print(f"Worker {worker_id}: Cleared GPU cache at sample {sample_count}")
 
 def data_loader_process_fn(
     data_queue:mp.Queue,

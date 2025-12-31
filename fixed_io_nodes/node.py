@@ -22,6 +22,7 @@ class Node(nn.Module):
         activation_strength:int=None,
         incoming_connections:List[int]=None,
         outgoing_connections:List[int]=None,
+        version:int=0,
         device:str='cuda' if torch.cuda.is_available() else 'cpu',
     ):
         super().__init__()
@@ -29,6 +30,7 @@ class Node(nn.Module):
         self.node_id = node_id
         self.lookup_table = lookup_table 
         self.node_store = node_store
+        self.version = version  # Track version for synchronization
 
 
         #TODO: phase/mag weights should be initialized as nn.Parameters
@@ -70,6 +72,7 @@ class Node(nn.Module):
 
         self.incoming_connections = node.payload['incoming_connections']
         self.outgoing_connections = node.payload['outgoing_connections']
+        self.version = node.payload.get('version', 0)  # Load version from payload
 
         self.phase_activation = self.phase_weight.clone()
         self.mag_activation = self.mag_weight.clone()
@@ -149,6 +152,13 @@ class Node(nn.Module):
 
         #recalculate activation strength
         self.calculate_activation_strength()
+    
+    def decay_activations(self, decay_factor: float):
+        """
+        Apply temporal decay to activation strength.
+        Makes older activations weaker than recent ones.
+        """
+        self.activation_strength = self.activation_strength * decay_factor
         
 
         
