@@ -1,0 +1,18 @@
+# Neurograph Visualization and Training Requirements
+
+# Web Framework
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# Numerical Computing
+numpy>=1.24.0
+
+# HTTP Client (for test scripts)
+requests>=2.31.0
+
+# YAML Config Parsing
+pyyaml>=6.0
+
+# Optional: Progress bars for training
+# tqdm>=4.65.0
+

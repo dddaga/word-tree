@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neurograph Advanced Viz</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #111;
+            color: #ddd;
+            overflow: hidden;
+        }
+        #mynetwork {
+            width: 100%;
+            height: 60vh;
+            border: 1px solid #333;
+        }
+        
+        /* Control Panel */
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 30, 40, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            width: 320px;
+            max-height: 90vh;
+            overflow-y: auto;
+            pointer-events: auto;
+            border: 1px solid #444;
+        }
+        
+        /* Inspection Panel */
+        #inspector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 30, 40, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            width: 280px;
+            pointer-events: auto;
+            display: none; /* Hidden by default */
+            border: 1px solid #444;
+        }
+
+        h2 { margin-top: 0; color: #00d4ff; font-size: 1.1rem; border-bottom: 1px solid #555; padding-bottom: 8px; }
+        h3 { color: #ff00aa; font-size: 0.95rem; margin: 10px 0 5px 0; }
+        
+        .section { margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        .section:last-child { border-bottom: none; }
+        
+        label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.85rem; color: #aaa; }
+        input[type=range] { width: 100%; margin-bottom: 8px; }
+        
+        .btn-group { display: flex; gap: 5px; margin-bottom: 10px; }
+        button {
+            flex: 1;
+            background: #333;
+            color: #ddd;
+            border: 1px solid #555;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        button:hover { background: #444; border-color: #777; }
+        button.primary { background: #00d4ff; color: #111; border: none; font-weight: bold; }
+        button.primary:hover { background: #00b8dd; }
+        button.danger { background: #ff0055; color: #fff; border: none; }
+        button.danger:hover { background: #cc0044; }
+        
+        .value { color: #fff; font-family: monospace; }
+        
+        /* Node Inspector Styles */
+        .inspect-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
+        .inspect-val { font-family: monospace; color: #00ff88; }
+        .inspect-grad { font-family: monospace; color: #ff00aa; }
+        
+        .legend { display: flex; gap: 10px; font-size: 0.75rem; color: #888; margin-top: 5px; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        
+        /* Table Container */
+        #table-container {
+            position: absolute;
+            bottom: 15vh;
+            left: 360px;
+            right: 20px;
+            height: 25vh;
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 8px;
+            overflow-y: auto;
+            border: 1px solid #444;
+            z-index: 10;
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #1a1a2e;
+            border-bottom: 1px solid #555;
+            position: sticky;
+            top: 0;
+            z-index: 11;
+        }
+        
+        #node-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        #node-table thead {
+            position: sticky;
+            top: 50px;
+            background: #1a1a2e;
+            z-index: 10;
+        }
+        
+        #node-table th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 2px solid #555;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        #node-table th:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        #node-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        #node-table tr:hover {
+            background: rgba(0, 212, 255, 0.15);
+            cursor: pointer;
+        }
+        
+        .role-input { background: rgba(0, 100, 255, 0.08); }
+        .role-input_connected { background: rgba(150, 0, 255, 0.06); }
+        .role-middle { background: rgba(100, 0, 150, 0.05); }
+        .role-output { background: rgba(0, 255, 100, 0.08); }
+        
+        .numeric { text-align: right; font-family: 'Courier New', monospace; white-space: nowrap; }
+        .mono { font-family: 'Courier New', monospace; }
+        .highlight { font-weight: bold; color: #fff; text-shadow: 0 0 5px #00d4ff; }
+        
+        .mini-bar {
+            display: inline-block;
+            height: 6px;
+            margin-left: 5px;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-input { background: #0066ff; color: #fff; }
+        .badge-input_connected { background: #9600ff; color: #fff; }
+        .badge-middle { background: #640096; color: #fff; }
+        .badge-output { background: #00ff66; color: #000; }
+        
+        /* Timeline Container */
+        #timeline-container {
+            position: absolute;
+            bottom: 0;
+            left: 360px;
+            right: 20px;
+            height: 14vh;
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 8px;
+            border: 1px solid #444;
+            padding: 10px;
+            z-index: 10;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-header h3 {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        #timeline-metric {
+            background: #333;
+            color: #ddd;
+            border: 1px solid #555;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+        
+        #timeline-canvas {
+            width: 100%;
+            height: calc(100% - 30px);
+            display: block;
+        }
+        
+        /* Mode button styles */
+        .mode-btn {
+            flex: 1;
+            transition: all 0.3s;
+        }
+        
+        .mode-description {
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        /* Metrics display */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="mynetwork"></div>
+    
+    <!-- Left Controls -->
+    <div id="controls">
+        <h2>Neurograph Controls</h2>
+        
+        <div class="section">
+            <h3>Simulation</h3>
+            <div class="btn-group">
+                <button id="btn-step-fwd" class="primary">Step Fwd</button>
+                <button id="btn-step-bwd" class="danger">Backprop</button>
+            </div>
+            <div class="btn-group">
+                <button id="btn-play">Auto Train</button>
+                <button id="btn-reset">Reset</button>
+            </div>
+            <div style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">
+                Step: <span id="step-count" class="value">0</span> | 
+                Mode: <span id="mode-indicator" class="value">Ready</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Topology</h3>
+            
+            <label>Input Nodes: <span id="val-n-in" class="value">2</span></label>
+            <input type="range" id="inp-n-in" min="1" max="5" value="2">
+            
+            <label>Input Connected: <span id="val-n-inc" class="value">4</span></label>
+            <input type="range" id="inp-n-inc" min="2" max="10" value="4">
+            
+            <label>Middle Nodes (Isolated): <span id="val-n-mid" class="value">8</span></label>
+            <input type="range" id="inp-n-mid" min="4" max="20" value="8">
+            
+            <label>Output Nodes: <span id="val-n-out" class="value">2</span></label>
+            <input type="range" id="inp-n-out" min="1" max="5" value="2">
+        </div>
+        
+        <div class="section">
+            <h3>Connectivity (Cardinality)</h3>
+            <label>Input Adapter (In -> Connected): <span id="val-c-in" class="value">2</span></label>
+            <input type="range" id="inp-c-in" min="1" max="5" value="2">
+            
+            <label>Middle Internal: <span id="val-c-mid" class="value">3</span></label>
+            <input type="range" id="inp-c-mid" min="1" max="8" value="3">
+            
+            <label>Radiation Neighbors (K): <span id="val-k" class="value">3</span></label>
+            <input type="range" id="inp-k" min="0" max="8" value="3">
+        </div>
+        
+        <div class="section">
+            <h3>Architecture Mode</h3>
+            <div class="btn-group">
+                <button id="btn-mode-flat" class="mode-btn">Direct Radiation</button>
+                <button id="btn-mode-hierarchical" class="mode-btn primary">Hierarchical</button>
+            </div>
+            <div class="mode-description" id="mode-desc">
+                <small>Current: Hierarchical with Input-Connected layer</small>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Temporal Sequence</h3>
+            <label>Input Sequence:</label>
+            <input type="text" id="inp-sequence" placeholder="0.5, 0.8, 0.3" value="0.5, 0.8, 0.3" style="width: 100%; padding: 4px; background: #222; border: 1px solid #555; color: #ddd; border-radius: 3px; margin-bottom: 8px;">
+            
+            <div class="btn-group">
+                <button id="btn-inject-seq" class="primary">Inject & Step</button>
+                <button id="btn-auto-seq">Auto Mode</button>
+            </div>
+            
+            <div style="margin-top: 8px; font-size: 0.85rem;">
+                <div>Timestep: <span id="timestep-count" class="value">0</span></div>
+                <div>Period: <span id="val-period" class="value">40</span> steps</div>
+            </div>
+            
+            <label>Temporal Period:</label>
+            <input type="range" id="inp-period" min="10" max="100" value="40" step="10">
+        </div>
+        
+        <div class="section">
+            <h3>Parameters</h3>
+            <label>Learning Rate: <span id="val-lr" class="value">0.05</span></label>
+            <input type="range" id="inp-lr" min="1" max="50" value="5">
+            
+            <label>Beam Width: <span id="val-beam">∞</span></label>
+            <input type="range" id="inp-beam" min="5" max="50" value="20">
+        </div>
+        
+        <div class="section">
+            <h3>Metrics</h3>
+            <div class="metric-row">
+                <span>Static Edges:</span>
+                <span id="metric-edges" class="value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Active Nodes:</span>
+                <span id="metric-active" class="value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Avg Gradient:</span>
+                <span id="metric-grad" class="value">--</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Inspector -->
+    <div id="inspector">
+        <h2>Node Inspector</h2>
+        <div id="inspect-content">
+            <p style="color: #888; font-size: 0.9rem;">Click a node to inspect details.</p>
+        </div>
+    </div>
+    
+    <!-- Node Table -->
+    <div id="table-container">
+        <div class="table-header">
+            <h3>Node State Table</h3>
+            <button id="btn-export-table" style="padding: 4px 8px; font-size: 0.75rem;">Export CSV</button>
+        </div>
+        <table id="node-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Role</th>
+                    <th>Phase (rad)</th>
+                    <th>Magnitude</th>
+                    <th>Activation</th>
+                    <th>Gradient</th>
+                    <th>Accumulator</th>
+                </tr>
+            </thead>
+            <tbody id="node-table-body"></tbody>
+        </table>
+    </div>
+    
+    <!-- Timeline View -->
+    <div id="timeline-container">
+        <div class="timeline-header">
+            <h3>Temporal Evolution</h3>
+            <select id="timeline-metric">
+                <option value="phase">Phase</option>
+                <option value="activation">Activation</option>
+                <option value="gradient">Gradient</option>
+            </select>
+        </div>
+        <canvas id="timeline-canvas"></canvas>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+# Neurograph Training Configurations
+# =================================
+# 
+# This file contains predefined experiment configurations for training
+# Neurograph networks on various tasks.
+#
+# Structure:
+#   experiment_name:
+#     network:       # Network architecture parameters
+#     training:      # Training hyperparameters
+#     dataset:       # Dataset configuration
+#
+# Dataset types:
+#   - pattern: Fixed input-output pattern mapping
+#   - temporal: Sequence prediction
+#   - sine: Sine wave approximation
+#   - classification: Multi-class classification
+
+# ============================================
+# Basic Pattern Learning
+# ============================================
+
+xor_basic:
+  description: "Basic XOR pattern learning - classic benchmark"
+  network:
+    num_input: 2
+    num_input_connected: 4
+    num_middle: 6
+    num_output: 1
+    vector_dim: 8
+    beam_width: 10
+    radiation_k: 3
+    use_radiation: true
+  training:
+    epochs: 100
+    learning_rate: 0.05
+    early_stopping_patience: 15
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]  # 0 and π
+
+xor_deep:
+  description: "XOR with deeper network"
+  network:
+    num_input: 2
+    num_input_connected: 6
+    num_middle: 12
+    num_output: 1
+    vector_dim: 16
+    beam_width: 15
+  training:
+    epochs: 150
+    learning_rate: 0.03
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]
+
+and_gate:
+  description: "AND gate pattern"
+  network:
+    num_input: 2
+    num_input_connected: 3
+    num_middle: 4
+    num_output: 1
+    vector_dim: 8
+  training:
+    epochs: 50
+    learning_rate: 0.1
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 0, 0, 3.14159]
+
+or_gate:
+  description: "OR gate pattern"
+  network:
+    num_input: 2
+    num_input_connected: 3
+    num_middle: 4
+    num_output: 1
+    vector_dim: 8
+  training:
+    epochs: 50
+    learning_rate: 0.1
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 3.14159]
+
+# ============================================
+# Function Approximation
+# ============================================
+
+sine_simple:
+  description: "Simple sine wave approximation"
+  network:
+    num_input: 1
+    num_input_connected: 4
+    num_middle: 8
+    num_output: 1
+    vector_dim: 16
+  training:
+    epochs: 200
+    learning_rate: 0.03
+    early_stopping_patience: 30
+  dataset:
+    type: sine
+
+sine_high_precision:
+  description: "High precision sine approximation"
+  network:
+    num_input: 1
+    num_input_connected: 8
+    num_middle: 16
+    num_output: 1
+    vector_dim: 32
+    beam_width: 25
+  training:
+    epochs: 500
+    learning_rate: 0.01
+    early_stopping_patience: 50
+  dataset:
+    type: sine
+
+# ============================================
+# Temporal Sequence Processing
+# ============================================
+
+temporal_short:
+  description: "Short temporal sequence prediction"
+  network:
+    num_input: 3
+    num_input_connected: 6
+    num_middle: 10
+    num_output: 1
+    vector_dim: 16
+    beam_width: 15
+  training:
+    epochs: 100
+    learning_rate: 0.03
+  dataset:
+    type: temporal
+    sequence_length: 3
+    prediction_horizon: 1
+
+temporal_medium:
+  description: "Medium-length sequence prediction"
+  network:
+    num_input: 5
+    num_input_connected: 8
+    num_middle: 16
+    num_output: 2
+    vector_dim: 16
+    beam_width: 25
+  training:
+    epochs: 200
+    learning_rate: 0.02
+  dataset:
+    type: temporal
+    sequence_length: 5
+    prediction_horizon: 2
+
+temporal_long:
+  description: "Long sequence prediction"
+  network:
+    num_input: 10
+    num_input_connected: 15
+    num_middle: 30
+    num_output: 3
+    vector_dim: 32
+    beam_width: 40
+  training:
+    epochs: 300
+    learning_rate: 0.01
+  dataset:
+    type: temporal
+    sequence_length: 10
+    prediction_horizon: 3
+
+# ============================================
+# Classification Tasks
+# ============================================
+
+binary_classification:
+  description: "Binary classification"
+  network:
+    num_input: 4
+    num_input_connected: 6
+    num_middle: 8
+    num_output: 2
+    vector_dim: 8
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: classification
+    num_classes: 2
+
+multiclass_3:
+  description: "3-class classification"
+  network:
+    num_input: 4
+    num_input_connected: 8
+    num_middle: 12
+    num_output: 3
+    vector_dim: 16
+  training:
+    epochs: 150
+    learning_rate: 0.03
+  dataset:
+    type: classification
+    num_classes: 3
+
+multiclass_5:
+  description: "5-class classification"
+  network:
+    num_input: 6
+    num_input_connected: 10
+    num_middle: 20
+    num_output: 5
+    vector_dim: 16
+    beam_width: 30
+  training:
+    epochs: 200
+    learning_rate: 0.02
+  dataset:
+    type: classification
+    num_classes: 5
+
+# ============================================
+# Architecture Comparison
+# ============================================
+
+small_network:
+  description: "Small, fast network for quick experiments"
+  network:
+    num_input: 2
+    num_input_connected: 2
+    num_middle: 4
+    num_output: 1
+    vector_dim: 4
+    beam_width: 5
+  training:
+    epochs: 30
+    learning_rate: 0.15
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [1, 1]
+    targets: [0, 3.14159]
+
+medium_network:
+  description: "Medium-sized balanced network"
+  network:
+    num_input: 4
+    num_input_connected: 6
+    num_middle: 10
+    num_output: 2
+    vector_dim: 16
+    beam_width: 15
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0, 0, 0]
+      - [1, 0, 0, 0]
+      - [0, 1, 0, 0]
+      - [1, 1, 0, 0]
+    targets: [0, 1.57, 3.14, 4.71]
+
+large_network:
+  description: "Large network for complex tasks"
+  network:
+    num_input: 8
+    num_input_connected: 12
+    num_middle: 24
+    num_output: 4
+    vector_dim: 32
+    beam_width: 40
+    radiation_k: 5
+  training:
+    epochs: 250
+    learning_rate: 0.02
+    early_stopping_patience: 30
+  dataset:
+    type: classification
+    num_classes: 4
+
+# ============================================
+# Radiation vs No-Radiation Comparison
+# ============================================
+
+with_radiation:
+  description: "XOR with radiation enabled"
+  network:
+    num_input: 2
+    num_input_connected: 4
+    num_middle: 6
+    num_output: 1
+    vector_dim: 8
+    use_radiation: true
+    radiation_k: 3
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]
+
+without_radiation:
+  description: "XOR without radiation (conductance only)"
+  network:
+    num_input: 2
+    num_input_connected: 4
+    num_middle: 6
+    num_output: 1
+    vector_dim: 8
+    use_radiation: false
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]
+
+# ============================================
+# Energy Conservation Experiments
+# ============================================
+
+high_decay:
+  description: "High temporal decay - faster energy depletion"
+  network:
+    num_input: 2
+    num_input_connected: 4
+    num_middle: 6
+    num_output: 1
+    vector_dim: 8
+    temporal_decay: 0.6
+    conductance_efficiency: 0.8
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]
+
+low_decay:
+  description: "Low temporal decay - persistent activations"
+  network:
+    num_input: 2
+    num_input_connected: 4
+    num_middle: 6
+    num_output: 1
+    vector_dim: 8
+    temporal_decay: 0.2
+    conductance_efficiency: 0.95
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: pattern
+    patterns:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    targets: [0, 3.14159, 3.14159, 0]
+
+# ============================================
+# Beam Width Experiments
+# ============================================
+
+narrow_beam:
+  description: "Narrow beam width - aggressive pruning"
+  network:
+    num_input: 4
+    num_input_connected: 8
+    num_middle: 16
+    num_output: 2
+    vector_dim: 16
+    beam_width: 5
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: classification
+    num_classes: 2
+
+wide_beam:
+  description: "Wide beam width - minimal pruning"
+  network:
+    num_input: 4
+    num_input_connected: 8
+    num_middle: 16
+    num_output: 2
+    vector_dim: 16
+    beam_width: 30
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: classification
+    num_classes: 2
+
+no_beam:
+  description: "No beam width - all nodes can be active"
+  network:
+    num_input: 4
+    num_input_connected: 8
+    num_middle: 16
+    num_output: 2
+    vector_dim: 16
+    # beam_width not set = unlimited
+  training:
+    epochs: 100
+    learning_rate: 0.05
+  dataset:
+    type: classification
+    num_classes: 2
+
