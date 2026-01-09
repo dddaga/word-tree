@@ -31,6 +31,7 @@ training:
 # --- System & Logging ---
 system:
   device: "cuda"
+  random_seed: 42
   logging:
     log_path: "training_logs/log0.csv"
     save_interval_seconds: 10
