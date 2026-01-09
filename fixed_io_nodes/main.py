@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
 
 import warnings
+import argparse, sys
 import queue
 import yaml
 import csv
@@ -27,10 +28,9 @@ def load_config(path):
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
-
-def logger_process_fn(log_queue:mp.Queue, log_path:str):
+def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None):
     """
-    Consumer process that writes logs to a CSV file.
+    Consumer process that writes logs to a CSV file and TensorBoard.
     Opens file once for performance, flushes often for safety.
     """
     # Check if file exists to decide whether to write header
@@ -40,33 +40,66 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str):
     path_obj = Path(log_path)
     path_obj.parent.mkdir(parents=True, exist_ok=True)
 
-    
+    # Initialize TensorBoard writer
+    writer = None
+    if tensorboard_dir:
+        writer = SummaryWriter(log_dir=tensorboard_dir)
+        print(f"Logger: TensorBoard logging enabled at {tensorboard_dir}")
+
+
     # Open file once
     with open(log_path, mode='a', newline='') as f:
 
-        fieldnames = ['worker_id', 'loss']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        
+        fieldnames = ['worker_id', 'loss', 'skipped']
+        writer_csv = csv.DictWriter(f, fieldnames=fieldnames)
+
         # If its a new file, write the header
         if not file_exists:
-            writer.writeheader()
+            writer_csv.writeheader()
             f.flush() 
-        
+
         print(f"Logger: Writing logs to {log_path}")
-        
+
+        global_step = 0
+        total_samples = 0
+        skipped_samples = 0
+
         while True:
             try:
-                record = log_queue.get(block=True, timeout=120) #wait for 120 seconds for a record to arrive                
-                
-                writer.writerow(record)
-                
+                record = log_queue.get(block=True, timeout=120) #wait for 120 seconds for a record to arrive
+
+                # Track skip statistics
+                total_samples += 1
+                if record.get('skipped', False):
+                    skipped_samples += 1
+
+                writer_csv.writerow(record)
                 f.flush() #flush the buffer to disk immediately to ensure data is not lost if the script crashes
-            
+
+                # Log to TensorBoard (only valid losses)
+                if writer and not record.get('skipped', False):
+                    writer.add_scalar('Training/Loss', record['loss'], global_step)
+                    global_step += 1
+
+                # Periodically report skip rate
+                if total_samples % 100 == 0 and skipped_samples > 0:
+                    skip_rate = (skipped_samples / total_samples) * 100
+                    print(f"Logger: Skip rate: {skip_rate:.2f}% ({skipped_samples}/{total_samples})")
+                    if writer:
+                        writer.add_scalar('Training/SkipRate', skip_rate, global_step)
+
             except queue.Empty:
                 break
             except Exception as e:
                 print(f"Logger Error: {e}")
 
+    if writer:
+        writer.close()
+
+    # Final statistics
+    if total_samples > 0:
+        final_skip_rate = (skipped_samples / total_samples) * 100
+        print(f"Logger: Final statistics - {skipped_samples}/{total_samples} samples skipped ({final_skip_rate:.2f}%)")
 
 def worker_process_fn(
     worker_id:int,
@@ -76,7 +109,6 @@ def worker_process_fn(
     config:dict,
 ):
     device = config['system']['device']
-    time.sleep(random.expovariate(2.0)) 
 
     #the node store is used internally by model. It is returned just for convenience.
     model, node_store = initialize_model_and_nodestore(
@@ -94,6 +126,7 @@ def worker_process_fn(
         activation_threshold=config['model']['activation_threshold'],
         gamma=config['model']['gamma'],
         device=config['system']['device'],
+        temporal_decay=config['model'].get('temporal_decay', 1.0)
     )
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -103,18 +136,30 @@ def worker_process_fn(
     # 2. Training Loop
     while True:
         try:
-            data, target = data_queue.get(block=True, timeout=60) #wait for 60 seconds for data to arrive
+            data, target = data_queue.get(block=True, timeout=10) #wait for 10 seconds for data to arrive
             data = data.to(device)
             target = target.to(device)
         except queue.Empty:
             print(f"Worker {worker_id}: Queue empty (timeout), shutting down.")
             break
 
+        model.gnn.sync_weights()
+
         # Forward Pass
-        
         out = model(data)
         loss = criterion(out, target)
         # print(f"Worker {worker_id}: Loss: {loss.item():.4f}, Target: {target.item()}, Output: {out}")
+        
+        # Validate loss before backward pass
+        if torch.isinf(loss) or torch.isnan(loss):
+            print(f"Worker {worker_id}: Invalid loss ({loss.item()}), skipping sample")
+            log_queue.put({
+                'worker_id': worker_id,
+                'loss': float('nan'),
+                'skipped': True
+            })
+            model.reset_activations()
+            continue
         
         # Backward Pass
         loss.backward()
@@ -122,22 +167,42 @@ def worker_process_fn(
         # Extract Gradients
         phase_grads, mag_grads = model.gnn.get_grads()
 
+        # Validate gradients before sending to accumulator
+        valid_grads = True
+        for grad in list(phase_grads.values()) + list(mag_grads.values()):
+            if grad is not None and (torch.isinf(grad).any() or torch.isnan(grad).any()):
+                valid_grads = False
+                break
+
+        if not valid_grads:
+            print(f"Worker {worker_id}: Invalid gradients detected, skipping sample")
+            log_queue.put({
+                'worker_id': worker_id,
+                'loss': loss.item(),
+                'skipped': True
+            })
+            model.reset_activations()
+            continue
+
         # SAFE TENSOR PASSING:
         # We must .detach() to cut the computation graph and .clone() to 
         # ensure the memory is safe to send to another process.
-        clean_phase_grads = {k: v.detach().clone() for k, v in phase_grads.items() if v is not None}
-        clean_mag_grads = {k: v.detach().clone() for k, v in mag_grads.items() if v is not None}
+        # CRITICAL: Move to CPU before putting in queue to avoid MPS/multiprocessing errors
+        clean_phase_grads = {k: v.detach().cpu().clone() for k, v in phase_grads.items() if v is not None}
+        clean_mag_grads = {k: v.detach().cpu().clone() for k, v in mag_grads.items() if v is not None}
 
-        # Send gradients to gradient accumulator and reset model
+        # Send gradients to gradient accumulator (only if valid)
         gradient_queue.put((clean_phase_grads, clean_mag_grads))
-        model.reset()
+        model.reset_activations()
 
         # Send results to logger
         log_queue.put({
             'worker_id': worker_id,
-            'loss': loss.item()
+            'loss': loss.item(),
+            'skipped': False
         })
-        print(f"Worker {worker_id}: Loss: {loss.item():.4f}")
+
+        print(f"Worker {worker_id}: Loss: {loss.item():.4f}") #  , Target: {target.item()}, Output: {out}")
 
 def data_loader_process_fn(
     data_queue:mp.Queue,
@@ -166,29 +231,33 @@ def data_loader_process_fn(
 
     while True:
 
-        if data_queue.qsize() < num_workers*2:
-            try:
-                x, y = next(data_iterator)
-                x = x.squeeze()
-                y = y.squeeze()
-            except StopIteration:
-                epochs_completed += 1
-                if epochs_completed >= epochs:
-                    return
-                data_iterator = iter(dataloader)
-                continue #restart the iterator
+        # Note: qsize() not available on macOS, so we continuously feed data
+        # The maxsize parameter on the queue will handle backpressure
+        try:
+            x, y = next(data_iterator)
+            x = x.squeeze()
+            y = y.squeeze()
+        except StopIteration:
+            epochs_completed += 1
+            if epochs_completed >= epochs:
+                return
+            data_iterator = iter(dataloader)
+            continue #restart the iterator
 
-            data_queue.put((x, y))
-        
-        else:
-            time.sleep(0.1)
+        # IMPORTANT: Ensure tensors are on CPU before sending through queue
+        # MPS/CUDA tensors cannot be shared between processes
+        x = x.cpu()
+        y = y.cpu()
+
+        # put() will block when queue is full (maxsize), providing natural backpressure
+        data_queue.put((x, y))
 
 
 
 def gradient_accumulator_process_fn(
     gradient_queue:mp.Queue,
     config:dict,
-    lookup_table:LookupTable,
+    lookup_table:LookupTable=None,
 ):
     
     node_store = NodeStore(
@@ -202,52 +271,77 @@ def gradient_accumulator_process_fn(
         vector_dim=config['model']['vector_dim'],
         phase_bins=config['model']['phase_bins'],
         mag_bins=config['model']['mag_bins'],
+
+        radiation_similarity_threshold=config['model']['radiation_similarity_threshold'],
+        temporal_decay=config['model']['temporal_decay'],
     )
 
     accumulator = GradientAccumulator(
         node_store=node_store,
         lr=config['training']['lr'],
         verbose=True,
-        device=config['system']['device']
+        device=config['system']['device'],
+        accumulation_steps=config['training']['accumulation_steps'],
+        momentum=config['training']['momentum'],
     )
 
-    print("Accumulator: Ready.")
+    print("Accumulator: Ready.", flush=True)
+    sys.stdout.flush()
 
-    while True:
+    try:    
+        while True:
 
-        grads = gradient_queue.get(block=True, timeout=config['training']['timeout']) #wait for 60 seconds for gradients to arrive
+            grads = gradient_queue.get(block=True, timeout=config['training']['timeout']) #wait for 60 seconds for gradients to arrive
 
-        if grads is None:
-            break
 
-        # Unpack and Accumulate
-        phase_grads, mag_grads = grads
-        accumulator.receive_gradients(phase_grads, mag_grads)
+            if grads is None:
+                print("Accumulator: Received shutdown signal.", flush=True)
+                sys.stdout.flush()
+                break
+            
 
-        # Apply updates (Accumulator handles the step logic internally)
-        accumulator.step()
+            # Unpack and Accumulate
+            phase_grads, mag_grads = grads
+            accumulator.receive_gradients(phase_grads, mag_grads)
+
+            # Apply updates (Accumulator handles the step logic internally)
+            accumulator.step()
+    except Exception as e:
+        raise e
+    finally:
+        # Always print node update counts before exiting
+        print("=" * 80, flush=True)
+        print("Node update counts:", flush=True)
+        print({i:j for i, j in accumulator.node_update_counts.items() if j > 0}, flush=True)
+        print("=" * 80, flush=True)
+        sys.stdout.flush()
+        time.sleep(0.5)  # Give time for output to flush
 
 
 if __name__ == "__main__":
-    torch.manual_seed(42)
-    random.seed(42)
-    np.random.seed(42)
-
     warnings.filterwarnings('ignore')
-
     mp.set_start_method('spawn', force=True)
 
-    config = load_config('configs/config.yaml')
+    parser = argparse.ArgumentParser(description='NeuroGraph Training')
+    parser.add_argument('--config', type=str, default='configs/config.yaml', help='Configuration file path (in YAML)')
+    args = parser.parse_args()
+
+    config = load_config(args.config)
+    torch.manual_seed(config['system']['random_seed'])
+    random.seed(config['system']['random_seed'])
+    np.random.seed(config['system']['random_seed'])
+
     device = config['system']['device']
     worker_count = config['training']['worker_count']
     log_path = config['system']['logging']['log_path']
+    tensorboard_dir = config['system']['logging'].get('tensorboard_dir', 'training_logs/tensorboard')
 
-    lookup_table = LookupTable(
-        phase_bins=config['model']['phase_bins'],
-        mag_bins=config['model']['mag_bins'],
-        gamma=config['model']['gamma'],
-        device=device
-    )
+    # Create unique run ID based on timestamp for separate TensorBoard runs
+    run_id = time.strftime("%Y%m%d-%H%M%S")
+    tensorboard_run_dir = os.path.join(tensorboard_dir, run_id)
+    print(f"📊 TensorBoard run: {run_id}")
+    print(f"📦 Using continuous FP16 weights (no quantization)")
+    print(f"📊 Batch size: {config['training']['batch_size']}")
     
 
     #initialize queues
@@ -258,13 +352,17 @@ if __name__ == "__main__":
     worker_processes = []
 
     #Start Logger Process
-    logger_process = mp.Process(target=logger_process_fn, args=(log_queue, log_path), name='logger')
+    logger_process = mp.Process(
+        target=logger_process_fn, 
+        args=(log_queue, log_path, tensorboard_run_dir), 
+        name='logger'
+    )
     logger_process.start()
 
     #Start Accumulator Process
     accumulator_process = mp.Process(
         target=gradient_accumulator_process_fn, 
-        args=(gradient_queue, config, lookup_table), 
+        args=(gradient_queue, config), 
         name='accumulator'
     )
     accumulator_process.start()
@@ -301,22 +399,29 @@ if __name__ == "__main__":
     # Join process and listen for KeyboardInterrupt
     try:
         dataloader_process.join()
+        print("DataLoader finished. Signaling accumulator to stop...", flush=True)
+        # When dataloader finishes normally, signal accumulator to stop
+        gradient_queue.put(None)
+        accumulator_process.join(timeout=120)  # Wait up to 120 seconds for accumulator to finish
+        if accumulator_process.is_alive():
+            print("Warning: Accumulator process did not terminate in time.", flush=True)
     except KeyboardInterrupt:
-        print("Shutting down training")
+        print("Shutting down training", flush=True)
         dataloader_process.terminate()
         
         # When the accumulator process sees a gradient as None, it will terminate.
         # This is to ensure that the accumulator process terminates gracefully.
         # Otherwise, there are chances that it terminates during a write step, which could corrupt th database
         gradient_queue.put(None)
-        accumulator_process.join()
-        
+        accumulator_process.join(timeout=120)
+        if accumulator_process.is_alive():
+            print("Warning: Accumulator process did not terminate in time.", flush=True)
 
         logger_process.terminate()
         for worker_process in worker_processes:
             worker_process.terminate()
         
-        print("Training terminated")
+        print("Training terminated", flush=True)
 
 
 

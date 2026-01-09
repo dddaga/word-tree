@@ -9,25 +9,24 @@ from lookup_table import LookupTable
 
 class Model(nn.Module):
 
-    def __init__(self, gnn:GNN, quantizer:Quantizer):
+    def __init__(self, gnn:GNN, quantizer:Quantizer=None):
 
         super().__init__()
         self.gnn = gnn
         # self.input_adapter = input_adapter
         # self.input_adapter_loaded = False
-        self.quantizer = quantizer
+        if quantizer is not None:
+            self.quantizer = quantizer
+        else:
+            self.quantizer = nn.Identity()
 
     
 
     def forward(self, x):
         
-        # if self.input_adapter_loaded:
-        #     with torch.no_grad():
-        #         out = self.input_adapter(x)
-        # else:
         out = x
 
-        out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
+        # out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
         phases = self.quantizer(out)
 
         out = self.gnn(phases)
@@ -39,17 +38,9 @@ class Model(nn.Module):
         """
         self.gnn.reset(fetch_weights=True)
         
-        # for p in self.input_adapter.parameters():
-        #     p.grad = None
-
         #nothing to reset for quantizer
     
 def initialize_model(
-    # input_dim:int, 
-    # adapter_hidden_dims:List[int],
-    # adapter_dropout:float,
-
-
     node_store:NodeStore,
     cardinality:int, 
     radiation_targets:int,
@@ -62,12 +53,9 @@ def initialize_model(
     iterations:int,
     activation_threshold:float,
     gamma:float=1.,
+    temporal_decay:float=1.0,
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
-
-
-    # adapter_normalization_layer:str='layer_norm',
-
 ):
 
 
@@ -86,16 +74,18 @@ def initialize_model(
         gamma=gamma,
         device=device,
         verbose=verbose,
+        temporal_decay=temporal_decay,
     )
 
-    quantizer = Quantizer(
-        phase_bins=phase_bins,
-        mag_bins=mag_bins,
-        lookup_table=gnn.lookup_table,
-        vector_dim=vector_dim,
-        input_node_count=input_nodes,
-        device=device,
-    )
+    # quantizer = Quantizer(
+    #     phase_bins=phase_bins,
+    #     mag_bins=mag_bins,
+    #     lookup_table=gnn.lookup_table,
+    #     vector_dim=vector_dim,
+    #     input_node_count=input_nodes,
+    #     device=device,
+    # )
+    quantizer = None #no quantization for now
 
     return Model(gnn, quantizer)
 
@@ -116,6 +106,8 @@ def initialize_model_and_nodestore(
     iterations:int,
     activation_threshold:float,
     gamma:float=1.,
+    temporal_decay:float=1.0,
+    radiation_similarity_threshold:float=0.0,
 
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
@@ -124,12 +116,13 @@ def initialize_model_and_nodestore(
     returns model, node_store
     """
 
-    lookup_table = LookupTable(
-        phase_bins=phase_bins,
-        mag_bins=mag_bins,
-        gamma=gamma,
-        device=device,
-    )
+    lookup_table = None #no quantization for now
+    # lookup_table = LookupTable(
+    #     phase_bins=phase_bins,
+    #     mag_bins=mag_bins,
+    #     gamma=gamma,
+    #     device=device,
+    # )
 
 
     node_store = NodeStore(
@@ -143,6 +136,8 @@ def initialize_model_and_nodestore(
         vector_dim=vector_dim,
         phase_bins=phase_bins,
         mag_bins=mag_bins,
+        temporal_decay=temporal_decay,
+        radiation_similarity_threshold=radiation_similarity_threshold,
     )
 
     model = initialize_model(
