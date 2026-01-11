@@ -3,6 +3,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
+from torch.utils.tensorboard import SummaryWriter
 
 import warnings
 import argparse, sys
@@ -28,7 +29,7 @@ def load_config(path):
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
-def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None):
+def logger_process_fn(log_queue:mp.Queue, log_path:str, fieldnames:list, tensorboard_dir:str=None):
     """
     Consumer process that writes logs to a CSV file and TensorBoard.
     Opens file once for performance, flushes often for safety.
@@ -50,7 +51,6 @@ def logger_process_fn(log_queue:mp.Queue, log_path:str, tensorboard_dir:str=None
     # Open file once
     with open(log_path, mode='a', newline='') as f:
 
-        fieldnames = ['worker_id', 'loss', 'skipped']
         writer_csv = csv.DictWriter(f, fieldnames=fieldnames)
 
         # If its a new file, write the header
@@ -258,6 +258,7 @@ def gradient_accumulator_process_fn(
     gradient_queue:mp.Queue,
     config:dict,
     lookup_table:LookupTable=None,
+    ga_log_path:str=None,
 ):
     
     node_store = NodeStore(
@@ -285,7 +286,29 @@ def gradient_accumulator_process_fn(
         momentum=config['training']['momentum'],
     )
 
-    print("Accumulator: Ready.", flush=True)
+    # Setup GA logging
+    ga_log_file = None
+    ga_writer = None
+    step_count = 0
+    
+    if ga_log_path is None:
+        # Derive GA log path from config log path
+        log_path = config['system']['logging']['log_path']
+        ga_log_path = log_path.replace('.csv', 'GA.csv')
+    
+    # Initialize GA log file
+    file_exists = os.path.isfile(ga_log_path)
+    path_obj = Path(ga_log_path)
+    path_obj.parent.mkdir(parents=True, exist_ok=True)
+    
+    ga_log_file = open(ga_log_path, mode='a', newline='')
+    ga_writer = csv.DictWriter(ga_log_file, fieldnames=['step', 'node_ids', 'num_nodes'])
+    
+    if not file_exists:
+        ga_writer.writeheader()
+        ga_log_file.flush()
+    
+    print(f"Accumulator: Ready. GA logging to {ga_log_path}", flush=True)
     sys.stdout.flush()
 
     try:    
@@ -305,7 +328,17 @@ def gradient_accumulator_process_fn(
             accumulator.receive_gradients(phase_grads, mag_grads)
 
             # Apply updates (Accumulator handles the step logic internally)
-            accumulator.step()
+            node_ids_to_update = accumulator.step()
+            
+            # Log node updates to GA log file
+            if node_ids_to_update:
+                step_count += 1
+                ga_writer.writerow({
+                    'step': step_count,
+                    'node_ids': str(node_ids_to_update),
+                    'num_nodes': len(node_ids_to_update)
+                })
+                ga_log_file.flush()
     except Exception as e:
         raise e
     finally:
@@ -315,6 +348,11 @@ def gradient_accumulator_process_fn(
         print({i:j for i, j in accumulator.node_update_counts.items() if j > 0}, flush=True)
         print("=" * 80, flush=True)
         sys.stdout.flush()
+        
+        # Close GA log file
+        if ga_log_file:
+            ga_log_file.close()
+        
         time.sleep(0.5)  # Give time for output to flush
 
 
@@ -354,7 +392,7 @@ if __name__ == "__main__":
     #Start Logger Process
     logger_process = mp.Process(
         target=logger_process_fn, 
-        args=(log_queue, log_path, tensorboard_run_dir), 
+        args=(log_queue, log_path, config['system']['logging']['fieldnames'], tensorboard_run_dir), 
         name='logger'
     )
     logger_process.start()

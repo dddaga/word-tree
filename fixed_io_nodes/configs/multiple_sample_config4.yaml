@@ -1,9 +1,7 @@
-#For dataset with multiple sample of a single class, and none for other classes
-
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "multiple_sample3"
+  collection_name: "multiple_sample4"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -17,16 +15,20 @@ graph:
 # --- Model Architecture ---
 model:
   vector_dim: 14
-  phase_bins: 256
-  mag_bins: 256
+  phase_bins: null
+  mag_bins: null
   gamma: 1.0
   iterations: 3
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 0.9
   activation_threshold: 0.05
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.001
-  worker_count: 1
+  lr: 0.005
+  accumulation_steps: 8
+  momentum: 0.9
+  worker_count: 4
   timeout: 300 #time to wait for data from queue
 
 
@@ -35,6 +37,6 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/multiple_sample_log3.csv"
+    log_path: "training_logs/multiple_sample_log4.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class']

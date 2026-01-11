@@ -1,7 +1,7 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "single_sample3"
+  collection_name: "single_sample5"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -25,10 +25,10 @@ model:
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.001
+  lr: 0.005
   accumulation_steps: 8
   momentum: 0.9
-  worker_count: 1
+  worker_count: 4
   timeout: 300 #time to wait for data from queue
 
 
@@ -37,5 +37,6 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/single_sample_log3.csv"
+    log_path: "training_logs/single_sample_log5.csv"
     save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'skipped']
