@@ -402,17 +402,22 @@ class NodeStore(nn.Module):
         return vectors
 
 
-    def get_node(self, node_ids: Union[int, List[int]], with_payload:bool=True, with_vectors:bool=True):
+    def get_node(self, node_ids: Union[int, str, List[int], List[str]], with_payload:bool=True, with_vectors:bool=True):
         """
-        node_ids: list of node ids to get
+        node_ids: list of node ids to get (can be int, str, or list of either)
         with_payload: whether to include payload
         with_vectors: whether to include vectors
 
         returns: list of nodes with or without payload and vectors (as requested)
         """
         #TODO: make this return a list of Node objects instead of qdrant points
-        if isinstance(node_ids, int):
+        # Convert to list if single value
+        if not isinstance(node_ids, list):
             node_ids = [node_ids]
+        
+        # Convert all node IDs to integers (handles both int and str inputs)
+        node_ids = [int(node_id) for node_id in node_ids]
+        
         return self.client.retrieve(
             collection_name=self.collection_name,
             ids=node_ids,
@@ -895,17 +900,24 @@ class UnquantizedNodeStore(nn.Module):
             wait=True,
         )
 
-    def get_node(self, node_ids: Union[int, List[int]], with_payload:bool=True, with_vectors:bool=True):
+    def get_node(self, node_ids: Union[int, str, List[int], List[str]], with_payload:bool=True, with_vectors:bool=True):
         """
-        node_ids: list of node ids to get
+        node_ids: list of node ids to get (can be int, str, or list of either)
         with_payload: whether to include payload
         with_vectors: whether to include vectors
 
         returns: list of nodes with or without payload and vectors (as requested)
         """
         #TODO: make this return a list of Node objects instead of qdrant points
-        if isinstance(node_ids, int):
+        # Convert to list if single value
+        if isinstance(node_ids, int) or isinstance(node_ids, str):
             node_ids = [node_ids]
+        if isinstance(node_ids, set):
+            node_ids = list(node_ids)
+        
+        # Convert all node IDs to integers (handles both int and str inputs)
+        node_ids = [int(node_id) for node_id in node_ids]
+        
         return self._retrieve_with_retry(
             ids=node_ids,
             with_payload=with_payload,

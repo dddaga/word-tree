@@ -19,7 +19,7 @@ class MyModuleDict(nn.ModuleDict):
 
 
 
-class GNN(nn.Module):
+class UnquantizedGNN(nn.Module):
 
     def __init__(
         self,
@@ -252,14 +252,20 @@ class GNN(nn.Module):
             #     print(f"Iteration {iteration+2} done")
 
         output_signals = {}
-        
+        inactive_output_nodes = []
         for node_id in self.output_nodeids:
             node_id = str(node_id)
             if node_id in self.active_nodes:
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
-                # print("Node not active: ", node_id)
-                output_signals[node_id] = torch.tensor(-torch.inf, device=self.device).requires_grad_(True)
+                node_value = self.node_store.get_node(node_id)[0]
+                node = Node(node_store=self.node_store, gamma=self.gamma, device=self.device)
+                node.load_values(node_value)
+                output_signals[node_id] = node.activation_strength
+                self.active_nodes[node_id] = node
+                inactive_output_nodes.append(node_id)
+        
+        print("inactive_output_nodes: ", inactive_output_nodes)
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed
@@ -269,6 +275,12 @@ class GNN(nn.Module):
         if self._forward_pass_count >= self._cache_cleanup_interval:
             self._cleanup_node_cache()
             self._forward_pass_count = 0
+        
+        # print("active_nodes: ", {i:[j.phase_activation, j.mag_activation] for i, j in self.active_nodes.items()})
+        # print("Activation strengths: ",)
+        # for i,j in self.active_nodes.items():
+        #     print(i, j.activation_strength)
+        # print("output_signals: ", output_signals)
         
         return output_signals
 
@@ -633,3 +645,4 @@ class QuantizedGNN(nn.Module):
             mag_grads[node_id] = node.mag_weight.grad
         return phase_grads, mag_grads
 
+GNN = UnquantizedGNN

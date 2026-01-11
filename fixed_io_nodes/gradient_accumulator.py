@@ -123,6 +123,8 @@ class GradientAccumulator(nn.Module):
                 print(f"Final values: {final_values}")
             if self.verbose:
                 print(f"Updated {len(node_ids_to_update)} nodes: {node_ids_to_update}")
+        
+        return node_ids_to_update
 
     def if_update_needed(self, grad:torch.Tensor):
         """
@@ -211,6 +213,8 @@ class UnquantizedGradientAccumulator(nn.Module):
         """
         Apply gradient updates when batch_size samples have been accumulated.
         Uses SGD with momentum for stable optimization.
+
+        returns the node ids that were updated
         """
         
 
@@ -219,7 +223,7 @@ class UnquantizedGradientAccumulator(nn.Module):
         node_ids_to_update = list(node_ids_to_update)
         
         if not node_ids_to_update:
-            return
+            return []
 
         # Fetch current node values and versions
         nodes_to_update = self.node_store.get_node(node_ids_to_update)
@@ -300,7 +304,7 @@ class UnquantizedGradientAccumulator(nn.Module):
                 print(f"  Avg phase grad norm: {avg_phase_grad_norm:.4f}, Avg mag grad norm: {avg_mag_grad_norm:.4f}")
             
             if self.verbose:
-                print(f"Updated {len(node_ids_to_update)} nodes: {node_ids_to_update}")
+                print(f"Updated {len(node_ids_to_update)}, Nodes: {node_ids_to_update}")
                 
         except Exception as e:
             print(f"Error updating vectors: {e}")
@@ -310,5 +314,6 @@ class UnquantizedGradientAccumulator(nn.Module):
         # Reset accumulators for next batch
         self.phase_grads.clear()
         self.mag_grads.clear()
+        return node_ids_to_update
 
 GradientAccumulator = UnquantizedGradientAccumulator

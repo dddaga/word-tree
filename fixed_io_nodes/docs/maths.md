@@ -29,7 +29,7 @@ $$\begin{equation}
 \end{equation}$$
 
 $$\begin{equation}
-\frac{dM}{dm} = M \cdot \gamma  \sin{(\frac{2\pi}{N}(m-\frac{N}{2}))} \cdot \cos{(\frac{2\pi}{N}(m-\frac{N}{2}))}
+\frac{dM}{dm} = M \cdot \gamma  \sin{(\frac{2\pi}{N}(m-\frac{N}{2}))} \cdot \cos{(\frac{2\pi}{N}(m-\frac{N}{2}))} \cdot \frac{2\pi}{N}
 \end{equation}$$
 
 As it is inefficient to always apply equation (1) and (2) for conversion everytime, the values are taken from lookup table. But then that makes the process non-differentiable. For that purpose, different functions are defined for lookup with custom autograd behaviour according to equations (3) and (4) in [*custom_functions.py*](../custom_functions.py)
@@ -100,12 +100,12 @@ $$
 2) The phase activation will be calculated as 
 
 $$
-\theta_0^{(new)} = \sum_{i=0}^n A_i*(\theta_i+\theta_w) 
-$$
+m_0^{(new)} = \sum_{i=0}^n A_i*(m_i+m_w) 
+$$  
 
-To ensure its appropriate range, $\theta_0^{(new)}$ = $\theta_0^{(new)}\%phase\_bins$
+To ensure its appropriate range, $m_0^{(new)}$ = $m_0^{(new)}\%bins$
 
-We do similarly for magnitude activation updates as well. 
+<!-- We do similarly for magnitude activation updates as well.  -->
 
 
 

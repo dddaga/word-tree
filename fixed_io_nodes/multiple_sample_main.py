@@ -2,7 +2,7 @@ import torch.multiprocessing as mp
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, Subset
 
 import warnings
 import argparse
@@ -22,7 +22,6 @@ from main import (
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 # Custom Modules
-from lookup_table import LookupTable
 from full_model import initialize_model_and_nodestore
 
 
@@ -30,9 +29,13 @@ def data_loader_process_fn(
     data_queue:mp.Queue,
     # dataset:Dataset,
     config:dict,
-    epochs:int=1,
-    shuffle:bool=True
+    epochs:int=100000,
+    shuffle:bool=True,
+    sample_count:int=1,
 ):
+    """
+    sample_count: number of samples to load for each class
+    """
     ###### Defining MNIST here because of problems in pickle-izing the dataset
     #the specific problem is with the lambda function in the transform.
 
@@ -43,6 +46,26 @@ def data_loader_process_fn(
     ])
     dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transformations)
 
+    labels = dataset.targets 
+
+    indices = []
+    count = {}
+
+    for i, label in enumerate(labels):
+        # .item() converts tensor to int for dictionary key
+        label = label.item() 
+        if label not in count:
+            count[label] = 0
+        if count[label] < sample_count:
+            indices.append(i)
+            count[label] += 1
+
+        # Optional: Exit early once you have all classes
+        if len(indices) == 10 * sample_count: 
+            break
+
+    dataset = Subset(dataset, indices)
+    
     #########################################################
 
     device = config['system']['device']
@@ -50,16 +73,28 @@ def data_loader_process_fn(
 
     torch.manual_seed(42) #CHANGED from main.py
     dataloader = DataLoader(dataset, batch_size=1, shuffle=shuffle)
-    x, y = next(iter(dataloader))
-    x = x.squeeze()
-    y = y.squeeze()
+    data_iterator = iter(dataloader)
+    epochs_completed = 0
 
-    print(f"Dataloader: Ready. \nTarget: {y.item()}")
+    print(f"Dataloader: Ready. \nSamples per class: {sample_count}. Total samples: {len(indices)}")
+
 
     while True:
 
-        if data_queue.qsize() < num_workers*2: #CHANGED from main.py, keep putting same sample over and over again
+        if data_queue.qsize() < num_workers*4: 
+            try:
+                x, y = next(data_iterator)
+                x = x.squeeze()
+                y = y.squeeze()
+            except StopIteration:
+                epochs_completed += 1
+                print(f"Finished epoch {epochs_completed}")
+                if epochs_completed >= epochs:
+                    return
+                data_iterator = iter(dataloader)
+                continue
             data_queue.put((x, y))
+            # print(f"putted {y.item()}")
         
         else:
             time.sleep(0.01)
@@ -153,9 +188,10 @@ def worker_process_fn(
         # Send results to logger
         log_queue.put({
             'worker_id': worker_id,
-            'loss': loss.item()
+            'loss': loss.item(),
+            'class': target.item()
         })
-        print(f"Worker {worker_id}: Loss: {loss.item():.4f}")
+        print(f"Worker {worker_id}, Class {target.item()}: Loss: {loss.item():.4f}")
 
         # Synchronization point: Wait for all workers to finish before starting next iteration
         try:
@@ -199,7 +235,7 @@ if __name__ == "__main__":
     worker_processes = []
 
     #Start Logger Process
-    logger_process = mp.Process(target=logger_process_fn, args=(log_queue, log_path), name='logger')
+    logger_process = mp.Process(target=logger_process_fn, args=(log_queue, log_path, config['system']['logging']['fieldnames']), name='logger', )
     logger_process.start()
 
     #Start Accumulator Process
@@ -221,7 +257,7 @@ if __name__ == "__main__":
     
     dataloader_process = mp.Process(
         target=data_loader_process_fn,
-        args=(data_queue, config, 1, True),
+        args=(data_queue, config),
         name="DataLoader"
     )
     dataloader_process.start()
@@ -243,7 +279,7 @@ if __name__ == "__main__":
     try:
         dataloader_process.join()
     except KeyboardInterrupt:
-        print("Shutting down training")
+        print("Shutting down training", flush=True)
         dataloader_process.terminate()
         
         # When the accumulator process sees a gradient as None, it will terminate.
