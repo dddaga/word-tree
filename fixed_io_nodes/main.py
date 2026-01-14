@@ -107,6 +107,8 @@ def worker_process_fn(
     gradient_queue:mp.Queue,
     log_queue:mp.Queue,
     config:dict,
+    start_barrier:mp.Barrier,
+    end_barrier:mp.Barrier,
 ):
     device = config['system']['device']
 
@@ -130,24 +132,39 @@ def worker_process_fn(
     )
 
     criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.BCEWithLogitsLoss(reduction='sum')
     
     print(f"Worker {worker_id}: Ready on {device}.")
 
     # 2. Training Loop
     while True:
         try:
-            data, target = data_queue.get(block=True, timeout=10) #wait for 10 seconds for data to arrive
+            data, target = data_queue.get(block=True, timeout=60) #wait for 10 seconds for data to arrive
             data = data.to(device)
             target = target.to(device)
         except queue.Empty:
             print(f"Worker {worker_id}: Queue empty (timeout), shutting down.")
             break
 
+        # Synchronization point: Wait for all workers to be ready before starting forward pass
+        try:
+            start_barrier.wait(timeout=120)
+        except mp.BrokenBarrierError:
+            print(f"Worker {worker_id}: Barrier broken, shutting down.")
+            break
+
         model.gnn.sync_weights()
 
         # Forward Pass
         out = model(data)
-        loss = criterion(out, target)
+        if isinstance(criterion, torch.nn.CrossEntropyLoss):
+            loss = criterion(out, target)
+        elif isinstance(criterion, torch.nn.BCEWithLogitsLoss):
+            target_onehot = torch.zeros_like(out)
+            target_onehot[target] = 1.0
+            loss = criterion(out, target_onehot)
+        else:
+            raise ValueError(f"Unsupported criterion: {criterion}")
         # print(f"Worker {worker_id}: Loss: {loss.item():.4f}, Target: {target.item()}, Output: {out}")
         
         # Validate loss before backward pass
@@ -156,9 +173,10 @@ def worker_process_fn(
             log_queue.put({
                 'worker_id': worker_id,
                 'loss': float('nan'),
-                'skipped': True
+                'skipped': True,
+                'class': target.item(),
             })
-            model.reset_activations()
+            model.reset()
             continue
         
         # Backward Pass
@@ -179,9 +197,10 @@ def worker_process_fn(
             log_queue.put({
                 'worker_id': worker_id,
                 'loss': loss.item(),
-                'skipped': True
+                'skipped': True,
+                'class': target.item(),
             })
-            model.reset_activations()
+            model.reset()
             continue
 
         # SAFE TENSOR PASSING:
@@ -193,22 +212,30 @@ def worker_process_fn(
 
         # Send gradients to gradient accumulator (only if valid)
         gradient_queue.put((clean_phase_grads, clean_mag_grads))
-        model.reset_activations()
+        model.reset()
 
         # Send results to logger
         log_queue.put({
             'worker_id': worker_id,
             'loss': loss.item(),
-            'skipped': False
+            'skipped': False,
+            'class': target.item(),
         })
 
-        print(f"Worker {worker_id}: Loss: {loss.item():.4f}") #  , Target: {target.item()}, Output: {out}")
+        print(f"Worker {worker_id}, Target {target.item()}: Loss: {loss.item():.4f} ")
+
+        # Synchronization point: Wait for all workers to finish before starting next iteration
+        try:
+            end_barrier.wait(timeout=120)
+        except mp.BrokenBarrierError:
+            print(f"Worker {worker_id}: Barrier broken, shutting down.")
+            break
 
 def data_loader_process_fn(
     data_queue:mp.Queue,
     # dataset:Dataset,
     config:dict,
-    epochs:int=1,
+    # epochs:int=1,
     shuffle:bool=True
 ):
     ###### Defining MNIST here because of problems in pickle-izing the dataset
@@ -216,14 +243,14 @@ def data_loader_process_fn(
 
     transformations = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.flatten())   
+        transforms.Resize((14, 14)),
+        transforms.Lambda(lambda x: x.squeeze()),
     ])
     dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transformations)
 
     #########################################################
 
-    device = config['system']['device']
-    num_workers = config['training']['worker_count']
+    epochs = config['training'].get('epochs', 1)
 
     dataloader = DataLoader(dataset, batch_size=1, shuffle=shuffle)
     data_iterator = iter(dataloader)
@@ -231,8 +258,7 @@ def data_loader_process_fn(
 
     while True:
 
-        # Note: qsize() not available on macOS, so we continuously feed data
-        # The maxsize parameter on the queue will handle backpressure
+        # The maxsize parameter on the queue will handle backpressure, so we don't need to check the queue size.
         try:
             x, y = next(data_iterator)
             x = x.squeeze()
@@ -243,11 +269,6 @@ def data_loader_process_fn(
                 return
             data_iterator = iter(dataloader)
             continue #restart the iterator
-
-        # IMPORTANT: Ensure tensors are on CPU before sending through queue
-        # MPS/CUDA tensors cannot be shared between processes
-        x = x.cpu()
-        y = y.cpu()
 
         # put() will block when queue is full (maxsize), providing natural backpressure
         data_queue.put((x, y))
@@ -361,7 +382,7 @@ if __name__ == "__main__":
     mp.set_start_method('spawn', force=True)
 
     parser = argparse.ArgumentParser(description='NeuroGraph Training')
-    parser.add_argument('--config', type=str, default='configs/config.yaml', help='Configuration file path (in YAML)')
+    parser.add_argument('--config', type=str, required=True, help='Configuration file path (in YAML)')
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -379,13 +400,19 @@ if __name__ == "__main__":
     tensorboard_run_dir = os.path.join(tensorboard_dir, run_id)
     print(f"📊 TensorBoard run: {run_id}")
     print(f"📦 Using continuous FP16 weights (no quantization)")
-    print(f"📊 Batch size: {config['training']['batch_size']}")
+    print(f"📊 Batch size: {config['training']['accumulation_steps']}")
     
 
     #initialize queues
     data_queue = mp.Queue(maxsize=worker_count*4)
     gradient_queue = mp.Queue()
     log_queue = mp.Queue()
+
+    # Create barriers for synchronization
+    # start_barrier: All workers wait here before starting forward pass
+    # end_barrier: All workers wait here after sending gradients before next iteration
+    start_barrier = mp.Barrier(worker_count)
+    end_barrier = mp.Barrier(worker_count)
 
     worker_processes = []
 
@@ -416,7 +443,7 @@ if __name__ == "__main__":
     
     dataloader_process = mp.Process(
         target=data_loader_process_fn,
-        args=(data_queue, config, 1, True),
+        args=(data_queue, config, True),
         name="DataLoader"
     )
     dataloader_process.start()
@@ -427,7 +454,7 @@ if __name__ == "__main__":
     for worker_id in range(worker_count):
         worker_process = mp.Process(
             target=worker_process_fn,
-            args=(worker_id, data_queue, gradient_queue, log_queue, config),
+            args=(worker_id, data_queue, gradient_queue, log_queue, config, start_barrier, end_barrier),
             name=f"Worker-{worker_id}"
         )
         worker_process.start()
@@ -443,6 +470,13 @@ if __name__ == "__main__":
         accumulator_process.join(timeout=120)  # Wait up to 120 seconds for accumulator to finish
         if accumulator_process.is_alive():
             print("Warning: Accumulator process did not terminate in time.", flush=True)
+        
+        # Clean up remaining processes
+        logger_process.terminate()
+        for worker_process in worker_processes:
+            worker_process.terminate()
+        
+        print("Training completed", flush=True)
     except KeyboardInterrupt:
         print("Shutting down training", flush=True)
         dataloader_process.terminate()
