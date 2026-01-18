@@ -1,12 +1,12 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "multiple_sample4"
+  collection_name: "single_sample4"
 
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 500
+  total_nodes: 200
   input_nodes: 14
   output_nodes: 10
   cardinality: 5
@@ -25,7 +25,7 @@ model:
 
 # --- Training Hyperparameters ---
 training:
-  lr: 0.001
+  lr: 0.005
   accumulation_steps: 8
   momentum: 0.9
   worker_count: 1
@@ -37,6 +37,7 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/multiple_sample_log4.csv"
+    log_path: "training_runs/single_sample_log4/single_sample_log4.csv"
     save_interval_seconds: 10
-    fieldnames: ['worker_id', 'loss', 'class']
+    fieldnames: ['worker_id', 'loss', 'skipped']
+    tensorboard_dir: null   

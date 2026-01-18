@@ -4,6 +4,7 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
+from torch.utils.data import TensorDataset
 
 import warnings
 import argparse, sys
@@ -15,6 +16,7 @@ import time
 import random
 from pathlib import Path
 import numpy as np
+from sklearn.datasets import load_iris
 
 os.environ["PYTHONWARNINGS"] = "ignore"
 
@@ -238,17 +240,26 @@ def data_loader_process_fn(
     # epochs:int=1,
     shuffle:bool=True
 ):
-    ###### Defining MNIST here because of problems in pickle-izing the dataset
-    #the specific problem is with the lambda function in the transform.
 
-    transformations = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Resize((14, 14)),
-        transforms.Lambda(lambda x: x.squeeze()),
-    ])
-    dataset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transformations)
+    ##### Define the dataset here
 
+    ###### Loading Iris dataset here
+    # Load Iris dataset from scikit-learn
+    iris_data = load_iris()
+    X = iris_data.data  # Features: (150, 4) - sepal length, sepal width, petal length, petal width
+    y = iris_data.target  # Labels: (150,) - 0, 1, 2 for setosa, versicolor, virginica
+    
+    # Convert to PyTorch tensors
+    X_tensor = torch.tensor(X, dtype=torch.float32)
+    y_tensor = torch.tensor(y, dtype=torch.long)
+    
+    # Create PyTorch Dataset
+    dataset = TensorDataset(X_tensor, y_tensor)
+    
+    print(f"Loaded Iris dataset: {len(dataset)} samples, {X.shape[1]} features, {len(iris_data.target_names)} classes")
+    
     #########################################################
+
 
     epochs = config['training'].get('epochs', 1)
 
@@ -261,7 +272,7 @@ def data_loader_process_fn(
         # The maxsize parameter on the queue will handle backpressure, so we don't need to check the queue size.
         try:
             x, y = next(data_iterator)
-            x = x.squeeze()
+            x = x.reshape(-1, 1)
             y = y.squeeze()
         except StopIteration:
             epochs_completed += 1

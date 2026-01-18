@@ -167,7 +167,8 @@ def worker_process_fn(
             raise ValueError(f"Unsupported criterion: {criterion}")
             
         
-        # print(f"Output: {out}")
+        # print(f"{target.item()}: {out}", flush=True)
+        # time.sleep(10.0)
         
         # Backward Pass
         loss.backward()

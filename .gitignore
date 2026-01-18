@@ -6,7 +6,3 @@ qdrant_storage/*
 
 *.pth #model weights
 data/
-
-#don't push logs
-*.csv
-training_logs/

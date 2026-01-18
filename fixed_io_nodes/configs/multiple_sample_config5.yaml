@@ -1,12 +1,12 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "multiple_sample4"
+  collection_name: "multiple_sample5"
 
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 500
+  total_nodes: 200
   input_nodes: 14
   output_nodes: 10
   cardinality: 5
@@ -18,7 +18,7 @@ model:
   phase_bins: null
   mag_bins: null
   gamma: 1.0
-  iterations: 3
+  iterations: 5
   radiation_similarity_threshold: 0.5
   temporal_decay: 0.9
   activation_threshold: 0.05
@@ -28,7 +28,7 @@ training:
   lr: 0.001
   accumulation_steps: 8
   momentum: 0.9
-  worker_count: 1
+  worker_count: 4
   timeout: 300 #time to wait for data from queue
 
 
@@ -37,6 +37,6 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/multiple_sample_log4.csv"
+    log_path: "training_logs/multiple_sample_log5.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class']
