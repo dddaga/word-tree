@@ -22,14 +22,14 @@ class Model(nn.Module):
 
     
 
-    def forward(self, x):
+    def forward(self, x, tracer=None):
         
         out = x
 
         # out = out.reshape(self.gnn.input_node_count * self.gnn.vector_dim) #will forcefully raise error if input_adapter has wrong output dimensions
         phases = self.quantizer(out)
 
-        out = self.gnn(phases)
+        out = self.gnn(phases, tracer=tracer)
         return out
 
     def reset(self):

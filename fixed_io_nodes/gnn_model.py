@@ -2,7 +2,7 @@ from torch import nn
 import torch
 from custom_functions import activation_strength_forward
 
-from typing import List, Union
+from typing import List, Union, Optional
 
 from nodestore import NodeStore
 from node import Node
@@ -123,11 +123,12 @@ class UnquantizedGNN(nn.Module):
 
     
 
-    def one_step_forward(self, input_values:torch.Tensor=None):
+    def one_step_forward(self, input_values:torch.Tensor=None, tracer=None):
         """
         input_values: torch.Tensor=None, shape = (input_nodes, vector_dim)
         if input is given, then it is inserted into the input nodes, otherwise a normal 
         1 step propagation is done. Input values are assumed to be quantized.
+        tracer: Optional[ForwardPassTracer] = None, tracer for capturing forward pass details
 
         Returns: None
         """
@@ -135,6 +136,10 @@ class UnquantizedGNN(nn.Module):
         if self.verbose: #TODO: print logs
             pass
         
+        # Determine iteration number for tracer
+        if tracer is not None:
+            iteration_num = tracer.get_num_iterations() if input_values is None else 0
+            tracer.start_iteration(iteration_num, input_injected=(input_values is not None))
 
         #TODO:
         #fetch input nodes which are not exisiting in active_nodes 
@@ -163,6 +168,17 @@ class UnquantizedGNN(nn.Module):
                     mag_activations=input_mags[n_id],
                     activation_strengths=activation_strengths[n_id],
                 )
+                
+                # Record input injection for tracer
+                if tracer is not None:
+                    tracer.record_node_update(
+                        node_id=node.id,
+                        input_sources=[],  # Input nodes have no input sources
+                        input_types=[],
+                        phase_activation=node.phase_activation,
+                        mag_activation=node.mag_activation,
+                        activation_strength=node.activation_strength,
+                    )
 
             
 
@@ -170,6 +186,9 @@ class UnquantizedGNN(nn.Module):
 
         #fetch radiation targets 
         radiation_targets = self._compute_radiation_targets(set(self.active_nodes.values()))
+        
+        if tracer is not None:
+            tracer.record_radiation_targets(radiation_targets)
         
         #Find the nodes to which we would have to propagate values to.
         #and thus fetch those nodes. (for both direct and radiation connections)
@@ -198,13 +217,25 @@ class UnquantizedGNN(nn.Module):
     
         #the incoming connections coming to new nodes from the current active nodes
         incoming_connections = {node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)}
+        # Track connection types separately for tracer
+        incoming_connection_types = {node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)}
+        direct_connections_dict = {}  # source -> list of targets
 
         for node in self.active_nodes.values():
             for n_id in node.outgoing_connections:
                 incoming_connections[n_id].append(node.id)
+                incoming_connection_types[n_id].append('direct')
+                if node.id not in direct_connections_dict:
+                    direct_connections_dict[node.id] = []
+                direct_connections_dict[node.id].append(n_id)
+        
         for n_id, targets in radiation_targets.items():
             for target in targets:
                 incoming_connections[target].append(n_id)
+                incoming_connection_types[target].append('radiation')
+        
+        if tracer is not None:
+            tracer.record_direct_connections(direct_connections_dict)
 
         #it is necessary to store them separately because after up call node.update_activations, they get changed
         phase_activations = {node.id: node.phase_activation.clone() for node in self.active_nodes.values()}
@@ -223,11 +254,29 @@ class UnquantizedGNN(nn.Module):
                 mag_activations=torch.stack([mag_activations[n_id] for n_id in incoming_connections[node.id]]),
                 activation_strengths=torch.stack([activation_strengths[n_id] for n_id in incoming_connections[node.id]]),
             )
+            
+            # Record node update for tracer
+            if tracer is not None:
+                input_sources = incoming_connections[node.id]
+                input_types = incoming_connection_types[node.id]
+                tracer.record_node_update(
+                    node_id=node.id,
+                    input_sources=input_sources,
+                    input_types=input_types,
+                    phase_activation=node.phase_activation,
+                    mag_activation=node.mag_activation,
+                    activation_strength=node.activation_strength,
+                )
             # print("updated node-", node.id)
 
         #update the active nodes to include the new nodes
         for node in new_nodes:
             self.active_nodes[node.id] = node
+
+        # Record all active nodes for tracer
+        if tracer is not None:
+            all_active_node_ids = [int(node_id) for node_id in self.active_nodes.keys()]
+            tracer.record_active_nodes(all_active_node_ids)
 
         # Apply temporal decay to all active nodes (except input nodes on first step)
         # This makes older activations weaker than recent ones
@@ -236,18 +285,18 @@ class UnquantizedGNN(nn.Module):
                 node.decay_activations(self.temporal_decay)
         
         # Explicitly delete temporary dictionaries to prevent memory leaks
-        del phase_activations, mag_activations, activation_strengths, incoming_connections
+        del phase_activations, mag_activations, activation_strengths, incoming_connections, incoming_connection_types
         del new_nodes, new_nodes_values, radiation_targets
 
 
-    def forward(self, input_values:torch.Tensor=None):
+    def forward(self, input_values:torch.Tensor=None, tracer=None):
 
-        self.one_step_forward(input_values)
+        self.one_step_forward(input_values, tracer=tracer)
         # if self.verbose:
         #     print(f"first pass done")
 
         for iteration in range(self.iterations-1):
-            self.one_step_forward()
+            self.one_step_forward(tracer=tracer)
             # if self.verbose:
             #     print(f"Iteration {iteration+2} done")
 

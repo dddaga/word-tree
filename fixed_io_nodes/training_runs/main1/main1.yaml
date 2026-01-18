@@ -1,12 +1,12 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "multiple_sample4"
+  collection_name: "main1"
 
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 500
+  total_nodes: 200
   input_nodes: 14
   output_nodes: 10
   cardinality: 5
@@ -28,8 +28,9 @@ training:
   lr: 0.001
   accumulation_steps: 8
   momentum: 0.9
-  worker_count: 1
+  worker_count: 4
   timeout: 300 #time to wait for data from queue
+  epochs: 10
 
 
 # --- System & Logging ---
@@ -37,6 +38,7 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/multiple_sample_log4.csv"
+    log_path: "training_runs/main1/main1.csv"
     save_interval_seconds: 10
-    fieldnames: ['worker_id', 'loss', 'class']
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    tensorboard_dir: null

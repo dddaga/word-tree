@@ -37,6 +37,7 @@ system:
   device: "cuda"
   random_seed: 42
   logging:
-    log_path: "training_logs/multiple_sample_log4.csv"
+    log_path: "training_runs/multiple_sample_log4/multiple_sample_log4.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class']
+    tensorboard_dir: null 
