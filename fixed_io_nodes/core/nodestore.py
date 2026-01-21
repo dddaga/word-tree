@@ -12,7 +12,7 @@ from qdrant_client.models import Distance, VectorParams
 from qdrant_client.models import Datatype
 from qdrant_client import models
 
-from lookup_table import LookupTable
+from .lookup_table import LookupTable
 
 
 class NodeStore(nn.Module):
@@ -495,6 +495,7 @@ class NodeStore(nn.Module):
     def is_output(self, node_id):
         return node_id in self.output_nodeids
     
+
 
 
 def retry_on_connection_error(max_retries=5, base_delay=0.5):

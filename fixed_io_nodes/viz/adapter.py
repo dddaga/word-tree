@@ -6,7 +6,7 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 import torch
 import numpy as np
-from nodestore import NodeStore
+from core.nodestore import NodeStore
 from .utils import get_node_role, get_static_edges, extract_node_weights, compute_loss_from_trace
 
 

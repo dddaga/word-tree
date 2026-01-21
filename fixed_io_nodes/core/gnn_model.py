@@ -1,11 +1,11 @@
 from torch import nn
 import torch
-from custom_functions import activation_strength_forward
+from .custom_functions import activation_strength_forward, signal_forward
 
 from typing import List, Union, Optional
 
-from nodestore import NodeStore
-from node import Node
+from .nodestore import NodeStore
+from .node import Node
 
 class MyModuleDict(nn.ModuleDict):
     def __getitem__(self, key: Union[str, int]) -> nn.Module:

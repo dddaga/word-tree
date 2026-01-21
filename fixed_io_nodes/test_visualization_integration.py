@@ -19,7 +19,7 @@ import threading
 from typing import Dict, Any
 
 # Import project modules
-from full_model import initialize_model_and_nodestore
+from core import initialize_model_and_nodestore
 from forward_pass_tracer import ForwardPassTracer
 from viz.adapter import TraceVisualizer, trace_to_step_result
 from viz.server import app, init_with_visualizer

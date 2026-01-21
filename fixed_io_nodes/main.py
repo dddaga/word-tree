@@ -21,10 +21,7 @@ from sklearn.datasets import load_iris
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 # Custom Modules
-from gradient_accumulator import GradientAccumulator
-from nodestore import NodeStore
-from full_model import initialize_model_and_nodestore
-from lookup_table import LookupTable
+from core import GradientAccumulator, NodeStore, initialize_model_and_nodestore, LookupTable
 
 # Helper to load config
 def load_config(path):
@@ -404,7 +401,9 @@ if __name__ == "__main__":
     device = config['system']['device']
     worker_count = config['training']['worker_count']
     log_path = config['system']['logging']['log_path']
-    tensorboard_dir = config['system']['logging'].get('tensorboard_dir', 'training_logs/tensorboard')
+    tensorboard_dir = config['system']['logging']['tensorboard_dir']
+    if tensorboard_dir is None:
+        tensorboard_dir = 'training_runs/tensorboard'
 
     # Create unique run ID based on timestamp for separate TensorBoard runs
     run_id = time.strftime("%Y%m%d-%H%M%S")

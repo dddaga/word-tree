@@ -22,8 +22,7 @@ from main import (
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 # Custom Modules
-from lookup_table import LookupTable
-from full_model import initialize_model_and_nodestore
+from core import LookupTable, initialize_model_and_nodestore
 
 
 def data_loader_process_fn(

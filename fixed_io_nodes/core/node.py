@@ -1,6 +1,6 @@
-from custom_functions import activation_strength_forward
-from nodestore import NodeStore
-from lookup_table import LookupTable
+from .custom_functions import activation_strength_forward
+from .nodestore import NodeStore
+from .lookup_table import LookupTable
 
 import torch.nn.functional as F
 import torch

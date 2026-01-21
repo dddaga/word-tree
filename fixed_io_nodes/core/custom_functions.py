@@ -1,6 +1,6 @@
 from torch import autograd
 import torch
-from lookup_table import LookupTable
+from .lookup_table import LookupTable
 
 #not used
 def phase_forward(x, y, phase_bins:int):
