@@ -5,7 +5,7 @@ Visualization utilities for converting trace data to visualization format.
 from typing import Dict, List, Set, Optional
 import torch
 import numpy as np
-from nodestore import NodeStore
+from core.nodestore import NodeStore
 
 
 def get_node_role(node_id: int, node_store: NodeStore) -> str:

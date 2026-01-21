@@ -1,11 +1,11 @@
 import torch
 from torch import nn
 from typing import List
-from gnn_model import GNN
-# from input_adapter import LinearInputAdapter
-from quantization import Quantizer
-from nodestore import NodeStore
-from lookup_table import LookupTable
+from .gnn_model import GNN
+# from .input_adapter import LinearInputAdapter
+from .quantization import Quantizer
+from .nodestore import NodeStore
+from .lookup_table import LookupTable
 
 class Model(nn.Module):
 

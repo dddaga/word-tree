@@ -1,9 +1,9 @@
-from lookup_table import LookupTable
+from .lookup_table import LookupTable
 from pprint import pprint
 import torch
 import torch.nn as nn
 from typing import Dict
-from nodestore import NodeStore
+from .nodestore import NodeStore
 
 
 class GradientAccumulator(nn.Module):

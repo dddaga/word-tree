@@ -1,6 +1,6 @@
 from torch import nn, autograd
 import torch
-from lookup_table import LookupTable
+from .lookup_table import LookupTable
 
 
 

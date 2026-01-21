@@ -13,7 +13,7 @@ import torch
 import sys
 from pathlib import Path
 
-from full_model import initialize_model_and_nodestore
+from core import initialize_model_and_nodestore
 from forward_pass_tracer import ForwardPassTracer
 from viz.adapter import TraceVisualizer
 from viz.server import app, init_with_visualizer

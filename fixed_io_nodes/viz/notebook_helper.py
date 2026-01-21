@@ -9,7 +9,7 @@ from typing import Dict, Any, Optional
 from .adapter import TraceVisualizer
 from .server import app, init_with_visualizer
 import uvicorn
-from nodestore import NodeStore
+from core.nodestore import NodeStore
 
 
 def launch_web_viz(
