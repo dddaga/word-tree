@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neurograph Visualization - Trace Data</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #111;
+            color: #ddd;
+            overflow: hidden;
+        }
+        #mynetwork {
+            width: 100%;
+            height: 60vh;
+            border: 1px solid #333;
+        }
+        
+        /* Control Panel */
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 30, 40, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            width: 320px;
+            max-height: 90vh;
+            overflow-y: auto;
+            pointer-events: auto;
+            border: 1px solid #444;
+        }
+        
+        /* Inspection Panel */
+        #inspector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 30, 40, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            width: 280px;
+            pointer-events: auto;
+            display: none;
+            border: 1px solid #444;
+        }
+
+        h2 { margin-top: 0; color: #00d4ff; font-size: 1.1rem; border-bottom: 1px solid #555; padding-bottom: 8px; }
+        h3 { color: #ff00aa; font-size: 0.95rem; margin: 10px 0 5px 0; }
+        
+        .section { margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        .section:last-child { border-bottom: none; }
+        
+        .btn-group { display: flex; gap: 5px; margin-bottom: 10px; }
+        button {
+            flex: 1;
+            background: #333;
+            color: #ddd;
+            border: 1px solid #555;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        button:hover { background: #444; border-color: #777; }
+        button.primary { background: #00d4ff; color: #111; border: none; font-weight: bold; }
+        button.primary:hover { background: #00b8dd; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .value { color: #fff; font-family: monospace; }
+        
+        /* Iteration Navigation */
+        .iteration-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .iteration-slider {
+            flex: 1;
+        }
+        
+        /* Node Inspector Styles */
+        .inspect-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
+        .inspect-val { font-family: monospace; color: #00ff88; }
+        
+        /* Table Container */
+        #table-container {
+            position: absolute;
+            bottom: 0;
+            left: 360px;
+            right: 20px;
+            height: 40vh;
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 8px;
+            overflow-y: auto;
+            border: 1px solid #444;
+            z-index: 10;
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #1a1a2e;
+            border-bottom: 1px solid #555;
+            position: sticky;
+            top: 0;
+            z-index: 11;
+        }
+        
+        #node-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        #node-table th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 2px solid #555;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        #node-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        #node-table tr:hover {
+            background: rgba(0, 212, 255, 0.15);
+            cursor: pointer;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="mynetwork"></div>
+    
+    <!-- Left Controls -->
+    <div id="controls">
+        <h2>Neurograph Visualization</h2>
+        
+        <div class="section">
+            <h3>Iteration Navigation</h3>
+            <div class="iteration-controls">
+                <button id="btn-prev" disabled>◀ Prev</button>
+                <span class="value" id="iteration-display">0 / 0</span>
+                <button id="btn-next" disabled>Next ▶</button>
+            </div>
+            <input type="range" id="iteration-slider" class="iteration-slider" min="0" max="0" value="0">
+            <div style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+                <div>Step: <span id="step-count" class="value">0</span></div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Controls</h3>
+            <div class="btn-group">
+                <button id="btn-reset" class="primary">Reset to Start</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Metrics</h3>
+            <div class="metric-row">
+                <span>Loss:</span>
+                <span id="metric-loss" class="value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Active Nodes:</span>
+                <span id="metric-active" class="value">--</span>
+            </div>
+            <div class="metric-row">
+                <span>Static Edges:</span>
+                <span id="metric-edges" class="value">--</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Inspector -->
+    <div id="inspector">
+        <h2>Node Inspector</h2>
+        <div id="inspect-content">
+            <p style="color: #888; font-size: 0.9rem;">Click a node to inspect details.</p>
+        </div>
+    </div>
+    
+    <!-- Node Table -->
+    <div id="table-container">
+        <div class="table-header">
+            <h3>Node State Table</h3>
+        </div>
+        <table id="node-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Role</th>
+                    <th>Phase Vector (rad)</th>
+                    <th>Magnitude Vector</th>
+                    <th>Activation</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody id="node-table-body"></tbody>
+        </table>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

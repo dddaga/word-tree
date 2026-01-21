@@ -12,6 +12,9 @@ Basically, this expt is having 100 nodes, each of vectordim=4, and `main3` has 4
 * Code for loading dataset (replace in the top of the dataloader process function)
 
 ```python
+from torch.utils.data import TensorDataset
+from sklearn.datasets import load_iris
+
 iris_data = load_iris()
 X = iris_data.data  # Features: (150, 4) - sepal length, sepal width, petal length, petal width
 y = iris_data.target  # Labels: (150,) - 0, 1, 2 for setosa, versicolor, virginica
