@@ -111,10 +111,15 @@ def initialize_model_and_nodestore(
 
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
+    qdrant_params:dict=None,
 ):
     """
     returns model, node_store
+    
+    qdrant_params: Optional dict of Qdrant parameters. If None, defaults will be used.
     """
+    if qdrant_params is None:
+        qdrant_params = {}
 
     lookup_table = None #no quantization for now
     # lookup_table = LookupTable(
@@ -138,6 +143,7 @@ def initialize_model_and_nodestore(
         mag_bins=mag_bins,
         temporal_decay=temporal_decay,
         radiation_similarity_threshold=radiation_similarity_threshold,
+        **qdrant_params,
     )
 
     model = initialize_model(
