@@ -28,6 +28,23 @@ def load_config(path):
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
+def get_qdrant_params(config: dict) -> dict:
+    """Extract Qdrant parameters from config with defaults."""
+    defaults = {
+        'm': 16,
+        'ef_construct': 100,
+        'deleted_threshold': 0.05,
+        'vacuum_min_vector_number': 1000,
+        'default_segment_number': 0,
+        'max_segment_size_kb': None,
+        'memmap_threshold': 20000,
+        'indexing_threshold_kb': 20000,
+        'on_disk_payload': True,
+        'distance_metric': 'Cosine',
+    }
+    qdrant_params = config.get('qdrant', {}).get('parameters', {})
+    return {**defaults, **qdrant_params}
+
 def logger_process_fn(log_queue:mp.Queue, log_path:str, fieldnames:list, tensorboard_dir:str=None):
     """
     Consumer process that writes logs to a CSV file and TensorBoard.
@@ -111,6 +128,9 @@ def worker_process_fn(
 ):
     device = config['system']['device']
 
+    # Extract Qdrant parameters from config
+    qdrant_params = get_qdrant_params(config)
+
     #the node store is used internally by model. It is returned just for convenience.
     model, node_store = initialize_model_and_nodestore(
         qdrant_url=config['qdrant']['url'],
@@ -127,7 +147,8 @@ def worker_process_fn(
         activation_threshold=config['model']['activation_threshold'],
         gamma=config['model']['gamma'],
         device=config['system']['device'],
-        temporal_decay=config['model'].get('temporal_decay', 1.0)
+        temporal_decay=config['model'].get('temporal_decay', 1.0),
+        qdrant_params=qdrant_params,
     )
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -290,6 +311,9 @@ def gradient_accumulator_process_fn(
     ga_log_path:str=None,
 ):
     
+    # Extract Qdrant parameters from config
+    qdrant_params = get_qdrant_params(config)
+    
     node_store = NodeStore(
         lookup_table=lookup_table,
         qdrant_url=config['qdrant']['url'],
@@ -304,6 +328,7 @@ def gradient_accumulator_process_fn(
 
         radiation_similarity_threshold=config['model']['radiation_similarity_threshold'],
         temporal_decay=config['model']['temporal_decay'],
+        **qdrant_params,
     )
 
     accumulator = GradientAccumulator(

@@ -1,0 +1,70 @@
+# Example Configuration File for NeuroGraph Training
+# For detailed documentation on Qdrant parameters, see: docs/QDRANT_PARAMETERS.md
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "example_collection"
+  
+  # Qdrant Parameters (all optional - defaults will be used if not specified)
+  # These parameters control Qdrant's indexing and optimization behavior
+  parameters:
+    # HNSW (Hierarchical Navigable Small World) Index Parameters
+    # Controls the vector search index structure
+    m: 16  # Number of edges per node in the index graph. Larger = more accurate search, more space required
+    ef_construct: 100  # Number of neighbours to consider during index building. Larger = more accurate search, more time to build
+    
+    # Optimizer Parameters
+    # Control when and how Qdrant optimizes segments
+    deleted_threshold: 0.05  # Minimal fraction of deleted vectors in a segment required to perform optimization (lower = more frequent optimization)
+    vacuum_min_vector_number: 1000  # Minimal number of vectors in a segment required to run optimization
+    default_segment_number: 0  # Target number of segments (0 = auto-select based on CPU count)
+    max_segment_size_kb: null  # Maximum segment size in KB (null = no limit)
+    memmap_threshold: 20000  # Maximum size (KB) of vectors stored in memory per segment. Beyond this, stored on disk
+    indexing_threshold_kb: 20000  # Maximum size (KB) for plain indexing. Exceeding this enables vector indexing (0 = disable indexing)
+    
+    # Storage Parameters
+    on_disk_payload: true  # Whether to store payload on disk (true) or in memory (false)
+    distance_metric: "Cosine"  # Distance metric: "Cosine", "Euclidean", "Dot", or "Manhattan"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 200
+  input_nodes: 14
+  output_nodes: 10
+  cardinality: 5
+  radiation_targets: 5
+
+
+# --- Model Architecture ---
+model:
+  vector_dim: 14
+  phase_bins: null  # Not used in unquantized mode
+  mag_bins: null  # Not used in unquantized mode
+  gamma: 1.0
+  iterations: 3
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 0.9
+  activation_threshold: 0.05
+
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.001
+  accumulation_steps: 8
+  momentum: 0.9
+  worker_count: 4
+  timeout: 300  # Time to wait for data from queue (seconds)
+  epochs: 10
+
+
+# --- System & Logging ---
+system:
+  device: "cuda"  # "cuda" or "cpu"
+  random_seed: 42
+  logging:
+    log_path: "training_runs/example_config/example_config.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    tensorboard_dir: null  # null = use default tensorboard directory

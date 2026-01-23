@@ -28,7 +28,7 @@ training:
   lr: 0.001
   accumulation_steps: 8
   momentum: 0.9
-  worker_count: 1
+  worker_count: 4
   timeout: 300 #time to wait for data from queue
 
 
