@@ -144,7 +144,8 @@ class UnquantizedGradientAccumulator(nn.Module):
     """
     def __init__(self,  node_store:NodeStore, lr:float, accumulation_steps:int=32, 
                  momentum:float=0.9, verbose:bool=False,
-                 device:str='cuda' if torch.cuda.is_available() else 'cpu'):
+                 device:str='cuda' if torch.cuda.is_available() else 'cpu',
+                 save_path:str=None, save_interval:int=None):
 
         super().__init__()
 
@@ -155,6 +156,9 @@ class UnquantizedGradientAccumulator(nn.Module):
         self.accumulation_steps = accumulation_steps
         self.momentum = momentum
         self.verbose = verbose
+        self.save_path = save_path
+        self.save_interval = save_interval
+        self.step_count = 0  # Track number of steps for interval-based saving
 
         # Use sparse dictionaries - only store gradients for active nodes
         # This prevents memory waste for large graphs with sparse activations
@@ -314,6 +318,30 @@ class UnquantizedGradientAccumulator(nn.Module):
         # Reset accumulators for next batch
         self.phase_grads.clear()
         self.mag_grads.clear()
+        
+        # Save weights if save_path is provided and interval conditions are met
+        if self.save_path is not None:
+            self.step_count += 1
+            should_save = False
+            
+            if self.save_interval is None:
+                # Save after every step if no interval specified
+                should_save = True
+            elif self.step_count % self.save_interval == 0:
+                # Save at specified intervals
+                should_save = True
+            
+            if should_save:
+                try:
+                    # Check if node_store has save_weights method (for PytorchNodeStore)
+                    if hasattr(self.node_store, 'save_weights'):
+                        self.node_store.save_weights(self.save_path)
+                    else:
+                        # For other NodeStore implementations, skip saving
+                        pass
+                except Exception as e:
+                    print(f"Warning: Failed to save weights: {e}")
+        
         return node_ids_to_update
 
 GradientAccumulator = UnquantizedGradientAccumulator

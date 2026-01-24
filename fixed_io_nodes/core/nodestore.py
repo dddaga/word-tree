@@ -1566,6 +1566,92 @@ class PytorchNodeStore(nn.Module):
                 vectors.append(self.mag_vectors[node_id].clone().tolist())
         return vectors
 
+    def save_weights(self, save_path: str):
+        """
+        Save model weights to disk.
+        
+        Args:
+            save_path: Path where to save the weights file
+        """
+        import os
+        import tempfile
+        
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        
+        # Prepare data to save
+        save_data = {
+            'phase_vectors': self.phase_vectors.cpu().clone(),
+            'mag_vectors': self.mag_vectors.cpu().clone(),
+            'phase_values': self.phase_values.cpu().clone(),
+            'payloads': dict(self.payloads),  # Convert to regular dict
+            'connections': dict(self.connections),  # Convert to regular dict
+            'metadata': {
+                'total_nodes': self.total_nodes,
+                'vector_dim': self.vector_dim,
+                'input_nodeids': list(self.input_nodeids),
+                'output_nodeids': list(self.output_nodeids),
+                'collection_name': self.collection_name,
+                'input_nodes': self.input_nodes,
+                'output_nodes': self.output_nodes,
+                'cardinality': self.cardinality,
+            }
+        }
+        
+        # Atomic write: write to temp file, then rename
+        temp_path = save_path + '.tmp'
+        try:
+            torch.save(save_data, temp_path)
+            # On Windows, need to remove target first if it exists
+            if os.path.exists(save_path):
+                os.remove(save_path)
+            os.rename(temp_path, save_path)
+            print(f"Saved model weights to {save_path}")
+        except Exception as e:
+            # Clean up temp file on error
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise e
+
+    def load_weights(self, load_path: str):
+        """
+        Load model weights from disk.
+        
+        Args:
+            load_path: Path to the weights file to load
+        """
+        import os
+        
+        if not os.path.exists(load_path):
+            raise FileNotFoundError(f"Weights file not found: {load_path}")
+        
+        # Load data
+        save_data = torch.load(load_path, map_location='cpu')
+        
+        # Verify metadata matches
+        metadata = save_data['metadata']
+        if metadata['total_nodes'] != self.total_nodes:
+            raise ValueError(f"Total nodes mismatch: saved={metadata['total_nodes']}, current={self.total_nodes}")
+        if metadata['vector_dim'] != self.vector_dim:
+            raise ValueError(f"Vector dim mismatch: saved={metadata['vector_dim']}, current={self.vector_dim}")
+        
+        # Load tensors into shared memory (with lock protection)
+        with self._lock:
+            # Copy loaded tensors to shared memory tensors
+            self.phase_vectors.copy_(save_data['phase_vectors'])
+            self.mag_vectors.copy_(save_data['mag_vectors'])
+            self.phase_values.copy_(save_data['phase_values'])
+            
+            # Load payloads and connections
+            self.payloads.update(save_data['payloads'])
+            self.connections.update(save_data['connections'])
+            
+            # Restore node ID sets
+            self.input_nodeids = set(metadata['input_nodeids'])
+            self.output_nodeids = set(metadata['output_nodeids'])
+        
+        print(f"Loaded model weights from {load_path}")
+
 
 NodeStore = PytorchNodeStore
 # NodeStore = UnquantizedNodeStore

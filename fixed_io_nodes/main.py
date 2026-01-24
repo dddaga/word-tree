@@ -28,6 +28,28 @@ def load_config(path):
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
+def get_weights_save_path(log_path: str, collection_name: str) -> str:
+    """
+    Extract training run directory from log_path and generate weights save path.
+    
+    Args:
+        log_path: Path to log file (e.g., "training_runs/main2/main2.csv")
+        collection_name: Collection name to use in filename
+        
+    Returns:
+        Full path to weights file (e.g., "training_runs/main2/main2_weights.pt")
+    """
+    import os
+    # Get directory from log_path
+    log_dir = os.path.dirname(log_path)
+    # If log_path has no directory (just filename), use current directory
+    if not log_dir or log_dir == '.':
+        log_dir = os.getcwd()
+    # Generate filename from collection_name
+    weights_filename = f"{collection_name}_weights.pt"
+    # Combine to get full path
+    return os.path.join(log_dir, weights_filename)
+
 def get_qdrant_params(config: dict) -> dict:
     """Extract Qdrant parameters from config with defaults."""
     defaults = {
@@ -290,7 +312,7 @@ def data_loader_process_fn(
         # The maxsize parameter on the queue will handle backpressure, so we don't need to check the queue size.
         try:
             x, y = next(data_iterator)
-            x = x.reshape(-1, 1)
+            x = x.reshape(1, -1)
             y = y.squeeze()
         except StopIteration:
             epochs_completed += 1
@@ -309,6 +331,7 @@ def gradient_accumulator_process_fn(
     config:dict,
     lookup_table:LookupTable=None,
     ga_log_path:str=None,
+    save_path:str=None,
 ):
     
     # Extract Qdrant parameters from config
@@ -338,6 +361,8 @@ def gradient_accumulator_process_fn(
         device=config['system']['device'],
         accumulation_steps=config['training']['accumulation_steps'],
         momentum=config['training']['momentum'],
+        save_path=save_path,  # Optional: None by default for backward compatibility
+        save_interval=None,  # Save after every step if save_path is provided
     )
 
     # Setup GA logging
@@ -459,10 +484,20 @@ if __name__ == "__main__":
     )
     logger_process.start()
 
+    # Calculate weights save path from config (optional, backward compatible)
+    save_path = None
+    try:
+        log_path = config['system']['logging']['log_path']
+        collection_name = config['qdrant']['collection_name']
+        save_path = get_weights_save_path(log_path, collection_name)
+    except (KeyError, Exception) as e:
+        # If path calculation fails, just skip saving (backward compatible)
+        pass
+    
     #Start Accumulator Process
     accumulator_process = mp.Process(
         target=gradient_accumulator_process_fn, 
-        args=(gradient_queue, config), 
+        args=(gradient_queue, config, None, None, save_path),  # lookup_table, ga_log_path, save_path
         name='accumulator'
     )
     accumulator_process.start()
