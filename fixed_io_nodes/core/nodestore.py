@@ -1,6 +1,9 @@
 import numpy as np
 import random
 import time
+import multiprocessing as mp
+from multiprocessing import shared_memory
+from abc import ABC, abstractmethod
 
 from typing import List, Dict, Union, Set
 
@@ -1078,4 +1081,491 @@ class UnquantizedNodeStore(nn.Module):
         )
 
 
-NodeStore = UnquantizedNodeStore
+# ============================================================================
+# PyTorch-based NodeStore with Shared Memory
+# ============================================================================
+
+class NodePoint:
+    """Helper class to mimic Qdrant Point structure for interface compatibility."""
+    def __init__(self, node_id: int, vector: Dict[str, torch.Tensor], payload: Dict, score: float = None):
+        self.id = node_id
+        self.vector = vector
+        self.payload = payload
+        self.score = score
+
+
+class VectorSearchBackend(ABC):
+    """Abstract base class for vector search backends."""
+    @abstractmethod
+    def search_batch(self, query_vectors: torch.Tensor, phase_values: torch.Tensor, 
+                     limit: int, threshold: float) -> List[List[tuple]]:
+        """
+        Search for nearest neighbors.
+        
+        Args:
+            query_vectors: Tensor of shape (batch_size, vector_dim*2) - cos/sin vectors
+            phase_values: Tensor of shape (num_nodes, vector_dim*2) - all node phase values
+            limit: Number of top results per query
+            threshold: Minimum similarity score threshold
+            
+        Returns:
+            List of lists of (node_id, score) tuples, one list per query
+        """
+        pass
+
+
+class SimpleCosineSearch(VectorSearchBackend):
+    """Simple cosine similarity search using matrix multiplication."""
+    def search_batch(self, query_vectors: torch.Tensor, phase_values: torch.Tensor,
+                     limit: int, threshold: float) -> List[List[tuple]]:
+        """
+        Batch cosine similarity search.
+        """
+        # Ensure tensors are on the same device
+        device = query_vectors.device
+        phase_values = phase_values.to(device)
+        
+        # Normalize query vectors
+        query_norm = torch.nn.functional.normalize(query_vectors, p=2, dim=1)
+        
+        # Normalize phase values
+        phase_norm = torch.nn.functional.normalize(phase_values, p=2, dim=1)
+        
+        # Compute cosine similarity: (batch_size, num_nodes)
+        similarities = query_norm @ phase_norm.T
+        
+        # Apply threshold
+        similarities = torch.where(similarities >= threshold, similarities, torch.tensor(-1.0, device=similarities.device))
+        
+        # Get top-k for each query
+        topk_values, topk_indices = torch.topk(similarities, k=min(limit, phase_values.shape[0]), dim=1)
+        
+        # Convert to list of lists of (node_id, score) tuples
+        results = []
+        for i in range(query_vectors.shape[0]):
+            query_results = []
+            for j in range(topk_indices.shape[1]):
+                node_id = int(topk_indices[i, j].item())
+                score = float(topk_values[i, j].item())
+                if score >= threshold:  # Only include if above threshold
+                    query_results.append((node_id, score))
+            results.append(query_results)
+        
+        return results
+
+
+class PytorchNodeStore(nn.Module):
+    """
+    PyTorch-based NodeStore using shared memory for multi-process access.
+    All workers share the same underlying weight matrices.
+    """
+    def __init__(
+        self, 
+        qdrant_url,  # Ignored, kept for compatibility
+        collection_name:str, 
+
+        num_total_nodes:int, 
+        num_input_nodes:int, 
+        num_output_nodes:int, 
+        cardinality:int, 
+        vector_dim:int, 
+        phase_bins:int=None,  # Legacy parameter, kept for compatibility
+        mag_bins:int=None,    # Legacy parameter, kept for compatibility
+        radiation_similarity_threshold: float=0.0,
+        temporal_decay: float=1.0,
+
+        m: int=16,  # Ignored, kept for compatibility
+        ef_construct: int=100,  # Ignored, kept for compatibility
+        deleted_threshold: float=0.05,  # Ignored, kept for compatibility
+        vacuum_min_vector_number: int=1000,  # Ignored, kept for compatibility
+        default_segment_number: int=0,  # Ignored, kept for compatibility
+        max_segment_size_kb: int=None,  # Ignored, kept for compatibility
+        memmap_threshold: int=20000,  # Ignored, kept for compatibility
+        indexing_threshold_kb: int=20000,  # Ignored, kept for compatibility
+        on_disk_payload: bool=True,  # Ignored, kept for compatibility
+        distance_metric: Union[str, Distance]="Cosine",  # Ignored, kept for compatibility
+
+        lookup_table=None,  # Ignored for unquantized, kept for compatibility
+    ):
+        """
+        Initialize PyTorch NodeStore with shared memory.
+        
+        Parameters match UnquantizedNodeStore for compatibility.
+        Qdrant-specific parameters are ignored.
+        """
+        super().__init__()
+
+        self.collection_name = collection_name
+        self.total_nodes = num_total_nodes
+        self.input_nodes = num_input_nodes
+        self.output_nodes = num_output_nodes
+        self.cardinality = cardinality
+        self.vector_dim = vector_dim
+        self.phase_bins = phase_bins  # Kept for legacy compatibility
+        self.mag_bins = mag_bins      # Kept for legacy compatibility
+        self.radiation_similarity_threshold = radiation_similarity_threshold
+        self.temporal_decay = temporal_decay
+
+        # Generate unique shared memory names based on collection_name
+        # Sanitize collection_name to be valid for shared memory names
+        safe_name = collection_name.replace('-', '_').replace('.', '_')
+        self.phase_shm_name = f"{safe_name}_phase"
+        self.mag_shm_name = f"{safe_name}_mag"
+        self.phase_values_shm_name = f"{safe_name}_phase_values"
+        self.lock_shm_name = f"{safe_name}_lock"
+        self.init_lock_shm_name = f"{safe_name}_init_lock"
+
+        # Initialize shared memory and tensors
+        self._init_shared_memory()
+        
+        # Initialize search backend
+        self.search_backend = SimpleCosineSearch()
+
+        # Initialize graph if needed
+        self._initialize_graph_if_needed(
+            total_nodes=num_total_nodes,
+            num_input_nodes=num_input_nodes,
+            num_output_nodes=num_output_nodes,
+            cardinality=cardinality,
+        )
+
+    def _init_shared_memory(self):
+        """Initialize shared memory blocks and create/attach to tensors."""
+        # Calculate sizes
+        phase_size = self.total_nodes * self.vector_dim * np.dtype(np.float32).itemsize
+        mag_size = self.total_nodes * self.vector_dim * np.dtype(np.float32).itemsize
+        phase_values_size = self.total_nodes * self.vector_dim * 2 * np.dtype(np.float32).itemsize
+
+        # Try to attach to existing shared memory, or create new
+        try:
+            # Attach to existing
+            phase_shm = shared_memory.SharedMemory(name=self.phase_shm_name)
+            mag_shm = shared_memory.SharedMemory(name=self.mag_shm_name)
+            phase_values_shm = shared_memory.SharedMemory(name=self.phase_values_shm_name)
+            self._is_creator = False
+        except FileNotFoundError:
+            # Create new
+            phase_shm = shared_memory.SharedMemory(create=True, size=phase_size, name=self.phase_shm_name)
+            mag_shm = shared_memory.SharedMemory(create=True, size=mag_size, name=self.mag_shm_name)
+            phase_values_shm = shared_memory.SharedMemory(create=True, size=phase_values_size, name=self.phase_values_shm_name)
+            self._is_creator = True
+
+        # Store shared memory objects
+        self.phase_shm = phase_shm
+        self.mag_shm = mag_shm
+        self.phase_values_shm = phase_values_shm
+
+        # Create numpy arrays from shared memory
+        phase_array = np.ndarray((self.total_nodes, self.vector_dim), dtype=np.float32, buffer=phase_shm.buf)
+        mag_array = np.ndarray((self.total_nodes, self.vector_dim), dtype=np.float32, buffer=mag_shm.buf)
+        phase_values_array = np.ndarray((self.total_nodes, self.vector_dim * 2), dtype=np.float32, buffer=phase_values_shm.buf)
+
+        # Convert to torch tensors (shares underlying memory)
+        self.phase_vectors = torch.from_numpy(phase_array)
+        self.mag_vectors = torch.from_numpy(mag_array)
+        self.phase_values = torch.from_numpy(phase_values_array)
+
+        # For shared dictionaries, we'll use regular dicts for now
+        # Each process will have its own copy, but they'll be initialized from shared memory
+        # In a production system, you'd use a Manager server or file-based sync
+        # For now, connections and payloads are re-initialized per process from the graph structure
+        self.payloads = {}
+        self.connections = {}
+
+        # Create process locks
+        try:
+            self._lock = mp.Lock()
+            self._init_lock = mp.Lock()
+        except Exception as e:
+            # Fallback: use threading locks if multiprocessing fails
+            import threading
+            print(f"Warning: Could not create multiprocessing locks, using threading locks: {e}")
+            self._lock = threading.Lock()
+            self._init_lock = threading.Lock()
+
+    def _initialize_nodeids(self, num_total_nodes, num_input_nodes, num_output_nodes, margin=0.1):
+        """Initialize node ID sets."""
+        node_ids = list(range(num_total_nodes))
+        
+        if num_total_nodes - (num_input_nodes + num_output_nodes) < margin * num_total_nodes:
+            raise ValueError("Total nodes must be greater than the sum of input and output nodes")
+        
+        self.input_nodeids = set(node_ids[:num_input_nodes])
+        self.output_nodeids = set(node_ids[-num_output_nodes:])
+        return node_ids
+
+    def _initialize_connections(self, node_ids, max_incoming_connections):
+        """Initialize graph connections."""
+        graph = {node_id: {'incoming': [], 'outgoing': []} for node_id in node_ids}
+        node_ids = set(node_ids)
+
+        for n in node_ids:
+            if n in self.input_nodeids:
+                continue
+            
+            possible_incoming_nodes = node_ids - self.output_nodeids - {n}
+            incoming_connection_count = random.randint(0, max_incoming_connections)
+            incoming_connections = random.choices(list(possible_incoming_nodes), k=incoming_connection_count)
+            graph[n]['incoming'] = incoming_connections
+
+            for incoming_connection in incoming_connections:
+                graph[incoming_connection]['outgoing'].append(n)
+
+        return graph
+
+    def _initialize_phases(self, node_ids):
+        """Initialize phases as continuous values in [0, 2π]."""
+        phases = {}
+        for node_id in node_ids:
+            phase_values = np.random.uniform(0, 2*np.pi, (self.vector_dim)).astype(np.float32)
+            phases[node_id] = phase_values
+        return phases
+
+    def _initialize_mags(self, node_ids):
+        """Initialize magnitudes as continuous values in [-π, π]."""
+        mags = {}
+        for node_id in node_ids:
+            mag_values = np.random.uniform(-np.pi, np.pi, (self.vector_dim)).astype(np.float32)
+            mags[node_id] = mag_values
+        return mags
+
+    def _initialize_graph_if_needed(self, total_nodes, num_input_nodes, num_output_nodes, cardinality, seed=42):
+        """Initialize graph only if this is the first process."""
+        # Check if tensors are already initialized (non-zero values indicate initialization)
+        # Use a simple check: see if first node has non-zero phase
+        is_initialized = torch.any(torch.abs(self.phase_vectors[0]) > 1e-6).item() if self.total_nodes > 0 else False
+        
+        if not is_initialized and self._is_creator:
+            # This is the first process, initialize
+            with self._init_lock:
+                # Double-check after acquiring lock (another process might have initialized)
+                is_initialized = torch.any(torch.abs(self.phase_vectors[0]) > 1e-6).item() if self.total_nodes > 0 else False
+                if is_initialized:
+                    # Another process initialized while we were waiting
+                    self._reconstruct_local_data(total_nodes, num_input_nodes, num_output_nodes, cardinality, seed)
+                    return
+                
+                random.seed(seed)
+                np.random.seed(seed)
+                torch.manual_seed(seed)
+
+                node_ids = self._initialize_nodeids(total_nodes, num_input_nodes, num_output_nodes)
+                connections = self._initialize_connections(node_ids, cardinality)
+                phases = self._initialize_phases(node_ids)
+                mags = self._initialize_mags(node_ids)
+
+                # Store in shared tensors
+                for node_id in node_ids:
+                    self.phase_vectors[node_id] = torch.tensor(phases[node_id], dtype=torch.float32)
+                    self.mag_vectors[node_id] = torch.tensor(mags[node_id], dtype=torch.float32)
+                    
+                    # Compute phase_values (cos/sin)
+                    phase_continuous = torch.tensor(phases[node_id], dtype=torch.float32)
+                    cos_values = torch.cos(phase_continuous)
+                    sin_values = torch.sin(phase_continuous)
+                    self.phase_values[node_id] = torch.cat([cos_values, sin_values], dim=-1)
+
+                # Store connections and payloads locally (each process has its own copy)
+                for node_id in node_ids:
+                    self.connections[node_id] = connections[node_id]
+                    self.payloads[node_id] = {
+                        'incoming_connections': connections[node_id]['incoming'],
+                        'outgoing_connections': connections[node_id]['outgoing'],
+                        'version': 0
+                    }
+
+                print(f"PytorchNodeStore: Graph initialized with {total_nodes} nodes")
+        else:
+            # Attaching process - reconstruct local data from same seed
+            self._reconstruct_local_data(total_nodes, num_input_nodes, num_output_nodes, cardinality, seed)
+
+    def _reconstruct_local_data(self, total_nodes, num_input_nodes, num_output_nodes, cardinality, seed=42):
+        """Reconstruct connections and payloads locally using the same random seed."""
+        # Set node IDs
+        self.input_nodeids = set(range(num_input_nodes))
+        self.output_nodeids = set(range(self.total_nodes - num_output_nodes, self.total_nodes))
+        
+        # Reconstruct connections with same seed to get same graph structure
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        
+        node_ids = list(range(total_nodes))
+        connections = self._initialize_connections(node_ids, cardinality)
+        
+        # Store locally
+        for node_id in node_ids:
+            self.connections[node_id] = connections[node_id]
+            # Initialize payloads with version 0 if not exists
+            if node_id not in self.payloads:
+                self.payloads[node_id] = {
+                    'incoming_connections': connections[node_id]['incoming'],
+                    'outgoing_connections': connections[node_id]['outgoing'],
+                    'version': 0
+                }
+
+    def get_node(self, node_ids: Union[int, str, List[int], List[str], Set[int]], with_payload:bool=True, with_vectors:bool=True):
+        """Get node(s) by ID."""
+        # Convert to list if single value
+        if isinstance(node_ids, int) or isinstance(node_ids, str):
+            node_ids = [node_ids]
+        if isinstance(node_ids, set):
+            node_ids = list(node_ids)
+        
+        # Convert all node IDs to integers (handles both int and str inputs)
+        node_ids = [int(node_id) for node_id in node_ids]
+        
+        results = []
+        for node_id in node_ids:
+            if node_id < 0 or node_id >= self.total_nodes:
+                continue
+            
+            vector = {}
+            if with_vectors:
+                vector['phase'] = self.phase_vectors[node_id].clone()
+                vector['mag'] = self.mag_vectors[node_id].clone()
+                vector['phase_values'] = self.phase_values[node_id].clone()
+            
+            payload = {}
+            if with_payload:
+                payload = dict(self.payloads.get(node_id, {}))
+            
+            results.append(NodePoint(node_id, vector, payload))
+        
+        return results
+
+    def update_vectors(self, values: Dict[int, Dict[str, List[float]]]):
+        """Update vectors for given node IDs with lock protection."""
+        with self._lock:
+            for node_id, node_values in values.items():
+                if node_id < 0 or node_id >= self.total_nodes:
+                    continue
+                
+                # Update phase and mag
+                if 'phase' in node_values:
+                    phase_tensor = torch.tensor(node_values['phase'], dtype=torch.float32)
+                    self.phase_vectors[node_id] = phase_tensor
+                    
+                    # Recompute phase_values
+                    cos_values = torch.cos(phase_tensor)
+                    sin_values = torch.sin(phase_tensor)
+                    self.phase_values[node_id] = torch.cat([cos_values, sin_values], dim=-1)
+                
+                if 'mag' in node_values:
+                    mag_tensor = torch.tensor(node_values['mag'], dtype=torch.float32)
+                    self.mag_vectors[node_id] = mag_tensor
+
+    def search_nodes_batch(self, query_vectors, vector_name='phase', limit=3, with_vectors=False, with_payload=True):
+        """Batch search for nearest neighbors."""
+        # Convert query vectors to tensor format
+        query_tensors = []
+        for q_vec in query_vectors:
+            if not isinstance(q_vec, torch.Tensor):
+                q_vec = torch.tensor(q_vec, dtype=torch.float32)
+            
+            if vector_name == 'phase':
+                # Transform continuous phase values to Cos/Sin vectors (Conjugate logic)
+                q_vec = torch.cat([
+                    torch.cos(q_vec), 
+                    -torch.sin(q_vec)
+                ], dim=-1)
+            else:
+                raise NotImplementedError(f"Vector name: {vector_name} not implemented")
+            
+            query_tensors.append(q_vec)
+        
+        # Stack into batch tensor
+        query_batch = torch.stack(query_tensors)  # (batch_size, vector_dim*2)
+        
+        # Perform search using backend
+        search_results = self.search_backend.search_batch(
+            query_batch, 
+            self.phase_values, 
+            limit, 
+            self.radiation_similarity_threshold
+        )
+        
+        # Convert to NodePoint objects
+        results = []
+        for query_result in search_results:
+            query_points = []
+            for node_id, score in query_result:
+                vector = {}
+                if with_vectors:
+                    vector['phase'] = self.phase_vectors[node_id].clone()
+                    vector['mag'] = self.mag_vectors[node_id].clone()
+                    vector['phase_values'] = self.phase_values[node_id].clone()
+                
+                payload = {}
+                if with_payload:
+                    payload = dict(self.payloads.get(node_id, {}))
+                
+                point = NodePoint(node_id, vector, payload, score=score)
+                query_points.append(point)
+            results.append(query_points)
+        
+        return results
+
+    def get_node_versions(self, node_ids: Union[int, List[int]]):
+        """Get version numbers for given node IDs."""
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+        
+        versions = {}
+        for node_id in node_ids:
+            if node_id in self.payloads:
+                versions[node_id] = self.payloads[node_id].get('version', 0)
+            else:
+                versions[node_id] = 0
+        
+        return versions
+
+    def update_node_versions(self, node_ids: Union[int, List[int]], versions: Union[int, List[int]]):
+        """Update version numbers for given node IDs."""
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+            versions = [versions]
+        
+        if len(node_ids) != len(versions):
+            raise ValueError("node_ids and versions must have the same length")
+        
+        with self._lock:
+            for node_id, version in zip(node_ids, versions):
+                if node_id in self.payloads:
+                    self.payloads[node_id]['version'] = version
+                else:
+                    self.payloads[node_id] = {'version': version}
+
+    def is_input(self, node_id):
+        """Check if node is an input node."""
+        return node_id in self.input_nodeids
+
+    def is_output(self, node_id):
+        """Check if node is an output node."""
+        return node_id in self.output_nodeids
+
+    def get_phase(self, node_ids: Union[int, List[int]]):
+        """Compatibility method to get phase vectors."""
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+        
+        vectors = []
+        for node_id in node_ids:
+            if 0 <= node_id < self.total_nodes:
+                vectors.append(self.phase_vectors[node_id].clone().tolist())
+        return vectors
+
+    def get_mag(self, node_ids: Union[int, List[int]]):
+        """Compatibility method to get magnitude vectors."""
+        if isinstance(node_ids, int):
+            node_ids = [node_ids]
+        
+        vectors = []
+        for node_id in node_ids:
+            if 0 <= node_id < self.total_nodes:
+                vectors.append(self.mag_vectors[node_id].clone().tolist())
+        return vectors
+
+
+NodeStore = PytorchNodeStore
+# NodeStore = UnquantizedNodeStore
