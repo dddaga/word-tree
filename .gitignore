@@ -5,4 +5,5 @@ qdrant_storage/*
 *.dfs #files store dby qdrantdb
 
 *.pth #model weights
+*.pt
 data/

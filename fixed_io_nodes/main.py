@@ -273,17 +273,8 @@ def worker_process_fn(
             print(f"Worker {worker_id}: Barrier broken, shutting down.")
             break
 
-def data_loader_process_fn(
-    data_queue:mp.Queue,
-    # dataset:Dataset,
-    config:dict,
-    # epochs:int=1,
-    shuffle:bool=True
-):
-
-    ##### Define the dataset here
-
-    ###### Loading Iris dataset here
+def load_iris_dataset() -> TensorDataset:
+    """Load and preprocess Iris dataset, returning a PyTorch Dataset."""
     # Load Iris dataset from scikit-learn
     iris_data = load_iris()
     X = iris_data.data  # Features: (150, 4) - sepal length, sepal width, petal length, petal width
@@ -291,6 +282,11 @@ def data_loader_process_fn(
     
     # Convert to PyTorch tensors
     X_tensor = torch.tensor(X, dtype=torch.float32)
+    max_X = X_tensor.max(dim=0).values
+    min_X = X_tensor.min(dim=0).values
+    X_tensor = (X_tensor - min_X) / (max_X - min_X)
+    X_tensor = torch.arccos(X_tensor).reshape(-1, 1, 4)
+
     y_tensor = torch.tensor(y, dtype=torch.long)
     
     # Create PyTorch Dataset
@@ -298,8 +294,30 @@ def data_loader_process_fn(
     
     print(f"Loaded Iris dataset: {len(dataset)} samples, {X.shape[1]} features, {len(iris_data.target_names)} classes")
     
-    #########################################################
+    return dataset
 
+def data_loader_process_fn(
+    data_queue:mp.Queue,
+    config:dict,
+    dataset_fn=None,  # Function that returns Dataset
+    shuffle:bool=True
+):
+    """
+    Data loader process that feeds data to worker processes.
+    
+    Args:
+        data_queue: Queue to put data batches
+        config: Configuration dictionary
+        dataset_fn: Callable that returns a PyTorch Dataset. If None, defaults to load_iris_dataset
+        shuffle: Whether to shuffle the dataset
+    """
+    
+    # If dataset_fn is None, use default (Iris)
+    if dataset_fn is None:
+        dataset_fn = load_iris_dataset
+    
+    # Call function to get dataset (executed in child process, avoiding pickling issues)
+    dataset = dataset_fn()
 
     epochs = config['training'].get('epochs', 1)
 
@@ -513,7 +531,7 @@ if __name__ == "__main__":
     
     dataloader_process = mp.Process(
         target=data_loader_process_fn,
-        args=(data_queue, config, True),
+        args=(data_queue, config, None, True),  # dataset_fn=None (default), shuffle=True
         name="DataLoader"
     )
     dataloader_process.start()

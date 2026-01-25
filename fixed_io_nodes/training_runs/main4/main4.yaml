@@ -1,0 +1,44 @@
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "main4"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 100
+  input_nodes: 1
+  output_nodes: 3
+  cardinality: 4
+  radiation_targets: 4
+
+# --- Model Architecture ---
+model:
+  vector_dim: 4
+  phase_bins: null
+  mag_bins: null
+  gamma: 1.5
+  iterations: 3
+  radiation_similarity_threshold: 0.1
+  temporal_decay: 0.9
+  activation_threshold: 0.1
+
+# --- Training Hyperparameters ---
+training: 
+  lr: 0.001
+  accumulation_steps: 4
+  momentum: 0.9
+  worker_count: 1
+  timeout: 300 #time to wait for data from queue
+  epochs: 10
+
+
+# --- System & Logging ---
+system:
+  device: "cuda"
+  random_seed: 42
+  logging:
+    log_path: "training_runs/main4/main4.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    tensorboard_dir: null
