@@ -25,6 +25,9 @@ import time
 from collections import defaultdict
 
 from . import worker as worker_mod
+from .gnn_grad_sink import GNNGradientSink
+from ._config_utils import get_node_store_from_config
+from core.gradient_accumulator import UnquantizedGradientAccumulator
 
 
 def _normalize_config_list(configs):
@@ -104,7 +107,7 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
     """
 
     @staticmethod
-    def forward(ctx, x, config, gradient_queue):
+    def forward(ctx, x, config, gradient_queue, gradient_sink):
         B = x.shape[0]
         output_queue = mp.Queue()
         procs = []
@@ -132,6 +135,7 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
         ctx.config = config
         ctx.B = B
         ctx.gradient_queue = gradient_queue
+        ctx.gradient_sink = gradient_sink
         return stack_out.to(x.device)
 
     @staticmethod
@@ -171,19 +175,29 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
             p.join(timeout=120)
         phase_acc = defaultdict(lambda: None)
         mag_acc = defaultdict(lambda: None)
+        phase_freq = defaultdict(int)
+        mag_freq = defaultdict(int)
         for i in range(ctx.B):
             pg, mg, _ = by_i[i]
             for k, v in (pg or {}).items():
                 if v is not None:
                     phase_acc[k] = v if phase_acc[k] is None else phase_acc[k] + v
+                    phase_freq[k] += 1
             for k, v in (mg or {}).items():
                 if v is not None:
                     mag_acc[k] = v if mag_acc[k] is None else mag_acc[k] + v
-        ctx.gradient_queue.put((dict(phase_acc), dict(mag_acc)))
+                    mag_freq[k] += 1
+        
+        # Route gradients to sink or queue based on what's provided
+        if ctx.gradient_sink is not None:
+            ctx.gradient_sink.add(dict(phase_acc), dict(mag_acc), dict(phase_freq), dict(mag_freq))
+        elif ctx.gradient_queue is not None:
+            ctx.gradient_queue.put((dict(phase_acc), dict(mag_acc)))
+        
         grad_input = torch.stack([by_i[i][2] for i in range(ctx.B)])
         # ensure same dtype/device as ctx.x so autograd assigns to x.grad correctly
         grad_input = grad_input.to(dtype=ctx.x.dtype, device=grad_output.device)
-        return grad_input, None, None
+        return grad_input, None, None, None
 
 
 class _StackLayerView(nn.Module):
@@ -323,43 +337,42 @@ class DistributedNeurographStack(nn.Module):
 
 class DistributedNeurographLayer(nn.Module):
     """
-    Single distributed GNN layer: one process per sample, one accumulator.
+    Single distributed GNN layer: one process per sample.
     No RPC; each sample runs in its own process so active_nodes never needs clearing.
     Collates outputs after all sample processes finish, then in backward sends grads
     and collates (phase_grads, mag_grads, input_grad) from all.
+    Owns gradient_sink, node_store, and accumulator; GNNAdam discovers these from the model.
     """
 
     def __init__(self, config):
         super().__init__()
         cfg = load_config(config) if isinstance(config, str) else config
         self._config = cfg
+        self._gradient_sink = GNNGradientSink()
+        self._node_store = get_node_store_from_config(cfg)
+        device = cfg["system"]["device"]
+        self._accumulator = UnquantizedGradientAccumulator(
+            node_store=self._node_store,
+            lr=cfg["training"]["lr"],
+            accumulation_steps=cfg["training"]["accumulation_steps"],
+            momentum=cfg["training"].get("momentum", 0.9),
+            verbose=cfg["system"]["logging"].get("verbose", False),
+            device=device,
+        )
         try:
             mp.set_start_method("spawn", force=True)
         except RuntimeError:
             pass
 
-        self._gradient_queue = mp.Queue()
-        save_path = None
-        try:
-            log_path = cfg["system"]["logging"]["log_path"]
-            save_path = get_weights_save_path(log_path, cfg["qdrant"]["collection_name"])
-        except (KeyError, Exception):
-            pass
-        self._accumulator_process = mp.Process(
-            target=gradient_accumulator_process_fn,
-            args=(self._gradient_queue, cfg, None, None, save_path),
-            name="accumulator",
-        )
-        self._accumulator_process.start()
-        time.sleep(2)
+    @property
+    def gradient_sink(self):
+        """Gradient sink for this layer; GNNAdam discovers this from the model."""
+        return self._gradient_sink
+
+    @property
+    def accumulator(self):
+        """Gradient accumulator for this layer; GNNAdam discovers this from the model."""
+        return self._accumulator
 
     def forward(self, x):
-        return _OneProcessPerSampleFunction.apply(x, self._config, self._gradient_queue)
-
-    def shutdown(self):
-        if getattr(self, "_gradient_queue", None) is not None:
-            self._gradient_queue.put(None)
-        if getattr(self, "_accumulator_process", None) is not None and self._accumulator_process.is_alive():
-            self._accumulator_process.join(timeout=120)
-        self._gradient_queue = None
-        self._accumulator_process = None
+        return _OneProcessPerSampleFunction.apply(x, self._config, None, self._gradient_sink)

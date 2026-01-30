@@ -68,3 +68,4 @@ system:
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class', 'skipped']
     tensorboard_dir: null  # null = use default tensorboard directory
+    verbose: false

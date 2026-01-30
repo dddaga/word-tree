@@ -7,7 +7,8 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import torch.multiprocessing as mp
-from distributed import DistributedNeurographLayer
+
+from distributed import DistributedNeurographLayer, GNNAdam
 from main import load_config, load_iris_dataset
 
 CONFIG_PATH = "training_runs/distributed_test/distributed.yaml"
@@ -36,6 +37,7 @@ if __name__ == "__main__":
 
     log_cfg = cfg["system"]["logging"]
     log_path = log_cfg["log_path"]
+    verbose = log_cfg.get("verbose", False)
     Path(log_path).parent.mkdir(parents=True, exist_ok=True)
     log_per_sample = log_cfg.get("log_per_sample", False)
     tensorboard_dir = log_cfg.get("tensorboard_dir")
@@ -44,16 +46,27 @@ if __name__ == "__main__":
     run_id = time.strftime("%Y%m%d-%H%M%S")
     tensorboard_run_dir = os.path.join(tensorboard_dir, run_id)
     writer = SummaryWriter(log_dir=tensorboard_run_dir)
-    print(f"TensorBoard: {tensorboard_run_dir}")
+    if verbose:
+        print(f"TensorBoard: {tensorboard_run_dir}")
+
+    # Build model (layer owns gradient_sink, node_store, and accumulator; GNNAdam discovers them)
+    model = IrisGNNModel(cfg)
+    device = cfg["system"]["device"]
+    model = model.to(device)
+
+    optimizer = GNNAdam(
+        model,
+        lr=cfg["training"]["lr"],
+        betas=(0.9, 0.999),
+        eps=1e-8,
+    )
 
     dataset = load_iris_dataset()
     batch_size = cfg["training"]["accumulation_steps"]
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-    model = IrisGNNModel(cfg)
     criterion = nn.CrossEntropyLoss()
     criterion_noreduce = nn.CrossEntropyLoss(reduction="none") if log_per_sample else None
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg["training"]["lr"])
     epochs = cfg["training"]["epochs"]
 
     log_fields = ["iteration", "loss"]
@@ -64,6 +77,8 @@ if __name__ == "__main__":
         log_f.flush()
         for epoch in range(epochs):
             for x, y in dataloader:
+                x = x.to(device)
+                y = y.to(device)
                 optimizer.zero_grad()
                 logits = model(x)
                 loss = criterion(logits, y)
@@ -75,14 +90,15 @@ if __name__ == "__main__":
                 writer.add_scalar("Training/Loss", loss.item(), global_step)
                 global_step += 1
 
-                if log_per_sample and criterion_noreduce is not None:
-                    per_sample = criterion_noreduce(logits, y)
-                    for b in range(y.size(0)):
-                        print(f"Target {y[b].item()}: Loss: {per_sample[b].item():.4f}")
-                else:
-                    print(f"Loss: {loss.item():.4f}")
+                if verbose:
+                    if log_per_sample and criterion_noreduce is not None:
+                        per_sample = criterion_noreduce(logits, y)
+                        for b in range(y.size(0)):
+                            print(f"Target {y[b].item()}: Loss: {per_sample[b].item():.4f}")
+                    else:
+                        print(f"Loss: {loss.item():.4f}")
 
-            print(f"epoch {epoch + 1}/{epochs} loss: {loss.item():.4f}")
+            if verbose:
+                print(f"epoch {epoch + 1}/{epochs} loss: {loss.item():.4f}")
 
     writer.close()
-    model.gnn.shutdown()
