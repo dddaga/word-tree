@@ -219,60 +219,88 @@ def trace_to_step_result(
 
 class TraceVisualizer:
     """
-    Helper class to manage trace data visualization.
+    Helper class to manage trace data visualization. Supports single-layer (backward compat)
+    or multi-layer via layers list. Each layer has (trace_data, node_store).
     """
-    
-    def __init__(self, trace_data: Dict[str, Any], node_store: NodeStore, config: Optional[Dict] = None):
+
+    def __init__(
+        self,
+        trace_data: Optional[Dict[str, Any]] = None,
+        node_store: Optional[NodeStore] = None,
+        config: Optional[Dict] = None,
+        *,
+        layers: Optional[List[tuple]] = None,
+    ):
         """
-        Initialize with trace data.
-        
-        Args:
-            trace_data: Trace data from ForwardPassTracer
-            node_store: NodeStore instance
-            config: Optional config dict
+        Initialize with trace data (single layer) or layers (multi-layer).
+
+        Single layer (backward compat): trace_data, node_store, config.
+        Multi-layer: layers=[(trace_data_0, node_store_0), (trace_data_1, node_store_1), ...], config.
         """
-        self.trace_data = trace_data
-        self.node_store = node_store
         self.config = config or {}
-        self.target_values = {}  # Always empty - feature removed
-        self._converted_states = {}  # Cache converted states
-    
+        self.target_values = {}
+        self._converted_states = {}  # (layer_index, iteration_idx) -> StepResult
+
+        if layers is not None:
+            self._layers = list(layers)
+            self.trace_data = self._layers[0][0] if self._layers else {}
+            self.node_store = self._layers[0][1] if self._layers else None
+        else:
+            self._layers = [(trace_data or {}, node_store)] if trace_data is not None and node_store is not None else []
+            self.trace_data = trace_data or {}
+            self.node_store = node_store
+
     def set_targets(self, targets: Dict[str, float]):
         """Set target values for output nodes (deprecated - no-op)."""
-        pass  # Feature removed
-    
-    def get_iteration_count(self) -> int:
-        """Get number of iterations in trace."""
-        return len(self.trace_data.get('iterations', []))
-    
-    def get_state(self, iteration_idx: int) -> StepResult:
+        pass
+
+    def get_layer_count(self) -> int:
+        """Number of layers (1 for single-layer trace)."""
+        return len(self._layers)
+
+    def get_iteration_count(self, layer_index: int = 0) -> int:
+        """Get number of iterations for the given layer."""
+        if layer_index < 0 or layer_index >= len(self._layers):
+            return 0
+        trace_data, _ = self._layers[layer_index]
+        return len(trace_data.get("iterations", []))
+
+    def get_state(self, iteration_idx: int, layer_index: int = 0) -> StepResult:
         """
-        Get StepResult for a specific iteration.
-        
+        Get StepResult for a specific layer and iteration.
+
         Args:
             iteration_idx: Index of iteration (0-based)
-            
+            layer_index: Index of layer (0-based)
+
         Returns:
-            StepResult for that iteration
+            StepResult for that layer and iteration
         """
-        # Check cache
-        if iteration_idx in self._converted_states:
-            return self._converted_states[iteration_idx]
-        
-        # Convert
+        if layer_index < 0 or layer_index >= len(self._layers):
+            raise ValueError(f"layer_index {layer_index} out of range [0, {len(self._layers)})")
+        trace_data, node_store = self._layers[layer_index]
+
+        cache_key = (layer_index, iteration_idx)
+        if cache_key in self._converted_states:
+            return self._converted_states[cache_key]
+
         result = trace_to_step_result(
-            self.trace_data,
+            trace_data,
             iteration_idx,
-            self.node_store,
+            node_store,
             self.config,
-            self.target_values
+            self.target_values,
         )
-        
-        # Cache it
-        self._converted_states[iteration_idx] = result
+        self._converted_states[cache_key] = result
         return result
-    
-    def get_all_states(self) -> List[StepResult]:
-        """Get all converted states."""
-        count = self.get_iteration_count()
-        return [self.get_state(i) for i in range(count)]
+
+    def get_all_states(self, layer_index: int = 0) -> List[StepResult]:
+        """Get all converted states for the given layer."""
+        count = self.get_iteration_count(layer_index)
+        return [self.get_state(i, layer_index) for i in range(count)]
+
+    def _trace_data_for_layer(self, layer_index: int) -> Dict[str, Any]:
+        """Internal: trace_data for a layer (for /api/iterations per-layer)."""
+        if layer_index < 0 or layer_index >= len(self._layers):
+            return {}
+        return self._layers[layer_index][0]

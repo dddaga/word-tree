@@ -30,6 +30,10 @@ class SetIterationRequest(BaseModel):
     iteration: int
 
 
+class SetLayerRequest(BaseModel):
+    layer_index: int
+
+
 @app.get("/")
 async def index():
     """Serve the main visualization page."""
@@ -53,9 +57,10 @@ async def init_network(data: Dict[str, Any] = {}):
         )
     
     # Return initial state
-    if _session.get_iteration_count() > 0:
+    _session._current_layer = getattr(_session, "_current_layer", 0)
+    if _session.get_iteration_count(_session._current_layer) > 0:
         _session._current_iteration = 0
-        return _session.get_state(0).__dict__
+        return _session.get_state(0, _session._current_layer).__dict__
     else:
         raise HTTPException(status_code=400, detail="Trace data has no iterations")
 
@@ -67,6 +72,8 @@ def init_with_visualizer(visualizer: TraceVisualizer):
     """
     global _session
     _session = visualizer
+    _session._current_layer = 0
+    _session._current_iteration = 0
 
 
 @app.get("/api/state")
@@ -74,14 +81,13 @@ async def get_state():
     """Get current network state."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized. Call /api/init first.")
-    
-    # Get current iteration (default to 0)
-    current_iter = getattr(_session, '_current_iteration', 0)
-    
-    if current_iter >= _session.get_iteration_count():
-        current_iter = _session.get_iteration_count() - 1
-    
-    state = _session.get_state(current_iter)
+
+    current_layer = getattr(_session, "_current_layer", 0)
+    current_iter = getattr(_session, "_current_iteration", 0)
+    layer_count = _session.get_iteration_count(current_layer)
+    if current_iter >= layer_count:
+        current_iter = max(0, layer_count - 1)
+    state = _session.get_state(current_iter, current_layer)
     return state.__dict__
 
 
@@ -90,18 +96,14 @@ async def step_forward():
     """Move to next iteration."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized")
-    
-    current_iter = getattr(_session, '_current_iteration', 0)
-    max_iter = _session.get_iteration_count() - 1
-    
+
+    current_layer = getattr(_session, "_current_layer", 0)
+    current_iter = getattr(_session, "_current_iteration", 0)
+    max_iter = _session.get_iteration_count(current_layer) - 1
     if current_iter < max_iter:
         current_iter += 1
         _session._current_iteration = current_iter
-    else:
-        # Already at last iteration
-        pass
-    
-    state = _session.get_state(current_iter)
+    state = _session.get_state(current_iter, current_layer)
     return state.__dict__
 
 
@@ -110,17 +112,13 @@ async def step_backward():
     """Move to previous iteration."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized")
-    
-    current_iter = getattr(_session, '_current_iteration', 0)
-    
+
+    current_layer = getattr(_session, "_current_layer", 0)
+    current_iter = getattr(_session, "_current_iteration", 0)
     if current_iter > 0:
         current_iter -= 1
         _session._current_iteration = current_iter
-    else:
-        # Already at first iteration
-        pass
-    
-    state = _session.get_state(current_iter)
+    state = _session.get_state(current_iter, current_layer)
     return state.__dict__
 
 
@@ -129,51 +127,83 @@ async def set_iteration(req: SetIterationRequest):
     """Jump to a specific iteration."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized")
-    
-    max_iter = _session.get_iteration_count() - 1
-    
+
+    current_layer = getattr(_session, "_current_layer", 0)
+    max_iter = _session.get_iteration_count(current_layer) - 1
     if req.iteration < 0 or req.iteration > max_iter:
         raise HTTPException(
-            status_code=400, 
-            detail=f"Iteration {req.iteration} out of range [0, {max_iter}]"
+            status_code=400,
+            detail=f"Iteration {req.iteration} out of range [0, {max_iter}]",
         )
-    
     _session._current_iteration = req.iteration
-    state = _session.get_state(req.iteration)
+    state = _session.get_state(req.iteration, current_layer)
     return state.__dict__
 
 
 @app.get("/api/iterations")
 async def get_iterations():
-    """Get information about available iterations."""
+    """Get information about available iterations for the current layer."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized")
-    
-    count = _session.get_iteration_count()
-    current = getattr(_session, '_current_iteration', 0)
-    
+
+    current_layer = getattr(_session, "_current_layer", 0)
+    count = _session.get_iteration_count(current_layer)
+    current = getattr(_session, "_current_iteration", 0)
+    trace_data = _session._trace_data_for_layer(current_layer)
+    iterations_list = trace_data.get("iterations", [])
+
     return {
         "total_iterations": count,
         "current_iteration": current,
         "iterations": [
             {
                 "iteration": i,
-                "input_injected": _session.trace_data['iterations'][i].get('input_injected', False),
-                "active_nodes": len(_session.trace_data['iterations'][i].get('active_nodes', []))
+                "input_injected": iterations_list[i].get("input_injected", False),
+                "active_nodes": len(iterations_list[i].get("active_nodes", [])),
             }
             for i in range(count)
-        ]
+        ],
     }
+
+
+@app.get("/api/layers")
+async def get_layers():
+    """Get layer count and current layer index."""
+    if _session is None:
+        raise HTTPException(status_code=400, detail="Network not initialized")
+    layer_count = _session.get_layer_count()
+    current_layer = getattr(_session, "_current_layer", 0)
+    return {
+        "layer_count": layer_count,
+        "current_layer": current_layer,
+    }
+
+
+@app.post("/api/set_layer")
+async def set_layer(req: SetLayerRequest):
+    """Switch to a specific layer."""
+    if _session is None:
+        raise HTTPException(status_code=400, detail="Network not initialized")
+    layer_count = _session.get_layer_count()
+    if req.layer_index < 0 or req.layer_index >= layer_count:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Layer {req.layer_index} out of range [0, {layer_count})",
+        )
+    _session._current_layer = req.layer_index
+    _session._current_iteration = 0
+    state = _session.get_state(0, req.layer_index)
+    return state.__dict__
 
 
 @app.post("/api/reset")
 async def reset():
-    """Reset to first iteration."""
+    """Reset to first iteration of current layer."""
     if _session is None:
         raise HTTPException(status_code=400, detail="Network not initialized")
-    
+    current_layer = getattr(_session, "_current_layer", 0)
     _session._current_iteration = 0
-    state = _session.get_state(0)
+    state = _session.get_state(0, current_layer)
     return state.__dict__
 
 
