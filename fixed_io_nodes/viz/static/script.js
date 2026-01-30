@@ -47,6 +47,8 @@ const network = new vis.Network(container, data, options);
 let selectedNodeId = null;
 let currentIteration = 0;
 let totalIterations = 0;
+let currentLayer = 0;
+let layerCount = 1;
 let lastState = null;
 let iterationInfo = [];
 
@@ -55,11 +57,12 @@ let iterationInfo = [];
 async function apiCall(endpoint, body = null, forcePost = false) {
     try {
         // Determine method: POST if body provided, endpoint requires POST, or forcePost is true
-        const requiresPost = forcePost || 
-                           endpoint.includes('/api/step') || 
-                           endpoint.includes('/api/step_back') || 
+        const requiresPost = forcePost ||
+                           endpoint.includes('/api/step') ||
+                           endpoint.includes('/api/step_back') ||
                            endpoint.includes('/api/reset') ||
                            endpoint.includes('/api/set_') ||
+                           endpoint.includes('/api/set_layer') ||
                            endpoint.includes('/api/inject');
         
         const hasBody = body && Object.keys(body).length > 0;
@@ -81,16 +84,53 @@ async function apiCall(endpoint, body = null, forcePost = false) {
 }
 
 async function initNetwork() {
-    // Check if already initialized
     const iterations = await apiCall('/api/iterations');
-    if (iterations && iterations.total_iterations > 0) {
-        totalIterations = iterations.total_iterations;
-        currentIteration = iterations.current_iteration || 0;
-        iterationInfo = iterations.iterations || [];
-        updateIterationControls();
-        await loadState();
-    } else {
+    if (!iterations || iterations.total_iterations === 0) {
         alert('Network not initialized. Please run visualize_forward_pass.py first.');
+        return;
+    }
+    totalIterations = iterations.total_iterations;
+    currentIteration = iterations.current_iteration || 0;
+    iterationInfo = iterations.iterations || [];
+    const layersResp = await apiCall('/api/layers');
+    if (layersResp) {
+        layerCount = layersResp.layer_count || 1;
+        currentLayer = layersResp.current_layer || 0;
+        updateLayerSelector();
+    }
+    updateIterationControls();
+    await loadState();
+}
+
+function updateLayerSelector() {
+    const sel = document.getElementById('layer-select');
+    sel.innerHTML = '';
+    for (let i = 0; i < layerCount; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = 'Layer ' + i;
+        if (i === currentLayer) opt.selected = true;
+        sel.appendChild(opt);
+    }
+    sel.style.display = layerCount > 1 ? 'block' : 'none';
+    document.getElementById('layer-section').style.display = layerCount > 1 ? 'block' : 'none';
+}
+
+async function setLayer(layerIndex) {
+    if (layerIndex < 0 || layerIndex >= layerCount) return;
+    const state = await apiCall('/api/set_layer', { layer_index: layerIndex });
+    if (state) {
+        currentLayer = layerIndex;
+        currentIteration = state.step_number || 0;
+        const iterations = await apiCall('/api/iterations');
+        if (iterations) {
+            totalIterations = iterations.total_iterations;
+            iterationInfo = iterations.iterations || [];
+        }
+        updateLayerSelector();
+        updateIterationControls();
+        renderState(state, true);
+        updateMetrics(state);
     }
 }
 
@@ -518,6 +558,11 @@ async function reset() {
 document.getElementById('btn-prev').addEventListener('click', stepBackward);
 document.getElementById('btn-next').addEventListener('click', stepForward);
 document.getElementById('btn-reset').addEventListener('click', reset);
+
+document.getElementById('layer-select').addEventListener('change', (e) => {
+    const layerIndex = parseInt(e.target.value);
+    setLayer(layerIndex);
+});
 
 document.getElementById('iteration-slider').addEventListener('input', (e) => {
     const iteration = parseInt(e.target.value);
