@@ -2,8 +2,16 @@ from .lookup_table import LookupTable
 from pprint import pprint
 import torch
 import torch.nn as nn
-from typing import Dict
+from typing import Dict, Union, List, Optional
 from .nodestore import NodeStore
+
+
+def _to_tensor(value: Union[torch.Tensor, List, tuple], dtype: torch.dtype, device: str) -> torch.Tensor:
+    """Convert value to tensor, handling both tensor and list inputs."""
+    if isinstance(value, torch.Tensor):
+        return value.detach().clone().to(dtype=dtype, device=device)
+    else:
+        return torch.tensor(value, dtype=dtype, device=device)
 
 
 class GradientAccumulator(nn.Module):
@@ -35,10 +43,11 @@ class GradientAccumulator(nn.Module):
         self.node_update_counts = {node_id:0 for node_id in range(self.total_nodes)}
 
 
-    def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor]):
+    def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor],
+                          phase_grad_freq:Optional[Dict[int, int]]=None, mag_grad_freq:Optional[Dict[int, int]]=None):
         """
-        This recieves the grads from other workers who are updating the graph. 
-        The gradients are expected as Dict[str, torch.Tensor] with the keys as the parameter names              
+        Receives grads from workers. Optionally pass phase_grad_freq and mag_grad_freq (node_id -> count of
+        samples that contributed). If omitted, each node is treated as count 1 (backwards compatible).
         """
         for node_id, phase_grad  in phase_grads.items():
             if phase_grad is None or torch.allclose(phase_grad, torch.zeros_like(phase_grad), atol=1e-8): #skip if the gradient is all zeros
@@ -47,7 +56,7 @@ class GradientAccumulator(nn.Module):
                 self.phase_grads[node_id] = phase_grad
             else:
                 self.phase_grads[node_id] += phase_grad
-            self.phase_grad_counts[node_id] += 1
+            self.phase_grad_counts[node_id] += (phase_grad_freq.get(node_id, 1) if phase_grad_freq is not None else 1)
 
         for node_id, mag_grad  in mag_grads.items():
             if mag_grad is None or torch.allclose(mag_grad, torch.zeros_like(mag_grad), atol=1e-8): #skip if the gradient is all zeros
@@ -56,7 +65,7 @@ class GradientAccumulator(nn.Module):
                 self.mag_grads[node_id] = mag_grad
             else:
                 self.mag_grads[node_id] += mag_grad
-            self.mag_grad_counts[node_id] += 1
+            self.mag_grad_counts[node_id] += (mag_grad_freq.get(node_id, 1) if mag_grad_freq is not None else 1)
 
         # print("phase_grads: ", phase_grads)
         # print("mag_grads: ", mag_grads)
@@ -84,8 +93,8 @@ class GradientAccumulator(nn.Module):
 
         node_ids_to_update = list(node_ids_to_update)
         nodes_to_update = self.node_store.get_node(node_ids_to_update)
-        old_phase_values = {node.id: torch.tensor(node.vector['phase'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
-        old_mag_values = {node.id: torch.tensor(node.vector['mag'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
+        old_phase_values = {node.id: _to_tensor(node.vector['phase'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
+        old_mag_values = {node.id: _to_tensor(node.vector['mag'], dtype=torch.float16, device=self.device) for node in nodes_to_update}
 
         new_phase_values = {}
         new_mag_values = {}
@@ -175,10 +184,11 @@ class UnquantizedGradientAccumulator(nn.Module):
 
         self.node_update_counts = {node_id:0 for node_id in range(self.total_nodes)}
 
-    def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor]):
+    def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor],
+                          phase_grad_freq:Optional[Dict[int, int]]=None, mag_grad_freq:Optional[Dict[int, int]]=None):
         """
-        This recieves the grads from other workers who are updating the graph. 
-        The gradients are expected as Dict[str, torch.Tensor] with the keys as the parameter names              
+        Receives grads from workers. Optionally pass phase_grad_freq and mag_grad_freq (node_id -> count of
+        samples that contributed). If omitted, each node is treated as count 1 (backwards compatible).
         """
         for node_id, phase_grad in phase_grads.items():
             if phase_grad is None or torch.allclose(phase_grad, torch.zeros_like(phase_grad), atol=1e-8):
@@ -194,7 +204,7 @@ class UnquantizedGradientAccumulator(nn.Module):
                 self.phase_grads[node_id] = phase_grad.to(self.device).clone()
             else:
                 self.phase_grads[node_id] += phase_grad.to(self.device)
-            self.phase_grad_counts[node_id] += 1
+            self.phase_grad_counts[node_id] += (phase_grad_freq.get(node_id, 1) if phase_grad_freq is not None else 1)
 
 
         for node_id, mag_grad in mag_grads.items():
@@ -211,7 +221,7 @@ class UnquantizedGradientAccumulator(nn.Module):
                 self.mag_grads[node_id] = mag_grad.to(self.device).clone()
             else:
                 self.mag_grads[node_id] += mag_grad.to(self.device)
-            self.mag_grad_counts[node_id] += 1
+            self.mag_grad_counts[node_id] += (mag_grad_freq.get(node_id, 1) if mag_grad_freq is not None else 1)
         
     def step(self):
         """
@@ -231,8 +241,8 @@ class UnquantizedGradientAccumulator(nn.Module):
 
         # Fetch current node values and versions
         nodes_to_update = self.node_store.get_node(node_ids_to_update)
-        old_phase_values = {node.id: torch.tensor(node.vector['phase'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
-        old_mag_values = {node.id: torch.tensor(node.vector['mag'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
+        old_phase_values = {node.id: _to_tensor(node.vector['phase'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
+        old_mag_values = {node.id: _to_tensor(node.vector['mag'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
         old_versions = {node.id: node.payload.get('version', 0) for node in nodes_to_update}
 
         new_phase_values = {}

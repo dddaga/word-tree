@@ -5,7 +5,15 @@ from .lookup_table import LookupTable
 import torch.nn.functional as F
 import torch
 from torch import nn
-from typing import List
+from typing import List, Union
+
+
+def _to_tensor_with_grad(value: Union[torch.Tensor, List, tuple], dtype: torch.dtype, device: str) -> torch.Tensor:
+    """Convert value to tensor with requires_grad, handling both tensor and list inputs."""
+    if isinstance(value, torch.Tensor):
+        return value.detach().clone().to(dtype=dtype, device=device).requires_grad_(True)
+    else:
+        return torch.tensor(value, dtype=dtype, device=device).requires_grad_(True)
 
 class QuantizedNode(nn.Module):
 
@@ -64,8 +72,8 @@ class QuantizedNode(nn.Module):
         self.id = node.id
 
         
-        self.phase_weight = nn.Parameter(torch.tensor(node.vector['phase'], dtype=torch.float16, device=self.device).requires_grad_(True))
-        self.mag_weight = nn.Parameter(torch.tensor(node.vector['mag'], dtype=torch.float16, device=self.device).requires_grad_(True))
+        self.phase_weight = nn.Parameter(_to_tensor_with_grad(node.vector['phase'], dtype=torch.float16, device=self.device))
+        self.mag_weight = nn.Parameter(_to_tensor_with_grad(node.vector['mag'], dtype=torch.float16, device=self.device))
 
 
         self.incoming_connections = node.payload['incoming_connections']
@@ -211,8 +219,8 @@ class UnquantizedNode(nn.Module):
         self.id = node.id
 
         # Load continuous float weights from Qdrant
-        self.phase_weight = nn.Parameter(torch.tensor(node.vector['phase'], dtype=torch.float16, device=self.device).requires_grad_(True))
-        self.mag_weight = nn.Parameter(torch.tensor(node.vector['mag'], dtype=torch.float16, device=self.device).requires_grad_(True))
+        self.phase_weight = nn.Parameter(_to_tensor_with_grad(node.vector['phase'], dtype=torch.float16, device=self.device))
+        self.mag_weight = nn.Parameter(_to_tensor_with_grad(node.vector['mag'], dtype=torch.float16, device=self.device))
 
         self.incoming_connections = node.payload['incoming_connections']
         self.outgoing_connections = node.payload['outgoing_connections']
