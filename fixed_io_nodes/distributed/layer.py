@@ -117,6 +117,7 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
                 target=worker_mod.run_one_sample_forward_only,
                 args=(i, xi, config, output_queue),
                 name=f"sample_{i}",
+                daemon=True,
             )
             p.start()
             procs.append(p)
@@ -158,6 +159,7 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
                 target=worker_mod.run_one_sample_backward_only,
                 args=(i, xi, config, co[i], output_queue),
                 name=f"back_{i}",
+                daemon=True,
             )
             p.start()
             procs.append(p)
