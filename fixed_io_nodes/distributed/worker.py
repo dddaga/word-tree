@@ -116,7 +116,7 @@ def run_gnn_worker_multilayer(rank: int, world_size: int, config_list: list):
             temporal_decay=cfg["model"].get("temporal_decay", 1.0),
             radiation_similarity_threshold=cfg["model"].get("radiation_similarity_threshold", 0.0),
             qdrant_params=qdrant_params or {},
-            verbose=cfg["system"].get("verbose", True)
+            verbose=cfg["system"].get("logging", {}).get("verbose", False)
         )
         model = model.to(cfg["system"]["device"])
         _worker_models.append(model)
@@ -157,7 +157,7 @@ def _load_model_for_config(config):
         temporal_decay=config["model"].get("temporal_decay", 1.0),
         radiation_similarity_threshold=config["model"].get("radiation_similarity_threshold", 0.0),
         qdrant_params=get_qdrant_params(config) or {},
-        verbose=config["system"].get("verbose", True)
+        verbose=config["system"].get("logging", {}).get("verbose", False)
     )
     device = config["system"]["device"]
     if isinstance(device, str) and "cuda" in device:
