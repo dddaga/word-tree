@@ -123,6 +123,10 @@ def _run_training(resolved_config, train_dataset, candidate_dir):
 
     weights_path = resolved_config["system"]["weights_save_path"]
     save_full_model(model, weights_path)
+    try:
+        model.gnn.shutdown()
+    except Exception:
+        pass
 
 
 def _run_validation(resolved_config, val_dataset, candidate_dir):

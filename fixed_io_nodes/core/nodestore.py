@@ -1081,6 +1081,10 @@ class UnquantizedNodeStore(nn.Module):
         )
 
 
+# The Nodestores above used qdrant client, which is not used currently
+# instead we store it directly using pytorch shared memory
+
+
 # ============================================================================
 # PyTorch-based NodeStore with Shared Memory
 # ============================================================================
@@ -1186,6 +1190,7 @@ class PytorchNodeStore(nn.Module):
         distance_metric: Union[str, Distance]="Cosine",  # Ignored, kept for compatibility
 
         lookup_table=None,  # Ignored for unquantized, kept for compatibility
+        verbose: bool=False,
     ):
         """
         Initialize PyTorch NodeStore with shared memory.
@@ -1205,6 +1210,7 @@ class PytorchNodeStore(nn.Module):
         self.mag_bins = mag_bins      # Kept for legacy compatibility
         self.radiation_similarity_threshold = radiation_similarity_threshold
         self.temporal_decay = temporal_decay
+        self.verbose = verbose
 
         # Generate unique shared memory names based on collection_name
         # Sanitize collection_name to be valid for shared memory names
@@ -1566,26 +1572,14 @@ class PytorchNodeStore(nn.Module):
                 vectors.append(self.mag_vectors[node_id].clone().tolist())
         return vectors
 
-    def save_weights(self, save_path: str):
-        """
-        Save model weights to disk.
-        
-        Args:
-            save_path: Path where to save the weights file
-        """
-        import os
-        import tempfile
-        
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        
-        # Prepare data to save
-        save_data = {
+    def state_dict(self, **kwargs):
+        """Return a dict of savable state (same structure as save_weights payload). Ignores destination/prefix/keep_vars from nn.Module.state_dict()."""
+        return {
             'phase_vectors': self.phase_vectors.cpu().clone(),
             'mag_vectors': self.mag_vectors.cpu().clone(),
             'phase_values': self.phase_values.cpu().clone(),
-            'payloads': dict(self.payloads),  # Convert to regular dict
-            'connections': dict(self.connections),  # Convert to regular dict
+            'payloads': dict(self.payloads),
+            'connections': dict(self.connections),
             'metadata': {
                 'total_nodes': self.total_nodes,
                 'vector_dim': self.vector_dim,
@@ -1597,60 +1591,49 @@ class PytorchNodeStore(nn.Module):
                 'cardinality': self.cardinality,
             }
         }
-        
-        # Atomic write: write to temp file, then rename
+
+    def load_state_dict(self, state_dict: dict, **kwargs):
+        """Restore from a state_dict returned by state_dict(). Ignores strict etc. from nn.Module.load_state_dict()."""
+        metadata = state_dict['metadata']
+        if metadata['total_nodes'] != self.total_nodes:
+            raise ValueError(f"Total nodes mismatch: saved={metadata['total_nodes']}, current={self.total_nodes}")
+        if metadata['vector_dim'] != self.vector_dim:
+            raise ValueError(f"Vector dim mismatch: saved={metadata['vector_dim']}, current={self.vector_dim}")
+        with self._lock:
+            self.phase_vectors.copy_(state_dict['phase_vectors'])
+            self.mag_vectors.copy_(state_dict['mag_vectors'])
+            self.phase_values.copy_(state_dict['phase_values'])
+            self.payloads.update(state_dict['payloads'])
+            self.connections.update(state_dict['connections'])
+            self.input_nodeids = set(metadata['input_nodeids'])
+            self.output_nodeids = set(metadata['output_nodeids'])
+
+    def save_weights(self, save_path: str):
+        """Save model weights to disk using state_dict()."""
+        import os
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
         temp_path = save_path + '.tmp'
         try:
-            torch.save(save_data, temp_path)
-            # On Windows, need to remove target first if it exists
+            torch.save(self.state_dict(), temp_path)
             if os.path.exists(save_path):
                 os.remove(save_path)
             os.rename(temp_path, save_path)
-            print(f"Saved model weights to {save_path}")
+            if self.verbose:
+                print(f"Saved model weights to {save_path}")
         except Exception as e:
-            # Clean up temp file on error
             if os.path.exists(temp_path):
                 os.remove(temp_path)
             raise e
 
     def load_weights(self, load_path: str):
-        """
-        Load model weights from disk.
-        
-        Args:
-            load_path: Path to the weights file to load
-        """
+        """Load model weights from disk using load_state_dict()."""
         import os
-        
         if not os.path.exists(load_path):
             raise FileNotFoundError(f"Weights file not found: {load_path}")
-        
-        # Load data
-        save_data = torch.load(load_path, map_location='cpu')
-        
-        # Verify metadata matches
-        metadata = save_data['metadata']
-        if metadata['total_nodes'] != self.total_nodes:
-            raise ValueError(f"Total nodes mismatch: saved={metadata['total_nodes']}, current={self.total_nodes}")
-        if metadata['vector_dim'] != self.vector_dim:
-            raise ValueError(f"Vector dim mismatch: saved={metadata['vector_dim']}, current={self.vector_dim}")
-        
-        # Load tensors into shared memory (with lock protection)
-        with self._lock:
-            # Copy loaded tensors to shared memory tensors
-            self.phase_vectors.copy_(save_data['phase_vectors'])
-            self.mag_vectors.copy_(save_data['mag_vectors'])
-            self.phase_values.copy_(save_data['phase_values'])
-            
-            # Load payloads and connections
-            self.payloads.update(save_data['payloads'])
-            self.connections.update(save_data['connections'])
-            
-            # Restore node ID sets
-            self.input_nodeids = set(metadata['input_nodeids'])
-            self.output_nodeids = set(metadata['output_nodeids'])
-        
-        print(f"Loaded model weights from {load_path}")
+        state_dict = torch.load(load_path, map_location='cpu')
+        self.load_state_dict(state_dict)
+        if self.verbose:
+            print(f"Loaded model weights from {load_path}")
 
 
 NodeStore = PytorchNodeStore

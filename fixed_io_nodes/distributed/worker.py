@@ -116,7 +116,8 @@ def run_gnn_worker_multilayer(rank: int, world_size: int, config_list: list):
             temporal_decay=cfg["model"].get("temporal_decay", 1.0),
             radiation_similarity_threshold=cfg["model"].get("radiation_similarity_threshold", 0.0),
             qdrant_params=qdrant_params or {},
-            verbose=cfg["system"].get("logging", {}).get("verbose", False)
+            verbose=cfg["system"].get("logging", {}).get("verbose", False),
+            dtype=cfg["model"].get("dtype", "float32"),
         )
         model = model.to(cfg["system"]["device"])
         _worker_models.append(model)
@@ -157,7 +158,8 @@ def _load_model_for_config(config):
         temporal_decay=config["model"].get("temporal_decay", 1.0),
         radiation_similarity_threshold=config["model"].get("radiation_similarity_threshold", 0.0),
         qdrant_params=get_qdrant_params(config) or {},
-        verbose=config["system"].get("logging", {}).get("verbose", False)
+        verbose=config["system"].get("logging", {}).get("verbose", False),
+        dtype=config["model"].get("dtype", "float32"),
     )
     device = config["system"]["device"]
     if isinstance(device, str) and "cuda" in device:
@@ -209,3 +211,62 @@ def run_one_sample_backward_only(sample_idx, x_i, config, grad_i, output_queue):
         output_queue.put((sample_idx, pg_np, mg_np, ig_np, None))
     except Exception as e:
         output_queue.put((sample_idx, None, None, None, e))
+
+
+def worker_pool_loop(worker_id: int, task_queue, result_queue, config: dict):
+    """
+    Long-lived worker: build model once, then handle weights/forward/backward/shutdown.
+    Keeps (x_i, out) after forward for backward.
+    """
+    model = _load_model_for_config(config)
+    device = next(model.parameters()).device
+    stored_x = None
+    stored_out = None
+
+    while True:
+        cmd = task_queue.get()
+        if cmd is None or (isinstance(cmd, (list, tuple)) and len(cmd) >= 1 and cmd[0] == "shutdown"):
+            break
+        if not isinstance(cmd, (list, tuple)) or len(cmd) < 2:
+            continue
+        op, payload = cmd[0], cmd[1]
+
+        if op == "weights":
+            state_dict = payload
+            model.gnn.node_store.load_state_dict(state_dict)
+            continue
+
+        if op == "forward":
+            x_i = payload
+            if not isinstance(x_i, torch.Tensor):
+                x_i = torch.from_numpy(x_i.copy())
+            x_i = x_i.to(device).detach().requires_grad_(True)
+            out = model(x_i)
+            stored_x = x_i
+            stored_out = out
+            out_np = out.cpu().detach().numpy().copy()
+            result_queue.put(("out", out_np))
+            continue
+
+        if op == "backward":
+            grad_i = payload
+            if not isinstance(grad_i, torch.Tensor):
+                grad_i = torch.from_numpy(grad_i.copy())
+            grad_i = grad_i.to(device)
+            if stored_out is None or stored_x is None:
+                result_queue.put(("grads", (None, None, None)))
+                continue
+            stored_out.backward(grad_i)
+            phase_grads, mag_grads = model.gnn.get_grads()
+            to_cpu = lambda d: {k: v.detach().cpu().clone() if v is not None else None for k, v in d.items()}
+            pg = to_cpu(phase_grads)
+            mg = to_cpu(mag_grads)
+            ig = stored_x.grad.detach().cpu().clone() if stored_x.grad is not None else torch.zeros_like(stored_x, device="cpu")
+            pg_np = {k: v.numpy().copy() if v is not None else None for k, v in pg.items()}
+            mg_np = {k: v.numpy().copy() if v is not None else None for k, v in mg.items()}
+            ig_np = ig.numpy().copy()
+            result_queue.put(("grads", (pg_np, mg_np, ig_np)))
+            model.reset()
+            stored_x = None
+            stored_out = None
+            continue

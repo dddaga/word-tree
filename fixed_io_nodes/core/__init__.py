@@ -1,7 +1,7 @@
 # Core package exports
 from .gradient_accumulator import GradientAccumulator
 from .nodestore import NodeStore
-from .full_model import Model, initialize_model_and_nodestore
+from .full_model import Model, initialize_model_and_nodestore, get_dtype
 from .gnn_model import GNN
 from .lookup_table import LookupTable
 from .node import Node
@@ -14,6 +14,7 @@ __all__ = [
     'NodeStore',
     'Model',
     'initialize_model_and_nodestore',
+    'get_dtype',
     'GNN',
     'LookupTable',
     'Node',

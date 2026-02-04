@@ -2,8 +2,16 @@ from .lookup_table import LookupTable
 from pprint import pprint
 import torch
 import torch.nn as nn
-from typing import Dict, Union, List, Optional
+from typing import Dict, Union, List, Optional, Tuple
 from .nodestore import NodeStore
+
+try:
+    from torch.optim.adam import adam as adam_step
+except ImportError:
+    try:
+        from torch.optim._functional import adam as adam_step
+    except ImportError:
+        adam_step = None  # will raise at step() if unavailable
 
 
 def _to_tensor(value: Union[torch.Tensor, List, tuple], dtype: torch.dtype, device: str) -> torch.Tensor:
@@ -150,37 +158,45 @@ class UnquantizedGradientAccumulator(nn.Module):
     """
     Gradient accumulator for GNN parameters with batch-based updates.
     Accumulates gradients for N samples (batch_size) before updating weights.
+    GNN parameters are updated with Adam via PyTorch's functional API.
     """
-    def __init__(self,  node_store:NodeStore, lr:float, accumulation_steps:int=32, 
-                 momentum:float=0.9, verbose:bool=False,
+    def __init__(self,  node_store:NodeStore, lr:float, accumulation_steps:int=32,
+                 betas:Tuple[float, float]=(0.9, 0.999), eps:float=1e-8,
+                 verbose:bool=False,
                  device:str='cuda' if torch.cuda.is_available() else 'cpu',
                  save_path:str=None, save_interval:int=None):
 
         super().__init__()
+        if adam_step is None:
+            raise RuntimeError("torch.optim._functional.adam not available; cannot use Adam for GNN params.")
 
         self.device = device
         self.total_nodes = node_store.total_nodes
         self.node_store = node_store
         self.lr = lr
         self.accumulation_steps = accumulation_steps
-        self.momentum = momentum
+        self.betas = betas
+        self.eps = eps
         self.verbose = verbose
         self.save_path = save_path
         self.save_interval = save_interval
         self.step_count = 0  # Track number of steps for interval-based saving
 
         # Use sparse dictionaries - only store gradients for active nodes
-        # This prevents memory waste for large graphs with sparse activations
         self.phase_grads = {}
         self.mag_grads = {}
 
         # Count of gradients received
         self.phase_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
         self.mag_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
-        
-        # Momentum buffers for SGD with momentum
-        self.phase_velocities = {}
-        self.mag_velocities = {}
+
+        # Adam state per node (sparse; created on first update)
+        self.phase_exp_avg: Dict[int, torch.Tensor] = {}
+        self.phase_exp_avg_sq: Dict[int, torch.Tensor] = {}
+        self.phase_state_steps: Dict[int, torch.Tensor] = {}
+        self.mag_exp_avg: Dict[int, torch.Tensor] = {}
+        self.mag_exp_avg_sq: Dict[int, torch.Tensor] = {}
+        self.mag_state_steps: Dict[int, torch.Tensor] = {}
 
         self.node_update_counts = {node_id:0 for node_id in range(self.total_nodes)}
 
@@ -223,19 +239,45 @@ class UnquantizedGradientAccumulator(nn.Module):
                 self.mag_grads[node_id] += mag_grad.to(self.device)
             self.mag_grad_counts[node_id] += (mag_grad_freq.get(node_id, 1) if mag_grad_freq is not None else 1)
         
+    def _adam_update_node(
+        self,
+        param: torch.Tensor,
+        grad: torch.Tensor,
+        exp_avg: torch.Tensor,
+        exp_avg_sq: torch.Tensor,
+        state_step: torch.Tensor,
+    ) -> None:
+        """Single-node Adam step using PyTorch functional API; updates param and state in place."""
+        beta1, beta2 = self.betas
+        # max_exp_avg_sqs required by API; unused when amsgrad=False
+        max_exp_avg_sq = torch.zeros_like(param, device=param.device)
+        adam_step(
+            [param],
+            [grad],
+            [exp_avg],
+            [exp_avg_sq],
+            [max_exp_avg_sq],
+            [state_step],
+            amsgrad=False,
+            beta1=beta1,
+            beta2=beta2,
+            lr=self.lr,
+            weight_decay=0,
+            eps=self.eps,
+            maximize=False,
+        )
+
     def step(self):
         """
         Apply gradient updates when batch_size samples have been accumulated.
-        Uses SGD with momentum for stable optimization.
+        GNN parameters are updated with Adam via PyTorch's functional API.
 
-        returns the node ids that were updated
+        Returns the node ids that were updated.
         """
-        
-
         # Get all nodes that have accumulated gradients
         node_ids_to_update = set(self.phase_grads.keys()).union(set(self.mag_grads.keys()))
         node_ids_to_update = list(node_ids_to_update)
-        
+
         if not node_ids_to_update:
             return []
 
@@ -247,44 +289,55 @@ class UnquantizedGradientAccumulator(nn.Module):
 
         new_phase_values = {}
         new_mag_values = {}
-        
-        for node_id in node_ids_to_update:
 
-            #update phase value if enough gradients are recieved
+        for node_id in node_ids_to_update:
+            # Phase: update if enough gradients received
             if self.phase_grad_counts[node_id] >= self.accumulation_steps:
                 avg_phase_grad = self.phase_grads[node_id] / self.phase_grad_counts[node_id]
-                
-                # Apply momentum: velocity = momentum * old_velocity + grad
-                if node_id not in self.phase_velocities:
-                    self.phase_velocities[node_id] = avg_phase_grad
+                phase_param = old_phase_values[node_id]
+                avg_phase_grad = avg_phase_grad.to(device=phase_param.device, dtype=phase_param.dtype)
+                if node_id not in self.phase_exp_avg:
+                    self.phase_exp_avg[node_id] = torch.zeros_like(phase_param, device=phase_param.device)
+                    self.phase_exp_avg_sq[node_id] = torch.zeros_like(phase_param, device=phase_param.device)
+                    self.phase_state_steps[node_id] = torch.tensor(0.0, device=phase_param.device, dtype=torch.float32)
                 else:
-                    self.phase_velocities[node_id] = self.momentum * self.phase_velocities[node_id] + avg_phase_grad
-                
-                # SGD update: weight -= lr * velocity
-                phase_vector = old_phase_values[node_id]
-                new_phase_values[node_id] = phase_vector - self.lr * self.phase_velocities[node_id]
-                
-                #reset the gradients and counts for the next step
+                    self.phase_exp_avg[node_id] = self.phase_exp_avg[node_id].to(phase_param.device)
+                    self.phase_exp_avg_sq[node_id] = self.phase_exp_avg_sq[node_id].to(phase_param.device)
+                    self.phase_state_steps[node_id] = self.phase_state_steps[node_id].to(phase_param.device)
+                self._adam_update_node(
+                    phase_param,
+                    avg_phase_grad,
+                    self.phase_exp_avg[node_id],
+                    self.phase_exp_avg_sq[node_id],
+                    self.phase_state_steps[node_id],
+                )
+                new_phase_values[node_id] = phase_param
                 self.phase_grad_counts[node_id] = 0
                 self.phase_grads[node_id] = None
             else:
                 new_phase_values[node_id] = old_phase_values[node_id]
 
-            #update mag value if enough gradients are recieved
+            # Mag: update if enough gradients received
             if self.mag_grad_counts[node_id] >= self.accumulation_steps:
                 avg_mag_grad = self.mag_grads[node_id] / self.mag_grad_counts[node_id]
-                
-                # Apply momentum
-                if node_id not in self.mag_velocities:
-                    self.mag_velocities[node_id] = avg_mag_grad
+                mag_param = old_mag_values[node_id]
+                avg_mag_grad = avg_mag_grad.to(device=mag_param.device, dtype=mag_param.dtype)
+                if node_id not in self.mag_exp_avg:
+                    self.mag_exp_avg[node_id] = torch.zeros_like(mag_param, device=mag_param.device)
+                    self.mag_exp_avg_sq[node_id] = torch.zeros_like(mag_param, device=mag_param.device)
+                    self.mag_state_steps[node_id] = torch.tensor(0.0, device=mag_param.device, dtype=torch.float32)
                 else:
-                    self.mag_velocities[node_id] = self.momentum * self.mag_velocities[node_id] + avg_mag_grad
-                
-                # SGD update
-                mag_vector = old_mag_values[node_id]
-                new_mag_values[node_id] = mag_vector - self.lr * self.mag_velocities[node_id]
-                
-                #reset the gradients and counts for the next step
+                    self.mag_exp_avg[node_id] = self.mag_exp_avg[node_id].to(mag_param.device)
+                    self.mag_exp_avg_sq[node_id] = self.mag_exp_avg_sq[node_id].to(mag_param.device)
+                    self.mag_state_steps[node_id] = self.mag_state_steps[node_id].to(mag_param.device)
+                self._adam_update_node(
+                    mag_param,
+                    avg_mag_grad,
+                    self.mag_exp_avg[node_id],
+                    self.mag_exp_avg_sq[node_id],
+                    self.mag_state_steps[node_id],
+                )
+                new_mag_values[node_id] = mag_param
                 self.mag_grad_counts[node_id] = 0
                 self.mag_grads[node_id] = None
             else:

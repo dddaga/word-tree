@@ -171,6 +171,8 @@ def worker_process_fn(
         device=config['system']['device'],
         temporal_decay=config['model'].get('temporal_decay', 1.0),
         qdrant_params=qdrant_params,
+        verbose=config['system']['logging']['verbose'],
+        dtype=config['model'].get('dtype', 'float32'),
     )
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -180,6 +182,7 @@ def worker_process_fn(
 
     # 2. Training Loop
     while True:
+        start_time = time.time()
         try:
             data, target = data_queue.get(block=True, timeout=60) #wait for 10 seconds for data to arrive
             data = data.to(device)
@@ -211,7 +214,7 @@ def worker_process_fn(
         
         # Validate loss before backward pass
         if torch.isinf(loss) or torch.isnan(loss):
-            print(f"Worker {worker_id}: Invalid loss ({loss.item()}), skipping sample")
+            # print(f"Worker {worker_id}: Invalid loss ({loss.item()}), skipping sample")
             log_queue.put({
                 'worker_id': worker_id,
                 'loss': float('nan'),
@@ -272,6 +275,9 @@ def worker_process_fn(
         except mp.BrokenBarrierError:
             print(f"Worker {worker_id}: Barrier broken, shutting down.")
             break
+
+        end_time = time.time()
+        print(f"Worker {worker_id}: Time taken: {end_time - start_time:.2f} seconds")
 
 def load_iris_dataset() -> TensorDataset:
     """Load and preprocess Iris dataset, returning a PyTorch Dataset."""
@@ -370,17 +376,17 @@ def gradient_accumulator_process_fn(
         radiation_similarity_threshold=config['model']['radiation_similarity_threshold'],
         temporal_decay=config['model']['temporal_decay'],
         **qdrant_params,
+        verbose=config['system']['logging']['verbose'],
     )
 
     accumulator = GradientAccumulator(
         node_store=node_store,
         lr=config['training']['lr'],
-        verbose=True,
         device=config['system']['device'],
         accumulation_steps=config['training']['accumulation_steps'],
-        momentum=config['training']['momentum'],
         save_path=save_path,  # Optional: None by default for backward compatibility
         save_interval=None,  # Save after every step if save_path is provided
+        verbose=config['system']['logging'].get('verbose', False),
     )
 
     # Setup GA logging
