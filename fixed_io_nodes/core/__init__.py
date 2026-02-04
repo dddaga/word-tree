@@ -6,7 +6,6 @@ from .gnn_model import GNN
 from .lookup_table import LookupTable
 from .node import Node
 from .quantization import Quantizer
-from .input_adapter import LinearInputAdapter
 from .custom_functions import activation_strength_forward, signal_forward
 
 __all__ = [
@@ -19,7 +18,6 @@ __all__ = [
     'LookupTable',
     'Node',
     'Quantizer',
-    'LinearInputAdapter',
     'activation_strength_forward',
     'signal_forward',
 ]

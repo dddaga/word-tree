@@ -137,8 +137,7 @@ class UnquantizedGNN(nn.Module):
         """
 
         if self.verbose: #TODO: print logs
-            print(f"GNN: one_step_forward " + "="*25)
-            print(f"GNN active nodes: {self.active_nodes.keys()}")
+            pass
         
         # Determine iteration number for tracer
         if tracer is not None:
@@ -319,7 +318,8 @@ class UnquantizedGNN(nn.Module):
                 inactive_output_nodes.append(node_id)
         
         if self.verbose:
-            print(f"GNN: inactive_output_nodes: {inactive_output_nodes}")
+            pass
+            # print(f"GNN: inactive_output_nodes: {inactive_output_nodes}")
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed
