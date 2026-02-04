@@ -21,11 +21,13 @@ except (ImportError, AttributeError):
         rpc_init_rpc = rpc_shutdown = None
         rpc = None
 
+import copy
 import time
 from collections import defaultdict
 
 from . import worker as worker_mod
 from .gnn_grad_sink import GNNGradientSink
+from .worker_pool import WorkerPool
 from ._config_utils import get_node_store_from_config
 from core.gradient_accumulator import UnquantizedGradientAccumulator
 
@@ -97,13 +99,78 @@ class _DistributedNeurographFunction(torch.autograd.Function):
         return grad_input.to(grad_output.device), None, None, None, None
 
 
+class _PooledWorkerFunction(torch.autograd.Function):
+    """
+    Forward/backward via a long-lived worker pool. Main pushes weights each batch,
+    then forward tasks; backward pushes grad_output and collects phase/mag/input grads.
+    When B > num_workers, processes in chunks of num_workers.
+    """
+
+    @staticmethod
+    def forward(ctx, x, config, node_store, gradient_sink, pool):
+        B = x.shape[0]
+        nw = pool.num_workers
+        state_dict = node_store.state_dict()
+        outputs = [None] * B
+        for chunk_start in range(0, B, nw):
+            chunk_end = min(chunk_start + nw, B)
+            pool.submit_weights(state_dict)
+            for j in range(chunk_end - chunk_start):
+                i = chunk_start + j
+                xi = x[i].detach().cpu().requires_grad_(True)
+                pool.submit_forward(j, xi)
+            for j in range(chunk_end - chunk_start):
+                i = chunk_start + j
+                outputs[i] = pool.get_forward_result(j)
+        stack_out = torch.stack(outputs)
+        ctx.x = x
+        ctx.B = B
+        ctx.gradient_sink = gradient_sink
+        ctx.pool = pool
+        return stack_out.to(x.device)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        co = grad_output.cpu()
+        if co.shape[0] != ctx.B:
+            co = co.expand(ctx.B, *co.shape[1:]).contiguous()
+        pool = ctx.pool
+        nw = pool.num_workers
+        by_i = [None] * ctx.B
+        for chunk_start in range(0, ctx.B, nw):
+            chunk_end = min(chunk_start + nw, ctx.B)
+            for j in range(chunk_end - chunk_start):
+                i = chunk_start + j
+                pool.submit_backward(j, co[i])
+            for j in range(chunk_end - chunk_start):
+                i = chunk_start + j
+                pg, mg, ig = pool.get_backward_result(j)
+                by_i[i] = (pg, mg, ig)
+        phase_acc = defaultdict(lambda: None)
+        mag_acc = defaultdict(lambda: None)
+        phase_freq = defaultdict(int)
+        mag_freq = defaultdict(int)
+        for pg, mg, ig in by_i:
+            for k, v in (pg or {}).items():
+                if v is not None:
+                    phase_acc[k] = v if phase_acc[k] is None else phase_acc[k] + v
+                    phase_freq[k] += 1
+            for k, v in (mg or {}).items():
+                if v is not None:
+                    mag_acc[k] = v if mag_acc[k] is None else mag_acc[k] + v
+                    mag_freq[k] += 1
+        if ctx.gradient_sink is not None:
+            ctx.gradient_sink.add(dict(phase_acc), dict(mag_acc), dict(phase_freq), dict(mag_freq))
+        grad_input = torch.stack([by_i[i][2] for i in range(ctx.B)])
+        grad_input = grad_input.to(dtype=ctx.x.dtype, device=grad_output.device)
+        return grad_input, None, None, None, None
+
+
 class _OneProcessPerSampleFunction(torch.autograd.Function):
     """
     One process per sample; forward and backward each start all B processes in parallel,
     then collect results and join. active_nodes never needs clearing per process.
-    Gradients reach upstream: we detach only the copy sent to the worker; backward
-    returns grad_input = d(loss)/d(x) from workers, so autograd assigns it to x.grad
-    and continues back through the layers that produced x.
+    Kept for fallback; prefer _PooledWorkerFunction.
     """
 
     @staticmethod
@@ -190,14 +257,12 @@ class _OneProcessPerSampleFunction(torch.autograd.Function):
                     mag_acc[k] = v if mag_acc[k] is None else mag_acc[k] + v
                     mag_freq[k] += 1
         
-        # Route gradients to sink or queue based on what's provided
         if ctx.gradient_sink is not None:
             ctx.gradient_sink.add(dict(phase_acc), dict(mag_acc), dict(phase_freq), dict(mag_freq))
         elif ctx.gradient_queue is not None:
             ctx.gradient_queue.put((dict(phase_acc), dict(mag_acc)))
         
         grad_input = torch.stack([by_i[i][2] for i in range(ctx.B)])
-        # ensure same dtype/device as ctx.x so autograd assigns to x.grad correctly
         grad_input = grad_input.to(dtype=ctx.x.dtype, device=grad_output.device)
         return grad_input, None, None, None
 
@@ -357,7 +422,8 @@ class DistributedNeurographLayer(nn.Module):
             node_store=self._node_store,
             lr=cfg["training"]["lr"],
             accumulation_steps=cfg["training"]["accumulation_steps"],
-            momentum=cfg["training"].get("momentum", 0.9),
+            betas=tuple(cfg["training"].get("betas", (0.9, 0.999))),
+            eps=cfg["training"].get("eps", 1e-8),
             verbose=cfg["system"]["logging"].get("verbose", False),
             device=device,
         )
@@ -365,6 +431,13 @@ class DistributedNeurographLayer(nn.Module):
             mp.set_start_method("spawn", force=True)
         except RuntimeError:
             pass
+        # Workers run GNN on CPU so we don't put num_workers copies of the model on GPU (OOM).
+        # Main process keeps config device (e.g. cuda) for encoder and accumulator.
+        worker_config = copy.deepcopy(cfg)
+        worker_config.setdefault("system", {})
+        worker_config["system"] = dict(worker_config["system"])
+        worker_config["system"]["device"] = "cpu"
+        self._pool = WorkerPool(worker_config)
 
     @property
     def gradient_sink(self):
@@ -377,4 +450,12 @@ class DistributedNeurographLayer(nn.Module):
         return self._accumulator
 
     def forward(self, x):
-        return _OneProcessPerSampleFunction.apply(x, self._config, None, self._gradient_sink)
+        return _PooledWorkerFunction.apply(
+            x, self._config, self._node_store, self._gradient_sink, self._pool
+        )
+
+    def shutdown(self):
+        """Shut down the worker pool. Call when done training (e.g. process exit)."""
+        if getattr(self, "_pool", None) is not None:
+            self._pool.shutdown()
+            self._pool = None

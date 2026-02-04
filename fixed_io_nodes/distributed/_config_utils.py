@@ -31,6 +31,7 @@ def get_node_store_from_config(cfg):
         temporal_decay=cfg["model"].get("temporal_decay", 1.0),
         radiation_similarity_threshold=cfg["model"].get("radiation_similarity_threshold", 0.0),
         qdrant_params=qdrant_params,
-        verbose=cfg["system"].get("verbose", False)
+        verbose=cfg["system"].get("verbose", False),
+        dtype=cfg["model"].get("dtype", "float32"),
     )
     return node_store

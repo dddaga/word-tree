@@ -308,6 +308,7 @@ class NeuroGraphModel:
             temporal_decay=self.config['model'].get('temporal_decay', 1.0),
             radiation_similarity_threshold=self.config['model'].get('radiation_similarity_threshold', 0.0),
             qdrant_params=qdrant_params,
+            dtype=self.config['model'].get('dtype', 'float32'),
         )
         
         model = model.to(device)

@@ -96,6 +96,7 @@ def _build_model_for_config(config_path, device, distributed):
             "radiation_similarity_threshold", 0.0
         ),
         qdrant_params=qdrant_params,
+        dtype=config["model"].get("dtype", "float32"),
     )
     return model.to(device), node_store, config
 
@@ -165,6 +166,7 @@ def _replace_gnn_layers_with_tracer_capture(model, config, device, distributed):
                 "radiation_similarity_threshold", 0.0
             ),
             qdrant_params=qdrant_params,
+            dtype=config["model"].get("dtype", "float32"),
         )
         return gnn_model, node_store
 

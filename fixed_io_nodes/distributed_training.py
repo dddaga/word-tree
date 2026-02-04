@@ -15,9 +15,15 @@ CONFIG_PATH = "training_runs/distributed_test/distributed.yaml"
 
 
 class IrisGNNModel(nn.Module):
+    """MLP(4 -> input_nodes*vector_dim) + tanh + reshape + GNN. Config-driven input_nodes, vector_dim."""
+
     def __init__(self, cfg):
         super().__init__()
-        self.linear = nn.Linear(4, 16)
+        input_nodes = cfg["graph"]["input_nodes"]
+        vector_dim = cfg["model"]["vector_dim"]
+        self.input_nodes = input_nodes
+        self.vector_dim = vector_dim
+        self.linear = nn.Linear(4, input_nodes * vector_dim)
         self.tanh = nn.Tanh()
         self.gnn = DistributedNeurographLayer(cfg)
 
@@ -25,7 +31,7 @@ class IrisGNNModel(nn.Module):
         B = x.size(0)
         x = x.squeeze(1)
         h = self.tanh(self.linear(x))
-        h = h.view(B, 4, 4)
+        h = h.view(B, self.input_nodes, self.vector_dim)
         return self.gnn(h)
 
 
@@ -102,3 +108,7 @@ if __name__ == "__main__":
                 print(f"epoch {epoch + 1}/{epochs} loss: {loss.item():.4f}")
 
     writer.close()
+    try:
+        model.gnn.shutdown()
+    except Exception:
+        pass

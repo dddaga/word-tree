@@ -18,6 +18,8 @@ def _is_list_of_scalars(val):
 def _collect_search_space(config, prefix=""):
     out = {}
     for key, val in config.items():
+        if not prefix and key == "gene_expression":
+            continue
         path = f"{prefix}.{key}" if prefix else key
         if isinstance(val, dict) and not _is_list_of_scalars(val):
             out.update(_collect_search_space(val, path))

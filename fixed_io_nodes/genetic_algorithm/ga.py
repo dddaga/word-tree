@@ -11,10 +11,12 @@ from pathlib import Path
 from queue import Empty
 from typing import Any, Dict, List
 
+import torch
 from tqdm.auto import tqdm
 
 from .config_resolver import resolve_config
 from .fitness import evaluate_fitness
+from .gene_expression import build_suppress_predicate
 
 
 def _fitness_worker(run_dir, resolved_config, run_name, get_train_val_datasets, result_queue):
@@ -59,6 +61,8 @@ class GeneticTuner:
         top_k: int = 5,
     ):
         self.base_config = base_config
+        gene_expression_raw = self.base_config.pop("gene_expression", {})
+        self._is_suppressed = build_suppress_predicate(gene_expression_raw)
         self.search_space = search_space
         self.generations = generations
         self.population_size = population_size
@@ -122,17 +126,35 @@ class GeneticTuner:
         Initialize population, run generations (evaluate, select, crossover, mutate), return top_k.
         Optionally save best_configs.json under run_dir.
         """
-        population = [self.generate_individual() for _ in range(self.population_size)]
+        _MAX_RETRIES = 1000
+        population = []
+        for _ in range(self.population_size):
+            for _ in range(_MAX_RETRIES):
+                ind = self.generate_individual()
+                if not self._is_suppressed(ind):
+                    population.append(ind)
+                    break
+            else:
+                raise RuntimeError(
+                    "Could not generate valid individual after %d retries; "
+                    "check gene_expression and search_space." % _MAX_RETRIES
+                )
         elite_count = max(1, int(self.population_size * self.elite_frac))
         all_time_best = []
         interrupted = False
 
+        # Run fitness in main process when CUDA requested so we use GPU; subprocess can cause device mismatch.
+        use_subprocess = not (
+            self.base_config.get("system", {}).get("device") == "cuda" and torch.cuda.is_available()
+        )
         try:
             gen_range = tqdm(range(self.generations), desc="Generation", unit="gen")
             for gen in gen_range:
                 fitness_scores = []
                 for ind in tqdm(population, desc=f"Gen {gen + 1} eval", leave=False, unit="ind"):
-                    f = self.evaluate_fitness(ind, run_dir, get_train_val_datasets, run_name=run_name)
+                    f = self.evaluate_fitness(
+                        ind, run_dir, get_train_val_datasets, run_name=run_name, use_subprocess=use_subprocess
+                    )
                     fitness_scores.append(f)
                 best_idx = max(range(len(fitness_scores)), key=lambda i: fitness_scores[i])
                 best_f = fitness_scores[best_idx]
@@ -147,13 +169,21 @@ class GeneticTuner:
                     elites = self.select_top_k(population, fitness_scores, elite_count)
                     new_pop = list(elites)
                     while len(new_pop) < self.population_size:
-                        p1, p2 = random.choices(elites, k=2)
-                        if random.random() < self.crossover_rate:
-                            child = _uniform_crossover(p1, p2, self.search_space)
+                        for _ in range(_MAX_RETRIES):
+                            p1, p2 = random.choices(elites, k=2)
+                            if random.random() < self.crossover_rate:
+                                child = _uniform_crossover(p1, p2, self.search_space)
+                            else:
+                                child = dict(p1)
+                            child = _mutate(child, self.search_space, self.mutation_rate)
+                            if not self._is_suppressed(child):
+                                new_pop.append(child)
+                                break
                         else:
-                            child = dict(p1)
-                        child = _mutate(child, self.search_space, self.mutation_rate)
-                        new_pop.append(child)
+                            raise RuntimeError(
+                                "Could not generate valid offspring after %d retries; "
+                                "check gene_expression and search_space." % _MAX_RETRIES
+                            )
                     population = new_pop[: self.population_size]
         except KeyboardInterrupt:
             interrupted = True

@@ -85,16 +85,18 @@ def main():
         if not search_space:
             raise ValueError("Run config must have at least one list-valued parameter (search space).")
 
+        print("Initializing tuner...")
         tuner = GeneticTuner(
             base_config=base_config,
             search_space=search_space,
-            generations=3,
-            population_size=4,
-            elite_frac=0.5,
-            crossover_rate=0.3,
+            generations=5,
+            population_size=20,
+            elite_frac=0.2,
+            crossover_rate=0.2,
             mutation_rate=0.2,
-            top_k=3,
+            top_k=4,
         )
+        print("Tuner initialized")
         print(f"GA run: {run_dir} (generations={tuner.generations}, pop={tuner.population_size})")
         print(f"Log file: {log_path}")
         top = tuner.run(

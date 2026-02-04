@@ -1,7 +1,18 @@
 import torch
 from torch import nn
-from typing import List
+from typing import List, Union
 from .gnn_model import GNN
+
+
+def get_dtype(dtype: Union[str, torch.dtype] = "float32") -> torch.dtype:
+    """Central dtype for unquantized GNN. Config key: model.dtype ('float32' | 'float16')."""
+    if isinstance(dtype, torch.dtype):
+        return dtype
+    if dtype == "float32":
+        return torch.float32
+    if dtype == "float16":
+        return torch.float16
+    raise ValueError("dtype must be 'float32' or 'float16'")
 # from .input_adapter import LinearInputAdapter
 from .quantization import Quantizer
 from .nodestore import NodeStore
@@ -42,10 +53,10 @@ class Model(nn.Module):
     
 def initialize_model(
     node_store:NodeStore,
-    cardinality:int, 
+    cardinality:int,
     radiation_targets:int,
     total_nodes:int,
-    input_nodes:int, 
+    input_nodes:int,
     output_nodes:int,
     phase_bins:int,
     mag_bins:int,
@@ -56,9 +67,9 @@ def initialize_model(
     temporal_decay:float=1.0,
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
+    dtype:Union[str, torch.dtype]="float32",
 ):
-
-
+    dtype = get_dtype(dtype)
     gnn = GNN(
         node_store=node_store,
         cardinality=cardinality,
@@ -75,6 +86,7 @@ def initialize_model(
         device=device,
         verbose=verbose,
         temporal_decay=temporal_decay,
+        dtype=dtype,
     )
 
     # quantizer = Quantizer(
@@ -112,16 +124,18 @@ def initialize_model_and_nodestore(
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
     qdrant_params:dict=None,
+    dtype:Union[str, torch.dtype]="float32",
 ):
     """
     returns model, node_store
-    
+
+    dtype: 'float32' | 'float16' (default 'float32'). Set via config model.dtype.
     qdrant_params: Optional dict of Qdrant parameters. If None, defaults will be used.
     """
     if qdrant_params is None:
         qdrant_params = {}
 
-    lookup_table = None #no quantization for now
+    lookup_table = None  # no quantization for now
     # lookup_table = LookupTable(
     #     phase_bins=phase_bins,
     #     mag_bins=mag_bins,
@@ -154,13 +168,14 @@ def initialize_model_and_nodestore(
         input_nodes=input_nodes,
         output_nodes=output_nodes,
         phase_bins=phase_bins,
-        mag_bins = mag_bins,
-        vector_dim = vector_dim,
-        iterations = iterations,
-        activation_threshold = activation_threshold,
-        gamma = gamma,
-        device = device,
-        verbose = verbose,
+        mag_bins=mag_bins,
+        vector_dim=vector_dim,
+        iterations=iterations,
+        activation_threshold=activation_threshold,
+        gamma=gamma,
+        device=device,
+        verbose=verbose,
+        dtype=dtype,
     )
 
     return model, node_store

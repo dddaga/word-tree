@@ -130,6 +130,7 @@ def worker_process_fn(
         temporal_decay=config['model']['temporal_decay'],
         radiation_similarity_threshold=config['model']['radiation_similarity_threshold'],
         device=config['system']['device'],
+        dtype=config['model'].get('dtype', 'float32'),
     )
 
     # criterion = torch.nn.CrossEntropyLoss()

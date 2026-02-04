@@ -38,10 +38,12 @@ class UnquantizedGNN(nn.Module):
         temporal_decay:float=1.0,
         device:str='cuda' if torch.cuda.is_available() else 'cpu',
         verbose:bool=False,
+        dtype:torch.dtype=torch.float32,
     ):
         super().__init__()
 
         self.device = device
+        self.dtype = dtype
         self.node_store = node_store
         self.cardinality = cardinality
         self.radiation_targets = radiation_targets
@@ -60,8 +62,9 @@ class UnquantizedGNN(nn.Module):
         #input nodes are considered active from the start
         self.active_nodes = {
             n_id: Node(
-                node_store=self.node_store, 
+                node_store=self.node_store,
                 gamma=gamma,
+                dtype=self.dtype,
                 node_id=n_id,
                 device=self.device,
                 ) for n_id in self.node_store.input_nodeids
@@ -208,7 +211,7 @@ class UnquantizedGNN(nn.Module):
         new_nodes_values = self.node_store.get_node(nodes_to_fetch_ids)
 
         #this just creates the Node objects, doesn't load the values into them
-        new_nodes = [Node(node_store=self.node_store, gamma=self.gamma, device=self.device) for _ in new_nodes_values]
+        new_nodes = [Node(node_store=self.node_store, gamma=self.gamma, dtype=self.dtype, device=self.device) for _ in new_nodes_values]
         
         for i, new_node_value in enumerate(new_nodes_values):
             new_nodes[i].load_values(new_node_value) #loads the values into the Node objects
@@ -309,7 +312,7 @@ class UnquantizedGNN(nn.Module):
                 output_signals[node_id] = self.active_nodes[node_id].activation_strength
             else:
                 node_value = self.node_store.get_node(node_id)[0]
-                node = Node(node_store=self.node_store, gamma=self.gamma, device=self.device)
+                node = Node(node_store=self.node_store, gamma=self.gamma, dtype=self.dtype, device=self.device)
                 node.load_values(node_value)
                 output_signals[node_id] = node.activation_strength
                 self.active_nodes[node_id] = node
@@ -365,6 +368,7 @@ class UnquantizedGNN(nn.Module):
                     new_node = Node(
                         node_store=self.node_store,
                         gamma=self.gamma,
+                        dtype=self.dtype,
                         device=self.device
                     )
                     new_node.load_values(n_value)

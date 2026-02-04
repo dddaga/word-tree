@@ -160,13 +160,23 @@ class QuantizedNode(nn.Module):
         
 
 
+def _parse_dtype(dtype):  # str or torch.dtype -> torch.dtype
+    if isinstance(dtype, torch.dtype):
+        return dtype
+    if dtype == "float32":
+        return torch.float32
+    if dtype == "float16":
+        return torch.float16
+    raise ValueError("dtype must be 'float32', 'float16', or torch.dtype")
+
+
 class UnquantizedNode(nn.Module):
 
     def __init__(
         self,
         node_store:NodeStore=None,
         gamma:float=1.0,
-
+        dtype:Union[str, torch.dtype]="float32",
         node_id:int=None,
         phase_weight:torch.Tensor=None,
         mag_weight:torch.Tensor=None,
@@ -180,6 +190,7 @@ class UnquantizedNode(nn.Module):
     ):
         super().__init__()
         self.device = device
+        self.dtype = _parse_dtype(dtype)
         self.node_id = node_id
         self.node_store = node_store
         self.version = version  # Track version for synchronization
@@ -218,9 +229,9 @@ class UnquantizedNode(nn.Module):
 
         self.id = node.id
 
-        # Load continuous float weights from Qdrant
-        self.phase_weight = nn.Parameter(_to_tensor_with_grad(node.vector['phase'], dtype=torch.float16, device=self.device))
-        self.mag_weight = nn.Parameter(_to_tensor_with_grad(node.vector['mag'], dtype=torch.float16, device=self.device))
+        # Load continuous float weights from node_store
+        self.phase_weight = nn.Parameter(_to_tensor_with_grad(node.vector['phase'], dtype=self.dtype, device=self.device))
+        self.mag_weight = nn.Parameter(_to_tensor_with_grad(node.vector['mag'], dtype=self.dtype, device=self.device))
 
         self.incoming_connections = node.payload['incoming_connections']
         self.outgoing_connections = node.payload['outgoing_connections']
@@ -290,11 +301,11 @@ class UnquantizedNode(nn.Module):
         mag_weight_clamped = torch.clamp(self.mag_weight, min=-3*torch.pi, max=3*torch.pi)
         
         phase_activations = weights * (phase_activations + phase_weight_clamped.reshape(1, -1))
-        mag_activations = weights * (mag_activations + mag_weight_clamped.reshape(1, -1))
+        mag_activations = weights * torch.sin(mag_activations + mag_weight_clamped.reshape(1, -1))
 
         # Sum to get new activations (continuous values)
         self.phase_activation = phase_activations.sum(dim=0)
-        self.mag_activation = mag_activations.sum(dim=0)
+        self.mag_activation = torch.arcsin(mag_activations.sum(dim=0))
         
         # Keep phase in [0, 2π] range for numerical stability
         self.phase_activation = torch.remainder(self.phase_activation, 2 * torch.pi)
