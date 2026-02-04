@@ -3,7 +3,10 @@
 # Per-layer accumulators consume phase/mag grads from workers.
 
 from ._imports import *  # noqa: F401, F403
-from main import load_config, get_weights_save_path, gradient_accumulator_process_fn
+try:
+    from ..main import load_config, get_weights_save_path, gradient_accumulator_process_fn
+except ImportError:
+    from main import load_config, get_weights_save_path, gradient_accumulator_process_fn
 
 import torch
 import torch.nn as nn
@@ -28,8 +31,11 @@ from collections import defaultdict
 from . import worker as worker_mod
 from .gnn_grad_sink import GNNGradientSink
 from .worker_pool import WorkerPool
-from ._config_utils import get_node_store_from_config
-from core.gradient_accumulator import UnquantizedGradientAccumulator
+from ._config_utils import get_config, get_node_store_from_config
+try:
+    from ..core.gradient_accumulator import UnquantizedGradientAccumulator
+except ImportError:
+    from core.gradient_accumulator import UnquantizedGradientAccumulator
 
 
 def _normalize_config_list(configs):
@@ -413,7 +419,7 @@ class DistributedNeurographLayer(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        cfg = load_config(config) if isinstance(config, str) else config
+        cfg = get_config(path=config) if isinstance(config, str) else get_config(overrides=config)
         self._config = cfg
         self._gradient_sink = GNNGradientSink()
         self._node_store = get_node_store_from_config(cfg)

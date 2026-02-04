@@ -221,4 +221,3 @@ On `optimizer.step()` (GNNAdam):
 
 Config used by this path: `training.accumulation_steps`, `training.lr`, `training.momentum`, `training.epochs`; `graph.*`, `model.*`, `qdrant.*`, `system.*`. `training.worker_count` is not used (each sample gets its own process).
 
-No edits are made to `main.py`, `model_wrapper.py`, or the rest of `core/` for this path.
