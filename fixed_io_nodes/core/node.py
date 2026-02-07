@@ -305,7 +305,10 @@ class UnquantizedNode(nn.Module):
 
         # Sum to get new activations (continuous values)
         self.phase_activation = phase_activations.sum(dim=0)
-        self.mag_activation = torch.arcsin(mag_activations.sum(dim=0))
+        # Clamp into (-1, 1) so arcsin gradient 1/sqrt(1-x^2) stays finite (avoids inf/nan mag grads)
+        mag_sum = mag_activations.sum(dim=0)
+        mag_sum_safe = torch.clamp(mag_sum, min=-1.0 + 1e-6, max=1.0 - 1e-6)
+        self.mag_activation = torch.arcsin(mag_sum_safe)
         
         # Keep phase in [0, 2π] range for numerical stability
         self.phase_activation = torch.remainder(self.phase_activation, 2 * torch.pi)

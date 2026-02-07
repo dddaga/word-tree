@@ -1,0 +1,49 @@
+# GA run1: Iris dataset. List-valued keys = search space; single values = fixed.
+# Paths (log_path, tensorboard_dir, weights) are set per candidate by config_resolver.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "ga_run1_placeholder"
+
+graph:
+  total_nodes: [100, 500, 1000] #200
+  input_nodes: [4, 16, 64] #8, 32
+  output_nodes: 3
+  cardinality: [3, 10, 30] #15, 20, 40
+  radiation_targets: [2,10,40] #3, 5, 15, 30, 50
+
+model:
+  vector_dim: [4, 16, 64]
+  phase_bins: null
+  mag_bins: null
+  gamma: [0.1, 1.0, 5.0]
+  iterations: [2, 7, 15] #3, 4, 
+  radiation_similarity_threshold: [0.0, 0.5, 0.9]
+  temporal_decay: [0.2, 0.5,  0.99] #0.8, 0.95,
+  activation_threshold: [0.0, 10.0, 30.0] #1.0, 5.0, 
+
+training:
+  lr: [0.01, 0.00001, 1.0]
+  accumulation_steps: [4, 8,] # 16]  #batch size 
+  epochs: [5, 10]
+
+system:
+  device: "cuda"
+  random_seed: 42
+  logging:
+    log_path: "placeholder/loss.csv"
+    save_interval_seconds: 10
+    fieldnames: ["iteration", "loss"]
+    tensorboard_dir: null
+    verbose: false
+
+gene_expression:
+  forbid_combinations:
+    - graph.total_nodes: 50
+      model.input_nodes: 64
+    - graph.total_nodes: [500, 1000]
+      model.input_nodes: [16, 64]
+  # rules:
+  #   - when:
+  #       graph.total_nodes: 100
+  #       model.vector_dim: 4
