@@ -304,6 +304,7 @@ class UnquantizedGradientAccumulator(nn.Module):
                     self.phase_exp_avg[node_id] = self.phase_exp_avg[node_id].to(phase_param.device)
                     self.phase_exp_avg_sq[node_id] = self.phase_exp_avg_sq[node_id].to(phase_param.device)
                     self.phase_state_steps[node_id] = self.phase_state_steps[node_id].to(phase_param.device)
+                # print(f"Node {node_id}, Phase grad norm: {torch.norm(avg_phase_grad)}")
                 self._adam_update_node(
                     phase_param,
                     avg_phase_grad,
@@ -330,6 +331,7 @@ class UnquantizedGradientAccumulator(nn.Module):
                     self.mag_exp_avg[node_id] = self.mag_exp_avg[node_id].to(mag_param.device)
                     self.mag_exp_avg_sq[node_id] = self.mag_exp_avg_sq[node_id].to(mag_param.device)
                     self.mag_state_steps[node_id] = self.mag_state_steps[node_id].to(mag_param.device)
+                # print(f"Node {node_id}, Mag grad norm: {torch.norm(avg_mag_grad)}")
                 self._adam_update_node(
                     mag_param,
                     avg_mag_grad,

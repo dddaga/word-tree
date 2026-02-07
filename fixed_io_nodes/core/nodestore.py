@@ -1310,7 +1310,7 @@ class PytorchNodeStore(nn.Module):
                 continue
             
             possible_incoming_nodes = node_ids - self.output_nodeids - {n}
-            incoming_connection_count = random.randint(0, max_incoming_connections)
+            incoming_connection_count = random.randint(1, max_incoming_connections)
             incoming_connections = random.choices(list(possible_incoming_nodes), k=incoming_connection_count)
             graph[n]['incoming'] = incoming_connections
 
