@@ -27,6 +27,14 @@ python fixed_io_nodes/experiments/phase_rad_mag_cond/run_experiment.py
 
 Uses Iris (MLP → experiment GNN), in-process training, and `ExperimentGNNAdam`. Logs to `training_runs/phase_rad_mag_cond_experiment/loss.csv`.
 
+**Plot loss vs step** (from repo root):
+
+```bash
+python fixed_io_nodes/experiments/phase_rad_mag_cond/plot_loss.py
+```
+
+Saves `training_runs/phase_rad_mag_cond_experiment/loss_plot.png` and shows the figure. Requires `pandas` and `matplotlib`. Optional: pass a custom CSV path as the first argument.
+
 ## Files
 
 | File | Role |

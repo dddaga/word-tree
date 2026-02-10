@@ -26,7 +26,8 @@ class _InProcessGNNFunction(torch.autograd.Function):
             h = h.requires_grad_(True)
         outputs = []
         for i in range(B):
-            gnn.reset(fetch_weights=False)
+            if i > 0:
+                gnn.reset(fetch_weights=False)
             out_i = gnn(h[i])
             outputs.append(out_i)
         ctx.outputs = outputs
@@ -40,7 +41,9 @@ class _InProcessGNNFunction(torch.autograd.Function):
         B = ctx.B
         h = ctx.saved_tensors[0]
         for i in range(B):
-            ctx.outputs[i].backward(grad_output[i])
+            out_i = ctx.outputs[i]
+            if out_i.grad_fn is not None:
+                out_i.backward(grad_output[i])
         phase_grads, mag_grads = gnn.get_grads()
         if phase_grads or mag_grads:
             layer._gradient_sink.add(phase_grads or {}, mag_grads or {})
