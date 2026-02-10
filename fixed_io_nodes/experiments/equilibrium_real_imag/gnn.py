@@ -1,7 +1,7 @@
 """
 GNN variant: conduction edges use real part of activation, radiation edges use imaginary part.
-real = cos(phase)*cos(gamma*sin(mag)), imag = cos(phase)*sin(gamma*sin(mag)).
-Subclasses UnquantizedGNN; only one_step_forward overridden.
+theta = sin(m), complex view e^(i*theta) with magnitude cos(phi): real = cos(phi)*cos(theta),
+imag = cos(phi)*sin(theta). Subclasses UnquantizedGNN; only one_step_forward overridden.
 """
 
 import torch

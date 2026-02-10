@@ -5,12 +5,13 @@ import torch
 
 def activation_real_imag(phases: torch.Tensor, mags: torch.Tensor, gamma: float = 1.0):
     """
-    real = cos(phase)*cos(gamma*sin(mag)), imag = cos(phase)*sin(gamma*sin(mag)).
-    Sum over last dim. Clamps exponent range for stability.
+    Complex view: e^(i*theta) with theta = sin(m); magnitude cos(phi).
+    real = cos(phase)*cos(sin(mag)), imag = cos(phase)*sin(sin(mag)).
+    gamma is ignored (iota = i is the imaginary unit; theta = sin(m) only).
+    Sum over last dim.
     """
     phase_cos = torch.cos(phases)
-    arg = gamma * torch.sin(mags)
-    arg = torch.clamp(arg, min=-10.0, max=10.0)
-    real = (phase_cos * torch.cos(arg)).sum(dim=-1)
-    imag = (phase_cos * torch.sin(arg)).sum(dim=-1)
+    theta = torch.sin(mags)
+    real = (phase_cos * torch.cos(theta)).sum(dim=-1)
+    imag = (phase_cos * torch.sin(theta)).sum(dim=-1)
     return real, imag
