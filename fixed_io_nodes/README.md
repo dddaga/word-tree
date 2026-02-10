@@ -1,5 +1,10 @@
 The main entry point is through `main.py`
 
+## Documentation
+
+* **`docs/USAGE.md`** — Simple MLP→GNN usage (create_gnn_layer, GNNAdam).
+* **`docs/ACTIVATION_PROPAGATION_DRY_RUN.md`** — End-to-end mathematical dry run: forward and backward propagation with a toy example, formulas, and code references (for understanding the model in depth).
+
 ## File descriptions
 
 
