@@ -22,7 +22,7 @@ DEFAULT_CONFIG = {
         "collection_name": "example_collection",
     },
     "graph": {
-        "total_nodes": 200,
+        # "total_nodes": 200,
         # "input_nodes": 14,
         # "output_nodes": 10,
         "cardinality": 5,
@@ -56,6 +56,7 @@ DEFAULT_CONFIG = {
 REQUIRED_CONFIG_PATHS = (
     "graph.input_nodes",
     "graph.output_nodes",
+    "graph.total_nodes",
     "model.vector_dim",
     "training.lr",
     "training.accumulation_steps",

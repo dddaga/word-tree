@@ -50,10 +50,9 @@ from .run_folder import (
 )
 
 
-def _run_training(resolved_config, train_dataset, candidate_dir):
+def _run_training(resolved_config, train_dataset, candidate_dir, model_class):
     """Run distributed_training-style loop; save full model to candidate_dir/weights.pt."""
     import torch.multiprocessing as mp
-    from distributed_training import IrisGNNModel
     from distributed import GNNAdam, save_full_model
 
     try:
@@ -66,7 +65,7 @@ def _run_training(resolved_config, train_dataset, candidate_dir):
     if device == "cuda" and not torch.cuda.is_available():
         device = "cpu"
 
-    model = IrisGNNModel(resolved_config)
+    model = model_class(resolved_config)
     model = model.to(device)
     optimizer = GNNAdam(
         model,
@@ -129,16 +128,15 @@ def _run_training(resolved_config, train_dataset, candidate_dir):
         pass
 
 
-def _run_validation(resolved_config, val_dataset, candidate_dir):
+def _run_validation(resolved_config, val_dataset, candidate_dir, model_class):
     """Load full model, run on val set, return accuracy and loss."""
-    from distributed_training import IrisGNNModel
     from distributed import load_full_model
 
     device = resolved_config["system"]["device"]
     if device == "cuda" and not torch.cuda.is_available():
         device = "cpu"
 
-    model = IrisGNNModel(resolved_config)
+    model = model_class(resolved_config)
     model = model.to(device)
     weights_path = Path(candidate_dir) / "weights.pt"
     load_full_model(model, str(weights_path), map_location=device)
@@ -168,12 +166,13 @@ def evaluate_fitness(
     run_dir,
     resolved_config,
     get_train_val_datasets,
+    model_class,
     run_name="ga",
 ):
     """
     Evaluate fitness for one resolved config. If results.json exists, return cached validation_accuracy.
     Else run training, validation, write results.json, return validation_accuracy.
-    get_train_val_datasets() -> (train_dataset, val_dataset).
+    get_train_val_datasets() -> (train_dataset, val_dataset). model_class(cfg) builds the model.
     """
     candidate_dir = get_candidate_dir(run_dir, resolved_config)
     inject_paths(resolved_config, candidate_dir, run_name=run_name)
@@ -191,8 +190,8 @@ def evaluate_fitness(
     candidate_log_path.parent.mkdir(parents=True, exist_ok=True)
     log_file, saved_fd1, saved_fd2 = _redirect_stdout_stderr_to_file(candidate_log_path)
     try:
-        _run_training(resolved_config, train_dataset, candidate_dir)
-        accuracy, validation_loss = _run_validation(resolved_config, val_dataset, candidate_dir)
+        _run_training(resolved_config, train_dataset, candidate_dir, model_class)
+        accuracy, validation_loss = _run_validation(resolved_config, val_dataset, candidate_dir, model_class)
         print(f"validation accuracy: {accuracy:.4f} loss: {validation_loss:.4f}")
         with open(Path(candidate_dir) / "log.txt", "a", encoding="utf-8") as f:
             f.write(f"validation accuracy: {accuracy:.4f} loss: {validation_loss:.4f}\n")
