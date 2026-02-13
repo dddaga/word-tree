@@ -11,6 +11,7 @@ from torch.utils.data import TensorDataset, Subset
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
+from distributed_training import IrisGNNModel
 from genetic_algorithm import load_run_config, GeneticTuner
 
 
@@ -89,6 +90,7 @@ def main():
         tuner = GeneticTuner(
             base_config=base_config,
             search_space=search_space,
+            model_class=IrisGNNModel,
             generations=5,
             population_size=20,
             elite_frac=0.2,

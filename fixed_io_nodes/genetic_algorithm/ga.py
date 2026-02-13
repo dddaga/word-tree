@@ -19,13 +19,15 @@ from .fitness import evaluate_fitness
 from .gene_expression import build_suppress_predicate
 
 
-def _fitness_worker(run_dir, resolved_config, run_name, get_train_val_datasets, result_queue):
+def _fitness_worker(run_dir, resolved_config, run_name, get_train_val_datasets, model_class, result_queue):
     """Run in subprocess so main can respond to Ctrl+C by terminating this process."""
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     if hasattr(signal, "SIGBREAK"):
         signal.signal(signal.SIGBREAK, signal.SIG_IGN)
     try:
-        acc = evaluate_fitness(run_dir, resolved_config, get_train_val_datasets, run_name=run_name)
+        acc = evaluate_fitness(
+            run_dir, resolved_config, get_train_val_datasets, model_class=model_class, run_name=run_name
+        )
         result_queue.put(("ok", acc))
     except Exception as e:
         result_queue.put(("err", str(e)))
@@ -53,6 +55,7 @@ class GeneticTuner:
         self,
         base_config: Dict[str, Any],
         search_space: Dict[str, list],
+        model_class,
         generations: int = 10,
         population_size: int = 50,
         elite_frac: float = 0.5,
@@ -64,6 +67,7 @@ class GeneticTuner:
         gene_expression_raw = self.base_config.pop("gene_expression", {})
         self._is_suppressed = build_suppress_predicate(gene_expression_raw)
         self.search_space = search_space
+        self.model_class = model_class
         self.generations = generations
         self.population_size = population_size
         self.elite_frac = elite_frac
@@ -86,11 +90,13 @@ class GeneticTuner:
         """Resolve individual to config, then run fitness in this process or a subprocess (subprocess allows Ctrl+C to stop)."""
         resolved = resolve_config(individual, self.base_config)
         if not use_subprocess:
-            return evaluate_fitness(run_dir, resolved, get_train_val_datasets, run_name=run_name)
+            return evaluate_fitness(
+                run_dir, resolved, get_train_val_datasets, model_class=self.model_class, run_name=run_name
+            )
         result_queue = mp.Queue()
         p = mp.Process(
             target=_fitness_worker,
-            args=(run_dir, resolved, run_name, get_train_val_datasets, result_queue),
+            args=(run_dir, resolved, run_name, get_train_val_datasets, self.model_class, result_queue),
             daemon=False,
         )
         p.start()
