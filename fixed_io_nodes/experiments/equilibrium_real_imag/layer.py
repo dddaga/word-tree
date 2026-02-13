@@ -1,6 +1,6 @@
 """
-In-process GNN layer: runs forward/backward in the main process (no worker pool).
-Uses PhaseRadMagConductionGNN and exposes .gnn, .gradient_sink, .accumulator for GNNAdam-compatible training.
+In-process GNN layer for real/imag experiment: forward + backward, no worker pool.
+Uses RealImagConductionRadiationGNN. Exposes .gnn, .gradient_sink, .accumulator for GNNAdam-compatible training.
 """
 
 import torch
@@ -11,13 +11,12 @@ from fixed_io_nodes.distributed.gnn_grad_sink import GNNGradientSink
 from fixed_io_nodes.core.gradient_accumulator import UnquantizedGradientAccumulator
 from fixed_io_nodes.core.full_model import get_dtype
 
-from .gnn import PhaseRadMagConductionGNN
+from fixed_io_nodes.experiments.equilibrium_real_imag.gnn import RealImagConductionRadiationGNN
 
 
-class _InProcessGNNFunction(torch.autograd.Function):
+class _RealImagGNNFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, h, layer):
-        # h: (B, input_nodes, vector_dim)
         ctx.layer = layer
         ctx.save_for_backward(h)
         gnn = layer._gnn
@@ -51,11 +50,10 @@ class _InProcessGNNFunction(torch.autograd.Function):
         return grad_input, None
 
 
-class InProcessNeurographLayer(nn.Module):
+class RealImagNeurographLayer(nn.Module):
     """
-    Single GNN layer running in the main process (no worker pool).
-    Uses PhaseRadMagConductionGNN. Exposes .gnn, .gradient_sink, .accumulator so
-    GNNAdam-compatible optimizers can update GNN parameters.
+    Single GNN layer for real/imag experiment (forward + backward in main process).
+    Uses RealImagConductionRadiationGNN. Exposes .gnn, .gradient_sink, .accumulator.
     """
 
     def __init__(self, config):
@@ -73,7 +71,7 @@ class InProcessNeurographLayer(nn.Module):
         self._device = device
         dtype = get_dtype(cfg["model"].get("dtype", "float32"))
 
-        self._gnn = PhaseRadMagConductionGNN(
+        self._gnn = RealImagConductionRadiationGNN(
             node_store=self._node_store,
             cardinality=cfg["graph"]["cardinality"],
             radiation_targets=cfg["graph"]["radiation_targets"],
@@ -90,7 +88,6 @@ class InProcessNeurographLayer(nn.Module):
             device=device,
             verbose=cfg["system"].get("logging", {}).get("verbose", False),
             dtype=dtype,
-            beam_top_frac=cfg["model"].get("beam_top_frac", 0.1),
         )
         self._gnn.sync_weights()
         self._gradient_sink = GNNGradientSink()
@@ -117,13 +114,13 @@ class InProcessNeurographLayer(nn.Module):
         return self._accumulator
 
     def forward(self, x):
-        return _InProcessGNNFunction.apply(x, self)
+        return _RealImagGNNFunction.apply(x, self)
 
     def shutdown(self):
         pass
 
 
-def create_experiment_layer(**kwargs):
-    """Build InProcessNeurographLayer with PhaseRadMagConductionGNN from kwargs (same API as create_gnn_layer)."""
+def create_real_imag_layer(**kwargs):
+    """Build RealImagNeurographLayer from kwargs (same API as create_experiment_layer)."""
     cfg = get_config(**kwargs)
-    return InProcessNeurographLayer(cfg)
+    return RealImagNeurographLayer(cfg)
