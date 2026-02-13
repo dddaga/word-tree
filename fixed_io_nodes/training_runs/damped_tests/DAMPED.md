@@ -38,3 +38,10 @@ A random noise was added to activation vectors after the single iteration of the
 #### Stochastic Radiation
 
 Randomly radiate to other nodes at the start of training and slowly reduce this towards the end (unless mentioned, assume that this is not applied in the expt)
+
+#### Dynamic Loss
+
+Let activation of node $i$, on timestep $t$ be $a_i^t$, we define dynamic loss as 
+$L_{dyn} = \sum_{i=1}^N \sum_{t=1}^{T-1} \|a_i^t - a_i^{t+1}\|_2$
+
+Final loss will be a weighted combination of these two (unless mentioned - assume that this loss is not applied in training)
