@@ -73,6 +73,7 @@ PARAM_MAP = {
     "mag_bins": "model.mag_bins",
     "iterations": "model.iterations",
     "activation_threshold": "model.activation_threshold",
+    "beam_top_frac": "model.beam_top_frac",
     "gamma": "model.gamma",
     "temporal_decay": "model.temporal_decay",
     "radiation_similarity_threshold": "model.radiation_similarity_threshold",

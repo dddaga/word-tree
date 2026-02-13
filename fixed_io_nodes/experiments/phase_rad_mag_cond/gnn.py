@@ -1,10 +1,11 @@
 """
 GNN variant: radiation carries phase only; conduction (direct) carries magnitude only.
-Subclasses UnquantizedGNN and overrides the propagation step to mask by connection type.
+Beam search: only the top fraction of active nodes by activation strength may propagate.
 """
 
+import math
 import torch
-from typing import List
+from typing import List, Set
 
 from fixed_io_nodes.core.gnn_model import UnquantizedGNN
 from fixed_io_nodes.core.node import Node
@@ -14,10 +15,25 @@ from fixed_io_nodes.core.custom_functions import activation_strength_forward
 class PhaseRadMagConductionGNN(UnquantizedGNN):
     """
     Same as UnquantizedGNN except in each propagation step:
-    - Radiation connections: pass sender's phase and activation_strength; magnitude = 0.
-    - Direct (conduction) connections: pass sender's magnitude and activation_strength; phase = 0.
-    So phase propagates only via radiation, magnitude only via conduction.
+    - Radiation: pass sender's phase and activation_strength; magnitude = 0.
+    - Conduction: pass sender's magnitude and activation_strength; phase = 0.
+    - Beam: only the top beam_top_frac (e.g. 10%) of active nodes by activation strength
+      may send via radiation or conduction.
     """
+
+    def __init__(self, beam_top_frac: float = 0.1, **kwargs):
+        super().__init__(**kwargs)
+        self.beam_top_frac = beam_top_frac
+
+    def _beam_sender_ids(self) -> Set[int]:
+        """Top beam_top_frac of active nodes by activation strength (descending). At least 1 if any active."""
+        active = list(self.active_nodes.values())
+        if not active:
+            return set()
+        strengths = [(node.id, node.activation_strength.item()) for node in active]
+        strengths.sort(key=lambda x: x[1], reverse=True)
+        k = max(1, math.ceil(len(active) * self.beam_top_frac))
+        return {n_id for n_id, _ in strengths[:k]}
 
     def one_step_forward(self, input_values: torch.Tensor = None, tracer=None):
         if self.verbose:
@@ -88,6 +104,8 @@ class PhaseRadMagConductionGNN(UnquantizedGNN):
             new_nodes[i].load_values(new_node_value)
         new_nodes = set(new_nodes)
 
+        beam_sender_ids = self._beam_sender_ids()
+
         incoming_connections = {
             node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)
         }
@@ -97,6 +115,8 @@ class PhaseRadMagConductionGNN(UnquantizedGNN):
         direct_connections_dict = {}
 
         for node in self.active_nodes.values():
+            if node.id not in beam_sender_ids:
+                continue
             for n_id in node.outgoing_connections:
                 incoming_connections[n_id].append(node.id)
                 incoming_connection_types[n_id].append("direct")
@@ -104,6 +124,8 @@ class PhaseRadMagConductionGNN(UnquantizedGNN):
                     direct_connections_dict[node.id] = []
                 direct_connections_dict[node.id].append(n_id)
         for n_id, targets in radiation_targets.items():
+            if n_id not in beam_sender_ids:
+                continue
             for target in targets:
                 incoming_connections[target].append(n_id)
                 incoming_connection_types[target].append("radiation")

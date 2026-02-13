@@ -21,8 +21,8 @@ if str(_repo_root) not in sys.path:
 from fixed_io_nodes.distributed._config_utils import get_config, get_node_store_from_config
 from fixed_io_nodes.core.full_model import get_dtype
 
-from .gnn import RealImagConductionRadiationGNN
-from .activation_logger import ActivationLogger
+from fixed_io_nodes.experiments.equilibrium_real_imag.gnn import RealImagConductionRadiationGNN
+from fixed_io_nodes.experiments.equilibrium_real_imag.activation_logger import ActivationLogger
 
 
 def load_iris_sample(device, dtype=torch.float32):

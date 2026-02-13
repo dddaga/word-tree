@@ -11,13 +11,13 @@ from fixed_io_nodes.core.gnn_model import UnquantizedGNN
 from fixed_io_nodes.core.node import Node
 from fixed_io_nodes.core.custom_functions import activation_strength_forward
 
-from .utils import activation_real_imag
+from .utils import activation_real_imag, activation_measure_for_threshold
 
 
 class RealImagConductionRadiationGNN(UnquantizedGNN):
     """
-    Same as UnquantizedGNN except in each propagation step the scalar used as
-    activation_strength per connection is: real for direct (conduction), imag for radiation.
+    Same as UnquantizedGNN except: (1) per-connection strength is real (conduction) or imag (radiation);
+    (2) only active nodes propagate: activation_measure = cos(m)*sqrt(real^2+imag^2) must be >= activation_threshold.
     Phase and mag from senders are passed unchanged.
     """
 
@@ -90,29 +90,6 @@ class RealImagConductionRadiationGNN(UnquantizedGNN):
             new_nodes[i].load_values(new_node_value)
         new_nodes = set(new_nodes)
 
-        incoming_connections = {
-            node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)
-        }
-        incoming_connection_types = {
-            node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)
-        }
-        direct_connections_dict = {}
-
-        for node in self.active_nodes.values():
-            for n_id in node.outgoing_connections:
-                incoming_connections[n_id].append(node.id)
-                incoming_connection_types[n_id].append("direct")
-                if node.id not in direct_connections_dict:
-                    direct_connections_dict[node.id] = []
-                direct_connections_dict[node.id].append(n_id)
-        for n_id, targets in radiation_targets.items():
-            for target in targets:
-                incoming_connections[target].append(n_id)
-                incoming_connection_types[target].append("radiation")
-
-        if tracer is not None:
-            tracer.record_direct_connections(direct_connections_dict)
-
         phase_activations = {
             node.id: node.phase_activation.clone()
             for node in self.active_nodes.values()
@@ -122,6 +99,7 @@ class RealImagConductionRadiationGNN(UnquantizedGNN):
         }
         real_per_node = {}
         imag_per_node = {}
+        activation_measure_per_node = {}
         for n_id in phase_activations:
             r, i = activation_real_imag(
                 phase_activations[n_id].unsqueeze(0),
@@ -130,6 +108,41 @@ class RealImagConductionRadiationGNN(UnquantizedGNN):
             )
             real_per_node[n_id] = r.squeeze(0)
             imag_per_node[n_id] = i.squeeze(0)
+            am = activation_measure_for_threshold(
+                phase_activations[n_id].unsqueeze(0),
+                mag_activations[n_id].unsqueeze(0),
+                self.gamma,
+            )
+            activation_measure_per_node[n_id] = am.squeeze(0).item()
+
+        active_sender_ids = {
+            n_id for n_id in phase_activations
+            if activation_measure_per_node[n_id] >= self.activation_threshold
+        }
+
+        incoming_connections = {
+            node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)
+        }
+        incoming_connection_types = {
+            node.id: [] for node in set(self.active_nodes.values()).union(new_nodes)
+        }
+        direct_connections_dict = {}
+        for node in self.active_nodes.values():
+            for n_id in node.outgoing_connections:
+                if node.id in active_sender_ids:
+                    incoming_connections[n_id].append(node.id)
+                    incoming_connection_types[n_id].append("direct")
+                    if node.id not in direct_connections_dict:
+                        direct_connections_dict[node.id] = []
+                    direct_connections_dict[node.id].append(n_id)
+        for n_id, targets in radiation_targets.items():
+            if n_id in active_sender_ids:
+                for target in targets:
+                    incoming_connections[target].append(n_id)
+                    incoming_connection_types[target].append("radiation")
+
+        if tracer is not None:
+            tracer.record_direct_connections(direct_connections_dict)
 
         for node in set(self.active_nodes.values()).union(new_nodes):
             if len(incoming_connections[node.id]) == 0:
@@ -175,6 +188,6 @@ class RealImagConductionRadiationGNN(UnquantizedGNN):
             for node in self.active_nodes.values():
                 node.decay_activations(self.temporal_decay)
 
-        del phase_activations, mag_activations, real_per_node, imag_per_node
+        del phase_activations, mag_activations, real_per_node, imag_per_node, activation_measure_per_node
         del incoming_connections, incoming_connection_types
         del new_nodes, new_nodes_values, radiation_targets

@@ -15,3 +15,15 @@ def activation_real_imag(phases: torch.Tensor, mags: torch.Tensor, gamma: float 
     real = (phase_cos * torch.cos(theta)).sum(dim=-1)
     imag = (phase_cos * torch.sin(theta)).sum(dim=-1)
     return real, imag
+
+
+def activation_measure_for_threshold(phases: torch.Tensor, mags: torch.Tensor, gamma: float = 1.0):
+    """
+    Scalar used to compare with activation_threshold: cos(m) * sqrt(real^2 + imag^2).
+    A node is active iff this measure >= threshold; only active nodes propagate.
+    For vector dim, cos(m) = product over d of cos(m_d). Returns same shape as real/imag (after sum).
+    """
+    real, imag = activation_real_imag(phases, mags, gamma)
+    magnitude = torch.sqrt(real * real + imag * imag + 1e-12)
+    cos_m = torch.prod(torch.cos(mags), dim=-1)
+    return cos_m * magnitude
