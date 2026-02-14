@@ -19,3 +19,16 @@
 * phase damping 0.5 (same as expt 1)
 * Added a random noise of variance 0.01 to phase_activation vectors 
 * Result - [image](./test3.jpg)
+
+
+## Experiment 4
+
+* Activation type first (same as expt 2)
+* phase damping, dynamic loss, random noise - all disabled (set to 0)
+* Added stochastic radiation - initially 80% of the radiation neighbours are selected randomly, and this is scaled down linearly to 0% for the first half of the training, after which the radiation neighbours are purely from vector search
+* result - [image](./test4.png)
+
+## Experiment 5
+
+* same as expt 4, only change is activation strength calculation changed from type (2) to type (1) 
+* result - [image](./test5.png)
