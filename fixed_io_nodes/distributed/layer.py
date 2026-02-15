@@ -455,7 +455,7 @@ class DistributedNeurographLayer(nn.Module):
 
     def set_training_progress(self, epoch: int, total_epochs: int) -> None:
         duration = (
-            self._stochastic_radiation_duration
+            self._stochastic_radiation_duration if self._stochastic_radiation_duration > 0 else 0.5
         )
         if self._scattering_prob_base == 0:
             self._current_scattering_prob = 0.0
