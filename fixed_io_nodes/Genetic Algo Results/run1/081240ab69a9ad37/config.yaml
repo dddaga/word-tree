@@ -1,0 +1,32 @@
+qdrant:
+  url: http://localhost:6333
+  collection_name: run1_081240ab69a9ad37
+graph:
+  total_nodes: 1000
+  input_nodes: 4
+  output_nodes: 3
+  cardinality: 3
+  radiation_targets: 10
+model:
+  vector_dim: 16
+  phase_bins: null
+  mag_bins: null
+  gamma: 0.1
+  iterations: 7
+  radiation_similarity_threshold: 0.9
+  temporal_decay: 0.99
+  activation_threshold: 10.0
+training:
+  lr: 1.0
+  accumulation_steps: 4
+  epochs: 10
+system:
+  device: cuda
+  random_seed: 42
+  logging:
+    log_path: genetic_algorithm_runs\run1\081240ab69a9ad37\loss.csv
+    save_interval_seconds: 10
+    fieldnames: loss
+    tensorboard_dir: genetic_algorithm_runs\run1\081240ab69a9ad37\tensorboard
+    verbose: false
+  weights_save_path: genetic_algorithm_runs\run1\081240ab69a9ad37\weights.pt

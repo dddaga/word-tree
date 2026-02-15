@@ -150,8 +150,9 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
             for t_id in targets:
                 source_to_targets.setdefault(n_id, []).append((t_id, "radiation"))
 
-        device = next(self.active_nodes.values()).phase_activation.device
-        dtype = next(self.active_nodes.values()).phase_activation.dtype
+        first_node = list(self.active_nodes.values())[0]
+        device = first_node.phase_activation.device
+        dtype = first_node.phase_activation.dtype
 
         for source_id, target_list in source_to_targets.items():
             phase_s = phase_activations[source_id]
