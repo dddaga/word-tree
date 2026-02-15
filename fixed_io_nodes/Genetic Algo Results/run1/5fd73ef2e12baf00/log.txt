@@ -1,0 +1,137 @@
+Process pool_worker_7:
+Process pool_worker_4:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\distributed\worker.py", line 244, in worker_pool_loop
+    out = model(x_i)
+          ^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\distributed\worker.py", line 244, in worker_pool_loop
+    out = model(x_i)
+          ^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\full_model.py", line 43, in forward
+    out = self.gnn(phases, tracer=tracer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 302, in forward
+    self.one_step_forward(tracer=tracer)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 255, in one_step_forward
+    node.update_activations(
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\node.py", line 303, in update_activations
+    phase_activations = weights * (phase_activations + phase_weight_clamped.reshape(1, -1))
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: bad allocation
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\distributed\worker.py", line 244, in worker_pool_loop
+    out = model(x_i)
+          ^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+Process pool_worker_3:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\distributed\worker.py", line 244, in worker_pool_loop
+    out = model(x_i)
+          ^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\full_model.py", line 43, in forward
+    out = self.gnn(phases, tracer=tracer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 302, in forward
+    self.one_step_forward(tracer=tracer)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 255, in one_step_forward
+    node.update_activations(
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\node.py", line 319, in update_activations
+    self.calculate_activation_strength()
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\node.py", line 251, in calculate_activation_strength
+    self.activation_strength = activation_strength_forward(self.phase_activation, self.mag_activation, self.gamma).to(self.device)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\custom_functions.py", line 69, in activation_strength_forward_unquantized
+    signal = (phase_values * mag_values).sum(dim=-1)
+              ~~~~~~~~~~~~~^~~~~~~~~~~~
+RuntimeError: bad allocation
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\full_model.py", line 43, in forward
+    out = self.gnn(phases, tracer=tracer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\torch\nn\modules\module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 302, in forward
+    self.one_step_forward(tracer=tracer)
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\gnn_model.py", line 255, in one_step_forward
+    node.update_activations(
+  File "C:\Users\SUDARSHAN\Desktop\IndraAstra\word-tree\fixed_io_nodes\core\node.py", line 303, in update_activations
+    phase_activations = weights * (phase_activations + phase_weight_clamped.reshape(1, -1))
+                        ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: bad allocation
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 330, in _bootstrap
+    traceback.print_exc()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py", line 1050, in print
+    print(line, file=file, end="")
+OSError: [Errno 22] Invalid argument
+forrtl: error (200): program aborting due to window-CLOSE event
+Image              PC                Routine            Line        Source             
+KERNELBASE.dll     00007FFEBAE8D64D  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFEBC05E8D7  Unknown               Unknown  Unknown
+ntdll.dll          00007FFEBD56C53C  Unknown               Unknown  Unknown

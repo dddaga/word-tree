@@ -1,0 +1,44 @@
+[
+  {
+    "graph.total_nodes": 200,
+    "graph.input_nodes": 16,
+    "graph.cardinality": 4,
+    "model.vector_dim": 16,
+    "model.gamma": 0.5,
+    "model.iterations": 2,
+    "model.radiation_similarity_threshold": 0.0,
+    "model.temporal_decay": 0.5,
+    "training.lr": 0.0005,
+    "system.logging.fieldnames": "iteration",
+    "fitness": 0.4,
+    "generation": 1
+  },
+  {
+    "graph.total_nodes": 200,
+    "graph.input_nodes": 16,
+    "graph.cardinality": 4,
+    "model.vector_dim": 16,
+    "model.gamma": 0.5,
+    "model.iterations": 2,
+    "model.radiation_similarity_threshold": 0.0,
+    "model.temporal_decay": 0.5,
+    "training.lr": 0.0005,
+    "system.logging.fieldnames": "iteration",
+    "fitness": 0.4,
+    "generation": 2
+  },
+  {
+    "graph.total_nodes": 200,
+    "graph.input_nodes": 16,
+    "graph.cardinality": 4,
+    "model.vector_dim": 16,
+    "model.gamma": 0.5,
+    "model.iterations": 2,
+    "model.radiation_similarity_threshold": 0.0,
+    "model.temporal_decay": 0.5,
+    "training.lr": 0.0005,
+    "system.logging.fieldnames": "iteration",
+    "fitness": 0.4,
+    "generation": 3
+  }
+]

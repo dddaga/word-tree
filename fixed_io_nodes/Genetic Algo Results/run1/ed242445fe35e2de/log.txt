@@ -1,0 +1,121 @@
+PytorchNodeStore: Graph initialized with 100 nodes
+Process pool_worker_1:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Process pool_worker_7:
+Process pool_worker_0:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Process pool_worker_4:
+Process pool_worker_6:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Process pool_worker_2:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Process pool_worker_5:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+Process pool_worker_3:
+Traceback (most recent call last):
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ujjwal.phy21.itbhu/IndraAstra/word-tree/fixed_io_nodes/distributed/worker.py", line 248, in worker_pool_loop
+    result_queue.put(("out", out_np))
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 94, in put
+    self._start_thread()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/multiprocessing/queues.py", line 179, in _start_thread
+    self._thread.start()
+  File "/home/ujjwal.phy21.itbhu/miniconda3/envs/ml_env/lib/python3.10/threading.py", line 928, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread

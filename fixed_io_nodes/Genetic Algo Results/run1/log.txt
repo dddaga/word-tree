@@ -1,0 +1,11 @@
+Initializing tuner...
+Tuner initialized
+GA run: genetic_algorithm_runs/run1 (generations=5, pop=20)
+Log file: genetic_algorithm_runs/run1/log.txt
+Generation:   0%|          | 0/5 [00:00<?, ?gen/s]
+Gen 1 eval:   0%|          | 0/20 [00:00<?, ?ind/s][A
+Gen 1 eval:   5%|5         | 1/20 [09:55<3:08:29, 595.25s/ind][A
+Gen 1 eval:  10%|#         | 2/20 [13:14<1:48:42, 362.38s/ind][A
+Gen 1 eval:  15%|#5        | 3/20 [19:31<1:44:33, 369.06s/ind][A
+Gen 1 eval:  20%|##        | 4/20 [55:56<4:49:36, 1086.03s/ind][A
+Gen 1 eval:  25%|##5       | 5/20 [6:21:28<32:14:26, 7737.77s/ind][A
