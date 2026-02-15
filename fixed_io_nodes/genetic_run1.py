@@ -102,12 +102,12 @@ def main():
             base_config=base_config,
             search_space=search_space,
             model_class=IrisGNNModel,
-            generations=5,
-            population_size=20,
+            generations=8,
+            population_size=50,
             elite_frac=0.2,
             crossover_rate=0.2,
             mutation_rate=0.2,
-            top_k=4,
+            top_k=8,
         )
         print("Tuner initialized")
         print(f"GA run: {run_dir} (generations={tuner.generations}, pop={tuner.population_size})")
