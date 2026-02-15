@@ -32,6 +32,8 @@ model:
   phase_damping: 0.5
   accumulate_dyn_loss: true
   dyn_loss_weight: 0.0
+  scattering_prob: 0.0
+  stochastic_radiation_duration: 0.0
 
 # --- Training Hyperparameters ---
 training: 

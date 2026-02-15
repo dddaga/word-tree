@@ -6,40 +6,44 @@ qdrant:
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 100
-  input_nodes: 4
-  output_nodes: 3
-  cardinality: 4
-  radiation_targets: 4
+  total_nodes: 150
+  input_nodes: 8
+  output_nodes: 10
+  cardinality: 5
+  radiation_targets: 5
 
 # --- Model Architecture ---
 model:
-  vector_dim: 4
+  vector_dim: 8
   phase_bins: null
   mag_bins: null
   gamma: 1.5
-  iterations: 3
+  iterations: 5
   radiation_similarity_threshold: 0.1
   temporal_decay: 0.9
   activation_threshold: 0.1
+  dtype: "float32"
+  phase_damping: 0.0
+  accumulate_dyn_loss: true
+  dyn_loss_weight: 0.0
+  scattering_prob: 0.8
 
 # --- Training Hyperparameters ---
 training: 
-  lr: 0.001
+  lr: 0.0004
   accumulation_steps: 4
-  momentum: 0.9
-  worker_count: 4
-  timeout: 300 #time to wait for data from queue
-  epochs: 10
+  epochs: 16
+  validation_fraction: 0.2
 
 
 # --- System & Logging ---
 system:
   device: "cuda"
   random_seed: 42
+  weights_save_path: "training_runs/distributed_test/distributed_test_weights.pt"
   logging:
     log_path: "training_runs/distributed_test/distributed_test.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class', 'skipped']
     tensorboard_dir: null
-    verbose: true
+    verbose: false

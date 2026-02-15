@@ -39,6 +39,7 @@ class UnquantizedGNN(nn.Module):
         device:str='cuda' if torch.cuda.is_available() else 'cpu',
         verbose:bool=False,
         dtype:torch.dtype=torch.float32,
+        scattering_prob:float=0.0,
     ):
         super().__init__()
 
@@ -58,6 +59,8 @@ class UnquantizedGNN(nn.Module):
         self.gamma = gamma
         self.temporal_decay = temporal_decay
         self.verbose = verbose
+        self.scattering_prob = scattering_prob
+        self._current_scattering_prob = None
 
         #input nodes are considered active from the start
         self.active_nodes = {
@@ -89,42 +92,48 @@ class UnquantizedGNN(nn.Module):
         self.output_nodeids = self.node_store.output_nodeids
         self.input_nodeids = self.node_store.input_nodeids
 
+    def set_current_scattering_prob(self, p: Optional[float]) -> None:
+        self._current_scattering_prob = p
 
-    def _compute_radiation_targets(self, nodes:List[Node], k:int=None):
+    def _compute_radiation_targets(self, nodes: List[Node], k: int = None, scattering_prob: float = 0.0):
         """
         Arguments:
         nodes: List[Node]
         k: int = None (default is self.radiation_targets)
+        scattering_prob: float = 0.0; 0 => deterministic (search only).
 
         Returns:
         topk_indices: Dict[node_ids: List[ids of closest k nodes]]
         """
-
         if k is None:
             k = self.radiation_targets
         if isinstance(nodes, Node):
             nodes = [nodes]
-        
+        if scattering_prob < 0.0 or scattering_prob > 1.0:
+            raise ValueError("Scattering probability must be between 0.0 and 1.0")
 
-        topk_indices = {}
+        topk_indices = {node.id: [] for node in nodes}
+        num_random_neighbours = max(1, int(k * scattering_prob)) if scattering_prob > 0 else 0
+        num_searched_neighbours = k - num_random_neighbours
 
-        
-        query_vectors = [node.phase_activation for node in nodes]
-        batch_results = self.node_store.search_nodes_batch(
-            query_vectors, 
-            vector_name='phase', 
-            limit=k,
-            with_payload=False, 
-            with_vectors=False
-        )
+        if num_searched_neighbours > 0:
+            query_vectors = [node.phase_activation for node in nodes]
+            batch_results = self.node_store.search_nodes_batch(
+                query_vectors,
+                vector_name='phase',
+                limit=num_searched_neighbours,
+                with_payload=False,
+                with_vectors=False
+            )
+            for i, node in enumerate(nodes):
+                topk_indices[node.id].extend([found_point.id for found_point in batch_results[i]])
 
-        # Map results back to the corresponding node IDs
-        for i, node in enumerate(nodes):
-            topk_indices[node.id] = [found_point.id for found_point in batch_results[i]]
-        
+        if num_random_neighbours > 0:
+            for node in nodes:
+                random_neighbours = self.node_store.sample_random_nodeids(num_random_neighbours)
+                topk_indices[node.id].extend(random_neighbours)
+
         return topk_indices
-
-    
 
     def one_step_forward(self, input_values:torch.Tensor=None, tracer=None):
         """
@@ -187,9 +196,10 @@ class UnquantizedGNN(nn.Module):
 
 
 
-        #fetch radiation targets 
-        radiation_targets = self._compute_radiation_targets(set(self.active_nodes.values()))
-        
+        #fetch radiation targets
+        sp = self._current_scattering_prob if self._current_scattering_prob is not None else self.scattering_prob
+        radiation_targets = self._compute_radiation_targets(set(self.active_nodes.values()), scattering_prob=sp)
+
         if tracer is not None:
             tracer.record_radiation_targets(radiation_targets)
         
