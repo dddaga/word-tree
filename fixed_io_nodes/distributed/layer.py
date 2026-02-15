@@ -455,7 +455,7 @@ class DistributedNeurographLayer(nn.Module):
 
     def set_training_progress(self, epoch: int, total_epochs: int) -> None:
         duration = (
-            self._stochastic_radiation_duration if self._stochastic_radiation_duration > 0 else 0.5
+            self._stochastic_radiation_duration 
         )
         if self._scattering_prob_base == 0:
             self._current_scattering_prob = 0.0
@@ -466,6 +466,8 @@ class DistributedNeurographLayer(nn.Module):
             self._current_scattering_prob = self._scattering_prob_base * max(
                 0.0, 1.0 - epoch / (total_epochs * duration)
             )
+            if duration <= 0.0:
+                self._current_scattering_prob = 0.0
 
     @property
     def gradient_sink(self):
