@@ -50,8 +50,8 @@ from .run_folder import (
 )
 
 
-def _run_training(resolved_config, train_dataset, candidate_dir, model_class):
-    """Run distributed_training-style loop; save full model to candidate_dir/weights.pt."""
+def _run_training(resolved_config, train_dataset, val_dataset, candidate_dir, model_class):
+    """Run distributed_training-style loop with train/val split and validation after every epoch; save full model to candidate_dir/weights.pt."""
     import torch.multiprocessing as mp
     from distributed import GNNAdam, save_full_model
 
@@ -74,7 +74,8 @@ def _run_training(resolved_config, train_dataset, candidate_dir, model_class):
         eps=1e-8,
     )
     batch_size = resolved_config["training"]["accumulation_steps"]
-    dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False) if val_dataset is not None else None
     criterion = nn.CrossEntropyLoss()
     epochs = resolved_config["training"].get("epochs", 10)
 
@@ -94,9 +95,10 @@ def _run_training(resolved_config, train_dataset, candidate_dir, model_class):
         log_writer.writeheader()
         log_f.flush()
         for epoch in range(epochs):
+            model.gnn.set_training_progress(epoch, epochs)
             epoch_loss_sum = 0.0
             epoch_batches = 0
-            for x, y in dataloader:
+            for x, y in train_loader:
                 x = x.to(device)
                 y = y.to(device)
                 optimizer.zero_grad()
@@ -114,9 +116,42 @@ def _run_training(resolved_config, train_dataset, candidate_dir, model_class):
                     train_log.flush()
                 global_step += 1
             mean_loss = epoch_loss_sum / epoch_batches if epoch_batches else 0.0
-            print(f"epoch {epoch + 1}/{epochs} loss: {mean_loss:.4f}")
+
+            model.eval()
+            pool = getattr(model.gnn, "_pool", None)
+            with torch.no_grad():
+                correct, total = 0, 0
+                for x, y in train_loader:
+                    if pool is not None:
+                        pool.reset_workers()
+                    x, y = x.to(device), y.to(device)
+                    logits = model(x)
+                    correct += (logits.argmax(1) == y).sum().item()
+                    total += y.size(0)
+                train_acc = 100.0 * correct / total if total else 0.0
+            val_acc = None
+            if val_loader is not None:
+                with torch.no_grad():
+                    correct, total = 0, 0
+                    for x, y in val_loader:
+                        if pool is not None:
+                            pool.reset_workers()
+                        x, y = x.to(device), y.to(device)
+                        logits = model(x)
+                        correct += (logits.argmax(1) == y).sum().item()
+                        total += y.size(0)
+                    val_acc = 100.0 * correct / total if total else 0.0
+                writer.add_scalar("Validation/ValAcc", val_acc, epoch)
+            if pool is not None:
+                pool.reset_workers()
+            model.train()
+            writer.add_scalar("Training/TrainAcc", train_acc, epoch)
+            msg = f"Epoch {epoch + 1}/{epochs}  train_acc={train_acc:.2f}%"
+            if val_acc is not None:
+                msg += f"  val_acc={val_acc:.2f}%"
+            print(msg)
             with open(candidate_log, "a", encoding="utf-8") as train_log:
-                train_log.write(f"epoch {epoch + 1}/{epochs} loss: {mean_loss:.4f}\n")
+                train_log.write(f"epoch {epoch + 1}/{epochs} loss: {mean_loss:.4f}  {msg}\n")
                 train_log.flush()
     writer.close()
 
@@ -185,12 +220,12 @@ def evaluate_fitness(
         results = read_results(candidate_dir)
         return float(results["validation_accuracy"])
 
-    train_dataset, val_dataset = get_train_val_datasets()
+    train_dataset, val_dataset = get_train_val_datasets(resolved_config)
     candidate_log_path = Path(candidate_dir) / "log.txt"
     candidate_log_path.parent.mkdir(parents=True, exist_ok=True)
     log_file, saved_fd1, saved_fd2 = _redirect_stdout_stderr_to_file(candidate_log_path)
     try:
-        _run_training(resolved_config, train_dataset, candidate_dir, model_class)
+        _run_training(resolved_config, train_dataset, val_dataset, candidate_dir, model_class)
         accuracy, validation_loss = _run_validation(resolved_config, val_dataset, candidate_dir, model_class)
         print(f"validation accuracy: {accuracy:.4f} loss: {validation_loss:.4f}")
         with open(Path(candidate_dir) / "log.txt", "a", encoding="utf-8") as f:

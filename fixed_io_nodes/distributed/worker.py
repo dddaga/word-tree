@@ -118,6 +118,7 @@ def run_gnn_worker_multilayer(rank: int, world_size: int, config_list: list):
             qdrant_params=qdrant_params or {},
             verbose=cfg["system"].get("logging", {}).get("verbose", False),
             dtype=cfg["model"].get("dtype", "float32"),
+            scattering_prob=cfg.get("model", {}).get("scattering_prob", 0.0),
         )
         model = model.to(cfg["system"]["device"])
         _worker_models.append(model)
@@ -160,6 +161,7 @@ def _load_model_for_config(config):
         qdrant_params=get_qdrant_params(config) or {},
         verbose=config["system"].get("logging", {}).get("verbose", False),
         dtype=config["model"].get("dtype", "float32"),
+        scattering_prob=config.get("model", {}).get("scattering_prob", 0.0),
     )
     device = config["system"]["device"]
     if isinstance(device, str) and "cuda" in device:
@@ -237,15 +239,27 @@ def worker_pool_loop(worker_id: int, task_queue, result_queue, config: dict):
             continue
 
         if op == "forward":
-            x_i = payload
+            if isinstance(payload, (list, tuple)) and len(payload) == 2:
+                x_i, scattering_prob = payload
+            else:
+                x_i, scattering_prob = payload, None
             if not isinstance(x_i, torch.Tensor):
                 x_i = torch.from_numpy(x_i.copy())
             x_i = x_i.to(device).detach().requires_grad_(True)
+            if scattering_prob is not None and hasattr(model.gnn, "set_current_scattering_prob"):
+                model.gnn.set_current_scattering_prob(scattering_prob)
             out = model(x_i)
             stored_x = x_i
             stored_out = out
             out_np = out.cpu().detach().numpy().copy()
             result_queue.put(("out", out_np))
+            continue
+
+        if op == "reset":
+            model.reset()
+            stored_x = None
+            stored_out = None
+            result_queue.put(("reset_ack", None))
             continue
 
         if op == "backward":

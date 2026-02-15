@@ -52,14 +52,25 @@ def _iris_dataset():
     return TensorDataset(X_tensor, y_tensor)
 
 
-def get_train_val_datasets(seed=42, val_frac=0.2):
-    """Return (train_dataset, val_dataset) as Subsets of Iris; fixed seed for reproducibility."""
+def get_train_val_datasets(config=None, seed=None, val_frac=None):
+    """Return (train_dataset, val_dataset) as Subsets of Iris. If config is provided, use config['system']['random_seed'] and config['training']['validation_fraction']."""
+    if config is not None:
+        seed = config["system"].get("random_seed", 42) if seed is None else seed
+        val_frac = config["training"].get("validation_fraction", 0.2) if val_frac is None else val_frac
+    else:
+        seed = 42 if seed is None else seed
+        val_frac = 0.2 if val_frac is None else val_frac
     full = _iris_dataset()
     n = len(full)
     indices = list(range(n))
-    train_idx, val_idx = train_test_split(indices, test_size=val_frac, random_state=seed, stratify=[full[i][1].item() for i in range(n)])
-    train_dataset = Subset(full, train_idx)
-    val_dataset = Subset(full, val_idx)
+    labels = [full[i][1].item() for i in range(n)]
+    if val_frac <= 0:
+        train_dataset = Subset(full, indices)
+        val_dataset = None
+    else:
+        train_idx, val_idx = train_test_split(indices, test_size=val_frac, random_state=seed, stratify=labels)
+        train_dataset = Subset(full, train_idx)
+        val_dataset = Subset(full, val_idx)
     return train_dataset, val_dataset
 
 
@@ -71,7 +82,7 @@ def main():
     if hasattr(signal, "SIGBREAK"):
         signal.signal(signal.SIGBREAK, _sigint_handler)
 
-    run_dir = "genetic_algorithm_runs/run1"
+    run_dir = "genetic_algorithm_runs/run2"
     Path(run_dir).mkdir(parents=True, exist_ok=True)
     log_path = Path(run_dir) / "log.txt"
     orig_stdout = sys.stdout

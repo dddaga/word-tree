@@ -45,8 +45,9 @@ class WorkerPool:
         for i in range(self._num_workers):
             self._task_queues[i].put(("weights", state_dict))
 
-    def submit_forward(self, worker_id: int, x_i: torch.Tensor):
-        self._task_queues[worker_id].put(("forward", x_i))
+    def submit_forward(self, worker_id: int, x_i: torch.Tensor, scattering_prob=None):
+        payload = (x_i, scattering_prob) if scattering_prob is not None else x_i
+        self._task_queues[worker_id].put(("forward", payload))
 
     def get_forward_result(self, worker_id: int) -> torch.Tensor:
         kind, payload = self._result_queues[worker_id].get()
@@ -58,6 +59,15 @@ class WorkerPool:
         if isinstance(payload, np.ndarray):
             return torch.from_numpy(payload.copy())
         return torch.from_numpy(payload.copy())
+
+    def reset_workers(self):
+        """Reset GNN state in all workers (e.g. after eval passes that did not run backward)."""
+        for i in range(self._num_workers):
+            self._task_queues[i].put(("reset", None))
+        for i in range(self._num_workers):
+            kind, _ = self._result_queues[i].get()
+            if kind != "reset_ack":
+                raise RuntimeError(f"Worker {i} returned {kind!r}, expected reset_ack")
 
     def submit_backward(self, worker_id: int, grad_i: torch.Tensor):
         self._task_queues[worker_id].put(("backward", grad_i))

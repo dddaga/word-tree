@@ -113,18 +113,23 @@ class _PooledWorkerFunction(torch.autograd.Function):
     """
 
     @staticmethod
-    def forward(ctx, x, config, node_store, gradient_sink, pool):
+    def forward(ctx, x, config, node_store, gradient_sink, pool, layer_ref):
         B = x.shape[0]
         nw = pool.num_workers
         state_dict = node_store.state_dict()
         outputs = [None] * B
+        scattering_prob = (
+            layer_ref._current_scattering_prob
+            if layer_ref._current_scattering_prob is not None
+            else layer_ref._scattering_prob_base
+        )
         for chunk_start in range(0, B, nw):
             chunk_end = min(chunk_start + nw, B)
             pool.submit_weights(state_dict)
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
                 xi = x[i].detach().cpu().requires_grad_(True)
-                pool.submit_forward(j, xi)
+                pool.submit_forward(j, xi, scattering_prob)
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
                 outputs[i] = pool.get_forward_result(j)
@@ -169,7 +174,7 @@ class _PooledWorkerFunction(torch.autograd.Function):
             ctx.gradient_sink.add(dict(phase_acc), dict(mag_acc), dict(phase_freq), dict(mag_freq))
         grad_input = torch.stack([by_i[i][2] for i in range(ctx.B)])
         grad_input = grad_input.to(dtype=ctx.x.dtype, device=grad_output.device)
-        return grad_input, None, None, None, None
+        return grad_input, None, None, None, None, None
 
 
 class _OneProcessPerSampleFunction(torch.autograd.Function):
@@ -444,6 +449,23 @@ class DistributedNeurographLayer(nn.Module):
         worker_config["system"] = dict(worker_config["system"])
         worker_config["system"]["device"] = "cpu"
         self._pool = WorkerPool(worker_config)
+        self._scattering_prob_base = self._config.get("model", {}).get("scattering_prob", 0.0)
+        self._current_scattering_prob = None
+        self._stochastic_radiation_duration = self._config.get("model", {}).get("stochastic_radiation_duration", 0)
+
+    def set_training_progress(self, epoch: int, total_epochs: int) -> None:
+        duration = (
+            self._stochastic_radiation_duration
+        )
+        if self._scattering_prob_base == 0:
+            self._current_scattering_prob = 0.0
+            return
+        if epoch >= total_epochs * duration:
+            self._current_scattering_prob = 0.0
+        else:
+            self._current_scattering_prob = self._scattering_prob_base * max(
+                0.0, 1.0 - epoch / (total_epochs * duration)
+            )
 
     @property
     def gradient_sink(self):
@@ -457,7 +479,7 @@ class DistributedNeurographLayer(nn.Module):
 
     def forward(self, x):
         return _PooledWorkerFunction.apply(
-            x, self._config, self._node_store, self._gradient_sink, self._pool
+            x, self._config, self._node_store, self._gradient_sink, self._pool, self
         )
 
     def shutdown(self):

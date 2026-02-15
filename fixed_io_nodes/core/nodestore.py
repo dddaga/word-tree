@@ -904,6 +904,11 @@ class UnquantizedNodeStore(nn.Module):
             wait=True,
         )
 
+    def sample_random_nodeids(self, count: int):
+        if count > self.total_nodes:
+            raise ValueError("Count cannot be greater than total nodes")
+        return random.sample(range(self.total_nodes), count)
+
     def get_node(self, node_ids: Union[int, str, List[int], List[str]], with_payload:bool=True, with_vectors:bool=True):
         """
         node_ids: list of node ids to get (can be int, str, or list of either)
@@ -1409,6 +1414,11 @@ class PytorchNodeStore(nn.Module):
                     'outgoing_connections': connections[node_id]['outgoing'],
                     'version': 0
                 }
+
+    def sample_random_nodeids(self, count: int):
+        if count > self.total_nodes:
+            raise ValueError("Count cannot be greater than total nodes")
+        return random.sample(range(self.total_nodes), count)
 
     def get_node(self, node_ids: Union[int, str, List[int], List[str], Set[int]], with_payload:bool=True, with_vectors:bool=True):
         """Get node(s) by ID."""
