@@ -38,6 +38,8 @@ DEFAULT_CONFIG = {
         "temporal_decay": 0.9,
         "activation_threshold": 0.05,
         "dtype": "float32",
+        "scattering_prob": 0.0,
+        "stochastic_radiation_duration": 0,
     },
     "system": {
         "device": "cuda",
@@ -79,6 +81,8 @@ PARAM_MAP = {
     "temporal_decay": "model.temporal_decay",
     "radiation_similarity_threshold": "model.radiation_similarity_threshold",
     "dtype": "model.dtype",
+    "scattering_prob": "model.scattering_prob",
+    "stochastic_radiation_duration": "model.stochastic_radiation_duration",
     "lr": "training.lr",
     "accumulation_steps": "training.accumulation_steps",
     "worker_count": "training.worker_count",
@@ -174,5 +178,6 @@ def get_node_store_from_config(cfg):
         qdrant_params=qdrant_params,
         verbose=cfg["system"].get("verbose", False),
         dtype=cfg["model"].get("dtype", "float32"),
+        scattering_prob=cfg.get("model", {}).get("scattering_prob", 0.0),
     )
     return node_store
