@@ -1,6 +1,7 @@
 """
-Complex activation s = e^(i*phi + gamma*sin(m)) = r*e^(i*phi) with r = e^(gamma*sin(m)).
-Real = r*cos(phi), imag = r*sin(phi); magnitude r (since cos^2+sin^2=1). All sums over vector_dim (last dim).
+Complex activation per cell: a_d = r_d*e^(i*phi_d) with r_d = e^(gamma*sin(m_d)).
+Net activation (vector algebra): Net = sum_d a_d = real + i*imag.
+Net activation strength for node = |Net| = sqrt(real^2 + imag^2). All sums over vector_dim (last dim).
 """
 
 import torch
@@ -8,8 +9,8 @@ import torch
 
 def activation_real_imag(phases: torch.Tensor, mags: torch.Tensor, gamma: float = 1.0):
     """
-    real = sum_d cos(phase_d)*exp(gamma*sin(mag_d)), imag = sum_d sin(phase_d)*exp(gamma*sin(mag_d)).
-    Interpreted as r*cos(phi), r*sin(phi) with r = e^(gamma*sin(m)); magnitude = sqrt(real^2+imag^2) = r.
+    Per-cell a_d = r_d*e^(i*phase_d), r_d = exp(gamma*sin(mag_d)). Net = sum_d a_d.
+    Returns (real, imag) so Net = real + i*imag; net activation strength = sqrt(real^2+imag^2).
     """
     mag_exponent = gamma * torch.sin(mags)
     mag_exponent = torch.clamp(mag_exponent, min=-10.0, max=10.0)
