@@ -188,7 +188,8 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
             if has_radiation:
                 received_imag[source_id] = received_imag[source_id] - imag_s
 
-        # Write back: theta = atan2(imag, real), magnitude r = sqrt(real^2+imag^2); set phase_activation, mag_activation, activation_strength
+        # Write back: Net = real + i*imag; store (phase, mag) so vector sum gives same Net (r*e^(i*phi) per cell).
+        # Net activation strength = |Net| = sqrt(real^2+imag^2). Distribute so sum_d (r_d*e^(i*phi_d)) = magnitude*e^(i*theta).
         all_nodes = set(self.active_nodes.values()) | new_nodes
         for node in all_nodes:
             nid = node.id
@@ -196,14 +197,14 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
             imag = received_imag[nid]
             theta = theta_from_real_imag(real, imag)
             magnitude = activation_strength_from_real_imag(real, imag)
-            # phase_activation: broadcast theta to vector_dim
             node.phase_activation = theta.unsqueeze(0).expand(self.vector_dim).to(device=device, dtype=dtype)
-            # mag so that exp(gamma*sin(mag)) = magnitude => sin(mag) = ln(magnitude)/gamma, clamp to [-1,1]
-            log_m = torch.log(magnitude + 1e-12)
+            # Per-cell r_d = magnitude/vector_dim so that sum_d r_d*e^(i*theta) = magnitude*e^(i*theta) = real + i*imag
+            magnitude_per_cell = magnitude / self.vector_dim
+            log_m = torch.log(magnitude_per_cell + 1e-12)
             sin_mag = (log_m / self.gamma).clamp(-1.0, 1.0)
             mag_val = torch.arcsin(sin_mag)
             node.mag_activation = mag_val.unsqueeze(0).expand(self.vector_dim).to(device=device, dtype=dtype)
-            # activation_strength = magnitude r (same as sqrt(real^2+imag^2))
+            # Net activation strength = |Net| from vector (recomputed so logger and GNN agree)
             node.activation_strength = activation_strength_from_real_imag(real, imag).to(
                 device=device, dtype=dtype
             )
