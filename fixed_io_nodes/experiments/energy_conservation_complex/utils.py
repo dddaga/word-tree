@@ -1,6 +1,6 @@
 """
-Complex activation: e^(i*theta)*e^(gamma*sin m) => real = cos(theta)*e^(gamma*sin m), imag = sin(theta)*e^(gamma*sin m).
-All sums over vector_dim (last dim).
+Complex activation s = e^(i*phi + gamma*sin(m)) = r*e^(i*phi) with r = e^(gamma*sin(m)).
+Real = r*cos(phi), imag = r*sin(phi); magnitude r (since cos^2+sin^2=1). All sums over vector_dim (last dim).
 """
 
 import torch
@@ -8,7 +8,8 @@ import torch
 
 def activation_real_imag(phases: torch.Tensor, mags: torch.Tensor, gamma: float = 1.0):
     """
-    real = sum_d cos(phase_d) * exp(gamma*sin(mag_d)), imag = sum_d sin(phase_d) * exp(gamma*sin(mag_d)).
+    real = sum_d cos(phase_d)*exp(gamma*sin(mag_d)), imag = sum_d sin(phase_d)*exp(gamma*sin(mag_d)).
+    Interpreted as r*cos(phi), r*sin(phi) with r = e^(gamma*sin(m)); magnitude = sqrt(real^2+imag^2) = r.
     """
     mag_exponent = gamma * torch.sin(mags)
     mag_exponent = torch.clamp(mag_exponent, min=-10.0, max=10.0)
@@ -25,22 +26,16 @@ def activation_strength_from_real_imag(
     gamma: float = 1.0,
 ):
     """
-    Activation strength = magnitude * exp(gamma * sin m), with magnitude = sqrt(real^2 + imag^2).
-    If mags is None, returns only magnitude (no exp factor).
-    mags: shape (..., vector_dim); exp factor is exp(gamma * sum_d sin(mags_d)), clamped for stability.
+    Magnitude r = sqrt(real^2 + imag^2) (s = r*e^(i*phi), r = e^(gamma*sin(m))).
+    Activation strength for beam = magnitude r.
     """
-    magnitude = torch.sqrt(real * real + imag * imag + 1e-12)
-    if mags is None:
-        return magnitude
-    mag_exponent = gamma * torch.sin(mags).sum(dim=-1)
-    mag_exponent = torch.clamp(mag_exponent, min=-10.0, max=10.0)
-    return magnitude * torch.exp(mag_exponent)
+    return torch.sqrt(real * real + imag * imag + 1e-12)
 
 
 def activation_strength(phases: torch.Tensor, mags: torch.Tensor, gamma: float = 1.0):
-    """Activation strength = magnitude * exp(gamma * sin m) for beam search."""
+    """Activation strength = magnitude r for beam search."""
     real, imag = activation_real_imag(phases, mags, gamma)
-    return activation_strength_from_real_imag(real, imag, mags, gamma)
+    return activation_strength_from_real_imag(real, imag)
 
 
 def theta_from_real_imag(real: torch.Tensor, imag: torch.Tensor):
