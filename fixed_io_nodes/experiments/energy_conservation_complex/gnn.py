@@ -1,8 +1,7 @@
 """
-GNN with full complex activation e^(i*theta)*e^(gamma*sin m). Real part = conduction, imag = radiation.
-Energy conservation: source splits its real (imag) among targets in proportion to conduction (radiation) alignment.
-Activation strength = magnitude(real, imag); beam: only top nodes by strength propagate.
-Decay = 0%. Forward only.
+GNN with complex activation s = e^(i*phi + gamma*sin m) = r*e^(i*phi), r = e^(gamma*sin m). Real = conduction, imag = radiation.
+Take-and-pass: sender loses what it sends (real/imag zeroed for the part sent), so activation moves wave-like.
+Beam: only top nodes by magnitude r propagate. Decay = 0%. Forward only.
 """
 
 import math
@@ -23,9 +22,8 @@ from .utils import (
 
 class EnergyConservationComplexGNN(UnquantizedGNN):
     """
-    Complex activation (real = conduction, imag = radiation). Proportion-based split conserves energy.
-    Beam: only top beam_top_frac nodes by activation strength (magnitude) propagate.
-    temporal_decay=1.0 (0% decay). No backward pass.
+    Complex activation s = r*e^(i*phi). Take-and-pass: senders lose real/imag they send (wave-like).
+    Beam: top beam_top_frac by magnitude r. temporal_decay=1.0 (0% decay). Forward only.
     """
 
     def __init__(self, beam_top_frac: float = 0.1, **kwargs):
@@ -66,9 +64,7 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
                     node.mag_activation.unsqueeze(0),
                     self.gamma,
                 )
-                node.activation_strength = activation_strength_from_real_imag(
-                    real, imag, node.mag_activation.unsqueeze(0), self.gamma
-                ).squeeze(0)
+                node.activation_strength = activation_strength_from_real_imag(real, imag).squeeze(0)
                 if tracer is not None:
                     tracer.record_node_update(
                         node_id=node.id,
@@ -184,7 +180,15 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
                 received_real[t_id] = received_real[t_id] + real_s * p_con
                 received_imag[t_id] = received_imag[t_id] + imag_s * p_rad
 
-        # Write back: theta = atan2(imag, real), magnitude = sqrt(real^2+imag^2); set phase_activation, mag_activation, activation_strength
+            # Take-and-pass: sender loses what it sent (wave-like; node can become inactive after sending)
+            has_direct = any(ctype == "direct" for _, ctype in target_list)
+            has_radiation = any(ctype == "radiation" for _, ctype in target_list)
+            if has_direct:
+                received_real[source_id] = received_real[source_id] - real_s
+            if has_radiation:
+                received_imag[source_id] = received_imag[source_id] - imag_s
+
+        # Write back: theta = atan2(imag, real), magnitude r = sqrt(real^2+imag^2); set phase_activation, mag_activation, activation_strength
         all_nodes = set(self.active_nodes.values()) | new_nodes
         for node in all_nodes:
             nid = node.id
@@ -199,10 +203,10 @@ class EnergyConservationComplexGNN(UnquantizedGNN):
             sin_mag = (log_m / self.gamma).clamp(-1.0, 1.0)
             mag_val = torch.arcsin(sin_mag)
             node.mag_activation = mag_val.unsqueeze(0).expand(self.vector_dim).to(device=device, dtype=dtype)
-            # activation_strength = magnitude * exp(gamma * sin m)
-            node.activation_strength = activation_strength_from_real_imag(
-                real, imag, node.mag_activation, self.gamma
-            ).to(device=device, dtype=dtype)
+            # activation_strength = magnitude r (same as sqrt(real^2+imag^2))
+            node.activation_strength = activation_strength_from_real_imag(real, imag).to(
+                device=device, dtype=dtype
+            )
 
             if tracer is not None:
                 conn_ids = []
