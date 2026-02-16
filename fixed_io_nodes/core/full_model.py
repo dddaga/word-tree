@@ -68,6 +68,7 @@ def initialize_model(
     device:str='cuda' if torch.cuda.is_available() else 'cpu',
     verbose:bool=False,
     dtype:Union[str, torch.dtype]="float32",
+    scattering_prob:float=0.0,
 ):
     dtype = get_dtype(dtype)
     gnn = GNN(
@@ -87,6 +88,7 @@ def initialize_model(
         verbose=verbose,
         temporal_decay=temporal_decay,
         dtype=dtype,
+        scattering_prob=scattering_prob,
     )
 
     # quantizer = Quantizer(
@@ -125,6 +127,7 @@ def initialize_model_and_nodestore(
     verbose:bool=False,
     qdrant_params:dict=None,
     dtype:Union[str, torch.dtype]="float32",
+    scattering_prob:float=0.0,
 ):
     """
     returns model, node_store
@@ -176,6 +179,7 @@ def initialize_model_and_nodestore(
         device=device,
         verbose=verbose,
         dtype=dtype,
+        scattering_prob=scattering_prob,
     )
 
     return model, node_store
