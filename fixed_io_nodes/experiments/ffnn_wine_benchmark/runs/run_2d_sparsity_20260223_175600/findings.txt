@@ -1,0 +1,29 @@
+============================================================
+  2D FFNN Conduction Sparsity Benchmark — Key Findings
+============================================================
+
+  Global best accuracy : h= 300, sparsity= 10%  → 0.6458
+
+  Dense (0% sparsity) accuracy range : 0.5958 – 0.6458
+
+  Resilience: highest sparsity still ≥95% of dense accuracy
+       h   dense acc   95% threshold   max safe sparsity
+  ------------------------------------------------------
+     100      0.6208          0.5898                 90%
+     200      0.6083          0.5779                 90%
+     300      0.6292          0.5977                 80%
+     400      0.6042          0.5740                 90%
+     500      0.5958          0.5660                 90%
+     600      0.6167          0.5858                 90%
+     700      0.6458          0.6135                 70%
+     800      0.6042          0.5740                 90%
+     900      0.6292          0.5977                 80%
+    1000      0.6292          0.5977                 70%
+
+  Avg active params at sparsity=  0% : 25,322
+  Avg accuracy      at sparsity=  0% : 0.6183
+
+  Avg active params at sparsity= 50% : 13,772
+  Avg accuracy      at sparsity= 50% : 0.6175
+
+============================================================

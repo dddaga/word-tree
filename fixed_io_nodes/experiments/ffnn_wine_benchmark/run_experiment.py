@@ -1,10 +1,11 @@
 """
 FFNN Hidden-Width Benchmark — UCI Wine Quality (Red)
 
+Multi-class classification: quality labels 0–10 (11 classes). Red wine CSV has 3–8.
 Trains a single-hidden-layer feedforward network for hidden_size in
-[100, 200, ..., 1000] and records space complexity, time complexity,
-training time, peak memory, accuracy, F1/precision/recall, best
-validation loss, convergence epoch, and inference latency.
+[100, 200, ..., 1000]; records space/time complexity, training time,
+inference latency, peak memory, accuracy, F1/precision/recall, best
+validation loss, convergence epoch.
 
 All outputs (plots + CSV + findings summary) are written to a
 timestamped sub-folder under:
@@ -57,6 +58,7 @@ RED_WINE_URL = (
     "https://archive.ics.uci.edu/ml/machine-learning-databases/"
     "wine-quality/winequality-red.csv"
 )
+NUM_CLASSES = 11   # wine quality 0–10
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -66,7 +68,7 @@ RED_WINE_URL = (
 def load_data():
     df = pd.read_csv(RED_WINE_URL, sep=";")
     X  = df.drop("quality", axis=1).values.astype(np.float32)
-    y  = (df["quality"] >= 6).astype(int).values          # binary: good / bad
+    y  = df["quality"].values.astype(np.int64)   # 0–10 scale (red wine typically 3–8)
 
     X_tr, X_tmp, y_tr, y_tmp = train_test_split(
         X, y, test_size=0.30, random_state=SEED, stratify=y
@@ -81,10 +83,8 @@ def load_data():
     X_te  = scaler.transform(X_te)
 
     print(f"Train: {X_tr.shape}  Val: {X_val.shape}  Test: {X_te.shape}")
-    print(
-        f"Class balance (train):  bad={np.mean(y_tr==0):.2%}  "
-        f"good={np.mean(y_tr==1):.2%}"
-    )
+    uniq, cnts = np.unique(y_tr, return_counts=True)
+    print(f"Classes (quality 0–10): {dict(zip(uniq.tolist(), cnts.tolist()))}")
     return X_tr, X_val, X_te, y_tr, y_val, y_te
 
 
@@ -141,7 +141,7 @@ def train_and_eval(hidden_size: int, X_tr, y_tr, X_val, y_val, X_te, y_te) -> di
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
-    model     = FeedForwardNet(X_tr.shape[1], hidden_size, 2).to(DEVICE)
+    model     = FeedForwardNet(X_tr.shape[1], hidden_size, NUM_CLASSES).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = nn.CrossEntropyLoss()
     train_loader, val_loader, test_loader = _make_loaders(
@@ -198,7 +198,7 @@ def train_and_eval(hidden_size: int, X_tr, y_tr, X_val, y_val, X_te, y_te) -> di
     return {
         "hidden_size":       hidden_size,
         "n_params":          count_params(model),
-        "macs":              estimate_macs(X_tr.shape[1], hidden_size, 2),
+        "macs":              estimate_macs(X_tr.shape[1], hidden_size, NUM_CLASSES),
         "train_time_s":      round(t_end - t_start, 3),
         "peak_mem_kb":       round(peak_mem / 1024, 2),
         "accuracy":          round(accuracy_score(all_true, all_preds), 6),
@@ -225,7 +225,7 @@ def plot_dashboard(df_res: pd.DataFrame, out_dir: Path):
     h_vals = df_res.index.tolist()
     fig, axes = plt.subplots(3, 3, figsize=(17, 13))
     fig.suptitle(
-        "FFNN Hidden-Width Benchmark  |  UCI Wine Quality (Red)  |  Binary Classification",
+        "FFNN Hidden-Width Benchmark  |  UCI Wine Quality (Red)  |  Multi-class (Quality 0–10)",
         fontsize=13, fontweight="bold", y=1.01,
     )
 
@@ -426,8 +426,8 @@ def main():
     X_tr, X_val, X_te, y_tr, y_val, y_te = load_data()
 
     print(f"\nBenchmarking hidden_size ∈ {HIDDEN_SIZES}  |  epochs={EPOCHS}\n")
-    print(f"{'hidden':>8} {'params':>10} {'MACs':>10} {'time(s)':>9} {'acc':>8} {'f1':>8}")
-    print("-" * 60)
+    print(f"{'hidden':>8} {'params':>10} {'MACs':>10} {'train(s)':>9} {'infer(µs)':>10} {'acc':>8} {'f1':>8}")
+    print("-" * 68)
 
     results = []
     for h in HIDDEN_SIZES:
@@ -438,6 +438,7 @@ def main():
             f"{r['n_params']:>10,}"
             f"{r['macs']:>10,}"
             f"{r['train_time_s']:>9.2f}"
+            f"{r['inference_time_us']:>10.2f}"
             f"{r['accuracy']:>8.4f}"
             f"{r['f1']:>8.4f}"
         )

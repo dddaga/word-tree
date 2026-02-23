@@ -1,0 +1,16 @@
+====================================================
+  FFNN Wine Benchmark — Key Findings
+====================================================
+  Best accuracy    : h= 700  (0.6375)
+  Best F1          : h= 700  (0.6285)
+  Fastest training : h= 100  (1.04s)
+  Smallest model   : h= 100  (2,311 params)
+  Most efficient   : h= 100  (score=0.1846)
+
+  Scaling factors  (h=100  →  h=1000)
+    Parameters  : x10.0
+    MACs        : x10.0
+    Train time  : x1.5
+    Infer. time : x2.0
+    Delta acc   : +0.0042
+====================================================

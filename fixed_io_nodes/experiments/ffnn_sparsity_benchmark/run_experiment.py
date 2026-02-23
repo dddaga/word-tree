@@ -1,8 +1,9 @@
 """
 FFNN Conduction Sparsity Benchmark — UCI Wine Quality (Red)
 
+Multi-class classification: quality labels 0–10 (11 classes). Red wine CSV has 3–8.
 Same single-hidden-layer architecture as ffnn_wine_benchmark, but each weight
-matrix is filtered by a fixed binary "conduction mask": for every non-input
+matrix is filtered by a fixed "conduction mask": for every non-input
 node, exactly floor((1 − sparsity) × fan_in) incoming connections are kept
 (chosen once at init, never changed). This is not dropout — the graph topology
 is static throughout training.
@@ -70,6 +71,7 @@ RED_WINE_URL = (
     "https://archive.ics.uci.edu/ml/machine-learning-databases/"
     "wine-quality/winequality-red.csv"
 )
+NUM_CLASSES = 11   # wine quality 0–10
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -79,7 +81,7 @@ RED_WINE_URL = (
 def load_data():
     df = pd.read_csv(RED_WINE_URL, sep=";")
     X  = df.drop("quality", axis=1).values.astype(np.float32)
-    y  = (df["quality"] >= 6).astype(int).values
+    y  = df["quality"].values.astype(np.int64)   # 0–10 scale (red wine typically 3–8)
 
     X_tr, X_tmp, y_tr, y_tmp = train_test_split(
         X, y, test_size=0.30, random_state=SEED, stratify=y
@@ -94,10 +96,8 @@ def load_data():
     X_te   = scaler.transform(X_te)
 
     print(f"Train: {X_tr.shape}  Val: {X_val.shape}  Test: {X_te.shape}")
-    print(
-        f"Class balance (train):  bad={np.mean(y_tr==0):.2%}  "
-        f"good={np.mean(y_tr==1):.2%}"
-    )
+    uniq, cnts = np.unique(y_tr, return_counts=True)
+    print(f"Classes (quality 0–10): {dict(zip(uniq.tolist(), cnts.tolist()))}")
     return X_tr, X_val, X_te, y_tr, y_val, y_te
 
 
@@ -203,7 +203,7 @@ def train_and_eval(
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
-    model     = SparseFFNN(X_tr.shape[1], hidden_size, 2, sparsity).to(DEVICE)
+    model     = SparseFFNN(X_tr.shape[1], hidden_size, NUM_CLASSES, sparsity).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = nn.CrossEntropyLoss()
     train_loader, val_loader, test_loader = _make_loaders(
@@ -526,9 +526,9 @@ def main():
     )
     print(
         f"{'hidden':>8} {'sparsity':>9} {'active_p':>10} "
-        f"{'time(s)':>9} {'acc':>8} {'f1':>8}"
+        f"{'train(s)':>9} {'infer(µs)':>10} {'acc':>8} {'f1':>8}"
     )
-    print("-" * 60)
+    print("-" * 68)
 
     results      = []
     sample_curves = []   # loss curves for hidden_size == SAMPLE_HIDDEN
@@ -549,6 +549,7 @@ def main():
                 f"{int(r['sparsity']*100):>8}%"
                 f"{r['active_params']:>10,}"
                 f"{r['train_time_s']:>9.2f}"
+                f"{r['inference_time_us']:>10.2f}"
                 f"{r['accuracy']:>8.4f}"
                 f"{r['f1']:>8.4f}"
             )
