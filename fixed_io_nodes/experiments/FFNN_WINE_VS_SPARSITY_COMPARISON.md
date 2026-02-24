@@ -16,7 +16,7 @@ Comparison of **ffnn_wine_benchmark** (hidden-width sweep, dense) and **ffnn_spa
 | **Data** | UCI Wine Quality (Red), quality 0–10 (11 classes), same split/seed | Same |
 | **Training** | 100 epochs, Adam 1e-3, batch 64 | Same |
 | **Timing** | train_time_s, inference_time_us per run | Same |
-
+claude
 Sparsity benchmark at **sparsity=0** is the same as wine benchmark (dense baseline).
 
 ---
