@@ -1,0 +1,76 @@
+# V3 Dynamic Phasor GNN Experiment Configuration
+# Addresses Issues 1, 4, 5, 7, 9 from GNN Analysis Report
+
+dataset:
+  name: "wine_quality_red"
+  url: "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
+  test_size: 0.30
+  val_fraction: 0.50  # of test split
+  seed: 42
+
+architecture:
+  total_nodes: 200
+  input_nodes: 22
+  output_nodes: 6        # Wine quality classes 3-8
+  intermediate_nodes: 172
+  vector_dim: 5
+  cardinality: 4
+
+resolution:
+  phase_bins: 512
+  mag_bins: 1024
+
+complex_activation:
+  enabled: true
+  gamma: 1.0
+
+normalization:
+  enabled: true
+  magnitude_clamping:
+    enabled: true
+    range: [0.1, 0.9]
+  signal_rmsnorm:
+    enabled: true
+
+radiation_diversity:
+  enabled: true
+  alpha: 0.01
+
+load_balance:
+  enabled: true
+  beta: 0.001
+  capacity_limit: 5
+  temperature_init: 1.0
+  temperature_min: 0.1
+  temperature_anneal_rate: 0.995
+
+uncertainty:
+  enabled: true
+  dropout_rate: 0.1
+  num_mc_samples: 10
+
+training:
+  epochs: 100
+  batch_size: 64
+  learning_rate: 0.01
+  phase_learning_rate: 0.015
+  magnitude_learning_rate: 0.012
+
+forward_pass:
+  max_timesteps: 30
+  decay_factor: 0.6
+  min_activation_strength: 1.0
+  min_output_activation_timesteps: 2
+  top_k_neighbors: 4
+  radiation_batch_size: 128
+  use_radiation: true
+
+graph_structure:
+  cardinality: 4
+  top_k_neighbors: 4
+
+metrics:
+  log_dir: "logs/v3_experiment/"
+  plot_loss_curve: true
+  plot_metrics: true
+  save_frequency: 10

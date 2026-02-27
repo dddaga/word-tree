@@ -121,7 +121,8 @@ graph LR
 
 | Dimension | Wine benchmark | Sparsity benchmark |
 |-----------|----------------|--------------------|
-| **Space (params)** | Grows with h; no sparsity | Same n_params; **active_params** decreases with sparsity |
+| **Spac
+e (params)** | Grows with h; no sparsity | Same n_params; **active_params** decreases with sparsity |
 | **Time (MACs)** | Grows with h | **active_macs** decreases with sparsity |
 | **Train time** | ~1.1–1.5 s; mild increase with h | Similar per (h, s); slightly lower at high sparsity (fewer active ops) |
 | **Accuracy** | Best 0.7667 (h=700) | Best **0.7708** (h=400, 10% sparsity); dense range matches wine |

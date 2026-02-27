@@ -1,0 +1,297 @@
+{
+  "experiment_name": "v3_quick_test",
+  "total_time_s": 342.90091013908386,
+  "loss_curves": {
+    "primary": [
+      1.787740938962088,
+      1.8212156112494995,
+      1.791670063204947,
+      1.778005792555632,
+      1.7219150126256864,
+      1.7345616585444077,
+      1.736887563187338,
+      1.7186676605342655,
+      1.6965952743412345,
+      1.7003944423340727
+    ],
+    "diversity": [
+      0.006618462037295103,
+      0.00661856634542346,
+      0.006618776358664036,
+      0.006618521176278591,
+      0.0066184066236019135,
+      0.0066186306066811085,
+      0.0066187940537929535,
+      0.006618443410843611,
+      0.00661893468350172,
+      0.006618544925004244
+    ],
+    "balance": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total": [
+      1.794359400999383,
+      1.827834177594923,
+      1.798288839563611,
+      1.7846243137319107,
+      1.7285334192492883,
+      1.7411802891510888,
+      1.743506357241131,
+      1.725286103945109,
+      1.7032142090247362,
+      1.707012987259077
+    ]
+  },
+  "performance": {
+    "train_accuracy": [
+      0.015625,
+      0.171875,
+      0.296875,
+      0.1875,
+      0.28125,
+      0.40625,
+      0.375,
+      0.4375,
+      0.453125,
+      0.421875
+    ],
+    "val_accuracy": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.4,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.4
+    ],
+    "test": {
+      "accuracy": 0.4,
+      "f1": 0.22857142857142856,
+      "precision": 0.16000000000000003,
+      "recall": 0.4,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          8,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          102,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          96,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          30,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ]
+      ],
+      "num_samples": 240
+    }
+  },
+  "issue_metrics": [
+    {
+      "entropy": 1.7916460037231445,
+      "normalized_entropy": 0.3381537721834204,
+      "gini_coefficient": 0.9702394008636475,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 1.0,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.791590929031372,
+      "normalized_entropy": 0.3381433774320376,
+      "gini_coefficient": 0.970291018486023,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.995,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7914797067642212,
+      "normalized_entropy": 0.33812238543411516,
+      "gini_coefficient": 0.970390796661377,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.990025,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7916150093078613,
+      "normalized_entropy": 0.33814792232333485,
+      "gini_coefficient": 0.9702785015106201,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.985074875,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7916655540466309,
+      "normalized_entropy": 0.33815746209516667,
+      "gini_coefficient": 0.9702291488647461,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.9801495006250001,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.791556715965271,
+      "normalized_entropy": 0.3381369200864816,
+      "gini_coefficient": 0.9703333377838135,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.9752487531218751,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.791469931602478,
+      "normalized_entropy": 0.338120540478242,
+      "gini_coefficient": 0.9703866243362427,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.9703725093562657,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7916557788848877,
+      "normalized_entropy": 0.33815561713929354,
+      "gini_coefficient": 0.9702011346817017,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.9655206468094844,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7913955450057983,
+      "normalized_entropy": 0.3381065008140367,
+      "gini_coefficient": 0.9704424142837524,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.960693043575437,
+      "capacity_violations": 0
+    },
+    {
+      "entropy": 1.7916909456253052,
+      "normalized_entropy": 0.33816225448054443,
+      "gini_coefficient": 0.9701956510543823,
+      "top10_hit_fraction": 1.0,
+      "unique_targets": 0,
+      "hit_count_variance": 0.0,
+      "hit_count_max": 0.0,
+      "hit_count_mean": 0.0,
+      "temperature": 0.9558895783575597,
+      "capacity_violations": 0
+    }
+  ],
+  "complexity": {
+    "space_complexity": {
+      "total_parameters": 49151,
+      "memory_bytes": 204004,
+      "memory_mb": 0.19455337524414062,
+      "breakdown": {
+        "node_store": {
+          "parameters": 2200,
+          "memory_bytes": 16200
+        },
+        "input_adapter": {
+          "parameters": 46940,
+          "memory_bytes": 187760
+        },
+        "uncertainty": {
+          "parameters": 11,
+          "memory_bytes": 44
+        }
+      }
+    },
+    "time_complexity": {
+      "train_time_per_epoch_s": [
+        11.806236958000001,
+        12.372020542000001,
+        12.188360166000002,
+        12.431484500000003,
+        12.272587791,
+        12.307562790999995,
+        12.135709500000004,
+        12.24832087499999,
+        12.316226375000014,
+        12.212789208000004
+      ],
+      "train_time_per_sample_ms": [],
+      "inference_latency_us": 200232.22900002223,
+      "inference_latency_std_us": 59234.58957568968
+    }
+  }
+}
