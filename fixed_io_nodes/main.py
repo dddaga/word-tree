@@ -302,6 +302,18 @@ def load_iris_dataset() -> TensorDataset:
     
     return dataset
 
+
+def load_mnist_dataset() -> TensorDataset:
+    """Load and preprocess MNIST, same contract as load_iris_dataset: TensorDataset(X, y), X shape (N, 1, 784)."""
+    T = transforms
+    mnist = torchvision.datasets.MNIST(root="./data", train=True, download=True, transform=transforms.ToTensor())
+    X = T.Resize((14, 14))(mnist.data).reshape(len(mnist.data), -1).float()/256.0
+    y_tensor = mnist.targets
+    dataset = TensorDataset(X, y_tensor)
+    print(f"Loaded MNIST dataset: {len(dataset)} samples, 784 features, 10 classes")
+    return dataset
+
+
 def data_loader_process_fn(
     data_queue:mp.Queue,
     config:dict,
