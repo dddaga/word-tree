@@ -41,12 +41,12 @@ class MagLookup(autograd.Function):
         value_grad = grad * ctx.lookup_table.lookup_magnitude_grad(indices.int())
         return value_grad, None
 
-def activation_strength_forward(phases, mags, lookup_table:LookupTable):
+# def activation_strength_forward(phases, mags, lookup_table:LookupTable):
 
-    phase_values = PhaseLookup.apply(phases, lookup_table)
-    mag_values = MagLookup.apply(mags, lookup_table)
-    signal = (phase_values*mag_values).sum(dim=-1)
-    return signal
+#     phase_values = PhaseLookup.apply(phases, lookup_table)
+#     mag_values = MagLookup.apply(mags, lookup_table)
+#     signal = (phase_values*mag_values).sum(dim=-1)
+#     return signal
 
 def activation_strength_forward_unquantized(phases, mags, gamma=1.0):
     """
@@ -64,7 +64,7 @@ def activation_strength_forward_unquantized(phases, mags, gamma=1.0):
 
     energy_per_dim = torch.exp(mags)
     real = energy_per_dim * torch.cos(phases)
-    return real.sum()
+    return real.sum(dim=-1)
     
 #To go back to quantized version, just change the following to activation_strength_forward    
 signal_forward = activation_strength_forward_unquantized

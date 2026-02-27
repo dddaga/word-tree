@@ -1,11 +1,11 @@
 from torch import nn
 import torch
 from .custom_functions import activation_strength_forward, signal_forward
-
 from typing import List, Union, Optional
-
 from .nodestore import NodeStore
 from .node import Node
+
+_EPSILON = 1e-8
 
 class MyModuleDict(nn.ModuleDict):
     def __getitem__(self, key: Union[str, int]) -> nn.Module:
@@ -113,7 +113,7 @@ class UnquantizedGNN(nn.Module):
             raise ValueError("Scattering probability must be between 0.0 and 1.0")
 
         topk_indices = {node.id: [] for node in nodes}
-        num_random_neighbours = max(1, int(k * scattering_prob)) if scattering_prob > 0 else 0
+        num_random_neighbours = int(k * scattering_prob)
         num_searched_neighbours = k - num_random_neighbours
 
         if num_searched_neighbours > 0:
@@ -132,7 +132,6 @@ class UnquantizedGNN(nn.Module):
             for node in nodes:
                 random_neighbours = self.node_store.sample_random_nodeids(num_random_neighbours)
                 topk_indices[node.id].extend(random_neighbours)
-
         return topk_indices
 
     def one_step_forward(self, input_values:torch.Tensor=None, tracer=None):
@@ -169,9 +168,7 @@ class UnquantizedGNN(nn.Module):
             input_mags = torch.zeros((self.input_node_count, self.vector_dim), device=input_values.device) 
             
             # Calculate activation strengths for all input nodes
-            activation_strengths = torch.zeros(self.input_node_count, device=input_values.device)
-            for i in range(self.input_node_count):
-                activation_strengths[i] = activation_strength_forward(input_phases[i], input_mags[i], self.gamma)
+            activation_strengths = activation_strength_forward(input_phases, input_mags, self.gamma)
 
             #inject input values into input nodes    
             for n_id, node in self.input_nodes.items():
@@ -247,8 +244,6 @@ class UnquantizedGNN(nn.Module):
                 incoming_connections[target].append(n_id)
                 incoming_connection_types[target].append('radiation')
         
-        if tracer is not None:
-            tracer.record_direct_connections(direct_connections_dict)
 
         #it is necessary to store them separately because after up call node.update_activations, they get changed
         phase_activations = {node.id: node.phase_activation.clone() for node in self.active_nodes.values()}
@@ -329,7 +324,6 @@ class UnquantizedGNN(nn.Module):
         
         if self.verbose:
             pass
-            # print(f"GNN: inactive_output_nodes: {inactive_output_nodes}")
         
         output_signals = torch.stack([v for k, v in sorted(output_signals.items())])
         output_signals = output_signals / self.vector_dim ** 0.5 #TODO: check if needed

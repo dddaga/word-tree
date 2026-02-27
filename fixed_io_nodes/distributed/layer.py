@@ -437,6 +437,8 @@ class DistributedNeurographLayer(nn.Module):
             eps=cfg["training"].get("eps", 1e-8),
             verbose=cfg["system"]["logging"].get("verbose", False),
             device=device,
+            save_path=cfg.get("system", {}).get("weights_save_path"),
+            save_interval=cfg.get("system", {}).get("weights_save_interval"),
         )
         try:
             mp.set_start_method("spawn", force=True)
@@ -451,23 +453,19 @@ class DistributedNeurographLayer(nn.Module):
         self._pool = WorkerPool(worker_config)
         self._scattering_prob_base = self._config.get("model", {}).get("scattering_prob", 0.0)
         self._current_scattering_prob = None
-        self._stochastic_radiation_duration = self._config.get("model", {}).get("stochastic_radiation_duration", 0)
+        self._stochastic_radiation_duration = self._config.get("model", {}).get("stochastic_radiation_duration", 0.5)
 
     def set_training_progress(self, epoch: int, total_epochs: int) -> None:
-        duration = (
-            self._stochastic_radiation_duration 
-        )
+        duration = self._stochastic_radiation_duration
         if self._scattering_prob_base == 0:
             self._current_scattering_prob = 0.0
             return
-        if epoch >= total_epochs * duration:
+        if epoch >= total_epochs / 2:
             self._current_scattering_prob = 0.0
         else:
             self._current_scattering_prob = self._scattering_prob_base * max(
-                0.0, 1.0 - epoch / (total_epochs * duration)
+                0.0, 1.0 -  epoch / (total_epochs * duration)
             )
-            if duration <= 0.0:
-                self._current_scattering_prob = 0.0
 
     @property
     def gradient_sink(self):

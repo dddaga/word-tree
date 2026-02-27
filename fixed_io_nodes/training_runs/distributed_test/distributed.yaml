@@ -23,14 +23,15 @@ model:
   temporal_decay: 0.9
   activation_threshold: 0.1
   dtype: "float32"
-  phase_damping: 0.0
-  accumulate_dyn_loss: true
+  phase_damping: 1.0
+  accumulate_dyn_loss: false
   dyn_loss_weight: 0.0
   scattering_prob: 0.8
+  stochastic_radiation_duration: 0.4
 
 # --- Training Hyperparameters ---
 training: 
-  lr: 0.0004
+  lr: 0.001
   accumulation_steps: 4
   epochs: 16
   validation_fraction: 0.2

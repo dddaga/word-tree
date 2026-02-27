@@ -4,7 +4,7 @@ import time
 import multiprocessing as mp
 from multiprocessing import shared_memory
 from abc import ABC, abstractmethod
-
+import math
 from typing import List, Dict, Union, Set
 
 import torch
@@ -1336,7 +1336,7 @@ class PytorchNodeStore(nn.Module):
         """Initialize magnitudes as continuous values in [-π, π]."""
         mags = {}
         for node_id in node_ids:
-            mag_values = np.random.uniform(-np.pi, np.pi, (self.vector_dim)).astype(np.float32)
+            mag_values = np.random.normal(-math.log(self.cardinality+1), 0.5, (self.vector_dim)).astype(np.float32)
             mags[node_id] = mag_values
         return mags
 

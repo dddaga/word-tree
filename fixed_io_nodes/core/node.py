@@ -285,39 +285,36 @@ class UnquantizedNode(nn.Module):
         mag_activations = torch.cat((mag_activations, self.mag_activation.reshape(1, -1)), dim=0)
         activation_strengths = torch.cat((activation_strengths.flatten(), self.activation_strength.reshape(1)), dim=0)
         
-        # Scale activation strengths to prevent softmax saturation
-        vector_dim = phase_activations.shape[-1]
-        scaled_strengths = activation_strengths / (vector_dim ** 0.5)
         
-        # Clamp to prevent softmax overflow/underflow
-        scaled_strengths = torch.clamp(scaled_strengths, min=-20.0, max=20.0)
-        
-        #calculate weights for the input activations
-        weights = F.softmax(scaled_strengths, dim=-1).reshape(-1, 1)
+        # Routing weights: softmax(strength / temperature)
+        weights = F.softmax(activation_strengths, dim=-1).reshape(-1, 1)
 
-        # Weighted sum of incoming activations with node's own weights
-        # Clamp weights to prevent extreme values
-        phase_weight_clamped = torch.clamp(self.phase_weight, min=-3*torch.pi, max=3*torch.pi)
-        mag_weight_clamped = torch.clamp(self.mag_weight, min=-3*torch.pi, max=3*torch.pi)
-        
-        phase_activations = weights * (phase_activations + phase_weight_clamped.reshape(1, -1))
-        mag_activations = weights * torch.sin(mag_activations + mag_weight_clamped.reshape(1, -1))
+        # Complex representation per row: energy = softplus(mag), real = energy*cos(phase), imag = energy*sin(phase)
+        energy_inputs = torch.exp(mag_activations)
+        real_inputs = energy_inputs * torch.cos(phase_activations)
+        imag_inputs = energy_inputs * torch.sin(phase_activations)
 
-        # Sum to get new activations (continuous values)
-        self.phase_activation = phase_activations.sum(dim=0)
-        # Clamp into (-1, 1) so arcsin gradient 1/sqrt(1-x^2) stays finite (avoids inf/nan mag grads)
-        mag_sum = mag_activations.sum(dim=0)
-        mag_sum_safe = torch.clamp(mag_sum, min=-1.0 + 1e-6, max=1.0 - 1e-6)
-        self.mag_activation = torch.arcsin(mag_sum_safe)
+        # Node's own bias (broadcast to each row)
+        energy_w = self.mag_weight
+        real_w = energy_w * torch.cos(self.phase_weight)
+        imag_w = energy_w * torch.sin(self.phase_weight)
+        real_per_row = real_inputs*real_w - imag_w*imag_inputs
+        imag_per_row = real_inputs*imag_w + real_w*imag_inputs
+
+        # Weighted superposition
+        real_sum = (weights * real_per_row).sum(dim=0)
+        imag_sum = (weights * imag_per_row).sum(dim=0)
         
-        # Keep phase in [0, 2π] range for numerical stability
-        self.phase_activation = torch.remainder(self.phase_activation, 2 * torch.pi)
-        
-        # Clamp magnitude to prevent extreme values
-        self.mag_activation = torch.clamp(self.mag_activation, min=-3*torch.pi, max=3*torch.pi)
-        
+
+        # Phase update: damping, no modulo
+        new_phase_raw = torch.atan2(imag_sum, real_sum)
+        self.phase_activation = new_phase_raw
+
+        # Magnitude update: log(norm + epsilon)
+        mag_next = torch.log(torch.sqrt(real_sum ** 2 + imag_sum ** 2) + 1e-8)
+        self.mag_activation = mag_next
+
         self.calculate_activation_strength()
-
 
     def reset(self):
         """

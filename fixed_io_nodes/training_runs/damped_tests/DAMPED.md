@@ -37,7 +37,7 @@ A random noise was added to activation vectors after the single iteration of the
 
 #### Stochastic Radiation
 
-Randomly radiate to other nodes at the start of training and slowly reduce this towards the end (unless mentioned, assume that this is not applied in the expt)
+Randomly radiate to other nodes at the start of training and slowly reduce this towards the end (unless mentioned, assume that this is not applied in the expt). The radiation can be reduced based on global steps or based on number of epochs. The former is more smoother, although not much difference found experimentally on IRIS dataset (just trained once. No documentation of this separately)
 
 #### Dynamic Loss
 
