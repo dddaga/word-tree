@@ -4,14 +4,6 @@ from .lookup_table import LookupTable
 
 _EPSILON = 1e-8
 
-#not used
-def phase_forward(x, y, phase_bins:int):
-    return (x+y)%phase_bins
-
-#not used
-def mag_forward(x, y, mag_bins:int): 
-    return (x+y)%mag_bins
-
 class PhaseLookup(autograd.Function):
     @staticmethod
     def forward(ctx, indices, lookup_table:LookupTable):

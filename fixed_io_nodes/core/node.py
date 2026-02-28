@@ -194,9 +194,9 @@ class UnquantizedNode(nn.Module):
         self.node_id = node_id
         self.node_store = node_store
         self.version = version  # Track version for synchronization
-        self.gamma = gamma  # Gamma parameter for magnitude exponential
+        self.gamma = gamma  # legacy parameter
 
-        # Initialize continuous weights (phase in radians, magnitude in [-π, π])
+        
         if phase_weight is None:
             phase_weight = torch.zeros(1)  # Initialize near 0
         if mag_weight is None:
