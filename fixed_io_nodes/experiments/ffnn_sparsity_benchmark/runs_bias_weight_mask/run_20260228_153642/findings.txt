@@ -1,0 +1,38 @@
+====================================================================
+  FFNN Node-Level Mask Sparsity Benchmark — Key Findings
+====================================================================
+
+  NOTE: This experiment masks BOTH weights AND biases at the node
+  level. Deactivated nodes have ALL incoming weights + bias zeroed,
+  unlike the baseline which only masks individual weight connections
+  while biases always survive.
+
+  Global best accuracy : h= 600, sparsity= 40%  → 0.6417
+
+  Dense (0 % sparsity) accuracy range : 0.6042 – 0.6375
+
+  Resilience: highest sparsity ≤ 95% of dense accuracy
+       h   dense acc   95% threshold   max safe sparsity
+  ------------------------------------------------------
+     100      0.6208          0.5898                 90%
+     200      0.6125          0.5819                 80%
+     300      0.6083          0.5779                 50%
+     400      0.6042          0.5740                 70%
+     500      0.6250          0.5938                 30%
+     600      0.6125          0.5819                 60%
+     700      0.6375          0.6056                 20%
+     800      0.6042          0.5740                 60%
+     900      0.6208          0.5898                 50%
+    1000      0.6250          0.5938                 20%
+
+  Avg active params at sparsity=  0% : 12,661
+  Avg accuracy      at sparsity=  0% : 0.6171
+  Avg train time    at sparsity=  0% : 1.42s
+  Avg inference     at sparsity=  0% : 14.68µs
+
+  Avg active params at sparsity= 50% : 6,606
+  Avg accuracy      at sparsity= 50% : 0.4383
+  Avg train time    at sparsity= 50% : 1.41s
+  Avg inference     at sparsity= 50% : 14.83µs
+
+====================================================================
