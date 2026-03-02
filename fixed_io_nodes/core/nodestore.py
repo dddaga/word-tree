@@ -1094,73 +1094,30 @@ class UnquantizedNodeStore(nn.Module):
 # PyTorch-based NodeStore with Shared Memory
 # ============================================================================
 
-class NodePoint:
-    """Helper class to mimic Qdrant Point structure for interface compatibility."""
-    def __init__(self, node_id: int, vector: Dict[str, torch.Tensor], payload: Dict, score: float = None):
-        self.id = node_id
-        self.vector = vector
-        self.payload = payload
-        self.score = score
-
-
 class VectorSearchBackend(ABC):
     """Abstract base class for vector search backends."""
     @abstractmethod
-    def search_batch(self, query_vectors: torch.Tensor, phase_values: torch.Tensor, 
-                     limit: int, threshold: float) -> List[List[tuple]]:
+    def search_batch(self, query_vectors: torch.Tensor, phase_values: torch.Tensor,
+                     limit: int) -> tuple:
         """
-        Search for nearest neighbors.
-        
-        Args:
-            query_vectors: Tensor of shape (batch_size, vector_dim*2) - cos/sin vectors
-            phase_values: Tensor of shape (num_nodes, vector_dim*2) - all node phase values
-            limit: Number of top results per query
-            threshold: Minimum similarity score threshold
-            
         Returns:
-            List of lists of (node_id, score) tuples, one list per query
+            indices: (num_queries, k), scores: (num_queries, k)
         """
         pass
 
 
 class SimpleCosineSearch(VectorSearchBackend):
-    """Simple cosine similarity search using matrix multiplication."""
+    """Simple cosine similarity search using matrix multiplication. Returns top-k only"""
     def search_batch(self, query_vectors: torch.Tensor, phase_values: torch.Tensor,
-                     limit: int, threshold: float) -> List[List[tuple]]:
-        """
-        Batch cosine similarity search.
-        """
-        # Ensure tensors are on the same device
+                     limit: int) -> tuple:
         device = query_vectors.device
         phase_values = phase_values.to(device)
-        
-        # Normalize query vectors
         query_norm = torch.nn.functional.normalize(query_vectors, p=2, dim=1)
-        
-        # Normalize phase values
         phase_norm = torch.nn.functional.normalize(phase_values, p=2, dim=1)
-        
-        # Compute cosine similarity: (batch_size, num_nodes)
         similarities = query_norm @ phase_norm.T
-        
-        # Apply threshold
-        similarities = torch.where(similarities >= threshold, similarities, torch.tensor(-1.0, device=similarities.device))
-        
-        # Get top-k for each query
-        topk_values, topk_indices = torch.topk(similarities, k=min(limit, phase_values.shape[0]), dim=1)
-        
-        # Convert to list of lists of (node_id, score) tuples
-        results = []
-        for i in range(query_vectors.shape[0]):
-            query_results = []
-            for j in range(topk_indices.shape[1]):
-                node_id = int(topk_indices[i, j].item())
-                score = float(topk_values[i, j].item())
-                if score >= threshold:  # Only include if above threshold
-                    query_results.append((node_id, score))
-            results.append(query_results)
-        
-        return results
+        k = min(limit, phase_values.shape[0])
+        topk_values, topk_indices = torch.topk(similarities, k=k, dim=1)
+        return topk_indices, topk_values
 
 
 class PytorchNodeStore(nn.Module):
@@ -1275,6 +1232,10 @@ class PytorchNodeStore(nn.Module):
         self.phase_vectors = torch.from_numpy(phase_array)
         self.mag_vectors = torch.from_numpy(mag_array)
         self.phase_values = torch.from_numpy(phase_values_array)
+        self.phase_weight = nn.Parameter(self.phase_vectors)
+        self.mag_weight = nn.Parameter(self.mag_vectors)
+
+        self.version_tensor = torch.zeros(self.total_nodes, dtype=torch.long)
 
         # For shared dictionaries, we'll use regular dicts for now
         # Each process will have its own copy, but they'll be initialized from shared memory
@@ -1384,7 +1345,9 @@ class PytorchNodeStore(nn.Module):
                         'outgoing_connections': connections[node_id]['outgoing'],
                         'version': 0
                     }
+                    self.version_tensor[node_id] = 0
 
+                self._build_edge_indices()
                 print(f"PytorchNodeStore: Graph initialized with {total_nodes} nodes")
         else:
             # Attaching process - reconstruct local data from same seed
@@ -1403,7 +1366,7 @@ class PytorchNodeStore(nn.Module):
         
         node_ids = list(range(total_nodes))
         connections = self._initialize_connections(node_ids, cardinality)
-        
+            
         # Store locally
         for node_id in node_ids:
             self.connections[node_id] = connections[node_id]
@@ -1414,41 +1377,46 @@ class PytorchNodeStore(nn.Module):
                     'outgoing_connections': connections[node_id]['outgoing'],
                     'version': 0
                 }
+            self.version_tensor[node_id] = self.payloads[node_id].get('version', 0)
+
+        self._build_edge_indices()
+
+    def _build_edge_indices(self):
+        """Build (2, num_edges) static edge index from connections and add self-loops."""
+        sources, dests = [], []
+        for node_id in range(self.total_nodes):
+            for dest in self.connections.get(node_id, {}).get('outgoing', []):
+                sources.append(node_id)
+                dests.append(dest)
+            sources.append(node_id)
+            dests.append(node_id)
+        self.edge_indices = torch.tensor([sources, dests], dtype=torch.long)
 
     def sample_random_nodeids(self, count: int):
         if count > self.total_nodes:
             raise ValueError("Count cannot be greater than total nodes")
         return random.sample(range(self.total_nodes), count)
 
-    def get_node(self, node_ids: Union[int, str, List[int], List[str], Set[int]], with_payload:bool=True, with_vectors:bool=True):
-        """Get node(s) by ID."""
-        # Convert to list if single value
-        if isinstance(node_ids, int) or isinstance(node_ids, str):
+    def get_node(self, node_ids: Union[int, str, List[int], List[str], Set[int]], with_payload: bool = True, with_vectors: bool = True):
+        """Return batched tensors for the given node IDs. Order preserved."""
+        if isinstance(node_ids, (int, str)):
             node_ids = [node_ids]
         if isinstance(node_ids, set):
             node_ids = list(node_ids)
+        int_node_ids = [int(n) for n in node_ids if 0 <= int(n) < self.total_nodes]
+        if len(int_node_ids) != len(node_ids):
+            raise ValueError("Some node IDs are not in the graph")
+        node_ids = int_node_ids
+    
         
-        # Convert all node IDs to integers (handles both int and str inputs)
-        node_ids = [int(node_id) for node_id in node_ids]
-        
-        results = []
-        for node_id in node_ids:
-            if node_id < 0 or node_id >= self.total_nodes:
-                continue
-            
-            vector = {}
-            if with_vectors:
-                vector['phase'] = self.phase_vectors[node_id].clone()
-                vector['mag'] = self.mag_vectors[node_id].clone()
-                vector['phase_values'] = self.phase_values[node_id].clone()
-            
-            payload = {}
-            if with_payload:
-                payload = dict(self.payloads.get(node_id, {}))
-            
-            results.append(NodePoint(node_id, vector, payload))
-        
-        return results
+        if not node_ids:
+            return {"phase": torch.empty(0, self.vector_dim), "mag": torch.empty(0, self.vector_dim), "versions": torch.empty(0, dtype=torch.long)}
+        idx = torch.tensor(node_ids, dtype=torch.long)
+        return {
+            "phase": self.phase_weight[idx].clone(),
+            "mag": self.mag_weight[idx].clone(),
+            "versions": self.version_tensor[idx].clone(),
+        }
 
     def update_vectors(self, values: Dict[int, Dict[str, List[float]]]):
         """Update vectors for given node IDs with lock protection."""
@@ -1472,55 +1440,27 @@ class PytorchNodeStore(nn.Module):
                     self.mag_vectors[node_id] = mag_tensor
 
     def search_nodes_batch(self, query_vectors, vector_name='phase', limit=3, with_vectors=False, with_payload=True):
-        """Batch search for nearest neighbors."""
-        # Convert query vectors to tensor format
-        query_tensors = []
-        for q_vec in query_vectors:
-            if not isinstance(q_vec, torch.Tensor):
-                q_vec = torch.tensor(q_vec, dtype=torch.float32)
-            
+        """Batch search for nearest neighbors. Returns (indices, scores) tensors of shape (num_queries, k)."""
+        if not isinstance(query_vectors, torch.Tensor):
+            query_tensors = []
+            for q_vec in query_vectors:
+                if not isinstance(q_vec, torch.Tensor):
+                    q_vec = torch.tensor(q_vec, dtype=torch.float32)
+                if vector_name == 'phase':
+                    q_vec = torch.cat([torch.cos(q_vec), -torch.sin(q_vec)], dim=-1)
+                else:
+                    raise NotImplementedError(f"Vector name: {vector_name} not implemented")
+                query_tensors.append(q_vec)
+            query_batch = torch.stack(query_tensors)
+        else:
             if vector_name == 'phase':
-                # Transform continuous phase values to Cos/Sin vectors (Conjugate logic)
-                q_vec = torch.cat([
-                    torch.cos(q_vec), 
-                    -torch.sin(q_vec)
-                ], dim=-1)
+                query_batch = torch.cat([torch.cos(query_vectors), -torch.sin(query_vectors)], dim=-1)
             else:
                 raise NotImplementedError(f"Vector name: {vector_name} not implemented")
-            
-            query_tensors.append(q_vec)
-        
-        # Stack into batch tensor
-        query_batch = torch.stack(query_tensors)  # (batch_size, vector_dim*2)
-        
-        # Perform search using backend
-        search_results = self.search_backend.search_batch(
-            query_batch, 
-            self.phase_values, 
-            limit, 
-            self.radiation_similarity_threshold
+        neighbour_indices, scores = self.search_backend.search_batch(
+            query_batch, self.phase_values, limit
         )
-        
-        # Convert to NodePoint objects
-        results = []
-        for query_result in search_results:
-            query_points = []
-            for node_id, score in query_result:
-                vector = {}
-                if with_vectors:
-                    vector['phase'] = self.phase_vectors[node_id].clone()
-                    vector['mag'] = self.mag_vectors[node_id].clone()
-                    vector['phase_values'] = self.phase_values[node_id].clone()
-                
-                payload = {}
-                if with_payload:
-                    payload = dict(self.payloads.get(node_id, {}))
-                
-                point = NodePoint(node_id, vector, payload, score=score)
-                query_points.append(point)
-            results.append(query_points)
-        
-        return results
+        return neighbour_indices, scores
 
     def get_node_versions(self, node_ids: Union[int, List[int]]):
         """Get version numbers for given node IDs."""
@@ -1541,16 +1481,16 @@ class PytorchNodeStore(nn.Module):
         if isinstance(node_ids, int):
             node_ids = [node_ids]
             versions = [versions]
-        
         if len(node_ids) != len(versions):
             raise ValueError("node_ids and versions must have the same length")
-        
         with self._lock:
             for node_id, version in zip(node_ids, versions):
                 if node_id in self.payloads:
                     self.payloads[node_id]['version'] = version
                 else:
                     self.payloads[node_id] = {'version': version}
+            idx = torch.tensor(node_ids, dtype=torch.long)
+            self.version_tensor[idx] = torch.tensor(versions, dtype=torch.long)
 
     def is_input(self, node_id):
         """Check if node is an input node."""
@@ -1583,11 +1523,12 @@ class PytorchNodeStore(nn.Module):
         return vectors
 
     def state_dict(self, **kwargs):
-        """Return a dict of savable state (same structure as save_weights payload). Ignores destination/prefix/keep_vars from nn.Module.state_dict()."""
+        """Return a dict of savable state. Ignores destination/prefix/keep_vars from nn.Module.state_dict()."""
         return {
-            'phase_vectors': self.phase_vectors.cpu().clone(),
-            'mag_vectors': self.mag_vectors.cpu().clone(),
+            'phase_weight': self.phase_weight.cpu().clone(),
+            'mag_weight': self.mag_weight.cpu().clone(),
             'phase_values': self.phase_values.cpu().clone(),
+            'version_tensor': self.version_tensor.cpu().clone(),
             'payloads': dict(self.payloads),
             'connections': dict(self.connections),
             'metadata': {
@@ -1602,21 +1543,28 @@ class PytorchNodeStore(nn.Module):
             }
         }
 
+    @torch.no_grad()
     def load_state_dict(self, state_dict: dict, **kwargs):
-        """Restore from a state_dict returned by state_dict(). Ignores strict etc. from nn.Module.load_state_dict()."""
+        """Restore from a state_dict returned by state_dict()."""
         metadata = state_dict['metadata']
         if metadata['total_nodes'] != self.total_nodes:
             raise ValueError(f"Total nodes mismatch: saved={metadata['total_nodes']}, current={self.total_nodes}")
         if metadata['vector_dim'] != self.vector_dim:
             raise ValueError(f"Vector dim mismatch: saved={metadata['vector_dim']}, current={self.vector_dim}")
         with self._lock:
-            self.phase_vectors.copy_(state_dict['phase_vectors'])
-            self.mag_vectors.copy_(state_dict['mag_vectors'])
-            self.phase_values.copy_(state_dict['phase_values'])
+            self.phase_weight.data.copy_(state_dict['phase_weight'])
+            self.mag_weight.data.copy_(state_dict['mag_weight'])
+            self.phase_values.data.copy_(state_dict['phase_values'])
+            self.version_tensor.copy_(state_dict['version_tensor'])
             self.payloads.update(state_dict['payloads'])
             self.connections.update(state_dict['connections'])
             self.input_nodeids = set(metadata['input_nodeids'])
             self.output_nodeids = set(metadata['output_nodeids'])
+            self._build_edge_indices()
+        # Recompute phase_values from phase_weight (cos/sin)
+        cos_vals = torch.cos(self.phase_weight.data)
+        sin_vals = torch.sin(self.phase_weight.data)
+        self.phase_values.copy_(torch.cat([cos_vals, sin_vals], dim=-1))
 
     def save_weights(self, save_path: str):
         """Save model weights to disk using state_dict()."""

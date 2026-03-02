@@ -89,18 +89,11 @@ class GNNAdam(optim.Adam):
         """
         # Step 1 & 2: Process each layer's gradients independently
         for sink, accumulator in zip(self.gradient_sinks, self.accumulators):
-            phase_grads, mag_grads, phase_grad_freq, mag_grad_freq = sink.get_and_clear()
-            if phase_grads is not None or mag_grads is not None:
-                # Convert None dicts to empty dicts for accumulator
-                if phase_grads is None:
-                    phase_grads = {}
-                if mag_grads is None:
-                    mag_grads = {}
-                accumulator.receive_gradients(
-                    phase_grads, mag_grads,
-                    phase_grad_freq=phase_grad_freq,
-                    mag_grad_freq=mag_grad_freq,
-                )
+            active_indices, phase_grads, mag_grads = sink.get_and_clear()
+            if active_indices is not None:
+                accumulator.receive_gradients(active_indices, phase_grads, mag_grads)
+                
+
                 # Run accumulator step (updates GNN params via node_store)
                 accumulator.step()
         

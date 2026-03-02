@@ -148,6 +148,9 @@ class _PooledWorkerFunction(torch.autograd.Function):
         pool = ctx.pool
         nw = pool.num_workers
         by_i = [None] * ctx.B
+        
+        all_idx, all_pg, all_mg = [], [], []
+        
         for chunk_start in range(0, ctx.B, nw):
             chunk_end = min(chunk_start + nw, ctx.B)
             for j in range(chunk_end - chunk_start):
@@ -155,24 +158,24 @@ class _PooledWorkerFunction(torch.autograd.Function):
                 pool.submit_backward(j, co[i])
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
-                pg, mg, ig = pool.get_backward_result(j)
-                by_i[i] = (pg, mg, ig)
-        phase_acc = defaultdict(lambda: None)
-        mag_acc = defaultdict(lambda: None)
-        phase_freq = defaultdict(int)
-        mag_freq = defaultdict(int)
-        for pg, mg, ig in by_i:
-            for k, v in (pg or {}).items():
-                if v is not None:
-                    phase_acc[k] = v if phase_acc[k] is None else phase_acc[k] + v
-                    phase_freq[k] += 1
-            for k, v in (mg or {}).items():
-                if v is not None:
-                    mag_acc[k] = v if mag_acc[k] is None else mag_acc[k] + v
-                    mag_freq[k] += 1
-        if ctx.gradient_sink is not None:
-            ctx.gradient_sink.add(dict(phase_acc), dict(mag_acc), dict(phase_freq), dict(mag_freq))
-        grad_input = torch.stack([by_i[i][2] for i in range(ctx.B)])
+                idx, pg, mg, ig = pool.get_backward_result(j)
+                by_i[i] = ig
+                
+                # Collect valid tensors for concatenation
+                if idx is not None and idx.numel() > 0:
+                    all_idx.append(idx)
+                    all_pg.append(pg)
+                    all_mg.append(mg)
+
+        # Concatenate lists into single batch tensors. 
+        # If Node 5 was activated 3 times in the batch, its ID will appear 3 times in cat_idx!
+        if ctx.gradient_sink is not None and all_idx:
+            cat_idx = torch.cat(all_idx)
+            cat_pg = torch.cat(all_pg)
+            cat_mg = torch.cat(all_mg)
+            ctx.gradient_sink.add(cat_idx, cat_pg, cat_mg)
+
+        grad_input = torch.stack(by_i)
         grad_input = grad_input.to(dtype=ctx.x.dtype, device=grad_output.device)
         return grad_input, None, None, None, None, None
 

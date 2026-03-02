@@ -74,23 +74,16 @@ class WorkerPool:
 
     def get_backward_result(
         self, worker_id: int
-    ) -> Tuple[Dict[int, torch.Tensor], Dict[int, torch.Tensor], torch.Tensor]:
+    ) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor]]:
         kind, payload = self._result_queues[worker_id].get()
         if kind != "grads":
             raise RuntimeError(f"Expected 'grads', got {kind}")
-        pg_np, mg_np, ig_np = payload
-        pg = (
-            {k: torch.from_numpy(v.copy() if hasattr(v, "copy") else v) for k, v in (pg_np or {}).items() if v is not None}
-            if pg_np
-            else {}
-        )
-        mg = (
-            {k: torch.from_numpy(v.copy() if hasattr(v, "copy") else v) for k, v in (mg_np or {}).items() if v is not None}
-            if mg_np
-            else {}
-        )
+        indices_np, pg_np, mg_np, ig_np = payload
+        indices = torch.from_numpy(indices_np) if indices_np is not None else None
+        pg = torch.from_numpy(pg_np) if pg_np is not None else None
+        mg = torch.from_numpy(mg_np) if mg_np is not None else None
         ig = torch.from_numpy(ig_np.copy()) if ig_np is not None else None
-        return pg, mg, ig
+        return indices, pg, mg, ig
 
     def shutdown(self):
         for i in range(self._num_workers):

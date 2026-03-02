@@ -15,6 +15,7 @@ from main import load_config, load_iris_dataset, load_mnist_dataset
 
 CONFIG_PATH = "training_runs/distributed_test/distributed.yaml"
 
+torch.autograd.set_detect_anomaly(True)
 
 class IrisGNNModel(nn.Module):
     """MLP(4 -> input_nodes*vector_dim) + tanh + reshape + GNN. Config-driven input_nodes, vector_dim."""
