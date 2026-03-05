@@ -172,6 +172,7 @@ class UnquantizedGradientAccumulator(nn.Module):
 
         self.device = device
         self.total_nodes = node_store.total_nodes
+        self.vector_dim = node_store.vector_dim
         self.node_store = node_store
         self.lr = lr
         self.accumulation_steps = accumulation_steps
@@ -183,61 +184,53 @@ class UnquantizedGradientAccumulator(nn.Module):
         self.step_count = 0  # Track number of steps for interval-based saving
 
         # Use sparse dictionaries - only store gradients for active nodes
-        self.phase_grads = {}
-        self.mag_grads = {}
+        # self.phase_grads = {}
+        # self.mag_grads = {}
+        self.phase_grads = torch.zeros((self.total_nodes, self.vector_dim), device=self.device, dtype=torch.float32)
+        self.mag_grads = torch.zeros_like(self.phase_grads)
 
         # Count of gradients received
-        self.phase_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
-        self.mag_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
+        # self.phase_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
+        # self.mag_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
+        self.phase_grad_counts = torch.zeros(self.total_nodes, dtype=torch.int32, device=self.device)
+        self.mag_grad_counts = torch.zeros_like(self.phase_grad_counts)
 
         # Adam state per node (sparse; created on first update)
-        self.phase_exp_avg: Dict[int, torch.Tensor] = {}
-        self.phase_exp_avg_sq: Dict[int, torch.Tensor] = {}
-        self.phase_state_steps: Dict[int, torch.Tensor] = {}
-        self.mag_exp_avg: Dict[int, torch.Tensor] = {}
-        self.mag_exp_avg_sq: Dict[int, torch.Tensor] = {}
-        self.mag_state_steps: Dict[int, torch.Tensor] = {}
+        # self.phase_exp_avg: Dict[int, torch.Tensor] = {}
+        # self.phase_exp_avg_sq: Dict[int, torch.Tensor] = {}
+        # self.phase_state_steps: Dict[int, torch.Tensor] = {}
+        # self.mag_exp_avg: Dict[int, torch.Tensor] = {}
+        # self.mag_exp_avg_sq: Dict[int, torch.Tensor] = {}
+        # self.mag_state_steps: Dict[int, torch.Tensor] = {}
+        self.phase_exp_avg = torch.zeros((self.total_nodes, self.vector_dim), device=self.device, dtype=torch.float32)
+        self.phase_exp_avg_sq = torch.zeros_like(self.phase_exp_avg)
+        self.phase_state_steps = torch.zeros(self.total_nodes, dtype=torch.int32, device=self.device)
+
+        self.mag_exp_avg = torch.zeros((self.total_nodes, self.vector_dim), device=self.device, dtype=torch.float32)
+        self.mag_exp_avg_sq = torch.zeros_like(self.mag_exp_avg)
+        self.mag_state_steps = torch.zeros(self.total_nodes, dtype=torch.int32, device=self.device)
 
         self.node_update_counts = {node_id:0 for node_id in range(self.total_nodes)}
 
-    def receive_gradients(self, phase_grads:Dict[int, torch.Tensor], mag_grads:Dict[int, torch.Tensor],
-                          phase_grad_freq:Optional[Dict[int, int]]=None, mag_grad_freq:Optional[Dict[int, int]]=None):
+    def receive_gradients(self, active_indices:torch.Tensor, phase_grads:torch.Tensor, mag_grads:torch.Tensor):
         """
         Receives grads from workers. Optionally pass phase_grad_freq and mag_grad_freq (node_id -> count of
         samples that contributed). If omitted, each node is treated as count 1 (backwards compatible).
         """
-        for node_id, phase_grad in phase_grads.items():
-            if phase_grad is None or torch.allclose(phase_grad, torch.zeros_like(phase_grad), atol=1e-8):
-                continue 
-            
-            # Safety check: reject inf/nan gradients
-            if torch.isinf(phase_grad).any() or torch.isnan(phase_grad).any():
-                print(f"Warning: Invalid phase gradient for node {node_id}, skipping")
-                continue
-            
-            # Accumulate gradients (will average later)
-            if node_id not in self.phase_grads:
-                self.phase_grads[node_id] = phase_grad.to(self.device).clone()
-            else:
-                self.phase_grads[node_id] += phase_grad.to(self.device)
-            self.phase_grad_counts[node_id] += (phase_grad_freq.get(node_id, 1) if phase_grad_freq is not None else 1)
+        
+        if (active_indices is None) or active_indices.numel() == 0:
+            return
 
+        active_indices = active_indices.to(self.device)
+        phase_grads = phase_grads.to(self.device)
+        mag_grads = mag_grads.to(self.device)
 
-        for node_id, mag_grad in mag_grads.items():
-            if mag_grad is None or torch.allclose(mag_grad, torch.zeros_like(mag_grad), atol=1e-8):
-                continue 
-            
-            # Safety check: reject inf/nan gradients
-            if torch.isinf(mag_grad).any() or torch.isnan(mag_grad).any():
-                print(f"Warning: Invalid mag gradient for node {node_id}, skipping")
-                continue
-            
-            # Accumulate gradients (will average later)
-            if node_id not in self.mag_grads:
-                self.mag_grads[node_id] = mag_grad.to(self.device).clone()
-            else:
-                self.mag_grads[node_id] += mag_grad.to(self.device)
-            self.mag_grad_counts[node_id] += (mag_grad_freq.get(node_id, 1) if mag_grad_freq is not None else 1)
+        self.phase_grads.index_add_(0, active_indices, phase_grads)
+        self.mag_grads.index_add_(0, active_indices, mag_grads)
+        
+        self.phase_grad_counts.index_add_(0, active_indices, torch.ones_like(active_indices, dtype=self.phase_grad_counts.dtype))
+        self.mag_grad_counts.index_add_(0, active_indices, torch.ones_like(active_indices, dtype=self.mag_grad_counts.dtype))
+
         
     def _adam_update_node(
         self,
@@ -266,147 +259,123 @@ class UnquantizedGradientAccumulator(nn.Module):
             eps=self.eps,
             maximize=False,
         )
+    
+    def _vectorized_adam(self, param, grad, exp_avg, exp_avg_sq, state_steps):
+        """
+        Custom Vectorized Adam that processes a matrix of nodes asynchronously.
+        Uses pure PyTorch math to bypass the strict device/dtype grouping bugs 
+        present in PyTorch's native functional adam API.
+        """
+        beta1, beta2 = self.betas
+        
+        # 1. Update step counts
+        state_steps += 1
+        
+        # 2. Update biased first moment estimate
+        exp_avg.mul_(beta1).add_(grad, alpha=1.0 - beta1)
+        
+        # 3. Update biased second raw moment estimate
+        exp_avg_sq.mul_(beta2).addcmul_(grad, grad, value=1.0 - beta2)
+        
+        # 4. Compute bias corrections (broadcast 1D step array to 2D features)
+        step_2d = state_steps.unsqueeze(-1).float()
+        bias_correction1 = 1.0 - beta1 ** step_2d
+        bias_correction2 = 1.0 - beta2 ** step_2d
+        
+        # 5. Apply Adam update equation
+        denom = (exp_avg_sq.sqrt() / torch.sqrt(bias_correction2)).add_(self.eps)
+        step_size = self.lr / bias_correction1
+        
+        # In-place parameter update
+        param.sub_(step_size * (exp_avg / denom))
+        
+        return param, exp_avg, exp_avg_sq, state_steps
 
+    @torch.no_grad()
     def step(self):
-        """
-        Apply gradient updates when batch_size samples have been accumulated.
-        GNN parameters are updated with Adam via PyTorch's functional API.
-
-        Returns the node ids that were updated.
-        """
-        # Get all nodes that have accumulated gradients
-        node_ids_to_update = set(self.phase_grads.keys()).union(set(self.mag_grads.keys()))
-        node_ids_to_update = list(node_ids_to_update)
-
-        if not node_ids_to_update:
-            return []
-
-        # Fetch current node values and versions
-        nodes_to_update = self.node_store.get_node(node_ids_to_update)
-        old_phase_values = {node.id: _to_tensor(node.vector['phase'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
-        old_mag_values = {node.id: _to_tensor(node.vector['mag'], dtype=torch.float32, device=self.device) for node in nodes_to_update}
-        old_versions = {node.id: node.payload.get('version', 0) for node in nodes_to_update}
-
-        new_phase_values = {}
-        new_mag_values = {}
-
-        for node_id in node_ids_to_update:
-            # Phase: update if enough gradients received
-            if self.phase_grad_counts[node_id] >= self.accumulation_steps:
-                avg_phase_grad = self.phase_grads[node_id] / self.phase_grad_counts[node_id]
-                phase_param = old_phase_values[node_id]
-                avg_phase_grad = avg_phase_grad.to(device=phase_param.device, dtype=phase_param.dtype)
-                if node_id not in self.phase_exp_avg:
-                    self.phase_exp_avg[node_id] = torch.zeros_like(phase_param, device=phase_param.device)
-                    self.phase_exp_avg_sq[node_id] = torch.zeros_like(phase_param, device=phase_param.device)
-                    self.phase_state_steps[node_id] = torch.tensor(0.0, device=phase_param.device, dtype=torch.float32)
-                else:
-                    self.phase_exp_avg[node_id] = self.phase_exp_avg[node_id].to(phase_param.device)
-                    self.phase_exp_avg_sq[node_id] = self.phase_exp_avg_sq[node_id].to(phase_param.device)
-                    self.phase_state_steps[node_id] = self.phase_state_steps[node_id].to(phase_param.device)
-                # print(f"Node {node_id}, Phase grad norm: {torch.norm(avg_phase_grad)}")
-                self._adam_update_node(
-                    phase_param,
-                    avg_phase_grad,
-                    self.phase_exp_avg[node_id],
-                    self.phase_exp_avg_sq[node_id],
-                    self.phase_state_steps[node_id],
-                )
-                new_phase_values[node_id] = phase_param
-                self.phase_grad_counts[node_id] = 0
-                self.phase_grads[node_id] = None
-            else:
-                new_phase_values[node_id] = old_phase_values[node_id]
-
-            # Mag: update if enough gradients received
-            if self.mag_grad_counts[node_id] >= self.accumulation_steps:
-                avg_mag_grad = self.mag_grads[node_id] / self.mag_grad_counts[node_id]
-                mag_param = old_mag_values[node_id]
-                avg_mag_grad = avg_mag_grad.to(device=mag_param.device, dtype=mag_param.dtype)
-                if node_id not in self.mag_exp_avg:
-                    self.mag_exp_avg[node_id] = torch.zeros_like(mag_param, device=mag_param.device)
-                    self.mag_exp_avg_sq[node_id] = torch.zeros_like(mag_param, device=mag_param.device)
-                    self.mag_state_steps[node_id] = torch.tensor(0.0, device=mag_param.device, dtype=torch.float32)
-                else:
-                    self.mag_exp_avg[node_id] = self.mag_exp_avg[node_id].to(mag_param.device)
-                    self.mag_exp_avg_sq[node_id] = self.mag_exp_avg_sq[node_id].to(mag_param.device)
-                    self.mag_state_steps[node_id] = self.mag_state_steps[node_id].to(mag_param.device)
-                # print(f"Node {node_id}, Mag grad norm: {torch.norm(avg_mag_grad)}")
-                self._adam_update_node(
-                    mag_param,
-                    avg_mag_grad,
-                    self.mag_exp_avg[node_id],
-                    self.mag_exp_avg_sq[node_id],
-                    self.mag_state_steps[node_id],
-                )
-                new_mag_values[node_id] = mag_param
-                self.mag_grad_counts[node_id] = 0
-                self.mag_grads[node_id] = None
-            else:
-                new_mag_values[node_id] = old_mag_values[node_id]
-
-        # Prepare final values for update (convert to lists for Qdrant)
-        final_values = {
-            node_id: {
-                'phase': new_phase_values[node_id].tolist(), 
-                'mag': new_mag_values[node_id].tolist()
-            } 
-            for node_id in node_ids_to_update
-        }
-
-        for node_id in final_values:
-            self.node_update_counts[node_id] += 1
-
-        try:
-            # Update vectors in DB
-            self.node_store.update_vectors(final_values)
-            
-            # Increment versions for updated nodes
-            new_versions = [old_versions[node_id] + 1 for node_id in node_ids_to_update]
-            self.node_store.update_node_versions(node_ids_to_update, new_versions)
-            
-            if False:
-                #This is supposed to print grad norms, but as the number of stored gradients are cleared above, this needs to be fixed accordingly.
-                avg_phase_grad_norm = torch.mean(torch.stack([torch.norm(self.phase_grads[nid]) for nid in self.phase_grads])) / self.phase_grad_counts[node_id] if self.phase_grads else 0
-                avg_mag_grad_norm = torch.mean(torch.stack([torch.norm(self.mag_grads[nid]) for nid in self.mag_grads])) / self.mag_grad_counts[node_id] if self.mag_grads else 0
-                print(f"Accumulator: Updated {len(node_ids_to_update)} nodes after {self.phase_grad_counts[node_id]} samples")
-                print(f"  Avg phase grad norm: {avg_phase_grad_norm:.4f}, Avg mag grad norm: {avg_mag_grad_norm:.4f}")
-            
-            if self.verbose:
-                print(f"Updated {len(node_ids_to_update)}, Nodes: {node_ids_to_update}")
-                
-        except Exception as e:
-            print(f"Error updating vectors: {e}")
-            import traceback
-            traceback.print_exc()
+        """Vectorized Adam update step applied only to nodes reaching the threshold."""
         
-        # Reset accumulators for next batch
-        self.phase_grads.clear()
-        self.mag_grads.clear()
+        # 1. Boolean masking instantly finds nodes that reached accumulation_steps
+        phase_ready = self.phase_grad_counts >= self.accumulation_steps
+        mag_ready = self.mag_grad_counts >= self.accumulation_steps
         
-        # Save weights if save_path is provided and interval conditions are met
+        ready_p_idx = phase_ready.nonzero(as_tuple=True)[0]
+        ready_m_idx = mag_ready.nonzero(as_tuple=True)[0]
+        
+        updated_nodes = set()
+        
+        # 2. Vectorized Mass Update for Phase
+        if ready_p_idx.numel() > 0:
+            avg_grad = self.phase_grads[ready_p_idx] / self.phase_grad_counts[ready_p_idx].unsqueeze(-1).float()
+            
+            param, exp_avg, exp_avg_sq, steps = self._vectorized_adam(
+                self.node_store.phase_weight[ready_p_idx], 
+                avg_grad, 
+                self.phase_exp_avg[ready_p_idx], 
+                self.phase_exp_avg_sq[ready_p_idx], 
+                self.phase_state_steps[ready_p_idx]
+            )
+            
+            # Write results back to global memory blocks
+            self.node_store.phase_weight[ready_p_idx] = param
+            self.phase_exp_avg[ready_p_idx] = exp_avg
+            self.phase_exp_avg_sq[ready_p_idx] = exp_avg_sq
+            self.phase_state_steps[ready_p_idx] = steps
+            
+            # Reset only the nodes that updated
+            self.phase_grads[ready_p_idx] = 0.0
+            self.phase_grad_counts[ready_p_idx] = 0
+            updated_nodes.update(ready_p_idx.tolist())
+            
+        # 3. Vectorized Mass Update for Magnitude
+        if ready_m_idx.numel() > 0:
+            avg_grad = self.mag_grads[ready_m_idx] / self.mag_grad_counts[ready_m_idx].unsqueeze(-1).float()
+            
+            param, exp_avg, exp_avg_sq, steps = self._vectorized_adam(
+                self.node_store.mag_weight[ready_m_idx], 
+                avg_grad, 
+                self.mag_exp_avg[ready_m_idx], 
+                self.mag_exp_avg_sq[ready_m_idx], 
+                self.mag_state_steps[ready_m_idx]
+            )
+            
+            self.node_store.mag_weight[ready_m_idx] = param
+            self.mag_exp_avg[ready_m_idx] = exp_avg
+            self.mag_exp_avg_sq[ready_m_idx] = exp_avg_sq
+            self.mag_state_steps[ready_m_idx] = steps
+            
+            self.mag_grads[ready_m_idx] = 0.0
+            self.mag_grad_counts[ready_m_idx] = 0
+            updated_nodes.update(ready_m_idx.tolist())
+
+        # 4. Synchronize Database / NodeStore states
+        if updated_nodes:
+            updated_list = list(updated_nodes)
+            
+            # Recompute trig values instantly for vector routing
+            with self.node_store._lock:
+                idx_tensor = torch.tensor(updated_list, dtype=torch.long, device=self.device)
+                cos_vals = torch.cos(self.node_store.phase_weight[idx_tensor])
+                sin_vals = torch.sin(self.node_store.phase_weight[idx_tensor])
+                # print(self.node_store.phase_values.device)
+                # print(idx_tensor.cpu().device)
+                self.node_store.phase_values[idx_tensor.cpu()] = torch.cat([cos_vals, sin_vals], dim=-1).cpu()
+
+            current_versions = self.node_store.version_tensor[updated_list]
+            self.node_store.version_tensor[updated_list] = current_versions + 1
+            
+            for nid, v in zip(updated_list, current_versions + 1):
+                if nid in self.node_store.payloads:
+                    self.node_store.payloads[nid]['version'] = v.item()
+
+        # 5. Save Interval logic
         if self.save_path is not None:
             self.step_count += 1
-            should_save = False
-            
-            if self.save_interval is None:
-                # Save after every step if no interval specified
-                should_save = True
-            elif self.step_count % self.save_interval == 0:
-                # Save at specified intervals
-                should_save = True
-            
-            if should_save:
-                try:
-                    # Check if node_store has save_weights method (for PytorchNodeStore)
-                    if hasattr(self.node_store, 'save_weights'):
-                        self.node_store.save_weights(self.save_path)
-                    else:
-                        # For other NodeStore implementations, skip saving
-                        pass
-                except Exception as e:
-                    print(f"Warning: Failed to save weights: {e}")
+            if self.save_interval is None or self.step_count % self.save_interval == 0:
+                if hasattr(self.node_store, 'save_weights'):
+                    self.node_store.save_weights(self.save_path)
         
-        return node_ids_to_update
+        return list(updated_nodes)
+    ### END OF CHANGES ###
 
 GradientAccumulator = UnquantizedGradientAccumulator

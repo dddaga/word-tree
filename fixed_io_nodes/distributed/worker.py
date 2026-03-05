@@ -271,15 +271,18 @@ def worker_pool_loop(worker_id: int, task_queue, result_queue, config: dict):
                 result_queue.put(("grads", (None, None, None)))
                 continue
             stored_out.backward(grad_i)
-            phase_grads, mag_grads = model.gnn.get_grads()
-            to_cpu = lambda d: {k: v.detach().cpu().clone() if v is not None else None for k, v in d.items()}
-            pg = to_cpu(phase_grads)
-            mg = to_cpu(mag_grads)
+            active_indices, phase_grads, mag_grads = model.gnn.get_grads()
+
+            #Numpy tensors for faster queue transfer
+            active_indices_np = active_indices.detach().cpu().numpy().copy() if active_indices is not None else None
+            phase_grads_np = phase_grads.detach().cpu().numpy().copy() if phase_grads is not None else None
+            mag_grads_np = mag_grads.detach().cpu().numpy().copy() if mag_grads is not None else None
+
+            
             ig = stored_x.grad.detach().cpu().clone() if stored_x.grad is not None else torch.zeros_like(stored_x, device="cpu")
-            pg_np = {k: v.numpy().copy() if v is not None else None for k, v in pg.items()}
-            mg_np = {k: v.numpy().copy() if v is not None else None for k, v in mg.items()}
             ig_np = ig.numpy().copy()
-            result_queue.put(("grads", (pg_np, mg_np, ig_np)))
+
+            result_queue.put(("grads", (active_indices_np, phase_grads_np, mag_grads_np, ig_np)))
             model.reset()
             stored_x = None
             stored_out = None
