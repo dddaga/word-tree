@@ -1,31 +1,29 @@
 """
 FFNN Conduction Sparsity Benchmark — UCI Wine Quality (Red)
-SUB-EXPERIMENT: Masking both Weights AND Biases (node-level)
+SUB-EXPERIMENT: Two Hidden Layers with Node-Level Masking (Weights + Biases)
 
-In the original experiment, only individual weight connections are masked while
-biases always survive. Here, sparsity operates at the **node level**: for each
-layer, floor(sparsity × out_features) neurons are completely deactivated — ALL
-their incoming weights AND their bias are zeroed. The remaining neurons keep
-full connectivity. This simulates truly removing nodes from the graph.
+This experiment extends the single hidden layer node-level masking experiment
+to a TWO hidden layer architecture. The total neuron budget is split equally
+between the two layers:
+    total_neurons = 100, 120, 140, …, 240
+    layer1 = total_neurons // 2
+    layer2 = total_neurons // 2
 
-The bias mask is NOT a separate mask — it is derived directly from the weight
-mask: bias[i] is zeroed iff the entire i-th row of the weight mask is zero
-(i.e. the node is inactive).
+Node-level sparsity is applied to BOTH hidden layers independently:
+for each layer, floor(sparsity × layer_size) neurons are completely
+deactivated — ALL their incoming weights AND their bias are zeroed.
+The output layer is NOT masked (all class logits remain active).
 
 Sweep:
-  hidden_size  ∈ {100, 200, …, 1000}   (10 values)
-  sparsity     ∈ {0.0, 0.1, …, 1.0}    (11 values)
-  Total        = 110 training runs
-
-Extra plots (not in baseline):
-  - 3D scatter: Accuracy vs Active Parameters vs Training & Inference Time
-  - Per-hidden-size lines: Accuracy, Params, Train/Inference Time vs Sparsity
+  total_neurons  ∈ {100, 120, 140, …, 240}   (8 values)
+  sparsity       ∈ {0.0, 0.1, …, 1.0}        (11 values)
+  Total          = 88 training runs
 
 Outputs written to a timestamped sub-folder under:
-    fixed_io_nodes/experiments/ffnn_sparsity_benchmark/runs_bias_weight_mask/
+    fixed_io_nodes/experiments/ffnn_sparsity_benchmark/runs_2layer_bias_weight_mask/
 
 Run from repo root:
-    python3 fixed_io_nodes/experiments/ffnn_sparsity_benchmark/run_experiment_bias_weight_mask.py
+    python3 fixed_io_nodes/experiments/ffnn_sparsity_benchmark/run_experiment_2layer_bias_weight_mask.py
 """
 
 import time
@@ -57,19 +55,18 @@ from torch.utils.data import DataLoader, TensorDataset
 
 # ── paths ────────────────────────────────────────────────────────────────────
 _HERE    = Path(__file__).resolve().parent
-_RUN_DIR = _HERE / "runs_bias_weight_mask" / f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+_RUN_DIR = _HERE / "runs_2layer_bias_weight_mask" / f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 _RUN_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── hyper-parameters ─────────────────────────────────────────────────────────
 EPOCHS          = 100
 LR              = 1e-3
 BATCH_SIZE      = 64
-HIDDEN_SIZES    = list(range(100, 2001, 100))
+TOTAL_NEURONS   = list(range(100, 241, 20))    # 100, 120, …, 240
 SPARSITY_LEVELS = [round(i / 10, 1) for i in range(0, 11)]   # 0.0 … 1.0
 SEED            = 42
-# DEVICE          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 DEVICE          = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-SAMPLE_HIDDEN   = 500
+SAMPLE_TOTAL    = 200   # total neurons for sample loss curves
 
 RED_WINE_URL = (
     "https://archive.ics.uci.edu/ml/machine-learning-databases/"
@@ -120,59 +117,60 @@ def make_node_mask(
     floor(sparsity × out_features) neurons are completely zeroed out.
     The remaining neurons keep ALL their incoming connections.
 
-    Returns (weight_mask, bias_mask) where bias_mask is derived from weight_mask:
-      bias_mask[i] = 1.0  iff  weight_mask[i, :].any()   (node is active)
-      bias_mask[i] = 0.0  iff  weight_mask[i, :] is all zeros (node is dead)
+    Returns (weight_mask, bias_mask).
     """
     if sparsity >= 1.0:
         return torch.zeros(out_features, in_features), torch.zeros(out_features)
 
     n_dead = int(sparsity * out_features)
 
-    # Choose which nodes to deactivate
     node_active = torch.ones(out_features)
     if n_dead > 0:
         dead_idxs = rng.choice(out_features, size=n_dead, replace=False)
         node_active[dead_idxs] = 0.0
 
-    # Weight mask: active nodes get a full row of 1s, dead nodes get all 0s
     weight_mask = node_active.unsqueeze(1).expand(out_features, in_features).clone()
-
-    # Bias mask: directly derived from the weight mask (same node-level decision)
     bias_mask = node_active
 
     return weight_mask, bias_mask
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Model
+# Model — Two Hidden Layers
 # ─────────────────────────────────────────────────────────────────────────────
 
-class SparseFFNN(nn.Module):
-    """Single hidden layer FFNN with node-level conduction masks.
+class SparseFFNN2Layer(nn.Module):
+    """Two hidden layer FFNN with node-level conduction masks.
 
-    Both weight rows AND bias entries are zeroed for deactivated nodes.
-    Active nodes retain full connectivity. The mask is fixed at init.
+    Both weight rows AND bias entries are zeroed for deactivated nodes
+    in BOTH hidden layers. The output layer is NOT masked.
     """
 
     def __init__(
-        self, input_dim: int, hidden_size: int, output_dim: int, sparsity: float
+        self, input_dim: int, h1_size: int, h2_size: int,
+        output_dim: int, sparsity: float,
     ):
         super().__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, output_dim)
+        self.fc1 = nn.Linear(input_dim, h1_size)
+        self.fc2 = nn.Linear(h1_size, h2_size)
+        self.fc3 = nn.Linear(h2_size, output_dim)
 
         rng = np.random.default_rng(SEED)
 
-        w_mask1, b_mask1 = make_node_mask(hidden_size, input_dim,   sparsity, rng)
-        # Output layer: NO sparsity mask — all class logits must remain active
-        w_mask2 = torch.ones(output_dim, hidden_size)
-        b_mask2 = torch.ones(output_dim)
+        # Sparsity masks for both hidden layers
+        w_mask1, b_mask1 = make_node_mask(h1_size, input_dim, sparsity, rng)
+        w_mask2, b_mask2 = make_node_mask(h2_size, h1_size,   sparsity, rng)
+
+        # Output layer: NO sparsity mask
+        w_mask3 = torch.ones(output_dim, h2_size)
+        b_mask3 = torch.ones(output_dim)
 
         self.register_buffer("w_mask1", w_mask1)
         self.register_buffer("b_mask1", b_mask1)
         self.register_buffer("w_mask2", w_mask2)
         self.register_buffer("b_mask2", b_mask2)
+        self.register_buffer("w_mask3", w_mask3)
+        self.register_buffer("b_mask3", b_mask3)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = F.relu(F.linear(
@@ -180,10 +178,15 @@ class SparseFFNN(nn.Module):
             self.fc1.weight * self.w_mask1,
             self.fc1.bias * self.b_mask1,
         ))
-        return F.linear(
+        x = F.relu(F.linear(
             x,
             self.fc2.weight * self.w_mask2,
             self.fc2.bias * self.b_mask2,
+        ))
+        return F.linear(
+            x,
+            self.fc3.weight * self.w_mask3,
+            self.fc3.bias * self.b_mask3,
         )
 
 
@@ -195,16 +198,22 @@ def count_params(model: nn.Module) -> int:
     return sum(p.numel() for p in model.parameters())
 
 
-def count_active_params(model: SparseFFNN) -> int:
+def count_active_params(model: SparseFFNN2Layer) -> int:
     """Active weight connections + active biases."""
-    w = int(model.w_mask1.sum().item()) + int(model.w_mask2.sum().item())
-    b = int(model.b_mask1.sum().item()) + int(model.b_mask2.sum().item())
+    w = (int(model.w_mask1.sum().item())
+         + int(model.w_mask2.sum().item())
+         + int(model.w_mask3.sum().item()))
+    b = (int(model.b_mask1.sum().item())
+         + int(model.b_mask2.sum().item())
+         + int(model.b_mask3.sum().item()))
     return w + b
 
 
-def count_active_macs(model: SparseFFNN) -> int:
+def count_active_macs(model: SparseFFNN2Layer) -> int:
     """MACs proportional to active (unmasked) weight connections only."""
-    return int(model.w_mask1.sum().item()) + int(model.w_mask2.sum().item())
+    return (int(model.w_mask1.sum().item())
+            + int(model.w_mask2.sum().item())
+            + int(model.w_mask3.sum().item()))
 
 
 def _make_loaders(X_tr, y_tr, X_val, y_val, X_te, y_te):
@@ -225,7 +234,7 @@ def _make_loaders(X_tr, y_tr, X_val, y_val, X_te, y_te):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def train_and_eval(
-    hidden_size: int,
+    total_neurons: int,
     sparsity: float,
     X_tr, y_tr, X_val, y_val, X_te, y_te,
     store_curves: bool = False,
@@ -233,7 +242,10 @@ def train_and_eval(
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
-    model     = SparseFFNN(X_tr.shape[1], hidden_size, NUM_CLASSES, sparsity).to(DEVICE)
+    h1 = total_neurons // 2
+    h2 = total_neurons // 2
+
+    model     = SparseFFNN2Layer(X_tr.shape[1], h1, h2, NUM_CLASSES, sparsity).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = nn.CrossEntropyLoss()
     train_loader, val_loader, test_loader = _make_loaders(
@@ -287,7 +299,9 @@ def train_and_eval(
             inf_times.append(time.perf_counter() - t0)
 
     result = {
-        "hidden_size":       hidden_size,
+        "total_neurons":     total_neurons,
+        "h1_size":           h1,
+        "h2_size":           h2,
         "sparsity":          sparsity,
         "n_params":          count_params(model),
         "active_params":     count_active_params(model),
@@ -320,7 +334,7 @@ def plot_heatmap(pivot: pd.DataFrame, metric: str, title: str, out_dir: Path, fn
     ax.set_xticklabels([f"{int(s*100)}%" for s in pivot.columns])
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels(pivot.index.astype(int))
-    ax.set_xlabel("Sparsity"); ax.set_ylabel("Hidden Size")
+    ax.set_xlabel("Sparsity"); ax.set_ylabel("Total Neurons (2 layers)")
     ax.set_title(title, fontsize=12, fontweight="bold")
     plt.colorbar(im, ax=ax, label=metric)
 
@@ -336,19 +350,19 @@ def plot_heatmap(pivot: pd.DataFrame, metric: str, title: str, out_dir: Path, fn
 
 
 def plot_accuracy_vs_sparsity(df: pd.DataFrame, out_dir: Path):
-    palette = plt.cm.viridis(np.linspace(0.1, 0.9, len(HIDDEN_SIZES)))
+    palette = plt.cm.viridis(np.linspace(0.1, 0.9, len(TOTAL_NEURONS)))
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
     fig.suptitle(
-        "Test Accuracy vs Sparsity (node-level mask)  |  each line = one hidden width",
+        "Test Accuracy vs Sparsity (2-layer node-level mask)  |  each line = one total width",
         fontsize=12, fontweight="bold",
     )
 
-    for h, c in zip(HIDDEN_SIZES, palette):
-        sub = df[df["hidden_size"] == h].sort_values("sparsity")
+    for tn, c in zip(TOTAL_NEURONS, palette):
+        sub = df[df["total_neurons"] == tn].sort_values("sparsity")
         axes[0].plot(sub["sparsity"] * 100, sub["accuracy"],
-                     "o-", color=c, lw=1.6, ms=4, label=f"h={h}")
+                     "o-", color=c, lw=1.6, ms=4, label=f"n={tn}")
         axes[1].plot(sub["sparsity"] * 100, sub["f1"],
-                     "o-", color=c, lw=1.6, ms=4, label=f"h={h}")
+                     "o-", color=c, lw=1.6, ms=4, label=f"n={tn}")
 
     for ax, ylabel in zip(axes, ["Test Accuracy", "Weighted F1"]):
         ax.set_xlabel("Sparsity (%)"); ax.set_ylabel(ylabel)
@@ -359,51 +373,51 @@ def plot_accuracy_vs_sparsity(df: pd.DataFrame, out_dir: Path):
 
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="center right", bbox_to_anchor=(1.12, 0.5),
-               title="Hidden Size", fontsize=8, title_fontsize=9)
+               title="Total Neurons", fontsize=8, title_fontsize=9)
     plt.tight_layout()
     plt.savefig(out_dir / "accuracy_vs_sparsity.png", dpi=150, bbox_inches="tight")
     plt.close()
 
 
-def plot_accuracy_vs_hidden(df: pd.DataFrame, out_dir: Path):
+def plot_accuracy_vs_neurons(df: pd.DataFrame, out_dir: Path):
     palette = plt.cm.plasma(np.linspace(0.05, 0.95, len(SPARSITY_LEVELS)))
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
     fig.suptitle(
-        "Test Accuracy vs Hidden Width (node-level mask)  |  each line = one sparsity level",
+        "Test Accuracy vs Total Neurons (2-layer node-level mask)  |  each line = one sparsity level",
         fontsize=12, fontweight="bold",
     )
 
     for s, c in zip(SPARSITY_LEVELS, palette):
-        sub = df[df["sparsity"] == s].sort_values("hidden_size")
+        sub = df[df["sparsity"] == s].sort_values("total_neurons")
         lbl = f"{int(s*100)}%"
-        axes[0].plot(sub["hidden_size"], sub["accuracy"],
+        axes[0].plot(sub["total_neurons"], sub["accuracy"],
                      "o-", color=c, lw=1.6, ms=4, label=lbl)
-        axes[1].plot(sub["hidden_size"], sub["f1"],
+        axes[1].plot(sub["total_neurons"], sub["f1"],
                      "o-", color=c, lw=1.6, ms=4, label=lbl)
 
     for ax, ylabel in zip(axes, ["Test Accuracy", "Weighted F1"]):
-        ax.set_xlabel("Hidden Neurons"); ax.set_ylabel(ylabel)
+        ax.set_xlabel("Total Hidden Neurons"); ax.set_ylabel(ylabel)
         ax.grid(True, alpha=0.3)
 
-    axes[0].set_title("Accuracy vs Hidden Width")
-    axes[1].set_title("F1 vs Hidden Width")
+    axes[0].set_title("Accuracy vs Total Neurons")
+    axes[1].set_title("F1 vs Total Neurons")
 
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="center right", bbox_to_anchor=(1.1, 0.5),
                title="Sparsity", fontsize=8, title_fontsize=9)
     plt.tight_layout()
-    plt.savefig(out_dir / "accuracy_vs_hidden.png", dpi=150, bbox_inches="tight")
+    plt.savefig(out_dir / "accuracy_vs_neurons.png", dpi=150, bbox_inches="tight")
     plt.close()
 
 
 def plot_metrics_dashboard(df: pd.DataFrame, out_dir: Path):
-    """Metrics averaged over hidden sizes, plotted against sparsity."""
+    """Metrics averaged over total neuron counts, plotted against sparsity."""
     grouped = df.groupby("sparsity").mean(numeric_only=True).reset_index()
     sp_pct  = grouped["sparsity"] * 100
 
     fig, axes = plt.subplots(3, 3, figsize=(17, 13))
     fig.suptitle(
-        "FFNN Node-Level Mask Sparsity Benchmark  |  metrics averaged over hidden widths",
+        "FFNN 2-Layer Node-Level Mask Sparsity Benchmark  |  metrics averaged over neuron counts",
         fontsize=12, fontweight="bold", y=1.01,
     )
 
@@ -432,7 +446,7 @@ def plot_tradeoff(df: pd.DataFrame, out_dir: Path):
     scatter_kw = dict(c=sp_pct, cmap="RdYlGn_r", s=60, alpha=0.8, zorder=3)
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-    fig.suptitle("Complexity vs Accuracy Trade-off (node-level mask)", fontsize=12, fontweight="bold")
+    fig.suptitle("Complexity vs Accuracy Trade-off (2-layer node-level mask)", fontsize=12, fontweight="bold")
 
     ax = axes[0]
     sc = ax.scatter(df["active_params"], df["accuracy"], **scatter_kw)
@@ -455,13 +469,13 @@ def plot_tradeoff(df: pd.DataFrame, out_dir: Path):
 
 
 def plot_sample_loss_curves(sample_curves: list, out_dir: Path):
-    """Loss curves for hidden_size=SAMPLE_HIDDEN across all sparsity levels."""
+    """Loss curves for total_neurons=SAMPLE_TOTAL across all sparsity levels."""
     epoch_range = range(1, EPOCHS + 1)
     palette     = plt.cm.RdYlGn_r(np.linspace(0.05, 0.95, len(sample_curves)))
 
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
     fig.suptitle(
-        f"Loss Curves (node-level mask)  |  hidden_size={SAMPLE_HIDDEN}, varying sparsity",
+        f"Loss Curves (2-layer node-level mask)  |  total_neurons={SAMPLE_TOTAL} ({SAMPLE_TOTAL//2}+{SAMPLE_TOTAL//2}), varying sparsity",
         fontsize=12, fontweight="bold",
     )
 
@@ -481,10 +495,6 @@ def plot_sample_loss_curves(sample_curves: list, out_dir: Path):
     plt.savefig(out_dir / "sample_loss_curves.png", dpi=150, bbox_inches="tight")
     plt.close()
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# NEW: Accuracy vs Active Parameters (sparsity) vs Training & Inference Time
-# ─────────────────────────────────────────────────────────────────────────────
 
 def plot_accuracy_vs_params_vs_time(df: pd.DataFrame, out_dir: Path):
     """3D scatter + 2D bubble plots showing how accuracy varies jointly with
@@ -550,29 +560,29 @@ def plot_accuracy_vs_params_vs_time(df: pd.DataFrame, out_dir: Path):
 
     fig.suptitle(
         "Accuracy vs Parameters (Sparsity) vs Training & Inference Time\n"
-        "(node-level weight+bias mask)",
+        "(2-layer node-level weight+bias mask)",
         fontsize=13, fontweight="bold", y=1.02,
     )
     plt.tight_layout()
     plt.savefig(out_dir / "accuracy_vs_params_vs_time.png", dpi=150, bbox_inches="tight")
     plt.close()
 
-    # ── Per-hidden-size line plot: Accuracy & Time vs Sparsity ────────────
-    palette = plt.cm.viridis(np.linspace(0.1, 0.9, len(HIDDEN_SIZES)))
+    # ── Per-total-neurons line plot: Accuracy & Time vs Sparsity ──────────
+    palette = plt.cm.viridis(np.linspace(0.1, 0.9, len(TOTAL_NEURONS)))
 
     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
     fig.suptitle(
-        "Accuracy & Time vs Sparsity per Hidden Size  (node-level mask)",
+        "Accuracy & Time vs Sparsity per Total Neurons  (2-layer node-level mask)",
         fontsize=13, fontweight="bold",
     )
 
-    for h, c in zip(HIDDEN_SIZES, palette):
-        sub = df[df["hidden_size"] == h].sort_values("sparsity")
+    for tn, c in zip(TOTAL_NEURONS, palette):
+        sub = df[df["total_neurons"] == tn].sort_values("sparsity")
         sp  = sub["sparsity"] * 100
-        axes[0, 0].plot(sp, sub["accuracy"],         "o-", color=c, lw=1.4, ms=3, label=f"h={h}")
-        axes[0, 1].plot(sp, sub["active_params"],     "o-", color=c, lw=1.4, ms=3, label=f"h={h}")
-        axes[1, 0].plot(sp, sub["train_time_s"],      "o-", color=c, lw=1.4, ms=3, label=f"h={h}")
-        axes[1, 1].plot(sp, sub["inference_time_us"], "o-", color=c, lw=1.4, ms=3, label=f"h={h}")
+        axes[0, 0].plot(sp, sub["accuracy"],         "o-", color=c, lw=1.4, ms=3, label=f"n={tn}")
+        axes[0, 1].plot(sp, sub["active_params"],     "o-", color=c, lw=1.4, ms=3, label=f"n={tn}")
+        axes[1, 0].plot(sp, sub["train_time_s"],      "o-", color=c, lw=1.4, ms=3, label=f"n={tn}")
+        axes[1, 1].plot(sp, sub["inference_time_us"], "o-", color=c, lw=1.4, ms=3, label=f"n={tn}")
 
     titles  = ["Test Accuracy", "Active Parameters", "Training Time (s)", "Inference Latency (µs)"]
     ylabels = ["Accuracy", "Count", "Seconds", "Microseconds"]
@@ -584,9 +594,104 @@ def plot_accuracy_vs_params_vs_time(df: pd.DataFrame, out_dir: Path):
 
     handles, labels = axes[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="center right", bbox_to_anchor=(1.1, 0.5),
-               title="Hidden Size", fontsize=7, title_fontsize=9)
+               title="Total Neurons", fontsize=7, title_fontsize=9)
     plt.tight_layout()
     plt.savefig(out_dir / "accuracy_params_time_lines.png", dpi=150, bbox_inches="tight")
+    plt.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Per-sparsity subplots & variance plots
+# ─────────────────────────────────────────────────────────────────────────────
+
+def plot_accuracy_loss_per_sparsity(df: pd.DataFrame, out_dir: Path):
+    """Separate subplot for each sparsity level: Accuracy and Val Loss vs Total Neurons."""
+    sparsity_levels = sorted(df["sparsity"].unique())
+    cmap = plt.cm.viridis
+    colors = [cmap(i / (len(sparsity_levels) - 1)) for i in range(len(sparsity_levels))]
+
+    n_sp = len(sparsity_levels)
+    ncols = 4
+    nrows = int(np.ceil(n_sp / ncols))
+
+    # ── Accuracy vs Total Neurons per sparsity ──
+    fig, axes = plt.subplots(nrows, ncols, figsize=(5 * ncols, 4 * nrows), sharex=True, sharey=True)
+    axes_flat = axes.flatten()
+
+    for idx, (sp, color) in enumerate(zip(sparsity_levels, colors)):
+        ax = axes_flat[idx]
+        sub = df[df["sparsity"] == sp].sort_values("total_neurons")
+        ax.plot(sub["total_neurons"], sub["accuracy"], color=color, linewidth=1.2, alpha=0.85)
+        ax.set_title(f"Sparsity = {sp:.1f}", fontsize=11)
+        ax.grid(True, alpha=0.3)
+        ax.set_ylim(0, 1)
+        if idx % ncols == 0:
+            ax.set_ylabel("Accuracy", fontsize=10)
+        if idx >= (nrows - 1) * ncols:
+            ax.set_xlabel("Total Neurons", fontsize=10)
+
+    for idx in range(n_sp, len(axes_flat)):
+        axes_flat[idx].set_visible(False)
+
+    fig.suptitle("Accuracy vs Total Neurons (separate per Sparsity level)  [2-layer]", fontsize=15, y=1.01)
+    fig.tight_layout()
+    fig.savefig(out_dir / "accuracy_vs_neurons_per_sparsity.png", dpi=200, bbox_inches="tight")
+    plt.close()
+
+    # ── Val Loss vs Total Neurons per sparsity ──
+    fig2, axes2 = plt.subplots(nrows, ncols, figsize=(5 * ncols, 4 * nrows), sharex=True, sharey=True)
+    axes2_flat = axes2.flatten()
+
+    for idx, (sp, color) in enumerate(zip(sparsity_levels, colors)):
+        ax2 = axes2_flat[idx]
+        sub = df[df["sparsity"] == sp].sort_values("total_neurons")
+        ax2.plot(sub["total_neurons"], sub["best_val_loss"], color=color, linewidth=1.2, alpha=0.85)
+        ax2.set_title(f"Sparsity = {sp:.1f}", fontsize=11)
+        ax2.grid(True, alpha=0.3)
+        if idx % ncols == 0:
+            ax2.set_ylabel("Best Val Loss", fontsize=10)
+        if idx >= (nrows - 1) * ncols:
+            ax2.set_xlabel("Total Neurons", fontsize=10)
+
+    for idx in range(n_sp, len(axes2_flat)):
+        axes2_flat[idx].set_visible(False)
+
+    fig2.suptitle("Validation Loss vs Total Neurons (separate per Sparsity level)  [2-layer]", fontsize=15, y=1.01)
+    fig2.tight_layout()
+    fig2.savefig(out_dir / "loss_vs_neurons_per_sparsity.png", dpi=200, bbox_inches="tight")
+    plt.close()
+
+
+def plot_variance_plots(df: pd.DataFrame, out_dir: Path):
+    """Accuracy and Loss variance across sparsity levels for each total neuron count."""
+    # ── Accuracy variance ──
+    variance_df = df.groupby("total_neurons")["accuracy"].var().reset_index()
+    variance_df.columns = ["total_neurons", "accuracy_variance"]
+
+    fig3, ax3 = plt.subplots(figsize=(14, 6))
+    ax3.bar(variance_df["total_neurons"], variance_df["accuracy_variance"],
+            width=15, color="steelblue", alpha=0.8)
+    ax3.set_xlabel("Total Neurons", fontsize=13)
+    ax3.set_ylabel("Variance of Accuracy (across sparsity levels)", fontsize=13)
+    ax3.set_title("Accuracy Variance across Sparsity levels vs Total Neurons  [2-layer]", fontsize=15)
+    ax3.grid(True, alpha=0.3, axis="y")
+    fig3.tight_layout()
+    fig3.savefig(out_dir / "accuracy_variance_vs_neurons.png", dpi=200)
+    plt.close()
+
+    # ── Loss variance ──
+    loss_var_df = df.groupby("total_neurons")["best_val_loss"].var().reset_index()
+    loss_var_df.columns = ["total_neurons", "loss_variance"]
+
+    fig4, ax4 = plt.subplots(figsize=(14, 6))
+    ax4.bar(loss_var_df["total_neurons"], loss_var_df["loss_variance"],
+            width=15, color="indianred", alpha=0.8)
+    ax4.set_xlabel("Total Neurons", fontsize=13)
+    ax4.set_ylabel("Variance of Val Loss (across sparsity levels)", fontsize=13)
+    ax4.set_title("Validation Loss Variance across Sparsity levels vs Total Neurons  [2-layer]", fontsize=15)
+    ax4.grid(True, alpha=0.3, axis="y")
+    fig4.tight_layout()
+    fig4.savefig(out_dir / "loss_variance_vs_neurons.png", dpi=200)
     plt.close()
 
 
@@ -596,38 +701,39 @@ def plot_accuracy_vs_params_vs_time(df: pd.DataFrame, out_dir: Path):
 
 def write_findings(df: pd.DataFrame, out_dir: Path):
     lines = []
-    sep   = "=" * 68
+    sep   = "=" * 72
 
-    lines += [sep, "  FFNN Node-Level Mask Sparsity Benchmark — Key Findings", sep, ""]
+    lines += [sep, "  FFNN 2-Layer Node-Level Mask Sparsity Benchmark — Key Findings", sep, ""]
 
-    lines.append("  NOTE: This experiment masks BOTH weights AND biases at the node")
-    lines.append("  level. Deactivated nodes have ALL incoming weights + bias zeroed,")
-    lines.append("  unlike the baseline which only masks individual weight connections")
-    lines.append("  while biases always survive.\n")
+    lines.append("  Architecture: 2 hidden layers, each with total_neurons // 2 neurons.")
+    lines.append("  Node-level masking applied to BOTH hidden layers (weights + bias).")
+    lines.append("  Output layer is NOT masked.\n")
 
     # Best run overall
     best = df.loc[df["accuracy"].idxmax()]
     lines.append(
-        f"  Global best accuracy : h={int(best.hidden_size):4d}, "
+        f"  Global best accuracy : total={int(best.total_neurons):4d} "
+        f"({int(best.h1_size)}+{int(best.h2_size)}), "
         f"sparsity={int(best.sparsity*100):3d}%  → {best.accuracy:.4f}"
     )
 
-    # Dense baseline (sparsity=0) per hidden size
-    dense = df[df["sparsity"] == 0.0].set_index("hidden_size")["accuracy"]
+    # Dense baseline (sparsity=0) per neuron count
+    dense = df[df["sparsity"] == 0.0].set_index("total_neurons")["accuracy"]
     lines.append(f"\n  Dense (0 % sparsity) accuracy range : "
                  f"{dense.min():.4f} – {dense.max():.4f}")
 
     # Resilience table
     lines.append("\n  Resilience: highest sparsity ≤ 95% of dense accuracy")
-    lines.append(f"  {'h':>6}  {'dense acc':>10}  {'95% threshold':>14}  {'max safe sparsity':>18}")
-    lines.append("  " + "-" * 54)
-    for h in HIDDEN_SIZES:
-        sub    = df[df["hidden_size"] == h].sort_values("sparsity")
+    lines.append(f"  {'total':>7}  {'(h1+h2)':>9}  {'dense acc':>10}  {'95% thresh':>11}  {'max safe sparsity':>18}")
+    lines.append("  " + "-" * 60)
+    for tn in TOTAL_NEURONS:
+        sub    = df[df["total_neurons"] == tn].sort_values("sparsity")
         d_acc  = float(sub[sub["sparsity"] == 0.0]["accuracy"].iloc[0])
         thresh = d_acc * 0.95
         safe   = sub[sub["accuracy"] >= thresh]["sparsity"].max()
+        h = tn // 2
         lines.append(
-            f"  {h:>6}  {d_acc:>10.4f}  {thresh:>14.4f}  {int(safe*100):>17}%"
+            f"  {tn:>7}  {f'{h}+{h}':>9}  {d_acc:>10.4f}  {thresh:>11.4f}  {int(safe*100):>17}%"
         )
 
     # Efficiency comparisons
@@ -663,38 +769,40 @@ def write_findings(df: pd.DataFrame, out_dir: Path):
 def main():
     print(f"Device  : {DEVICE}")
     print(f"Outputs : {_RUN_DIR}\n")
-    print("SUB-EXPERIMENT: Node-level masking (weights + bias masked together)\n")
+    print("SUB-EXPERIMENT: 2-layer node-level masking (weights + bias masked together)\n")
 
     X_tr, X_val, X_te, y_tr, y_val, y_te = load_data()
 
-    total_runs = len(HIDDEN_SIZES) * len(SPARSITY_LEVELS)
+    total_runs = len(TOTAL_NEURONS) * len(SPARSITY_LEVELS)
     print(
-        f"\nSweeping hidden_size ∈ {HIDDEN_SIZES}"
-        f"\n        sparsity    ∈ {[f'{int(s*100)}%' for s in SPARSITY_LEVELS]}"
+        f"\nSweeping total_neurons ∈ {TOTAL_NEURONS}"
+        f"\n        sparsity       ∈ {[f'{int(s*100)}%' for s in SPARSITY_LEVELS]}"
         f"\nTotal runs: {total_runs}  |  epochs={EPOCHS}\n"
     )
     print(
-        f"{'hidden':>8} {'sparsity':>9} {'active_p':>10} "
+        f"{'total':>8} {'(h1+h2)':>9} {'sparsity':>9} {'active_p':>10} "
         f"{'train(s)':>9} {'infer(µs)':>10} {'acc':>8} {'f1':>8}"
     )
-    print("-" * 68)
+    print("-" * 78)
 
     results       = []
     sample_curves = []
 
-    for h in HIDDEN_SIZES:
+    for tn in TOTAL_NEURONS:
         for s in SPARSITY_LEVELS:
-            is_sample = (h == SAMPLE_HIDDEN)
+            is_sample = (tn == SAMPLE_TOTAL)
             r = train_and_eval(
-                h, s, X_tr, y_tr, X_val, y_val, X_te, y_te,
+                tn, s, X_tr, y_tr, X_val, y_val, X_te, y_te,
                 store_curves=is_sample,
             )
             results.append(r)
             if is_sample:
                 sample_curves.append(r)
 
+            h = tn // 2
             print(
-                f"{r['hidden_size']:>8}"
+                f"{r['total_neurons']:>8}"
+                f"  {f'{h}+{h}':>7}"
                 f"{int(r['sparsity']*100):>8}%"
                 f"{r['active_params']:>10,}"
                 f"{r['train_time_s']:>9.2f}"
@@ -705,7 +813,8 @@ def main():
 
     # ── save CSV ──────────────────────────────────────────────────────────────
     scalar_cols = [
-        "hidden_size", "sparsity", "n_params", "active_params", "active_macs",
+        "total_neurons", "h1_size", "h2_size", "sparsity",
+        "n_params", "active_params", "active_macs",
         "train_time_s", "peak_mem_kb", "accuracy", "f1", "precision", "recall",
         "best_val_loss", "convergence_epoch", "inference_time_us",
     ]
@@ -715,22 +824,24 @@ def main():
     # ── plots ─────────────────────────────────────────────────────────────────
     print("\nSaving plots ...")
 
-    pivot_acc = df.pivot(index="hidden_size", columns="sparsity", values="accuracy")
-    pivot_f1  = df.pivot(index="hidden_size", columns="sparsity", values="f1")
+    pivot_acc = df.pivot(index="total_neurons", columns="sparsity", values="accuracy")
+    pivot_f1  = df.pivot(index="total_neurons", columns="sparsity", values="f1")
 
     plot_heatmap(pivot_acc, "Accuracy",
-                 "Test Accuracy (node-level mask)  |  rows=hidden_size, cols=sparsity",
+                 "Test Accuracy (2-layer node-level mask)  |  rows=total_neurons, cols=sparsity",
                  out_dir=_RUN_DIR, fname="heatmap_accuracy.png")
     plot_heatmap(pivot_f1,  "Weighted F1",
-                 "Weighted F1 (node-level mask)    |  rows=hidden_size, cols=sparsity",
+                 "Weighted F1 (2-layer node-level mask)    |  rows=total_neurons, cols=sparsity",
                  out_dir=_RUN_DIR, fname="heatmap_f1.png")
 
     plot_accuracy_vs_sparsity(df, _RUN_DIR)
-    plot_accuracy_vs_hidden(df, _RUN_DIR)
+    plot_accuracy_vs_neurons(df, _RUN_DIR)
     plot_metrics_dashboard(df, _RUN_DIR)
     plot_tradeoff(df, _RUN_DIR)
     plot_sample_loss_curves(sample_curves, _RUN_DIR)
     plot_accuracy_vs_params_vs_time(df, _RUN_DIR)
+    plot_accuracy_loss_per_sparsity(df, _RUN_DIR)
+    plot_variance_plots(df, _RUN_DIR)
 
     # ── findings ──────────────────────────────────────────────────────────────
     write_findings(df, _RUN_DIR)
@@ -739,9 +850,11 @@ def main():
     print(
         "  results.csv  |  findings.txt\n"
         "  heatmap_accuracy.png  |  heatmap_f1.png\n"
-        "  accuracy_vs_sparsity.png  |  accuracy_vs_hidden.png\n"
+        "  accuracy_vs_sparsity.png  |  accuracy_vs_neurons.png\n"
         "  metrics_dashboard.png  |  tradeoff.png  |  sample_loss_curves.png\n"
-        "  accuracy_vs_params_vs_time.png  |  accuracy_params_time_lines.png"
+        "  accuracy_vs_params_vs_time.png  |  accuracy_params_time_lines.png\n"
+        "  accuracy_vs_neurons_per_sparsity.png  |  loss_vs_neurons_per_sparsity.png\n"
+        "  accuracy_variance_vs_neurons.png  |  loss_variance_vs_neurons.png"
     )
 
 

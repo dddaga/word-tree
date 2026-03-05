@@ -1,0 +1,48 @@
+====================================================================
+  FFNN Node-Level Mask Sparsity Benchmark — Key Findings
+====================================================================
+
+  NOTE: This experiment masks BOTH weights AND biases at the node
+  level. Deactivated nodes have ALL incoming weights + bias zeroed,
+  unlike the baseline which only masks individual weight connections
+  while biases always survive.
+
+  Global best accuracy : h=1100, sparsity= 10%  → 0.6500
+
+  Dense (0 % sparsity) accuracy range : 0.6042 – 0.6417
+
+  Resilience: highest sparsity ≤ 95% of dense accuracy
+       h   dense acc   95% threshold   max safe sparsity
+  ------------------------------------------------------
+     100      0.6208          0.5898                 90%
+     200      0.6125          0.5819                 90%
+     300      0.6083          0.5779                 90%
+     400      0.6083          0.5779                 90%
+     500      0.6250          0.5938                 90%
+     600      0.6125          0.5819                 90%
+     700      0.6375          0.6056                 80%
+     800      0.6042          0.5740                 90%
+     900      0.6208          0.5898                 90%
+    1000      0.6250          0.5938                 90%
+    1100      0.6417          0.6096                 40%
+    1200      0.6417          0.6096                 80%
+    1300      0.6292          0.5977                 90%
+    1400      0.6208          0.5898                 70%
+    1500      0.6125          0.5819                 90%
+    1600      0.6250          0.5938                 90%
+    1700      0.6333          0.6017                 90%
+    1800      0.6125          0.5819                 90%
+    1900      0.6292          0.5977                 90%
+    2000      0.6333          0.6017                 90%
+
+  Avg active params at sparsity=  0% : 24,161
+  Avg accuracy      at sparsity=  0% : 0.6227
+  Avg train time    at sparsity=  0% : 4.00s
+  Avg inference     at sparsity=  0% : 85.30µs
+
+  Avg active params at sparsity= 50% : 17,861
+  Avg accuracy      at sparsity= 50% : 0.6163
+  Avg train time    at sparsity= 50% : 4.28s
+  Avg inference     at sparsity= 50% : 93.79µs
+
+====================================================================
