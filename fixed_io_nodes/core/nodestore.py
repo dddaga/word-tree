@@ -1297,7 +1297,7 @@ class PytorchNodeStore(nn.Module):
         """Initialize magnitudes as continuous values in [-π, π]."""
         mags = {}
         for node_id in node_ids:
-            mag_values = np.random.normal(-math.log(self.cardinality+1), 0.5, (self.vector_dim)).astype(np.float32)
+            mag_values = np.random.normal(1.0, 0.1, (self.vector_dim)).astype(np.float32)
             mags[node_id] = mag_values
         return mags
 

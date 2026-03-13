@@ -121,7 +121,8 @@ def update_activations(
 
     # New phase/mag activation and activation strength
     new_phase = torch.atan2(dest_imaginary_output, dest_real_output + _EPSILON)
-    new_mag = torch.log(torch.sqrt(dest_real_output ** 2 + dest_imaginary_output ** 2 + _EPSILON))
+    new_mag = 0.5 * torch.log(dest_real_output ** 2 + dest_imaginary_output ** 2 + _EPSILON)
+    new_mag = new_mag - new_mag.mean(dim=-1, keepdim=True)
     new_activation_strength = activation_strength_forward_unquantized(new_phase, new_mag)
 
     dest_indices = torch.unique(dest)

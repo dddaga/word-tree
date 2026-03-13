@@ -34,7 +34,7 @@ class IrisGNNModel(nn.Module):
     def forward(self, x):
         B = x.size(0)
         x = x.squeeze(1)
-        h = self.tanh(self.linear(x))   
+        h = self.tanh(self.linear(x)) * torch.pi
         h = h.view(B, self.input_nodes, self.vector_dim)
         return self.out(self.gnn(h))
 
@@ -54,7 +54,7 @@ class MNISTGNNModel(nn.Module):
     def forward(self, x):
         B = x.size(0)
         x = x.squeeze(1)
-        h = self.tanh(self.linear(x))
+        h = self.tanh(self.linear(x)) * torch.pi
         h = h.view(B, self.input_nodes, self.vector_dim)
         return self.out(self.gnn(h))
 

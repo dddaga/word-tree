@@ -184,24 +184,14 @@ class UnquantizedGradientAccumulator(nn.Module):
         self.step_count = 0  # Track number of steps for interval-based saving
 
         # Use sparse dictionaries - only store gradients for active nodes
-        # self.phase_grads = {}
-        # self.mag_grads = {}
         self.phase_grads = torch.zeros((self.total_nodes, self.vector_dim), device=self.device, dtype=torch.float32)
         self.mag_grads = torch.zeros_like(self.phase_grads)
 
         # Count of gradients received
-        # self.phase_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
-        # self.mag_grad_counts = {node_id:0 for node_id in range(self.total_nodes)}
         self.phase_grad_counts = torch.zeros(self.total_nodes, dtype=torch.int32, device=self.device)
         self.mag_grad_counts = torch.zeros_like(self.phase_grad_counts)
 
         # Adam state per node (sparse; created on first update)
-        # self.phase_exp_avg: Dict[int, torch.Tensor] = {}
-        # self.phase_exp_avg_sq: Dict[int, torch.Tensor] = {}
-        # self.phase_state_steps: Dict[int, torch.Tensor] = {}
-        # self.mag_exp_avg: Dict[int, torch.Tensor] = {}
-        # self.mag_exp_avg_sq: Dict[int, torch.Tensor] = {}
-        # self.mag_state_steps: Dict[int, torch.Tensor] = {}
         self.phase_exp_avg = torch.zeros((self.total_nodes, self.vector_dim), device=self.device, dtype=torch.float32)
         self.phase_exp_avg_sq = torch.zeros_like(self.phase_exp_avg)
         self.phase_state_steps = torch.zeros(self.total_nodes, dtype=torch.int32, device=self.device)
@@ -376,6 +366,5 @@ class UnquantizedGradientAccumulator(nn.Module):
                     self.node_store.save_weights(self.save_path)
         
         return list(updated_nodes)
-    ### END OF CHANGES ###
 
 GradientAccumulator = UnquantizedGradientAccumulator

@@ -304,13 +304,15 @@ def load_iris_dataset() -> TensorDataset:
 
 
 def load_mnist_dataset() -> TensorDataset:
-    """Load and preprocess MNIST, same contract as load_iris_dataset: TensorDataset(X, y), X shape (N, 1, 784)."""
+    """Load and preprocess MNIST, same contract as load_iris_dataset: TensorDataset(X, y), X shape (N, 1, 14*14)."""
+    torch.manual_seed(42)
     T = transforms
     mnist = torchvision.datasets.MNIST(root="./data", train=True, download=True, transform=transforms.ToTensor())
-    X = T.Resize((14, 14))(mnist.data).reshape(len(mnist.data), -1).float()/256.0
-    y_tensor = mnist.targets
+    indices = torch.randperm(len(mnist.data))[:10000]
+    X = (T.Resize((14, 14))(mnist.data[indices]).reshape(len(indices), -1).float()/256.0).reshape(-1, 1, 14*14)
+    y_tensor = mnist.targets[indices]
     dataset = TensorDataset(X, y_tensor)
-    print(f"Loaded MNIST dataset: {len(dataset)} samples, 784 features, 10 classes")
+    print(f"Loaded MNIST dataset: {len(dataset)} samples, {X.shape[1]} features, {len(mnist.targets.unique())} classes")
     return dataset
 
 
