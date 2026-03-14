@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 import torch.multiprocessing as mp
 
 from distributed import DistributedNeurographLayer, GNNAdam
+from distributed.checkpoint import save_full_model, load_full_model
 from main import load_config, load_iris_dataset, load_mnist_dataset
 
 CONFIG_PATH = "training_runs/distributed_test/distributed.yaml"
@@ -88,8 +89,8 @@ if __name__ == "__main__":
     # Load weights if path exists (same path used for saving)
     load_path = cfg.get("system", {}).get("weights_save_path")
     if load_path and os.path.exists(load_path):
-        model.gnn._node_store.load_weights(load_path)
-        print(f"Loaded weights from {load_path}")
+        load_full_model(model, load_path)
+        print(f"Loaded full model weights from {load_path}")
 
     optimizer = GNNAdam(
         model,
@@ -193,7 +194,21 @@ if __name__ == "__main__":
                 msg += f"  val_acc={val_acc:.2f}%"
             print(msg)
 
+    if load_path:
+        save_full_model(model, load_path)
+        print(f"Saved full model weights to {load_path}")
+
     writer.close()
+
+    print("Linear weight:")
+    print(model.linear.weight.data[0])
+    print("Out weight")
+    print(model.out.weight.data[0])
+    print("GNN node 5 weight:")
+    print(model.gnn._node_store.phase_weight.data[5])
+    print("GNN node 9 mag weight:")
+    print(model.gnn._node_store.mag_weight.data[9])
+    
     try:
         model.gnn.shutdown()
     except Exception:

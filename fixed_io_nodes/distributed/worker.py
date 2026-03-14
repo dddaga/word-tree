@@ -236,6 +236,7 @@ def worker_pool_loop(worker_id: int, task_queue, result_queue, config: dict):
         if op == "weights":
             state_dict = payload
             model.gnn.node_store.load_state_dict(state_dict)
+            model.reset()
             continue
 
         if op == "forward":

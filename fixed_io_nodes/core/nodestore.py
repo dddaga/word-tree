@@ -1522,8 +1522,8 @@ class PytorchNodeStore(nn.Module):
                 vectors.append(self.mag_vectors[node_id].clone().tolist())
         return vectors
 
-    def state_dict(self, **kwargs):
-        """Return a dict of savable state. Ignores destination/prefix/keep_vars from nn.Module.state_dict()."""
+    def get_custom_state(self, **kwargs):
+        """Return a dict of savable state. """
         return {
             'phase_weight': self.phase_weight.cpu().clone(),
             'mag_weight': self.mag_weight.cpu().clone(),
@@ -1544,8 +1544,8 @@ class PytorchNodeStore(nn.Module):
         }
 
     @torch.no_grad()
-    def load_state_dict(self, state_dict: dict, **kwargs):
-        """Restore from a state_dict returned by state_dict()."""
+    def load_custom_state(self, state_dict: dict, **kwargs):
+        """Restore from a custom saved state_dict returned by get_custom_state()."""
         metadata = state_dict['metadata']
         if metadata['total_nodes'] != self.total_nodes:
             raise ValueError(f"Total nodes mismatch: saved={metadata['total_nodes']}, current={self.total_nodes}")
@@ -1554,6 +1554,9 @@ class PytorchNodeStore(nn.Module):
         with self._lock:
             self.phase_weight.data.copy_(state_dict['phase_weight'])
             self.mag_weight.data.copy_(state_dict['mag_weight'])
+            self.phase_vectors.copy_(state_dict['phase_weight'])
+            self.mag_vectors.copy_(state_dict['mag_weight']) #NOTE: there is an implicit assumtion here, that phase/mag vectors are the same as phase/mag weights.
+
             self.phase_values.data.copy_(state_dict['phase_values'])
             self.version_tensor.copy_(state_dict['version_tensor'])
             self.payloads.update(state_dict['payloads'])
@@ -1572,7 +1575,7 @@ class PytorchNodeStore(nn.Module):
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         temp_path = save_path + '.tmp'
         try:
-            torch.save(self.state_dict(), temp_path)
+            torch.save(self.get_custom_state(), temp_path)
             if os.path.exists(save_path):
                 os.remove(save_path)
             os.rename(temp_path, save_path)
@@ -1589,7 +1592,7 @@ class PytorchNodeStore(nn.Module):
         if not os.path.exists(load_path):
             raise FileNotFoundError(f"Weights file not found: {load_path}")
         state_dict = torch.load(load_path, map_location='cpu')
-        self.load_state_dict(state_dict)
+        self.load_custom_state(state_dict)
         if self.verbose:
             print(f"Loaded model weights from {load_path}")
 
