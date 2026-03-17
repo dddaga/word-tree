@@ -117,7 +117,8 @@ class _PooledWorkerFunction(torch.autograd.Function):
     def forward(ctx, x, config, node_store, gradient_sink, pool, layer_ref):
         B = x.shape[0]
         nw = pool.num_workers
-        state_dict = node_store.get_custom_state()
+        state_dict = {k: v.cpu() if isinstance(v, torch.Tensor) else v
+                       for k, v in node_store.state_dict().items()}
         outputs = [None] * B
         scattering_prob = (
             layer_ref._current_scattering_prob
@@ -159,7 +160,8 @@ class _PooledWorkerFunction(torch.autograd.Function):
             chunk_end = min(chunk_start + nw, ctx.B)
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
-                pool.submit_backward(j, co[i])
+                clean_grad = co[i].detach().clone().contiguous()
+                pool.submit_backward(j, clean_grad)
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
                 idx, pg, mg, ig = pool.get_backward_result(j)
