@@ -117,8 +117,7 @@ class _PooledWorkerFunction(torch.autograd.Function):
     def forward(ctx, x, config, node_store, gradient_sink, pool, layer_ref):
         B = x.shape[0]
         nw = pool.num_workers
-        state_dict = {k: v.cpu() if isinstance(v, torch.Tensor) else v
-                       for k, v in node_store.state_dict().items()}
+        state_dict = node_store.get_custom_state()
         outputs = [None] * B
         scattering_prob = (
             layer_ref._current_scattering_prob
