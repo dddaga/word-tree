@@ -26,6 +26,7 @@ except (ImportError, AttributeError):
 
 import copy
 import time
+import atexit
 from collections import defaultdict
 
 from . import worker as worker_mod
@@ -116,16 +117,19 @@ class _PooledWorkerFunction(torch.autograd.Function):
     def forward(ctx, x, config, node_store, gradient_sink, pool, layer_ref):
         B = x.shape[0]
         nw = pool.num_workers
-        state_dict = node_store.state_dict()
+        state_dict = node_store.get_custom_state()
         outputs = [None] * B
         scattering_prob = (
             layer_ref._current_scattering_prob
             if layer_ref._current_scattering_prob is not None
             else layer_ref._scattering_prob_base
         )
+        
+        # Submit weights ONCE per batch, not per chunk
+        pool.submit_weights(state_dict)
+        
         for chunk_start in range(0, B, nw):
             chunk_end = min(chunk_start + nw, B)
-            pool.submit_weights(state_dict)
             for j in range(chunk_end - chunk_start):
                 i = chunk_start + j
                 xi = x[i].detach().cpu().requires_grad_(True)
@@ -358,6 +362,9 @@ class DistributedNeurographLayer(nn.Module):
         self._current_scattering_prob = None
         self._stochastic_radiation_duration = self._config.get("model", {}).get("stochastic_radiation_duration", 0.5)
 
+        #Called automatically when the program exits
+        atexit.register(self.shutdown)
+
     def set_training_progress(self, epoch: int, total_epochs: int) -> None:
         duration = self._stochastic_radiation_duration
         if self._scattering_prob_base == 0:
@@ -381,6 +388,7 @@ class DistributedNeurographLayer(nn.Module):
         return self._accumulator
 
     def forward(self, x):
+        x = torch.tanh(x) * torch.pi
         return _PooledWorkerFunction.apply(
             x, self._config, self._node_store, self._gradient_sink, self._pool, self
         )

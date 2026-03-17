@@ -68,6 +68,7 @@ class GNNAdam(optim.Adam):
 
         self.gradient_sinks = gradient_sinks
         self.accumulators = accumulators
+        self.gnn_layers = gnn_layers
 
     def zero_grad(self, set_to_none: bool = False):
         """
@@ -75,10 +76,15 @@ class GNNAdam(optim.Adam):
         by the accumulators and cleared when consumed.
         """
         super().zero_grad(set_to_none=set_to_none)
-        # Clear all gradient sinks
+        # Clear all gradient sinks and reset the worker graph states
         for sink in self.gradient_sinks:
             if hasattr(sink, 'clear'):
                 sink.clear()
+                
+        for layer in self.gnn_layers:
+            pool = getattr(layer, "_pool", None)
+            if pool is not None:
+                pool.reset_workers()
 
     def step(self, closure=None):
         """

@@ -28,14 +28,13 @@ class IrisGNNModel(nn.Module):
         self.input_nodes = input_nodes
         self.vector_dim = vector_dim
         self.linear = nn.Linear(4, input_nodes * vector_dim)
-        self.tanh = nn.Tanh()
         self.out = nn.Linear(cfg["graph"]["output_nodes"], 3)
-        self.gnn = DistributedNeurographLayer(cfg)
+        self.gnn = DistributedNeurographLayer(cfg, )
 
     def forward(self, x):
         B = x.size(0)
         x = x.squeeze(1)
-        h = self.tanh(self.linear(x)) * torch.pi
+        h = self.linear(x)
         h = h.view(B, self.input_nodes, self.vector_dim)
         return self.out(self.gnn(h))
 
@@ -48,14 +47,13 @@ class MNISTGNNModel(nn.Module):
         self.input_nodes = input_nodes
         self.vector_dim = vector_dim
         self.linear = nn.Linear(14*14, input_nodes * vector_dim)
-        self.tanh = nn.Tanh()
         self.out = nn.Linear(cfg["graph"]["output_nodes"], 10)
         self.gnn = DistributedNeurographLayer(cfg)
 
     def forward(self, x):
         B = x.size(0)
         x = x.squeeze(1)
-        h = self.tanh(self.linear(x)) * torch.pi
+        h = self.linear(x)
         h = h.view(B, self.input_nodes, self.vector_dim)
         return self.out(self.gnn(h))
 
@@ -140,8 +138,6 @@ if __name__ == "__main__":
             correct, total = 0, 0
             pbar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{epochs}", total=len(train_loader))
             for x, y in pbar:
-                if gnn_pool is not None:
-                    gnn_pool.reset_workers()
                 model.gnn.set_training_progress(global_step, total_steps)
                 x = x.to(device)
                 y = y.to(device)
@@ -209,7 +205,3 @@ if __name__ == "__main__":
     print("GNN node 9 mag weight:")
     print(model.gnn._node_store.mag_weight.data[9])
     
-    try:
-        model.gnn.shutdown()
-    except Exception:
-        pass
