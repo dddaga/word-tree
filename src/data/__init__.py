@@ -1,2 +1,3 @@
 from .dataset import ImagenetteDataset, IMAGENETTE_CLASSES, IMAGENET_INDICES, get_dataloader
 from .extractor import VGGExtractor
+from .store import TensorStore
