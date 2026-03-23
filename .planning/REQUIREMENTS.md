@@ -16,12 +16,11 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 - [ ] **DATA-05**: Feature vectors and soft labels stored in HDF5 tensor store
 - [ ] **DATA-06**: CSV manifest maps each record to tensor index, split (train/val), and ground-truth class
 
-### Dense Baseline
+### Dense Baseline (Frozen VGG16)
 
-- [ ] **BASE-01**: Dense MLP (25088→4096→4096→10) implemented matching VGG16 FC structure
-- [ ] **BASE-02**: Distillation training loop with KL divergence loss (soft targets from VGG16)
-- [ ] **BASE-03**: Baseline top-1 accuracy measured on Imagenette val set
-- [ ] **BASE-04**: Baseline parameter count and FLOPs recorded
+- [ ] **BASE-01**: Pretrained VGG16 (frozen, eval mode) run on Imagenette val set — no training
+- [ ] **BASE-02**: Top-1 accuracy on Imagenette val set recorded as the benchmark to beat
+- [ ] **BASE-03**: VGG16 FC parameter count (~123.6M) and FLOPs per inference recorded
 
 ### SGNNET Architecture
 
@@ -96,14 +95,14 @@ Deferred to future milestone.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DATA-01 through DATA-06 | Phase 1 | Pending |
-| BASE-01 through BASE-04 | Phase 2 | Pending |
+| BASE-01 through BASE-03 | Phase 2 | Pending |
 | ARCH-01 through ARCH-07 | Phase 3 | Pending |
 | TRAIN-01 through TRAIN-06 | Phase 4 | Pending |
 | PCA-01 through PCA-06 | Phase 5 | Pending |
 | ANAL-01 through ANAL-06 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 36 total
+- v1 requirements: 35 total
 - Mapped to phases: 36
 - Unmapped: 0 ✓
 

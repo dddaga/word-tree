@@ -91,63 +91,50 @@ store.h5
 
 ---
 
-## Phase 2 — Dense Baseline Distillation
+## Phase 2 — Dense Baseline Benchmark
 **Day:** March 23 (afternoon)
-**Goal:** Implement and train a dense MLP that replicates VGG16 FC behavior via distillation. Establishes accuracy ceiling and parameter reference point.
-**Requirements:** BASE-01 through BASE-04
-**Done when:** Dense MLP trained, top-1 accuracy ≥85% on val set, parameter count and FLOPs recorded.
+**Goal:** Evaluate frozen pretrained VGG16 on Imagenette val set. No training — this is the benchmark accuracy that SGNNET must approach.
+**Requirements:** BASE-01 through BASE-03
+**Done when:** `results/baseline_vgg16.json` exists with top-1 accuracy, FC parameter count, and FLOPs.
 
-### Plan 2.1 — Dense MLP Architecture
-Implement the dense MLP matching VGG16 FC layer structure.
+### Plan 2.1 — Frozen VGG16 Evaluation
+Run pretrained VGG16 (frozen, eval mode) on Imagenette val set. Extract per-class accuracy.
 
-**Architecture:**
-- FC1: 25088 → 4096, ReLU, Dropout(0.5)
-- FC2: 4096 → 4096, ReLU, Dropout(0.5)
-- FC3: 4096 → 10, (no activation — logits)
-- Parameter count: 25088×4096 + 4096×4096 + 4096×10 + biases ≈ 123.6M
+**What this measures:**
+- Top-1 accuracy on Imagenette val = the distillation target to match
+- VGG16 FC parameter count = the 100% parameter reference (SGNNET targets ≤1% of this)
 
 **Deliverables:**
-- `src/models/dense_mlp.py`: DenseMLP class
-- `src/models/__init__.py`
-
-**Verification:** `count_params(model)` returns ~123.6M; forward pass on random input [B, 25088] produces [B, 10].
-
----
-
-### Plan 2.2 — Distillation Training Loop
-Training loop using soft KL divergence loss against VGG16 soft labels. Loads data from HDF5 tensor store.
-
-**Loss:** `F.kl_div(F.log_softmax(logits/T), soft_labels, reduction='batchmean') * T²`
-where T = temperature (default 4.0)
-
-**Deliverables:**
-- `src/training/trainer.py`: Trainer class
-  - `train_epoch(model, dataloader, optimizer) -> avg_loss`
-  - `evaluate(model, dataloader) -> top1_accuracy`
-- `src/training/config.py`: TrainConfig dataclass (lr, epochs, batch_size, temperature)
-- `scripts/train_baseline.py`: CLI entry point
-
-**Verification:** Training loss decreases over first 5 epochs; no NaN/Inf in loss.
-
----
-
-### Plan 2.3 — Baseline Evaluation & Metrics
-Evaluate trained dense MLP, record all baseline metrics.
-
-**Deliverables:**
-- `results/baseline_dense.json`:
+- `src/utils/metrics.py`: `count_params(model)`, `count_flops(model, input_shape)`
+- `scripts/eval_baseline.py`: load VGG16 pretrained, run on val set, write results
+- `results/baseline_vgg16.json`:
   ```json
   {
-    "model": "DenseMLP",
-    "params": 123646952,
+    "model": "VGG16 (frozen)",
+    "fc_params": 123646952,
     "top1_accuracy": ...,
-    "flops_per_inference": ...,
-    "training_epochs": ...
+    "per_class_accuracy": {...},
+    "flops_fc_per_inference": ...
   }
   ```
-- `src/utils/metrics.py`: `count_params(model)`, `count_flops(model, input_shape)`
 
-**Verification:** `results/baseline_dense.json` exists; top1_accuracy ≥ 0.85.
+**Verification:** `results/baseline_vgg16.json` exists; top1_accuracy is a reasonable number (typically ~94–97% on Imagenette for VGG16).
+
+---
+
+### Plan 2.2 — Soft Label Quality Check
+Verify that the soft labels saved in the tensor store in Phase 1 faithfully reflect VGG16's output distribution.
+
+**What to check:**
+- Hard prediction from soft labels (argmax) matches VGG16 direct eval accuracy
+- Soft label entropy is reasonable (not collapsed to one-hot)
+- Class distribution is balanced across Imagenette's 10 classes
+
+**Deliverables:**
+- `scripts/verify_soft_labels.py`: loads HDF5, computes argmax top-1, compares to baseline_vgg16.json
+- Adds `"soft_label_accuracy_check": true/false` to `results/baseline_vgg16.json`
+
+**Verification:** Argmax accuracy from soft labels matches VGG16 direct eval accuracy within 0.1%.
 
 ---
 
@@ -409,8 +396,7 @@ Aggregate all results into a single comparison table.
 ```
 | Model              | Params   | % of VGG FC | Top-1 Acc | FLOPs (inf) |
 |--------------------|----------|-------------|-----------|-------------|
-| VGG16 FC           | 123.6M   | 100%        | ~xx%      | xxx M       |
-| Dense MLP (dist.)  | 123.6M   | 100%        | xx%       | xxx M       |
+| VGG16 FC (frozen)  | 123.6M   | 100%        | ~xx%      | xxx M       |
 | SGNNET (full dim)  | ~1.24M   | ~1%         | xx%       | xxx M       |
 | SGNNET + PCA (k*)  | ~xxx K   | <1%         | xx%       | xxx M       |
 ```

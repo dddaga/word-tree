@@ -33,7 +33,7 @@ Key numbers for VGG16 experiment:
 ### Active
 
 - [ ] Download Imagenette and extract VGG16 pre-FC features (25088-dim) + soft labels (10-class) into a tensor store
-- [ ] Implement dense MLP baseline replicating VGG16 FC behavior via distillation
+- [ ] Evaluate frozen pretrained VGG16 on Imagenette val — record accuracy as the benchmark
 - [ ] Implement SGNNET core: W positions, C sparse matrix, dynamic connectivity, K-iterations, self-projection
 - [ ] Train SGNNET to match VGG16 FC soft outputs at ≤1% parameter count
 - [ ] Apply PCA to compress 25088-dim input, sweep compression ratios, retrain SGNNET
