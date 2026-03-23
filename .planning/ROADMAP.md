@@ -11,6 +11,11 @@
 **Goal:** Download Imagenette, extract VGG16 pre-FC feature vectors and soft labels, persist to HDF5 tensor store.
 **Requirements:** DATA-01 through DATA-06
 **Done when:** HDF5 store exists with 13.4k records, each containing a 25088-dim feature vector and a 10-dim soft probability vector; CSV manifest maps every record.
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Environment setup, Imagenette download, and ImagenetteDataset class
+- [ ] 01-02-PLAN.md — VGG16 feature extraction, HDF5 tensor store, and CSV manifest
 
 ### Plan 1.1 — Environment Setup
 Set up Python environment with all dependencies: torch, torchvision, h5py, scikit-learn, pandas, matplotlib, tqdm.
@@ -472,4 +477,4 @@ Write final `results/report.md`.
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-23 after initialization*
+*Last updated: 2026-03-23 after Phase 1 planning*
