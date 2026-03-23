@@ -76,5 +76,8 @@
     }
   },
   "flops_fc_per_inference": 123633664,
-  "flops_note": "MACs from thop.profile on model.classifier"
+  "flops_note": "MACs from thop.profile on model.classifier",
+  "soft_label_accuracy_check": true,
+  "soft_label_accuracy_diff": 0.0,
+  "soft_label_mean_entropy": 0.03486732766032219
 }
