@@ -1,0 +1,47 @@
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run1"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 15454 #123633664/ (1000 * vector_dim)
+  input_nodes: 3136 # 512*7*7 / vector_dim
+  output_nodes: 10
+  cardinality: 1540 # 20 is extremelys small - just to make it work
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  # phase_bins: null
+  # mag_bins: null
+  # gamma: 1.5
+  iterations: 5
+  radiation_similarity_threshold: 0.1
+  temporal_decay: 0.9
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.0
+  stochastic_radiation_duration: 0.4
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0005
+  accumulation_steps: 4
+  epochs: 2
+  validation_fraction: 0.0
+
+
+# --- System & Logging ---
+system:
+  device: "cuda"
+  random_seed: 42
+  weights_save_path: "training_runs/run1/run1_weights.pt"
+  logging:
+    log_path: "training_runs/run1/run1.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    tensorboard_dir: null
+    verbose: false
