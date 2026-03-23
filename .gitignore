@@ -1,0 +1,8 @@
+d_env/
+data/
+__pycache__/
+*.pyc
+.DS_Store
+._*
+checkpoints/
+results/
