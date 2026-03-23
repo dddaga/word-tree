@@ -28,12 +28,10 @@ Key numbers for VGG16 experiment:
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Download Imagenette and extract VGG16 pre-FC features (25088-dim) + soft labels (10-class) into a tensor store — Validated in Phase 1: Data Pipeline
+- [x] Evaluate frozen pretrained VGG16 on Imagenette val — record accuracy as the benchmark — Validated in Phase 2: Dense Baseline Benchmark (99.54% top-1, 99.97% mAP)
 
 ### Active
-
-- [ ] Download Imagenette and extract VGG16 pre-FC features (25088-dim) + soft labels (10-class) into a tensor store
-- [ ] Evaluate frozen pretrained VGG16 on Imagenette val — record accuracy as the benchmark
 - [ ] Implement SGNNET core: W positions, C sparse matrix, dynamic connectivity, K-iterations, self-projection
 - [ ] Train SGNNET to match VGG16 FC soft outputs at ≤1% parameter count
 - [ ] Apply PCA to compress 25088-dim input, sweep compression ratios, retrain SGNNET
@@ -76,7 +74,7 @@ Key numbers for VGG16 experiment:
 | N_in approach for SGNNET | N_in=25088 creates N²=630M C matrix — must decide: accept large N or add adapter | — Pending |
 
 ---
-*Last updated: 2026-03-23 after initialization*
+*Last updated: 2026-03-23 after Phase 2 completion*
 
 ## Evolution
 
