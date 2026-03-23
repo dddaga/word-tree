@@ -148,12 +148,15 @@ def get_dataloader(
     -------
     DataLoader
     """
+    import torch
     dataset = ImagenetteDataset(root=root, split=split)
     shuffle = split == "train"
+    # pin_memory is not supported on MPS; only enable for CUDA/CPU
+    pin_memory = not torch.backends.mps.is_available()
     return DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=shuffle,
         num_workers=num_workers,
-        pin_memory=True,
+        pin_memory=pin_memory,
     )
