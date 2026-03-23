@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: In progress
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-23T17:41:15.000Z"
+status: completed
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-23T17:56:03.297Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State: neuro_graph
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 2 — Dense Baseline Benchmark**
-Status: In progress (1/2 plans complete)
-Next action: Execute Plan 02-02 (soft label quality verification)
+Status: Complete (2/2 plans)
+Next action: Phase 3 (SGNNET Core Architecture)
 
 ## Phase Progress
 
 | Phase | Name | Status |
 |-------|------|--------|
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
-| 2 | Dense Baseline Benchmark | In progress (1/2 plans) |
+| 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Not started |
 | 4 | SGNNET Training & Evaluation | Not started |
 | 5 | PCA Compression | Not started |
@@ -48,6 +48,7 @@ Next action: Execute Plan 02-02 (soft label quality verification)
 - **thop MACs not FLOPs**: thop.profile returns MACs; documented with flops_note in JSON (Phase 2, Plan 02-01)
 - **Reuse VGGExtractor for eval**: No duplicate VGG16 loading; extractor handles frozen/eval/MPS (Phase 2, Plan 02-01)
 - **Track results/*.json in git**: Baseline JSON is a key deliverable consumed by Phases 4 and 6 (Phase 2, Plan 02-01)
+- **Stored soft labels identical to direct eval**: Accuracy diff=0.0 confirms HDF5 tensor store is perfectly faithful (Phase 2, Plan 02-02)
 
 ## Open Decisions
 
@@ -65,6 +66,7 @@ Next action: Execute Plan 02-02 (soft label quality verification)
 - Baseline eval script: `scripts/eval_baseline.py`
 - Baseline results: `results/baseline_vgg16.json` (top1=0.9954, mAP=0.9997)
 - Metrics tests: `tests/test_metrics.py` (4 tests)
+- Soft label verification: `scripts/verify_soft_labels.py` (accuracy, entropy, class balance checks)
 
 ## Performance Metrics
 
@@ -73,12 +75,13 @@ Next action: Execute Plan 02-02 (soft label quality verification)
 | 01-01      | 6min     | 2     | 5     |
 | 01-02      | 3min     | 2     | 5     |
 | 02-01      | 4min     | 2     | 8     |
+| 02-02      | 2min     | 1     | 2     |
 
 ## Last Session
 
-- **Stopped at:** Completed 02-01-PLAN.md
-- **Timestamp:** 2026-03-23T17:41:15Z
+- **Stopped at:** Completed 02-02-PLAN.md
+- **Timestamp:** 2026-03-23T17:49:06Z
 
 ---
 *State initialized: 2026-03-23*
-*Last updated: 2026-03-23 after Plan 02-01 completion*
+*Last updated: 2026-03-23 after Plan 02-02 completion*

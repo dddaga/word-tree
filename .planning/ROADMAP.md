@@ -105,7 +105,7 @@ store.h5
 
 Plans:
 - [x] 02-01-PLAN.md — Metrics module, frozen VGG16 eval, baseline JSON
-- [ ] 02-02-PLAN.md — Soft label quality verification
+- [x] 02-02-PLAN.md — Soft label quality verification
 
 ### Plan 2.1 — Frozen VGG16 Evaluation
 Run pretrained VGG16 (frozen, eval mode) on Imagenette val set. Compute full per-class metrics.
@@ -482,4 +482,4 @@ Write final `results/report.md`.
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-23 after Phase 2 planning*
+*Last updated: 2026-03-23 after Phase 2 Plan 02-02 completion*
