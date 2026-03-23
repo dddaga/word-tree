@@ -19,8 +19,10 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 ### Dense Baseline (Frozen VGG16)
 
 - [ ] **BASE-01**: Pretrained VGG16 (frozen, eval mode) run on Imagenette val set — no training
-- [ ] **BASE-02**: Top-1 accuracy on Imagenette val set recorded as the benchmark to beat
-- [ ] **BASE-03**: VGG16 FC parameter count (~123.6M) and FLOPs per inference recorded
+- [ ] **BASE-02**: Top-1 accuracy (overall and per-class) recorded as the benchmark
+- [ ] **BASE-03**: mAP computed across all 10 Imagenette classes (each class treated as binary: correct class vs. rest)
+- [ ] **BASE-04**: Per-class precision, recall, and F1 recorded for all 10 classes
+- [ ] **BASE-05**: VGG16 FC parameter count (~123.6M) and FLOPs per inference recorded
 
 ### SGNNET Architecture
 
@@ -39,25 +41,27 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 - [ ] **TRAIN-03**: Position clamping enforced after each optimizer step (keep inside [0, box_size])
 - [ ] **TRAIN-04**: SGNNET achieves ≤1.24M trainable parameters (1% of VGG16 FC ~123.6M)
 - [ ] **TRAIN-05**: Static C matrix maintains ≥90% sparsity throughout training
-- [ ] **TRAIN-06**: Top-1 accuracy on Imagenette val set measured and recorded
+- [ ] **TRAIN-06**: Top-1 accuracy (overall + per-class), mAP, and per-class precision/recall/F1 measured and recorded
 
 ### PCA Compression
 
 - [ ] **PCA-01**: PCA fitted on training feature vectors (25088-dim); explained variance curve produced
 - [ ] **PCA-02**: Compression sweep over k ∈ {64, 128, 256, 512, 1024, 2048} principal components
 - [ ] **PCA-03**: SGNNET retrained with PCA-compressed input for each k
-- [ ] **PCA-04**: Accuracy vs. compression ratio curve produced
+- [ ] **PCA-04**: Per-class accuracy, mAP, and overall accuracy vs. compression ratio curves produced
 - [ ] **PCA-05**: Optimal k identified (highest compression with <2% accuracy drop vs. full-dim SGNNET)
 - [ ] **PCA-06**: PCA transformation overhead (FLOPs) accounted for in compute comparison
 
 ### Comparative Analysis
 
-- [ ] **ANAL-01**: Parameter count table: VGG16 FC / Dense MLP / SGNNET full / SGNNET+PCA(k*)
-- [ ] **ANAL-02**: FLOPs per inference computed for all four variants (including PCA transform overhead)
-- [ ] **ANAL-03**: Top-1 accuracy on Imagenette val set for all four variants
-- [ ] **ANAL-04**: Accuracy vs. parameter count scatter plot
-- [ ] **ANAL-05**: Accuracy vs. compression ratio curve (for PCA sweep)
-- [ ] **ANAL-06**: Summary report (`results/report.md`) with tables and key findings
+- [ ] **ANAL-01**: Parameter count table for all variants (VGG16 FC / SGNNET full / SGNNET+PCA(k*))
+- [ ] **ANAL-02**: FLOPs per inference computed for all variants (including PCA transform overhead)
+- [ ] **ANAL-03**: Per-class accuracy table for all variants — 10 classes × 3 variants
+- [ ] **ANAL-04**: mAP for all variants — primary comparison metric
+- [ ] **ANAL-05**: Per-class precision, recall, F1 for all variants
+- [ ] **ANAL-06**: mAP vs. parameter count scatter plot
+- [ ] **ANAL-07**: Per-class accuracy delta heatmap (SGNNET vs. VGG16 per class)
+- [ ] **ANAL-08**: Summary report (`results/report.md`) with all tables and key findings
 
 ## v2 Requirements
 
@@ -95,14 +99,14 @@ Deferred to future milestone.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DATA-01 through DATA-06 | Phase 1 | Pending |
-| BASE-01 through BASE-03 | Phase 2 | Pending |
+| BASE-01 through BASE-05 | Phase 2 | Pending |
 | ARCH-01 through ARCH-07 | Phase 3 | Pending |
 | TRAIN-01 through TRAIN-06 | Phase 4 | Pending |
 | PCA-01 through PCA-06 | Phase 5 | Pending |
-| ANAL-01 through ANAL-06 | Phase 6 | Pending |
+| ANAL-01 through ANAL-08 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 35 total
+- v1 requirements: 40 total
 - Mapped to phases: 36
 - Unmapped: 0 ✓
 

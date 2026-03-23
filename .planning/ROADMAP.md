@@ -98,14 +98,20 @@ store.h5
 **Done when:** `results/baseline_vgg16.json` exists with top-1 accuracy, FC parameter count, and FLOPs.
 
 ### Plan 2.1 — Frozen VGG16 Evaluation
-Run pretrained VGG16 (frozen, eval mode) on Imagenette val set. Extract per-class accuracy.
+Run pretrained VGG16 (frozen, eval mode) on Imagenette val set. Compute full per-class metrics.
 
 **What this measures:**
-- Top-1 accuracy on Imagenette val = the distillation target to match
+- Per-class accuracy, precision, recall, F1 = the class-level benchmark for each of the 10 Imagenette classes
+- mAP (mean Average Precision) = primary aggregate comparison metric
 - VGG16 FC parameter count = the 100% parameter reference (SGNNET targets ≤1% of this)
 
+**mAP computation:** For each class c, treat it as a binary problem (class c vs. rest). Rank val samples by softmax score for class c. Compute AP = area under precision-recall curve. Average across 10 classes = mAP.
+
 **Deliverables:**
-- `src/utils/metrics.py`: `count_params(model)`, `count_flops(model, input_shape)`
+- `src/utils/metrics.py`:
+  - `compute_all_metrics(scores, labels, class_names) -> MetricsDict`
+    Returns: top1_acc, per_class_acc, per_class_precision, per_class_recall, per_class_f1, mAP
+  - `count_params(model)`, `count_flops(model, input_shape)`
 - `scripts/eval_baseline.py`: load VGG16 pretrained, run on val set, write results
 - `results/baseline_vgg16.json`:
   ```json
@@ -113,12 +119,17 @@ Run pretrained VGG16 (frozen, eval mode) on Imagenette val set. Extract per-clas
     "model": "VGG16 (frozen)",
     "fc_params": 123646952,
     "top1_accuracy": ...,
-    "per_class_accuracy": {...},
+    "mAP": ...,
+    "per_class": {
+      "tench":          {"accuracy": ..., "precision": ..., "recall": ..., "f1": ..., "AP": ...},
+      "english_springer": {...},
+      ...
+    },
     "flops_fc_per_inference": ...
   }
   ```
 
-**Verification:** `results/baseline_vgg16.json` exists; top1_accuracy is a reasonable number (typically ~94–97% on Imagenette for VGG16).
+**Verification:** `results/baseline_vgg16.json` exists; mAP typically ~0.97–0.99 for VGG16 on Imagenette.
 
 ---
 
@@ -278,7 +289,7 @@ Quick sweep over key hyperparameters to find best config within time budget.
 ---
 
 ### Plan 4.3 — Final SGNNET Evaluation
-Train best config for full epochs, record all metrics.
+Train best config for full epochs, record full per-class metrics using the same `compute_all_metrics` from Phase 2.
 
 **Deliverables:**
 - Trained model checkpoint: `checkpoints/sgnnet_best.pt`
@@ -288,6 +299,11 @@ Train best config for full epochs, record all metrics.
     "model": "SGNNET",
     "params": ...,
     "top1_accuracy": ...,
+    "mAP": ...,
+    "per_class": {
+      "tench":          {"accuracy": ..., "precision": ..., "recall": ..., "f1": ..., "AP": ...},
+      ...
+    },
     "flops_per_inference": ...,
     "sparsity": 0.90,
     "K": 3,
@@ -296,7 +312,7 @@ Train best config for full epochs, record all metrics.
   }
   ```
 
-**Verification:** `sgnnet_full.json` exists; params ≤ 1.24M; top1_accuracy recorded.
+**Verification:** `sgnnet_full.json` exists; params ≤ 1.24M; mAP and per-class metrics recorded for all 10 classes.
 
 ---
 
@@ -329,7 +345,7 @@ Retrain SGNNET with PCA-compressed input for each k. Run in parallel (one job pe
 For each k:
 - SGNNET: N_in = k (no adapter needed — PCA handles projection)
 - N_hidden = 512, D = 64, K = 3, sparsity = 0.90
-- Train 50 epochs, record accuracy
+- Train 50 epochs, record full per-class metrics
 
 **Compute overhead per inference (for comparison):**
 - PCA transform: k × 25088 multiply-adds = k × 25088 FLOPs
@@ -339,14 +355,17 @@ For each k:
 - `results/pca_sweep.json`:
   ```json
   {
-    "k64":  {"accuracy": ..., "params": ..., "total_flops": ...},
-    "k128": {"accuracy": ..., "params": ..., "total_flops": ...},
+    "k64":  {
+      "top1_accuracy": ..., "mAP": ..., "params": ..., "total_flops": ...,
+      "per_class": {"tench": {...}, ...}
+    },
+    "k128": {...},
     ...
   }
   ```
 - `src/scripts/train_pca_sweep.py`: runs all k values
 
-**Verification:** All 6 k values trained; `pca_sweep.json` has entries for all.
+**Verification:** All 6 k values trained; `pca_sweep.json` has per-class metrics for all.
 
 ---
 
@@ -387,46 +406,59 @@ Compute params and FLOPs per inference for all four variants with full accountin
 
 ---
 
-### Plan 6.2 — Comparison Table
-Aggregate all results into a single comparison table.
+### Plan 6.2 — Comparison Tables
+Aggregate all results. One aggregate table + one per-class table.
 
 **Deliverables:**
-- `results/comparison_table.md`:
+- `results/comparison_aggregate.md`:
 
 ```
-| Model              | Params   | % of VGG FC | Top-1 Acc | FLOPs (inf) |
-|--------------------|----------|-------------|-----------|-------------|
-| VGG16 FC (frozen)  | 123.6M   | 100%        | ~xx%      | xxx M       |
-| SGNNET (full dim)  | ~1.24M   | ~1%         | xx%       | xxx M       |
-| SGNNET + PCA (k*)  | ~xxx K   | <1%         | xx%       | xxx M       |
+| Model              | Params   | % of VGG FC | Top-1 Acc | mAP    | FLOPs (inf) |
+|--------------------|----------|-------------|-----------|--------|-------------|
+| VGG16 FC (frozen)  | 123.6M   | 100%        | xx%       | x.xxx  | xxx M       |
+| SGNNET (full dim)  | ~1.24M   | ~1%         | xx%       | x.xxx  | xxx M       |
+| SGNNET + PCA (k*)  | ~xxx K   | <1%         | xx%       | x.xxx  | xxx M       |
+```
+
+- `results/comparison_per_class.md`:
+
+```
+| Class              | VGG16 Acc | VGG16 AP | SGNNET Acc | SGNNET AP | SGNNET+PCA Acc | SGNNET+PCA AP |
+|--------------------|-----------|----------|------------|-----------|----------------|---------------|
+| tench              | xx%       | x.xxx    | xx%        | x.xxx     | xx%            | x.xxx         |
+| english_springer   | ...       | ...      | ...        | ...       | ...            | ...           |
+| ... (all 10)       |           |          |            |           |                |               |
 ```
 
 ---
 
 ### Plan 6.3 — Visualizations
-Produce all plots: accuracy vs. params, accuracy vs. compression ratio, neuron position evolution.
+Produce plots for aggregate and per-class comparisons.
 
 **Deliverables:**
-- `results/accuracy_vs_params.png`: scatter plot
-- `results/accuracy_vs_k.png`: PCA compression curve
-- `results/neuron_positions_before_after.png`: W position visualization (2D PCA projection of W before/after training)
+- `results/map_vs_params.png`: mAP vs. parameter count scatter (all 3 variants)
+- `results/map_vs_k.png`: mAP vs. PCA k (compression sweep)
+- `results/per_class_accuracy_delta.png`: heatmap of per-class accuracy delta (SGNNET − VGG16 and SGNNET+PCA − VGG16) — shows which classes the sparse model gains or loses on
+- `results/per_class_ap_comparison.png`: grouped bar chart, AP per class for all 3 variants
+- `results/neuron_positions_before_after.png`: 2D PCA projection of W before/after training
 - `results/safety_valve_firing_rate.png`: safety valve loss over training epochs
 
 ---
 
 ### Plan 6.4 — Summary Report
-Write final `results/report.md` documenting the experiment, methodology, results, and open questions.
+Write final `results/report.md`.
 
 **Deliverables:**
 - `results/report.md` with sections:
   1. Experiment setup (dataset, VGG16 extraction, distillation approach)
-  2. Dense baseline results
+  2. VGG16 baseline — aggregate and per-class metrics
   3. SGNNET architecture summary (N, D, K, sparsity, N_in approach chosen)
-  4. SGNNET results and comparison
-  5. PCA compression results
-  6. Key findings and open questions (routing differentiability, K sensitivity, N_in strategy)
+  4. SGNNET results — aggregate and per-class comparison vs. VGG16
+  5. PCA compression results — mAP and per-class curves vs. k
+  6. Key findings: which classes SGNNET recovers well, which it struggles on, optimal PCA k
+  7. Open questions (routing differentiability, K sensitivity, N_in strategy)
 
-**Verification:** All 6 ANAL requirements checked off; report is readable stand-alone document.
+**Verification:** All 8 ANAL requirements checked off; report is a readable stand-alone document.
 
 ---
 
