@@ -5,4 +5,7 @@ __pycache__/
 .DS_Store
 ._*
 checkpoints/
-results/
+results/*.pt
+results/*.h5
+results/*.csv
+results/*.log
