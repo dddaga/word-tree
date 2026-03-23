@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Not started
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-23T16:23:06.721Z"
+status: In progress
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-23T17:41:15.000Z"
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
 ---
 
 # Project State: neuro_graph
@@ -19,20 +19,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** SGNNET matches VGG16 FC accuracy at ≤1% of its parameters
-**Current focus:** Phase 2 — Dense Baseline Benchmark
+**Current focus:** Phase 02 — dense-baseline-benchmark
 
 ## Current Phase
 
 **Phase 2 — Dense Baseline Benchmark**
-Status: Not started
-Next action: Discuss Phase 2 (frozen VGG16 evaluation, soft label quality check)
+Status: In progress (1/2 plans complete)
+Next action: Execute Plan 02-02 (soft label quality verification)
 
 ## Phase Progress
 
 | Phase | Name | Status |
 |-------|------|--------|
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
-| 2 | Dense Baseline Benchmark | Not started |
+| 2 | Dense Baseline Benchmark | In progress (1/2 plans) |
 | 3 | SGNNET Core Architecture | Not started |
 | 4 | SGNNET Training & Evaluation | Not started |
 | 5 | PCA Compression | Not started |
@@ -45,6 +45,9 @@ Next action: Discuss Phase 2 (frozen VGG16 evaluation, soft label quality check)
 - **PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0**: Removes 50% MPS memory cap for full-batch extraction (Phase 1, Plan 01-02)
 - **num_workers=0 for extraction**: macOS MPS + Python 3.14 multiprocessing spawn incompatible (Phase 1, Plan 01-02)
 - **pin_memory disabled on MPS**: Auto-detected in get_dataloader (Phase 1, Plan 01-02)
+- **thop MACs not FLOPs**: thop.profile returns MACs; documented with flops_note in JSON (Phase 2, Plan 02-01)
+- **Reuse VGGExtractor for eval**: No duplicate VGG16 loading; extractor handles frozen/eval/MPS (Phase 2, Plan 02-01)
+- **Track results/*.json in git**: Baseline JSON is a key deliverable consumed by Phases 4 and 6 (Phase 2, Plan 02-01)
 
 ## Open Decisions
 
@@ -58,7 +61,10 @@ Next action: Discuss Phase 2 (frozen VGG16 evaluation, soft label quality check)
 - Feature extractor: `src/data/extractor.py`
 - Tensor store: `data/store.h5` (13,394 records)
 - Manifest: `data/manifest.csv` (13,394 rows)
-- Results: `results/` directory (created in Phase 6)
+- Metrics module: `src/utils/metrics.py` (compute_all_metrics, count_params, count_flops)
+- Baseline eval script: `scripts/eval_baseline.py`
+- Baseline results: `results/baseline_vgg16.json` (top1=0.9954, mAP=0.9997)
+- Metrics tests: `tests/test_metrics.py` (4 tests)
 
 ## Performance Metrics
 
@@ -66,12 +72,13 @@ Next action: Discuss Phase 2 (frozen VGG16 evaluation, soft label quality check)
 |------------|----------|-------|-------|
 | 01-01      | 6min     | 2     | 5     |
 | 01-02      | 3min     | 2     | 5     |
+| 02-01      | 4min     | 2     | 8     |
 
 ## Last Session
 
-- **Stopped at:** Phase 2 context gathered
-- **Timestamp:** 2026-03-23T08:05:00Z
+- **Stopped at:** Completed 02-01-PLAN.md
+- **Timestamp:** 2026-03-23T17:41:15Z
 
 ---
 *State initialized: 2026-03-23*
-*Last updated: 2026-03-23 after Phase 1 completion and UAT*
+*Last updated: 2026-03-23 after Plan 02-01 completion*

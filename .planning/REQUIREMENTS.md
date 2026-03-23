@@ -18,11 +18,11 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 
 ### Dense Baseline (Frozen VGG16)
 
-- [ ] **BASE-01**: Pretrained VGG16 (frozen, eval mode) run on Imagenette val set — no training
-- [ ] **BASE-02**: Top-1 accuracy (overall and per-class) recorded as the benchmark
-- [ ] **BASE-03**: mAP computed across all 10 Imagenette classes (each class treated as binary: correct class vs. rest)
-- [ ] **BASE-04**: Per-class precision, recall, and F1 recorded for all 10 classes
-- [ ] **BASE-05**: VGG16 FC parameter count (~123.6M) and FLOPs per inference recorded
+- [x] **BASE-01**: Pretrained VGG16 (frozen, eval mode) run on Imagenette val set — no training
+- [x] **BASE-02**: Top-1 accuracy (overall and per-class) recorded as the benchmark
+- [x] **BASE-03**: mAP computed across all 10 Imagenette classes (each class treated as binary: correct class vs. rest)
+- [x] **BASE-04**: Per-class precision, recall, and F1 recorded for all 10 classes
+- [x] **BASE-05**: VGG16 FC parameter count (~123.6M) and FLOPs per inference recorded
 
 ### SGNNET Architecture
 
