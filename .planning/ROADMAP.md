@@ -2,7 +2,7 @@
 
 **Milestone:** v1 — SGNNET VGG16 Distillation Experiment
 **Timeline:** March 23–25, 2026 (3 days)
-**Status:** Not started
+**Status:** In progress
 
 ---
 
@@ -14,7 +14,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Environment setup, Imagenette download, and ImagenetteDataset class
+- [x] 01-01-PLAN.md — Environment setup, Imagenette download, and ImagenetteDataset class
 - [ ] 01-02-PLAN.md — VGG16 feature extraction, HDF5 tensor store, and CSV manifest
 
 ### Plan 1.1 — Environment Setup
