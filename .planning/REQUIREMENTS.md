@@ -9,7 +9,7 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 
 ### Data Pipeline
 
-- [ ] **DATA-01**: Imagenette dataset downloaded and split into train/val sets (~9.5k / ~3.9k images)
+- [x] **DATA-01**: Imagenette dataset downloaded and split into train/val sets (~9.5k / ~3.9k images)
 - [ ] **DATA-02**: VGG16 pretrained (ImageNet weights) loaded in eval mode, backbone frozen
 - [ ] **DATA-03**: All images passed through VGG16 CNN layers; pre-FC activations (25088-dim) extracted via forward hook
 - [ ] **DATA-04**: Soft labels computed: VGG16 FC output → logits for 10 Imagenette classes → softmax
@@ -98,7 +98,7 @@ Deferred to future milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 through DATA-06 | Phase 1 | Pending |
+| DATA-01 through DATA-06 | Phase 1 | DATA-01 complete; DATA-02 through DATA-06 pending |
 | BASE-01 through BASE-05 | Phase 2 | Pending |
 | ARCH-01 through ARCH-07 | Phase 3 | Pending |
 | TRAIN-01 through TRAIN-06 | Phase 4 | Pending |
@@ -112,4 +112,4 @@ Deferred to future milestone.
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after initial definition*
+*Last updated: 2026-03-23 after Plan 01-01 completion (DATA-01 complete)*
