@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-24T10:43:56.592Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-03-24T10:51:46.082Z"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State: neuro_graph
@@ -52,6 +52,9 @@ Next action: Phase 3 (SGNNET Core Architecture)
 - [Phase 03]: Encoding returns [channel_norm, h_norm, w_norm] (3 coords); value added per-sample in model forward
 - [Phase 03]: Split forward into _seed/_iterate_hidden/_output_readout for readability under 250-line limit
 - [Phase 03]: Sparsity test threshold 0.88 for small N_hidden due to guaranteed-connectivity row fix
+- [Phase 03]: Active param counting: only mask==1 entries count toward budget (649K active vs 6.5M dense)
+- [Phase 03]: KL divergence (not MSE) for distillation task loss in total_loss
+- [Phase 03]: C_ho sparsity threshold 0.85 due to guaranteed-connectivity on small 256x10 matrix
 
 ## Open Decisions
 
@@ -81,10 +84,11 @@ Next action: Phase 3 (SGNNET Core Architecture)
 | 02-02      | 2min     | 1     | 2     |
 | Phase 03 P01 | 2min | 1 tasks | 5 files |
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
+| Phase 03 P03 | 3min | 2 tasks | 5 files |
 
 ## Last Session
 
-- **Stopped at:** Completed 03-02-PLAN.md
+- **Stopped at:** Completed 03-03-PLAN.md
 - **Timestamp:** 2026-03-23T17:49:06Z
 
 ---

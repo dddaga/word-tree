@@ -169,7 +169,7 @@ Verify that the soft labels saved in the tensor store in Phase 1 faithfully refl
 Plans:
 - [x] 03-01-PLAN.md — Geometric primitives (r*, dynamic connectivity) and input encoding
 - [x] 03-02-PLAN.md — SGNNET nn.Module with three-phase forward pass and self-projection readout
-- [ ] 03-03-PLAN.md — Loss functions, initialization, parameter budget verification, and integration test
+- [x] 03-03-PLAN.md — Loss functions, initialization, parameter budget verification, and integration test
 
 ### Plan 3.1 — Geometric Primitives
 Implement the mathematical primitives: personal volume radius, dynamic connectivity, safety valve.
