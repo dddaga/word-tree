@@ -31,8 +31,11 @@ Key numbers for VGG16 experiment:
 - [x] Download Imagenette and extract VGG16 pre-FC features (25088-dim) + soft labels (10-class) into a tensor store — Validated in Phase 1: Data Pipeline
 - [x] Evaluate frozen pretrained VGG16 on Imagenette val — record accuracy as the benchmark — Validated in Phase 2: Dense Baseline Benchmark (99.54% top-1, 99.97% mAP)
 
+### Validated
+
+- [x] Implement SGNNET core: W positions, C sparse matrix, dynamic connectivity, K-iterations, self-projection — Validated in Phase 3: SGNNET Core Architecture (649,330 params = 0.53% of VGG16 FC, 51 tests passing)
+
 ### Active
-- [ ] Implement SGNNET core: W positions, C sparse matrix, dynamic connectivity, K-iterations, self-projection
 - [ ] Train SGNNET to match VGG16 FC soft outputs at ≤1% parameter count
 - [ ] Apply PCA to compress 25088-dim input, sweep compression ratios, retrain SGNNET
 - [ ] Produce a comparison table: params, FLOPs, accuracy for all three variants (dense / SGNNET full / SGNNET+PCA)
@@ -71,10 +74,10 @@ Key numbers for VGG16 experiment:
 | Distillation not scratch training | Clean supervised signal in hours on single GPU; direct comparison baseline | — Pending |
 | HDF5 tensor store | Efficient random access for 13.4k feature vectors; survives process restarts | — Pending |
 | Soft labels = softmax of 10 Imagenette logits from VGG16 | Avoids modifying VGG16 head; directly measures distillation fidelity | — Pending |
-| N_in approach for SGNNET | N_in=25088 creates N²=630M C matrix — must decide: accept large N or add adapter | — Pending |
+| N_in=25088 direct (no adapter) | C_input [25088×256] accepted; 649k total params stays within 1% budget; adapter deferred | Validated in Phase 3 |
 
 ---
-*Last updated: 2026-03-23 after Phase 2 completion*
+*Last updated: 2026-03-24 after Phase 3 completion*
 
 ## Evolution
 
