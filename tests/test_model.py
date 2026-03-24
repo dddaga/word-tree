@@ -100,10 +100,14 @@ def test_c_input_connectivity():
 
 
 def test_c_input_sparsity():
-    """C_input_mask is approximately 90% sparse."""
+    """C_input_mask is approximately 90% sparse.
+
+    Threshold lowered to 0.88 because with small N_hidden=16 the
+    guaranteed-one-connection-per-row fix adds proportionally more entries.
+    """
     model = SGNNET(N_hidden=16, N_out=10, D=4, K=3)
     zero_frac = (model.C_input_mask == 0).float().mean().item()
-    assert zero_frac >= 0.89, f"C_input not sparse enough: {zero_frac:.3f}"
+    assert zero_frac >= 0.88, f"C_input not sparse enough: {zero_frac:.3f}"
 
 
 def test_c_hh_sparsity():
