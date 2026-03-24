@@ -259,76 +259,239 @@ Verify SGNNET meets the 1% parameter target before training.
 
 ---
 
-## Phase 4 — SGNNET Training & Evaluation
-**Day:** March 24 (afternoon)
-**Goal:** Train SGNNET with full loss (task + safety valve + load balance), evaluate on val set, compare to dense baseline.
-**Requirements:** TRAIN-01 through TRAIN-06, ARCH-06 (K-means init, deferred from Phase 3)
-**Done when:** SGNNET trained, val accuracy recorded, comparison with dense baseline documented.
+## Phase 4 — SGNNET Wave Architecture & Experiments
+**Goal:** Progressively validate distillation of VGG16 FC into a smaller sparse network. Three stages in sequence: (1) sparse static connectivity only as the baseline, then (2) add dynamic signal propagation in two variants. Each stage benchmarked independently before the next begins.
+**Requirements:** TRAIN-01 through TRAIN-06
+**Done when:** All three stages trained and benchmarked; wave_comparison.md shows the contribution of each addition.
 
-### Plan 4.1 — SGNNET Training Loop
-Extend Trainer to support SGNNET-specific loss and gradient zeroing.
+**Experimental progression:**
+```
+Stage A — Static connectivity only
+          Binary C matrices, real activations, no proximity routing
+          → establishes: can sparse wiring alone distill VGG16?
 
-**Deliverables:**
-- `src/training/sgnnet_trainer.py`: SGNNETTrainer (extends or wraps Trainer)
-  - `train_epoch`: compute total_loss, zero W.grad[:N_in], clamp W inside box
-  - `evaluate`: top-1 accuracy on val set
-  - `log_epoch`: log loss components separately (task / safety / load_balance)
-- `scripts/train_sgnnet.py`: CLI entry point
+Stage B — Static + dynamic propagation (Exp 1: spatial phase)
+          Adds proximity routing with path-length phase, λ = r*/2
+          → establishes: does geometric wave propagation improve over static?
 
-**Training config:**
-- Optimizer: Adam, lr=1e-3
-- Epochs: 50 (adjust based on convergence)
-- Batch size: 256
-- λ_safety: 0.5
-- λ_lb: 0.01
-- Temperature T: 4.0
+Stage C — Static + dynamic propagation (Exp 2: spatial phase + W_phase)
+          Adds learned per-dimension phase operator on top of Exp 1
+          → establishes: does learned phase identity improve over geometry alone?
+```
 
-**Verification:** Training loss decreases; safety_valve_loss stays near 0 during normal training; load_balance_loss decreases over time.
+Exp 1 and Exp 2 are variants of Stage B/C — they are the dynamic connectivity experiments. Stage A is the prerequisite benchmark.
 
----
+**Architecture changes from Phase 3 baseline:**
 
-### Plan 4.2 — Ablation: K and N Sweep
-Quick sweep over key hyperparameters to find best config within time budget.
+| Component | Phase 3 | Phase 4 |
+|---|---|---|
+| C matrix values | Learned scalars | Binary 0/1 only, immutable |
+| Activation | Real D-vector | Complex phasor Z ∈ ℂ^D (D real + D imag) |
+| Normalization | LayerNorm over all neurons | Masked — active neurons only (|Z_j| > ε) |
+| Proximity routing | Gaussian amplitude only | Gaussian(d) × Z × exp(i×2πd/λ), λ = r*/2 |
+| Dynamic topology | Supported | Deferred to Generation 2 |
 
-**Sweep plan (parallel, background jobs):**
-- K ∈ {1, 3, 5} — recursive iteration count
-- N_hidden ∈ {256, 512, 1024} — hidden neuron count
-- 10 epochs each (fast ablation)
-
-**Deliverables:**
-- `results/ablation_K.json`: accuracy vs. K
-- `results/ablation_N.json`: accuracy vs. N_hidden
-- Best config selected for final training run
-
-**Verification:** At least one config achieves val accuracy > 60% (sanity threshold for soft-label distillation).
+**λ = r*/2 = r_repel:** one full oscillation in active zone [r_repel, r*]. Both boundaries in-phase (φ=0). Single inhibitory ring at d = 3r*/4.
 
 ---
 
-### Plan 4.3 — Final SGNNET Evaluation
-Train best config for full epochs, record full per-class metrics using the same `compute_all_metrics` from Phase 2.
+### Plan 4.1 — Stage A: Static Connectivity Baseline
+
+Train and benchmark SGNNET with binary static C matrices and no dynamic proximity routing. This is the reference point that all subsequent dynamic experiments are compared against.
+
+**Architecture (Stage A):**
+- C matrices: binary 0/1 mask, immutable — no learned values
+- Activations: real D-vectors (no phasor, no phase)
+- No proximity routing — forward pass is pure sparse static recurrence
+- Selective normalization: only neurons with |A_j| > ε participate
+
+**Forward pass:**
+```
+A_hidden = masked_norm(C_input_mask @ A_input)           # seeding
+for k in K-1:
+    A_hidden = masked_norm(C_hh_mask @ A_hidden)         # static recurrence
+A_out = C_ho_mask @ A_hidden                             # output
+scores = (A_out × W_norm).sum(dim=-1)                    # self-projection readout
+```
+
+**Stage 1 — GA hyperparameter search (partial data):**
+- Search: K ∈ {1,2,3,4}, N_hidden ∈ {64,128,256}, D ∈ {2,4,8}, lr, λ_safety
+- Fitness: convergence quality after 15 epochs on 15% of data
+
+**Stage 2 — Full training with found hyperparams.**
 
 **Deliverables:**
-- Trained model checkpoint: `checkpoints/sgnnet_best.pt`
-- `results/sgnnet_full.json`:
+- `src/sgnnet/model_wave.py`: SGNNET_Wave with `use_proximity=False` flag for Stage A
+- `src/sgnnet/norm_masked.py`: `masked_normalize`
+- `results/stageA_ga_results.json`, `results/stageA_full.json`
+- `checkpoints/stageA_best.pt`
+
+**Verification:** Loss converges; `stageA_full.json` has top1, mAP, per-class metrics for all 10 classes.
+
+---
+
+### Plan 4.2 — Wave Architecture: Proximity + Phase Infrastructure
+
+Extend SGNNET_Wave to support proximity-based routing with path-length phase. Shared infrastructure for Stage B (Exp 1) and Stage C (Exp 2).
+
+**New components added to `model_wave.py`:**
+- `use_proximity=True` flag enables the proximity path
+- Phasor activation state: `(Z_re, Z_im)` each `[batch, N_hidden, D]`
+- Seeding: `Z_re = C_input_mask @ A_input`, `Z_im = zeros`
+- C path: `C_hh_mask @ Z_re`, `C_hh_mask @ Z_im` (binary, no phase)
+- Proximity path with path-length phase (λ = r*/2):
+```
+d_ij     = ||W_pos_i − W_pos_j||
+strength = exp(−d²/r*²) × (d < r*)
+phase_ij = 2π × d_ij / λ
+
+Z_prox_re_j = Σ_i strength_ij × (Z_re_i × cos(phase_ij) − Z_im_i × sin(phase_ij))
+Z_prox_im_j = Σ_i strength_ij × (Z_re_i × sin(phase_ij) + Z_im_i × cos(phase_ij))
+```
+- Combined: `Z_new = C_path + proximity_path`
+- Readout: `A_out = sqrt(Z_re² + Z_im²)` (magnitude), self-projection as before
+
+**Also delivers:**
+- `src/sgnnet/norm_masked.py`: `masked_normalize` — mean/var over neurons with `|Z_j| > eps` only
+- `tests/test_model_wave.py`: forward shapes, Z_im non-zero after first proximity step, selective norm
+
+**Verification:**
+- `Z_im` is all-zeros after seeding, non-zero after first proximity step
+- Gradients flow through both re and im paths back to W_pos
+- Selective norm excludes zero-activation neurons from statistics
+
+---
+
+### Plan 4.3 — GA Hyperparameter Search Harness
+
+Build the search infrastructure used by all three stages.
+
+**Deliverables:**
+- `src/training/ga_search.py`: GASearch class
+  - Population-based search, configurable search space
+  - Fitness function: train N_epochs on partial data (10-20%), score = convergence quality
+    - Score = −final_loss if loss decreased monotonically; large penalty if loss explodes or oscillates
+  - Mutation: Gaussian perturbation on continuous params, random resample on discrete
+  - Selection: top-k tournament
+- `scripts/run_ga_search.py`: CLI — takes experiment name, writes `results/{exp}_ga_results.json`
+
+**Search space (both experiments):**
+
+| Hyperparameter | Type | Range |
+|---|---|---|
+| K | discrete | {1, 2, 3, 4} |
+| N_hidden | discrete | {64, 128, 256} |
+| D | discrete | {2, 4, 8} |
+| lr_Wpos | continuous (log) | [1e-5, 1e-2] |
+| λ_safety | continuous | [0.0, 1.0] |
+| batch_size | discrete | {64, 128, 256} |
+
+**GA config:** population=20, generations=10, top_k=5, partial_data_fraction=0.15, epochs_per_eval=15
+
+**Verification:**
+- GA runs to completion without error on partial data
+- `ga_results.json` contains best config with fitness score and convergence curve
+
+---
+
+### Plan 4.4 — Stage B: Experiment 1 — Spatial Path-Length Phase Only
+
+Phase derived entirely from geometric distance between neuron positions. No learned phase operator.
+
+**What trains:** W_pos (shapes proximity topology and path-length phase), safety valve loss.
+
+**Forward pass (Exp1):**
+```
+Z_j_new = masked_norm(C_path(Z) + proximity_path_with_phase(Z, W_pos))
+          ↑ no W_phase — phase comes only from ||W_pos_i − W_pos_j||
+```
+
+**Stage 1 — GA search:**
+- Run GASearch on Exp1 architecture with partial data
+- Output: `results/exp1_ga_results.json` — best (K, N_hidden, D, lr_Wpos, λ_safety)
+
+**Stage 2 — Full training:**
+- Train with GA-found hyperparams on full dataset
+- Log per-epoch: task loss, safety loss, |Z| distribution, W_pos spread
+
+**Deliverables:**
+- `scripts/train_exp1.py`
+- `checkpoints/exp1_best.pt`
+- `results/exp1_full.json`:
   ```json
   {
-    "model": "SGNNET",
-    "params": ...,
-    "top1_accuracy": ...,
-    "mAP": ...,
-    "per_class": {
-      "tench":          {"accuracy": ..., "precision": ..., "recall": ..., "f1": ..., "AP": ...},
-      ...
-    },
-    "flops_per_inference": ...,
-    "sparsity": 0.90,
-    "K": 3,
-    "N": ...,
-    "D": 64
+    "experiment": "spatial_phase_only",
+    "hyperparams": {"K": ..., "N_hidden": ..., "D": ..., "lambda": ...},
+    "top1_accuracy": ..., "mAP": ...,
+    "per_class": {"tench": {...}, ...},
+    "params": ..., "percent_of_vgg16_fc": ...
   }
   ```
 
-**Verification:** `sgnnet_full.json` exists; params ≤ 1.24M; mAP and per-class metrics recorded for all 10 classes.
+**Verification:** Loss converges; `top1_accuracy` and `mAP` recorded for all 10 classes.
+
+---
+
+### Plan 4.5 — Stage C: Experiment 2 — Spatial Phase + W_phase Operator
+
+Adds a learned per-neuron per-dimension phase operator on top of Experiment 1.
+
+**Additional component:**
+- `W_phase_j ∈ ℝ^D` per neuron — one learned phase rotation per activation dimension
+- Shape: `[N_hidden + N_out, D]` — same shape as W_pos
+- Applied at each receiving node after the phasor sum:
+
+```
+# After accumulating Z_incoming at node j (same as Exp1):
+Z_re_new_j[k] = Z_incoming_re_j[k] × cos(W_phase_j[k]) − Z_incoming_im_j[k] × sin(W_phase_j[k])
+Z_im_new_j[k] = Z_incoming_re_j[k] × sin(W_phase_j[k]) + Z_incoming_im_j[k] × cos(W_phase_j[k])
+```
+
+**What trains:** W_pos, W_phase (separate learning rates from GA search).
+
+**Additional search dimension vs Exp1:**
+
+| Hyperparameter | Type | Range |
+|---|---|---|
+| lr_Wphase | continuous (log) | [1e-5, 1e-2] |
+
+**Stage 1 — GA search:** same harness as Plan 4.3, extended search space.
+
+**Stage 2 — Full training:** same pipeline as Exp1.
+
+**Deliverables:**
+- `scripts/train_exp2.py`
+- `checkpoints/exp2_best.pt`
+- `results/exp2_full.json` (same schema as exp1_full.json, experiment = "spatial_phase_plus_operator")
+
+**Verification:** W_phase parameters receive non-zero gradients; results comparable to Exp1 for fair ablation.
+
+---
+
+### Plan 4.6 — Evaluation & Comparison
+
+Compare Stage A (static only), Stage B (Exp1), Stage C (Exp2), and Phase 3 amplitude baseline.
+
+**What each comparison answers:**
+- Stage A vs Phase 3: does removing dynamic connectivity hurt, and do binary C matrices work at all?
+- Stage B vs Stage A: does geometric wave propagation (path-length phase) improve over static wiring?
+- Stage C vs Stage B: does learned W_phase improve over geometry-only phase?
+- Parameter cost: W_phase adds N×D params — is the improvement worth the cost?
+
+**Deliverables:**
+- `results/wave_comparison.json`: all models side by side
+- `results/wave_comparison.md`:
+
+```
+| Model                  | Params | Top-1 | mAP  | Key addition vs. prior     |
+|------------------------|--------|-------|------|----------------------------|
+| SGNNET v1 (Phase 3)    | 649k   | xx%   | x.xx | Amplitude, learned C values|
+| Stage A (static only)  | ~Nk    | xx%   | x.xx | Binary C, no dynamic       |
+| Stage B / Exp1 (φ geo) | ~Nk    | xx%   | x.xx | + path-length phase        |
+| Stage C / Exp2 (φ+Wφ)  | ~Nk    | xx%   | x.xx | + learned phase operator   |
+```
+
+**Verification:** All models evaluated on same val set with `compute_all_metrics`; each stage's contribution isolated.
 
 ---
 
@@ -483,9 +646,12 @@ Write final `results/report.md`.
 | Day | Phases | Target Outcome |
 |-----|--------|----------------|
 | March 23 | 1 + 2 | Tensor store ready; dense baseline trained and evaluated |
-| March 24 | 3 + 4 | SGNNET implemented and trained; vs. dense baseline comparison |
-| March 25 | 5 + 6 | PCA sweep complete; final report with all comparisons |
+| March 24 | 3 | SGNNET core architecture implemented (amplitude baseline) |
+| March 25+ | 4 | Wave architecture refactor; Exp1 + Exp2 GA search + training |
+| TBD | 5 + 6 | PCA sweep; final comparative report |
+
+**Note:** Phase 4 redesigned on March 25 to implement wave-based phasor architecture with two experimental variants. Phase 5 and 6 timeline adjusted accordingly.
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-24 after Phase 3 planning*
+*Last updated: 2026-03-25 after Phase 4 redesign (wave architecture + two-experiment plan)*
