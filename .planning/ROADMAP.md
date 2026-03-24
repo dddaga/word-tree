@@ -161,9 +161,15 @@ Verify that the soft labels saved in the tensor store in Phase 1 faithfully refl
 
 ## Phase 3 — SGNNET Core Architecture
 **Day:** March 24 (morning)
-**Goal:** Implement SGNNET from the spec in `sparse_geometric_network_report.md`. All components modular, tested independently.
-**Requirements:** ARCH-01 through ARCH-07
+**Goal:** Implement SGNNET with D=4 geometric space, split C matrices, and three-phase forward pass. Architecture diverges from report per CONTEXT.md decisions.
+**Requirements:** ARCH-01 through ARCH-05, ARCH-07 (ARCH-06 K-means init deferred to Phase 4)
 **Done when:** SGNNET forward pass runs without error, produces valid gradients, neuron positions move during a toy training loop.
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Geometric primitives (r*, dynamic connectivity) and input encoding
+- [ ] 03-02-PLAN.md — SGNNET nn.Module with three-phase forward pass and self-projection readout
+- [ ] 03-03-PLAN.md — Loss functions, initialization, parameter budget verification, and integration test
 
 ### Plan 3.1 — Geometric Primitives
 Implement the mathematical primitives: personal volume radius, dynamic connectivity, safety valve.
@@ -256,7 +262,7 @@ Verify SGNNET meets the 1% parameter target before training.
 ## Phase 4 — SGNNET Training & Evaluation
 **Day:** March 24 (afternoon)
 **Goal:** Train SGNNET with full loss (task + safety valve + load balance), evaluate on val set, compare to dense baseline.
-**Requirements:** TRAIN-01 through TRAIN-06
+**Requirements:** TRAIN-01 through TRAIN-06, ARCH-06 (K-means init, deferred from Phase 3)
 **Done when:** SGNNET trained, val accuracy recorded, comparison with dense baseline documented.
 
 ### Plan 4.1 — SGNNET Training Loop
@@ -482,4 +488,4 @@ Write final `results/report.md`.
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-23 after Phase 2 Plan 02-02 completion*
+*Last updated: 2026-03-24 after Phase 3 planning*
