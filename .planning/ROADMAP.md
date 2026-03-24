@@ -164,11 +164,11 @@ Verify that the soft labels saved in the tensor store in Phase 1 faithfully refl
 **Goal:** Implement SGNNET with D=4 geometric space, split C matrices, and three-phase forward pass. Architecture diverges from report per CONTEXT.md decisions.
 **Requirements:** ARCH-01 through ARCH-05, ARCH-07 (ARCH-06 K-means init deferred to Phase 4)
 **Done when:** SGNNET forward pass runs without error, produces valid gradients, neuron positions move during a toy training loop.
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 03-01-PLAN.md — Geometric primitives (r*, dynamic connectivity) and input encoding
-- [ ] 03-02-PLAN.md — SGNNET nn.Module with three-phase forward pass and self-projection readout
+- [x] 03-02-PLAN.md — SGNNET nn.Module with three-phase forward pass and self-projection readout
 - [ ] 03-03-PLAN.md — Loss functions, initialization, parameter budget verification, and integration test
 
 ### Plan 3.1 — Geometric Primitives

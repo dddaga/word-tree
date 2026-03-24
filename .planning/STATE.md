@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-24T10:39:51.279Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-24T10:43:56.592Z"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State: neuro_graph
@@ -50,6 +50,8 @@ Next action: Phase 3 (SGNNET Core Architecture)
 - **Track results/*.json in git**: Baseline JSON is a key deliverable consumed by Phases 4 and 6 (Phase 2, Plan 02-01)
 - **Stored soft labels identical to direct eval**: Accuracy diff=0.0 confirms HDF5 tensor store is perfectly faithful (Phase 2, Plan 02-02)
 - [Phase 03]: Encoding returns [channel_norm, h_norm, w_norm] (3 coords); value added per-sample in model forward
+- [Phase 03]: Split forward into _seed/_iterate_hidden/_output_readout for readability under 250-line limit
+- [Phase 03]: Sparsity test threshold 0.88 for small N_hidden due to guaranteed-connectivity row fix
 
 ## Open Decisions
 
@@ -78,10 +80,11 @@ Next action: Phase 3 (SGNNET Core Architecture)
 | 02-01      | 4min     | 2     | 8     |
 | 02-02      | 2min     | 1     | 2     |
 | Phase 03 P01 | 2min | 1 tasks | 5 files |
+| Phase 03 P02 | 2min | 1 tasks | 2 files |
 
 ## Last Session
 
-- **Stopped at:** Completed 03-01-PLAN.md
+- **Stopped at:** Completed 03-02-PLAN.md
 - **Timestamp:** 2026-03-23T17:49:06Z
 
 ---
