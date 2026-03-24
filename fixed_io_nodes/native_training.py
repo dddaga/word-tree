@@ -15,7 +15,7 @@ from main import load_config, load_iris_dataset, load_mnist_dataset
 
 CONFIG_PATH = "training_runs/distributed_test/distributed.yaml"
 
-torch.autograd.set_detect_anomaly(True)
+# torch.autograd.set_detect_anomaly(True)
 
 
 class IrisGNNModel(nn.Module):

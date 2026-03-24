@@ -2,15 +2,16 @@ import os
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))    
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
-from fixed_io_nodes.distributed.gnn_optimizer import GNNAdam
-from fixed_io_nodes.distributed.layer import DistributedNeurographLayer
-from fixed_io_nodes.distributed.checkpoint import load_full_model, save_full_model
+from fixed_io_nodes.native import NativeNeurographLayer, NativeGNNOptimizer
+from fixed_io_nodes.native.checkpoint import load_full_model, save_full_model
 from fixed_io_nodes.main import load_config
 
 
@@ -35,7 +36,7 @@ class CustomHybridModel(nn.Module):
         assert self.input_nodes * self.vector_dim == 512 * 7 * 7, (
             "input_nodes * vector_dim must match VGG16 feature size (25088)"
         )
-        self.gnn = DistributedNeurographLayer(cfg)
+        self.gnn = NativeNeurographLayer(cfg)
         self.out = nn.Linear(self.output_nodes, 10)
 
     def forward(self, x):
@@ -45,7 +46,7 @@ class CustomHybridModel(nn.Module):
         return self.out(gnn_out)
 
 
-def main(config_path: str | None = None):
+def main(config_path: str  = None):
     cfg_path = Path(config_path).resolve() if config_path else DEFAULT_CONFIG_PATH
     cfg = load_config(str(cfg_path))
 
@@ -80,7 +81,8 @@ def main(config_path: str | None = None):
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     model = CustomHybridModel(cfg).to(device)
-    optimizer = GNNAdam(model, lr=lr)
+    accumulation_steps = cfg.get("training", {}).get("accumulation_steps", batch_size)
+    optimizer = NativeGNNOptimizer(model, lr=lr, accumulation_steps=accumulation_steps)
 
     global_step = 0
     if save_path.exists():
@@ -127,14 +129,12 @@ def main(config_path: str | None = None):
         with torch.no_grad():
             for x, y in val_loader:
                 x, y = x.to(device), y.to(device)
-                if hasattr(model.gnn, "_pool") and model.gnn._pool is not None:
-                    model.gnn._pool.reset_workers()
-
                 logits = model(x)
                 loss = criterion(logits, y)
                 val_loss += loss.item() * y.size(0)
                 preds = logits.argmax(dim=1)
-                val_correct += (preds == y).sum().item()
+                ground_truth = y.argmax(dim=1)
+                val_correct += (preds == ground_truth).sum().item()
                 val_total += y.size(0)
 
         val_loss /= val_total

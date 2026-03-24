@@ -65,6 +65,9 @@ def update_activations(
     mag_weights: torch.Tensor,
     activation_strengths: torch.Tensor,
     edge_index: torch.Tensor,
+    weight_real: torch.Tensor = None,
+    weight_imag: torch.Tensor = None,
+    all_destinations: bool = False,
 ):
     """
     edge_index: (2, num_edges) - Directed edges from source to destination nodes. 
@@ -111,9 +114,13 @@ def update_activations(
     dest_real_input = torch.zeros_like(phase_weights).scatter_add_(0, dest.unsqueeze(-1).expand_as(source_real), source_real)
     dest_imaginary_input = torch.zeros_like(mag_weights).scatter_add_(0, dest.unsqueeze(-1).expand_as(source_imaginary), source_imaginary)
 
-    #Calculate destination's phase/mag weight vectors
-    dest_real_weight = mag_weights * torch.cos(phase_weights)
-    dest_imaginary_weight = mag_weights * torch.sin(phase_weights)
+    #Calculate destination's phase/mag weight vectors (use pre-computed if provided)
+    if weight_real is None:
+        dest_real_weight = mag_weights * torch.cos(phase_weights)
+        dest_imaginary_weight = mag_weights * torch.sin(phase_weights)
+    else:
+        dest_real_weight = weight_real
+        dest_imaginary_weight = weight_imag
 
     # Perform the complex multiplication b/w input and weight vectors
     dest_real_output = dest_real_input*dest_real_weight - dest_imaginary_input * dest_imaginary_weight
@@ -122,19 +129,17 @@ def update_activations(
     # New phase/mag activation and activation strength
     new_phase = torch.atan2(dest_imaginary_output, dest_real_output + _EPSILON)
     new_mag = 0.5 * torch.log(dest_real_output ** 2 + dest_imaginary_output ** 2 + _EPSILON)
-    new_mag = new_mag - new_mag.mean(dim=-1, keepdim=True)
-    new_activation_strength = activation_strength_forward_unquantized(new_phase, new_mag)
+    mean_log_mag = new_mag.mean(dim=-1, keepdim=True)
+    new_mag = new_mag - mean_log_mag
+    # activation_strength = sum(real / geom_mean) — direct from Cartesian outputs
+    geom_mean = torch.exp(mean_log_mag)
+    new_activation_strength = (dest_real_output / (geom_mean + _EPSILON)).sum(dim=-1)
 
-    dest_indices = torch.unique(dest)
-    # phase_activations = phase_activations.clone()
-    # mag_activations = mag_activations.clone()
-    # activation_strengths = activation_strengths.clone()
-    # phase_activations[dest_indices] = new_phase[dest_indices]
-    # mag_activations[dest_indices] = new_mag[dest_indices]
-    # activation_strengths[dest_indices] = new_activation_strength[dest_indices]  
+    if all_destinations:
+        return new_phase, new_mag, new_activation_strength
 
     mask_1d = torch.zeros(phase_activations.shape[0], dtype=torch.bool, device=phase_activations.device)
-    mask_1d[dest_indices] = True
+    mask_1d[dest] = True
     mask_2d = mask_1d.unsqueeze(-1) # For 2D vector tensors
 
     # Out-of-place combination (safely builds a brand new tensor for the graph)

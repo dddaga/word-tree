@@ -100,7 +100,8 @@ class NativeNodeStore(nn.Module):
             sources.append(nid)
             dests.append(nid)
         self.register_buffer(
-            "edge_indices", torch.tensor([sources, dests], dtype=torch.long)
+            "edge_indices", torch.tensor([sources, dests], dtype=torch.long,
+                                         device=self.phase_weight.device)
         )
 
     # ------------------------------------------------------------------

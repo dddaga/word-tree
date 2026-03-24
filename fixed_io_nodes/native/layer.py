@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from typing import Optional, Union
 
+from torch.utils.checkpoint import checkpoint as grad_checkpoint
 from core.custom_functions import update_activations, activation_strength_forward
 from .node_store import NativeNodeStore
 
@@ -49,6 +50,7 @@ class NativeNeurographLayer(nn.Module):
         self._input_nodeids = sorted(self._node_store.input_nodeids)
         self._output_nodeids = sorted(self._node_store.output_nodeids)
         self._input_idx = None  # lazily built on correct device
+        self._output_idx = None
 
     # ------------------------------------------------------------------
     # Public API
@@ -66,125 +68,142 @@ class NativeNeurographLayer(nn.Module):
                 0.0, 1.0 - step / (total_steps * duration)
             )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """x: (B, input_nodes, vector_dim) → (B, output_nodes)"""
-        x = torch.tanh(x) * torch.pi
-        B = x.shape[0]
-        outputs = []
-        for i in range(B):
-            outputs.append(self._forward_single(x[i]))
-        return torch.stack(outputs)
-
-    # ------------------------------------------------------------------
-    # Per-sample GNN forward
-    # ------------------------------------------------------------------
-
     def _get_input_idx(self, device: torch.device) -> torch.Tensor:
         if self._input_idx is None or self._input_idx.device != device:
             self._input_idx = torch.tensor(self._input_nodeids, device=device, dtype=torch.long)
         return self._input_idx
 
-    def _forward_single(self, input_values: torch.Tensor) -> torch.Tensor:
-        """
-        Process one sample through the GNN.
-        input_values: (input_nodes, vector_dim)
-        Returns: (output_nodes,)
+    def _get_output_idx(self, device: torch.device) -> torch.Tensor:
+        if self._output_idx is None or self._output_idx.device != device:
+            self._output_idx = torch.tensor(self._output_nodeids, device=device, dtype=torch.long)
+        return self._output_idx
 
-        Key: clone parameters WITHOUT detach so gradients flow back.
-        """
-        device = input_values.device
+    # ------------------------------------------------------------------
+    # Batched mega-graph forward
+    # ------------------------------------------------------------------
 
-        # Differentiable clone — gradients propagate back to nn.Parameters
-        phase_weight = self._node_store.phase_weight.clone()
-        mag_weight = self._node_store.mag_weight.clone()
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """x: (B, input_nodes, vector_dim) → (B, output_nodes)
+
+        All B samples processed simultaneously as one mega-graph with B*N nodes.
+        Edge construction happens once (identical across samples), then replicated.
+        """
+        x = torch.tanh(x) * torch.pi
+        B = x.shape[0]
+        N = self._total_nodes
+        V = self._vector_dim
+        device = x.device
+        n_in = self._input_node_count
+
+        # Replicate weights for B samples: (N, V) → (B*N, V)
+        # clone() without detach keeps gradient connection to nn.Parameter
+        phase_weight = self._node_store.phase_weight.clone().repeat(B, 1)
+        mag_weight = self._node_store.mag_weight.clone().repeat(B, 1)
 
         # Initialize activations from weights
         phase_act = phase_weight.clone()
         mag_act = mag_weight.clone()
         act_strength = activation_strength_forward(phase_act, mag_act, self._gamma)
 
-        active_mask = torch.zeros(self._total_nodes, dtype=torch.bool, device=device)
+        # Index helpers
         input_idx = self._get_input_idx(device)
+        output_idx = self._get_output_idx(device)
+        offsets = torch.arange(B, device=device) * N
+        batched_input_idx = (input_idx.unsqueeze(0) + offsets.unsqueeze(1)).reshape(-1)
+
+        # Active mask — single-sample, since edges are identical across samples
+        active_mask = torch.zeros(N, dtype=torch.bool, device=device)
         active_mask[input_idx] = True
 
-        # First iteration: inject inputs then propagate
-        phase_act, mag_act, act_strength, active_mask = self._inject_inputs(
-            input_values, phase_act, mag_act, act_strength, active_mask,
-            phase_weight, mag_weight, input_idx, device,
-        )
-        phase_act, mag_act, act_strength, active_mask = self._one_step_propagate(
-            phase_act, mag_act, act_strength, active_mask,
-            phase_weight, mag_weight, device,
+        # Inject inputs (batched)
+        phase_act, mag_act, act_strength = self._inject_inputs_batched(
+            x.reshape(B * n_in, V), phase_act, mag_act, act_strength,
+            phase_weight, mag_weight, batched_input_idx, B, n_in, device,
         )
 
-        # Remaining iterations: propagate only
-        for _ in range(self._iterations - 2):
-            phase_act, mag_act, act_strength, active_mask = self._one_step_propagate(
-                phase_act, mag_act, act_strength, active_mask,
-                phase_weight, mag_weight, device,
+        # Pre-compute batched full edges for when active_mask saturates
+        full_edges = self._node_store.edge_indices
+        batched_full_edges = self._replicate_edges(full_edges, offsets, B)
+        all_active = False
+
+        # Pre-compute weight trig once (constant across iterations)
+        w_real = mag_weight * torch.cos(phase_weight)
+        w_imag = mag_weight * torch.sin(phase_weight)
+
+        # Propagation iterations
+        for _ in range(self._iterations - 1):
+            if all_active:
+                batched_edges = batched_full_edges
+            else:
+                active_indices = active_mask.nonzero(as_tuple=True)[0]
+                if active_indices.numel() == 0:
+                    break
+                edge_index, active_mask = self._build_edge_index(active_indices, active_mask, device)
+                if active_mask.all():
+                    all_active = True
+                    batched_edges = batched_full_edges
+                else:
+                    batched_edges = self._replicate_edges(edge_index, offsets, B)
+            phase_act, mag_act, act_strength = grad_checkpoint(
+                update_activations,
+                phase_act, mag_act, phase_weight, mag_weight, act_strength, batched_edges,
+                w_real, w_imag, all_active,
+                use_reentrant=False,
             )
 
-        # Extract output
-        output_idx = torch.tensor(self._output_nodeids, device=device, dtype=torch.long)
-        return act_strength[output_idx] / (self._vector_dim ** 0.5)
+        # Extract outputs
+        batched_output_idx = (output_idx.unsqueeze(0) + offsets.unsqueeze(1)).reshape(-1)
+        return act_strength[batched_output_idx].view(B, -1) / (V ** 0.5)
 
-    # ------------------------------------------------------------------
-    # GNN sub-operations (adapted from UnquantizedGNN in core/gnn_model.py)
-    # ------------------------------------------------------------------
+    def _inject_inputs_batched(self, x_flat, phase_act, mag_act, act_strength,
+                               phase_weight, mag_weight, batched_input_idx, B, n_in, device):
+        """Batched input injection for all B samples at once.
 
-    def _inject_inputs(self, input_values, phase_act, mag_act, act_strength,
-                       active_mask, phase_weight, mag_weight, input_idx, device):
-        """Inject external input into input nodes via update_activations."""
-        n_in = self._input_node_count
+        Builds a mini mega-graph: [B*n_in existing activations | B*n_in virtual inputs]
+        with edges from virtual sources to existing destinations.
+        """
+        Bn = B * n_in
 
-        input_phase = input_values.to(device)
-        input_mag = torch.zeros_like(input_values, device=device)
-        input_act_strength = activation_strength_forward(
-            phase_act[input_idx], mag_act[input_idx], self._gamma
-        )
+        existing_pa = phase_act[batched_input_idx]
+        existing_ma = mag_act[batched_input_idx]
+        existing_as = act_strength[batched_input_idx]
+        virtual_mag = torch.zeros_like(x_flat)
+        virtual_as = activation_strength_forward(existing_pa, existing_ma, self._gamma)
 
-        # Edge index: virtual input sources → input nodes
-        edge_index = torch.empty((2, n_in), device=device, dtype=torch.long)
-        edge_index[0] = input_idx + n_in  # virtual source indices
-        edge_index[1] = input_idx
+        pa = torch.cat([existing_pa, x_flat], dim=0)
+        ma = torch.cat([existing_ma, virtual_mag], dim=0)
+        a_s = torch.cat([existing_as, virtual_as], dim=0)
+        pw = torch.cat([phase_weight[batched_input_idx], torch.empty_like(x_flat)], dim=0)
+        mw = torch.cat([mag_weight[batched_input_idx], torch.empty_like(x_flat)], dim=0)
 
-        # Concatenate node state with virtual input state
-        pa = torch.cat([phase_act[input_idx], input_phase], dim=0)
-        ma = torch.cat([mag_act[input_idx], input_mag], dim=0)
-        a_s = torch.cat([act_strength[input_idx], input_act_strength], dim=0)
-        pw = torch.cat([phase_weight[input_idx], torch.empty_like(input_phase)], dim=0)
-        mw = torch.cat([mag_weight[input_idx], torch.empty_like(input_mag)], dim=0)
+        dst = torch.arange(Bn, device=device)
+        inject_edges = torch.stack([dst + Bn, dst])
 
-        new_pa, new_ma, new_as = update_activations(pa, ma, pw, mw, a_s, edge_index)
+        new_pa, new_ma, new_as = update_activations(pa, ma, pw, mw, a_s, inject_edges)
 
-        # Update only input nodes (out-of-place)
+        # Write back (out-of-place for autograd safety)
         phase_act = phase_act.clone()
         mag_act = mag_act.clone()
         act_strength = act_strength.clone()
-        phase_act[input_idx] = new_pa[:n_in]
-        mag_act[input_idx] = new_ma[:n_in]
-        act_strength[input_idx] = new_as[:n_in]
-        active_mask[input_idx] = True
+        phase_act[batched_input_idx] = new_pa[:Bn]
+        mag_act[batched_input_idx] = new_ma[:Bn]
+        act_strength[batched_input_idx] = new_as[:Bn]
 
-        return phase_act, mag_act, act_strength, active_mask
+        return phase_act, mag_act, act_strength
 
-    def _one_step_propagate(self, phase_act, mag_act, act_strength, active_mask,
-                            phase_weight, mag_weight, device):
-        """One message-passing iteration: build edges, update activations."""
-        active_indices = active_mask.nonzero(as_tuple=True)[0]
-        if active_indices.numel() == 0:
-            return phase_act, mag_act, act_strength, active_mask
+    def _replicate_edges(self, edge_index, offsets, B):
+        """Replicate single-sample edges for B samples with node-index offsets."""
+        src = edge_index[0].unsqueeze(0) + offsets.unsqueeze(1)
+        dst = edge_index[1].unsqueeze(0) + offsets.unsqueeze(1)
+        return torch.stack([src.reshape(-1), dst.reshape(-1)])
 
-        edge_index, active_mask = self._build_edge_index(active_indices, active_mask, device)
-
-        new_phase, new_mag, new_strength = update_activations(
-            phase_act, mag_act, phase_weight, mag_weight, act_strength, edge_index
-        )
-        return new_phase, new_mag, new_strength, active_mask
+    # ------------------------------------------------------------------
+    # Edge construction (single-sample, then replicated by forward)
+    # ------------------------------------------------------------------
 
     def _build_edge_index(self, active_indices, active_mask, device):
         """Combine static edges (filtered by active mask) with radiation targets."""
-        edge_indices = self._node_store.edge_indices.to(device)
+        edge_indices = self._node_store.edge_indices
         mask = active_mask[edge_indices[0]]
         direct_edges = edge_indices[:, mask]
 
@@ -228,12 +247,7 @@ class NativeNeurographLayer(nn.Module):
             neighbours = torch.cat([neighbours, found_idx.to(device)], dim=1)
 
         if num_random > 0:
-            rand_n = torch.empty(active_indices.shape[0], num_random, device=device, dtype=torch.long)
-            for i in range(active_indices.shape[0]):
-                rand_n[i] = torch.tensor(
-                    self._node_store.sample_random_nodeids(num_random),
-                    device=device, dtype=torch.long,
-                )
+            rand_n = torch.randint(0, self._total_nodes, (active_indices.shape[0], num_random), device=device)
             neighbours = torch.cat([neighbours, rand_n], dim=1)
 
         return neighbours
