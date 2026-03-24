@@ -1,0 +1,23 @@
+{
+  "model": "SGNNET",
+  "N_in": 25088,
+  "N_hidden": 256,
+  "N_out": 10,
+  "D": 4,
+  "K": 3,
+  "sparsity": 0.9,
+  "box_size": 1.0,
+  "total_params": 649330,
+  "param_breakdown": {
+    "C_input_values": 641355,
+    "C_hh_values": 6568,
+    "C_ho_values": 335,
+    "W": 1064,
+    "norm": 8
+  },
+  "percent_of_vgg16_fc": 0.5252,
+  "C_input_sparsity": 0.9001,
+  "C_hh_sparsity": 0.8998,
+  "C_ho_sparsity": 0.8691,
+  "vgg16_fc_params": 123642856
+}

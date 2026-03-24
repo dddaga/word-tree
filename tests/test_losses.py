@@ -1,4 +1,7 @@
-"""Tests for SGNNET loss functions and initialization."""
+"""Tests for SGNNET loss functions, initialization, and integration."""
+
+import json
+import os
 
 import torch
 import torch.nn.functional as F
@@ -137,3 +140,175 @@ class TestInitializeSGNNET:
         initialize_sgnnet(model)
         assert model.W.data.min().item() >= 0.0
         assert model.W.data.max().item() <= model.box_size
+
+
+# -------------------------------------------------------------------
+# Integration: parameter budget and sparsity
+# -------------------------------------------------------------------
+
+VGG16_FC_PARAMS = 123_642_856
+BUDGET_1_PERCENT = VGG16_FC_PARAMS * 0.01  # 1,236,428.56
+
+
+def _count_active_params(model: SGNNET) -> tuple[int, dict]:
+    """Count active (non-masked) parameters in SGNNET.
+
+    C matrices use mask buffers: only entries where mask==1 are active.
+    W and norm parameters are fully active.
+    """
+    breakdown = {}
+    total = 0
+
+    # C matrices: count only masked-in entries
+    for c_name, mask_name in [
+        ("C_input_values", "C_input_mask"),
+        ("C_hh_values", "C_hh_mask"),
+        ("C_ho_values", "C_ho_mask"),
+    ]:
+        mask = getattr(model, mask_name)
+        active = int(mask.sum().item())
+        breakdown[c_name] = active
+        total += active
+
+    # W: fully active
+    breakdown["W"] = model.W.numel()
+    total += model.W.numel()
+
+    # Norm: fully active
+    norm_count = sum(
+        p.numel() for n, p in model.named_parameters() if "norm" in n
+    )
+    breakdown["norm"] = norm_count
+    total += norm_count
+
+    return total, breakdown
+
+
+class TestParameterBudget:
+    """Verify SGNNET stays within 1% of VGG16 FC params."""
+
+    def test_total_params_within_budget(self):
+        """Default config (N_hidden=256) active params <= 1% of VGG16 FC."""
+        model = SGNNET(N_hidden=256, N_out=10, D=4, sparsity=0.90)
+        total, _ = _count_active_params(model)
+        assert total <= int(BUDGET_1_PERCENT), (
+            f"Active params {total} exceed 1% budget {int(BUDGET_1_PERCENT)}"
+        )
+
+    def test_sparsity_all_c_matrices(self):
+        """All three C matrices have high sparsity.
+
+        C_ho (256x10) has lower sparsity due to guaranteed-connectivity
+        row fix on a small matrix. Threshold 0.85 for C_ho, 0.89 others.
+        """
+        model = SGNNET(N_hidden=256, N_out=10, D=4, sparsity=0.90)
+        thresholds = {"C_input": 0.89, "C_hh": 0.89, "C_ho": 0.85}
+        for name, mask in [
+            ("C_input", model.C_input_mask),
+            ("C_hh", model.C_hh_mask),
+            ("C_ho", model.C_ho_mask),
+        ]:
+            sparsity = (mask == 0).float().mean().item()
+            threshold = thresholds[name]
+            assert sparsity >= threshold, (
+                f"{name} sparsity {sparsity:.4f} < {threshold}"
+            )
+
+
+# -------------------------------------------------------------------
+# Integration: toy training loop
+# -------------------------------------------------------------------
+
+class TestToyTrainingLoop:
+    """End-to-end forward + backward + optimizer step."""
+
+    def test_w_positions_move(self):
+        """3 optimizer steps move W positions."""
+        torch.manual_seed(7)
+        model = SGNNET(N_hidden=16, N_out=10, D=4, K=2, sparsity=0.5)
+        initialize_sgnnet(model)
+        optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+        x = torch.randn(4, 25088)
+        target = F.softmax(torch.randn(4, 10), dim=-1)
+
+        W_before = model.W.data.clone()
+        for _ in range(3):
+            scores = model(x)
+            gate = model._last_gate
+            loss = total_loss(
+                scores, target, model.W, gate=gate,
+                box_size=model.box_size,
+                N=model.N_hidden + model.N_out, D=model.D,
+            )
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+        W_after = model.W.data.clone()
+        assert not torch.allclose(W_before, W_after), (
+            "W positions did not move during training"
+        )
+
+
+# -------------------------------------------------------------------
+# Write sgnnet_config.json (runs as test side effect)
+# -------------------------------------------------------------------
+
+class TestWriteConfig:
+    """Write results/sgnnet_config.json with parameter accounting."""
+
+    def test_write_sgnnet_config(self):
+        """Generate config JSON with parameter breakdown."""
+        model = SGNNET(N_hidden=256, N_out=10, D=4, sparsity=0.90)
+        total, breakdown = _count_active_params(model)
+
+        # Sparsity
+        sparsities = {}
+        for name, mask in [
+            ("C_input", model.C_input_mask),
+            ("C_hh", model.C_hh_mask),
+            ("C_ho", model.C_ho_mask),
+        ]:
+            sparsities[name] = round(
+                (mask == 0).float().mean().item(), 4
+            )
+
+        # Load VGG16 baseline
+        baseline_path = os.path.join("results", "baseline_vgg16.json")
+        if os.path.exists(baseline_path):
+            with open(baseline_path) as f:
+                vgg = json.load(f)
+            vgg_fc = vgg["fc_params"]
+        else:
+            vgg_fc = VGG16_FC_PARAMS
+
+        config = {
+            "model": "SGNNET",
+            "N_in": 25088,
+            "N_hidden": 256,
+            "N_out": 10,
+            "D": 4,
+            "K": 3,
+            "sparsity": 0.90,
+            "box_size": 1.0,
+            "total_params": total,
+            "param_breakdown": breakdown,
+            "percent_of_vgg16_fc": round(total / vgg_fc * 100, 4),
+            "C_input_sparsity": sparsities["C_input"],
+            "C_hh_sparsity": sparsities["C_hh"],
+            "C_ho_sparsity": sparsities["C_ho"],
+            "vgg16_fc_params": vgg_fc,
+        }
+
+        os.makedirs("results", exist_ok=True)
+        out_path = os.path.join("results", "sgnnet_config.json")
+        with open(out_path, "w") as f:
+            json.dump(config, f, indent=2)
+
+        # Verify written correctly
+        assert os.path.exists(out_path)
+        with open(out_path) as f:
+            loaded = json.load(f)
+        assert loaded["percent_of_vgg16_fc"] <= 1.0
+        assert loaded["total_params"] == total
