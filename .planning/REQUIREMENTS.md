@@ -27,12 +27,12 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 ### SGNNET Architecture
 
 - [ ] **ARCH-01**: SGNNET core module implemented: W positions [N, D], C sparse matrix [N, N], K-iteration loop
-- [ ] **ARCH-02**: Dynamic connectivity function with personal volume radius r* = (box_size/2) / N^(1/D)
+- [x] **ARCH-02**: Dynamic connectivity function with personal volume radius r* = (box_size/2) / N^(1/D)
 - [ ] **ARCH-03**: Self-projection readout: score_i = dot(A_i, W_i) / ||W_i||
 - [ ] **ARCH-04**: Safety valve loss (dead-zone Coulomb repulsion) implemented
 - [ ] **ARCH-05**: Load balance loss implemented (variance of per-neuron selection frequency)
 - [ ] **ARCH-06**: K-means initialization for hidden and output neuron positions
-- [ ] **ARCH-07**: N_in strategy resolved: either accept large N (25088+) or add input adapter projection
+- [x] **ARCH-07**: N_in strategy resolved: either accept large N (25088+) or add input adapter projection
 
 ### SGNNET Training
 
