@@ -113,11 +113,12 @@ class TestTotalLoss:
 
     def test_uses_kl_divergence(self):
         """Task loss uses KL divergence, not MSE."""
-        # Identical distributions -> KL should be ~0
-        probs = F.softmax(torch.randn(2, 10), dim=-1)
+        # Same logits -> log_softmax identical -> KL should be ~0
+        logits = torch.randn(2, 10)
+        targets = F.softmax(logits, dim=-1)
         W = torch.rand(20, 4) * 0.5 + 0.25
         loss = total_loss(
-            probs, probs, W, lambda_safety=0.0, lambda_lb=0.0,
+            logits, targets, W, lambda_safety=0.0, lambda_lb=0.0,
             N=20, D=4,
         )
         assert loss.item() == pytest.approx(0.0, abs=1e-4)
