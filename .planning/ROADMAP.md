@@ -263,7 +263,7 @@ Verify SGNNET meets the 1% parameter target before training.
 **Goal:** Progressively validate distillation of VGG16 FC into a smaller sparse network. Three stages in sequence: (1) sparse static connectivity only as the baseline, then (2) add dynamic signal propagation in two variants. Each stage benchmarked independently before the next begins.
 **Requirements:** TRAIN-01 through TRAIN-06
 **Done when:** All three stages trained and benchmarked; wave_comparison.md shows the contribution of each addition.
-**Plans:** 5 plans
+**Plans:** 3/5 plans executed
 
 Plans:
 - [x] 04-01-PLAN.md — SGNNET_Wave model architecture (norm_masked, wave_routing, model_wave, tests)
