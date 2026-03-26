@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-03-PLAN.md
-last_updated: "2026-03-24T10:55:58.111Z"
+stopped_at: Phase 4 context gathered
+last_updated: "2026-03-26T05:44:09.845Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
   total_plans: 7
   completed_plans: 7
@@ -33,8 +33,8 @@ Next action: Phase 3 (SGNNET Core Architecture)
 |-------|------|--------|
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
-| 3 | SGNNET Core Architecture | Not started |
-| 4 | SGNNET Training & Evaluation | Not started |
+| 3 | SGNNET Core Architecture | Complete (3/3 plans) |
+| 4 | SGNNET Wave Architecture & Experiments | Not started |
 | 5 | PCA Compression | Not started |
 | 6 | Comparative Analysis & Report | Not started |
 
@@ -55,10 +55,15 @@ Next action: Phase 3 (SGNNET Core Architecture)
 - [Phase 03]: Active param counting: only mask==1 entries count toward budget (649K active vs 6.5M dense)
 - [Phase 03]: KL divergence (not MSE) for distillation task loss in total_loss
 - [Phase 03]: C_ho sparsity threshold 0.85 due to guaranteed-connectivity on small 256x10 matrix
+- [Phase 04]: Switched to phasor activations Z ∈ ℂ^D because amplitude-only dynamic routing is broken: LayerNorm output lives near 0 while W_pos ∈ [0,1]^D, so cdist(A_hidden, W_pos) ≈ 1.0 >> r*≈0.125, killing all proximity gates. Phasor decouples routing (always-positive Gaussian amplitude) from interference (complex phase rotation).
+- [Phase 04]: C matrices made binary immutable (0/1 mask, no learned values) to isolate the contribution of dynamic wave routing in experiments. Learned C weights deferred to later generation.
+- [Phase 04]: λ = r*/2 = r_repel — one full oscillation in active zone [r*/2, r*], both boundaries at φ=0, single inhibitory ring at d=3r*/4. All constants derived from N and D via r*; no free wavelength hyperparameter.
+- [Phase 04]: W_phase ∈ ℝ^D (Exp 2 only) — per-neuron per-dimension learned phase operator applied after incoming phasor accumulation; separate from W_pos which sets geometric proximity.
+- [Phase 04]: FP16 mixed precision via `torch.autocast('mps', dtype=torch.float16)` + `torch.amp.GradScaler('mps')` (requires PyTorch ≥2.3). `torch.cuda.amp.*` is CUDA-only — does not work on MPS. Apple Silicon GPU processes FP16 natively (~1.5–2× throughput for large matmuls). If PyTorch <2.3, use autocast alone (GradScaler had inf-detection bugs on MPS before 2.3).
 
 ## Open Decisions
 
-- **N_in strategy for SGNNET**: N_in=25088 (large C matrix, borderline feasible) vs. input adapter 25088->48 (adapter dominates params). Recommended: adapter 25088->48 to stay within 1% budget. Decide during Phase 3, Plan 3.2.
+- **N_in strategy for Phase 4**: Phase 3 used N_in=25088 direct (C_input [25088×256], 649k active params). Phase 4 wave model needs to decide: keep direct or add adapter. Decision point: Plan 4.1.
 
 ## Key Files
 
@@ -88,8 +93,8 @@ Next action: Phase 3 (SGNNET Core Architecture)
 
 ## Last Session
 
-- **Stopped at:** Completed 03-03-PLAN.md
-- **Timestamp:** 2026-03-23T17:49:06Z
+- **Stopped at:** Phase 4 context gathered
+- **Timestamp:** 2026-03-25T00:00:00Z
 
 ---
 *State initialized: 2026-03-23*
