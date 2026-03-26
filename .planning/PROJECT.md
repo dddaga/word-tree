@@ -35,8 +35,11 @@ Key numbers for VGG16 experiment:
 
 - [x] Implement SGNNET core: W positions, C sparse matrix, dynamic connectivity, K-iterations, self-projection — Validated in Phase 3: SGNNET Core Architecture (649,330 params = 0.53% of VGG16 FC, 51 tests passing)
 
+### Validated
+
+- [x] Train SGNNET wave architecture through three stages (static baseline + two dynamic routing variants) — Validated in Phase 4: Wave Architecture Experiments (Stage A: 10.27% top-1, Stage B: 11.97%, Stage C: 10.52%; binary C mask ceiling identified at ~3.2 KL plateau; wave_comparison.md produced)
+
 ### Active
-- [ ] Train SGNNET to match VGG16 FC soft outputs at ≤1% parameter count
 - [ ] Apply PCA to compress 25088-dim input, sweep compression ratios, retrain SGNNET
 - [ ] Produce a comparison table: params, FLOPs, accuracy for all three variants (dense / SGNNET full / SGNNET+PCA)
 
@@ -77,7 +80,7 @@ Key numbers for VGG16 experiment:
 | N_in=25088 direct (no adapter) | C_input [25088×256] accepted; 649k total params stays within 1% budget; adapter deferred | Validated in Phase 3 |
 
 ---
-*Last updated: 2026-03-24 after Phase 3 completion*
+*Last updated: 2026-03-26 after Phase 4 completion*
 
 ## Evolution
 
