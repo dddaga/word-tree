@@ -1,0 +1,133 @@
+{
+  "best_config": {
+    "K": 2,
+    "N_hidden": 256,
+    "lr_Wpos": 0.01,
+    "lambda_safety": 0.8973479043322251,
+    "batch_size": 64,
+    "lr_Wphase": 0.01
+  },
+  "best_score": -1.5512027019113086,
+  "history": [
+    {
+      "generation": 0,
+      "best_score": -1.6547182975536052,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00558947831449993,
+        "lambda_safety": 0.607114635159067,
+        "batch_size": 256,
+        "lr_Wphase": 1.6412851009307804e-05
+      }
+    },
+    {
+      "generation": 1,
+      "best_score": -1.687748350428438,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00558947831449993,
+        "lambda_safety": 0.607114635159067,
+        "batch_size": 256,
+        "lr_Wphase": 1.6412851009307804e-05
+      }
+    },
+    {
+      "generation": 2,
+      "best_score": -1.659450953984557,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.008770694699961262,
+        "lambda_safety": 1.0,
+        "batch_size": 128,
+        "lr_Wphase": 0.0049240794197162
+      }
+    },
+    {
+      "generation": 3,
+      "best_score": -1.6003539959580526,
+      "best_config": {
+        "K": 1,
+        "N_hidden": 256,
+        "lr_Wpos": 0.008770694699961262,
+        "lambda_safety": 0.8829737270205791,
+        "batch_size": 256,
+        "lr_Wphase": 0.01
+      }
+    },
+    {
+      "generation": 4,
+      "best_score": -1.5630966253610221,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.008770694699961262,
+        "lambda_safety": 1.0,
+        "batch_size": 128,
+        "lr_Wphase": 0.0049240794197162
+      }
+    },
+    {
+      "generation": 5,
+      "best_score": -1.6034448474752672,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.005892242644049107,
+        "lambda_safety": 0.9007993815852524,
+        "batch_size": 64,
+        "lr_Wphase": 0.0049240794197162
+      }
+    },
+    {
+      "generation": 6,
+      "best_score": -1.5512027019113086,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.01,
+        "lambda_safety": 0.8973479043322251,
+        "batch_size": 64,
+        "lr_Wphase": 0.01
+      }
+    },
+    {
+      "generation": 7,
+      "best_score": -1.5649480369802067,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.01,
+        "lambda_safety": 0.8973479043322251,
+        "batch_size": 64,
+        "lr_Wphase": 0.01
+      }
+    },
+    {
+      "generation": 8,
+      "best_score": -1.60915960156407,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.005892242644049107,
+        "lambda_safety": 0.7151456476668919,
+        "batch_size": 64,
+        "lr_Wphase": 0.0027818875162816934
+      }
+    },
+    {
+      "generation": 9,
+      "best_score": -1.5926740843204332,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.005892242644049107,
+        "lambda_safety": 0.7151456476668919,
+        "batch_size": 64,
+        "lr_Wphase": 0.0027818875162816934
+      }
+    }
+  ]
+}
