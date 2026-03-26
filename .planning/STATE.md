@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-26T05:44:09.845Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-26T06:43:50Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 12
+  completed_plans: 8
 ---
 
 # Project State: neuro_graph
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** SGNNET matches VGG16 FC accuracy at ≤1% of its parameters
-**Current focus:** Phase 03 — sgnnet-core-architecture
+**Current focus:** Phase 04 — sgnnet-wave-architecture-experiments
 
 ## Current Phase
 
-**Phase 2 — Dense Baseline Benchmark**
-Status: Complete (2/2 plans)
-Next action: Phase 3 (SGNNET Core Architecture)
+**Phase 4 — SGNNET Wave Architecture & Experiments**
+Status: In progress (1/5 plans)
+Next action: Plan 04-02 (Training infrastructure)
 
 ## Phase Progress
 
@@ -34,7 +34,7 @@ Next action: Phase 3 (SGNNET Core Architecture)
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
-| 4 | SGNNET Wave Architecture & Experiments | Not started |
+| 4 | SGNNET Wave Architecture & Experiments | In progress (1/5 plans) |
 | 5 | PCA Compression | Not started |
 | 6 | Comparative Analysis & Report | Not started |
 
@@ -60,10 +60,14 @@ Next action: Phase 3 (SGNNET Core Architecture)
 - [Phase 04]: λ = r*/2 = r_repel — one full oscillation in active zone [r*/2, r*], both boundaries at φ=0, single inhibitory ring at d=3r*/4. All constants derived from N and D via r*; no free wavelength hyperparameter.
 - [Phase 04]: W_phase ∈ ℝ^D (Exp 2 only) — per-neuron per-dimension learned phase operator applied after incoming phasor accumulation; separate from W_pos which sets geometric proximity.
 - [Phase 04]: FP16 mixed precision via `torch.autocast('mps', dtype=torch.float16)` + `torch.amp.GradScaler('mps')` (requires PyTorch ≥2.3). `torch.cuda.amp.*` is CUDA-only — does not work on MPS. Apple Silicon GPU processes FP16 natively (~1.5–2× throughput for large matmuls). If PyTorch <2.3, use autocast alone (GradScaler had inf-detection bugs on MPS before 2.3).
+- [Phase 04, Plan 01]: Binary C masks as buffers (D-05): no learned values, 0/1 only, registered as buffers
+- [Phase 04, Plan 01]: Masked normalization: only neurons with |Z_j| > eps participate in mean/var
+- [Phase 04, Plan 01]: W_phase is None unless use_wphase=True (Stage C only)
+- [Phase 04, Plan 01]: N_in=25088 direct kept for Phase 4 wave model (no adapter)
 
 ## Open Decisions
 
-- **N_in strategy for Phase 4**: Phase 3 used N_in=25088 direct (C_input [25088×256], 649k active params). Phase 4 wave model needs to decide: keep direct or add adapter. Decision point: Plan 4.1.
+None currently.
 
 ## Key Files
 
@@ -90,11 +94,12 @@ Next action: Phase 3 (SGNNET Core Architecture)
 | Phase 03 P01 | 2min | 1 tasks | 5 files |
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
 | Phase 03 P03 | 3min | 2 tasks | 5 files |
+| 04-01      | 11min    | 3     | 4     |
 
 ## Last Session
 
-- **Stopped at:** Phase 4 context gathered
-- **Timestamp:** 2026-03-25T00:00:00Z
+- **Stopped at:** Completed 04-01-PLAN.md (Wave Architecture)
+- **Timestamp:** 2026-03-26T06:43:50Z
 
 ---
 *State initialized: 2026-03-23*
