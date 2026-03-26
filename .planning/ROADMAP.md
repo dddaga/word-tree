@@ -267,10 +267,10 @@ Verify SGNNET meets the 1% parameter target before training.
 
 Plans:
 - [x] 04-01-PLAN.md — SGNNET_Wave model architecture (norm_masked, wave_routing, model_wave, tests)
-- [ ] 04-02-PLAN.md — Training infrastructure (trainer with FP16 AMP, GA search harness)
-- [ ] 04-03-PLAN.md — Stage A static connectivity baseline (GA search + full training)
-- [ ] 04-04-PLAN.md — Exp 1 + Exp 2 wave experiments (GA search + full training)
-- [ ] 04-05-PLAN.md — Evaluation and wave comparison
+- [x] 04-02-PLAN.md — Training infrastructure (trainer with FP16 AMP, GA search harness)
+- [x] 04-03-PLAN.md — Stage A static connectivity baseline (GA search + full training)
+- [x] 04-04-PLAN.md — Exp 1 + Exp 2 wave experiments (GA search + full training)
+- [x] 04-05-PLAN.md — Evaluation and wave comparison
 
 
 **Experimental progression:**

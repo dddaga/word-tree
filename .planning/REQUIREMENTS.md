@@ -41,7 +41,7 @@ Requirements for the 3-day experimental sprint (March 23–25, 2026).
 - [ ] **TRAIN-03**: Position clamping enforced after each optimizer step (keep inside [0, box_size])
 - [x] **TRAIN-04**: SGNNET achieves ≤1.24M trainable parameters (1% of VGG16 FC ~123.6M)
 - [x] **TRAIN-05**: Static C matrix maintains ≥90% sparsity throughout training
-- [ ] **TRAIN-06**: Top-1 accuracy (overall + per-class), mAP, and per-class precision/recall/F1 measured and recorded
+- [x] **TRAIN-06**: Top-1 accuracy (overall + per-class), mAP, and per-class precision/recall/F1 measured and recorded
 
 ### PCA Compression
 

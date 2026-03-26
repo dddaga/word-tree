@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-03-26T08:47:00Z"
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-03-26T08:52:00Z"
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State: neuro_graph
@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 4 — SGNNET Wave Architecture & Experiments**
-Status: In progress (4/5 plans)
-Next action: Plan 04-05 (Wave comparison report)
+Status: Complete (5/5 plans)
+Next action: Phase 5 (PCA Compression)
 
 ## Phase Progress
 
@@ -34,7 +34,7 @@ Next action: Plan 04-05 (Wave comparison report)
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
-| 4 | SGNNET Wave Architecture & Experiments | In progress (4/5 plans) |
+| 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
 | 5 | PCA Compression | Not started |
 | 6 | Comparative Analysis & Report | Not started |
 
@@ -74,6 +74,8 @@ Next action: Plan 04-05 (Wave comparison report)
 - [Phase 04, Plan 04]: Exp 2 GA selected K=2, N_hidden=256, lr=0.01, lr_Wphase=0.01 -- aggressive lr for W_phase
 - [Phase 04, Plan 04]: Exp 1 (spatial phase) top1=0.1197 vs Stage A 0.1027 -- proximity routing adds marginal benefit
 - [Phase 04, Plan 04]: Exp 2 (spatial + W_phase) top1=0.1052 -- W_phase trained (norm=13.36) but did not improve accuracy
+- [Phase 04, Plan 05]: Baseline class name casing mismatch handled via explicit mapping dict (VGG16 "English springer" vs experiments "english_springer")
+- [Phase 04, Plan 05]: Phase 3 SGNNET config (649K params with learned C) included as reference row alongside Phase 4 binary-C experiments (1K-2K params)
 
 ## Open Decisions
 
@@ -95,6 +97,9 @@ None currently.
 - Training loop: `src/training/trainer.py` (Trainer class with FP16 AMP, position clamping)
 - GA search: `src/training/ga_search.py` (GASearch, SEARCH_SPACE_AB, SEARCH_SPACE_C)
 - GA CLI: `scripts/run_ga_search.py` (run GA search by experiment name)
+- Wave comparison: `scripts/eval_comparison.py` (assembles all stage results)
+- Wave comparison JSON: `results/wave_comparison.json` (side-by-side metrics + deltas)
+- Wave comparison MD: `results/wave_comparison.md` (human-readable tables)
 
 ## Performance Metrics
 
@@ -111,11 +116,12 @@ None currently.
 | 04-02      | 13min    | 2     | 4     |
 | 04-03      | 22min    | 2     | 3     |
 | 04-04      | 60min    | 2     | 8     |
+| 04-05      | 2min     | 1     | 3     |
 
 ## Last Session
 
-- **Stopped at:** Completed 04-04-PLAN.md (Stage B/C Wave Experiments)
-- **Timestamp:** 2026-03-26T08:47:00Z
+- **Stopped at:** Completed 04-05-PLAN.md (Wave Comparison Report)
+- **Timestamp:** 2026-03-26T08:52:00Z
 
 ---
 *State initialized: 2026-03-23*
