@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-26T06:43:50Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-26T07:09:49Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 12
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State: neuro_graph
@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 4 — SGNNET Wave Architecture & Experiments**
-Status: In progress (1/5 plans)
-Next action: Plan 04-02 (Training infrastructure)
+Status: In progress (2/5 plans)
+Next action: Plan 04-03 (Stage A baseline)
 
 ## Phase Progress
 
@@ -34,7 +34,7 @@ Next action: Plan 04-02 (Training infrastructure)
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
-| 4 | SGNNET Wave Architecture & Experiments | In progress (1/5 plans) |
+| 4 | SGNNET Wave Architecture & Experiments | In progress (2/5 plans) |
 | 5 | PCA Compression | Not started |
 | 6 | Comparative Analysis & Report | Not started |
 
@@ -64,6 +64,9 @@ Next action: Plan 04-02 (Training infrastructure)
 - [Phase 04, Plan 01]: Masked normalization: only neurons with |Z_j| > eps participate in mean/var
 - [Phase 04, Plan 01]: W_phase is None unless use_wphase=True (Stage C only)
 - [Phase 04, Plan 01]: N_in=25088 direct kept for Phase 4 wave model (no adapter)
+- [Phase 04, Plan 02]: load_balance_loss uses abs sum of scores as proxy for neuron selection frequency
+- [Phase 04, Plan 02]: GradScaler support detected at runtime via PyTorch version check (>= 2.3)
+- [Phase 04, Plan 02]: PYTORCH_ENABLE_MPS_FALLBACK=1 needed for cdist backward on MPS
 
 ## Open Decisions
 
@@ -82,6 +85,9 @@ None currently.
 - Baseline results: `results/baseline_vgg16.json` (top1=0.9954, mAP=0.9997)
 - Metrics tests: `tests/test_metrics.py` (4 tests)
 - Soft label verification: `scripts/verify_soft_labels.py` (accuracy, entropy, class balance checks)
+- Training loop: `src/training/trainer.py` (Trainer class with FP16 AMP, position clamping)
+- GA search: `src/training/ga_search.py` (GASearch, SEARCH_SPACE_AB, SEARCH_SPACE_C)
+- GA CLI: `scripts/run_ga_search.py` (run GA search by experiment name)
 
 ## Performance Metrics
 
@@ -95,11 +101,12 @@ None currently.
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
 | Phase 03 P03 | 3min | 2 tasks | 5 files |
 | 04-01      | 11min    | 3     | 4     |
+| 04-02      | 13min    | 2     | 4     |
 
 ## Last Session
 
-- **Stopped at:** Completed 04-01-PLAN.md (Wave Architecture)
-- **Timestamp:** 2026-03-26T06:43:50Z
+- **Stopped at:** Completed 04-02-PLAN.md (Training Infrastructure)
+- **Timestamp:** 2026-03-26T07:09:49Z
 
 ---
 *State initialized: 2026-03-23*
