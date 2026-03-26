@@ -263,6 +263,15 @@ Verify SGNNET meets the 1% parameter target before training.
 **Goal:** Progressively validate distillation of VGG16 FC into a smaller sparse network. Three stages in sequence: (1) sparse static connectivity only as the baseline, then (2) add dynamic signal propagation in two variants. Each stage benchmarked independently before the next begins.
 **Requirements:** TRAIN-01 through TRAIN-06
 **Done when:** All three stages trained and benchmarked; wave_comparison.md shows the contribution of each addition.
+**Plans:** 5 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — SGNNET_Wave model architecture (norm_masked, wave_routing, model_wave, tests)
+- [ ] 04-02-PLAN.md — Training infrastructure (trainer with FP16 AMP, GA search harness)
+- [ ] 04-03-PLAN.md — Stage A static connectivity baseline (GA search + full training)
+- [ ] 04-04-PLAN.md — Exp 1 + Exp 2 wave experiments (GA search + full training)
+- [ ] 04-05-PLAN.md — Evaluation and wave comparison
+
 
 **Experimental progression:**
 ```
@@ -290,8 +299,11 @@ Exp 1 and Exp 2 are variants of Stage B/C — they are the dynamic connectivity 
 | Normalization | LayerNorm over all neurons | Masked — active neurons only (|Z_j| > ε) |
 | Proximity routing | Gaussian amplitude only | Gaussian(d) × Z × exp(i×2πd/λ), λ = r*/2 |
 | Dynamic topology | Supported | Deferred to Generation 2 |
+| Training precision | FP32 | FP16 mixed precision (autocast + GradScaler) |
 
 **λ = r*/2 = r_repel:** one full oscillation in active zone [r_repel, r*]. Both boundaries in-phase (φ=0). Single inhibitory ring at d = 3r*/4.
+
+**FP16 training (MPS-correct AMP):** All training uses `torch.autocast('mps', dtype=torch.float16)` + `torch.amp.GradScaler('mps')` (PyTorch 2.3+). Do NOT use `torch.cuda.amp.*` — that is CUDA-only and silently no-ops or errors on MPS. Model weights stored in FP32; forward and backward compute in FP16. Apple Silicon GPU processes FP16 natively (~1.5–2× throughput for large matmuls). `cdist` and norm ops may auto-promote to FP32 internally — that is expected and correct. If `torch.__version__ < 2.3`, fall back to `autocast` alone (skip GradScaler — MPS scaler had inf-detection bugs before 2.3).
 
 ---
 
@@ -318,11 +330,12 @@ scores = (A_out × W_norm).sum(dim=-1)                    # self-projection read
 - Search: K ∈ {1,2,3,4}, N_hidden ∈ {64,128,256}, D ∈ {2,4,8}, lr, λ_safety
 - Fitness: convergence quality after 15 epochs on 15% of data
 
-**Stage 2 — Full training with found hyperparams.**
+**Stage 2 — Full training with found hyperparams (FP16 + GradScaler).**
 
 **Deliverables:**
 - `src/sgnnet/model_wave.py`: SGNNET_Wave with `use_proximity=False` flag for Stage A
 - `src/sgnnet/norm_masked.py`: `masked_normalize`
+- `src/training/trainer.py`: shared training loop with `autocast('mps', float16)` + `GradScaler`
 - `results/stageA_ga_results.json`, `results/stageA_full.json`
 - `checkpoints/stageA_best.pt`
 
