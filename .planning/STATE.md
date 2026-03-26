@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-03-26T07:09:49Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-03-26T08:47:00Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State: neuro_graph
@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 4 — SGNNET Wave Architecture & Experiments**
-Status: In progress (3/5 plans)
-Next action: Plan 04-04 (Stage B proximity routing)
+Status: In progress (4/5 plans)
+Next action: Plan 04-05 (Wave comparison report)
 
 ## Phase Progress
 
@@ -34,7 +34,7 @@ Next action: Plan 04-04 (Stage B proximity routing)
 | 1 | Data Pipeline | Complete (2/2 plans, UAT passed 7/7) |
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
-| 4 | SGNNET Wave Architecture & Experiments | In progress (3/5 plans) |
+| 4 | SGNNET Wave Architecture & Experiments | In progress (4/5 plans) |
 | 5 | PCA Compression | Not started |
 | 6 | Comparative Analysis & Report | Not started |
 
@@ -70,6 +70,10 @@ Next action: Plan 04-04 (Stage B proximity routing)
 - [Phase 04, Plan 03]: Stage A with 1064 learnable params (W_pos only) achieves ~10% accuracy -- binary C masks alone insufficient for distillation
 - [Phase 04, Plan 03]: GA selected K=2, N_hidden=256, lr=0.008, lambda_safety=0.52 as best Stage A config
 - [Phase 04, Plan 03]: Loss plateaus at ~3.22 after epoch 8 -- static binary wiring hits expressiveness ceiling
+- [Phase 04, Plan 04]: Exp 1 GA selected K=2, N_hidden=256, lr=0.0024 -- lower lr suits phasor routing
+- [Phase 04, Plan 04]: Exp 2 GA selected K=2, N_hidden=256, lr=0.01, lr_Wphase=0.01 -- aggressive lr for W_phase
+- [Phase 04, Plan 04]: Exp 1 (spatial phase) top1=0.1197 vs Stage A 0.1027 -- proximity routing adds marginal benefit
+- [Phase 04, Plan 04]: Exp 2 (spatial + W_phase) top1=0.1052 -- W_phase trained (norm=13.36) but did not improve accuracy
 
 ## Open Decisions
 
@@ -106,11 +110,12 @@ None currently.
 | 04-01      | 11min    | 3     | 4     |
 | 04-02      | 13min    | 2     | 4     |
 | 04-03      | 22min    | 2     | 3     |
+| 04-04      | 60min    | 2     | 8     |
 
 ## Last Session
 
-- **Stopped at:** Completed 04-03-PLAN.md (Stage A Baseline)
-- **Timestamp:** 2026-03-26T07:43:26Z
+- **Stopped at:** Completed 04-04-PLAN.md (Stage B/C Wave Experiments)
+- **Timestamp:** 2026-03-26T08:47:00Z
 
 ---
 *State initialized: 2026-03-23*
