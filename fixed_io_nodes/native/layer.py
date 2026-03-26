@@ -14,7 +14,7 @@ class NativeNeurographLayer(nn.Module):
     with native autograd gradient tracking (no custom autograd.Function).
     """
 
-    def __init__(self, config: Union[str, dict]):
+    def __init__(self, config: Union[str, dict], use_layer_norm: bool = True):
         super().__init__()
         if isinstance(config, str):
             import yaml
@@ -46,6 +46,10 @@ class NativeNeurographLayer(nn.Module):
         self._scattering_prob_base = model.get("scattering_prob", 0.0)
         self._stochastic_radiation_duration = model.get("stochastic_radiation_duration", 0.5)
         self._current_scattering_prob = None
+
+        self._use_layer_norm = use_layer_norm
+        if use_layer_norm:
+            self.mag_norm = nn.LayerNorm(self._vector_dim, elementwise_affine=True)
 
         self._input_nodeids = sorted(self._node_store.input_nodeids)
         self._output_nodeids = sorted(self._node_store.output_nodeids)
@@ -103,7 +107,19 @@ class NativeNeurographLayer(nn.Module):
         # Initialize activations from weights
         phase_act = phase_weight.clone()
         mag_act = mag_weight.clone()
+        if self._use_layer_norm:
+            mag_act = self.mag_norm(mag_act)
         act_strength = activation_strength_forward(phase_act, mag_act, self._gamma)
+
+        # Build a closure that optionally applies LayerNorm before update_activations,
+        # so that both run inside grad_checkpoint (avoids retaining LN intermediates).
+        if self._use_layer_norm:
+            mag_norm = self.mag_norm
+            def _normed_update(pa, ma, pw, mw, a_s, edges, wr, wi, all_act):
+                return update_activations(pa, mag_norm(ma), pw, mw, a_s, edges, wr, wi, all_act)
+            _update_fn = _normed_update
+        else:
+            _update_fn = update_activations
 
         # Index helpers
         input_idx = self._get_input_idx(device)
@@ -145,7 +161,7 @@ class NativeNeurographLayer(nn.Module):
                 else:
                     batched_edges = self._replicate_edges(edge_index, offsets, B)
             phase_act, mag_act, act_strength = grad_checkpoint(
-                update_activations,
+                _update_fn,
                 phase_act, mag_act, phase_weight, mag_weight, act_strength, batched_edges,
                 w_real, w_imag, all_active,
                 use_reentrant=False,
