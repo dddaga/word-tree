@@ -1,0 +1,122 @@
+{
+  "best_config": {
+    "K": 2,
+    "N_hidden": 256,
+    "lr_Wpos": 0.00804477468426438,
+    "lambda_safety": 0.5203270549244602,
+    "batch_size": 256
+  },
+  "best_score": -2.0567550539664325,
+  "history": [
+    {
+      "generation": 0,
+      "best_score": -2.997747815325902,
+      "best_config": {
+        "K": 4,
+        "N_hidden": 128,
+        "lr_Wpos": 0.004033144386571721,
+        "lambda_safety": 0.37616036552618515,
+        "batch_size": 256
+      }
+    },
+    {
+      "generation": 1,
+      "best_score": -2.386545574803075,
+      "best_config": {
+        "K": 4,
+        "N_hidden": 256,
+        "lr_Wpos": 0.0023222179538650123,
+        "lambda_safety": 0.6761810922225898,
+        "batch_size": 64
+      }
+    },
+    {
+      "generation": 2,
+      "best_score": -2.4568407555581913,
+      "best_config": {
+        "K": 4,
+        "N_hidden": 128,
+        "lr_Wpos": 0.004033144386571721,
+        "lambda_safety": 0.37616036552618515,
+        "batch_size": 256
+      }
+    },
+    {
+      "generation": 3,
+      "best_score": -2.0567550539664325,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00804477468426438,
+        "lambda_safety": 0.5203270549244602,
+        "batch_size": 256
+      }
+    },
+    {
+      "generation": 4,
+      "best_score": -2.204371675672511,
+      "best_config": {
+        "K": 1,
+        "N_hidden": 256,
+        "lr_Wpos": 0.004033144386571721,
+        "lambda_safety": 0.37616036552618515,
+        "batch_size": 128
+      }
+    },
+    {
+      "generation": 5,
+      "best_score": -2.1860099493998724,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00804477468426438,
+        "lambda_safety": 0.5203270549244602,
+        "batch_size": 256
+      }
+    },
+    {
+      "generation": 6,
+      "best_score": -2.7003343358729976,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00804477468426438,
+        "lambda_safety": 0.5278854120041164,
+        "batch_size": 128
+      }
+    },
+    {
+      "generation": 7,
+      "best_score": -2.2319306193158552,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 256,
+        "lr_Wpos": 0.00804477468426438,
+        "lambda_safety": 0.5278854120041164,
+        "batch_size": 128
+      }
+    },
+    {
+      "generation": 8,
+      "best_score": -2.2296885898501864,
+      "best_config": {
+        "K": 1,
+        "N_hidden": 256,
+        "lr_Wpos": 0.0030505832551771636,
+        "lambda_safety": 0.4048998442141185,
+        "batch_size": 64
+      }
+    },
+    {
+      "generation": 9,
+      "best_score": -2.388887876322082,
+      "best_config": {
+        "K": 2,
+        "N_hidden": 128,
+        "lr_Wpos": 0.004518484006723412,
+        "lambda_safety": 0.37616036552618515,
+        "batch_size": 128
+      }
+    }
+  ]
+}
