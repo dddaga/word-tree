@@ -1,15 +1,15 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "run1"
+  collection_name: "run2"
 
 
 # --- Graph Structure & Node Initialization ---
 graph:
-  total_nodes: 15454 #123633664/ (1000 * vector_dim)
+  total_nodes: 30000 #123633664/ (1000 * vector_dim)
   input_nodes: 3136 # 512*7*7 / vector_dim
   output_nodes: 256
-  cardinality: 200 
+  cardinality: 1000 
   radiation_targets: 0
 
 # --- Model Architecture ---
@@ -31,17 +31,21 @@ training:
   lr: 0.0001
   batch_size: 4
   accumulation_steps: 4
-  epochs: 20
+  epochs: 5
   validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
 
 
 # --- System & Logging ---
 system:
   device: "mps"
   random_seed: 42
-  weights_save_path: "training_runs/run1/run1_weights.pt"
+  weights_save_path: "training_runs/run2/run2_weights.pt"
+  scheduler_save_path: "training_runs/run2/run2_scheduler.pt"
   logging:
-    log_path: "training_runs/run1/run1.csv"
+    log_path: "training_runs/run2/run2.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class', 'skipped']
     tensorboard_dir: null

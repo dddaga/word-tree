@@ -1,0 +1,1 @@
+No log files or weights for this. This was an unstable trianing run with <15% accuracy after 4 epochs and training was stopped after that. 
