@@ -19,8 +19,7 @@ THIS_DIR = Path(__file__).resolve().parent
 DEFAULT_CONFIG_PATH = THIS_DIR / "training_runs" / "run1" / "config.yaml"
 
 
-def _save_optimizer(optimizer, path):
-    state = {"head_optimizer": optimizer._head_optimizer.state_dict()}
+def _save_training_state(optimizer, path, epoch, global_step):
     acc_states = []
     for acc in optimizer._accumulators:
         acc_states.append({
@@ -35,13 +34,20 @@ def _save_optimizer(optimizer, path):
             "mag_exp_avg_sq": acc.mag_exp_avg_sq,
             "mag_state_steps": acc.mag_state_steps,
         })
-    state["accumulators"] = acc_states
+    state = {
+        "optimizer": optimizer._head_optimizer.state_dict(),
+        "accumulators": acc_states,
+        "epoch": epoch,
+        "global_step": global_step,
+    }
     torch.save(state, str(path))
 
 
-def _load_optimizer(optimizer, path, device):
-    state = torch.load(str(path), map_location=device)
-    optimizer._head_optimizer.load_state_dict(state["head_optimizer"])
+def _load_training_state(optimizer, path, device):
+    """Load optimizer + accumulator state. Returns (epoch, global_step)."""
+    state = torch.load(str(path), map_location=device, weights_only=False)
+    optimizer._head_optimizer.load_state_dict(state["optimizer"])
+
     for acc, acc_state in zip(optimizer._accumulators, state["accumulators"]):
         acc.phase_grads = acc_state["phase_grads"].to(device)
         acc.mag_grads = acc_state["mag_grads"].to(device)
@@ -53,6 +59,18 @@ def _load_optimizer(optimizer, path, device):
         acc.mag_exp_avg = acc_state["mag_exp_avg"].to(device)
         acc.mag_exp_avg_sq = acc_state["mag_exp_avg_sq"].to(device)
         acc.mag_state_steps = acc_state["mag_state_steps"].to(device)
+
+    return state.get("epoch", 20), state.get("global_step", 47340) 
+    #The default values are chosen here since training runs 1 to 4 didn't save these parameters, and all of them had these same values
+
+
+def _save_scheduler(scheduler, path):
+    torch.save(scheduler.state_dict(), str(path))
+
+
+def _load_scheduler(scheduler, path, device):
+    state = torch.load(str(path), map_location=device)
+    scheduler.load_state_dict(state)
 
 
 def _resolve_path(path_value: str, base_dir: Path) -> Path:
@@ -90,9 +108,9 @@ def main(config_path: str = None, layernorm_override: bool = None):
         cfg.setdefault("system", {})["use_layer_norm"] = layernorm_override
 
     device = cfg.get("system", {}).get("device", "cpu")
-    epochs = cfg.get("training", {}).get("epochs", 10)
-    batch_size = cfg.get("training", {}).get("batch_size", 32)
-    lr = cfg.get("training", {}).get("lr", 1e-3)
+    epochs = cfg["training"]["epochs"]
+    batch_size = cfg["training"]["batch_size"]
+    lr = cfg["training"]["lr"]
 
     raw_log_dir = cfg.get("system", {}).get(
         "tensorboard_dir", "training_runs/run1/tensorboard"
@@ -127,24 +145,52 @@ def main(config_path: str = None, layernorm_override: bool = None):
         save_path.stem + "_optimizer" + save_path.suffix
     )
 
+    # LR scheduler (optional — enabled when lr_decay_factor is set in config)
+    scheduler_cfg = cfg.get("training", {})
+    use_scheduler = "lr_decay_factor" in scheduler_cfg
+    scheduler = None
+    scheduler_save_path = None
+    if use_scheduler:
+        patience = scheduler_cfg.get("plateau_patience", 5)
+        lr_factor = scheduler_cfg["lr_decay_factor"]
+        min_lr = scheduler_cfg.get("min_lr", 1e-7)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            mode="min",
+            factor=lr_factor,
+            patience=patience,
+            min_lr=min_lr,
+        )
+        raw_sched_path = cfg.get("system", {}).get("scheduler_save_path")
+        if raw_sched_path:
+            scheduler_save_path = _resolve_path(raw_sched_path, THIS_DIR)
+        else:
+            scheduler_save_path = save_path.with_name(
+                save_path.stem + "_scheduler" + save_path.suffix
+            )
+
+    start_epoch = 0
     global_step = 0
     if save_path.exists():
         load_full_model(model, str(save_path), map_location=device)
         print(f"Loaded checkpoint from {save_path}")
         if optimizer_save_path.exists():
-            _load_optimizer(optimizer, optimizer_save_path, device)
-            print(f"Loaded optimizer state from {optimizer_save_path}")
+            loaded_epoch, loaded_step = _load_training_state(
+                optimizer, optimizer_save_path, device
+            )
+            start_epoch = loaded_epoch + 1  # resume from next epoch
+            global_step = loaded_step
+            print(f"Loaded optimizer state from {optimizer_save_path} "
+                  f"(resuming from epoch {start_epoch}, step {global_step})")
+        if scheduler is not None and scheduler_save_path.exists():
+            _load_scheduler(scheduler, scheduler_save_path, device)
+            print(f"Loaded scheduler state from {scheduler_save_path}")
 
     criterion = nn.CrossEntropyLoss()
     total_steps = epochs * len(train_loader)
 
-    patience = cfg.get("training", {}).get("plateau_patience", 5)
-    min_delta = cfg.get("training", {}).get("plateau_min_delta", 1e-4)
-    best_train_loss = float("inf")
-    plateau_counter = 0
-
     print("Training started")
-    for epoch in range(epochs):
+    for epoch in range(start_epoch, epochs):
         model.train()
         correct = 0
         total = 0
@@ -202,23 +248,21 @@ def main(config_path: str = None, layernorm_override: bool = None):
             f"Val Acc: {val_acc:.2f}%, Val Loss: {val_loss:.4f}"
         )
 
+        if scheduler is not None:
+            old_lr = optimizer.param_groups[0]["lr"]
+            scheduler.step(avg_train_loss)
+            new_lr = optimizer.param_groups[0]["lr"]
+            if new_lr < old_lr:
+                print(f"LR decayed: {old_lr:.2e} -> {new_lr:.2e}")
+            writer.add_scalar("Training/LR", new_lr, epoch)
+
         save_full_model(model, str(save_path))
-        _save_optimizer(optimizer, optimizer_save_path)
+        _save_training_state(optimizer, optimizer_save_path, epoch, global_step)
         print(f"Saved checkpoint to {save_path}")
         print(f"Saved optimizer state to {optimizer_save_path}")
-
-        if best_train_loss - avg_train_loss > min_delta:
-            best_train_loss = avg_train_loss
-            plateau_counter = 0
-        else:
-            plateau_counter += 1
-            print(
-                f"Training loss plateau: no improvement for "
-                f"{plateau_counter}/{patience} epochs"
-            )
-            if plateau_counter >= patience:
-                print("Early stopping: training loss has plateaued.")
-                break
+        if scheduler is not None:
+            _save_scheduler(scheduler, scheduler_save_path)
+            print(f"Saved scheduler state to {scheduler_save_path}")
 
     print(f"Training complete. Final model at {save_path}")
     writer.close()

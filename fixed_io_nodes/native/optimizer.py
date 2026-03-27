@@ -112,12 +112,16 @@ class _GradAccumulator:
         state_steps[idx] = ss
 
 
-class NativeGNNOptimizer:
+class NativeGNNOptimizer(torch.optim.Optimizer):
     """
-    Dual-path optimizer:
+    Dual-path optimizer (subclasses torch.optim.Optimizer):
     - Head params (linear layers): standard Adam, updated every batch
     - GNN params (phase_weight, mag_weight): per-node gradient accumulation
       with Adam, updated only when a node reaches accumulation_steps
+
+    param_groups layout:
+      [0] = head parameters
+      [1] = GNN parameters (phase_weight, mag_weight)
     """
 
     def __init__(self, model: nn.Module, lr: float, accumulation_steps: int,
@@ -129,33 +133,44 @@ class NativeGNNOptimizer:
 
         self._gnn_layers = gnn_layers
 
-        # Collect GNN param IDs to exclude from head optimizer
+        # Split params into head vs GNN groups
         gnn_param_ids = set()
-        self._accumulators = []
+        gnn_params = []
         for layer in gnn_layers:
             ns = layer._node_store
             gnn_param_ids.add(id(ns.phase_weight))
             gnn_param_ids.add(id(ns.mag_weight))
-            device = ns.phase_weight.device
-            self._accumulators.append(
-                _GradAccumulator(ns, lr, accumulation_steps, betas, eps, device=str(device))
-            )
+            gnn_params.extend([ns.phase_weight, ns.mag_weight])
 
         head_params = [p for p in model.parameters() if id(p) not in gnn_param_ids]
+
+        # Use torch.optim.Adam for head params (optimized C++ kernels)
         self._head_optimizer = torch.optim.Adam(head_params, lr=lr, betas=betas, eps=eps)
 
-    def zero_grad(self):
-        self._head_optimizer.zero_grad()
-        for layer in self._gnn_layers:
-            ns = layer._node_store
-            if ns.phase_weight.grad is not None:
-                ns.phase_weight.grad = None
-            if ns.mag_weight.grad is not None:
-                ns.mag_weight.grad = None
+        # Initialise Optimizer base class with GNN group only; then prepend
+        # the head optimizer's param_group so both share the same dict object.
+        # This lets schedulers modify self.param_groups[0]["lr"] and the
+        # internal Adam sees the change immediately (same dict reference).
+        defaults = dict(lr=lr, betas=betas, eps=eps)
+        super().__init__([{"params": gnn_params}], defaults)
+        self.param_groups.insert(0, self._head_optimizer.param_groups[0])
 
-    def step(self):
-        # 1. Extract GNN gradients, feed to accumulators, clear
+        # Build accumulators — they read LR from self.param_groups[1]
+        self._accumulators = []
+        for layer in gnn_layers:
+            ns = layer._node_store
+            device = ns.phase_weight.device
+            self._accumulators.append(
+                _GradAccumulator(ns, lr, accumulation_steps, betas, eps,
+                                 device=str(device))
+            )
+
+    def step(self, closure=None):
+        # --- Path 1: GNN accumulator-based Adam ---
+        gnn_lr = self.param_groups[1]["lr"]
         for layer, acc in zip(self._gnn_layers, self._accumulators):
+            acc.lr = gnn_lr
+
             ns = layer._node_store
             pg = ns.phase_weight.grad
             mg = ns.mag_weight.grad
@@ -170,9 +185,8 @@ class NativeGNNOptimizer:
 
             acc.step()
 
-            # Clear GNN grads so head Adam doesn't touch them
             ns.phase_weight.grad = None
             ns.mag_weight.grad = None
 
-        # 2. Standard Adam for head params
-        self._head_optimizer.step()
+        # --- Path 2: Optimized torch.optim.Adam for head params ---
+        self._head_optimizer.step(closure=closure)

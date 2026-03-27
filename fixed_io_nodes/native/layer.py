@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.nn as nn
 from typing import Optional, Union
@@ -42,6 +43,7 @@ class NativeNeurographLayer(nn.Module):
         self._vector_dim = model["vector_dim"]
         self._iterations = model["iterations"]
         self._radiation_targets = graph["radiation_targets"]
+        self._radiation_similarity_threshold = model.get("radiation_similarity_threshold", 0.0)
         self._gamma = model.get("gamma", 1.0)
         self._scattering_prob_base = model.get("scattering_prob", 0.0)
         self._stochastic_radiation_duration = model.get("stochastic_radiation_duration", 0.5)
@@ -60,17 +62,24 @@ class NativeNeurographLayer(nn.Module):
     # Public API
     # ------------------------------------------------------------------
 
+    # Exponential decay constant; controls steepness: k=3 drops to ~18% at midpoint
+    _DECAY_K = 3.0
+    _DECAY_DENOM = math.exp(-_DECAY_K)  # e^{-k}, precomputed
+
     def set_training_progress(self, step: int, total_steps: int) -> None:
         if self._scattering_prob_base == 0:
             self._current_scattering_prob = 0.0
             return
-        if step >= total_steps / 2:
+        T = total_steps * self._stochastic_radiation_duration
+        if step >= T:
             self._current_scattering_prob = 0.0
-        else:
-            duration = self._stochastic_radiation_duration
-            self._current_scattering_prob = self._scattering_prob_base * max(
-                0.0, 1.0 - step / (total_steps * duration)
-            )
+            return
+        t = step / T  # normalised: 0 at start, 1 at end of active window
+        # f(t) = (e^{-k·t} - e^{-k}) / (1 - e^{-k})  →  f(0)=1, f(1)=0
+        k, ek = self._DECAY_K, self._DECAY_DENOM
+        self._current_scattering_prob = self._scattering_prob_base * (
+            math.exp(-k * t) - ek
+        ) / (1.0 - ek)
 
     def _get_input_idx(self, device: torch.device) -> torch.Tensor:
         if self._input_idx is None or self._input_idx.device != device:
@@ -137,9 +146,8 @@ class NativeNeurographLayer(nn.Module):
             phase_weight, mag_weight, batched_input_idx, B, n_in, device,
         )
 
-        # Pre-compute batched full edges for when active_mask saturates
+        # Pre-compute full static edges (replicated per-iteration when all_active)
         full_edges = self._node_store.edge_indices
-        batched_full_edges = self._replicate_edges(full_edges, offsets, B)
         all_active = False
 
         # Pre-compute weight trig once (constant across iterations)
@@ -149,7 +157,13 @@ class NativeNeurographLayer(nn.Module):
         # Propagation iterations
         for _ in range(self._iterations - 1):
             if all_active:
-                batched_edges = batched_full_edges
+                iter_edge = full_edges
+                if self._radiation_targets > 0:
+                    all_indices = torch.arange(N, device=device)
+                    rad_edges = self._compute_radiation_edges(all_indices, device)
+                    if rad_edges.shape[1] > 0:
+                        iter_edge = torch.cat([full_edges, rad_edges], dim=1)
+                batched_edges = self._replicate_edges(iter_edge, offsets, B)
             else:
                 active_indices = active_mask.nonzero(as_tuple=True)[0]
                 if active_indices.numel() == 0:
@@ -157,9 +171,7 @@ class NativeNeurographLayer(nn.Module):
                 edge_index, active_mask = self._build_edge_index(active_indices, active_mask, device)
                 if active_mask.all():
                     all_active = True
-                    batched_edges = batched_full_edges
-                else:
-                    batched_edges = self._replicate_edges(edge_index, offsets, B)
+                batched_edges = self._replicate_edges(edge_index, offsets, B)
             phase_act, mag_act, act_strength = grad_checkpoint(
                 _update_fn,
                 phase_act, mag_act, phase_weight, mag_weight, act_strength, batched_edges,
@@ -217,19 +229,59 @@ class NativeNeurographLayer(nn.Module):
     # Edge construction (single-sample, then replicated by forward)
     # ------------------------------------------------------------------
 
+    def _compute_radiation_edges(self, active_indices: torch.Tensor, device: torch.device) -> torch.Tensor:
+        """Return radiation-only edges (2, E) for active_indices. Does not modify active_mask.
+
+        Cosine-searched targets below radiation_similarity_threshold are dropped entirely.
+        Random targets are always included (no threshold applies to them).
+        """
+        if self._radiation_targets == 0:
+            return torch.empty((2, 0), device=device, dtype=torch.long)
+
+        k = self._radiation_targets
+        scattering_prob = (
+            self._current_scattering_prob
+            if self._current_scattering_prob is not None
+            else self._scattering_prob_base
+        )
+        scattering_prob = max(0.0, min(1.0, scattering_prob))
+        num_random = int(k * scattering_prob)
+        num_searched = k - num_random
+
+        all_src, all_dst = [], []
+
+        if num_searched > 0:
+            query = self._node_store.phase_weight.data[active_indices]
+            found_idx, scores = self._node_store.search_nodes_batch(
+                query, vector_name="phase", limit=num_searched,
+            )
+            found_idx = found_idx.to(device)
+            if self._radiation_similarity_threshold > 0.0:
+                # Keep only hits above threshold; result is variable-length per node
+                valid = scores.to(device) >= self._radiation_similarity_threshold
+                all_src.append(active_indices.unsqueeze(1).expand_as(found_idx)[valid])
+                all_dst.append(found_idx[valid])
+            else:
+                all_src.append(active_indices.repeat_interleave(num_searched))
+                all_dst.append(found_idx.flatten())
+
+        if num_random > 0:
+            rand_n = torch.randint(0, self._total_nodes, (active_indices.shape[0], num_random), device=device)
+            all_src.append(active_indices.repeat_interleave(num_random))
+            all_dst.append(rand_n.flatten())
+
+        if not all_src:
+            return torch.empty((2, 0), device=device, dtype=torch.long)
+        return torch.stack([torch.cat(all_src), torch.cat(all_dst)])
+
     def _build_edge_index(self, active_indices, active_mask, device):
         """Combine static edges (filtered by active mask) with radiation targets."""
         edge_indices = self._node_store.edge_indices
         mask = active_mask[edge_indices[0]]
         direct_edges = edge_indices[:, mask]
 
-        # Radiation targets
-        radiation_neighbours = self._compute_radiation_targets(active_indices, device)
-        n_rad = radiation_neighbours.numel()
-        if n_rad > 0:
-            rad_edge = torch.empty((2, n_rad), device=device, dtype=torch.long)
-            rad_edge[1] = radiation_neighbours.flatten()
-            rad_edge[0] = active_indices.repeat_interleave(radiation_neighbours.shape[1])
+        rad_edge = self._compute_radiation_edges(active_indices, device)
+        if rad_edge.shape[1] > 0:
             active_edge_index = torch.cat([direct_edges, rad_edge], dim=1)
         else:
             active_edge_index = direct_edges
@@ -238,32 +290,3 @@ class NativeNeurographLayer(nn.Module):
         active_mask = active_mask.clone()
         active_mask[active_edge_index[1]] = True
         return active_edge_index, active_mask
-
-    def _compute_radiation_targets(self, active_indices, device):
-        """Find radiation targets via cosine search + random sampling."""
-        k = self._radiation_targets
-        scattering_prob = (
-            self._current_scattering_prob
-            if self._current_scattering_prob is not None
-            else self._scattering_prob_base
-        )
-        scattering_prob = max(0.0, min(1.0, scattering_prob))
-
-        num_random = int(k * scattering_prob)
-        num_searched = k - num_random
-
-        neighbours = torch.empty((active_indices.shape[0], 0), device=device, dtype=torch.long)
-
-        if num_searched > 0:
-            # Use current phase activations as query (detached for non-diff search)
-            query = self._node_store.phase_weight.data[active_indices]
-            found_idx, _ = self._node_store.search_nodes_batch(
-                query, vector_name="phase", limit=num_searched,
-            )
-            neighbours = torch.cat([neighbours, found_idx.to(device)], dim=1)
-
-        if num_random > 0:
-            rand_n = torch.randint(0, self._total_nodes, (active_indices.shape[0], num_random), device=device)
-            neighbours = torch.cat([neighbours, rand_n], dim=1)
-
-        return neighbours
