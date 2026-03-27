@@ -15,7 +15,7 @@ class NativeNeurographLayer(nn.Module):
     with native autograd gradient tracking (no custom autograd.Function).
     """
 
-    def __init__(self, config: Union[str, dict], use_layer_norm: bool = True):
+    def __init__(self, config: Union[str, dict], use_layer_norm: bool = None):
         super().__init__()
         if isinstance(config, str):
             import yaml
@@ -49,9 +49,11 @@ class NativeNeurographLayer(nn.Module):
         self._stochastic_radiation_duration = model.get("stochastic_radiation_duration", 0.5)
         self._current_scattering_prob = None
 
-        self._use_layer_norm = use_layer_norm
-        if use_layer_norm:
+        self._use_layer_norm = model.get("layernorm", False) if use_layer_norm is None else use_layer_norm
+        if self._use_layer_norm:
             self.mag_norm = nn.LayerNorm(self._vector_dim, elementwise_affine=True)
+
+        self._edge_dropout_p = model.get("dropout", 0.0)
 
         self._input_nodeids = sorted(self._node_store.input_nodeids)
         self._output_nodeids = sorted(self._node_store.output_nodeids)
@@ -163,15 +165,16 @@ class NativeNeurographLayer(nn.Module):
                     rad_edges = self._compute_radiation_edges(all_indices, device)
                     if rad_edges.shape[1] > 0:
                         iter_edge = torch.cat([full_edges, rad_edges], dim=1)
-                batched_edges = self._replicate_edges(iter_edge, offsets, B)
             else:
                 active_indices = active_mask.nonzero(as_tuple=True)[0]
                 if active_indices.numel() == 0:
                     break
-                edge_index, active_mask = self._build_edge_index(active_indices, active_mask, device)
+                iter_edge, active_mask = self._build_edge_index(active_indices, active_mask, device)
                 if active_mask.all():
                     all_active = True
-                batched_edges = self._replicate_edges(edge_index, offsets, B)
+
+            iter_edge = self._apply_edge_dropout(iter_edge)
+            batched_edges = self._replicate_edges(iter_edge, offsets, B)
             phase_act, mag_act, act_strength = grad_checkpoint(
                 _update_fn,
                 phase_act, mag_act, phase_weight, mag_weight, act_strength, batched_edges,
@@ -224,6 +227,19 @@ class NativeNeurographLayer(nn.Module):
         src = edge_index[0].unsqueeze(0) + offsets.unsqueeze(1)
         dst = edge_index[1].unsqueeze(0) + offsets.unsqueeze(1)
         return torch.stack([src.reshape(-1), dst.reshape(-1)])
+
+    def _apply_edge_dropout(self, edge_index: torch.Tensor) -> torch.Tensor:
+        """Drop non-self-loop edges with probability ``_edge_dropout_p``.
+
+        Only active during training.  Self-loops (src == dst) are always kept.
+        No scaling needed because softmax routing weights auto-renormalize.
+        """
+        if self._edge_dropout_p == 0.0 or not self.training:
+            return edge_index
+        src, dst = edge_index[0], edge_index[1]
+        keep = torch.rand(edge_index.shape[1], device=edge_index.device) >= self._edge_dropout_p
+        keep = keep | (src == dst)  # preserve self-loops
+        return edge_index[:, keep]
 
     # ------------------------------------------------------------------
     # Edge construction (single-sample, then replicated by forward)

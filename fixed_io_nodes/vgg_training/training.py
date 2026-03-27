@@ -90,8 +90,7 @@ class CustomHybridModel(nn.Module):
         assert self.input_nodes * self.vector_dim == 512 * 7 * 7, (
             "input_nodes * vector_dim must match VGG16 feature size (25088)"
         )
-        use_ln = cfg.get("system", {}).get("use_layer_norm", True)
-        self.gnn = NativeNeurographLayer(cfg, use_layer_norm=use_ln)
+        self.gnn = NativeNeurographLayer(cfg)
         self.out = nn.Linear(self.output_nodes, 10)
 
     def forward(self, x):
@@ -101,11 +100,13 @@ class CustomHybridModel(nn.Module):
         return self.out(gnn_out)
 
 
-def main(config_path: str = None, layernorm_override: bool = None):
+def main(config_path: str = None, layernorm_override: bool = None, dropout_override: float = None):
     cfg_path = Path(config_path).resolve() if config_path else DEFAULT_CONFIG_PATH
     cfg = load_config(str(cfg_path))
     if layernorm_override is not None:
-        cfg.setdefault("system", {})["use_layer_norm"] = layernorm_override
+        cfg.setdefault("model", {})["layernorm"] = layernorm_override
+    if dropout_override is not None:
+        cfg.setdefault("model", {})["dropout"] = dropout_override
 
     device = cfg.get("system", {}).get("device", "cpu")
     epochs = cfg["training"]["epochs"]
@@ -280,7 +281,14 @@ if __name__ == "__main__":
         metavar="BOOL",
         help="Enable magnitude LayerNorm (default: use config value). Pass false/0/no to disable.",
     )
+    parser.add_argument(
+        "--dropout",
+        type=float,
+        default=None,
+        metavar="P",
+        help="Edge dropout probability (overrides config model.dropout). 0 = disabled.",
+    )
     args = parser.parse_args()
     resolved_config = args.config_flag or args.config
-    main(resolved_config, layernorm_override=args.layernorm)
+    main(resolved_config, layernorm_override=args.layernorm, dropout_override=args.dropout)
 
