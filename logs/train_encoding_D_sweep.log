@@ -1,0 +1,100 @@
+Device: mps  Epochs: 90
+Loaded: train=9469  val=3925
+
+
+── PART 1: Encoding mode at D=4, N=512 ──
+
+==============================================================
+A. Linear encoding  D=4 N=512 [current default]
+==============================================================
+  e  1  loss=6.6766  task=6.6749  safety=0.0031  top1=0.1396  lr=2.36e-03
+  e 10  loss=2.1589  task=2.1584  safety=0.0008  top1=0.1536  lr=2.36e-03
+  e 20  loss=2.1432  task=2.1427  safety=0.0009  top1=0.1411  lr=2.36e-03
+  e 30  loss=2.1298  task=2.1291  safety=0.0011  top1=0.1457  lr=2.36e-03
+  e 40  loss=2.1252  task=2.1247  safety=0.0009  top1=0.1529  lr=2.36e-03
+  e 50  loss=2.1177  task=2.1173  safety=0.0007  top1=0.1717  lr=2.36e-03
+  e 60  loss=2.1154  task=2.1151  safety=0.0005  top1=0.1829  lr=2.36e-03
+  e 70  loss=2.1151  task=2.1148  safety=0.0005  top1=0.1771  lr=2.36e-03
+  e 80  loss=2.1124  task=2.1122  safety=0.0004  top1=0.1618  lr=2.36e-03
+  e 90  loss=2.1077  task=2.1074  safety=0.0004  top1=0.1819  lr=2.36e-03
+  top1_best=0.2099  top1_last=0.1819  task=2.109  t=111s
+
+==============================================================
+B. Fourier encoding D=4 N=512 [sinusoidal sin(h),sin(w),sin(c)]
+==============================================================
+  e  1  loss=8.2105  task=8.2087  safety=0.0031  top1=0.0971  lr=2.36e-03
+  e 10  loss=2.1811  task=2.1806  safety=0.0010  top1=0.1411  lr=2.36e-03
+  e 20  loss=2.1489  task=2.1485  safety=0.0008  top1=0.1689  lr=2.36e-03
+  e 30  loss=2.1353  task=2.1350  safety=0.0005  top1=0.1521  lr=2.36e-03
+  e 40  loss=2.1245  task=2.1243  safety=0.0004  top1=0.1903  lr=2.36e-03
+  e 50  loss=2.1171  task=2.1169  safety=0.0003  top1=0.1671  lr=2.36e-03
+  e 60  loss=2.1123  task=2.1121  safety=0.0002  top1=0.2023  lr=2.36e-03
+  e 70  loss=2.1064  task=2.1061  safety=0.0005  top1=0.2079  lr=2.36e-03
+  e 80  loss=2.1061  task=2.1058  safety=0.0007  top1=0.2107  lr=2.36e-03
+  e 90  loss=2.1064  task=2.1058  safety=0.0009  top1=0.1985  lr=2.36e-03
+  top1_best=0.2161  top1_last=0.1985  task=2.103  t=117s
+
+  Part 1 result: linear=0.2099  fourier=0.2161
+  Winner encoding: fourier
+
+
+── PART 2: D scaling with Fourier encoding ──
+
+==============================================================
+D. Fourier D=8  N=512
+==============================================================
+  e  1  loss=5.0103  task=5.0017  safety=0.0149  top1=0.1434  lr=2.36e-03
+  e 10  loss=2.1028  task=2.1018  safety=0.0017  top1=0.1908  lr=2.36e-03
+  e 20  loss=2.0878  task=2.0869  safety=0.0015  top1=0.2051  lr=2.36e-03
+  e 30  loss=2.0775  task=2.0766  safety=0.0016  top1=0.2094  lr=2.36e-03
+  e 40  loss=2.0635  task=2.0624  safety=0.0018  top1=0.2102  lr=2.36e-03
+  e 50  loss=2.0573  task=2.0560  safety=0.0022  top1=0.2530  lr=2.36e-03
+  e 60  loss=2.0541  task=2.0528  safety=0.0023  top1=0.2318  lr=2.36e-03
+  e 70  loss=2.0490  task=2.0477  safety=0.0024  top1=0.2349  lr=2.36e-03
+  e 80  loss=2.0429  task=2.0414  safety=0.0027  top1=0.2568  lr=2.36e-03
+  e 90  loss=2.0474  task=2.0459  safety=0.0027  top1=0.2285  lr=2.36e-03
+  top1_best=0.2586  top1_last=0.2285  task=2.044  t=120s
+
+==============================================================
+E. Fourier D=16 N=512
+==============================================================
+  e  1  loss=6.8991  task=6.8804  safety=0.0322  top1=0.1493  lr=2.36e-03
+  e 10  loss=2.1367  task=2.1355  safety=0.0021  top1=0.1801  lr=2.36e-03
+  e 20  loss=2.1112  task=2.1098  safety=0.0023  top1=0.2089  lr=2.36e-03
+  e 30  loss=2.0972  task=2.0958  safety=0.0024  top1=0.2252  lr=2.36e-03
+  e 40  loss=2.0850  task=2.0834  safety=0.0027  top1=0.2245  lr=2.36e-03
+  e 50  loss=2.0764  task=2.0746  safety=0.0031  top1=0.2438  lr=2.36e-03
+  e 60  loss=2.0711  task=2.0691  safety=0.0034  top1=0.2614  lr=2.36e-03
+  e 70  loss=2.0636  task=2.0615  safety=0.0036  top1=0.2515  lr=2.36e-03
+  e 80  loss=2.0576  task=2.0554  safety=0.0038  top1=0.2698  lr=2.36e-03
+  e 90  loss=2.0548  task=2.0525  safety=0.0039  top1=0.2624  lr=2.36e-03
+  top1_best=0.2754  top1_last=0.2624  task=2.053  t=315s
+
+==============================================================
+F. Fourier D=8  N=1024
+==============================================================
+  e  1  loss=17.0772  task=17.0709  safety=0.0128  top1=0.1113  lr=2.36e-03
+  e 10  loss=2.2081  task=2.2077  safety=0.0008  top1=0.1152  lr=2.36e-03
+  e 20  loss=2.1441  task=2.1436  safety=0.0009  top1=0.1338  lr=2.36e-03
+  e 30  loss=2.0942  task=2.0936  safety=0.0012  top1=0.1822  lr=2.36e-03
+  e 40  loss=2.0551  task=2.0544  safety=0.0015  top1=0.2059  lr=2.36e-03
+  e 50  loss=2.0314  task=2.0307  safety=0.0015  top1=0.2163  lr=2.36e-03
+  e 60  loss=2.0161  task=2.0154  safety=0.0015  top1=0.2288  lr=2.36e-03
+  e 70  loss=2.0069  task=2.0061  safety=0.0016  top1=0.2410  lr=2.36e-03
+  e 80  loss=1.9938  task=1.9929  safety=0.0018  top1=0.2637  lr=2.36e-03
+  e 90  loss=1.9918  task=1.9908  safety=0.0019  top1=0.2532  lr=2.36e-03
+  top1_best=0.2688  top1_last=0.2532  task=1.992  t=279s
+
+Saved → results/train_encoding_D_sweep.json
+
+── Encoding + D sweep summary ────────────────────────────────────
+  Config                                         top1_best     task     t(s)
+  ---------------------------------------------  ---------  -------  -------
+  linear_D4_N512                                    0.2099   2.1089      111
+  fourier_D4_N512                                   0.2161   2.1033      117
+  fourier_D8_N512                                   0.2586   2.0436      120
+  fourier_D16_N512                                  0.2754   2.0526      315
+  fourier_D8_N1024                                  0.2688   1.9918      279
+
+  Best: E. Fourier D=16 N=512  top1_best=0.2754
+  Baseline reference (linear D=4 N=512 iter1): ~0.265

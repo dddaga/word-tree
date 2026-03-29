@@ -6,9 +6,9 @@ status: completed
 stopped_at: Completed 04-05-PLAN.md (Wave Comparison Report)
 last_updated: "2026-03-26T09:00:03.624Z"
 progress:
-  total_phases: 4
+  total_phases: 7
   completed_phases: 4
-  total_plans: 12
+  total_plans: 17
   completed_plans: 12
 ---
 
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 
 ## Current Phase
 
-**Phase 4 — SGNNET Wave Architecture & Experiments**
-Status: Complete (5/5 plans)
-Next action: Phase 5 (PCA Compression)
+**Phase 5 — Scalable Architecture Experiments**
+Status: In progress (0/5 plans formally, experiments running in tmux)
+Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compression)
 
 ## Phase Progress
 
@@ -35,8 +35,9 @@ Next action: Phase 5 (PCA Compression)
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | PCA Compression | Not started |
-| 6 | Comparative Analysis & Report | Not started |
+| 5 | Scalable Architecture Experiments | In progress — Exp1 scale sweep, Exp2 SmallWorld, Exp3 ProximityWave running; Exp4 signal reflection planned |
+| 6 | PCA Compression | Not started |
+| 7 | Comparative Analysis & Report | Not started |
 
 ## Decisions
 
@@ -120,8 +121,8 @@ None currently.
 
 ## Last Session
 
-- **Stopped at:** Completed 04-05-PLAN.md (Wave Comparison Report)
-- **Timestamp:** 2026-03-26T08:52:00Z
+- **Stopped at:** Phase 5 in progress — Exp1 scale (scale_v3 tmux), Exp2 SmallWorld (exp2_sw tmux), Exp3 ProximityWave (exp3_pw tmux) all running; signal reflection documented in docs/experiment_ideas.md and roadmap
+- **Timestamp:** 2026-03-26T17:30:00Z
 
 ---
 *State initialized: 2026-03-23*

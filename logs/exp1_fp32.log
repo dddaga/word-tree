@@ -1,0 +1,28 @@
+Using device: mps  |  autocast: DISABLED (FP32)
+Reusing GA config: {'K': 2, 'N_hidden': 256, 'lr_Wpos': 0.0023640127738678374, 'lambda_safety': 0.6914567150060956, 'batch_size': 64}
+Loaded data: train=9469, val=3925
+  epoch   0  train_loss=3.5320  val_loss=2.6368
+  epoch   1  train_loss=2.6818  val_loss=2.3856
+  epoch   2  train_loss=2.4726  val_loss=2.3403
+  epoch   3  train_loss=2.4195  val_loss=2.3208
+  epoch   4  train_loss=2.3983  val_loss=2.4147
+  epoch  10  train_loss=2.3820  val_loss=2.3181
+  epoch  20  train_loss=2.3780  val_loss=2.3945
+  epoch  30  train_loss=2.3639  val_loss=2.3419
+  epoch  40  train_loss=2.3889  val_loss=2.3580
+  epoch  50  train_loss=2.3536  val_loss=2.3165
+  epoch  60  train_loss=2.3521  val_loss=2.3307
+  epoch  70  train_loss=2.3428  val_loss=2.3201
+  epoch  80  train_loss=2.3330  val_loss=2.3101
+  epoch  90  train_loss=2.3366  val_loss=2.3103
+  epoch 100  train_loss=2.3303  val_loss=2.3154
+  epoch 110  train_loss=2.3316  val_loss=2.3124
+  epoch 120  train_loss=2.3335  val_loss=2.3111
+  epoch 130  train_loss=2.3291  val_loss=2.3060
+  epoch 140  train_loss=2.3281  val_loss=2.3074
+
+--- FP16 vs FP32 Comparison ---
+                       FP16 (50ep)  FP32 (150ep)
+top-1 accuracy              0.1197        0.0662
+mAP                         0.1160        0.0927
+params                        1064          1064

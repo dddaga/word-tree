@@ -50,8 +50,9 @@ def phasor_proximity_routing(
     strength = torch.exp(-dists ** 2 / (r_star ** 2 + 1e-8))
     strength = strength * (dists < r_star).float()
 
-    # No self-connections
-    strength.fill_diagonal_(0)
+    # No self-connections (out-of-place: fill_diagonal_ mutates a tracked tensor
+    # and corrupts the autograd graph at large N on MPS)
+    strength = strength * (1.0 - torch.eye(N_hidden, device=W_pos.device))
 
     # Normalize per target neuron (sum over source dim=0)
     strength = strength / (strength.sum(dim=0, keepdim=True) + 1e-8)

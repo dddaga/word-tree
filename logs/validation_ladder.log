@@ -1,0 +1,44 @@
+============================================
+VALIDATION LADDER — CPU MODE
+============================================
+
+>>> STEP 1: DONE — results confirmed in logs (l2 wins 23.9%, N=1024 16%)
+
+>>> STEP 2: W_phase receiver
+    N=512 | baseline vs K_phase=8 vs K_phase=16 | 60 epochs
+Device: cpu  Epochs: 60
+Loaded: train=9469  val=3925
+
+=======================================================
+Baseline (no W_phase)
+=======================================================
+  e  1  loss=5.8246  task=5.8231  safety=0.0026  top1=0.1559  lr=2.36e-03
+  e 10  loss=2.1125  task=2.1125  safety=0.0000  top1=0.1768  lr=2.36e-03
+  e 20  loss=2.1036  task=2.1034  safety=0.0003  top1=0.1656  lr=2.36e-03
+  e 30  loss=2.1008  task=2.1006  safety=0.0004  top1=0.1952  lr=2.36e-03
+  e 40  loss=2.0997  task=2.0996  safety=0.0003  top1=0.2311  lr=2.36e-03
+  e 50  loss=2.0953  task=2.0952  safety=0.0002  top1=0.1855  lr=2.36e-03
+  e 60  loss=2.0922  task=2.0920  safety=0.0002  top1=0.2051  lr=2.36e-03
+  top1=0.2051  task=2.094  safety=0.000  safety/task=0.00  t=366s
+
+=======================================================
+W_phase receiver K_phase=8 alpha=0.5
+=======================================================
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/validate_step2_wphase.py", line 217, in <module>
+    results["wphase_k8"] = run("W_phase receiver K_phase=8 alpha=0.5", model_p8, data)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/validate_step2_wphase.py", line 174, in run
+    history = trainer.train(n_epochs=EPOCHS)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/src/training/trainer.py", line 235, in train
+    train_metrics = self.train_epoch()
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/src/training/trainer.py", line 123, in train_epoch
+    scores = self.model(features)
+  File "/Users/indra/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/indra/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/validate_step2_wphase.py", line 122, in forward
+    return self.base.forward_with_phase(x, self.W_phase, self.conn_phase, self.alpha)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/validate_step2_wphase.py", line 152, in _forward_with_phase
+    scores = (Z * W_out.unsqueeze(0)).sum(-1).mean(1)  # mean over hidden dim
+RuntimeError: The size of tensor a (512) must match the size of tensor b (10) at non-singleton dimension 1

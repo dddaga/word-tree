@@ -12,6 +12,7 @@ import torch
 import torch.nn.functional as F
 
 from src.sgnnet.losses import load_balance_loss, safety_valve_loss
+from src.training.callbacks import EarlyStopping
 
 
 # -------------------------------------------------------------------
@@ -30,23 +31,10 @@ def _check_grad_scaler_support() -> bool:
 # -------------------------------------------------------------------
 
 class Trainer:
-    """Shared training loop for SGNNET_Wave experiments.
+    """Training loop: FP16 AMP, AdamW, ReduceLROnPlateau, early stopping.
 
-    Handles FP16 mixed precision on MPS, position clamping (TRAIN-03),
-    gradient zeroing for input neurons (TRAIN-02 -- by model design,
-    only hidden+output positions are nn.Parameters).
-
-    Parameters
-    ----------
-    model        : SGNNET_Wave instance
-    train_loader : yields (features, soft_labels, labels)
-    val_loader   : yields (features, soft_labels, labels)
-    lr_wpos      : learning rate for W_pos
-    lr_wphase    : learning rate for W_phase (Stage C only)
-    lambda_safety: weight for safety valve loss
-    lambda_lb    : weight for load balance loss
-    box_size     : confining hypercube side length
-    device       : torch device string
+    Monitors train_loss for both scheduler and early stopping
+    (val loss unreliable on small GA partial-data subsets).
     """
 
     def __init__(
@@ -60,27 +48,62 @@ class Trainer:
         lambda_lb: float = 0.01,
         box_size: float = 1.0,
         device: str = "mps",
+        use_amp: bool = True,
+        sched_type: str = "plateau",   # "plateau" or "cosine"
+        sched_patience: int = 10,
+        sched_factor: float = 0.5,
+        sched_cosine_T: int = 150,     # T_max for cosine annealing (= n_epochs)
+        min_lr: float = 1e-7,
+        early_stop_patience: int = 25,
+        early_stop_delta: float = 1e-4,
+        grad_clip_norm: float = 1.0,
     ):
         self.model = model.to(device)
         self.device = device
         self.box_size = box_size
         self.lambda_safety = lambda_safety
         self.lambda_lb = lambda_lb
+        self.grad_clip_norm = grad_clip_norm
         self.train_loader = train_loader
         self.val_loader = val_loader
 
-        # Separate param groups: W_pos always, W_phase if present
-        param_groups = [{"params": [model.W_pos], "lr": lr_wpos}]
+        # W_pos: no weight decay — positions must explore [0,1]^D freely;
+        # decay pulls coords toward 0, collapsing geometric spread.
+        # W_phase (Stage C only): standard weight decay is fine.
+        param_groups = [{"params": [model.W_pos], "lr": lr_wpos, "weight_decay": 0.0}]
         if model.W_phase is not None and lr_wphase is not None:
             param_groups.append({"params": [model.W_phase], "lr": lr_wphase})
-        self.optimizer = torch.optim.Adam(param_groups)
+        self.optimizer = torch.optim.AdamW(param_groups)
 
-        # FP16 GradScaler setup (D-09)
-        self.use_grad_scaler = _check_grad_scaler_support()
+        # FP16 GradScaler setup (D-09); disabled when use_amp=False or on CPU
+        # AMP on CPU uses bfloat16 which is slower than float32 for small models
+        _device_str = str(device)
+        _amp_supported = _device_str != "cpu" and "cpu" not in _device_str
+        self.use_amp = use_amp and _amp_supported
+        self.use_grad_scaler = self.use_amp and _check_grad_scaler_support()
         if self.use_grad_scaler:
             self.scaler = torch.amp.GradScaler(device)
         else:
             self.scaler = None
+
+        # LR scheduler: plateau (adaptive) or cosine (smooth fixed decay)
+        self.sched_type = sched_type
+        if sched_type == "cosine":
+            self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+                self.optimizer, T_max=sched_cosine_T, eta_min=min_lr,
+            )
+        elif sched_type == "none":
+            self.scheduler = None   # constant LR — no decay
+        else:
+            self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                self.optimizer, mode="min", factor=sched_factor,
+                patience=sched_patience, min_lr=min_lr,
+            )
+
+        # Early stopping: monitors train_loss
+        self.early_stopping = EarlyStopping(
+            patience=early_stop_patience, min_delta=early_stop_delta,
+        )
 
     # ---------------------------------------------------------------
     # Single training epoch
@@ -101,14 +124,21 @@ class Trainer:
 
             self.optimizer.zero_grad()
 
-            with torch.autocast(self.device, dtype=torch.float16):
+            _amp_ctx = (
+                torch.autocast(str(self.device).split(":")[0], dtype=torch.float16)
+                if self.use_amp
+                else torch.autocast("cpu", enabled=False)
+            )
+            with _amp_ctx:
                 scores = self.model(features)
                 task_loss = F.kl_div(
                     F.log_softmax(scores, dim=-1),
                     soft_labels,
                     reduction="batchmean",
                 )
-                safety = safety_valve_loss(self.model.W_pos, self.box_size)
+                safety = safety_valve_loss(
+                    self.model.W_pos, self.box_size, task_loss=task_loss
+                )
                 lb_loss = load_balance_loss(scores.abs().sum(dim=0))
                 loss = (
                     task_loss
@@ -116,12 +146,22 @@ class Trainer:
                     + self.lambda_lb * lb_loss
                 )
 
+            # Only clip optimizer params — NOT all model params.
+            # theta and W_phase are not in the optimizer so optimizer.zero_grad()
+            # never clears their gradients; they accumulate across batches and
+            # would dominate the norm, clipping W_pos gradient to near-zero.
+            _opt_params = [p for g in self.optimizer.param_groups for p in g["params"]]
+
             if self.scaler is not None:
                 self.scaler.scale(loss).backward()
+                # Unscale before clipping so clip threshold is in real gradient units
+                self.scaler.unscale_(self.optimizer)
+                torch.nn.utils.clip_grad_norm_(_opt_params, self.grad_clip_norm)
                 self.scaler.step(self.optimizer)
                 self.scaler.update()
             else:
                 loss.backward()
+                torch.nn.utils.clip_grad_norm_(_opt_params, self.grad_clip_norm)
                 self.optimizer.step()
 
             # Position clamping (TRAIN-03)
@@ -159,7 +199,12 @@ class Trainer:
                 features = features.to(self.device)
                 soft_labels = soft_labels.to(self.device)
 
-                with torch.autocast(self.device, dtype=torch.float16):
+                _amp_ctx = (
+                    torch.autocast(str(self.device).split(":")[0], dtype=torch.float16)
+                    if self.use_amp
+                    else torch.autocast("cpu", enabled=False)
+                )
+                with _amp_ctx:
                     scores = self.model(features)
                     task_loss = F.kl_div(
                         F.log_softmax(scores, dim=-1),
@@ -173,44 +218,81 @@ class Trainer:
                 n_batches += 1
 
         n = max(n_batches, 1)
+        all_scores_cat = torch.cat(all_scores, dim=0)
+        all_labels_cat = torch.cat(all_labels, dim=0)
+        preds = all_scores_cat.argmax(dim=-1)
+        val_top1 = (preds == all_labels_cat).float().mean().item()
         return {
             "val_loss": val_loss_sum / n,
-            "scores": torch.cat(all_scores, dim=0),
-            "labels": torch.cat(all_labels, dim=0),
+            "val_top1": val_top1,
         }
 
     # ---------------------------------------------------------------
     # Multi-epoch training
     # ---------------------------------------------------------------
 
+    def current_lr(self) -> float:
+        """Return current learning rate for W_pos param group."""
+        return self.optimizer.param_groups[0]["lr"]
+
     def train(
         self,
         n_epochs: int,
         log_fn: callable | None = None,
     ) -> list[dict]:
-        """Train for n_epochs. Returns list of per-epoch metrics."""
+        """Train for n_epochs (may stop early). Returns per-epoch history."""
         history: list[dict] = []
 
         for epoch in range(n_epochs):
             train_metrics = self.train_epoch()
             val_metrics = self.evaluate()
+            train_loss = train_metrics["train_loss"]
 
             combined = {
                 "epoch": epoch,
                 **train_metrics,
                 **val_metrics,
+                "lr": self.current_lr(),
                 "nan_detected": False,
+                "stopped_early": False,
             }
 
-            if math.isnan(train_metrics["train_loss"]):
+            if math.isnan(train_loss):
                 combined["nan_detected"] = True
                 history.append(combined)
                 if log_fn:
                     log_fn(combined)
                 break
 
+            # Topology reconnection (SGNNET_ProximityWave and similar models
+            # that expose tick_epoch() to rebuild their conn_hh from W_pos)
+            if hasattr(self.model, "tick_epoch"):
+                self.model.tick_epoch()
+
+            # LR scheduler step (no-op when sched_type="none")
+            if self.scheduler is not None:
+                if self.sched_type == "cosine":
+                    self.scheduler.step()
+                else:
+                    self.scheduler.step(train_loss)
+
             history.append(combined)
             if log_fn:
                 log_fn(combined)
+
+            # Progress print every 10 epochs
+            if (epoch + 1) % 10 == 0 or epoch == 0:
+                task  = train_metrics.get("task_loss", train_loss)
+                safe  = train_metrics.get("safety_loss", 0.0)
+                top1  = val_metrics.get("val_top1", 0.0)
+                print(f"  e{epoch+1:3d}  loss={train_loss:.4f}  "
+                      f"task={task:.4f}  safety={safe:.4f}  "
+                      f"top1={top1:.4f}  lr={self.current_lr():.2e}")
+
+            # Early stopping check (monitors train_loss)
+            if self.early_stopping.step(train_loss, self.model):
+                combined["stopped_early"] = True
+                print(f"  Early stop at epoch {epoch} — best train_loss={self.early_stopping.best_loss:.4f}")
+                break
 
         return history

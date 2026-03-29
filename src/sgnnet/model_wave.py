@@ -34,17 +34,17 @@ def _make_binary_c(
     Returns a float tensor of 0/1 values. Not an nn.Parameter.
     Every row is guaranteed at least one connection.
     """
-    mask = (torch.rand(rows, cols) < (1.0 - sparsity)).float()
+    mask = (torch.rand(rows, cols) < (1.0 - sparsity))  # bool — 1 byte vs 4 bytes
 
     if zero_diag and rows == cols:
-        mask.fill_diagonal_(0)
+        mask.fill_diagonal_(False)
 
     # Guarantee at least 1 connection per row
-    dead_rows = mask.sum(dim=1) == 0
+    dead_rows = ~mask.any(dim=1)
     if dead_rows.any():
         indices = dead_rows.nonzero(as_tuple=True)[0]
         random_cols = torch.randint(0, cols, (indices.shape[0],))
-        mask[indices, random_cols] = 1.0
+        mask[indices, random_cols] = True
 
     return mask
 
@@ -136,7 +136,7 @@ class SGNNET_Wave(nn.Module):
         spatial = self.spatial_coords.unsqueeze(0).expand(B, -1, -1)
         A_input = torch.cat([x.unsqueeze(-1), spatial], dim=-1)  # [B, N_in, D=4]
 
-        Z_re = torch.einsum("bid,ih->bhd", A_input, self.C_input_mask)
+        Z_re = torch.einsum("bid,ih->bhd", A_input, self.C_input_mask.float())
         Z_re = masked_normalize(Z_re)
         Z_im = torch.zeros_like(Z_re)
         return Z_re, Z_im
@@ -152,8 +152,9 @@ class SGNNET_Wave(nn.Module):
 
         for _k in range(self.K - 1):
             # Static path through binary C_hh
-            S_re = torch.einsum("bhd,hj->bjd", Z_re, self.C_hh_mask)
-            S_im = torch.einsum("bhd,hj->bjd", Z_im, self.C_hh_mask)
+            C_hh = self.C_hh_mask.float()
+            S_re = torch.einsum("bhd,hj->bjd", Z_re, C_hh)
+            S_im = torch.einsum("bhd,hj->bjd", Z_im, C_hh)
 
             if self.use_proximity:
                 w_phase = (
@@ -185,10 +186,11 @@ class SGNNET_Wave(nn.Module):
         W_out = self.W_pos[self.N_hidden:]
 
         # Static path: hidden -> output via C_ho
-        S_re_out = torch.einsum("bhd,ho->bod", Z_re, self.C_ho_mask)
+        C_ho = self.C_ho_mask.float()
+        S_re_out = torch.einsum("bhd,ho->bod", Z_re, C_ho)
 
         if self.use_proximity:
-            S_im_out = torch.einsum("bhd,ho->bod", Z_im, self.C_ho_mask)
+            S_im_out = torch.einsum("bhd,ho->bod", Z_im, C_ho)
             # Magnitude of phasor output
             A_out = torch.sqrt(S_re_out ** 2 + S_im_out ** 2 + 1e-8)
         else:

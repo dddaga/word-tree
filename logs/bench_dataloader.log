@@ -1,0 +1,24 @@
+
+DataLoader benchmark  split=train  batch=128  workers=2
+============================================================
+
+[1] H5Dataset (open/close per sample — current):
+  h5_per_sample         74 batches  15.51s/epoch  (209.5 ms/batch)
+  h5_per_sample         74 batches  12.52s/epoch  (169.1 ms/batch)
+  h5_per_sample         74 batches  12.71s/epoch  (171.8 ms/batch)
+
+[2] InMemDataset (all in RAM):
+  [InMemDataset] loaded train in 0.15s  (950 MB)
+  in_memory             74 batches  1.29s/epoch  (17.4 ms/batch)
+  in_memory             74 batches  2.05s/epoch  (27.6 ms/batch)
+  in_memory             74 batches  2.29s/epoch  (30.9 ms/batch)
+
+[3] H5DatasetFast (numpy arrays loaded once, torch.from_numpy per item):
+  [H5DatasetFast] loaded train in 0.32s
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/spawn.py", line 126, in _main
+    self = reduction.pickle.load(from_parent)
+AttributeError: Can't get attribute 'H5DatasetFast' on <module '__mp_main__' from '/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/bench_dataloader.py'>

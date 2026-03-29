@@ -1,0 +1,61 @@
+Using device: mps
+Sweeping N_hidden=[512, 1024, 2048, 4096, 10000, 50000]  epochs=150
+Base config (from GA): K=2, lr_Wpos=2.3640e-03, lambda_safety=0.691, batch_size=64
+Loaded data: train=9469, val=3925
+
+
+--- N_hidden=512 ---
+  [N=512] epoch   0  train_loss=6.0264  val_loss=3.8023
+  [N=512] epoch   1  train_loss=3.2659  val_loss=2.6239
+  [N=512] epoch   2  train_loss=2.5749  val_loss=2.4175
+  [N=512] epoch  25  train_loss=2.6350  val_loss=2.5914
+  Early stop at epoch 28 — best train_loss=2.4964
+[N=512] top1=0.1042  mAP=0.0975  params=2088
+
+--- N_hidden=1024 ---
+  [N=1024] epoch   0  train_loss=5.6813  val_loss=3.8563
+  [N=1024] epoch   1  train_loss=3.6523  val_loss=3.2633
+  [N=1024] epoch   2  train_loss=3.2805  val_loss=3.0685
+  [N=1024] epoch  25  train_loss=3.3229  val_loss=3.2038
+  Early stop at epoch 28 — best train_loss=3.1638
+[N=1024] top1=0.0981  mAP=0.1002  params=4136
+
+--- N_hidden=2048 ---
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_exp1_scale_neurons.py", line 176, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_exp1_scale_neurons.py", line 148, in main
+    r = run_one(n_hidden, best, data, device)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_exp1_scale_neurons.py", line 94, in run_one
+    history = trainer.train(FULL_EPOCHS, log_fn=log)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/src/training/trainer.py", line 217, in train
+    train_metrics = self.train_epoch()
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/src/training/trainer.py", line 133, in train_epoch
+    self.scaler.scale(loss).backward()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/_tensor.py", line 630, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/autograd/__init__.py", line 364, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+torch.AcceleratorError: index 4094 is out of bounds: 0, range 0 to 2058

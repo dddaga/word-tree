@@ -1,0 +1,57 @@
+Device: cpu  Epochs: 150
+Loaded: train=9469  val=3925
+
+==============================================================
+A. ReduceLROnPlateau  (patience=10, factor=0.5) — current default
+==============================================================
+  e  1  loss=10.8353  task=10.8336  safety=0.0029  top1=0.1282  lr=2.36e-03
+  e 10  loss=2.1715  task=2.1702  safety=0.0023  top1=0.1488  lr=2.36e-03
+  e 20  loss=2.1392  task=2.1383  safety=0.0016  top1=0.1600  lr=2.36e-03
+  e 30  loss=2.1322  task=2.1317  safety=0.0009  top1=0.1730  lr=2.36e-03
+  e 40  loss=2.1301  task=2.1297  safety=0.0007  top1=0.1587  lr=2.36e-03
+  e 50  loss=2.1268  task=2.1265  safety=0.0006  top1=0.1814  lr=2.36e-03
+  e 60  loss=2.1268  task=2.1264  safety=0.0006  top1=0.1625  lr=2.36e-03
+  e 70  loss=2.1285  task=2.1281  safety=0.0007  top1=0.1582  lr=2.36e-03
+  e 80  loss=2.1254  task=2.1249  safety=0.0008  top1=0.1839  lr=2.36e-03
+  e 90  loss=2.1204  task=2.1199  safety=0.0009  top1=0.1694  lr=1.18e-03
+  e100  loss=2.1193  task=2.1188  safety=0.0010  top1=0.1827  lr=1.18e-03
+  e110  loss=2.1206  task=2.1200  safety=0.0009  top1=0.1926  lr=5.91e-04
+  e120  loss=2.1172  task=2.1167  safety=0.0009  top1=0.1776  lr=5.91e-04
+  e130  loss=2.1176  task=2.1170  safety=0.0009  top1=0.1847  lr=5.91e-04
+  e140  loss=2.1166  task=2.1160  safety=0.0009  top1=0.1783  lr=2.96e-04
+  e150  loss=2.1160  task=2.1154  safety=0.0010  top1=0.1727  lr=1.48e-04
+  top1_best=0.1992  top1_last=0.1727  task=2.116  t=3734s
+
+==============================================================
+B. CosineAnnealingLR (T_max=150, eta_min=1e-7) — smooth decay
+==============================================================
+  e  1  loss=10.8353  task=10.8336  safety=0.0029  top1=0.1282  lr=2.36e-03
+  e 10  loss=2.1718  task=2.1705  safety=0.0023  top1=0.1498  lr=2.34e-03
+  e 20  loss=2.1391  task=2.1381  safety=0.0016  top1=0.1587  lr=2.26e-03
+  e 30  loss=2.1316  task=2.1310  safety=0.0009  top1=0.1738  lr=2.14e-03
+  e 40  loss=2.1294  task=2.1289  safety=0.0007  top1=0.1605  lr=1.97e-03
+  e 50  loss=2.1255  task=2.1251  safety=0.0006  top1=0.1694  lr=1.77e-03
+  e 60  loss=2.1242  task=2.1239  safety=0.0006  top1=0.1628  lr=1.55e-03
+  e 70  loss=2.1237  task=2.1234  safety=0.0006  top1=0.1689  lr=1.31e-03
+  e 80  loss=2.1214  task=2.1210  safety=0.0006  top1=0.1834  lr=1.06e-03
+  e 90  loss=2.1198  task=2.1195  safety=0.0006  top1=0.1631  lr=8.17e-04
+  e100  loss=2.1188  task=2.1184  safety=0.0007  top1=0.1829  lr=5.91e-04
+  e110  loss=2.1181  task=2.1177  safety=0.0007  top1=0.1789  lr=3.91e-04
+  e120  loss=2.1168  task=2.1164  safety=0.0007  top1=0.1786  lr=2.26e-04
+  e130  loss=2.1163  task=2.1159  safety=0.0007  top1=0.1768  lr=1.02e-04
+  e140  loss=2.1160  task=2.1156  safety=0.0007  top1=0.1697  lr=2.59e-05
+  e150  loss=2.1158  task=2.1153  safety=0.0007  top1=0.1710  lr=1.00e-07
+  top1_best=0.1949  top1_last=0.1710  task=2.115  t=3618s
+
+Saved → results/test_cosine_lr.json
+
+── LR schedule comparison ───────────────────────────────────────
+  Schedule                                       top1_best  top1_last  epochs    t(s)
+  ---------------------------------------------  ---------  ---------  ------  ------
+  plateau                                           0.1992     0.1727     150    3734
+  cosine                                            0.1949     0.1710     150    3618
+
+  Delta (cosine - plateau): -0.0043
+  Winner: plateau
+
+  Note: lr_history and top1_history saved in JSON for curve analysis.

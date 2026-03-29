@@ -1,0 +1,42 @@
+{
+  "linear_D4_N512": {
+    "label": "A. Linear encoding  D=4 N=512 [current default]",
+    "top1_best": 0.20993630588054657,
+    "top1_last": 0.18191082775592804,
+    "final_task_loss": 2.1088528078955573,
+    "epochs_run": 90,
+    "elapsed_s": 111.0
+  },
+  "fourier_D4_N512": {
+    "label": "B. Fourier encoding D=4 N=512 [sinusoidal sin(h),sin(w),sin(c)]",
+    "top1_best": 0.21605095267295837,
+    "top1_last": 0.198471337556839,
+    "final_task_loss": 2.1033143307711626,
+    "epochs_run": 90,
+    "elapsed_s": 116.8
+  },
+  "fourier_D8_N512": {
+    "label": "D. Fourier D=8  N=512",
+    "top1_best": 0.2585987150669098,
+    "top1_last": 0.2285350263118744,
+    "final_task_loss": 2.043561943801673,
+    "epochs_run": 90,
+    "elapsed_s": 120.4
+  },
+  "fourier_D16_N512": {
+    "label": "E. Fourier D=16 N=512",
+    "top1_best": 0.27541401982307434,
+    "top1_last": 0.2624203860759735,
+    "final_task_loss": 2.0525576958785186,
+    "epochs_run": 90,
+    "elapsed_s": 315.2
+  },
+  "fourier_D8_N1024": {
+    "label": "F. Fourier D=8  N=1024",
+    "top1_best": 0.26878979802131653,
+    "top1_last": 0.253248393535614,
+    "final_task_loss": 1.9918066024780274,
+    "epochs_run": 90,
+    "elapsed_s": 279.3
+  }
+}

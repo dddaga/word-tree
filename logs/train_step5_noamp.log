@@ -1,0 +1,29 @@
+Device: mps  Epochs: 120  Sched: plateau
+use_amp: False (fp32 only, no GradScaler — testing iter1 AMP hypothesis)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+=================================================================
+D. thresh=0.0  geo=False  dynamic_z  N=512 D=4  fp32 plateau 120ep
+=================================================================
+  e  1  loss=10.7689  task=10.7672  safety=0.0029  top1=0.1259  lr=2.36e-03
+  e 10  loss=2.5521  task=2.5512  safety=0.0016  top1=0.1233  lr=2.36e-03
+  e 20  loss=2.1852  task=2.1840  safety=0.0020  top1=0.1361  lr=2.36e-03
+  e 30  loss=2.1471  task=2.1461  safety=0.0017  top1=0.1651  lr=2.36e-03
+  e 40  loss=2.1400  task=2.1393  safety=0.0013  top1=0.1643  lr=2.36e-03
+  e 50  loss=2.1333  task=2.1327  safety=0.0011  top1=0.1755  lr=2.36e-03
+  e 60  loss=2.1317  task=2.1311  safety=0.0010  top1=0.1603  lr=2.36e-03
+  e 70  loss=2.1313  task=2.1307  safety=0.0010  top1=0.1541  lr=2.36e-03
+  e 80  loss=2.1272  task=2.1266  safety=0.0010  top1=0.1896  lr=2.36e-03
+  e 90  loss=2.1221  task=2.1215  safety=0.0010  top1=0.1633  lr=1.18e-03
+  e100  loss=2.1207  task=2.1201  safety=0.0010  top1=0.1796  lr=1.18e-03
+  e110  loss=2.1218  task=2.1212  safety=0.0011  top1=0.1809  lr=5.91e-04
+  e120  loss=2.1183  task=2.1177  safety=0.0011  top1=0.1702  lr=5.91e-04
+  top1_best=0.1962  best_ep=106  task=2.118  t=148s
+
+Saved -> results/train_step5_noamp_diagnostic.json
+
+  Config D (fp32, no AMP, plateau): 0.1962
+  Iter1 reference (dynamic_z):      0.2652
+  -> Still stuck (delta=-0.0690). AMP is NOT the primary cause.
+  -> Investigate: data pipeline diff, model arch change, or optimizer config.

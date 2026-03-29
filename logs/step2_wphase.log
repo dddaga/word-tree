@@ -1,0 +1,47 @@
+Device: cpu  Epochs: 60
+Loaded: train=9469  val=3925
+
+=======================================================
+Baseline (no W_phase)
+=======================================================
+  e  1  loss=5.2181  task=5.2165  safety=0.0027  top1=0.1164  lr=2.36e-03
+  e 10  loss=2.1127  task=2.1120  safety=0.0013  top1=0.1692  lr=2.36e-03
+  e 20  loss=2.1102  task=2.1098  safety=0.0008  top1=0.1618  lr=2.36e-03
+  e 30  loss=2.1081  task=2.1079  safety=0.0005  top1=0.1539  lr=2.36e-03
+  e 40  loss=2.1071  task=2.1069  safety=0.0003  top1=0.1694  lr=2.36e-03
+  e 50  loss=2.1096  task=2.1095  safety=0.0002  top1=0.1643  lr=2.36e-03
+  e 60  loss=2.1025  task=2.1024  safety=0.0001  top1=0.1613  lr=1.18e-03
+  top1=0.1613  task=2.103  safety=0.000  safety/task=0.00  t=327s
+
+=======================================================
+W_phase receiver K_phase=8 alpha=0.5
+=======================================================
+  e  1  loss=12.8112  task=12.8095  safety=0.0030  top1=0.1223  lr=2.36e-03
+  e 10  loss=2.2031  task=2.1998  safety=0.0056  top1=0.1508  lr=2.36e-03
+  e 20  loss=2.1308  task=2.1281  safety=0.0046  top1=0.1439  lr=2.36e-03
+  e 30  loss=2.1286  task=2.1268  safety=0.0032  top1=0.1371  lr=2.36e-03
+  e 40  loss=2.1314  task=2.1297  safety=0.0028  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.1239  task=2.1224  safety=0.0026  top1=0.1610  lr=1.18e-03
+  e 60  loss=2.1237  task=2.1222  safety=0.0025  top1=0.1590  lr=1.18e-03
+  top1=0.1590  task=2.120  safety=0.003  safety/task=0.00  t=643s
+
+=======================================================
+W_phase receiver K_phase=16 alpha=0.5
+=======================================================
+  e  1  loss=10.6195  task=10.6169  safety=0.0044  top1=0.1246  lr=2.36e-03
+  e 10  loss=2.1725  task=2.1716  safety=0.0015  top1=0.1185  lr=2.36e-03
+  e 20  loss=2.1518  task=2.1506  safety=0.0019  top1=0.1641  lr=2.36e-03
+  e 30  loss=2.1333  task=2.1323  safety=0.0017  top1=0.1582  lr=2.36e-03
+  e 40  loss=2.1291  task=2.1285  safety=0.0011  top1=0.1631  lr=2.36e-03
+  e 50  loss=2.1248  task=2.1243  safety=0.0009  top1=0.1343  lr=2.36e-03
+  e 60  loss=2.1199  task=2.1194  safety=0.0008  top1=0.1501  lr=2.36e-03
+  top1=0.1501  task=2.120  safety=0.001  safety/task=0.00  t=895s
+
+Saved → results/validate_step2_wphase.json
+
+── Step 2 summary ──────────────────────────────────
+  baseline              top1=0.1613  safety/task=0.00
+  wphase_k8             top1=0.1590  safety/task=0.00
+  wphase_k16            top1=0.1501  safety/task=0.00
+
+  Pass: W_phase variants ≥ 0.1713 (baseline + 1%)

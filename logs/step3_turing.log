@@ -1,0 +1,73 @@
+Device: cpu  Epochs: 60
+Loaded: train=9469  val=3925
+
+=======================================================
+Turing mode=baseline
+=======================================================
+  e  1  loss=5.9951  task=5.9930  safety=0.0037  top1=0.1106  lr=2.36e-03
+  e 10  loss=2.2295  task=2.2272  safety=0.0040  top1=0.1483  lr=2.36e-03
+  e 20  loss=2.2218  task=2.2204  safety=0.0025  top1=0.1302  lr=2.36e-03
+  e 30  loss=2.2193  task=2.2179  safety=0.0024  top1=0.1417  lr=2.36e-03
+  e 40  loss=2.2167  task=2.2152  safety=0.0026  top1=0.1518  lr=2.36e-03
+  e 50  loss=2.2131  task=2.2116  safety=0.0027  top1=0.1434  lr=1.18e-03
+  e 60  loss=2.2127  task=2.2112  safety=0.0026  top1=0.1394  lr=1.18e-03
+  top1=0.1394  train=2.212  task=2.211  t=242s
+
+=======================================================
+Turing mode=threshold
+=======================================================
+  e  1  loss=8.6199  task=8.6180  safety=0.0034  top1=0.0558  lr=2.36e-03
+  e 10  loss=2.1064  task=2.1047  safety=0.0029  top1=0.1743  lr=2.36e-03
+  e 20  loss=2.0899  task=2.0890  safety=0.0017  top1=0.1789  lr=2.36e-03
+  e 30  loss=2.0836  task=2.0828  safety=0.0014  top1=0.2079  lr=2.36e-03
+  e 40  loss=2.0752  task=2.0745  safety=0.0011  top1=0.2079  lr=2.36e-03
+  e 50  loss=2.0724  task=2.0719  safety=0.0009  top1=0.1837  lr=2.36e-03
+  e 60  loss=2.0713  task=2.0709  safety=0.0007  top1=0.1811  lr=2.36e-03
+  top1=0.1811  train=2.070  task=2.069  t=210s
+
+=======================================================
+Turing mode=reflection
+=======================================================
+  e  1  loss=5.6422  task=5.6400  safety=0.0038  top1=0.1284  lr=2.36e-03
+  e 10  loss=2.2566  task=2.2552  safety=0.0024  top1=0.1582  lr=2.36e-03
+  e 20  loss=2.1570  task=2.1548  safety=0.0038  top1=0.1462  lr=2.36e-03
+  e 30  loss=2.1458  task=2.1447  safety=0.0019  top1=0.1434  lr=2.36e-03
+  e 40  loss=2.1352  task=2.1344  safety=0.0014  top1=0.1513  lr=2.36e-03
+  e 50  loss=2.1211  task=2.1202  safety=0.0015  top1=0.1567  lr=2.36e-03
+  e 60  loss=2.1162  task=2.1152  safety=0.0017  top1=0.1651  lr=2.36e-03
+  top1=0.1651  train=2.117  task=2.116  t=221s
+
+=======================================================
+Turing mode=turing
+=======================================================
+  e  1  loss=19.7836  task=19.7813  safety=0.0040  top1=0.1338  lr=2.36e-03
+  e 10  loss=2.1052  task=2.1042  safety=0.0018  top1=0.1850  lr=2.36e-03
+  e 20  loss=2.1016  task=2.1006  safety=0.0016  top1=0.2003  lr=2.36e-03
+  e 30  loss=2.1009  task=2.1000  safety=0.0014  top1=0.1748  lr=2.36e-03
+  e 40  loss=2.0931  task=2.0922  safety=0.0015  top1=0.2171  lr=2.36e-03
+  e 50  loss=2.0946  task=2.0938  safety=0.0014  top1=0.2155  lr=2.36e-03
+  e 60  loss=2.0900  task=2.0892  safety=0.0015  top1=0.2041  lr=1.18e-03
+  top1=0.2041  train=2.090  task=2.089  t=457s
+
+=======================================================
+Turing mode=learnable
+=======================================================
+  e  1  loss=12.4020  task=12.4005  safety=0.0026  top1=0.0899  lr=2.36e-03
+  e 10  loss=2.1876  task=2.1858  safety=0.0030  top1=0.1987  lr=2.36e-03
+  e 20  loss=2.1187  task=2.1163  safety=0.0041  top1=0.2150  lr=2.36e-03
+  e 30  loss=2.1140  task=2.1120  safety=0.0034  top1=0.1883  lr=2.36e-03
+  e 40  loss=2.1086  task=2.1071  safety=0.0026  top1=0.2015  lr=2.36e-03
+  e 50  loss=2.1076  task=2.1063  safety=0.0023  top1=0.1896  lr=2.36e-03
+  e 60  loss=2.1005  task=2.0993  safety=0.0020  top1=0.2048  lr=1.18e-03
+  top1=0.2048  train=2.102  task=2.100  t=475s
+
+Saved → results/validate_step3_turing.json
+
+── Step 3 summary ──────────────────────────────────
+  baseline      top1=0.1394
+  threshold     top1=0.1811
+  reflection    top1=0.1651
+  turing        top1=0.2041
+  learnable     top1=0.2048
+
+  Best: Turing mode=learnable  top1=0.2048

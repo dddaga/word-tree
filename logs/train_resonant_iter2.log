@@ -1,0 +1,90 @@
+Device: cpu  Epochs 512=90  Epochs 1024=72
+Loaded: train=9469  val=3925
+
+============================================================
+dynamic_z N=512 [iter1 reference]
+============================================================
+  e  1  loss=6.0122  task=6.0105  safety=0.0029  top1=0.1152  lr=2.36e-03
+  e 10  loss=2.1582  task=2.1575  safety=0.0012  top1=0.1870  lr=2.36e-03
+  e 20  loss=2.1406  task=2.1398  safety=0.0014  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.1325  task=2.1317  safety=0.0013  top1=0.1916  lr=2.36e-03
+  e 40  loss=2.1279  task=2.1273  safety=0.0011  top1=0.1926  lr=2.36e-03
+  e 50  loss=2.1219  task=2.1214  safety=0.0009  top1=0.1766  lr=2.36e-03
+  e 60  loss=2.1117  task=2.1111  safety=0.0009  top1=0.1949  lr=2.36e-03
+  e 70  loss=2.1041  task=2.1034  safety=0.0013  top1=0.1921  lr=2.36e-03
+  e 80  loss=2.0924  task=2.0917  safety=0.0012  top1=0.2020  lr=2.36e-03
+  e 90  loss=2.0900  task=2.0894  safety=0.0010  top1=0.2387  lr=2.36e-03
+  top1_best=0.2387  top1_last=0.2387  task=2.090  t=1232s
+
+============================================================
+dynamic_z N=512 + threshold=0.3
+============================================================
+  e  1  loss=9.4192  task=9.4169  safety=0.0039  top1=0.1254  lr=2.36e-03
+  e 10  loss=2.1192  task=2.1174  safety=0.0030  top1=0.1725  lr=2.36e-03
+  e 20  loss=2.0842  task=2.0826  safety=0.0027  top1=0.1990  lr=2.36e-03
+  e 30  loss=2.0749  task=2.0733  safety=0.0027  top1=0.2107  lr=2.36e-03
+  e 40  loss=2.0737  task=2.0724  safety=0.0022  top1=0.2112  lr=2.36e-03
+  e 50  loss=2.0686  task=2.0674  safety=0.0021  top1=0.2025  lr=2.36e-03
+  e 60  loss=2.0689  task=2.0675  safety=0.0023  top1=0.2099  lr=2.36e-03
+  e 70  loss=2.0627  task=2.0614  safety=0.0022  top1=0.2242  lr=1.18e-03
+  e 80  loss=2.0622  task=2.0610  safety=0.0021  top1=0.2071  lr=1.18e-03
+  e 90  loss=2.0618  task=2.0605  safety=0.0021  top1=0.1903  lr=1.18e-03
+  top1_best=0.2293  top1_last=0.1903  task=2.062  t=1375s
+
+============================================================
+dynamic_z_geo N=512 [geo bias only, gamma=1.0]
+============================================================
+  e  1  loss=9.0645  task=9.0626  safety=0.0033  top1=0.0652  lr=2.36e-03
+  e 10  loss=2.1241  task=2.1226  safety=0.0026  top1=0.1682  lr=2.36e-03
+  e 20  loss=2.0920  task=2.0910  safety=0.0018  top1=0.1676  lr=2.36e-03
+  e 30  loss=2.0726  task=2.0719  safety=0.0013  top1=0.2013  lr=2.36e-03
+  e 40  loss=2.0613  task=2.0605  safety=0.0014  top1=0.1944  lr=2.36e-03
+  e 50  loss=2.0576  task=2.0566  safety=0.0017  top1=0.1959  lr=2.36e-03
+  e 60  loss=2.0539  task=2.0529  safety=0.0017  top1=0.2110  lr=1.18e-03
+  e 70  loss=2.0515  task=2.0504  safety=0.0019  top1=0.2196  lr=1.18e-03
+  e 80  loss=2.0509  task=2.0498  safety=0.0019  top1=0.2120  lr=1.18e-03
+  e 90  loss=2.0471  task=2.0460  safety=0.0020  top1=0.2166  lr=5.91e-04
+  top1_best=0.2283  top1_last=0.2166  task=2.047  t=2835s
+
+============================================================
+dynamic_z_geo N=512 + threshold=0.3 + gamma=1.0 [full]
+============================================================
+  e  1  loss=11.8756  task=11.8730  safety=0.0044  top1=0.0935  lr=2.36e-03
+  e 10  loss=2.1126  task=2.1116  safety=0.0017  top1=0.1804  lr=2.36e-03
+  e 20  loss=2.0778  task=2.0764  safety=0.0024  top1=0.2237  lr=2.36e-03
+  e 30  loss=2.0758  task=2.0748  safety=0.0018  top1=0.2415  lr=2.36e-03
+  e 40  loss=2.0711  task=2.0701  safety=0.0016  top1=0.2163  lr=2.36e-03
+  e 50  loss=2.0681  task=2.0672  safety=0.0016  top1=0.2219  lr=1.18e-03
+  e 60  loss=2.0651  task=2.0643  safety=0.0014  top1=0.2313  lr=1.18e-03
+  e 70  loss=2.0628  task=2.0619  safety=0.0015  top1=0.2255  lr=1.18e-03
+  e 80  loss=2.0629  task=2.0620  safety=0.0016  top1=0.2268  lr=1.18e-03
+  e 90  loss=2.0601  task=2.0591  safety=0.0016  top1=0.2191  lr=5.91e-04
+  top1_best=0.2425  top1_last=0.2191  task=2.059  t=1829s
+
+============================================================
+dynamic_z_geo N=1024 + threshold=0.3 + gamma=1.0
+============================================================
+  e  1  loss=9.6696  task=9.6684  safety=0.0026  top1=0.1088  lr=2.36e-03
+  e 10  loss=2.2765  task=2.2758  safety=0.0014  top1=0.1029  lr=2.36e-03
+  e 20  loss=2.2147  task=2.2142  safety=0.0010  top1=0.1394  lr=2.36e-03
+  e 30  loss=2.1804  task=2.1800  safety=0.0009  top1=0.1172  lr=2.36e-03
+  e 40  loss=2.1551  task=2.1547  safety=0.0008  top1=0.1348  lr=2.36e-03
+  e 50  loss=2.1424  task=2.1421  safety=0.0006  top1=0.1358  lr=2.36e-03
+  e 60  loss=2.1394  task=2.1392  safety=0.0006  top1=0.1457  lr=2.36e-03
+  e 70  loss=2.1329  task=2.1327  safety=0.0005  top1=0.1361  lr=2.36e-03
+  top1_best=0.1845  top1_last=0.1330  task=2.132  t=2594s
+
+Saved → results/train_resonant_iter2.json
+
+── Iteration 2 summary ───────────────────────────────────────────
+  Config                                         top1_best  top1_last     task
+  ---------------------------------------------  ---------  ---------  -------
+  dynamic_z                                         0.2387     0.2387   2.0900
+  dynamic_z_thresh                                  0.2293     0.1903   2.0616
+  dynamic_z_geo                                     0.2283     0.2166   2.0465
+  dynamic_z_full                                    0.2425     0.2191   2.0594
+  dynamic_z_full_N1024                              0.1845     0.1330   2.1318
+
+  Best: dynamic_z_geo N=512 + threshold=0.3 + gamma=1.0 [full]  top1_best=0.2425
+
+  Iter1 reference (dynamic_z 120ep MPS): top1_best=0.2652

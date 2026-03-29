@@ -1,0 +1,47 @@
+{
+  "baseline": {
+    "label": "Turing mode=baseline",
+    "top1": 0.13936305046081543,
+    "final_train_loss": 2.2124778135402785,
+    "final_task_loss": 2.210950365582028,
+    "final_safety_loss": 0.0026287301814787696,
+    "epochs": 60,
+    "elapsed_s": 242.4
+  },
+  "threshold": {
+    "label": "Turing mode=threshold",
+    "top1": 0.181146502494812,
+    "final_train_loss": 2.0697572244180216,
+    "final_task_loss": 2.069325414219418,
+    "final_safety_loss": 0.0007431424853731752,
+    "epochs": 60,
+    "elapsed_s": 210.4
+  },
+  "reflection": {
+    "label": "Turing mode=reflection",
+    "top1": 0.16509553790092468,
+    "final_train_loss": 2.116670932318713,
+    "final_task_loss": 2.1157105896923993,
+    "final_safety_loss": 0.0016527461422909354,
+    "epochs": 60,
+    "elapsed_s": 220.6
+  },
+  "turing": {
+    "label": "Turing mode=turing",
+    "top1": 0.20407643914222717,
+    "final_train_loss": 2.0896831000173415,
+    "final_task_loss": 2.0888403373795583,
+    "final_safety_loss": 0.0014503922392110767,
+    "epochs": 60,
+    "elapsed_s": 456.9
+  },
+  "learnable": {
+    "label": "Turing mode=learnable",
+    "top1": 0.2048407644033432,
+    "final_train_loss": 2.1016640676034464,
+    "final_task_loss": 2.100456883456256,
+    "final_safety_loss": 0.0020775574608705937,
+    "epochs": 60,
+    "elapsed_s": 474.7
+  }
+}

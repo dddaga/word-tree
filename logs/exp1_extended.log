@@ -1,0 +1,21 @@
+Using device: mps
+Loaded data: train=9469, val=3925
+Gen 0: best_score=-1.9473  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+Gen 1: best_score=-1.7864  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+  Early stop at epoch 25 — best train_loss=7.4432
+Gen 2: best_score=-1.8020  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+Gen 3: best_score=-1.8489  sparsity=0.8  N_hidden=256  (fitness = -train_loss * param_penalty)
+  Early stop at epoch 25 — best train_loss=65226.7599
+Gen 4: best_score=-1.8209  sparsity=0.8  N_hidden=256  (fitness = -train_loss * param_penalty)
+Gen 5: best_score=-1.8077  sparsity=0.7  N_hidden=256  (fitness = -train_loss * param_penalty)
+Gen 6: best_score=-1.7679  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+Gen 7: best_score=-1.7967  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+  Early stop at epoch 25 — best train_loss=47795.1637
+  Early stop at epoch 25 — best train_loss=48865.0901
+  Early stop at epoch 25 — best train_loss=45405.6145
+Gen 8: best_score=-1.8116  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+  Early stop at epoch 29 — best train_loss=6.2629
+Gen 9: best_score=-1.8744  sparsity=0.95  N_hidden=256  (fitness = -train_loss * param_penalty)
+GA best config: {'K': 3, 'N_hidden': 256, 'lr_Wpos': 0.006565691275803824, 'lambda_safety': 0.5847166613737456, 'batch_size': 64, 'sparsity': 0.95}
+  Early stop at epoch 28 — best train_loss=2.6481
+Exp1-extended: top1=0.0955, mAP=0.1001, params=1064, sparsity=0.95

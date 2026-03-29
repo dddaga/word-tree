@@ -1,0 +1,56 @@
+Device: cpu  Epochs: 60
+Loaded: train=9469  val=3925
+
+=======================================================
+Annealing schedule=fixed
+=======================================================
+  e  1  tau=1.000  loss=9.679  top1=0.0693  beam=32
+  e 10  tau=1.000  loss=2.122  top1=0.1717  beam=32
+  e 20  tau=1.000  loss=2.104  top1=0.1684  beam=32
+  e 30  tau=1.000  loss=2.103  top1=0.1595  beam=32
+  e 40  tau=1.000  loss=2.104  top1=0.1656  beam=32
+  e 50  tau=1.000  loss=2.102  top1=0.1771  beam=32
+  e 60  tau=1.000  loss=2.099  top1=0.1931  beam=32
+
+=======================================================
+Annealing schedule=exp
+=======================================================
+  e  1  tau=1.000  loss=8.004  top1=0.0958  beam=32
+  e 10  tau=0.638  loss=2.170  top1=0.1238  beam=20
+  e 20  tau=0.387  loss=2.140  top1=0.1490  beam=12
+  e 30  tau=0.235  loss=2.136  top1=0.1776  beam=8
+  e 40  tau=0.142  loss=2.132  top1=0.1638  beam=8
+  e 50  tau=0.086  loss=2.129  top1=0.1857  beam=8
+  e 60  tau=0.052  loss=2.125  top1=0.1824  beam=8
+
+=======================================================
+Annealing schedule=cosine
+=======================================================
+  e  1  tau=1.000  loss=7.400  top1=0.0769  beam=32
+  e 10  tau=0.946  loss=2.115  top1=0.1483  beam=30
+  e 20  tau=0.772  loss=2.111  top1=0.1766  beam=24
+  e 30  tau=0.526  loss=2.113  top1=0.1755  beam=16
+  e 40  tau=0.273  loss=2.109  top1=0.1814  beam=8
+  e 50  tau=0.081  loss=2.113  top1=0.1758  beam=8
+  e 60  tau=0.001  loss=2.114  top1=0.1524  beam=8
+
+=======================================================
+Annealing schedule=stepwise
+=======================================================
+  e  1  tau=1.000  loss=7.577  top1=0.1149  beam=32
+  e 10  tau=1.000  loss=2.139  top1=0.1613  beam=32
+  e 20  tau=0.100  loss=2.128  top1=0.1625  beam=8
+  e 30  tau=0.100  loss=2.123  top1=0.1271  beam=8
+  e 40  tau=0.100  loss=2.123  top1=0.1623  beam=8
+  e 50  tau=0.100  loss=2.119  top1=0.1592  beam=8
+  e 60  tau=0.100  loss=2.122  top1=0.1506  beam=8
+
+Saved → results/validate_step4_anneal.json
+
+── Step 4 summary ──────────────────────────────────
+  fixed         top1=0.1931  loss=2.101
+  exp           top1=0.1824  loss=2.126
+  cosine        top1=0.1524  loss=2.113
+  stepwise      top1=0.1506  loss=2.121
+
+  Best: Annealing schedule=fixed  top1=0.1931

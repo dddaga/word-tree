@@ -1,0 +1,86 @@
+Device: mps  Epochs 512=120  Epochs 1024=100
+Loaded: train=9469  val=3925
+
+============================================================
+Baseline SmallWorld N=512 (l2, no routing)
+============================================================
+  e  1  loss=11.0952  task=11.0932  safety=0.0035  top1=0.1093  lr=2.36e-03
+  e 10  loss=2.1350  task=2.1323  safety=0.0047  top1=0.1715  lr=2.36e-03
+  e 20  loss=2.1139  task=2.1127  safety=0.0021  top1=0.1518  lr=2.36e-03
+  e 30  loss=2.1112  task=2.1104  safety=0.0013  top1=0.1811  lr=2.36e-03
+  e 40  loss=2.1093  task=2.1087  safety=0.0011  top1=0.1511  lr=2.36e-03
+  e 50  loss=2.1066  task=2.1061  safety=0.0009  top1=0.1661  lr=2.36e-03
+  e 60  loss=2.1084  task=2.1079  safety=0.0009  top1=0.1941  lr=2.36e-03
+  e 70  loss=2.1015  task=2.1010  safety=0.0009  top1=0.1860  lr=1.18e-03
+  e 80  loss=2.1036  task=2.1031  safety=0.0009  top1=0.2003  lr=1.18e-03
+  e 90  loss=2.0998  task=2.0993  safety=0.0008  top1=0.1870  lr=5.91e-04
+  e100  loss=2.0982  task=2.0977  safety=0.0008  top1=0.1766  lr=2.96e-04
+  e110  loss=2.0983  task=2.0978  safety=0.0009  top1=0.1814  lr=2.96e-04
+  e120  loss=2.0979  task=2.0974  safety=0.0009  top1=0.1870  lr=1.48e-04
+  top1_best=0.2008  top1_last=0.1870  task=2.097  safety/task=0.000  t=106s
+
+============================================================
+Resonant N=512 (threshold+reflection+turing, static phase)
+============================================================
+  e  1  loss=14.3310  task=14.3288  safety=0.0038  top1=0.1121  lr=2.36e-03
+  e 10  loss=2.3229  task=2.3206  safety=0.0039  top1=0.1223  lr=2.36e-03
+  e 20  loss=2.2248  task=2.2223  safety=0.0044  top1=0.1126  lr=2.36e-03
+  e 30  loss=2.2029  task=2.2010  safety=0.0032  top1=0.1068  lr=2.36e-03
+  e 40  loss=2.1940  task=2.1927  safety=0.0022  top1=0.1284  lr=2.36e-03
+  e 50  loss=2.1878  task=2.1869  safety=0.0016  top1=0.0948  lr=2.36e-03
+  e 60  loss=2.1880  task=2.1872  safety=0.0014  top1=0.1083  lr=2.36e-03
+  e 70  loss=2.1871  task=2.1864  safety=0.0013  top1=0.1238  lr=2.36e-03
+  e 80  loss=2.1828  task=2.1820  safety=0.0014  top1=0.1042  lr=2.36e-03
+  e 90  loss=2.1762  task=2.1754  safety=0.0014  top1=0.0828  lr=1.18e-03
+  e100  loss=2.1771  task=2.1763  safety=0.0014  top1=0.0971  lr=1.18e-03
+  e110  loss=2.1751  task=2.1743  safety=0.0014  top1=0.1062  lr=5.91e-04
+  e120  loss=2.1734  task=2.1726  safety=0.0014  top1=0.0989  lr=2.96e-04
+  top1_best=0.1597  top1_last=0.0989  task=2.173  safety/task=0.001  t=216s
+
+============================================================
+Resonant N=512 dynamic_gate (GAT-style activation gating)
+============================================================
+  e  1  loss=10.2774  task=10.2751  safety=0.0040  top1=0.0555  lr=2.36e-03
+  e 10  loss=2.4920  task=2.4912  safety=0.0015  top1=0.1034  lr=2.36e-03
+  e 20  loss=2.1986  task=2.1970  safety=0.0027  top1=0.1702  lr=2.36e-03
+  e 30  loss=2.1773  task=2.1755  safety=0.0030  top1=0.1661  lr=2.36e-03
+  e 40  loss=2.1588  task=2.1576  safety=0.0022  top1=0.1628  lr=2.36e-03
+  e 50  loss=2.1449  task=2.1441  safety=0.0015  top1=0.1778  lr=2.36e-03
+  e 60  loss=2.1396  task=2.1389  safety=0.0011  top1=0.1822  lr=2.36e-03
+  e 70  loss=2.1337  task=2.1330  safety=0.0012  top1=0.1761  lr=2.36e-03
+  e 80  loss=2.1279  task=2.1272  safety=0.0012  top1=0.1868  lr=2.36e-03
+  e 90  loss=2.1241  task=2.1235  safety=0.0011  top1=0.1941  lr=2.36e-03
+  e100  loss=2.1266  task=2.1260  safety=0.0010  top1=0.1725  lr=2.36e-03
+  e110  loss=2.1206  task=2.1199  safety=0.0011  top1=0.1946  lr=2.36e-03
+  e120  loss=2.1128  task=2.1120  safety=0.0013  top1=0.1957  lr=1.18e-03
+  top1_best=0.2250  top1_last=0.1957  task=2.113  safety/task=0.001  t=180s
+
+============================================================
+Resonant N=512 dynamic_z (input-dependent topology from Z)
+============================================================
+  e  1  loss=4.8362  task=4.8344  safety=0.0031  top1=0.1817  lr=2.36e-03
+  e 10  loss=2.2707  task=2.2692  safety=0.0025  top1=0.2000  lr=2.36e-03
+  e 20  loss=2.1334  task=2.1314  safety=0.0035  top1=0.2237  lr=2.36e-03
+  e 30  loss=2.0933  task=2.0912  safety=0.0037  top1=0.2020  lr=2.36e-03
+  e 40  loss=2.0878  task=2.0863  safety=0.0025  top1=0.1845  lr=2.36e-03
+  e 50  loss=2.0848  task=2.0834  safety=0.0024  top1=0.2117  lr=2.36e-03
+  e 60  loss=2.0858  task=2.0845  safety=0.0022  top1=0.2048  lr=2.36e-03
+  e 70  loss=2.0837  task=2.0824  safety=0.0022  top1=0.2003  lr=2.36e-03
+  e 80  loss=2.0768  task=2.0755  safety=0.0021  top1=0.2069  lr=1.18e-03
+  e 90  loss=2.0782  task=2.0770  safety=0.0021  top1=0.2265  lr=1.18e-03
+  e100  loss=2.0764  task=2.0752  safety=0.0020  top1=0.2196  lr=5.91e-04
+  e110  loss=2.0745  task=2.0733  safety=0.0021  top1=0.2145  lr=2.96e-04
+  e120  loss=2.0739  task=2.0727  safety=0.0021  top1=0.2217  lr=2.96e-04
+  top1_best=0.2318  top1_last=0.2217  task=2.073  safety/task=0.001  t=143s
+
+Saved → results/train_resonant.json
+
+── Resonant training summary ─────────────────────────────────────
+  Config                               top1_best  top1_last  task_loss
+  -----------------------------------  ---------  ---------  ---------
+  baseline_N512                           0.2008     0.1870     2.0974
+  resonant_N512                           0.1597     0.0989     2.1726
+  dynamic_gate_N512                       0.2250     0.1957     2.1125
+  dynamic_z_N512                          0.2318     0.2217     2.0731
+
+  Best: Resonant N=512 dynamic_z (input-dependent topology from Z)  top1_best=0.2318

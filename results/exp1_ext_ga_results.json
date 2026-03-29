@@ -1,0 +1,53 @@
+{
+  "best_config": {
+    "K": 3,
+    "N_hidden": 256,
+    "lr_Wpos": 0.006565691275803824,
+    "lambda_safety": 0.5847166613737456,
+    "batch_size": 64,
+    "sparsity": 0.95
+  },
+  "best_score": -1.7679036125387813,
+  "history": [
+    {
+      "generation": 0,
+      "best_score": -1.9472817402693627
+    },
+    {
+      "generation": 1,
+      "best_score": -1.7863560524948159
+    },
+    {
+      "generation": 2,
+      "best_score": -1.8020157589967365
+    },
+    {
+      "generation": 3,
+      "best_score": -1.848944993500711
+    },
+    {
+      "generation": 4,
+      "best_score": -1.8208978755651892
+    },
+    {
+      "generation": 5,
+      "best_score": -1.8076792650204845
+    },
+    {
+      "generation": 6,
+      "best_score": -1.7679036125387813
+    },
+    {
+      "generation": 7,
+      "best_score": -1.796695343112098
+    },
+    {
+      "generation": 8,
+      "best_score": -1.8116113010753052
+    },
+    {
+      "generation": 9,
+      "best_score": -1.8743680190902083
+    }
+  ]
+}

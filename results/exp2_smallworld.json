@@ -1,0 +1,47 @@
+{
+  "architecture": "SGNNET_SmallWorld",
+  "sweep": [
+    {
+      "N_hidden": 256,
+      "params": 1064,
+      "top1_accuracy": 0.12687898089171976,
+      "mAP": 0.10943823561485563,
+      "elapsed_s": 208.9
+    },
+    {
+      "N_hidden": 512,
+      "params": 2088,
+      "top1_accuracy": 0.16636942675159236,
+      "mAP": 0.11513295246284261,
+      "elapsed_s": 272.0
+    },
+    {
+      "N_hidden": 1024,
+      "params": 4136,
+      "top1_accuracy": 0.11235668789808917,
+      "mAP": 0.1265181388112781,
+      "elapsed_s": 494.0
+    },
+    {
+      "N_hidden": 2048,
+      "params": 8232,
+      "top1_accuracy": 0.13019108280254776,
+      "mAP": 0.11794271426423233,
+      "elapsed_s": 982.7
+    },
+    {
+      "N_hidden": 4096,
+      "params": 16424,
+      "top1_accuracy": 0.08178343949044586,
+      "mAP": 0.11352847115079603,
+      "elapsed_s": 436.9
+    },
+    {
+      "N_hidden": 10000,
+      "params": 40040,
+      "top1_accuracy": 0.21859872611464967,
+      "mAP": 0.18764489092667472,
+      "elapsed_s": 2344.0
+    }
+  ]
+}

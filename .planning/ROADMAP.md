@@ -508,7 +508,124 @@ Compare Stage A (static only), Stage B (Exp1), Stage C (Exp2), and Phase 3 ampli
 
 ---
 
-## Phase 5 — PCA Compression
+## Phase 5 — Scalable Architecture Experiments
+**Goal:** Extend SGNNET to large neuron counts (N ≤ 20 000) by replacing O(N²) operations with O(N·K) sparse topology. Three architectural variants tested and compared. Signal reflection routing introduced as a candidate mechanism.
+**Requirements:** SCALE-01 through SCALE-06
+**Done when:** All three architectures swept across N=[256,512,1024,2048,4096,10000,20000]; comparison table produced; signal reflection experiment completed.
+
+Plans:
+- [ ] 05-01-PLAN.md — Bug fixes for SGNNET_Wave at large N (fill_diagonal_ in-place, safety loss boolean indexing), neuron scaling sweep N≤10000
+- [ ] 05-02-PLAN.md — SGNNET_SmallWorld: fixed fan-in index tables replacing dense C_hh einsum; no phases, index-based groups
+- [ ] 05-03-PLAN.md — SGNNET_ProximityWave: sparse k-NN topology + dynamic phasor routing; O(N·K) per batch; periodic W_pos-based reconnection
+- [ ] 05-04-PLAN.md — Signal reflection routing experiment
+- [ ] 05-05-PLAN.md — Architecture comparison: SmallWorld vs ProximityWave vs SGNNET_Wave across all N values
+
+### Plan 5.1 — SGNNET_Wave Bug Fixes & Neuron Scaling Sweep
+
+**Bugs fixed:**
+- `wave_routing.py`: `strength.fill_diagonal_(0)` in-place on tracked tensor → replaced with `strength * (1 - eye)` (out-of-place)
+- `losses.py`: `dists[mask]` boolean indexing creates backward shape mismatch at large N on MPS → replaced with element-wise masking; safety loss disabled above N=5000 (O(N²) OOM guard)
+- `lambda_safety` scaled by `(256/N)^(1/D)` to compensate for denser neuron packing at large N
+
+**Sweep:** N_hidden = [512, 1024, 2048, 4096, 10000]
+
+**Deliverables:**
+- Fixed `src/sgnnet/losses.py`, `src/sgnnet/wave_routing.py`
+- `scripts/train_exp1_scale_neurons.py`
+- `results/exp1_scale_{N}.json` per run; `results/exp1_neuron_scaling.json` summary
+
+**Verification:** All N values complete 150 epochs without crash; loss stays bounded.
+
+---
+
+### Plan 5.2 — SGNNET_SmallWorld
+
+Fixed fan-in topology with no phases. Replaces O(N²) C_hh dense einsum and cdist with O(N·K) gather+sum.
+
+**Architecture:**
+- `conn_in [N_hidden, K_in]`: block-local input → hidden fan-in (K_in=50)
+- `conn_hh [N_hidden, K_hh]`: Watts-Strogatz small-world graph built at init; K_local=4 within-group + K_random=2 long-range shortcuts
+- No cdist, no phases — purely structural routing
+
+**Key property:** K_random≥1 achieves ~100% graph connectivity (graph diameter ≈ O(log N)); K_random=0 leaves groups isolated (empirically 3% reachability at N=256).
+
+**Deliverables:**
+- `src/sgnnet/model_smallworld.py`
+- `scripts/train_exp2_smallworld.py`
+- `results/exp2_sw_{N}.json` per run; `results/exp2_smallworld.json` summary
+
+**Verification:** N=20000 completes without OOM; backward OK at all N.
+
+---
+
+### Plan 5.3 — SGNNET_ProximityWave
+
+Sparse topology with dynamic phasor routing. `conn_hh` built from W_pos k-NN (geometry-based, no hard group boundaries). Phase and strength computed only over the K edges per neuron (O(N·K) not O(N²)).
+
+**Architecture:**
+- `build_knn_conn(W_pos, K_local, K_random)` — k-NN in W_pos space + random shortcuts; no index-based groups → overlap is natural from geometry
+- `sparse_phasor_route` — per-edge distance → Gaussian strength + 2π·d/λ phase; O(N·K·B·D) per forward pass
+- `tick_epoch()` — called by Trainer each epoch; rebuilds conn_hh from current W_pos every `reconnect_every` epochs (adaptive topology without per-batch O(N²) cost)
+
+**Deliverables:**
+- `src/sgnnet/model_proximity_wave.py`
+- `scripts/train_exp3_proxwave.py`
+- `results/exp3_pw_{N}.json` per run; `results/exp3_proxwave.json` summary
+
+**Verification:** At N=10000 each forward pass stays under 500ms; topology changes logged at reconnect points.
+
+---
+
+### Plan 5.4 — Signal Reflection Routing Experiment
+
+**Idea:** In the routing step, activations propagate conditionally based on sign and magnitude. Strongly negative activations are reflected back to the originating neuron rather than propagating.
+
+**Rule:**
+```
+Z_prop[h]    = relu(Z[h])             # positive part — travels to neighbours
+Z_reflect[h] = relu(-Z[h] - θ)        # only strongly negative values bounce back
+Z_new[h]     = -Z_reflect[h] + Σ_k weight[h,k] * Z_prop[k]
+```
+Where θ is a threshold hyperparameter (default 0.0 = any negative reflects; >0 = only strongly negative).
+
+**Properties expected:**
+- Sparse activation propagation: only positive neurons transmit each step
+- Self-inhibition: strongly suppressed neurons actively dampen themselves, creating routing "dead zones" that information flows around
+- Input-dependent information channels: active path through the graph shifts per input
+- Asymmetric gradient flow: gradients only propagate through connections where source was positive
+
+**Risk:** Dying neuron cascade — once negative a neuron may never recover. Mitigation: leaky reflection `α·relu(-Z - θ)` with α=0.1 lets negative signal drain rather than accumulate.
+
+**Phasor extension:** gate on real component (in-phase = propagate, out-of-phase = reflect); imaginary component tracks phase direction.
+
+**Implementation:** Add `reflective: bool` and `reflect_threshold: float` flags to `SGNNET_ProximityWave._route()`. Compare N=1024 with/without at 100 epochs.
+
+**Deliverables:**
+- `reflective` flag in `src/sgnnet/model_proximity_wave.py`
+- `scripts/train_exp4_reflection.py` — ablation at N=1024: standard vs leaky-reflect (α=0.1, θ=0.0) vs hard-reflect (α=1.0, θ=0.5)
+- `results/exp4_reflection.json` — side-by-side metrics
+
+**Verification:** No NaN gradients; leaky variant does not produce dead neurons (monitor fraction of neurons with |Z|<ε per epoch).
+
+---
+
+### Plan 5.5 — Architecture Comparison
+
+Aggregate all three architectures across the N sweep. Identify accuracy vs. compute trade-off.
+
+**Comparison axes:**
+- top-1 accuracy and mAP at each N
+- Training time per epoch (ms/epoch) vs N
+- Forward pass memory footprint vs N
+- Whether phase routing adds measurable benefit over flat SmallWorld gather
+
+**Deliverables:**
+- `results/arch_comparison.json` — all three models at all N values
+- `results/arch_comparison.md` — human-readable table
+
+---
+
+## Phase 6 — PCA Compression
 **Day:** March 25 (morning)
 **Goal:** Apply PCA to 25088-dim features, sweep compression ratios, retrain SGNNET for each k, find optimal compression point.
 **Requirements:** PCA-01 through PCA-06
@@ -572,7 +689,7 @@ Identify the highest compression (smallest k) with accuracy drop < 2% vs. full-d
 
 ---
 
-## Phase 6 — Comparative Analysis & Report
+## Phase 7 — Comparative Analysis & Report
 **Day:** March 25 (afternoon)
 **Goal:** Aggregate all results into a clean comparison table. Produce final report.
 **Requirements:** ANAL-01 through ANAL-06
@@ -661,10 +778,11 @@ Write final `results/report.md`.
 | March 23 | 1 + 2 | Tensor store ready; dense baseline trained and evaluated |
 | March 24 | 3 | SGNNET core architecture implemented (amplitude baseline) |
 | March 25+ | 4 | Wave architecture refactor; Exp1 + Exp2 GA search + training |
-| TBD | 5 + 6 | PCA sweep; final comparative report |
+| March 26+ | 5 | Scaling experiments: SmallWorld, ProximityWave, signal reflection, N≤20000 |
+| TBD | 6 + 7 | PCA sweep; final comparative report |
 
 **Note:** Phase 4 redesigned on March 25 to implement wave-based phasor architecture with two experimental variants. Phase 5 and 6 timeline adjusted accordingly.
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-25 after Phase 4 redesign (wave architecture + two-experiment plan)*
+*Last updated: 2026-03-26 — Phase 5 added (scalable architecture experiments + signal reflection); PCA → Phase 6; Report → Phase 7*

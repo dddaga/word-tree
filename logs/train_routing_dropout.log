@@ -1,0 +1,58 @@
+Device: mps  Epochs: 120  Sched: plateau
+Loaded: train=18938  val=3925
+
+==============================================================
+routing_dropout p=0.0  dynamic_z_geo thresh=0.3  N=512 D=4  aug  120ep
+==============================================================
+  e  1  loss=7.3026  task=7.3015  safety=0.0019  top1=0.0983  lr=2.36e-03
+  e 10  loss=2.1395  task=2.1386  safety=0.0015  top1=0.1623  lr=2.36e-03
+  e 20  loss=2.1285  task=2.1280  safety=0.0007  top1=0.1394  lr=2.36e-03
+  e 30  loss=2.1229  task=2.1225  safety=0.0006  top1=0.1868  lr=2.36e-03
+  e 40  loss=2.1260  task=2.1256  safety=0.0006  top1=0.1865  lr=2.36e-03
+  e 50  loss=2.1203  task=2.1200  safety=0.0006  top1=0.1735  lr=1.18e-03
+  e 60  loss=2.1184  task=2.1180  safety=0.0006  top1=0.1865  lr=5.91e-04
+  e 70  loss=2.1176  task=2.1172  safety=0.0007  top1=0.1669  lr=2.96e-04
+  e 80  loss=2.1178  task=2.1174  safety=0.0007  top1=0.1758  lr=1.48e-04
+  e 90  loss=2.1175  task=2.1171  safety=0.0007  top1=0.1692  lr=1.48e-04
+  e100  loss=2.1171  task=2.1167  safety=0.0007  top1=0.1717  lr=7.39e-05
+  top1_best=0.1868  top1_last=0.0986  task=nan  t=325s
+
+==============================================================
+routing_dropout p=0.1  dynamic_z_geo thresh=0.3  N=512 D=4  aug  120ep
+==============================================================
+  e  1  loss=7.2947  task=7.2936  safety=0.0019  top1=0.0991  lr=2.36e-03
+  e 10  loss=2.1688  task=2.1681  safety=0.0013  top1=0.1534  lr=2.36e-03
+  e 20  loss=2.1535  task=2.1531  safety=0.0007  top1=0.1378  lr=2.36e-03
+  e 30  loss=2.1452  task=2.1449  safety=0.0005  top1=0.1824  lr=2.36e-03
+  e 40  loss=2.1509  task=2.1505  safety=0.0007  top1=0.1819  lr=1.18e-03
+  e 50  loss=2.1418  task=2.1413  safety=0.0008  top1=0.1666  lr=1.18e-03
+  e 60  loss=2.1421  task=2.1416  safety=0.0009  top1=0.1875  lr=1.18e-03
+  e 70  loss=2.1388  task=2.1383  safety=0.0009  top1=0.1587  lr=5.91e-04
+  e 80  loss=2.1411  task=2.1405  safety=0.0009  top1=0.1776  lr=5.91e-04
+  e 90  loss=2.1424  task=2.1418  safety=0.0010  top1=0.1631  lr=2.96e-04
+  e100  loss=2.1405  task=2.1399  safety=0.0010  top1=0.1666  lr=2.96e-04
+  top1_best=0.1875  top1_last=0.0986  task=nan  t=352s
+
+==============================================================
+routing_dropout p=0.2  dynamic_z_geo thresh=0.3  N=512 D=4  aug  120ep
+==============================================================
+  e  1  loss=7.2842  task=7.2831  safety=0.0019  top1=0.1029  lr=2.36e-03
+  top1_best=0.1113  top1_last=0.0986  task=nan  t=10s
+
+==============================================================
+routing_dropout p=0.3  dynamic_z_geo thresh=0.3  N=512 D=4  aug  120ep
+==============================================================
+  top1_best=0.0986  top1_last=0.0986  task=nan  t=3s
+
+Saved → results/train_routing_dropout.json
+
+── Routing dropout ablation ─────────────────────────────────────
+  Config                                                   top1_best  Δ vs p=0    t(s)
+  -------------------------------------------------------  ---------  --------  ------
+  p00                                                         0.1868   +0.0000     325
+  p01                                                         0.1875   +0.0008     352
+  p02                                                         0.1113   -0.0754      10
+  p03                                                         0.0986   -0.0882       3
+
+  Best: p=0.1  (0.1875)
+  → Dropout helps. Use routing_dropout_p=0.1 in subsequent ablations.

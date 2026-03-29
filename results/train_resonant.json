@@ -1,0 +1,42 @@
+{
+  "baseline_N512": {
+    "label": "Baseline SmallWorld N=512 (l2, no routing)",
+    "top1_last": 0.1870063692331314,
+    "top1_best": 0.20076432824134827,
+    "final_train_loss": 2.0979001950573277,
+    "final_task_loss": 2.0974015332557063,
+    "final_safety_loss": 0.0008582065319264861,
+    "epochs_run": 120,
+    "elapsed_s": 105.8
+  },
+  "resonant_N512": {
+    "label": "Resonant N=512 (threshold+reflection+turing, static phase)",
+    "top1_last": 0.09885350614786148,
+    "top1_best": 0.1597452163696289,
+    "final_train_loss": 2.173447710758931,
+    "final_task_loss": 2.172640078776592,
+    "final_safety_loss": 0.001389924606711075,
+    "epochs_run": 120,
+    "elapsed_s": 215.9
+  },
+  "dynamic_gate_N512": {
+    "label": "Resonant N=512 dynamic_gate (GAT-style activation gating)",
+    "top1_last": 0.1956687867641449,
+    "top1_best": 0.22496815025806427,
+    "final_train_loss": 2.1132712660609068,
+    "final_task_loss": 2.11252902101826,
+    "final_safety_loss": 0.0012774046932070237,
+    "epochs_run": 120,
+    "elapsed_s": 180.3
+  },
+  "dynamic_z_N512": {
+    "label": "Resonant N=512 dynamic_z (input-dependent topology from Z)",
+    "top1_last": 0.22165605425834656,
+    "top1_best": 0.2318471372127533,
+    "final_train_loss": 2.0743343456371415,
+    "final_task_loss": 2.0731349013947153,
+    "final_safety_loss": 0.0020642518021820764,
+    "epochs_run": 120,
+    "elapsed_s": 142.5
+  }
+}

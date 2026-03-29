@@ -1,0 +1,40 @@
+Device: cpu  Epochs: 200  Data: data/store_aug.h5
+Loaded: train=18938  val=3925
+
+==============================================================
+B. cosine   dynamic_z_geo  N=512  D=4  aug  200ep
+==============================================================
+  e  1  loss=7.2621  task=7.2611  safety=0.0017  top1=0.0983  lr=2.36e-03
+  e 10  loss=2.1389  task=2.1380  safety=0.0015  top1=0.1620  lr=2.35e-03
+  e 20  loss=2.1298  task=2.1294  safety=0.0007  top1=0.1422  lr=2.31e-03
+  e 30  loss=2.1248  task=2.1245  safety=0.0006  top1=0.1952  lr=2.24e-03
+  e 40  loss=2.1258  task=2.1253  safety=0.0008  top1=0.1883  lr=2.14e-03
+  e 50  loss=2.1241  task=2.1236  safety=0.0009  top1=0.1613  lr=2.02e-03
+  e 60  loss=2.1222  task=2.1216  safety=0.0009  top1=0.1783  lr=1.88e-03
+  e 70  loss=2.1222  task=2.1217  safety=0.0009  top1=0.1794  lr=1.72e-03
+  e 80  loss=2.1206  task=2.1200  safety=0.0009  top1=0.1776  lr=1.55e-03
+  e 90  loss=2.1201  task=2.1196  safety=0.0009  top1=0.1796  lr=1.37e-03
+  e100  loss=2.1201  task=2.1196  safety=0.0009  top1=0.1842  lr=1.18e-03
+  e110  loss=2.1184  task=2.1179  safety=0.0010  top1=0.1625  lr=9.97e-04
+  e120  loss=2.1174  task=2.1168  safety=0.0010  top1=0.1868  lr=8.17e-04
+  e130  loss=2.1169  task=2.1164  safety=0.0010  top1=0.1786  lr=6.45e-04
+  e140  loss=2.1162  task=2.1156  safety=0.0011  top1=0.1692  lr=4.87e-04
+  e150  loss=2.1155  task=2.1148  safety=0.0011  top1=0.1834  lr=3.46e-04
+  e160  loss=2.1147  task=2.1141  safety=0.0011  top1=0.1659  lr=2.26e-04
+  e170  loss=2.1142  task=2.1135  safety=0.0012  top1=0.1715  lr=1.29e-04
+  e180  loss=2.1139  task=2.1132  safety=0.0012  top1=0.1730  lr=5.79e-05
+  e190  loss=2.1135  task=2.1129  safety=0.0012  top1=0.1725  lr=1.47e-05
+  e200  loss=2.1135  task=2.1128  safety=0.0012  top1=0.1717  lr=1.00e-07
+  top1_best=0.2036  top1_last=0.1717  task=2.113  t=1241s
+
+Saved → results/train_aug_baseline_cosine_200ep.json
+
+── Aug-data baseline: LR schedule comparison ────────────────────
+  Config                                              top1_best  top1_last    t(s)
+  --------------------------------------------------  ---------  ---------  ------
+  cosine                                                 0.2036     0.1717    1241
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_aug_baseline.py", line 165, in <module>
+    p = results["plateau"]["top1_best"]
+        ~~~~~~~^^^^^^^^^^^
+KeyError: 'plateau'

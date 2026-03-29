@@ -1,0 +1,90 @@
+Device: mps  Epochs: 120
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, 256GB RAM)
+
+=================================================================
+A. thresh=0.0  geo=True   dynamic_z_geo  N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.8354  task=10.8337  safety=0.0029  top1=0.1287  lr=2.36e-03
+  e 10  loss=2.1718  task=2.1705  safety=0.0023  top1=0.1478  lr=2.32e-03
+  e 20  loss=2.1389  task=2.1380  safety=0.0016  top1=0.1559  lr=2.21e-03
+  e 30  loss=2.1313  task=2.1307  safety=0.0010  top1=0.1722  lr=2.02e-03
+  e 40  loss=2.1289  task=2.1285  safety=0.0007  top1=0.1620  lr=1.77e-03
+  e 50  loss=2.1249  task=2.1245  safety=0.0006  top1=0.1654  lr=1.49e-03
+  e 60  loss=2.1233  task=2.1230  safety=0.0006  top1=0.1638  lr=1.18e-03
+  e 70  loss=2.1217  task=2.1213  safety=0.0005  top1=0.1720  lr=8.76e-04
+  e 80  loss=2.1198  task=2.1195  safety=0.0005  top1=0.1847  lr=5.91e-04
+  e 90  loss=2.1183  task=2.1180  safety=0.0005  top1=0.1638  lr=3.46e-04
+  e100  loss=2.1179  task=2.1175  safety=0.0005  top1=0.1753  lr=1.58e-04
+  e110  loss=2.1169  task=2.1166  safety=0.0005  top1=0.1727  lr=4.04e-05
+  e120  loss=2.1166  task=2.1162  safety=0.0005  top1=0.1717  lr=1.00e-07
+  top1_best=0.1903  best_ep=51  task=2.116  t=189s
+
+=================================================================
+B. thresh=0.1  geo=True   dynamic_z_geo  N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.9026  task=10.9009  safety=0.0029  top1=0.1274  lr=2.36e-03
+  e 10  loss=2.1750  task=2.1737  safety=0.0022  top1=0.1531  lr=2.32e-03
+  e 20  loss=2.1379  task=2.1370  safety=0.0016  top1=0.1666  lr=2.21e-03
+  e 30  loss=2.1302  task=2.1296  safety=0.0010  top1=0.1638  lr=2.02e-03
+  e 40  loss=2.1278  task=2.1273  safety=0.0008  top1=0.1763  lr=1.77e-03
+  e 50  loss=2.1261  task=2.1258  safety=0.0006  top1=0.1834  lr=1.49e-03
+  e 60  loss=2.1219  task=2.1216  safety=0.0005  top1=0.1761  lr=1.18e-03
+  e 70  loss=2.1216  task=2.1213  safety=0.0005  top1=0.1804  lr=8.76e-04
+  e 80  loss=2.1191  task=2.1187  safety=0.0005  top1=0.1664  lr=5.91e-04
+  e 90  loss=2.1182  task=2.1179  safety=0.0005  top1=0.1753  lr=3.46e-04
+  e100  loss=2.1173  task=2.1170  safety=0.0006  top1=0.1679  lr=1.58e-04
+  e110  loss=2.1167  task=2.1164  safety=0.0006  top1=0.1738  lr=4.04e-05
+  e120  loss=2.1165  task=2.1162  safety=0.0006  top1=0.1707  lr=1.00e-07
+  top1_best=0.1916  best_ep=42  task=2.116  t=244s
+
+=================================================================
+C. thresh=0.3  geo=True   dynamic_z_geo  N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.8733  task=10.8716  safety=0.0030  top1=0.1294  lr=2.36e-03
+  e 10  loss=2.1744  task=2.1731  safety=0.0022  top1=0.1399  lr=2.32e-03
+  e 20  loss=2.1378  task=2.1369  safety=0.0016  top1=0.1592  lr=2.21e-03
+  e 30  loss=2.1306  task=2.1300  safety=0.0010  top1=0.1712  lr=2.02e-03
+  e 40  loss=2.1280  task=2.1276  safety=0.0007  top1=0.1648  lr=1.77e-03
+  e 50  loss=2.1245  task=2.1241  safety=0.0006  top1=0.1587  lr=1.49e-03
+  e 60  loss=2.1230  task=2.1227  safety=0.0005  top1=0.1745  lr=1.18e-03
+  e 70  loss=2.1212  task=2.1209  safety=0.0005  top1=0.1610  lr=8.76e-04
+  e 80  loss=2.1195  task=2.1192  safety=0.0005  top1=0.1674  lr=5.91e-04
+  e 90  loss=2.1185  task=2.1182  safety=0.0005  top1=0.1730  lr=3.46e-04
+  e100  loss=2.1176  task=2.1172  safety=0.0005  top1=0.1674  lr=1.58e-04
+  e110  loss=2.1169  task=2.1165  safety=0.0005  top1=0.1715  lr=4.04e-05
+  e120  loss=2.1166  task=2.1163  safety=0.0005  top1=0.1712  lr=1.00e-07
+  top1_best=0.1852  best_ep=13  task=2.116  t=198s
+
+=================================================================
+D. thresh=0.0  geo=False  dynamic_z      N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.9082  task=10.9064  safety=0.0030  top1=0.1251  lr=2.36e-03
+  e 10  loss=2.1718  task=2.1704  safety=0.0023  top1=0.1646  lr=2.32e-03
+  e 20  loss=2.1370  task=2.1361  safety=0.0015  top1=0.1582  lr=2.21e-03
+  e 30  loss=2.1311  task=2.1305  safety=0.0010  top1=0.1896  lr=2.02e-03
+  e 40  loss=2.1271  task=2.1267  safety=0.0007  top1=0.1715  lr=1.77e-03
+  e 50  loss=2.1261  task=2.1257  safety=0.0006  top1=0.1707  lr=1.49e-03
+  e 60  loss=2.1236  task=2.1233  safety=0.0005  top1=0.1674  lr=1.18e-03
+  e 70  loss=2.1218  task=2.1215  safety=0.0005  top1=0.1773  lr=8.76e-04
+  e 80  loss=2.1193  task=2.1190  safety=0.0005  top1=0.1829  lr=5.91e-04
+  e 90  loss=2.1183  task=2.1180  safety=0.0005  top1=0.1692  lr=3.46e-04
+  e100  loss=2.1177  task=2.1174  safety=0.0005  top1=0.1732  lr=1.58e-04
+  e110  loss=2.1169  task=2.1165  safety=0.0006  top1=0.1704  lr=4.04e-05
+  e120  loss=2.1165  task=2.1162  safety=0.0006  top1=0.1704  lr=1.00e-07
+  top1_best=0.1962  best_ep=51  task=2.116  t=277s
+
+Saved -> results/train_thresh_sweep.json
+
+-- Threshold / geo sweep ------------------------------------------
+  Config                                                             top1_best  vs iter1-ctrl    t(s)
+  -----------------------------------------------------------------  ---------  --------  ------
+  A                                                                     0.1903   -0.0059     189
+  B                                                                     0.1916   -0.0046     244
+  C                                                                     0.1852   -0.0110     198
+  D                                                                     0.1962   +0.0000     278
+
+  Key question — config D (pure dynamic_z, no thresh, no geo):
+  -> Still 19.62%. Regression is from aug data distribution shift.
+  -> hflip augmentation may be changing VGG feature distribution.
+  -> Consider: train on original data only, or reduce hflip fraction.

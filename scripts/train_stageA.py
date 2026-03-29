@@ -142,9 +142,9 @@ def evaluate_and_save(model, trainer, history, best: dict) -> dict:
     total_params = sum(p.numel() for p in model.parameters())
 
     # Sparsity check (TRAIN-05)
-    c_input_sparsity = float((model.C_input_mask == 0).float().mean())
-    c_hh_sparsity = float((model.C_hh_mask == 0).float().mean())
-    c_ho_sparsity = float((model.C_ho_mask == 0).float().mean())
+    c_input_sparsity = float((~model.C_input_mask).float().mean())
+    c_hh_sparsity = float((~model.C_hh_mask).float().mean())
+    c_ho_sparsity = float((~model.C_ho_mask).float().mean())
 
     result = {
         "experiment": "stageA_static_baseline",

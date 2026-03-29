@@ -1,0 +1,41 @@
+Device: cpu  Epochs: 90
+Dataset: train=9469  val=3925  (lazy per-batch loading, 4 workers)
+
+=================================================================
+A. thresh=0.0  geo=True   dynamic_z_geo  N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.8353  task=10.8336  safety=0.0029  top1=0.1282  lr=2.36e-03
+  e 10  loss=2.1729  task=2.1716  safety=0.0023  top1=0.1524  lr=2.36e-03
+  e 20  loss=2.1378  task=2.1370  safety=0.0015  top1=0.1868  lr=2.36e-03
+  e 30  loss=2.1312  task=2.1307  safety=0.0009  top1=0.1715  lr=2.36e-03
+  e 40  loss=2.1269  task=2.1265  safety=0.0007  top1=0.1817  lr=2.36e-03
+  e 50  loss=2.1268  task=2.1264  safety=0.0006  top1=0.1730  lr=2.36e-03
+  e 60  loss=2.1253  task=2.1249  safety=0.0006  top1=0.1890  lr=2.36e-03
+  e 70  loss=2.1272  task=2.1268  safety=0.0007  top1=0.1753  lr=2.36e-03
+  e 80  loss=2.1275  task=2.1270  safety=0.0008  top1=0.1758  lr=2.36e-03
+  e 90  loss=2.1251  task=2.1246  safety=0.0009  top1=0.1883  lr=2.36e-03
+  top1_best=0.1957  best_ep=82  task=2.124  t=552s
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+
+=================================================================
+B. thresh=0.1  geo=True   dynamic_z_geo  N=512 D=4 aug 120ep
+=================================================================
+  e  1  loss=10.8353  task=10.8336  safety=0.0029  top1=0.1282  lr=2.36e-03
+  e 10  loss=2.1729  task=2.1716  safety=0.0023  top1=0.1524  lr=2.36e-03
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+Device: cpu  Epochs: 90
+/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 40 leaked semaphore objects to clean up at shutdown: {'/mp-jvu0rhnc', '/mp-h9dwffpz', '/mp-wkl7ncwv', '/mp-3fdf2g7x', '/mp-z11zznxc', '/mp-uljvs7v4', '/mp-zi91mku7', '/mp-ty1fyvdv', '/mp-uw1ei73d', '/mp-ocyq6245', '/mp-1o9ix7kd', '/mp-xhf32se7', '/mp-oliica1f', '/mp-9kz0il8v', '/mp-y3r8smc4', '/mp-80mtdh94', '/mp-045ud0kk', '/mp-ykppxhw2', '/mp-n8nbolw6', '/mp-ivo7r8rs', '/mp-t4nci90u', '/mp-ykq1e32a', '/mp-u1g6kqrn', '/mp-ct_chvuo', '/mp-tvqyvg6e', '/mp-kag6p0q1', '/mp-1ybt3ipx', '/mp-cdfhm2rq', '/mp-p505xlrf', '/mp-0ge3ms_0', '/mp-v016a0ml', '/mp-r8r9xb7v', '/mp-beu5cy7w', '/mp-dq_ds5ez', '/mp-ia17sf5b', '/mp-uzek6z3t', '/mp-swv35ou3', '/mp-rnhwb78p', '/mp-8pb12o_s', '/mp-jcj0msqe'}
+  warnings.warn(

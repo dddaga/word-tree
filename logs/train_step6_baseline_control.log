@@ -1,0 +1,29 @@
+Device: mps  Epochs: 120  Seed: 42
+Model: plain SGNNET_SmallWorld (no Resonant wrapper) — iter1 baseline replication
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+=================================================================
+SmallWorld baseline  N=512 D=4 plateau 120ep  (iter1 baseline_N512 replica)
+=================================================================
+  e  1  loss=12.0975  task=12.0958  safety=0.0030  top1=0.1320  lr=2.36e-03
+  e 10  loss=2.1658  task=2.1649  safety=0.0016  top1=0.1524  lr=2.36e-03
+  e 20  loss=2.1316  task=2.1306  safety=0.0017  top1=0.1498  lr=2.36e-03
+  e 30  loss=2.1185  task=2.1176  safety=0.0015  top1=0.1839  lr=2.36e-03
+  e 40  loss=2.1186  task=2.1180  safety=0.0012  top1=0.1753  lr=2.36e-03
+  e 50  loss=2.1151  task=2.1147  safety=0.0008  top1=0.1783  lr=2.36e-03
+  e 60  loss=2.1109  task=2.1105  safety=0.0007  top1=0.1580  lr=1.18e-03
+  e 70  loss=2.1113  task=2.1110  safety=0.0006  top1=0.1664  lr=1.18e-03
+  e 80  loss=2.1106  task=2.1103  safety=0.0005  top1=0.1761  lr=1.18e-03
+  e 90  loss=2.1078  task=2.1075  safety=0.0005  top1=0.1735  lr=5.91e-04
+  e100  loss=2.1075  task=2.1073  safety=0.0005  top1=0.1707  lr=5.91e-04
+  e110  loss=2.1079  task=2.1076  safety=0.0005  top1=0.1659  lr=2.96e-04
+  e120  loss=2.1060  task=2.1057  safety=0.0005  top1=0.1834  lr=2.96e-04
+  top1_best=0.1987  best_ep=45  task=2.106  t=70s
+
+Saved -> results/train_step6_baseline_control.json
+
+  SmallWorld baseline (no routing): 0.1987
+  Iter1 baseline_N512 reference:    0.2438
+  Iter1 dynamic_z reference:        0.2652
+  -> Partial recovery (delta=-0.0451). Regression is mixed.

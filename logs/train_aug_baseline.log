@@ -1,0 +1,48 @@
+Device: mps  Epochs: 120  Data: data/store_aug.h5
+Loaded: train=18938  val=3925
+
+==============================================================
+A. plateau  dynamic_z_full  N=512  D=4  aug-data  120ep
+==============================================================
+  e  1  loss=7.3026  task=7.3015  safety=0.0019  top1=0.0983  lr=2.36e-03
+  e 10  loss=2.1395  task=2.1386  safety=0.0015  top1=0.1623  lr=2.36e-03
+  e 20  loss=2.1285  task=2.1280  safety=0.0007  top1=0.1394  lr=2.36e-03
+  e 30  loss=2.1229  task=2.1225  safety=0.0006  top1=0.1868  lr=2.36e-03
+  e 40  loss=2.1260  task=2.1256  safety=0.0006  top1=0.1865  lr=2.36e-03
+  e 50  loss=2.1203  task=2.1200  safety=0.0006  top1=0.1735  lr=1.18e-03
+  e 60  loss=2.1184  task=2.1180  safety=0.0006  top1=0.1865  lr=5.91e-04
+  e 70  loss=2.1176  task=2.1172  safety=0.0007  top1=0.1669  lr=2.96e-04
+  e 80  loss=2.1178  task=2.1174  safety=0.0007  top1=0.1758  lr=1.48e-04
+  e 90  loss=2.1175  task=2.1171  safety=0.0007  top1=0.1692  lr=1.48e-04
+  e100  loss=2.1171  task=2.1167  safety=0.0007  top1=0.1717  lr=7.39e-05
+  top1_best=0.1868  top1_last=0.0986  task=nan  t=436s
+
+==============================================================
+B. cosine   dynamic_z_full  N=512  D=4  aug-data  120ep
+==============================================================
+  e  1  loss=7.3026  task=7.3015  safety=0.0019  top1=0.0983  lr=2.36e-03
+  e 10  loss=2.1395  task=2.1386  safety=0.0015  top1=0.1620  lr=2.32e-03
+  e 20  loss=2.1283  task=2.1279  safety=0.0007  top1=0.1419  lr=2.21e-03
+  e 30  loss=2.1226  task=2.1223  safety=0.0006  top1=0.1855  lr=2.02e-03
+  e 40  loss=2.1248  task=2.1245  safety=0.0005  top1=0.1875  lr=1.77e-03
+  e 50  loss=2.1213  task=2.1210  safety=0.0006  top1=0.1761  lr=1.49e-03
+  e 60  loss=2.1194  task=2.1191  safety=0.0006  top1=0.1896  lr=1.18e-03
+  e 70  loss=2.1186  task=2.1182  safety=0.0007  top1=0.1618  lr=8.76e-04
+  e 80  loss=2.1186  task=2.1182  safety=0.0007  top1=0.1873  lr=5.91e-04
+  e 90  loss=2.1180  task=2.1176  safety=0.0008  top1=0.1694  lr=3.46e-04
+  e100  loss=2.1171  task=2.1167  safety=0.0008  top1=0.1717  lr=1.58e-04
+  top1_best=0.1896  top1_last=0.0986  task=nan  t=463s
+
+Saved → results/train_aug_baseline.json
+
+── Aug-data baseline: LR schedule comparison ────────────────────
+  Config                                              top1_best  top1_last    t(s)
+  --------------------------------------------------  ---------  ---------  ------
+  plateau                                                0.1868     0.0986     436
+  cosine                                                 0.1896     0.0986     463
+
+  Delta (cosine - plateau): +0.0028
+  Winner: cosine
+
+  → This config becomes the reference for all subsequent ablations.
+    Use store_aug.h5 + dynamic_z_full + cosine LR + 120ep as baseline.
