@@ -1,0 +1,54 @@
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run5"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 15454 #123633664/ (1000 * vector_dim)
+  input_nodes: 3136 # 512*7*7 / vector_dim
+  output_nodes: 256
+  cardinality: 200
+  radiation_targets: 16
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  # phase_bins: null
+  # mag_bins: null
+  # gamma: 1.5
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.0
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run5/run5_weights.pt"
+  scheduler_save_path: "training_runs/run5/run5_scheduler.pt"
+  tensorboard_dir: "training_runs/run5/tensorboard"
+  logging:
+    log_path: "training_runs/run5/run5.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false
