@@ -22,6 +22,7 @@ class NativeNodeStore(nn.Module):
         vector_dim: int,
         seed: int = 42,
         device: str = "cpu",
+        topology: str = "flat",
     ):
         super().__init__()
         self.total_nodes = total_nodes
@@ -29,6 +30,7 @@ class NativeNodeStore(nn.Module):
         self.output_nodes = output_nodes
         self.cardinality = cardinality
         self.vector_dim = vector_dim
+        self.topology = topology
 
         self.phase_weight = nn.Parameter(torch.empty(total_nodes, vector_dim))
         self.mag_weight = nn.Parameter(torch.empty(total_nodes, vector_dim))
@@ -54,9 +56,19 @@ class NativeNodeStore(nn.Module):
         node_ids = list(range(self.total_nodes))
         self.input_nodeids = set(node_ids[: self.input_nodes])
         self.output_nodeids = set(node_ids[-self.output_nodes :])
+        self.intermediate_nodeids = set(node_ids[self.input_nodes : -self.output_nodes])
 
-        if self.total_nodes - (self.input_nodes + self.output_nodes) < 0.1 * self.total_nodes:
-            raise ValueError("Total nodes must be sufficiently larger than input + output nodes")
+        if self.topology == "flat":
+            if self.total_nodes - (self.input_nodes + self.output_nodes) < 0.1 * self.total_nodes:
+                raise ValueError("Total nodes must be sufficiently larger than input + output nodes")
+        elif self.topology == "layered":
+            if len(self.intermediate_nodeids) == 0:
+                raise ValueError(
+                    "Layered topology requires intermediate nodes: "
+                    "total_nodes must be > input_nodes + output_nodes"
+                )
+        else:
+            raise ValueError(f"Unknown topology: {self.topology!r} (expected 'flat' or 'layered')")
 
         # Build connections
         graph = {nid: {"incoming": [], "outgoing": []} for nid in node_ids}
@@ -64,7 +76,18 @@ class NativeNodeStore(nn.Module):
         for n in node_ids:
             if n in self.input_nodeids:
                 continue
-            possible = list(all_ids - self.output_nodeids - {n})
+
+            if self.topology == "layered":
+                if n in self.output_nodeids:
+                    # Output: incoming from intermediate only
+                    possible = list(self.intermediate_nodeids)
+                else:
+                    # Intermediate: incoming from any node except self
+                    possible = list(all_ids - {n})
+            else:
+                # Flat: incoming from any non-output, non-self node
+                possible = list(all_ids - self.output_nodeids - {n})
+
             count = random.randint(1, self.cardinality)
             incoming = random.choices(possible, k=count)
             graph[n]["incoming"] = incoming
@@ -152,9 +175,11 @@ class NativeNodeStore(nn.Module):
                 "vector_dim": self.vector_dim,
                 "input_nodeids": list(self.input_nodeids),
                 "output_nodeids": list(self.output_nodeids),
+                "intermediate_nodeids": list(self.intermediate_nodeids),
                 "input_nodes": self.input_nodes,
                 "output_nodes": self.output_nodes,
                 "cardinality": self.cardinality,
+                "topology": self.topology,
             },
         }
 
@@ -171,4 +196,9 @@ class NativeNodeStore(nn.Module):
         self.connections = state_dict["connections"]
         self.input_nodeids = set(meta["input_nodeids"])
         self.output_nodeids = set(meta["output_nodeids"])
+        self.topology = meta.get("topology", "flat")
+        if "intermediate_nodeids" in meta:
+            self.intermediate_nodeids = set(meta["intermediate_nodeids"])
+        else:
+            self.intermediate_nodeids = set(range(self.total_nodes)) - self.input_nodeids - self.output_nodeids
         self._build_edge_indices()

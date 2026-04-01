@@ -35,6 +35,7 @@ class NativeNeurographLayer(nn.Module):
             vector_dim=model["vector_dim"],
             seed=system.get("random_seed", 42),
             device=system.get("device", "cpu"),
+            topology=graph.get("topology", "flat"),
         )
 
         self._total_nodes = graph["total_nodes"]
