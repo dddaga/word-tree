@@ -20,11 +20,13 @@ model:
   # gamma: 1.5
   iterations: 5
   radiation_similarity_threshold: 0.1
-  temporal_decay: 0.9
+  temporal_decay: 1.0
   activation_threshold: 0.1
   dtype: "float32"
   scattering_prob: 0.0
   stochastic_radiation_duration: 0.4
+  layernorm: true
+  dropout: 0.0
 
 # --- Training Hyperparameters ---
 training:
@@ -41,7 +43,6 @@ system:
   random_seed: 42
   weights_save_path: "training_runs/run3/run3_weights.pt"
   tensorboard_dir: "training_runs/run3/tensorboard"
-  use_layer_norm: true
   logging:
     log_path: "training_runs/run3/run3.csv"
     save_interval_seconds: 10

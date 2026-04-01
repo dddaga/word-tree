@@ -1,7 +1,7 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "run4"
+  collection_name: "run7"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -10,7 +10,7 @@ graph:
   input_nodes: 3136 # 512*7*7 / vector_dim
   output_nodes: 256
   cardinality: 200
-  radiation_targets: 32
+  radiation_targets: 0
 
 # --- Model Architecture ---
 model:
@@ -19,21 +19,21 @@ model:
   # mag_bins: null
   # gamma: 1.5
   iterations: 5
-  radiation_similarity_threshold: 0.1
+  radiation_similarity_threshold: 0.5
   temporal_decay: 1.0
   activation_threshold: 0.1
   dtype: "float32"
-  scattering_prob: 0.8
-  stochastic_radiation_duration: 0.4
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
   layernorm: true
-  dropout: 0.0
+  dropout: 0.2
 
 # --- Training Hyperparameters ---
 training:
   lr: 0.0001
   batch_size: 4
   accumulation_steps: 4
-  epochs: 20
+  epochs: 40
   validation_fraction: 0.0
   lr_decay_factor: 0.5
   plateau_patience: 5
@@ -44,11 +44,11 @@ training:
 system:
   device: "mps"
   random_seed: 42
-  weights_save_path: "training_runs/run4/run4_weights.pt"
-  scheduler_save_path: "training_runs/run4/run4_scheduler.pt"
-  tensorboard_dir: "training_runs/run4/tensorboard"
+  weights_save_path: "training_runs/run7/run7_weights.pt"
+  scheduler_save_path: "training_runs/run7/run7_scheduler.pt"
+  tensorboard_dir: "training_runs/run7/tensorboard"
   logging:
-    log_path: "training_runs/run4/run4.csv"
+    log_path: "training_runs/run7/run7.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class', 'skipped']
     verbose: false
