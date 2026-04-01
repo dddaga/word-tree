@@ -251,7 +251,7 @@ def main(config_path: str = None, layernorm_override: bool = None, dropout_overr
 
         if scheduler is not None:
             old_lr = optimizer.param_groups[0]["lr"]
-            scheduler.step(avg_train_loss)
+            scheduler.step(val_loss)
             new_lr = optimizer.param_groups[0]["lr"]
             if new_lr < old_lr:
                 print(f"LR decayed: {old_lr:.2e} -> {new_lr:.2e}")

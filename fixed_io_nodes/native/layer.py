@@ -54,6 +54,7 @@ class NativeNeurographLayer(nn.Module):
             self.mag_norm = nn.LayerNorm(self._vector_dim, elementwise_affine=True)
 
         self._edge_dropout_p = model.get("dropout", 0.0)
+        self._temporal_decay = model.get("temporal_decay", 1.0)
 
         self._input_nodeids = sorted(self._node_store.input_nodeids)
         self._output_nodeids = sorted(self._node_store.output_nodeids)
@@ -109,6 +110,12 @@ class NativeNeurographLayer(nn.Module):
         V = self._vector_dim
         device = x.device
         n_in = self._input_node_count
+
+        # Temporal decay: precompute log-space subtraction constant
+        if self._temporal_decay < 1.0:
+            _decay_lambda = -torch.log(torch.tensor(self._temporal_decay, device=device, dtype=x.dtype))
+        else:
+            _decay_lambda = None
 
         # Replicate weights for B samples: (N, V) → (B*N, V)
         # clone() without detach keeps gradient connection to nn.Parameter
@@ -181,6 +188,11 @@ class NativeNeurographLayer(nn.Module):
                 w_real, w_imag, all_active,
                 use_reentrant=False,
             )
+
+            # Temporal decay: subtract lambda from log-magnitudes (equivalent to
+            # multiplying linear magnitudes by temporal_decay each iteration)
+            if _decay_lambda is not None:
+                mag_act = mag_act - _decay_lambda
 
         # Extract outputs
         batched_output_idx = (output_idx.unsqueeze(0) + offsets.unsqueeze(1)).reshape(-1)
