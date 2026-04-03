@@ -515,7 +515,7 @@ Compare Stage A (static only), Stage B (Exp1), Stage C (Exp2), and Phase 3 ampli
 
 Plans:
 - [ ] 05-01-PLAN.md — Bug fixes for SGNNET_Wave at large N (fill_diagonal_ in-place, safety loss boolean indexing), neuron scaling sweep N≤10000
-- [ ] 05-02-PLAN.md — SGNNET_SmallWorld: fixed fan-in index tables replacing dense C_hh einsum; no phases, index-based groups
+- [x] 05-02-PLAN.md — SGNNET_ProximityWave: k-NN topology + phasor routing at N=1024/4096, D=64; dispatched to Mac Studio
 - [ ] 05-03-PLAN.md — SGNNET_ProximityWave: sparse k-NN topology + dynamic phasor routing; O(N·K) per batch; periodic W_pos-based reconnection
 - [ ] 05-04-PLAN.md — Signal reflection routing experiment
 - [ ] 05-05-PLAN.md — Architecture comparison: SmallWorld vs ProximityWave vs SGNNET_Wave across all N values

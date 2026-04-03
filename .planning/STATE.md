@@ -35,7 +35,7 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | Scalable Architecture Experiments | In progress — Exp1 scale sweep, Exp2 SmallWorld, Exp3 ProximityWave running; Exp4 signal reflection planned |
+| 5 | Scalable Architecture Experiments | In progress — Plan 02 (ProximityWave) complete, dispatched to Mac Studio (exp3_pw); Exp1 scale sweep, Exp2 SmallWorld also running |
 | 6 | PCA Compression | Not started |
 | 7 | Comparative Analysis & Report | Not started |
 
@@ -77,6 +77,9 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 - [Phase 04, Plan 04]: Exp 2 (spatial + W_phase) top1=0.1052 -- W_phase trained (norm=13.36) but did not improve accuracy
 - [Phase 04, Plan 05]: Baseline class name casing mismatch handled via explicit mapping dict (VGG16 "English springer" vs experiments "english_springer")
 - [Phase 04, Plan 05]: Phase 3 SGNNET config (649K params with learned C) included as reference row alongside Phase 4 binary-C experiments (1K-2K params)
+- [Phase 05, Plan 02]: Inline anti-Hebbian suppression in ProximityWave routing weights (not separate wrapper) due to phasor Z_re/Z_im interface mismatch with SGNNET_Resonant
+- [Phase 05, Plan 02]: Fourier encoding mode added to ProximityWave for D=64 compatibility
+- [Phase 05, Plan 02]: l2 norm mode in ProximityWave (validated winner from Step 1)
 
 ## Open Decisions
 
@@ -121,8 +124,8 @@ None currently.
 
 ## Last Session
 
-- **Stopped at:** Phase 5 in progress — Exp1 scale (scale_v3 tmux), Exp2 SmallWorld (exp2_sw tmux), Exp3 ProximityWave (exp3_pw tmux) all running; signal reflection documented in docs/experiment_ideas.md and roadmap
-- **Timestamp:** 2026-03-26T17:30:00Z
+- **Stopped at:** Phase 5 Plan 02 (ProximityWave) complete -- dispatched exp3_pw on Mac Studio; N=1024 fwd=595ms/batch
+- **Timestamp:** 2026-04-03T12:13:23Z
 
 ---
 *State initialized: 2026-03-23*
