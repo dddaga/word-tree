@@ -7,7 +7,7 @@ propagate automatically.
 Learnings baked in
 ------------------
 - AdamW with weight_decay=0.0 on W_pos (weight decay collapses positions)
-- lambda_safety must scale down with N — safety_valve uses O(N²) pairs
+- lambda_safety must scale down with N — safety_valve uses O(N^2) pairs
   in a fixed box_size, so density rises and each pair contributes more
 - Safety valve disabled above N=5000 (cdist would OOM at ~10 GB)
 - Gradient clipping DISABLED (float('inf')) — iter1 had no clipping; norm=1.0 capped
@@ -18,9 +18,44 @@ Learnings baked in
 """
 
 from __future__ import annotations
+import datetime
+import subprocess
 
 
-# ── GA best config from Phase 4 Exp 1 ───────────────────────────────────────
+# -- Reproducibility metadata ------------------------------------------------
+
+def run_metadata(script_path: str | None = None, extra: dict | None = None) -> dict:
+    """Return a reproducibility metadata dict to embed in every result JSON.
+
+    Call at the top of each run() function:
+        result["_meta"] = run_metadata(__file__, {"D": D, "N": N, "epochs": EPOCHS})
+
+    Fields:
+        script    : basename of the training script
+        timestamp : ISO 8601 UTC timestamp
+        git_hash  : short commit hash (empty string if git unavailable)
+        config    : caller-supplied hyperparameter dict (optional)
+    """
+    try:
+        git_hash = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            stderr=subprocess.DEVNULL, text=True
+        ).strip()
+    except Exception:
+        git_hash = ""
+
+    import os
+    meta = {
+        "script":    os.path.basename(script_path) if script_path else "",
+        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "git_hash":  git_hash,
+    }
+    if extra:
+        meta["config"] = extra
+    return meta
+
+
+# -- GA best config from Phase 4 Exp 1 (D=4 reference) ---------------------
 
 GA_BEST = {
     "K": 2,
@@ -31,7 +66,21 @@ GA_BEST = {
 }
 
 
-# ── Lambda safety scaling ────────────────────────────────────────────────────
+# -- Phase 5 best config (D=64, step29 Config C) ----------------------------
+
+GA_BEST_D64 = {
+    "N_hidden": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "lr_Wpos": 2.364e-3,
+    "batch_size": 128,
+    "antihebb_alpha": 0.7,
+    "antihebb_variant": "wpos",
+    "top1_best": 0.7524,       # 75.24% — all-time best (step29 Config C)
+}
+
+
+# -- Lambda safety scaling ---------------------------------------------------
 
 BASE_N = 256      # N for which GA_BEST["lambda_safety"] was tuned
 BASE_D = 4        # geometric dimensionality
@@ -59,7 +108,7 @@ def scaled_lambda_safety(
     return base_lambda * (base_n / n_hidden) ** (1.0 / d)
 
 
-# ── Standard Trainer kwargs ──────────────────────────────────────────────────
+# -- Standard Trainer kwargs -------------------------------------------------
 
 def trainer_kwargs(
     n_hidden: int,
@@ -73,7 +122,7 @@ def trainer_kwargs(
     ----------
     n_hidden  : number of hidden neurons (for lambda_safety scaling)
     lr_wpos   : override learning rate (default: GA best)
-    n_epochs  : total training epochs — used for cosine T_max
+    n_epochs  : total training epochs -- used for cosine T_max
     sched_type: "plateau" (ReduceLROnPlateau) | "cosine" (CosineAnnealingLR) | "none" (constant LR)
 
     Usage:
@@ -85,25 +134,25 @@ def trainer_kwargs(
         "lambda_safety": scaled_lambda_safety(n_hidden),
         "lambda_lb": 0.01,
         "use_amp": True,
-        "grad_clip_norm": float("inf"),  # no clipping — matches iter1 (26.52%)
+        "grad_clip_norm": float("inf"),  # no clipping -- matches iter1 (26.52%)
         "sched_type": sched_type,
         "sched_patience": 10,        # only used when sched_type="plateau"
         "sched_factor": 0.5,
         "sched_cosine_T": n_epochs,  # only used when sched_type="cosine"
         "min_lr": 1e-7,
-        "early_stop_patience": 50,   # generous — let model converge fully
+        "early_stop_patience": 50,   # generous -- let model converge fully
         "early_stop_delta": 5e-4,
     }
 
 
-# ── SmallWorld / ProximityWave topology defaults ─────────────────────────────
+# -- SmallWorld / ProximityWave topology defaults ----------------------------
 
 def topology_kwargs(n_hidden: int) -> dict:
     """Return small-world topology parameters for a given N_hidden.
 
     K_random >= 2 is required for ~100% graph connectivity.
     K_local = 4 gives good local clustering without excess fan-in.
-    norm_mode="l2": validated Step 1 — l2 per-neuron normalisation beats
+    norm_mode="l2": validated Step 1 -- l2 per-neuron normalisation beats
     masked (10% random) and relu (8% due to D=4 near-zero vectors).
     """
     return {
