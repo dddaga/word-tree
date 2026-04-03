@@ -1,0 +1,47 @@
+{
+  "_partial": true,
+  "_status": "Running on Mac Studio PID 95059 — configs Ref and A complete, B at e30/150, C pending",
+  "_synced_at": "2026-04-03T12:05:00Z",
+  "Ref": {
+    "label": "Ref   ReduceLROnPlateau  patience=10 factor=0.5  [current default]",
+    "top1_best": 0.7078,
+    "best_epoch": 138,
+    "epochs_run": 150,
+    "elapsed_s": 11874,
+    "sched_type": "plateau",
+    "lr_trajectory": [0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364],
+    "top1_history_sampled": [0.1320, 0.3834, 0.5088, 0.5312, 0.5786, 0.5473, 0.5857, 0.6410, 0.6583, 0.6296, 0.6650, 0.6622, 0.6680, 0.6808, 0.6647, 0.6744],
+    "_note": "LR never decayed — plateau patience=10 never triggered because loss keeps improving"
+  },
+  "A": {
+    "label": "A     CosineWarmRestarts  T_0=10 T_mult=1  [constant 10ep cycles x 15]",
+    "top1_best": 0.6698,
+    "best_epoch": 130,
+    "epochs_run": 150,
+    "elapsed_s": 12203,
+    "sched_type": "warm_restarts",
+    "sched_T0": 10,
+    "sched_T_mult": 1,
+    "lr_trajectory": [0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364, 0.002364],
+    "top1_history_sampled": [0.1254, 0.3348, 0.4476, 0.4749, 0.5345, 0.5523, 0.5866, 0.5929, 0.6286, 0.6301, 0.6345, 0.6444, 0.6522, 0.6510, 0.6698, 0.6657, 0.6683]
+  },
+  "B": {
+    "_status": "running at e30/150",
+    "label": "B     CosineWarmRestarts  T_0=10 T_mult=2  [doubling: 10->20->40->80ep]",
+    "top1_best_partial": 0.4749,
+    "epochs_run_partial": 30,
+    "sched_type": "warm_restarts",
+    "sched_T0": 10,
+    "sched_T_mult": 2
+  },
+  "C": {
+    "_status": "queued",
+    "label": "C     CosineAnnealingLR  T=150  [single smooth decay, no restarts]",
+    "sched_type": "cosine"
+  },
+  "_analysis": {
+    "preliminary": "Plateau (Ref=70.78%) BEATS CosineWarmRestarts (A=66.98%) by +3.80pp. Warm restarts with constant 10-epoch cycles disrupt the routing optimization on S^63 — the periodic LR jumps knock the model off converging attractor trajectories. Plateau is superior because LR stays constant when loss keeps improving, effectively acting as constant LR.",
+    "key_finding": "LR never actually decayed in the Ref config — plateau patience=10 never triggered. This is effectively constant-LR training.",
+    "decision": "KEEP plateau as default LR schedule. Warm restarts are harmful at D=64."
+  }
+}

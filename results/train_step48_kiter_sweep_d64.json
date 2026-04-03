@@ -1,0 +1,42 @@
+{
+  "_partial": true,
+  "_status": "Running on Mac Studio PID 91447 — configs Ref and A complete, B at e70/150, C-G pending",
+  "_synced_at": "2026-04-03T12:05:00Z",
+  "Ref": {
+    "label": "Ref   K_iter=8   no-AH  [step22E baseline ~56.28%]",
+    "top1_best": 0.5824,
+    "best_epoch": 142,
+    "epochs_run": 150,
+    "elapsed_s": 10904,
+    "convergence_diag": "converged",
+    "N": 1024, "D": 64, "K_iter": 8,
+    "antihebb": false, "alpha_ahebb": 0.0
+  },
+  "A": {
+    "label": "A     K_iter=12  no-AH",
+    "top1_best": 0.5508,
+    "best_epoch": 127,
+    "epochs_run": 150,
+    "elapsed_s": 15637,
+    "convergence_diag": "converged",
+    "N": 1024, "D": 64, "K_iter": 12,
+    "antihebb": false, "alpha_ahebb": 0.0
+  },
+  "B": {
+    "_status": "running at e70/150, current best ~0.5144 at e70",
+    "label": "B     K_iter=16  no-AH",
+    "top1_best_partial": 0.5144,
+    "epochs_run_partial": 70,
+    "N": 1024, "D": 64, "K_iter": 16,
+    "antihebb": false, "alpha_ahebb": 0.0
+  },
+  "C": {"_status": "queued", "K_iter": 24, "antihebb": false},
+  "D": {"_status": "queued", "K_iter": 32, "antihebb": false},
+  "E": {"_status": "queued", "K_iter": 16, "antihebb": true, "alpha_ahebb": 0.5},
+  "F": {"_status": "queued", "K_iter": 8, "antihebb": true, "alpha_ahebb": 0.5},
+  "G": {"_status": "queued", "K_iter": 32, "antihebb": true, "alpha_ahebb": 0.5},
+  "_analysis": {
+    "preliminary": "K_iter=12 (A=55.08%) WORSE than K_iter=8 (Ref=58.24%) by -3.16pp. K_iter=16 (B) tracking at 51.44% at e70 — likely to finish below Ref. This suggests K_iter>8 does NOT help without AntiHebb at D=64. The critical configs E/F/G (with AntiHebb) are not yet available. Decision deferred until E/F/G complete.",
+    "key_finding": "Without AntiHebb, deeper K_iter causes over-smoothing even at D=64"
+  }
+}
