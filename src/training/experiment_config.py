@@ -15,9 +15,53 @@ Learnings baked in
 - log1p softening in safety_valve_loss — smooth Coulomb cap
 - Early stopping on train_loss (val loss unreliable on small GA subsets)
 - python -u in tmux scripts for unbuffered stdout
+
+Gen4 adopted changes (Phase 5 Plan 04, step29c/step54/step48 results)
+----------------------------------------------------------------------
+- AntiHebb alpha: 0.7 -> 1.0 (step29c Phase 1: monotonic scaling, 70.98% at 40ep)
+- alpha_reflect: 0.3 -> 0.5 (step22b calibration: +2.75pp at 40ep)
+- LR schedule: plateau confirmed (step54: 70.78% vs warm restarts 66.98%)
+- K_iter: 8 retained (step48: K_iter=12 hurts -3.16pp without AntiHebb)
+- EXCLUDED: fast W_phase (49.45% < 56.28% baseline), signed coupling, D x D mixing
+- PENDING: step32 compound run to confirm Gen4 ceiling
 """
 
 from __future__ import annotations
+import datetime
+import subprocess
+
+
+# ── Reproducibility metadata ─────────────────────────────────────────────────
+
+def run_metadata(script_path: str | None = None, extra: dict | None = None) -> dict:
+    """Return a reproducibility metadata dict to embed in every result JSON.
+
+    Call at the top of each run() function:
+        result["_meta"] = run_metadata(__file__, {"D": D, "N": N, "epochs": EPOCHS})
+
+    Fields:
+        script    : basename of the training script
+        timestamp : ISO 8601 UTC timestamp
+        git_hash  : short commit hash (empty string if git unavailable)
+        config    : caller-supplied hyperparameter dict (optional)
+    """
+    try:
+        git_hash = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            stderr=subprocess.DEVNULL, text=True
+        ).strip()
+    except Exception:
+        git_hash = ""
+
+    import os
+    meta = {
+        "script":    os.path.basename(script_path) if script_path else "",
+        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "git_hash":  git_hash,
+    }
+    if extra:
+        meta["config"] = extra
+    return meta
 
 
 # ── GA best config from Phase 4 Exp 1 ───────────────────────────────────────
@@ -94,6 +138,25 @@ def trainer_kwargs(
         "early_stop_patience": 50,   # generous — let model converge fully
         "early_stop_delta": 5e-4,
     }
+
+
+# ── Gen4 best mechanism config (Phase 5, Plan 04) ───────────────────────────
+# Source: step29c Phase 1 calibration + step22b routing calibration + step54 LR
+# Step32 compound run pending; will confirm these as the production Gen4 stack.
+
+GEN4_BEST = {
+    "alpha_ahebb": 1.0,          # step29c: monotonic scaling, full suppression optimal
+    "variant_ahebb": "wpos",     # step29: W_pos spatial surround (static, not Z dynamic)
+    "alpha_reflect": 0.5,        # step22b: +2.75pp vs default 0.3
+    "alpha_turing": 0.3,         # step22b: not significantly different from default
+    "K_phase": 8,                # step22b calibration
+    "beam_size": 32,             # step22b calibration
+    "geo_gamma": 1.0,            # step22b calibration
+    "D": 64,                     # D=64 Fourier encoding (D=128 dead — step33)
+    "encoding_mode": "fourier",  # confirmed since step22
+    "K_iter": 8,                 # step48: K_iter>8 hurts without AntiHebb
+    "sched_type": "plateau",     # step54: plateau (effectively constant LR) beats restarts
+}
 
 
 # ── SmallWorld / ProximityWave topology defaults ─────────────────────────────
