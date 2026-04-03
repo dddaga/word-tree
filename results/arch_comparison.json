@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "description": "Phase 5 Track A architecture comparison table",
+    "generated": "2026-04-03",
+    "pending_experiments": [
+      "step56_n_scaling (N=[512,2048,4096,10000] SmallWorld rows)",
+      "exp3_proxwave (ProximityWave rows)",
+      "exp4_reflection (Reflection rows)"
+    ],
+    "complete_data_sources": [
+      "train_step22b_routing_calib_d64.json (step22b: D=64 routing calibration, 40ep)",
+      "train_step29_antihebb_d64.json (step29: AntiHebb sweep, all-time best 75.24%)"
+    ],
+    "notes": "Partial table: rows with null top1 are pending experiment completion. Fill from results JSON when available."
+  },
+  "rows": [
+    {
+      "arch": "SmallWorld baseline",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": 56.28,
+      "params": null,
+      "mechanisms": "none",
+      "source": "step29 Ref",
+      "status": "complete",
+      "notes": "SmallWorld + Resonant dynamic_z_geo, no AntiHebb"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.5)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": 70.14,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.5 wpos",
+      "source": "step29 A",
+      "status": "complete",
+      "notes": "Intermediate AntiHebb strength"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.7)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": 75.24,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.7 wpos",
+      "source": "step29 C",
+      "status": "complete",
+      "notes": "ALL-TIME BEST: +18.96pp over 56.28% baseline"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.7)",
+      "N": 512,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.7 wpos",
+      "source": "step56",
+      "status": "pending",
+      "notes": "Awaiting step56 N-scaling sweep completion on Mac Studio"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.7)",
+      "N": 2048,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.7 wpos",
+      "source": "step56",
+      "status": "pending",
+      "notes": "Awaiting step56 N-scaling sweep completion on Mac Studio"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.7)",
+      "N": 4096,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.7 wpos",
+      "source": "step56",
+      "status": "pending",
+      "notes": "Awaiting step56 N-scaling sweep completion on Mac Studio"
+    },
+    {
+      "arch": "SmallWorld + AntiHebb(0.7)",
+      "N": 10000,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "AntiHebb alpha=0.7 wpos",
+      "source": "step56",
+      "status": "pending",
+      "notes": "Awaiting step56 N-scaling sweep completion on Mac Studio"
+    },
+    {
+      "arch": "ProximityWave + AntiHebb(0.7)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": 66176,
+      "mechanisms": "k-NN topology + phasor routing + AntiHebb alpha=0.7 inline",
+      "source": "exp3_proxwave N1024",
+      "status": "pending",
+      "notes": "Awaiting exp3_pw Mac Studio run completion"
+    },
+    {
+      "arch": "ProximityWave + AntiHebb(0.7)",
+      "N": 4096,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": 262720,
+      "mechanisms": "k-NN topology + phasor routing + AntiHebb alpha=0.7 inline",
+      "source": "exp3_proxwave N4096",
+      "status": "pending",
+      "notes": "Awaiting exp3_pw Mac Studio run completion"
+    },
+    {
+      "arch": "SmallWorld + reflection(leaky a=0.1 th=0.0)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "Reflection alpha_reflect=0.1, theta=0.0",
+      "source": "exp4_reflection B",
+      "status": "queued",
+      "notes": "Awaiting dispatch (Mac Studio at concurrency cap). Script synced."
+    },
+    {
+      "arch": "SmallWorld + reflection(hard a=1.0 th=0.5)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "Reflection alpha_reflect=1.0, theta=0.5",
+      "source": "exp4_reflection C",
+      "status": "queued",
+      "notes": "Awaiting dispatch (Mac Studio at concurrency cap). Script synced."
+    },
+    {
+      "arch": "SmallWorld + reflection(medium a=0.3 th=0.0)",
+      "N": 1024,
+      "D": 64,
+      "K_iter": 8,
+      "top1_pct": null,
+      "params": null,
+      "mechanisms": "Reflection alpha_reflect=0.3, theta=0.0",
+      "source": "exp4_reflection D",
+      "status": "queued",
+      "notes": "Awaiting dispatch (Mac Studio at concurrency cap). Script synced."
+    }
+  ]
+}

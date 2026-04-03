@@ -1,0 +1,61 @@
+{
+  "status": "queued",
+  "queued_at": "2026-04-03",
+  "mac_studio_session": "exp4_ref",
+  "log_file": "/Users/admin/ml/dhiraj/qwen2_omni/testing/logs/train_exp4_reflection.log",
+  "launch_command": "ssh mac-studio 'cd /Users/admin/ml/dhiraj/qwen2_omni/testing && /opt/homebrew/bin/tmux new-session -d -s exp4_ref \"d_env/bin/python3 -u scripts/train_exp4_reflection.py --device mps 2>&1 | tee logs/train_exp4_reflection.log\"'",
+  "sync_command": "rsync -avz mac-studio:/Users/admin/ml/dhiraj/qwen2_omni/testing/results/exp4_reflection.json results/",
+  "reason_not_dispatched": "Mac Studio at 3 concurrent experiments (step29c, step48, step54). Cap is 2. Scripts synced and ready. Launch when count <= 1.",
+  "A": {
+    "label": "Config A: SmallWorld + AntiHebb alpha=0.7 (reference, no reflection)",
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "antihebb_wpos",
+    "alpha_ahebb": 0.7,
+    "reflection": false,
+    "top1": null,
+    "dead_max_frac": null,
+    "dead_warning": null,
+    "note": "Reference run — queued"
+  },
+  "B": {
+    "label": "Config B: SmallWorld + leaky-reflect (alpha_reflect=0.1, theta=0.0)",
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "reflection",
+    "alpha_reflect": 0.1,
+    "theta": 0.0,
+    "top1": null,
+    "dead_max_frac": null,
+    "dead_warning": null,
+    "note": "Leaky variant — queued"
+  },
+  "C": {
+    "label": "Config C: SmallWorld + hard-reflect (alpha_reflect=1.0, theta=0.5)",
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "reflection",
+    "alpha_reflect": 1.0,
+    "theta": 0.5,
+    "top1": null,
+    "dead_max_frac": null,
+    "dead_warning": null,
+    "note": "Hard variant — queued; watch dead_frac"
+  },
+  "D": {
+    "label": "Config D: SmallWorld + medium-reflect (alpha_reflect=0.3, theta=0.0)",
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "reflection",
+    "alpha_reflect": 0.3,
+    "theta": 0.0,
+    "top1": null,
+    "dead_max_frac": null,
+    "dead_warning": null,
+    "note": "Medium variant — queued"
+  }
+}
