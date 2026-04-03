@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-05-PLAN.md (Wave Comparison Report)
-last_updated: "2026-03-26T09:00:03.624Z"
+stopped_at: Completed 05-04-PLAN.md (ARM 1+2 Sync, Gen4 Compound)
+last_updated: "2026-04-03T12:15:00Z"
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 17
-  completed_plans: 12
+  total_plans: 18
+  completed_plans: 13
 ---
 
 # Project State: neuro_graph
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** SGNNET matches VGG16 FC accuracy at ≤1% of its parameters
-**Current focus:** Phase 04 — sgnnet-wave-architecture-experiments
+**Current focus:** Phase 05 — Scalable Architecture Experiments
 
 ## Current Phase
 
 **Phase 5 — Scalable Architecture Experiments**
-Status: In progress (0/5 plans formally, experiments running in tmux)
-Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compression)
+Status: In progress (1/6 plans complete, experiments running on Mac Studio)
+Next action: Dispatch step52/step53/step32 when concurrency slot opens; await full results
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | Scalable Architecture Experiments | In progress — Exp1 scale sweep, Exp2 SmallWorld, Exp3 ProximityWave running; Exp4 signal reflection planned |
+| 5 | Scalable Architecture Experiments | In progress (1/6 plans) — ARM 1+2 partial sync done; Gen4 config composed; step29c/48/54 running on Mac Studio |
 | 6 | PCA Compression | Not started |
 | 7 | Comparative Analysis & Report | Not started |
 
@@ -78,9 +78,15 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 - [Phase 04, Plan 05]: Baseline class name casing mismatch handled via explicit mapping dict (VGG16 "English springer" vs experiments "english_springer")
 - [Phase 04, Plan 05]: Phase 3 SGNNET config (649K params with learned C) included as reference row alongside Phase 4 binary-C experiments (1K-2K params)
 
+- [Phase 05, Plan 04]: AntiHebb alpha 0.7 -> 1.0: monotonic scaling at D=64 confirmed by step29c Phase 1 calibration (70.98% at 40ep)
+- [Phase 05, Plan 04]: Plateau LR retained: 70.78% beats CosineWarmRestarts 66.98% (step54); effectively constant-LR
+- [Phase 05, Plan 04]: K_iter stays at 8: K_iter=12 loses 3.16pp without AntiHebb (step48); AH compound pending
+- [Phase 05, Plan 04]: Fast W_phase excluded from Gen4: D x D interference with Fourier encoding (49% < 56% baseline)
+- [Phase 05, Plan 04]: Phase_exc alpha=0.1 optional compound test (marginal gain at 57.91% vs 56.28% baseline)
+
 ## Open Decisions
 
-None currently.
+- Gen4 compound results (step32) pending: will confirm final alpha/mechanism stack after dispatch
 
 ## Key Files
 
@@ -118,12 +124,13 @@ None currently.
 | 04-03      | 22min    | 2     | 3     |
 | 04-04      | 60min    | 2     | 8     |
 | 04-05      | 2min     | 1     | 3     |
+| 05-04      | 10min    | 2     | 8     |
 
 ## Last Session
 
-- **Stopped at:** Phase 5 in progress — Exp1 scale (scale_v3 tmux), Exp2 SmallWorld (exp2_sw tmux), Exp3 ProximityWave (exp3_pw tmux) all running; signal reflection documented in docs/experiment_ideas.md and roadmap
-- **Timestamp:** 2026-03-26T17:30:00Z
+- **Stopped at:** Completed 05-04-PLAN.md — ARM 1+2 partial sync, Gen4 compound config composed, step53 low-rank mixing script written; step29c/48/54 still running on Mac Studio; step52/53/32 scripts synced and awaiting concurrency slot
+- **Timestamp:** 2026-04-03T12:15:00Z
 
 ---
 *State initialized: 2026-03-23*
-*Last updated: 2026-03-23 after Plan 02-02 completion*
+*Last updated: 2026-04-03 after Plan 05-04 completion*
