@@ -1,0 +1,117 @@
+{
+  "Ref0": {
+    "label": "Ref0  D=64 N=1024 K_iter=3  NO signed  [diagnostic: K_iter=3 cost at D=64]",
+    "top1_best": 0.4000000059604645,
+    "best_ep": 148,
+    "ep_frac": 0.9866666666666667,
+    "t": 11255.989066839218,
+    "_meta": {
+      "script": "train_step29_antihebb_d64.py",
+      "timestamp": "2026-03-31T06:32:37.574329Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 3,
+        "mechanism": "antihebb_d64",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 3,
+    "mechanism": "antihebb_d64"
+  },
+  "Ref": {
+    "label": "Ref   D=64 N=1024 K_iter=8  NO signed  [step22E replication, expect \u224856.28%]",
+    "top1_best": 0.5640764236450195,
+    "best_ep": 101,
+    "ep_frac": 0.6733333333333333,
+    "t": 30104.72780108452,
+    "_meta": {
+      "script": "train_step29_antihebb_d64.py",
+      "timestamp": "2026-03-31T14:54:22.563189Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "antihebb_d64",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "antihebb_d64"
+  },
+  "A": {
+    "label": "A     D=64 K_iter=8  + AntiHebb \u03b1=0.5 wpos  [step16 winner at D=64]",
+    "top1_best": 0.7014012932777405,
+    "best_ep": 125,
+    "ep_frac": 0.8333333333333334,
+    "t": 46489.02947187424,
+    "_meta": {
+      "script": "train_step29_antihebb_d64.py",
+      "timestamp": "2026-04-01T03:49:12.052910Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "antihebb_d64",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "antihebb_d64"
+  },
+  "B": {
+    "label": "B     D=64 K_iter=8  + AntiHebb \u03b1=0.3 wpos",
+    "top1_best": 0.6557961702346802,
+    "best_ep": 137,
+    "ep_frac": 0.9133333333333333,
+    "t": 46774.87466096878,
+    "_meta": {
+      "script": "train_step29_antihebb_d64.py",
+      "timestamp": "2026-04-01T16:48:47.387585Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "antihebb_d64",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "antihebb_d64"
+  },
+  "C": {
+    "label": "C     D=64 K_iter=8  + AntiHebb \u03b1=0.7 wpos  [stronger \u2014 test ceiling]",
+    "top1_best": 0.7523567080497742,
+    "best_ep": 144,
+    "ep_frac": 0.96,
+    "t": 21228.804384946823,
+    "_meta": {
+      "script": "train_step29_antihebb_d64.py",
+      "timestamp": "2026-04-01T22:42:36.415135Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "antihebb_d64",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "antihebb_d64"
+  }
+}
