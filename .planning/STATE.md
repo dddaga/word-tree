@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 5 — Scalable Architecture Experiments**
-Status: In progress (0/5 plans formally, experiments running in tmux)
-Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compression)
+Status: In progress (1/6 plans formally complete — 05-05 ARM 3+5 scripts prepared)
+Next action: Dispatch step49/50/51/55/PCA when Mac Studio slots open; then Plan 05-06 synthesis
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | Scalable Architecture Experiments | In progress — Exp1 scale sweep, Exp2 SmallWorld, Exp3 ProximityWave running; Exp4 signal reflection planned |
+| 5 | Scalable Architecture Experiments | In progress — 05-05 complete (ARM 3 step36 analyzed, ARM 5 scripts prepared); step49/50/51/55/PCA queued |
 | 6 | PCA Compression | Not started |
 | 7 | Comparative Analysis & Report | Not started |
 
@@ -80,7 +80,8 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 
 ## Open Decisions
 
-None currently.
+- ARM 3 final verdict pending step49/50/51 results; preliminary PARTIAL-GO based on step36 +2.34pp
+- ARM 5 input winner pending step55 and PCA sweep results
 
 ## Key Files
 
@@ -118,11 +119,12 @@ None currently.
 | 04-03      | 22min    | 2     | 3     |
 | 04-04      | 60min    | 2     | 8     |
 | 04-05      | 2min     | 1     | 3     |
+| 05-05      | 5min     | 2     | 10    |
 
 ## Last Session
 
-- **Stopped at:** Phase 5 in progress — Exp1 scale (scale_v3 tmux), Exp2 SmallWorld (exp2_sw tmux), Exp3 ProximityWave (exp3_pw tmux) all running; signal reflection documented in docs/experiment_ideas.md and roadmap
-- **Timestamp:** 2026-03-26T17:30:00Z
+- **Stopped at:** Completed 05-05-PLAN.md (ARM 3 Dynamic Connectivity + ARM 5 Input Architecture)
+- **Timestamp:** 2026-04-03T12:10:00Z
 
 ---
 *State initialized: 2026-03-23*
