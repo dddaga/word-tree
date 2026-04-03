@@ -1,0 +1,42 @@
+{
+  "status": "dispatched",
+  "dispatched_at": "2026-04-03T12:09:00Z",
+  "mac_studio_session": "exp3_pw",
+  "log_file": "/Users/admin/ml/dhiraj/qwen2_omni/testing/logs/train_exp3_proxwave.log",
+  "N1024": {
+    "label": "ProximityWave N=1024 D=64 K_iter=8 AntiHebb(0.7)",
+    "N": 1024,
+    "N_hidden": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "K_local": 4,
+    "K_random": 2,
+    "reconnect_every": 10,
+    "anti_hebb_alpha": 0.7,
+    "norm_mode": "l2",
+    "params": 66176,
+    "ms_fwd_batch": 595.3,
+    "top1": null,
+    "ms_per_epoch": null,
+    "topology_rebuilds": null,
+    "note": "Experiment dispatched to Mac Studio — awaiting completion"
+  },
+  "N4096": {
+    "label": "ProximityWave N=4096 D=64 K_iter=8 AntiHebb(0.7)",
+    "N": 4096,
+    "N_hidden": 4096,
+    "D": 64,
+    "K_iter": 8,
+    "K_local": 4,
+    "K_random": 2,
+    "reconnect_every": 10,
+    "anti_hebb_alpha": 0.7,
+    "norm_mode": "l2",
+    "params": 262720,
+    "ms_fwd_batch": null,
+    "top1": null,
+    "ms_per_epoch": null,
+    "topology_rebuilds": null,
+    "note": "Experiment dispatched to Mac Studio — awaiting completion"
+  }
+}
