@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 5 — Scalable Architecture Experiments**
-Status: In progress (1/6 plans complete, experiments running in tmux)
-Next action: Complete remaining Phase 5 plans (02-06); launch step56 when Mac Studio slot opens
+Status: In progress (3/6 plans complete, experiments running in tmux)
+Next action: Complete remaining Phase 5 plans (04-06); dispatch exp4_reflection when Mac Studio slot opens
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ Next action: Complete remaining Phase 5 plans (02-06); launch step56 when Mac St
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | Scalable Architecture Experiments | In progress (1/6 plans) — 05-01 complete (N-scaling script synced); step29c/step48/step54 running on Mac Studio |
+| 5 | Scalable Architecture Experiments | In progress (3/6 plans) — 05-01 (N-scaling script), 05-02 (ProximityWave dispatched), 05-03 (Reflection model + arch comparison) |
 | 6 | PCA Compression | Not started |
 | 7 | Comparative Analysis & Report | Not started |
 
@@ -87,6 +87,10 @@ None currently.
 - [Phase 05, Plan 01]: Step56 N-scaling queued (3 experiments running on Mac Studio; concurrency cap = 2)
 - [Phase 05, Plan 01]: n_groups capped at min(128, N//8) for large N topology stability
 - [Phase 05, Plan 01]: GA_BEST_D64 added to experiment_config.py (step29 Config C: 75.24%)
+- [Phase 05, Plan 03]: Reflection as standalone routing (not wrapped around AntiHebb) — clean ablation
+- [Phase 05, Plan 03]: Z_new = Z_struct - Z_reflect (minus sign = self-inhibitory, not additive amplification)
+- [Phase 05, Plan 03]: exp4_reflection queued (Mac Studio at 3 concurrent > cap 2); scripts synced
+- [Phase 05, Plan 03]: arch_comparison.md partial (3/12 rows complete; 9 pending step56/exp3/exp4)
 
 ## Key Files
 
@@ -125,11 +129,13 @@ None currently.
 | 04-04      | 60min    | 2     | 8     |
 | 04-05      | 2min     | 1     | 3     |
 | 05-01      | 5min     | 2     | 4     |
+| 05-02      | 9min     | 2     | 4     |
+| 05-03      | 25min    | 2     | 7     |
 
 ## Last Session
 
-- **Stopped at:** Completed 05-01-PLAN.md (N-scaling sweep script + dispatch to Mac Studio)
-- **Timestamp:** 2026-04-03T12:09:00Z
+- **Stopped at:** Completed 05-03-PLAN.md (Reflection routing + architecture comparison table)
+- **Timestamp:** 2026-04-03T13:00:00Z
 
 ---
 *State initialized: 2026-03-23*
