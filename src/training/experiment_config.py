@@ -159,6 +159,30 @@ GEN4_BEST = {
 }
 
 
+# ── Phase 5 best config (step29 Config C: 75.24% all-time best) ─────────────
+# Source: train_step29_antihebb_d64.json Config C
+# SmallWorld + Resonant(dynamic_z_geo) + AntiHebb(alpha=0.7, wpos), N=1024, D=64, K_iter=8
+
+GA_BEST_D64 = {
+    "N_hidden":      1024,
+    "D":             64,
+    "K_iter":        8,
+    "K_local":       4,
+    "K_random":      2,
+    "K_in":          50,
+    "n_groups":      128,
+    "alpha_ahebb":   0.7,
+    "variant_ahebb": "wpos",
+    "alpha_reflect": 0.5,
+    "alpha_turing":  0.3,
+    "K_phase":       8,
+    "beam_size":     32,
+    "mode":          "dynamic_z_geo",
+    "top1":          0.7524,
+    "source":        "step29C",
+}
+
+
 # ── SmallWorld / ProximityWave topology defaults ─────────────────────────────
 
 def topology_kwargs(n_hidden: int) -> dict:
