@@ -1,0 +1,176 @@
+{
+  "Ref": {
+    "label": "Ref.  D=64  N=1024  K_iter=8  no Z-KNN                   [step22E base = 56.28%]",
+    "top1_best": 0.5678980946540833,
+    "best_ep": 120,
+    "ep_frac": 0.8,
+    "t": 26939.621960878372,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-03-31T11:13:36.696212Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 0,
+        "first_step_only": false,
+        "alpha_dyn": 1.0,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 0,
+    "first_step_only": false,
+    "alpha_dyn": 1.0
+  },
+  "A": {
+    "label": "A.    + Z-KNN  K=8   per step   alpha=1.0   [replace conn_hh with dynamic KNN]",
+    "top1_best": 0.46242037415504456,
+    "best_ep": 141,
+    "ep_frac": 0.94,
+    "t": 82701.78986096382,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-04-01T10:11:58.800834Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 8,
+        "first_step_only": false,
+        "alpha_dyn": 1.0,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 8,
+    "first_step_only": false,
+    "alpha_dyn": 1.0
+  },
+  "B": {
+    "label": "B.    + Z-KNN  K=16  per step   alpha=1.0",
+    "top1_best": 0.4723566770553589,
+    "best_ep": 141,
+    "ep_frac": 0.94,
+    "t": 47732.854852199554,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-04-01T23:27:32.078615Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 16,
+        "first_step_only": false,
+        "alpha_dyn": 1.0,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 16,
+    "first_step_only": false,
+    "alpha_dyn": 1.0
+  },
+  "C": {
+    "label": "C.    + Z-KNN  K=32  per step   alpha=1.0",
+    "top1_best": 0.4784713387489319,
+    "best_ep": 148,
+    "ep_frac": 0.9866666666666667,
+    "t": 39199.82596206665,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-04-02T10:20:52.113346Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 32,
+        "first_step_only": false,
+        "alpha_dyn": 1.0,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 32,
+    "first_step_only": false,
+    "alpha_dyn": 1.0
+  },
+  "D": {
+    "label": "D.    + Z-KNN  K=8   first step only  alpha=1.0   [dynamic per input, static across K_iter]",
+    "top1_best": 0.4766879081726074,
+    "best_ep": 142,
+    "ep_frac": 0.9466666666666667,
+    "t": 14984.262865781784,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-04-02T14:30:36.606255Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 8,
+        "first_step_only": true,
+        "alpha_dyn": 1.0,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 8,
+    "first_step_only": true,
+    "alpha_dyn": 1.0
+  },
+  "E": {
+    "label": "E.    + Z-KNN  K=8   per step   alpha=0.3   [additive \u2014 Z_struct + 0.3*Z_dyn]",
+    "top1_best": 0.5273885130882263,
+    "best_ep": 139,
+    "ep_frac": 0.9266666666666666,
+    "t": 25060.700210809708,
+    "_meta": {
+      "script": "train_step31_dynamic_zknn.py",
+      "timestamp": "2026-04-02T21:28:17.606218Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "mechanism": "dynamic_z_knn",
+        "K_dyn": 8,
+        "first_step_only": false,
+        "alpha_dyn": 0.3,
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "mechanism": "dynamic_z_knn",
+    "K_dyn": 8,
+    "first_step_only": false,
+    "alpha_dyn": 0.3
+  }
+}
