@@ -19,6 +19,13 @@ if both individual contributions are positive. Log results in LEARNINGS_phase*.m
 
 ## Currently Running
 
+### Step 56: N-scaling sweep (QUEUED for dispatch)
+**Script:** `scripts/train_step56_n_scaling.py`
+**Log:** `logs/train_step56_n_scaling.log`
+**Sweep:** N=[512, 1024, 2048, 4096, 10000] at D=64 K_iter=8 AntiHebb alpha=0.7 wpos
+**Status:** Script synced to Mac Studio, awaiting slot (3 experiments running: step29c, step48, step54)
+**Key:** Does accuracy plateau at N=1024, or does scaling N help at D=64?
+
 ### Threshold / geo sweep (MPS)
 **Script:** `scripts/train_thresh_sweep.py`
 **Log:** `logs/train_thresh_sweep.log`
