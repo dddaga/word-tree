@@ -24,8 +24,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 5 — Scalable Architecture Experiments**
-Status: In progress (0/5 plans formally, experiments running in tmux)
-Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compression)
+Status: In progress (1/6 plans complete, experiments running in tmux)
+Next action: Complete remaining Phase 5 plans (02-06); launch step56 when Mac Studio slot opens
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 | 2 | Dense Baseline Benchmark | Complete (2/2 plans) |
 | 3 | SGNNET Core Architecture | Complete (3/3 plans) |
 | 4 | SGNNET Wave Architecture & Experiments | Complete (5/5 plans) |
-| 5 | Scalable Architecture Experiments | In progress — Exp1 scale sweep, Exp2 SmallWorld, Exp3 ProximityWave running; Exp4 signal reflection planned |
+| 5 | Scalable Architecture Experiments | In progress (1/6 plans) — 05-01 complete (N-scaling script synced); step29c/step48/step54 running on Mac Studio |
 | 6 | PCA Compression | Not started |
 | 7 | Comparative Analysis & Report | Not started |
 
@@ -82,6 +82,12 @@ Next action: Complete remaining Phase 5 experiments; then Phase 6 (PCA Compressi
 
 None currently.
 
+## Phase 5 Decisions
+- [Phase 05, Plan 01]: losses.py bugs (fill_diagonal_, boolean indexing) already fixed in prior work -- no changes needed
+- [Phase 05, Plan 01]: Step56 N-scaling queued (3 experiments running on Mac Studio; concurrency cap = 2)
+- [Phase 05, Plan 01]: n_groups capped at min(128, N//8) for large N topology stability
+- [Phase 05, Plan 01]: GA_BEST_D64 added to experiment_config.py (step29 Config C: 75.24%)
+
 ## Key Files
 
 - Architecture spec: `sparse_geometric_network_report.md`
@@ -118,11 +124,12 @@ None currently.
 | 04-03      | 22min    | 2     | 3     |
 | 04-04      | 60min    | 2     | 8     |
 | 04-05      | 2min     | 1     | 3     |
+| 05-01      | 5min     | 2     | 4     |
 
 ## Last Session
 
-- **Stopped at:** Phase 5 in progress — Exp1 scale (scale_v3 tmux), Exp2 SmallWorld (exp2_sw tmux), Exp3 ProximityWave (exp3_pw tmux) all running; signal reflection documented in docs/experiment_ideas.md and roadmap
-- **Timestamp:** 2026-03-26T17:30:00Z
+- **Stopped at:** Completed 05-01-PLAN.md (N-scaling sweep script + dispatch to Mac Studio)
+- **Timestamp:** 2026-04-03T12:09:00Z
 
 ---
 *State initialized: 2026-03-23*
