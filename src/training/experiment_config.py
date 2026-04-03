@@ -7,7 +7,7 @@ propagate automatically.
 Learnings baked in
 ------------------
 - AdamW with weight_decay=0.0 on W_pos (weight decay collapses positions)
-- lambda_safety must scale down with N — safety_valve uses O(N^2) pairs
+- lambda_safety must scale down with N — safety_valve uses O(N²) pairs
   in a fixed box_size, so density rises and each pair contributes more
 - Safety valve disabled above N=5000 (cdist would OOM at ~10 GB)
 - Gradient clipping DISABLED (float('inf')) — iter1 had no clipping; norm=1.0 capped
@@ -15,6 +15,15 @@ Learnings baked in
 - log1p softening in safety_valve_loss — smooth Coulomb cap
 - Early stopping on train_loss (val loss unreliable on small GA subsets)
 - python -u in tmux scripts for unbuffered stdout
+
+Gen4 adopted changes (Phase 5 Plan 04, step29c/step54/step48 results)
+----------------------------------------------------------------------
+- AntiHebb alpha: 0.7 -> 1.0 (step29c Phase 1: monotonic scaling, 70.98% at 40ep)
+- alpha_reflect: 0.3 -> 0.5 (step22b calibration: +2.75pp at 40ep)
+- LR schedule: plateau confirmed (step54: 70.78% vs warm restarts 66.98%)
+- K_iter: 8 retained (step48: K_iter=12 hurts -3.16pp without AntiHebb)
+- EXCLUDED: fast W_phase (49.45% < 56.28% baseline), signed coupling, D x D mixing
+- PENDING: step32 compound run to confirm Gen4 ceiling
 """
 
 from __future__ import annotations
@@ -22,7 +31,7 @@ import datetime
 import subprocess
 
 
-# -- Reproducibility metadata ------------------------------------------------
+# ── Reproducibility metadata ─────────────────────────────────────────────────
 
 def run_metadata(script_path: str | None = None, extra: dict | None = None) -> dict:
     """Return a reproducibility metadata dict to embed in every result JSON.
@@ -55,7 +64,7 @@ def run_metadata(script_path: str | None = None, extra: dict | None = None) -> d
     return meta
 
 
-# -- GA best config from Phase 4 Exp 1 (D=4 reference) ---------------------
+# ── GA best config from Phase 4 Exp 1 ───────────────────────────────────────
 
 GA_BEST = {
     "K": 2,
@@ -66,21 +75,7 @@ GA_BEST = {
 }
 
 
-# -- Phase 5 best config (D=64, step29 Config C) ----------------------------
-
-GA_BEST_D64 = {
-    "N_hidden": 1024,
-    "D": 64,
-    "K_iter": 8,
-    "lr_Wpos": 2.364e-3,
-    "batch_size": 128,
-    "antihebb_alpha": 0.7,
-    "antihebb_variant": "wpos",
-    "top1_best": 0.7524,       # 75.24% — all-time best (step29 Config C)
-}
-
-
-# -- Lambda safety scaling ---------------------------------------------------
+# ── Lambda safety scaling ────────────────────────────────────────────────────
 
 BASE_N = 256      # N for which GA_BEST["lambda_safety"] was tuned
 BASE_D = 4        # geometric dimensionality
@@ -108,7 +103,7 @@ def scaled_lambda_safety(
     return base_lambda * (base_n / n_hidden) ** (1.0 / d)
 
 
-# -- Standard Trainer kwargs -------------------------------------------------
+# ── Standard Trainer kwargs ──────────────────────────────────────────────────
 
 def trainer_kwargs(
     n_hidden: int,
@@ -122,7 +117,7 @@ def trainer_kwargs(
     ----------
     n_hidden  : number of hidden neurons (for lambda_safety scaling)
     lr_wpos   : override learning rate (default: GA best)
-    n_epochs  : total training epochs -- used for cosine T_max
+    n_epochs  : total training epochs — used for cosine T_max
     sched_type: "plateau" (ReduceLROnPlateau) | "cosine" (CosineAnnealingLR) | "none" (constant LR)
 
     Usage:
@@ -134,25 +129,44 @@ def trainer_kwargs(
         "lambda_safety": scaled_lambda_safety(n_hidden),
         "lambda_lb": 0.01,
         "use_amp": True,
-        "grad_clip_norm": float("inf"),  # no clipping -- matches iter1 (26.52%)
+        "grad_clip_norm": float("inf"),  # no clipping — matches iter1 (26.52%)
         "sched_type": sched_type,
         "sched_patience": 10,        # only used when sched_type="plateau"
         "sched_factor": 0.5,
         "sched_cosine_T": n_epochs,  # only used when sched_type="cosine"
         "min_lr": 1e-7,
-        "early_stop_patience": 50,   # generous -- let model converge fully
+        "early_stop_patience": 50,   # generous — let model converge fully
         "early_stop_delta": 5e-4,
     }
 
 
-# -- SmallWorld / ProximityWave topology defaults ----------------------------
+# ── Gen4 best mechanism config (Phase 5, Plan 04) ───────────────────────────
+# Source: step29c Phase 1 calibration + step22b routing calibration + step54 LR
+# Step32 compound run pending; will confirm these as the production Gen4 stack.
+
+GEN4_BEST = {
+    "alpha_ahebb": 1.0,          # step29c: monotonic scaling, full suppression optimal
+    "variant_ahebb": "wpos",     # step29: W_pos spatial surround (static, not Z dynamic)
+    "alpha_reflect": 0.5,        # step22b: +2.75pp vs default 0.3
+    "alpha_turing": 0.3,         # step22b: not significantly different from default
+    "K_phase": 8,                # step22b calibration
+    "beam_size": 32,             # step22b calibration
+    "geo_gamma": 1.0,            # step22b calibration
+    "D": 64,                     # D=64 Fourier encoding (D=128 dead — step33)
+    "encoding_mode": "fourier",  # confirmed since step22
+    "K_iter": 8,                 # step48: K_iter>8 hurts without AntiHebb
+    "sched_type": "plateau",     # step54: plateau (effectively constant LR) beats restarts
+}
+
+
+# ── SmallWorld / ProximityWave topology defaults ─────────────────────────────
 
 def topology_kwargs(n_hidden: int) -> dict:
     """Return small-world topology parameters for a given N_hidden.
 
     K_random >= 2 is required for ~100% graph connectivity.
     K_local = 4 gives good local clustering without excess fan-in.
-    norm_mode="l2": validated Step 1 -- l2 per-neuron normalisation beats
+    norm_mode="l2": validated Step 1 — l2 per-neuron normalisation beats
     masked (10% random) and relu (8% due to D=4 near-zero vectors).
     """
     return {
