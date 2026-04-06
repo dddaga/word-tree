@@ -1,0 +1,95 @@
+Device: mps  Epochs: 120  D=16  encoding=fourier  mode=dynamic_z_geo
+Goal: routing ablation WITH geo mode at D=16 (fill gap from step10a)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+=================================================================
+A. theta only      D=16 fourier dynamic_z_geo  (reflect=0.0 turing=0.0)
+=================================================================
+  e  1  loss=3.4332  task=3.4149  safety=0.0314  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1250  task=2.1239  safety=0.0020  top1=0.1620  lr=2.36e-03
+  e 20  loss=2.1097  task=2.1084  safety=0.0022  top1=0.1975  lr=2.36e-03
+  e 30  loss=2.0939  task=2.0925  safety=0.0024  top1=0.2071  lr=2.36e-03
+  e 40  loss=2.0838  task=2.0823  safety=0.0027  top1=0.1674  lr=2.36e-03
+  e 50  loss=2.0705  task=2.0689  safety=0.0029  top1=0.2087  lr=2.36e-03
+  e 60  loss=2.0650  task=2.0632  safety=0.0030  top1=0.2308  lr=2.36e-03
+  e 70  loss=2.0588  task=2.0568  safety=0.0033  top1=0.2367  lr=2.36e-03
+  e 80  loss=2.0519  task=2.0499  safety=0.0035  top1=0.2318  lr=2.36e-03
+  e 90  loss=2.0493  task=2.0472  safety=0.0035  top1=0.2324  lr=2.36e-03
+  e100  loss=2.0447  task=2.0426  safety=0.0036  top1=0.2797  lr=2.36e-03
+  e110  loss=2.0433  task=2.0411  safety=0.0038  top1=0.2634  lr=2.36e-03
+  e120  loss=2.0396  task=2.0374  safety=0.0039  top1=0.2611  lr=2.36e-03
+  top1_best=0.2838  best_ep=99  task=2.037  t=1056s
+
+=================================================================
+B. theta+reflect   D=16 fourier dynamic_z_geo  (reflect=0.3 turing=0.0)
+=================================================================
+  e  1  loss=3.3332  task=3.3150  safety=0.0313  top1=0.1373  lr=2.36e-03
+  e 10  loss=2.1325  task=2.1313  safety=0.0019  top1=0.1580  lr=2.36e-03
+  e 20  loss=2.1149  task=2.1136  safety=0.0022  top1=0.1712  lr=2.36e-03
+  e 30  loss=2.0975  task=2.0961  safety=0.0025  top1=0.1885  lr=2.36e-03
+  e 40  loss=2.0880  task=2.0865  safety=0.0026  top1=0.2048  lr=2.36e-03
+  e 50  loss=2.0809  task=2.0793  safety=0.0029  top1=0.2443  lr=2.36e-03
+  e 60  loss=2.0698  task=2.0681  safety=0.0030  top1=0.2257  lr=2.36e-03
+  e 70  loss=2.0642  task=2.0623  safety=0.0032  top1=0.2471  lr=2.36e-03
+  e 80  loss=2.0574  task=2.0554  safety=0.0034  top1=0.2362  lr=2.36e-03
+  e 90  loss=2.0527  task=2.0507  safety=0.0034  top1=0.2082  lr=2.36e-03
+  e100  loss=2.0485  task=2.0465  safety=0.0034  top1=0.2461  lr=2.36e-03
+  e110  loss=2.0464  task=2.0444  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0428  task=2.0407  safety=0.0036  top1=0.2316  lr=2.36e-03
+  top1_best=0.2790  best_ep=81  task=2.041  t=1776s
+
+=================================================================
+C. theta+turing    D=16 fourier dynamic_z_geo  (reflect=0.0 turing=0.3)
+=================================================================
+  e  1  loss=3.4336  task=3.4154  safety=0.0314  top1=0.1480  lr=2.36e-03
+  e 10  loss=2.1261  task=2.1250  safety=0.0020  top1=0.1582  lr=2.36e-03
+  e 20  loss=2.1089  task=2.1076  safety=0.0022  top1=0.1885  lr=2.36e-03
+  e 30  loss=2.0926  task=2.0912  safety=0.0024  top1=0.2015  lr=2.36e-03
+  e 40  loss=2.0811  task=2.0795  safety=0.0027  top1=0.1852  lr=2.36e-03
+  e 50  loss=2.0688  task=2.0671  safety=0.0029  top1=0.2028  lr=2.36e-03
+  e 60  loss=2.0641  task=2.0623  safety=0.0031  top1=0.2336  lr=2.36e-03
+  e 70  loss=2.0571  task=2.0552  safety=0.0033  top1=0.2563  lr=2.36e-03
+  e 80  loss=2.0544  task=2.0524  safety=0.0034  top1=0.2324  lr=2.36e-03
+  e 90  loss=2.0502  task=2.0481  safety=0.0035  top1=0.2471  lr=2.36e-03
+  e100  loss=2.0477  task=2.0456  safety=0.0036  top1=0.2673  lr=2.36e-03
+  e110  loss=2.0429  task=2.0407  safety=0.0038  top1=0.2301  lr=2.36e-03
+  e120  loss=2.0378  task=2.0355  safety=0.0039  top1=0.2196  lr=2.36e-03
+  top1_best=0.2876  best_ep=89  task=2.037  t=2256s
+
+=================================================================
+D. full routing    D=16 fourier dynamic_z_geo  (reflect=0.3 turing=0.3)
+=================================================================
+  e  1  loss=3.3236  task=3.3054  safety=0.0313  top1=0.1325  lr=2.36e-03
+  e 10  loss=2.1284  task=2.1272  safety=0.0020  top1=0.1669  lr=2.36e-03
+  e 20  loss=2.1108  task=2.1095  safety=0.0022  top1=0.1855  lr=2.36e-03
+  e 30  loss=2.0979  task=2.0965  safety=0.0025  top1=0.1753  lr=2.36e-03
+  e 40  loss=2.0868  task=2.0853  safety=0.0026  top1=0.2066  lr=2.36e-03
+  e 50  loss=2.0799  task=2.0783  safety=0.0029  top1=0.2211  lr=2.36e-03
+  e 60  loss=2.0685  task=2.0668  safety=0.0030  top1=0.2441  lr=2.36e-03
+  e 70  loss=2.0651  task=2.0632  safety=0.0032  top1=0.2194  lr=2.36e-03
+  e 80  loss=2.0582  task=2.0562  safety=0.0034  top1=0.2326  lr=2.36e-03
+  e 90  loss=2.0526  task=2.0507  safety=0.0034  top1=0.2459  lr=2.36e-03
+  e100  loss=2.0483  task=2.0463  safety=0.0034  top1=0.2466  lr=2.36e-03
+  e110  loss=2.0463  task=2.0442  safety=0.0035  top1=0.2938  lr=2.36e-03
+  e120  loss=2.0443  task=2.0422  safety=0.0036  top1=0.2499  lr=2.36e-03
+  top1_best=0.2938  best_ep=110  task=2.042  t=2323s
+
+Saved -> results/train_step11_routing_geo_d16.json
+
+-- Routing ablation WITH geo at D=16 ----------------------------------------
+  Config                                                             top1_best  vs_nogeo    t(s)
+  -----------------------------------------------------------------  ---------  --------  ------
+  A                                                                     0.2838   +0.0000    1056
+  B                                                                     0.2790   -0.0048    1776
+  C                                                                     0.2876   +0.0038    2256
+  D                                                                     0.2938   +0.0100    2323
+
+  theta-only + geo (A):     0.2838
+  reflect contribution:     -0.0048
+  turing contribution:      +0.0038
+  both together (D):        +0.0099
+
+  step9A full+geo 150ep ref: 0.2922
+  step10a theta-only no-geo: 0.2838
+  geo effect on theta-only:  +0.0000

@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 04-05-PLAN.md (Wave Comparison Report)
-last_updated: "2026-03-26T09:00:03.624Z"
+status: active
+stopped_at: New architecture experiments planned (steps 57-61); scripts being written; monitoring step29c/49/50/55
+last_updated: "2026-04-04T16:00:00.000Z"
 progress:
-  total_phases: 7
+  total_phases: 6
   completed_phases: 4
-  total_plans: 17
+  total_plans: 22
   completed_plans: 12
 ---
 
@@ -83,6 +83,11 @@ Next action: Complete remaining Phase 5 plans (04-06); dispatch exp4_reflection 
 None currently.
 
 ## Phase 5 Decisions
+- [Phase 05, new arch]: Primary goal confirmed: SGNNET as parameter-efficient FFN replacement for transformers
+- [Phase 05, new arch]: Ablation protocol: 50% data + 75ep for mechanism comparison, 100% + 150ep for final confirmation
+- [Phase 05, new arch]: Steps 57-61 planned — phase routing (magnitude options A/B), resonance-excitatory, beam unification, hub interneurons
+- [Phase 05, new arch]: Phase range [-π, π] via torch.remainder(phi + delta_phi, 2*pi) - pi
+- [Phase 05, new arch]: Resonance metric: mag_A × mag_B × phase_dot(A,B) — multiplicative, no scale normalization needed
 - [Phase 05, Plan 01]: losses.py bugs (fill_diagonal_, boolean indexing) already fixed in prior work -- no changes needed
 - [Phase 05, Plan 01]: Step56 N-scaling queued (3 experiments running on Mac Studio; concurrency cap = 2)
 - [Phase 05, Plan 01]: n_groups capped at min(128, N//8) for large N topology stability
@@ -134,8 +139,8 @@ None currently.
 
 ## Last Session
 
-- **Stopped at:** Completed 05-03-PLAN.md (Reflection routing + architecture comparison table)
-- **Timestamp:** 2026-04-03T13:00:00Z
+- **Stopped at:** Primary goal confirmed (SGNNET as FFN replacement); steps 57-61 designed; CLAUDE.md + EXPERIMENT_QUEUE.md + STATE.md + ROADMAP.md updated; phase plan files annotated
+- **Timestamp:** 2026-04-04T16:00:00Z
 
 ---
 *State initialized: 2026-03-23*

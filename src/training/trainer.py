@@ -49,10 +49,12 @@ class Trainer:
         box_size: float = 1.0,
         device: str = "mps",
         use_amp: bool = True,
-        sched_type: str = "plateau",   # "plateau" or "cosine"
+        sched_type: str = "plateau",   # "plateau" | "cosine" | "warm_restarts"
         sched_patience: int = 10,
         sched_factor: float = 0.5,
         sched_cosine_T: int = 150,     # T_max for cosine annealing (= n_epochs)
+        sched_T0: int = 10,            # T_0 for warm restarts (cycle length in epochs)
+        sched_T_mult: int = 1,         # T_mult for warm restarts (1=constant, 2=doubling)
         min_lr: float = 1e-7,
         early_stop_patience: int = 25,
         early_stop_delta: float = 1e-4,
@@ -86,11 +88,15 @@ class Trainer:
         else:
             self.scaler = None
 
-        # LR scheduler: plateau (adaptive) or cosine (smooth fixed decay)
+        # LR scheduler: plateau (adaptive) | cosine (single decay) | warm_restarts (cyclic)
         self.sched_type = sched_type
         if sched_type == "cosine":
             self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
                 self.optimizer, T_max=sched_cosine_T, eta_min=min_lr,
+            )
+        elif sched_type == "warm_restarts":
+            self.scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                self.optimizer, T_0=sched_T0, T_mult=sched_T_mult, eta_min=min_lr,
             )
         elif sched_type == "none":
             self.scheduler = None   # constant LR — no decay
@@ -163,6 +169,10 @@ class Trainer:
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(_opt_params, self.grad_clip_norm)
                 self.optimizer.step()
+
+            # Sub-epoch phase graph rebuild (models that expose tick_step)
+            if hasattr(self.model, "tick_step"):
+                self.model.tick_step()
 
             # Position clamping (TRAIN-03)
             with torch.no_grad():
@@ -271,7 +281,7 @@ class Trainer:
 
             # LR scheduler step (no-op when sched_type="none")
             if self.scheduler is not None:
-                if self.sched_type == "cosine":
+                if self.sched_type in ("cosine", "warm_restarts"):
                     self.scheduler.step()
                 else:
                     self.scheduler.step(train_loss)

@@ -145,6 +145,10 @@ class SGNNET_AntiHebbian(nn.Module):
             supp_w  = (1.0 - self.alpha_ahebb * pos_sim.clamp(min=0)  # [N,K_hh]
                       ).unsqueeze(0).unsqueeze(-1)                     # [1,N,K_hh,1]
 
+        # Reflection accumulator — leaky memory of what relu suppressed each step.
+        # alpha_reflect=0.5 was calibrated in step22b (+5pp). Must persist across K_iter.
+        Z_reflected = torch.zeros_like(Z)
+
         for _ in range(self.m.base.K_iter):
             Z_fwd = F.relu(Z - theta_pos)
             Z_nb  = Z_fwd[:, conn_hh, :]                              # [B,N,K_hh,D]
@@ -157,7 +161,17 @@ class SGNNET_AntiHebbian(nn.Module):
                 supp_z = (1.0 - self.alpha_ahebb * z_sim.clamp(min=0)).unsqueeze(-1)
                 Z_struct = (Z_nb * supp_z).sum(dim=2)
 
-            Z_inh = self.m._phase_inhibit(Z, W_ph_norm, theta_pos)
-            Z = F.normalize((Z_struct + self.m.alpha_turing * Z_inh).clamp(-10, 10), dim=-1)
+            # Reflection: accumulate what the threshold suppressed
+            Z_remainder = Z_fwd - Z
+            Z_reflected = self.m.alpha_reflect * Z_reflected + Z_remainder
+
+            # Phase inhibition — skip expensive computation when alpha_turing=0
+            if self.m.alpha_turing != 0.0:
+                Z_inh = self.m._phase_inhibit(Z, W_ph_norm, theta_pos)
+                Z_new = Z_struct + Z_reflected + self.m.alpha_turing * Z_inh
+            else:
+                Z_new = Z_struct + Z_reflected
+
+            Z = F.normalize(Z_new.clamp(-10, 10), dim=-1)
 
         return self.m.base._readout(Z)

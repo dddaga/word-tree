@@ -1,0 +1,105 @@
+Device: mps  Epochs: 120  D=16  N=512  encoding=fourier
+Goal: interneuron fraction sweep — does input→routing bottleneck help?
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. all=512 seeded  readout=all  [baseline]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  top1_best=0.2856  best_ep=99  task=2.041  t=1520s
+
+======================================================================
+A.  384/512 seeded  readout=all  [25% interneurons]
+======================================================================
+  e  1  loss=4.2071  task=4.1887  safety=0.0315  top1=0.0917  lr=2.36e-03
+  e 10  loss=2.1269  task=2.1258  safety=0.0019  top1=0.1776  lr=2.36e-03
+  e 20  loss=2.1014  task=2.1001  safety=0.0022  top1=0.1811  lr=2.36e-03
+  e 30  loss=2.0788  task=2.0774  safety=0.0025  top1=0.2135  lr=2.36e-03
+  e 40  loss=2.0677  task=2.0660  safety=0.0029  top1=0.2647  lr=2.36e-03
+  e 50  loss=2.0596  task=2.0578  safety=0.0031  top1=0.2451  lr=2.36e-03
+  e 60  loss=2.0489  task=2.0470  safety=0.0034  top1=0.2650  lr=2.36e-03
+  e 70  loss=2.0445  task=2.0424  safety=0.0035  top1=0.2543  lr=2.36e-03
+  e 80  loss=2.0386  task=2.0365  safety=0.0036  top1=0.2438  lr=2.36e-03
+  e 90  loss=2.0328  task=2.0306  safety=0.0038  top1=0.2313  lr=2.36e-03
+  e100  loss=2.0287  task=2.0263  safety=0.0040  top1=0.2713  lr=2.36e-03
+  e110  loss=2.0264  task=2.0239  safety=0.0043  top1=0.2795  lr=2.36e-03
+  e120  loss=2.0228  task=2.0202  safety=0.0045  top1=0.2487  lr=2.36e-03
+  top1_best=0.3101  best_ep=102  task=2.021  t=1530s
+
+======================================================================
+B.  256/512 seeded  readout=all  [50% interneurons]
+======================================================================
+  e  1  loss=3.3711  task=3.3529  safety=0.0314  top1=0.1608  lr=2.36e-03
+  e 10  loss=2.1549  task=2.1537  safety=0.0020  top1=0.1595  lr=2.36e-03
+  e 20  loss=2.1230  task=2.1216  safety=0.0025  top1=0.2387  lr=2.36e-03
+  e 30  loss=2.1045  task=2.1029  safety=0.0029  top1=0.2568  lr=2.36e-03
+  e 40  loss=2.0939  task=2.0921  safety=0.0032  top1=0.2346  lr=2.36e-03
+  e 50  loss=2.0811  task=2.0792  safety=0.0033  top1=0.2441  lr=2.36e-03
+  e 60  loss=2.0766  task=2.0747  safety=0.0034  top1=0.2543  lr=2.36e-03
+  e 70  loss=2.0697  task=2.0676  safety=0.0035  top1=0.2894  lr=2.36e-03
+  e 80  loss=2.0664  task=2.0643  safety=0.0037  top1=0.2772  lr=2.36e-03
+  e 90  loss=2.0608  task=2.0586  safety=0.0039  top1=0.2599  lr=2.36e-03
+  e100  loss=2.0580  task=2.0556  safety=0.0041  top1=0.2810  lr=2.36e-03
+  e110  loss=2.0546  task=2.0520  safety=0.0043  top1=0.2344  lr=2.36e-03
+  e120  loss=2.0486  task=2.0459  safety=0.0046  top1=0.2716  lr=2.36e-03
+  top1_best=0.3205  best_ep=104  task=2.048  t=1456s
+
+======================================================================
+C.  256/512 seeded  readout=interneurons  [50% int, output=int only]
+======================================================================
+  e  1  loss=3.7165  task=3.6981  safety=0.0316  top1=0.0848  lr=2.36e-03
+  e 10  loss=2.1640  task=2.1627  safety=0.0022  top1=0.1791  lr=2.36e-03
+  e 20  loss=2.1470  task=2.1456  safety=0.0025  top1=0.2102  lr=2.36e-03
+  e 30  loss=2.1360  task=2.1345  safety=0.0026  top1=0.2097  lr=2.36e-03
+  e 40  loss=2.1296  task=2.1279  safety=0.0029  top1=0.2303  lr=2.36e-03
+  e 50  loss=2.1262  task=2.1244  safety=0.0031  top1=0.2245  lr=2.36e-03
+  e 60  loss=2.1206  task=2.1187  safety=0.0032  top1=0.1982  lr=2.36e-03
+  e 70  loss=2.1188  task=2.1169  safety=0.0032  top1=0.2217  lr=2.36e-03
+  e 80  loss=2.1142  task=2.1122  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e 90  loss=2.1129  task=2.1108  safety=0.0035  top1=0.2321  lr=2.36e-03
+  e100  loss=2.1111  task=2.1089  safety=0.0037  top1=0.2499  lr=2.36e-03
+  e110  loss=2.1098  task=2.1076  safety=0.0038  top1=0.2329  lr=2.36e-03
+  e120  loss=2.1092  task=2.1069  safety=0.0039  top1=0.1944  lr=2.36e-03
+  top1_best=0.2680  best_ep=111  task=2.107  t=1396s
+
+======================================================================
+D.  128/512 seeded  readout=interneurons  [75% int, output=int only]
+======================================================================
+  e  1  loss=3.6219  task=3.6038  safety=0.0311  top1=0.1633  lr=2.36e-03
+  e 10  loss=2.1228  task=2.1219  safety=0.0015  top1=0.1903  lr=2.36e-03
+  e 20  loss=2.0977  task=2.0965  safety=0.0019  top1=0.2076  lr=2.36e-03
+  e 30  loss=2.0819  task=2.0806  safety=0.0022  top1=0.2211  lr=2.36e-03
+  e 40  loss=2.0722  task=2.0708  safety=0.0024  top1=0.1985  lr=2.36e-03
+  e 50  loss=2.0594  task=2.0579  safety=0.0027  top1=0.2303  lr=2.36e-03
+  e 60  loss=2.0462  task=2.0445  safety=0.0029  top1=0.2489  lr=2.36e-03
+  e 70  loss=2.0405  task=2.0387  safety=0.0031  top1=0.2561  lr=2.36e-03
+  e 80  loss=2.0340  task=2.0321  safety=0.0033  top1=0.2428  lr=2.36e-03
+  e 90  loss=2.0290  task=2.0270  safety=0.0035  top1=0.2543  lr=2.36e-03
+  e100  loss=2.0252  task=2.0232  safety=0.0036  top1=0.2645  lr=2.36e-03
+  e110  loss=2.0211  task=2.0189  safety=0.0038  top1=0.2703  lr=2.36e-03
+  e120  loss=2.0181  task=2.0157  safety=0.0040  top1=0.2670  lr=2.36e-03
+  top1_best=0.2994  best_ep=91  task=2.016  t=1228s
+
+Saved -> results/train_step20_interneurons.json
+
+-- Interneuron fraction sweep  (ref=0.2856) -----------------------
+  Config                                                          top1_best    vs_ref    t(s)
+  ------------------------------------------------------------------------------------------
+  Ref                                                                0.2856   +0.0000    1520
+  A                                                                  0.3101   +0.0245    1530
+  B                                                                  0.3205   +0.0349    1456
+  C                                                                  0.2680   -0.0176    1396
+  D                                                                  0.2994   +0.0138    1228

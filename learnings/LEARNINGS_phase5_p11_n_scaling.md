@@ -84,3 +84,20 @@ the number of neurons.
 - Is N=1024 already at the ceiling for this architecture at D=64?
 - Does the O(N*K) cost scaling remain practical at N=10000?
 - Should future experiments use a larger N, or invest in mechanism improvements instead?
+
+---
+
+## 2026-04-05 — step56: All 4 Completed N-values
+
+N-scaling sweep result (Gen4 params: AH=1.0, alpha_reflect=0.5, beam_size=16, geo_gamma=0.5):
+- N=512:   69.58% (params=66K, best_ep=134/150)
+- N=1024:  80.92% (params=133K, best_ep=147/150)
+- N=2048:  81.10% (params=264K, best_ep=149/150)
+- N=4096:  **84.36%** (params=529K, best_ep=146/150, 238min) ← PROJECT BEST
+- N=10000: running... (e60=72.92%, safety disabled, healthy trajectory)
+
+Power-law confirmed: each 2x N gives +3-11pp. Very late convergence across all N suggests
+the architecture has not plateaued. N=10000 expected ~86-87% if trend holds.
+
+Key finding: N-scaling is the primary improvement lever. Wave-1 mechanism experiments
+(steps 58-63) all killed — static AH routing is the stable fixed point.

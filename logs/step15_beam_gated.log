@@ -1,0 +1,143 @@
+Device: mps  Epochs: 120  D=16  N=512  encoding=fourier
+Goal: beam-gated sparse routing — non-beam state options A/B/C
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+======================================================================
+Ref. current model  — all neurons conduct+radiate  [baseline]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  top1_best=0.2856  best_ep=99  task=2.041  t=1378s
+
+======================================================================
+A1. beam-gated RESET   beam=32  [hard sparsity]
+======================================================================
+  e  1  loss=2.4658  task=2.4475  safety=0.0314  top1=0.1029  lr=2.36e-03
+  e 10  loss=2.2512  task=2.2473  safety=0.0066  top1=0.1394  lr=2.36e-03
+  e 20  loss=2.2354  task=2.2316  safety=0.0065  top1=0.1536  lr=2.36e-03
+  e 30  loss=2.2291  task=2.2250  safety=0.0071  top1=0.1592  lr=2.36e-03
+  e 40  loss=2.2288  task=2.2247  safety=0.0071  top1=0.1521  lr=2.36e-03
+  e 50  loss=2.2287  task=2.2246  safety=0.0070  top1=0.1531  lr=2.36e-03
+  e 60  loss=2.2281  task=2.2239  safety=0.0071  top1=0.1521  lr=1.18e-03
+  e 70  loss=2.2281  task=2.2239  safety=0.0071  top1=0.1531  lr=1.18e-03
+  e 80  loss=2.2279  task=2.2237  safety=0.0071  top1=0.1518  lr=5.91e-04
+  e 90  loss=2.2278  task=2.2236  safety=0.0072  top1=0.1536  lr=2.96e-04
+  e100  loss=2.2278  task=2.2236  safety=0.0072  top1=0.1534  lr=1.48e-04
+  e110  loss=2.2277  task=2.2236  safety=0.0072  top1=0.1529  lr=7.39e-05
+  e120  loss=2.2277  task=2.2235  safety=0.0072  top1=0.1536  lr=3.69e-05
+  top1_best=0.1659  best_ep=24  task=2.224  t=1168s
+
+======================================================================
+A2. beam-gated RESET   beam=64  [more beam neurons]
+======================================================================
+  e  1  loss=2.7191  task=2.7008  safety=0.0315  top1=0.1037  lr=2.36e-03
+  e 10  loss=2.2858  task=2.2822  safety=0.0063  top1=0.1146  lr=2.36e-03
+  e 20  loss=2.2524  task=2.2484  safety=0.0068  top1=0.1261  lr=2.36e-03
+  e 30  loss=2.2463  task=2.2427  safety=0.0061  top1=0.1429  lr=2.36e-03
+  e 40  loss=2.2457  task=2.2423  safety=0.0059  top1=0.1266  lr=2.36e-03
+  e 50  loss=2.2448  task=2.2414  safety=0.0058  top1=0.1312  lr=1.18e-03
+  e 60  loss=2.2447  task=2.2414  safety=0.0058  top1=0.1315  lr=1.18e-03
+  e 70  loss=2.2444  task=2.2410  safety=0.0058  top1=0.1353  lr=5.91e-04
+  e 80  loss=2.2441  task=2.2408  safety=0.0058  top1=0.1340  lr=2.96e-04
+  e 90  loss=2.2440  task=2.2407  safety=0.0058  top1=0.1338  lr=1.48e-04
+  e100  loss=2.2440  task=2.2406  safety=0.0058  top1=0.1353  lr=7.39e-05
+  e110  loss=2.2440  task=2.2406  safety=0.0058  top1=0.1340  lr=7.39e-05
+  e120  loss=2.2440  task=2.2406  safety=0.0058  top1=0.1353  lr=3.69e-05
+  top1_best=0.1429  best_ep=30  task=2.241  t=1900s
+
+======================================================================
+B1. beam-gated RETAIN  beam=32  [integrate-and-fire]
+======================================================================
+  e  1  loss=4.3509  task=4.3326  safety=0.0315  top1=0.1032  lr=2.36e-03
+  e 10  loss=2.2509  task=2.2483  safety=0.0044  top1=0.1600  lr=2.36e-03
+  e 20  loss=2.2146  task=2.2114  safety=0.0055  top1=0.1671  lr=2.36e-03
+  e 30  loss=2.1898  task=2.1863  safety=0.0061  top1=0.1592  lr=2.36e-03
+  e 40  loss=2.1767  task=2.1728  safety=0.0067  top1=0.1661  lr=2.36e-03
+  e 50  loss=2.1672  task=2.1631  safety=0.0070  top1=0.1676  lr=2.36e-03
+  e 60  loss=2.1560  task=2.1518  safety=0.0073  top1=0.1740  lr=2.36e-03
+  e 70  loss=2.1504  task=2.1461  safety=0.0075  top1=0.1659  lr=2.36e-03
+  e 80  loss=2.1435  task=2.1390  safety=0.0077  top1=0.1692  lr=2.36e-03
+  e 90  loss=2.1391  task=2.1347  safety=0.0077  top1=0.1753  lr=2.36e-03
+  e100  loss=2.1354  task=2.1308  safety=0.0079  top1=0.1730  lr=2.36e-03
+  e110  loss=2.1339  task=2.1291  safety=0.0081  top1=0.1732  lr=2.36e-03
+  e120  loss=2.1316  task=2.1269  safety=0.0082  top1=0.1824  lr=2.36e-03
+  top1_best=0.1824  best_ep=120  task=2.127  t=1606s
+
+======================================================================
+B2. beam-gated RETAIN  beam=16  [fewer beam neurons]
+======================================================================
+  e  1  loss=4.5042  task=4.4859  safety=0.0315  top1=0.1075  lr=2.36e-03
+  e 10  loss=2.2289  task=2.2266  safety=0.0041  top1=0.1633  lr=2.36e-03
+  e 20  loss=2.1959  task=2.1930  safety=0.0051  top1=0.1684  lr=2.36e-03
+  e 30  loss=2.1761  task=2.1730  safety=0.0054  top1=0.1732  lr=2.36e-03
+  e 40  loss=2.1666  task=2.1632  safety=0.0058  top1=0.1669  lr=2.36e-03
+  e 50  loss=2.1561  task=2.1525  safety=0.0061  top1=0.1748  lr=2.36e-03
+  e 60  loss=2.1455  task=2.1418  safety=0.0064  top1=0.1761  lr=2.36e-03
+  e 70  loss=2.1404  task=2.1365  safety=0.0067  top1=0.1817  lr=2.36e-03
+  e 80  loss=2.1343  task=2.1302  safety=0.0071  top1=0.1758  lr=2.36e-03
+  e 90  loss=2.1289  task=2.1248  safety=0.0072  top1=0.1885  lr=2.36e-03
+  e100  loss=2.1273  task=2.1231  safety=0.0073  top1=0.1801  lr=2.36e-03
+  e110  loss=2.1235  task=2.1192  safety=0.0074  top1=0.1811  lr=2.36e-03
+  e120  loss=2.1216  task=2.1172  safety=0.0077  top1=0.1868  lr=2.36e-03
+  top1_best=0.1936  best_ep=103  task=2.117  t=1400s
+
+======================================================================
+C1. beam-gated DECAY   beam=32  alpha=0.9  [slow memory]
+======================================================================
+  e  1  loss=3.4664  task=3.4481  safety=0.0315  top1=0.1192  lr=2.36e-03
+  e 10  loss=2.1924  task=2.1901  safety=0.0040  top1=0.1539  lr=2.36e-03
+  e 20  loss=2.1658  task=2.1629  safety=0.0050  top1=0.1654  lr=2.36e-03
+  e 30  loss=2.1509  task=2.1479  safety=0.0051  top1=0.1715  lr=2.36e-03
+  e 40  loss=2.1414  task=2.1382  safety=0.0055  top1=0.1722  lr=2.36e-03
+  e 50  loss=2.1346  task=2.1313  safety=0.0057  top1=0.1763  lr=2.36e-03
+  e 60  loss=2.1313  task=2.1277  safety=0.0061  top1=0.1687  lr=2.36e-03
+  e 70  loss=2.1263  task=2.1226  safety=0.0064  top1=0.1768  lr=2.36e-03
+  e 80  loss=2.1228  task=2.1190  safety=0.0066  top1=0.1763  lr=2.36e-03
+  e 90  loss=2.1199  task=2.1159  safety=0.0067  top1=0.1755  lr=2.36e-03
+  e100  loss=2.1186  task=2.1147  safety=0.0068  top1=0.1761  lr=2.36e-03
+  e110  loss=2.1168  task=2.1128  safety=0.0068  top1=0.1768  lr=1.18e-03
+  e120  loss=2.1160  task=2.1120  safety=0.0068  top1=0.1786  lr=1.18e-03
+  top1_best=0.1878  best_ep=106  task=2.112  t=1413s
+
+======================================================================
+C2. beam-gated DECAY   beam=32  alpha=0.5  [fast forgetting]
+======================================================================
+  e  1  loss=2.6199  task=2.6014  safety=0.0318  top1=0.1192  lr=2.36e-03
+  e 10  loss=2.2235  task=2.2198  safety=0.0064  top1=0.1508  lr=2.36e-03
+  e 20  loss=2.1740  task=2.1692  safety=0.0082  top1=0.1585  lr=2.36e-03
+  e 30  loss=2.1562  task=2.1516  safety=0.0078  top1=0.1646  lr=2.36e-03
+  e 40  loss=2.1496  task=2.1451  safety=0.0077  top1=0.1676  lr=2.36e-03
+  e 50  loss=2.1481  task=2.1437  safety=0.0077  top1=0.1682  lr=2.36e-03
+  e 60  loss=2.1476  task=2.1432  safety=0.0076  top1=0.1697  lr=2.36e-03
+  e 70  loss=2.1465  task=2.1421  safety=0.0075  top1=0.1654  lr=2.36e-03
+  e 80  loss=2.1454  task=2.1410  safety=0.0076  top1=0.1699  lr=1.18e-03
+  e 90  loss=2.1454  task=2.1410  safety=0.0076  top1=0.1712  lr=1.18e-03
+  e100  loss=2.1446  task=2.1402  safety=0.0075  top1=0.1689  lr=5.91e-04
+  e110  loss=2.1445  task=2.1401  safety=0.0075  top1=0.1710  lr=2.96e-04
+  e120  loss=2.1444  task=2.1400  safety=0.0075  top1=0.1702  lr=2.96e-04
+  top1_best=0.1766  best_ep=85  task=2.140  t=1198s
+
+Saved -> results/train_step15_beam_gated_routing.json
+
+-- Beam-gated sparse routing (ref=0.2856) -------------------------
+  Config                                                        nonbeam  top1_best    vs_ref    t(s)
+  -----------------------------------------------------------------------------------------------
+  Ref                                                           all_active     0.2856   +0.0000    1378
+  A1                                                              reset     0.1659   -0.1197    1168
+  A2                                                              reset     0.1429   -0.1427    1900
+  B1                                                             retain     0.1824   -0.1032    1606
+  B2                                                             retain     0.1936   -0.0920    1400
+  C1                                                              decay     0.1878   -0.0978    1413
+  C2                                                              decay     0.1766   -0.1090    1198

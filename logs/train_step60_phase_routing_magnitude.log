@@ -1,0 +1,134 @@
+Loaded REF_BASELINE from step57: 0.7353
+Device: mps  Epochs: 75  Batch: 128  Data: 50%
+Step 60: PhaseRouting magnitude ablation  |  REF_BASELINE=0.7353 (step57)
+NOTE: PhaseRouting uses bare SmallWorld base, not Resonant — new architecture test
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref   AntiHebb alpha=1.0 wpos (Resonant backbone)
+======================================================================
+  e  1  loss=4.4572  task=4.3836  safety=0.1506  top1=0.0823  lr=2.36e-03
+  e 10  loss=1.8008  task=1.7547  safety=0.0944  top1=0.4020  lr=2.36e-03
+  e 20  loss=1.4837  task=1.4522  safety=0.0645  top1=0.4660  lr=2.36e-03
+  e 30  loss=1.3100  task=1.2852  safety=0.0507  top1=0.6018  lr=2.36e-03
+  e 40  loss=1.1957  task=1.1745  safety=0.0434  top1=0.6382  lr=2.36e-03
+  e 50  loss=1.0963  task=1.0773  safety=0.0387  top1=0.6594  lr=2.36e-03
+  e 60  loss=1.0156  task=0.9981  safety=0.0359  top1=0.6703  lr=2.36e-03
+  e 70  loss=0.9676  task=0.9513  safety=0.0334  top1=0.7139  lr=2.36e-03
+  top1_best=0.7353  best_ep=73/75 (97%)  diag=converged  t=5593s
+
+======================================================================
+A     independent no AH  freq=capped_exp
+======================================================================
+  e  1  loss=10.0009  task=9.9259  safety=0.1534  top1=0.1141  lr=2.36e-03
+  e 10  loss=7.9209  task=7.7794  safety=0.2896  top1=0.0920  lr=2.36e-03
+  e 20  loss=6.1821  task=6.0035  safety=0.3654  top1=0.1009  lr=2.36e-03
+  e 30  loss=5.5338  task=5.3358  safety=0.4052  top1=0.0736  lr=2.36e-03
+  e 40  loss=5.2900  task=5.0807  safety=0.4282  top1=0.1014  lr=2.36e-03
+  e 50  loss=4.6763  task=4.4951  safety=0.3706  top1=0.0515  lr=2.36e-03
+  e 60  loss=4.5381  task=4.3432  safety=0.3988  top1=0.1126  lr=2.36e-03
+  e 70  loss=4.1354  task=3.9304  safety=0.4195  top1=0.0999  lr=2.36e-03
+  top1_best=0.1141  best_ep=1/75 (1%)  diag=training_too_short  t=1918s
+
+======================================================================
+B     coherent dynamic-ref no AH  freq=capped_exp
+======================================================================
+  e  1  loss=10.1934  task=10.1169  safety=0.1565  top1=0.1024  lr=2.36e-03
+  e 10  loss=7.7600  task=7.6658  safety=0.1927  top1=0.1068  lr=2.36e-03
+  e 20  loss=5.3656  task=5.2677  safety=0.2001  top1=0.0869  lr=2.36e-03
+  e 30  loss=4.9429  task=4.8476  safety=0.1949  top1=0.1022  lr=2.36e-03
+  e 40  loss=4.6243  task=4.5261  safety=0.2009  top1=0.0912  lr=2.36e-03
+  e 50  loss=4.2745  task=4.1656  safety=0.2228  top1=0.1073  lr=2.36e-03
+  e 60  loss=4.1989  task=4.0988  safety=0.2048  top1=0.0925  lr=2.36e-03
+  e 70  loss=4.1351  task=4.0518  safety=0.1704  top1=0.1009  lr=2.36e-03
+  top1_best=0.1228  best_ep=11/75 (15%)  diag=training_too_short  t=2173s
+
+======================================================================
+C     independent AH=1.0  freq=capped_exp
+======================================================================
+  e  1  loss=9.7948  task=9.7183  safety=0.1564  top1=0.1080  lr=2.36e-03
+  e 10  loss=8.2940  task=8.0962  safety=0.4047  top1=0.0752  lr=2.36e-03
+  e 20  loss=5.6389  task=5.3999  safety=0.4892  top1=0.1613  lr=2.36e-03
+  e 30  loss=4.9418  task=4.6966  safety=0.5017  top1=0.0999  lr=2.36e-03
+  e 40  loss=4.2618  task=4.0164  safety=0.5022  top1=0.1001  lr=2.36e-03
+  e 50  loss=3.7829  task=3.5387  safety=0.4996  top1=0.0591  lr=2.36e-03
+  e 60  loss=3.0197  task=2.8146  safety=0.4196  top1=0.1177  lr=1.18e-03
+  e 70  loss=3.5088  task=3.2833  safety=0.4615  top1=0.1017  lr=1.18e-03
+  top1_best=0.1613  best_ep=20/75 (27%)  diag=training_too_short  t=1400s
+
+======================================================================
+D     coherent dynamic-ref AH=1.0  freq=capped_exp
+======================================================================
+  e  1  loss=9.3610  task=9.2842  safety=0.1570  top1=0.1052  lr=2.36e-03
+  e 10  loss=8.0904  task=7.9909  safety=0.2037  top1=0.0978  lr=2.36e-03
+  e 20  loss=5.5319  task=5.4137  safety=0.2418  top1=0.0805  lr=2.36e-03
+  e 30  loss=4.8600  task=4.7355  safety=0.2546  top1=0.0989  lr=2.36e-03
+  e 40  loss=4.0390  task=3.9175  safety=0.2485  top1=0.1042  lr=2.36e-03
+  e 50  loss=4.1103  task=3.9837  safety=0.2590  top1=0.0994  lr=2.36e-03
+  e 60  loss=3.9070  task=3.7816  safety=0.2564  top1=0.1004  lr=2.36e-03
+  e 70  loss=3.7768  task=3.6580  safety=0.2432  top1=0.1022  lr=2.36e-03
+  top1_best=0.1355  best_ep=71/75 (95%)  diag=converged  t=2179s
+
+======================================================================
+A_wt  independent+mag-weighted-phase no AH
+======================================================================
+  e  1  loss=5.7088  task=5.6398  safety=0.1413  top1=0.0966  lr=2.36e-03
+  e 10  loss=3.5338  task=3.4949  safety=0.0798  top1=0.0836  lr=2.36e-03
+  e 20  loss=3.4596  task=3.4100  safety=0.1015  top1=0.0772  lr=1.18e-03
+  e 30  loss=3.4106  task=3.3512  safety=0.1214  top1=0.0945  lr=1.18e-03
+  e 40  loss=3.3768  task=3.2977  safety=0.1620  top1=0.0871  lr=1.18e-03
+  e 50  loss=3.2871  task=3.1819  safety=0.2153  top1=0.0968  lr=1.18e-03
+  e 60  loss=3.3197  task=3.1842  safety=0.2772  top1=0.1022  lr=1.18e-03
+  e 70  loss=3.2864  task=3.1292  safety=0.3219  top1=0.1264  lr=5.91e-04
+  top1_best=0.1544  best_ep=73/75 (97%)  diag=converged  t=1796s
+
+======================================================================
+B_wt  coherent+mag-weighted-phase no AH
+======================================================================
+  e  1  loss=6.8205  task=6.7546  safety=0.1347  top1=0.1078  lr=2.36e-03
+  e 10  loss=5.0197  task=5.0181  safety=0.0034  top1=0.0973  lr=2.36e-03
+  e 20  loss=3.8284  task=3.5683  safety=0.5323  top1=0.1139  lr=2.36e-03
+  e 30  loss=3.5803  task=3.3362  safety=0.4997  top1=0.1113  lr=2.36e-03
+  e 40  loss=3.5828  task=3.3382  safety=0.5007  top1=0.1350  lr=2.36e-03
+  e 50  loss=3.4297  task=3.1955  safety=0.4793  top1=0.1152  lr=2.36e-03
+  e 60  loss=3.4464  task=3.2111  safety=0.4817  top1=0.1485  lr=2.36e-03
+  e 70  loss=3.3655  task=3.1357  safety=0.4704  top1=0.1254  lr=2.36e-03
+  top1_best=0.1485  best_ep=60/75 (80%)  diag=converged  t=2520s
+
+======================================================================
+B_anc coherent anchor-ref no AH
+======================================================================
+  e  1  loss=10.1937  task=10.1155  safety=0.1600  top1=0.0696  lr=2.36e-03
+  e 10  loss=7.3745  task=7.2861  safety=0.1808  top1=0.0955  lr=2.36e-03
+  e 20  loss=5.5210  task=5.4363  safety=0.1733  top1=0.0938  lr=2.36e-03
+  e 30  loss=4.5194  task=4.4353  safety=0.1720  top1=0.0764  lr=2.36e-03
+  e 40  loss=4.5668  task=4.4935  safety=0.1498  top1=0.0869  lr=2.36e-03
+  e 50  loss=4.4356  task=4.3683  safety=0.1378  top1=0.1124  lr=2.36e-03
+  e 60  loss=4.0327  task=3.9619  safety=0.1449  top1=0.1075  lr=2.36e-03
+  e 70  loss=3.7785  task=3.6988  safety=0.1630  top1=0.0948  lr=2.36e-03
+  top1_best=0.1338  best_ep=53/75 (71%)  diag=converged  t=2251s
+
+======================================================================
+B_abs coherent absolute-ref no AH
+======================================================================
+  e  1  loss=10.4131  task=10.3353  safety=0.1591  top1=0.1062  lr=2.36e-03
+  e 10  loss=7.3512  task=7.2600  safety=0.1867  top1=0.0991  lr=2.36e-03
+  e 20  loss=5.5318  task=5.4424  safety=0.1828  top1=0.1073  lr=2.36e-03
+  e 30  loss=5.1454  task=5.0518  safety=0.1913  top1=0.1004  lr=2.36e-03
+  e 40  loss=4.1047  task=4.0195  safety=0.1742  top1=0.1078  lr=2.36e-03
+  e 50  loss=4.0104  task=3.9398  safety=0.1444  top1=0.0953  lr=2.36e-03
+  e 60  loss=4.1071  task=4.0301  safety=0.1575  top1=0.1011  lr=2.36e-03
+  e 70  loss=3.7844  task=3.6838  safety=0.2058  top1=0.1373  lr=2.36e-03
+  top1_best=0.1373  best_ep=70/75 (93%)  diag=converged  t=1964s
+
+======================================================================
+E     decay_coherence no AH lambda=1.0
+======================================================================
+  e  1  loss=10.1216  task=10.0443  safety=0.1583  top1=0.0846  lr=2.36e-03
+  e 10  loss=8.1924  task=8.0919  safety=0.2056  top1=0.1090  lr=2.36e-03
+  e 20  loss=6.1569  task=6.0484  safety=0.2220  top1=0.0910  lr=2.36e-03
+  e 30  loss=4.8263  task=4.7129  safety=0.2321  top1=0.1034  lr=2.36e-03
+  e 40  loss=4.3906  task=4.2690  safety=0.2487  top1=0.0989  lr=2.36e-03
+  e 50  loss=4.1962  task=4.0732  safety=0.2515  top1=0.1029  lr=2.36e-03
+  e 60  loss=3.7367  task=3.6152  safety=0.2486  top1=0.0989  lr=1.18e-03

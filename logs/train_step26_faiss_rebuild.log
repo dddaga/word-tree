@@ -1,0 +1,149 @@
+WARNING: faiss-cpu not installed — will use torch O(N²) fallback
+Install: pip install faiss-cpu
+
+Device: mps  Epochs: 150  D=16  N=512
+Question: Does fresher conn_phase (sub-epoch FAISS rebuild) improve accuracy?
+Expected baseline: ~28.56%  |  signed coupling ceiling: ~40.15%
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. dynamic_z_geo  rebuild=epoch  K_phase=8   [current default]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  e130  loss=2.0440  task=2.0418  safety=0.0037  top1=0.2242  lr=2.36e-03
+  e140  loss=2.0398  task=2.0375  safety=0.0039  top1=0.2392  lr=2.36e-03
+  e150  loss=2.0355  task=2.0331  safety=0.0041  top1=0.2517  lr=2.36e-03
+  top1_best=0.2922  best_ep=131/150 (87%)  diag=converged  t=4982s
+
+======================================================================
+A.  dynamic_z_geo  rebuild=10step  K_phase=8   [every 10 steps]
+======================================================================
+  e  1  loss=3.3121  task=3.2939  safety=0.0313  top1=0.1366  lr=2.36e-03
+  e 10  loss=2.1296  task=2.1284  safety=0.0020  top1=0.1674  lr=2.36e-03
+  e 20  loss=2.1152  task=2.1139  safety=0.0022  top1=0.2031  lr=2.36e-03
+  e 30  loss=2.0981  task=2.0966  safety=0.0024  top1=0.2000  lr=2.36e-03
+  e 40  loss=2.0880  task=2.0865  safety=0.0026  top1=0.2176  lr=2.36e-03
+  e 50  loss=2.0773  task=2.0756  safety=0.0029  top1=0.2122  lr=2.36e-03
+  e 60  loss=2.0694  task=2.0677  safety=0.0030  top1=0.1980  lr=2.36e-03
+  e 70  loss=2.0617  task=2.0599  safety=0.0032  top1=0.2344  lr=2.36e-03
+  e 80  loss=2.0572  task=2.0553  safety=0.0034  top1=0.2553  lr=2.36e-03
+  e 90  loss=2.0525  task=2.0506  safety=0.0034  top1=0.2229  lr=2.36e-03
+  e100  loss=2.0499  task=2.0479  safety=0.0035  top1=0.2296  lr=2.36e-03
+  e110  loss=2.0465  task=2.0445  safety=0.0035  top1=0.2639  lr=2.36e-03
+  e120  loss=2.0420  task=2.0398  safety=0.0036  top1=0.2497  lr=2.36e-03
+  e130  loss=2.0406  task=2.0384  safety=0.0038  top1=0.2265  lr=2.36e-03
+  e140  loss=2.0352  task=2.0329  safety=0.0039  top1=0.2316  lr=2.36e-03
+  e150  loss=2.0363  task=2.0339  safety=0.0041  top1=0.2637  lr=2.36e-03
+  top1_best=0.2884  best_ep=126/150 (84%)  diag=converged  t=11410s
+
+======================================================================
+B.  dynamic_z_geo  rebuild=5step   K_phase=8   [every 5 steps]
+======================================================================
+  e  1  loss=3.3455  task=3.3274  safety=0.0313  top1=0.1391  lr=2.36e-03
+  e 10  loss=2.1295  task=2.1284  safety=0.0020  top1=0.1753  lr=2.36e-03
+  e 20  loss=2.1144  task=2.1131  safety=0.0022  top1=0.1564  lr=2.36e-03
+  e 30  loss=2.1007  task=2.0992  safety=0.0025  top1=0.2051  lr=2.36e-03
+  e 40  loss=2.0904  task=2.0888  safety=0.0027  top1=0.2214  lr=2.36e-03
+  e 50  loss=2.0800  task=2.0783  safety=0.0029  top1=0.1898  lr=2.36e-03
+  e 60  loss=2.0691  task=2.0674  safety=0.0030  top1=0.1931  lr=2.36e-03
+  e 70  loss=2.0630  task=2.0611  safety=0.0032  top1=0.2418  lr=2.36e-03
+  e 80  loss=2.0558  task=2.0538  safety=0.0034  top1=0.2334  lr=2.36e-03
+  e 90  loss=2.0523  task=2.0503  safety=0.0034  top1=0.2107  lr=2.36e-03
+  e100  loss=2.0488  task=2.0468  safety=0.0034  top1=0.2476  lr=2.36e-03
+  e110  loss=2.0488  task=2.0468  safety=0.0036  top1=0.2497  lr=2.36e-03
+  e120  loss=2.0418  task=2.0397  safety=0.0036  top1=0.2683  lr=2.36e-03
+  e130  loss=2.0428  task=2.0406  safety=0.0037  top1=0.2395  lr=2.36e-03
+  e140  loss=2.0395  task=2.0372  safety=0.0039  top1=0.2423  lr=2.36e-03
+  e150  loss=2.0358  task=2.0334  safety=0.0041  top1=0.2497  lr=2.36e-03
+  top1_best=0.2945  best_ep=123/150 (82%)  diag=converged  t=11439s
+
+======================================================================
+C.  dynamic_z_geo  rebuild=1step   K_phase=8   [every step]
+======================================================================
+  e  1  loss=3.3329  task=3.3147  safety=0.0313  top1=0.1348  lr=2.36e-03
+  e 10  loss=2.1280  task=2.1269  safety=0.0020  top1=0.1631  lr=2.36e-03
+  e 20  loss=2.1115  task=2.1102  safety=0.0022  top1=0.2066  lr=2.36e-03
+  e 30  loss=2.0995  task=2.0981  safety=0.0024  top1=0.1834  lr=2.36e-03
+  e 40  loss=2.0877  task=2.0862  safety=0.0026  top1=0.1873  lr=2.36e-03
+  e 50  loss=2.0764  task=2.0747  safety=0.0029  top1=0.2245  lr=2.36e-03
+  e 60  loss=2.0694  task=2.0677  safety=0.0030  top1=0.2107  lr=2.36e-03
+  e 70  loss=2.0651  task=2.0632  safety=0.0032  top1=0.2186  lr=2.36e-03
+  e 80  loss=2.0606  task=2.0586  safety=0.0034  top1=0.2693  lr=2.36e-03
+  e 90  loss=2.0515  task=2.0495  safety=0.0034  top1=0.2397  lr=2.36e-03
+  e100  loss=2.0485  task=2.0465  safety=0.0035  top1=0.2441  lr=2.36e-03
+  e110  loss=2.0472  task=2.0452  safety=0.0035  top1=0.2522  lr=2.36e-03
+  e120  loss=2.0451  task=2.0430  safety=0.0037  top1=0.2591  lr=2.36e-03
+  e130  loss=2.0411  task=2.0389  safety=0.0037  top1=0.2176  lr=2.36e-03
+  e140  loss=2.0380  task=2.0357  safety=0.0039  top1=0.2706  lr=2.36e-03
+  e150  loss=2.0375  task=2.0351  safety=0.0041  top1=0.2675  lr=2.36e-03
+  top1_best=0.2871  best_ep=121/150 (81%)  diag=converged  t=13049s
+
+======================================================================
+D.  dynamic_z_geo  rebuild=epoch   K_phase=16  [wider graph]
+======================================================================
+  e  1  loss=3.3700  task=3.3518  safety=0.0313  top1=0.1452  lr=2.36e-03
+  e 10  loss=2.1276  task=2.1265  safety=0.0019  top1=0.1768  lr=2.36e-03
+  e 20  loss=2.1095  task=2.1082  safety=0.0022  top1=0.1860  lr=2.36e-03
+  e 30  loss=2.0973  task=2.0959  safety=0.0024  top1=0.1819  lr=2.36e-03
+  e 40  loss=2.0875  task=2.0860  safety=0.0026  top1=0.2150  lr=2.36e-03
+  e 50  loss=2.0753  task=2.0737  safety=0.0029  top1=0.2308  lr=2.36e-03
+  e 60  loss=2.0708  task=2.0691  safety=0.0030  top1=0.2359  lr=2.36e-03
+  e 70  loss=2.0633  task=2.0614  safety=0.0032  top1=0.2336  lr=2.36e-03
+  e 80  loss=2.0575  task=2.0555  safety=0.0034  top1=0.2650  lr=2.36e-03
+  e 90  loss=2.0519  task=2.0499  safety=0.0034  top1=0.2219  lr=2.36e-03
+  e100  loss=2.0502  task=2.0482  safety=0.0034  top1=0.2591  lr=2.36e-03
+  e110  loss=2.0447  task=2.0426  safety=0.0035  top1=0.2469  lr=2.36e-03
+  e120  loss=2.0453  task=2.0432  safety=0.0036  top1=0.2561  lr=2.36e-03
+  e130  loss=2.0433  task=2.0412  safety=0.0037  top1=0.2301  lr=2.36e-03
+  e140  loss=2.0359  task=2.0336  safety=0.0039  top1=0.2589  lr=2.36e-03
+  e150  loss=2.0334  task=2.0310  safety=0.0041  top1=0.2818  lr=2.36e-03
+  top1_best=0.2861  best_ep=114/150 (76%)  diag=converged  t=17789s
+
+======================================================================
+E.  dynamic_z_geo  rebuild=5step   K_phase=16  [wider+fresher]
+======================================================================
+  e  1  loss=3.3325  task=3.3143  safety=0.0313  top1=0.1401  lr=2.36e-03
+  e 10  loss=2.1314  task=2.1302  safety=0.0020  top1=0.1694  lr=2.36e-03
+  e 20  loss=2.1132  task=2.1119  safety=0.0022  top1=0.1946  lr=2.36e-03
+  e 30  loss=2.0976  task=2.0962  safety=0.0024  top1=0.2020  lr=2.36e-03
+  e 40  loss=2.0851  task=2.0836  safety=0.0026  top1=0.2148  lr=2.36e-03
+  e 50  loss=2.0777  task=2.0760  safety=0.0029  top1=0.2362  lr=2.36e-03
+  e 60  loss=2.0695  task=2.0678  safety=0.0030  top1=0.2377  lr=2.36e-03
+  e 70  loss=2.0627  task=2.0608  safety=0.0032  top1=0.2316  lr=2.36e-03
+  e 80  loss=2.0574  task=2.0555  safety=0.0034  top1=0.2459  lr=2.36e-03
+  e 90  loss=2.0528  task=2.0508  safety=0.0034  top1=0.2609  lr=2.36e-03
+  e100  loss=2.0497  task=2.0477  safety=0.0035  top1=0.2698  lr=2.36e-03
+  e110  loss=2.0441  task=2.0421  safety=0.0035  top1=0.2724  lr=2.36e-03
+  e120  loss=2.0431  task=2.0410  safety=0.0036  top1=0.2596  lr=2.36e-03
+  e130  loss=2.0415  task=2.0394  safety=0.0038  top1=0.2438  lr=2.36e-03
+  e140  loss=2.0363  task=2.0340  safety=0.0039  top1=0.2586  lr=2.36e-03
+  e150  loss=2.0372  task=2.0348  safety=0.0041  top1=0.2782  lr=2.36e-03
+  top1_best=0.2869  best_ep=126/150 (84%)  diag=converged  t=17979s
+
+Saved -> results/train_step26_faiss_rebuild.json
+
+-- FAISS rebuild frequency sweep  (ref_epoch=0.2922) ---
+  Config                                                        top1   vs_epoch   ep_frac    t(s)
+  -----------------------------------------------------------------------------------------------
+  Ref. dynamic_z_geo  rebuild=epoch  K_phase=8   [current     0.2922    +0.0000     87.3%    4982
+  A.  dynamic_z_geo  rebuild=10step  K_phase=8   [every 1     0.2884    -0.0038     84.0%   11410
+  B.  dynamic_z_geo  rebuild=5step   K_phase=8   [every 5     0.2945    +0.0023     82.0%   11439
+  C.  dynamic_z_geo  rebuild=1step   K_phase=8   [every s     0.2871    -0.0051     80.7%   13049
+  D.  dynamic_z_geo  rebuild=epoch   K_phase=16  [wider g     0.2861    -0.0061     76.0%   17788
+  E.  dynamic_z_geo  rebuild=5step   K_phase=16  [wider+f     0.2869    -0.0054     84.0%   17979
+
+  Note: rebuild_interval=1 adds ~22ms/epoch at N=512 (55 batches × 0.4ms)
+  If t(C) ≈ t(Ref), FAISS overhead is negligible as expected.

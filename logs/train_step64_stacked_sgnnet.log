@@ -1,0 +1,45 @@
+Loaded REF_BASELINE from step57: 0.7353
+Device: cpu  Epochs: 75  Batch: 128  Data: 50%
+Step 64: Stacked SGNNET  |  REF_BASELINE=0.7353 (step57)
+Testing series depth, skip connections, linear bridge, parallel fusion
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+  Ref  1-layer AntiHebb α=1.0 baseline  |  params=132,736
+
+======================================================================
+Ref  1-layer AntiHebb α=1.0 baseline
+======================================================================
+  e  1  loss=4.4571  task=4.3836  safety=0.1506  top1=0.0833  lr=2.36e-03
+  e 10  loss=1.8010  task=1.7549  safety=0.0944  top1=0.4033  lr=2.36e-03
+  e 20  loss=1.4840  task=1.4524  safety=0.0645  top1=0.4650  lr=2.36e-03
+  e 30  loss=1.3106  task=1.2858  safety=0.0507  top1=0.5980  lr=2.36e-03
+  e 40  loss=1.1963  task=1.1751  safety=0.0434  top1=0.6344  lr=2.36e-03
+  e 50  loss=1.0953  task=1.0764  safety=0.0387  top1=0.6561  lr=2.36e-03
+  e 60  loss=1.0149  task=0.9973  safety=0.0359  top1=0.6711  lr=2.36e-03
+  e 70  loss=0.9663  task=0.9500  safety=0.0335  top1=0.7121  lr=2.36e-03
+  top1_best=0.7338  best_ep=73/75 (97%)  diag=converged  t=4881s
+
+  A    2-layer series passthrough no-skip  |  params=265,472
+
+======================================================================
+A    2-layer series passthrough no-skip
+======================================================================
+  e  1  loss=3.9609  task=3.8872  safety=0.1508  top1=0.1399  lr=2.36e-03
+  e 10  loss=1.7482  task=1.6926  safety=0.1137  top1=0.4364  lr=2.36e-03
+  e 20  loss=1.4290  task=1.3849  safety=0.0903  top1=0.5422  lr=2.36e-03
+  e 30  loss=1.2618  task=1.2224  safety=0.0808  top1=0.5893  lr=2.36e-03
+  e 40  loss=1.1380  task=1.1015  safety=0.0748  top1=0.6652  lr=2.36e-03
+  e 50  loss=1.0734  task=1.0389  safety=0.0707  top1=0.6543  lr=2.36e-03
+  e 60  loss=1.0077  task=0.9747  safety=0.0676  top1=0.6945  lr=2.36e-03
+  e 70  loss=0.9448  task=0.9129  safety=0.0651  top1=0.6892  lr=2.36e-03
+  top1_best=0.7162  best_ep=73/75 (97%)  diag=converged  t=10026s
+
+  B    2-layer series passthrough + skip  |  params=265,472
+
+======================================================================
+B    2-layer series passthrough + skip
+======================================================================
+  e  1  loss=4.2912  task=4.2175  safety=0.1508  top1=0.1050  lr=2.36e-03
+  e 10  loss=1.7498  task=1.6973  safety=0.1073  top1=0.4329  lr=2.36e-03
+  e 20  loss=1.4305  task=1.3897  safety=0.0835  top1=0.4996  lr=2.36e-03

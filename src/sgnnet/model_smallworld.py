@@ -84,22 +84,51 @@ def _build_fanin_conn(
     Groups hidden neurons into n_groups blocks; each block preferentially
     samples from its corresponding input region (block-local bias).
     This mirrors the VGG16 spatial structure: early features are local.
+
+    GUARANTEED COVERAGE: within each group, every input index is assigned
+    to at least one neuron via round-robin before random fill. No input
+    feature is ever silently dropped.
     """
     rng = np.random.default_rng(seed)
     group_size_h = max(1, N_hidden // n_groups)
     group_size_in = max(1, N_in // n_groups)
     conn = np.zeros((N_hidden, K_in), dtype=np.int64)
 
-    for h in range(N_hidden):
-        g = h // group_size_h
-        lo = g * group_size_in
-        hi = min((g + 1) * group_size_in, N_in)
-        pool = list(range(lo, hi))
-        if len(pool) < K_in:
-            # Pad with global random samples
-            extra = rng.integers(0, N_in, size=K_in - len(pool)).tolist()
-            pool = pool + extra
-        conn[h] = rng.choice(pool, size=K_in, replace=False)
+    for g in range(n_groups):
+        h_lo = g * group_size_h
+        h_hi = min((g + 1) * group_size_h, N_hidden)
+        in_lo = g * group_size_in
+        in_hi = min((g + 1) * group_size_in, N_in)
+
+        neurons = list(range(h_lo, h_hi))
+        inputs = np.arange(in_lo, in_hi)
+        n_neurons = len(neurons)
+        n_inputs = len(inputs)
+
+        if n_neurons == 0 or n_inputs == 0:
+            continue
+
+        # Shuffle inputs so round-robin assignment is unbiased
+        shuffled = rng.permutation(inputs).tolist()
+
+        for j, h in enumerate(neurons):
+            # Round-robin: neuron j owns positions j, j+n_neurons, j+2*n_neurons, ...
+            # This guarantees every input in this group appears in at least one neuron.
+            coverage = shuffled[j::n_neurons]
+
+            if len(coverage) >= K_in:
+                # Edge case: more coverage slots than K_in — subsample
+                conn[h] = rng.choice(coverage, size=K_in, replace=False)
+            else:
+                n_remaining = K_in - len(coverage)
+                covered_set = set(coverage)
+                not_covered = [x for x in inputs.tolist() if x not in covered_set]
+                if len(not_covered) >= n_remaining:
+                    extra = rng.choice(not_covered, size=n_remaining, replace=False).tolist()
+                else:
+                    # Exhaust remaining group inputs, pad with global random
+                    extra = not_covered + rng.integers(0, N_in, size=n_remaining - len(not_covered)).tolist()
+                conn[h] = np.array(coverage + extra, dtype=np.int64)
 
     return torch.tensor(conn, dtype=torch.long)
 

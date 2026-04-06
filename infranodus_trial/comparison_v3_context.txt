@@ -1,0 +1,544 @@
+SGNNET RESEARCH GAP ANALYSIS REPORT
+====================================
+Generated: 2026-03-31
+Source: All learnings/*.md files + all results/train_step*.json (22 result files, 13 learnings files)
+Method: Manual deep reading of entire research corpus by Claude Opus 4.6
+
+================================================================================
+SECTION 1: TOPICAL CLUSTERS
+================================================================================
+
+Cluster 1: ENCODING AND DIMENSIONALITY (D)
+-------------------------------------------
+Key concepts: Fourier encoding, linear encoding, positional encoding, D=4/8/16/32/64/128,
+S^(D-1) hypersphere capacity, angular separation, Johnson-Lindenstrauss limit, VGG feature
+seeding, channel normalization, sinusoidal frequency bands.
+
+Evidence: D is the single most impactful axis. D=64 N=1024 achieved 56.28% (step22E), vs
+D=16 N=512 at 29.22% (step9A). D=16 N=2048 only reached 41.76% at similar parameter count.
+Fourier encoding enables arbitrary D; the old linear encoding was structurally fixed at D=4.
+At D=4, neurons are overcrowded on S^3 (~10 distinguishable directions for 512 neurons).
+At D=64, S^63 provides exponentially more room.
+
+Cluster 2: ROUTING DEPTH (K_iter) AND OVER-SMOOTHING
+-----------------------------------------------------
+Key concepts: K_iter (propagation iterations), graph diameter (~log(N)), over-smoothing,
+k-hop neighborhood, heat diffusion on graphs, convergence to dominant eigenvector.
+
+Evidence: K_iter=8 is the sweet spot at D=16 (36.69%, step13I), while K_iter=12 drops to
+29.53% (step13J) due to over-smoothing. K_iter=1 gives only 22.90%. The small-world graph
+has diameter ~9, so K_iter=8 covers most of the graph. Over-smoothing occurs when all Z
+collapse to the same vector after too many propagation steps. This is the GNN over-smoothing
+problem applied to SGNNET routing.
+
+Cluster 3: SIGNED COUPLING AND BINDING-BY-SYNCHRONY
+----------------------------------------------------
+Key concepts: All-pairs cosine coupling, Z Z^T power iteration, excitatory/inhibitory
+balance, binding-by-synchrony (Singer 1989), phase groups, Hopfield network connection,
+O(N^2) cost, mode collapse at K_iter>=8.
+
+Evidence: Signed coupling is the strongest single mechanism (+10.93pp, step18A: 40.15%).
+But it CATASTROPHICALLY collapses at K_iter>=8 (step23B: 10.68%). The all-pairs feedback
+Z <- normalize((Z Z^T) Z) is a power iteration converging to the dominant eigenvector.
+K_iter=3 is the stability limit. Signed + N=1024 + K_iter=3 = 45.55% (step23C). This is
+a fundamental tension: the two most powerful mechanisms (deep routing and signed coupling)
+cannot be combined.
+
+Cluster 4: INHIBITION MECHANISMS
+--------------------------------
+Key concepts: Anti-Hebbian inhibition (W_pos-weighted spatial surround), divisive
+normalization (lateral shunting), refractory inhibition (temporal competition), Mexican-hat
+response profile, feature decorrelation (Z-based anti-Hebbian).
+
+Evidence: Anti-Hebbian inhibition with W_pos spatial weighting is the second-strongest
+mechanism (+8.00pp, step16H: 37.22%). Divisive normalization gives +1.84pp (step16A).
+Refractory inhibition beta=0.7/alpha_r=2.0 gives +4.31pp (step16E). W_pos-weighted
+anti-Hebbian forces neurons geometrically nearby to suppress each other, creating spatial
+diversity. Z-based anti-Hebbian (feature decorrelation) gives +2.19pp (step16I).
+
+Cluster 5: FAST WEIGHTS AND INTRA-FORWARD ADAPTATION
+-----------------------------------------------------
+Key concepts: Fast weight memory (Ba et al. 2016), Oja's rule (Hebbian PCA), Hopfield
+attract, attention-based W_phase update, W_phase as slow prior vs fast weight, batch-shared
+vs per-sample, LISTA sparse coding connection.
+
+Evidence: All 6 fast W_phase configs beat baseline (step17). Attention update is best
+(+1.84pp, step17F: 31.06%). W_phase as a learned parameter HURTS (step10b: 27.90% < 28.59%
+static). The key insight: gradient descent on W_phase across examples converges to an
+average direction that discriminates nothing. Fast weights make W_phase input-specific
+without gradient descent. The LISTA connection: Z = sparse code, W_phase = dictionary,
+theta-gating = ISTA shrinkage, K_iter = unrolled iterations.
+
+Cluster 6: GRAPH TOPOLOGY AND CONNECTIVITY
+-------------------------------------------
+Key concepts: Small-world graph (K_local + K_random), C_input fan-in, block-local bias,
+conn_hh structural edges, conn_phase W_phase K-NN, dynamic_z topology rebuild, dynamic_gate
+(fixed graph + activation-gated weights), dynamic_z_geo (geometric bias in routing score),
+FAISS rebuild frequency, graph diameter, mixing time.
+
+Evidence: dynamic_z (topology rebuilt per forward) > dynamic_gate (fixed graph, gated
+weights) > resonant (static phase graph rebuilt per epoch). Geo bias adds +3.1% at D=16
+(step9: 29.22% vs 26.09%). C_input structure matters more than routing: block-local
+gives 17.96% vs random 10.17%. Small-world K_random>=2 required for connectivity. W_pos
+in the routing gradient (geometric-biased attention) is the strongest connectivity variant.
+
+Cluster 7: NEURON SCALING (N) AND WIDTH
+---------------------------------------
+Key concepts: N=256/512/1024/2048, polynomial scaling, neuron count vs direction richness,
+interneurons (unseeded neurons), DeepSeekMoE shared experts, active set, beam routing.
+
+Evidence: N=1024 gives +5.10pp over N=512 at D=16 (step12B: 34.32%). But D=64 N=1024
+(56.28%) >> D=16 N=2048 (41.76%). Interneurons at 50% with readout=all give +2.83pp
+(step20B: 32.05%). This maps to DeepSeekMoE's shared experts. Beam routing at route=64
+gives +2.88pp with 53x speedup (step25B: 29.73%).
+
+Cluster 8: TRAINING INFRASTRUCTURE AND STABILITY
+-------------------------------------------------
+Key concepts: Gradient clipping bug (accumulated theta/W_phase grads), MPS fallback,
+DataLoader spawn/fork mismatch, AMP/GradScaler, ReduceLROnPlateau, cosine schedule,
+weight_decay=0 for W_pos, in-place mutation bugs (fill_diagonal_), safety valve loss.
+
+Evidence: A gradient clipping bug was the root cause of a prolonged regression investigation
+(26.52% -> ~20%). The bug: clip_grad_norm_ on ALL params when only W_pos is in the
+optimizer. theta/W_phase grads accumulate -> clip norm dominated -> W_pos gradient
+near-zero. Safety valve evolved from Coulomb divergence to bounded quadratic + log1p + 15%
+soft cap. Boolean indexing backward crashes at large N on MPS.
+
+Cluster 9: SPARSE ATTENTION AND TRANSFORMER ANALOGY
+----------------------------------------------------
+Key concepts: Longformer, BigBird, Reformer LSH, FlashAttention, MoE (Switch, DeepSeekMoE),
+Mixture of Depths (MoD), TurboSparse, FFN sparsity, ReLU revival, Matformer nested training,
+O(N*K) hard constraint vs O(N^2).
+
+Evidence: SGNNET routing at N=1024 K_iter=8 with signed coupling costs ~8N^2 ops, matching
+a standard 4x expansion FFN. Beam routing (step25) achieves 53x FLOP reduction at route=64.
+Dynamic Z-KNN (step31, running) is the critical experiment for O(N*K) input-dependent
+connectivity. The Matformer analog: train at max N, extract sub-models at any N.
+
+Cluster 10: ROUTING MECHANISMS (THRESHOLD, REFLECTION, TURING)
+--------------------------------------------------------------
+Key concepts: Learnable per-neuron threshold theta, self-inhibition (reflection), two-scale
+Turing (local excite + long-range inhibit), routing gate temperature, stack order,
+mechanism hierarchy reversal at D=16.
+
+Evidence: At D=4: learnable ~= turing > threshold > reflection > baseline (all positive).
+At D=16 (no geo): theta-only WINS; reflection and turing HURT (step10a). The reversal:
+at D=16, each neuron has a unique direction, so theta-gating by similarity suffices.
+Extra mechanisms add noise. With geo mode (step11), the results are nuanced but theta-only
+remains competitive.
+
+Cluster 11: EXCITATORY PATHWAYS
+-------------------------------
+Key concepts: Excitatory radiation, phase excitatory portals, conduction gating (top-K
+structural neighbors), asymmetry between excitatory conduction and inhibitory radiation.
+
+Evidence: Top-K gated conduction ALWAYS hurts (step14: k_cond=4 -4.61pp, k_cond=1 -4.48pp).
+Excitatory radiation at best neutral (step14F: +0.16pp). Phase excitatory portals give
++2.98pp (step19A: 32.20%). The architecture has a fundamental asymmetry: conduction is
+excitatory/structural, radiation is inhibitory/dynamic. Signed coupling resolved this
+asymmetry by unifying excitation and inhibition in one all-pairs operation.
+
+Cluster 12: LOSS FUNCTIONS AND AUXILIARY OBJECTIVES
+---------------------------------------------------
+Key concepts: Task loss (cross-entropy on soft labels), safety valve loss (bounded quadratic
+repulsion), load balancing loss, lambda_safety scaling with N, knowledge distillation,
+mechanism-aware auxiliary losses (step39, planned).
+
+Evidence: Safety valve was dominant at large N before the bounded quadratic fix (safety/task
+was 140%, reduced to 0.14%). Soft labels from KD are used (argmax matches hard label at
+99.54%). Step39 (running) tests phase coherence loss, inhibition sparsity loss, and routing
+diversity loss. This is the first experiment that modifies the loss to interact with routing
+mechanisms, bridging two previously disconnected research clusters.
+
+Cluster 13: BEAM SELECTION AND SPARSITY
+---------------------------------------
+Key concepts: beam_size hyperparameter (fixed at 32), hard beam gating, soft differentiable
+beam, threshold-aligned beam, beam reset/retain/decay modes, non-beam neuron fate, active
+set input-dependence.
+
+Evidence: Hard beam gating FAILS catastrophically (step15: A1 16.59%, A2 14.29%). Soft beam
+also fails (step27: all configs below baseline). Threshold-aligned beam is neutral (step27F:
++0.08pp). Beam routing (input-dependent active set by Z-norm, step25) succeeds at route=64
+(+2.88pp). The key distinction: beam routing selects which neurons PARTICIPATE in routing,
+while beam gating prevents non-beam neurons from updating at all.
+
+Cluster 14: CROSS-DIMENSIONAL MIXING AND MATRIX BANKS
+------------------------------------------------------
+Key concepts: D-by-D learnable matrix W_mix, per-step vs post-routing, per-neuron vs
+shared, phase-queried matrix bank (M matrices via W_phase direction), cross-dimensional
+feature interaction.
+
+Evidence: Step30 (running) tests W_mix variants. Step37 (running) tests phase-queried
+matrix bank with M=4/16/64 matrices. Current routing aggregation is dimension-independent:
+dim d of output = sum_j Z_j[d]. This means no interaction BETWEEN dimensions within
+routing. A shared D-by-D matrix enables full cross-dimensional mixing, analogous to
+attention's value projection.
+
+
+================================================================================
+SECTION 2: STRUCTURAL GAPS
+================================================================================
+
+Gap 1: SIGNED COUPLING x HIGH-D ENCODING
+-----------------------------------------
+Themes: Cluster 3 (Signed Coupling) x Cluster 1 (Encoding/Dimensionality)
+WHY: Signed coupling gives +10.93pp at D=16 and D extension gives +19.54pp at D=64.
+But signed coupling at D=64 with K_iter=3 gives only 32.15% (step28), far below the
+56.28% D=64 K_iter=8 baseline. The signed coupling mechanism was tuned at D=16 -- at
+D=64, the cosine similarity landscape is fundamentally different (neurons are far more
+orthogonal on S^63). Alpha=0.3 may be wildly wrong at D=64. No systematic alpha/tau
+calibration has been done for signed coupling at D=64.
+PRIORITY: HIGH (this is the project's central bottleneck -- the two best mechanisms
+are incompatible, and no calibration sweep has been run to find the D=64 sweet spot)
+
+Gap 2: INHIBITION MECHANISMS x HIGH-D (D=64)
+---------------------------------------------
+Themes: Cluster 4 (Inhibition) x Cluster 1 (Encoding/Dimensionality)
+WHY: Anti-Hebbian (W_pos) gives +8pp at D=16. Step29 is running anti-Hebb at D=64 but
+on an uncalibrated base. The inhibition alpha=0.5 was tuned at D=16. At D=64, the angular
+distances between neurons are much larger -- the inhibition radius and strength need
+recalibration. Anti-Hebbian uses W_pos neighbors, but W_pos geometry at D=64 may be
+completely different from D=16.
+PRIORITY: HIGH (step29b running, but on uncalibrated base; step29c will re-validate
+on calibrated base)
+
+Gap 3: FAST WEIGHTS x K_iter DEPTH
+-----------------------------------
+Themes: Cluster 5 (Fast Weights) x Cluster 2 (Routing Depth)
+WHY: Fast W_phase was tested at K_iter=3 (step17). K_iter=8 gives +7.47pp over K_iter=3.
+With more routing steps, the fast weight A has more iterations to refine -- Oja's rule
+converges to the principal eigenvector with O(K_iter) refinements. At K_iter=3, the fast
+weight barely has time to adapt. At K_iter=8, it might converge and provide genuinely
+input-specific routing. This combination has never been tested.
+PRIORITY: HIGH (the fast-weight mechanism is explicitly designed to improve with more
+iterations; testing only at K_iter=3 leaves its potential untapped)
+
+Gap 4: INHIBITION MECHANISMS x SIGNED COUPLING
+-----------------------------------------------
+Themes: Cluster 4 (Inhibition) x Cluster 3 (Signed Coupling)
+WHY: Anti-Hebbian (+8pp) and signed coupling (+10.93pp) are the two strongest mechanisms.
+They are NOT redundant: Anti-Hebbian suppresses neurons based on W_POS proximity (spatial
+diversity), while signed coupling operates on Z similarity (activation diversity). One
+acts on the STRUCTURAL graph, the other on the DYNAMIC activation space. Their combination
+has never been tested at any scale. If gains compound, the combined effect could be +15pp+.
+PRIORITY: HIGH (the two largest individual gains, operating on orthogonal axes)
+
+Gap 5: INTERNEURONS x SIGNED COUPLING
+--------------------------------------
+Themes: Cluster 7 (Neuron Scaling) x Cluster 3 (Signed Coupling)
+WHY: Interneurons (50%, readout=all) give +2.83pp by creating "shared experts" that
+integrate cross-feature signals. Signed coupling creates phase groups via Z similarity.
+Interneurons, receiving no direct input, would have their Z determined entirely by routing
+-- making them pure "routing attractors." In a signed coupling regime, interneurons could
+serve as stable cluster centers that attract similar neurons, analogous to DeepSeekMoE's
+shared experts. Step28 (Gen3) includes this combination but on the wrong base
+(signed+K_iter=3 at D=64, which is known to underperform).
+PRIORITY: MEDIUM (tested indirectly in step28, but on a compromised base)
+
+Gap 6: LOSS FUNCTIONS x ROUTING MECHANISMS
+-------------------------------------------
+Themes: Cluster 12 (Loss Functions) x Cluster 10 (Routing Mechanisms)
+WHY: Every experiment modifies the FORWARD PASS but uses the SAME loss function (task +
+safety + optional load balance). No experiment has tested whether a loss that directly
+rewards desired routing behavior (e.g., penalizing over-smoothing, rewarding sparsity,
+encouraging routing diversity) could unlock gains that forward-pass modifications miss.
+Step39 (running) is the first experiment to bridge this gap.
+PRIORITY: HIGH (a completely unexplored axis of variation)
+
+Gap 7: TRANSLATION INVARIANCE x FOURIER ENCODING
+-------------------------------------------------
+Themes: From LEARNINGS_research.md (translation invariance) x Cluster 1 (Encoding)
+WHY: The Fourier encoding embeds spatial position at multiple frequencies. This makes
+SGNNET explicitly position-dependent -- the same object at different spatial locations
+activates different neurons. No experiment has tested channel-only C_input (Fix B from
+LEARNINGS_research.md) which would make seeding position-invariant. At D=64, there are
+enough dimensions to potentially separate spatial and feature information, but this has
+not been attempted. The VGG feature extractor already provides some translation invariance,
+but SGNNET's seeding layer destroys it.
+PRIORITY: MEDIUM (known gap documented in LEARNINGS_research.md but never experimentally
+addressed since Fourier encoding was introduced)
+
+Gap 8: BEAM ROUTING x SIGNED COUPLING
+--------------------------------------
+Themes: Cluster 13 (Beam Selection) x Cluster 3 (Signed Coupling)
+WHY: Beam routing (route=64, +2.88pp, 53x speedup) restricts which neurons participate.
+Signed coupling is O(N^2) all-pairs. If beam routing's input-dependent active set were
+used to restrict signed coupling to the active subset (64 neurons instead of 512), the
+cost drops from O(512^2) to O(64^2) = 64x cheaper, while maintaining input-dependence.
+This has not been tested -- step24 tested STATIC K-NN sparsification of signed coupling
+(which fails because W_phase is not input-dependent), but DYNAMIC beam-based sparsification
+is fundamentally different.
+PRIORITY: HIGH (could solve the O(N^2) cost problem for signed coupling while preserving
+its input-dependent nature)
+
+Gap 9: MATFORMER NESTED TRAINING x SGNNET N SWEEP
+--------------------------------------------------
+Themes: Cluster 9 (Sparse Attention/Transformer Analogy) x Cluster 7 (Neuron Scaling)
+WHY: Matformer trains one model that subsumes all smaller N variants. SGNNET runs separate
+training for each N (512, 1024, 2048). A single nested-N training run would produce one
+model answering all N questions, saving ~3x compute and providing cleaner comparisons.
+SGNNET's graph structure (subgraph of lower-index neurons is a valid smaller model) makes
+this directly applicable. Not implemented.
+PRIORITY: LOW (engineering optimization, not accuracy-critical)
+
+Gap 10: ADAPTIVE DEPTH (MoD) x OVER-SMOOTHING PREVENTION
+---------------------------------------------------------
+Themes: Cluster 9 (MoD) x Cluster 2 (Over-smoothing)
+WHY: K_iter=12 over-smooths (step13J: 29.53% < K_iter=8: 36.69%). MoD's per-layer router
+lets each neuron decide when to stop updating. This could solve over-smoothing by letting
+neurons that have already converged to their attractor "freeze" while others continue
+routing. Step34 (running) tests this. The theoretical connection is strong: MoD shows
+layer-skipping saves 50% FLOPs with +1.5% accuracy in transformers.
+PRIORITY: MEDIUM (step34 running, results pending)
+
+Gap 11: CROSS-DIMENSIONAL MIXING x FAST WEIGHTS
+------------------------------------------------
+Themes: Cluster 14 (Cross-Dim Mixing) x Cluster 5 (Fast Weights)
+WHY: Cross-dimensional mixing (W_mix D-by-D matrix) enables feature interaction across
+dimensions during routing. Fast weights make W_phase input-specific. But the W_mix matrix
+itself could be input-conditioned via fast weights or phase-querying. A static W_mix
+treats all inputs identically. A fast-weight W_mix (adapted per forward pass via Oja or
+attention on the D-by-D space) would be truly input-specific cross-dimensional mixing.
+Neither step30 (W_mix variants) nor step37 (phase-queried bank) uses fast-weight adaptation
+of the mixing matrix within the forward pass.
+PRIORITY: MEDIUM (combines two individually positive mechanisms in an unexplored way)
+
+Gap 12: SAFETY VALVE / GEOMETRIC CONSTRAINTS x HIGH-D
+------------------------------------------------------
+Themes: Cluster 12 (Loss Functions, safety valve) x Cluster 1 (Dimensionality)
+WHY: Safety valve loss uses r* = 0.5/N^(1/D) as the minimum spacing. At D=64, r* is
+extremely small (0.5/1024^(1/64) = ~0.49). The safety valve may be completely ineffective
+at D=64 because neurons on S^63 are so far apart that the repulsion never activates.
+Has lambda_safety been verified at D=64? The current scaling formula (256/N)^(1/D) was
+designed for D=4. This could mean W_pos is unconstrained at D=64, possibly explaining
+why step28 (D=64 + signed) underperforms -- W_pos geometry may be degenerate.
+PRIORITY: MEDIUM (possibly explains poor D=64 + mechanism results)
+
+
+================================================================================
+SECTION 3: TOP BRIDGING CONCEPTS
+================================================================================
+
+1. COSINE SIMILARITY / ANGULAR DISTANCE ON S^(D-1)
+   Appears in: Encoding (D determines sphere geometry), Signed coupling (cos(Z_h, Z_j)),
+   Routing mechanisms (theta-gating by dot product), Dynamic topology (Z-based K-NN),
+   Anti-Hebbian inhibition (cos similarity for suppression), Fast weights (Oja's sim term),
+   Over-smoothing (all Z converge to same direction).
+   Role: THE fundamental operation in SGNNET. Every mechanism computes or exploits angular
+   relationships between neuron activations on the unit hypersphere.
+
+2. INPUT-DEPENDENCE (per-sample vs per-epoch vs static)
+   Appears in: Dynamic topology (dynamic_z rebuilt per forward), Fast weights (W_phase
+   adapted per forward), Beam routing (active set per input), Signed coupling (Z-based,
+   per input), Static graph (conn_hh fixed), Interneurons (always-active vs input-gated).
+   Role: The recurring theme is that input-dependent mechanisms consistently beat static
+   ones. dynamic_z > resonant. Fast W_phase > learned W_phase. Beam routing > all-active.
+   The sparse signed coupling gap (step24: only 37% N^2 recovery) is directly caused by
+   using STATIC W_phase K-NN instead of dynamic Z-based selection.
+
+3. K_iter (ROUTING DEPTH)
+   Appears in: Over-smoothing, Signed coupling collapse, Fast weight convergence, LISTA
+   iterations, MoD adaptive depth, Beam routing depth scaling, Computational cost.
+   Role: K_iter interacts with EVERY mechanism differently. Signed coupling collapses at
+   K_iter>=8. Anti-Hebbian may benefit from more iterations. Fast weights need more
+   iterations to converge. MoD proposes adaptive depth per neuron. K_iter is the most
+   interaction-rich hyperparameter.
+
+4. W_pos (LEARNED POSITIONS)
+   Appears in: Geometric bias in routing (geo_gamma), Anti-Hebbian spatial suppression,
+   Safety valve repulsion, Structural graph (K-NN on W_pos at init), C_input fan-in
+   (block-local bias), Readout projection, weight_decay=0 requirement.
+   Role: W_pos is the only parameter in the optimizer and the backbone of the architecture.
+   It defines structural wiring, geometric routing bias, anti-Hebbian neighborhoods, and
+   safety constraints. Every mechanism ultimately affects or is affected by W_pos geometry.
+
+5. SPARSITY (activation and connectivity)
+   Appears in: Beam routing (input-dependent active set), theta-gating (relu(Z-theta)),
+   Top-K conduction, MoE top-K routing, TurboSparse FFN sparsity, LISTA L1 penalty,
+   ReLU revival, Signed coupling sparsification attempts.
+   Role: SGNNET's O(N*K) constraint requires sparsity. The central open question is
+   whether sparse input-dependent connectivity can match N^2 signed coupling. Step31
+   (dynamic Z-KNN) is the critical test.
+
+
+================================================================================
+SECTION 4: UNEXPLORED COMBINATIONS
+================================================================================
+
+COMBINATION 1: Anti-Hebbian + Signed Coupling (at D=16)
+Anti-Hebbian: +8.00pp (step16H, D=16 K_iter=3)
+Signed coupling: +10.93pp (step18A, D=16 K_iter=3)
+Combined: NEVER TESTED at any scale.
+Reasoning: They operate on orthogonal axes (W_pos geometry vs Z activation similarity).
+If gains compound even partially: 29.22% + 8 + 10.93 = ~48% at D=16 K_iter=3.
+This would exceed the D=64 K_iter=8 baseline (56.28%) when combined with D=64 extension.
+
+COMBINATION 2: Fast W_phase (attention rule) + K_iter=8
+Fast W_phase attention: +1.84pp (step17F, D=16 K_iter=3)
+K_iter=8: +7.47pp (step13I, D=16)
+Combined: NEVER TESTED.
+Reasoning: Fast weight attention update treats W_phase as key matrix, retrieves from Z.
+At K_iter=3, only 3 refinement steps. At K_iter=8, the fast weight has 8 steps to converge,
+potentially producing much richer input-specific routing. Expected: >+1.84pp because
+the mechanism is designed to benefit from more iterations.
+
+COMBINATION 3: Dynamic Z-KNN + Anti-Hebbian (at D=64)
+Dynamic Z-KNN: step31 running, results pending (D=64)
+Anti-Hebbian: +8.00pp (D=16), step29 running at D=64 (uncalibrated)
+Combined: NEVER TESTED.
+Reasoning: Dynamic Z-KNN provides input-dependent excitatory connections. Anti-Hebbian
+provides spatial suppression. Together they would create: (a) input-dependent excitation
+of similar neurons + (b) spatial suppression of nearby neurons = soft clustering with
+spatial diversity. This mirrors the biological lateral inhibition + excitatory coupling
+pattern.
+
+COMBINATION 4: Beam routing (route=64) + Signed coupling (restricted to active set)
+Beam routing: +2.88pp, 53x speedup (step25B, D=16 K_iter=3)
+Signed coupling: +10.93pp, O(N^2) (step18A, D=16 K_iter=3)
+Combined with beam restriction: NEVER TESTED.
+Reasoning: Run signed coupling only on the route=64 active neurons. Cost: O(64^2) = 4096
+ops per step instead of O(512^2) = 262144. If the beam selects the most relevant neurons,
+coupling among them should capture most of the N^2 effect. This is fundamentally different
+from step24's static K-NN sparsification because the active set is INPUT-DEPENDENT.
+
+COMBINATION 5: Refractory inhibition + Multiple K_iter steps
+Refractory inhibition: +4.31pp (step16E, D=16 K_iter=3)
+Higher K_iter: +7.47pp at K_iter=8
+Combined: NEVER TESTED.
+Reasoning: Refractory inhibition suppresses neurons that were active in step k from
+dominating step k+1. This is specifically an anti-over-smoothing mechanism. At K_iter=8,
+over-smoothing is the primary failure mode. Refractory inhibition could extend the useful
+depth from K_iter=8 to K_iter=12 or beyond by preventing dominant neurons from collapsing
+all representations.
+
+COMBINATION 6: Interneurons + Fast W_phase + Anti-Hebbian (triple compound at D=16)
+Interneurons 50%: +2.83pp (step20B)
+Fast W_phase attention: +1.84pp (step17F)
+Anti-Hebbian W_pos: +8.00pp (step16H)
+Triple compound: NEVER TESTED at any scale.
+Expected compound at D=16 (if gains stack ~70%): 29.22% + 0.7*(2.83+1.84+8.00) = ~38.1%
+This would be a D=16 compound configuration potentially approaching the D=32 baseline
+(49.38%) when extended to D=32.
+
+COMBINATION 7: Phase-queried matrix bank (step37) + Signed coupling (restricted)
+Phase-queried bank: running (D=64 K_iter=8)
+Signed coupling: +10.93pp but collapses at K_iter>=8
+Combined: NEVER TESTED.
+Reasoning: The matrix bank provides per-neuron cross-dimensional mixing conditioned on
+W_phase direction. If this creates more distinguishable neuron representations, signed
+coupling's mode collapse might be delayed (neurons are less similar on S^63 after
+phase-conditioned rotation). This could be the key to making signed coupling work at
+K_iter=8.
+
+
+================================================================================
+SECTION 5: CONTRADICTIONS AND TENSIONS
+================================================================================
+
+TENSION 1: SIGNED COUPLING vs ROUTING DEPTH (FUNDAMENTAL INCOMPATIBILITY)
+--------------------------------------------------------------------------
+Signed coupling K_iter=3: +10.93pp (step18A). K_iter=8: CATASTROPHIC COLLAPSE (step23B).
+Routing depth K_iter=8: +7.47pp (step13I). K_iter=3: baseline.
+Resolution status: UNRESOLVED. The two most powerful mechanisms cannot be combined.
+Step23 establishes this is a HARD constraint: even alpha=0.1 with K_iter=8 collapses.
+The power iteration theory explains why: at K_iter>=8, Z Z^T is iterated enough times
+to converge to the dominant eigenvector. All neurons become identical.
+Possible resolutions:
+  - Refractory inhibition to prevent convergence (COMBINATION 5 above)
+  - Phase-queried rotation to diversify Z before coupling (COMBINATION 7 above)
+  - Stochastic coupling (randomly skip coupling in some steps)
+  - Annealed coupling alpha that decreases with K_iter step number
+
+TENSION 2: MECHANISM HIERARCHY REVERSAL ACROSS D
+-------------------------------------------------
+At D=4: turing (+6.5pp) and reflection (+2.6pp) both strongly positive.
+At D=16: turing (-2.88pp) and reflection (-0.48pp) both NEGATIVE (step10a).
+This is not a contradiction but a phase transition: at D=4, neurons are overcrowded and
+need extra mechanisms to distinguish them. At D=16+, angular separation is sufficient
+and extra mechanisms add noise. HOWEVER: this was tested at D=16 WITHOUT geo mode
+(step10a). With geo mode (step11), results may differ but are not documented in results
+JSONs.
+
+TENSION 3: STATIC W_PHASE vs DYNAMIC W_PHASE
+---------------------------------------------
+Static W_phase (random init, never updated): 28.59% (step10b E)
+Learned W_phase (gradient descent on W_phase): 27.90% (step10b F) -- WORSE
+Fast W_phase (Oja/Hopfield/attention within forward): 30-31% -- BETTER
+This creates a paradox: the MOST frozen version is better than the gradient-learned
+version, but the MOST dynamic version is best of all. The resolution is in the learning
+timescale: gradient descent across training examples averages W_phase to a useless mean,
+while fast-weight adaptation specializes it per input. The static version is "neutral"
+(random directions don't help or hurt), while learned is "anti-helpful" (averaged away).
+
+TENSION 4: SPARSE SIGNED COUPLING FAILURE vs DYNAMIC Z-KNN HOPE
+----------------------------------------------------------------
+Step24: Static K-NN on W_phase recovers only 37% of N^2 signed coupling gain.
+Step31 hypothesis: Dynamic Z-KNN (input-dependent K-NN on current Z) will recover >80%.
+The tension: if Z-KNN fails similarly, then ALL sparse approximations of signed coupling
+are inadequate, and the O(N^2) cost is irreducible. This would fundamentally limit
+SGNNET's viability as a scalable FFN replacement (the project's long-term goal requires
+O(N*K) hard constraint). Step31 results are pending and project-critical.
+
+TENSION 5: D=64 CEILING vs MECHANISM TRANSFER
+----------------------------------------------
+D=64 N=1024 K_iter=8: 56.28% (no mechanisms beyond base routing).
+Gen3 compound (D=64 + signed + mechanisms): 32.15% (step28, far worse than base D=64).
+The tension: every mechanism was validated at D=16 K_iter=3, then applied to D=64 K_iter=8
+WITHOUT recalibration. The calibration rule (documented in memory) states: "When base
+changes generation/scale, hyperparams must be recalibrated first via short 40-50ep sweep."
+Step22b (calibration) is running but not yet complete. Until calibration is done, ALL
+mechanism results at D=64 are on a questionable base. The true D=64 ceiling with properly
+calibrated mechanisms is unknown.
+
+TENSION 6: BEAM ROUTING ACCURACY vs FULL ROUTING
+-------------------------------------------------
+Step25B: route=64 gives 29.73% (HIGHER than full-N 26.85% reference by +2.88pp).
+This is counterintuitive: using FEWER neurons should not IMPROVE accuracy.
+The resolution: full-N routing at K_iter=3 has many weakly-activated neurons contributing
+noise. Beam selection (by Z-norm) removes weak/irrelevant neurons, effectively acting as
+an attention mechanism. The accuracy GAIN from sparsification is evidence that full-N
+routing includes harmful noise. This suggests all mechanisms could benefit from being
+applied only to the beam-selected active set.
+
+TENSION 7: W_PHASE DISCONNECTION IN BEST CONFIG
+------------------------------------------------
+W_phase is "wired to nothing in dynamic_z_geo mode" (LEARNINGS_phase5_p5). In the forward
+loop, W_phase is normalized and passed to _phase_inhibit(), but _phase_inhibit in
+dynamic_z_geo mode calls _inhibit_dynamic_z() which IGNORES W_phase. Every D=16+
+experiment (steps 8-27) has W_phase completely disconnected from routing. The "resonant"
+mechanism (the architecture's namesake) has NEVER been tested in the best configuration.
+This is both a tension and a major gap: the W_phase parameter exists, receives gradients
+through other paths (readout), but its intended role in routing is inactive.
+
+
+================================================================================
+SECTION 6: SUMMARY STATISTICS
+================================================================================
+
+Total experiments completed: ~45 (steps 1-27 + step28 partial)
+Total experiments running: ~10 (steps 28-37, 39, 41)
+Total mechanisms tested: 15+ (theta, reflection, turing, signed coupling, anti-Hebbian,
+  divisive norm, refractory, fast W_phase Oja/Hopfield/attention, excitatory radiation,
+  phase portals, interneurons, beam routing, soft beam, W_mix, input-gated adjacency)
+
+Key accuracy milestones:
+  D=4  linear:     26.52% (iter1 dynamic_z, original best)
+  D=16 Fourier:    29.22% (step9A, dynamic_z_geo, 150ep)
+  D=16 mechanisms: 40.15% (step18A, signed coupling, 120ep)
+  D=16 combined:   45.55% (step23C, signed + N=1024 + K_iter=3)
+  D=64 base:       56.28% (step22E, D=64 N=1024 K_iter=8, no mechanisms)
+  D=64 + mech:     32.15% (step28, signed + D=64, REGRESSION -- calibration needed)
+
+Number of structural gaps identified: 12
+Number of unexplored combinations: 7
+Number of unresolved tensions: 7
+
+Most impactful untested experiment (by estimated potential):
+  Anti-Hebbian + Signed Coupling compound at D=16 K_iter=3
+  Expected: ~48% (if gains compound at 70% efficiency)
+  Why untested: They were validated in sequential experiments but never stacked.
+
+Most project-critical pending result:
+  Step31 (Dynamic Z-KNN at D=64 K_iter=8)
+  If >80% N^2 recovery: O(N*K) SGNNET is viable as FFN replacement
+  If <50% N^2 recovery: O(N^2) may be irreducible, limiting scalability

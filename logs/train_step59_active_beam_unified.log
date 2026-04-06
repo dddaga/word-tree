@@ -1,0 +1,72 @@
+Loaded REF_BASELINE from step57: 0.7353
+Device: mps  Epochs: 75  Batch: 128  Data: 50%
+Step 59: Active beam unified routing  |  REF_BASELINE=0.7353 (step57)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref   AntiHebb alpha=1.0 wpos
+======================================================================
+  e  1  loss=4.4572  task=4.3836  safety=0.1506  top1=0.0823  lr=2.36e-03
+  e 10  loss=1.8008  task=1.7547  safety=0.0944  top1=0.4031  lr=2.36e-03
+  e 20  loss=1.4837  task=1.4522  safety=0.0645  top1=0.4660  lr=2.36e-03
+  e 30  loss=1.3101  task=1.2853  safety=0.0507  top1=0.6020  lr=2.36e-03
+  e 40  loss=1.1951  task=1.1739  safety=0.0434  top1=0.6420  lr=2.36e-03
+  e 50  loss=1.0963  task=1.0774  safety=0.0387  top1=0.6596  lr=2.36e-03
+  e 60  loss=1.0159  task=0.9984  safety=0.0358  top1=0.6706  lr=2.36e-03
+  e 70  loss=0.9679  task=0.9516  safety=0.0333  top1=0.7129  lr=2.36e-03
+  top1_best=0.7358  best_ep=73/75 (97%)  diag=converged  t=3032s
+
+======================================================================
+A     BeamUnified gate_struct_only beam=16
+======================================================================
+  e  1  loss=2.6187  task=2.5764  safety=0.0867  top1=0.1001  lr=2.36e-03
+  e 10  loss=2.3346  task=2.3334  safety=0.0024  top1=0.0994  lr=2.36e-03
+  e 20  loss=2.2846  task=2.2830  safety=0.0033  top1=0.1070  lr=2.36e-03
+  e 30  loss=2.2692  task=2.2673  safety=0.0038  top1=0.1062  lr=2.36e-03
+  e 40  loss=2.2630  task=2.2611  safety=0.0038  top1=0.1062  lr=2.36e-03
+  e 50  loss=2.2599  task=2.2582  safety=0.0033  top1=0.1050  lr=2.36e-03
+  e 60  loss=2.2586  task=2.2572  safety=0.0028  top1=0.1088  lr=2.36e-03
+  e 70  loss=2.2577  task=2.2565  safety=0.0025  top1=0.1068  lr=2.36e-03
+  top1_best=0.1113  best_ep=72/75 (96%)  diag=converged  t=2565s
+
+======================================================================
+B     BeamUnified gate_struct+phase beam=16
+======================================================================
+  e  1  loss=2.6264  task=2.5840  safety=0.0867  top1=0.1024  lr=2.36e-03
+  e 10  loss=2.3374  task=2.3362  safety=0.0025  top1=0.1055  lr=2.36e-03
+  e 20  loss=2.2849  task=2.2833  safety=0.0034  top1=0.1070  lr=2.36e-03
+  e 30  loss=2.2690  task=2.2670  safety=0.0040  top1=0.1070  lr=2.36e-03
+  e 40  loss=2.2631  task=2.2612  safety=0.0039  top1=0.1055  lr=2.36e-03
+  e 50  loss=2.2599  task=2.2582  safety=0.0035  top1=0.1042  lr=2.36e-03
+  e 60  loss=2.2584  task=2.2569  safety=0.0029  top1=0.1078  lr=2.36e-03
+  e 70  loss=2.2576  task=2.2564  safety=0.0025  top1=0.1065  lr=2.36e-03
+  top1_best=0.1103  best_ep=24/75 (32%)  diag=training_too_short  t=2490s
+
+======================================================================
+C     BeamUnified gate_both + active_norm beam=16
+======================================================================
+  e  1  loss=2.3780  task=2.3356  safety=0.0867  top1=0.0963  lr=2.36e-03
+  e 10  loss=2.2836  task=2.2825  safety=0.0023  top1=0.0920  lr=2.36e-03
+  e 20  loss=2.2724  task=2.2711  safety=0.0027  top1=0.0887  lr=2.36e-03
+  e 30  loss=2.2676  task=2.2665  safety=0.0022  top1=0.0897  lr=2.36e-03
+  e 40  loss=2.2653  task=2.2644  safety=0.0018  top1=0.0887  lr=2.36e-03
+  e 50  loss=2.2641  task=2.2632  safety=0.0018  top1=0.0922  lr=2.36e-03
+  e 60  loss=2.2634  task=2.2625  safety=0.0019  top1=0.0932  lr=2.36e-03
+  e 70  loss=2.2631  task=2.2621  safety=0.0020  top1=0.0912  lr=2.36e-03
+  top1_best=0.0968  best_ep=2/75 (3%)  diag=training_too_short  t=2556s
+
+Saved -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step59_active_beam_unified.json
+
+-- Step 59: Active beam unified routing (ref=0.7358 / step57=0.7353) --
+  Config                                                     top1    vs_Ref   best_ep    t(s)
+  ------------------------------------------------------------------------------------------
+  Ref   AntiHebb alpha=1.0 wpos                            0.7358   +0.0000       73      3032
+  A     BeamUnified gate_struct_only beam=16               0.1113   -0.6245       72      2565
+  B     BeamUnified gate_struct+phase beam=16              0.1103   -0.6255       24      2490
+  C     BeamUnified gate_both + active_norm beam=16        0.0968   -0.6390        2      2556
+
+  Key questions:
+  A vs Ref  → does restricting senders sharpen the routing signal?
+  B vs A    → does gating phase channel too help or hurt?
+  C vs B    → does active-only normalization add on top of full beam gating?

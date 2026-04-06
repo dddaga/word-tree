@@ -1,0 +1,156 @@
+Device: cpu  Epochs: 150  Batch: 128
+Step 55: Spatial grouped input — learned per-group projections
+Base: D=64 N=1024 K_iter=8 AntiHebb α=0.7 wpos
+Reference: ~75.24% (step29 Config C)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref   K_in=50 sparse gather  n_groups=128 flat  NO proj  [baseline 75.24%]
+======================================================================
+  proj_params=0  total_params=132,736
+  e  1  loss=3.7732  task=3.7018  safety=0.1461  top1=0.1470  lr=2.36e-03
+  e 10  loss=1.7558  task=1.7263  safety=0.0603  top1=0.4158  lr=2.36e-03
+  e 20  loss=1.5070  task=1.4730  safety=0.0694  top1=0.5332  lr=2.36e-03
+  e 30  loss=1.3542  task=1.3155  safety=0.0793  top1=0.6199  lr=2.36e-03
+  e 40  loss=1.2265  task=1.1833  safety=0.0884  top1=0.6191  lr=2.36e-03
+  e 50  loss=1.1583  task=1.1141  safety=0.0904  top1=0.6099  lr=2.36e-03
+  e 60  loss=1.1159  task=1.0716  safety=0.0907  top1=0.6512  lr=2.36e-03
+  e 70  loss=1.0837  task=1.0387  safety=0.0920  top1=0.6759  lr=2.36e-03
+  e 80  loss=1.0587  task=1.0132  safety=0.0931  top1=0.6940  lr=2.36e-03
+  e 90  loss=1.0349  task=0.9893  safety=0.0934  top1=0.6938  lr=2.36e-03
+  e100  loss=1.0144  task=0.9683  safety=0.0944  top1=0.6953  lr=2.36e-03
+  e110  loss=0.9868  task=0.9403  safety=0.0952  top1=0.7080  lr=2.36e-03
+  e120  loss=0.9820  task=0.9348  safety=0.0966  top1=0.7037  lr=2.36e-03
+  e130  loss=0.9656  task=0.9178  safety=0.0979  top1=0.7080  lr=2.36e-03
+  e140  loss=0.9484  task=0.9000  safety=0.0991  top1=0.7146  lr=2.36e-03
+  e150  loss=0.9367  task=0.8875  safety=0.1007  top1=0.7355  lr=2.36e-03
+  top1_best=0.7549  best_ep=134/150 (89%)  t=20998s
+
+======================================================================
+A     7 rows  separate proj  overlap=0%   [pure exclusive, no bridge]
+======================================================================
+  proj_params=3,670,016  total_params=3,802,752
+  e  1  loss=2.1776  task=2.1053  safety=0.1479  top1=0.6527  lr=2.36e-03
+  e 10  loss=0.0748  task=0.0697  safety=0.0104  top1=0.8734  lr=2.36e-03
+  e 20  loss=0.0179  task=0.0167  safety=0.0025  top1=0.8808  lr=2.36e-03
+  e 30  loss=0.0121  task=0.0113  safety=0.0017  top1=0.8805  lr=2.36e-03
+  e 40  loss=0.0140  task=0.0131  safety=0.0020  top1=0.8904  lr=2.36e-03
+  e 50  loss=0.0060  task=0.0056  safety=0.0008  top1=0.8887  lr=1.18e-03
+  e 60  loss=0.0060  task=0.0055  safety=0.0008  top1=0.8907  lr=1.18e-03
+  e 70  loss=0.0037  task=0.0035  safety=0.0005  top1=0.8932  lr=5.91e-04
+  e 80  loss=0.0039  task=0.0037  safety=0.0006  top1=0.8927  lr=5.91e-04
+  e 90  loss=0.0030  task=0.0028  safety=0.0004  top1=0.8927  lr=2.96e-04
+  e100  loss=0.0031  task=0.0029  safety=0.0004  top1=0.8930  lr=1.48e-04
+  e110  loss=0.0027  task=0.0025  safety=0.0004  top1=0.8925  lr=1.48e-04
+  e120  loss=0.0026  task=0.0025  safety=0.0004  top1=0.8938  lr=1.48e-04
+  e130  loss=0.0026  task=0.0024  safety=0.0004  top1=0.8935  lr=1.48e-04
+  e140  loss=0.0025  task=0.0024  safety=0.0004  top1=0.8932  lr=1.48e-04
+  e150  loss=0.0025  task=0.0023  safety=0.0003  top1=0.8932  lr=1.48e-04
+  top1_best=0.8943  best_ep=135/150 (90%)  t=9824s
+
+======================================================================
+B     7 rows  separate proj  overlap=20%  [819 excl + 205 bridge]
+======================================================================
+  proj_params=2,935,296  total_params=3,068,032
+  e  1  loss=4.5951  task=4.5341  safety=0.1249  top1=0.1248  lr=2.36e-03
+  e 10  loss=1.5041  task=1.4790  safety=0.0515  top1=0.4229  lr=2.36e-03
+  e 20  loss=1.2188  task=1.1824  safety=0.0746  top1=0.5276  lr=2.36e-03
+  e 30  loss=0.8380  task=0.7939  safety=0.0901  top1=0.6851  lr=2.36e-03
+  e 40  loss=0.5898  task=0.5495  safety=0.0824  top1=0.7641  lr=2.36e-03
+  e 50  loss=0.4817  task=0.4488  safety=0.0673  top1=0.7819  lr=2.36e-03
+  e 60  loss=0.4341  task=0.4045  safety=0.0607  top1=0.7875  lr=2.36e-03
+  e 70  loss=0.4118  task=0.3836  safety=0.0575  top1=0.8025  lr=2.36e-03
+  e 80  loss=0.3865  task=0.3601  safety=0.0540  top1=0.8000  lr=2.36e-03
+  e 90  loss=0.3675  task=0.3424  safety=0.0514  top1=0.7969  lr=2.36e-03
+  e100  loss=0.3554  task=0.3311  safety=0.0497  top1=0.8028  lr=2.36e-03
+  e110  loss=0.3282  task=0.3058  safety=0.0459  top1=0.8117  lr=2.36e-03
+  e120  loss=0.2881  task=0.2684  safety=0.0403  top1=0.8245  lr=2.36e-03
+  e130  loss=0.2385  task=0.2222  safety=0.0333  top1=0.8262  lr=2.36e-03
+  e140  loss=0.2101  task=0.1958  safety=0.0294  top1=0.8283  lr=2.36e-03
+  e150  loss=0.1826  task=0.1701  safety=0.0255  top1=0.8296  lr=2.36e-03
+  top1_best=0.8357  best_ep=146/150 (97%)  t=9500s
+
+======================================================================
+C     7 rows  separate proj  overlap=40%  [614 excl + 410 bridge]
+======================================================================
+  proj_params=2,200,576  total_params=2,333,312
+  e  1  loss=4.6010  task=4.5441  safety=0.1166  top1=0.1131  lr=2.36e-03
+  e 10  loss=1.6758  task=1.6500  safety=0.0529  top1=0.3738  lr=2.36e-03
+  e 20  loss=1.4625  task=1.4177  safety=0.0916  top1=0.4680  lr=2.36e-03
+  e 30  loss=1.3640  task=1.3102  safety=0.1101  top1=0.4948  lr=2.36e-03
+  e 40  loss=1.3061  task=1.2475  safety=0.1199  top1=0.5047  lr=2.36e-03
+  e 50  loss=1.2714  task=1.2096  safety=0.1265  top1=0.5175  lr=2.36e-03
+  e 60  loss=1.2472  task=1.1814  safety=0.1348  top1=0.5327  lr=2.36e-03
+  e 70  loss=1.2203  task=1.1512  safety=0.1414  top1=0.5439  lr=2.36e-03
+  e 80  loss=1.1998  task=1.1278  safety=0.1473  top1=0.5669  lr=2.36e-03
+  e 90  loss=1.1206  task=1.0441  safety=0.1566  top1=0.5997  lr=2.36e-03
+  e100  loss=1.0468  task=0.9753  safety=0.1463  top1=0.6380  lr=2.36e-03
+  e110  loss=0.8601  task=0.8013  safety=0.1202  top1=0.6940  lr=2.36e-03
+  e120  loss=0.8006  task=0.7460  safety=0.1119  top1=0.7093  lr=2.36e-03
+  e130  loss=0.7594  task=0.7076  safety=0.1061  top1=0.7129  lr=2.36e-03
+  e140  loss=0.7302  task=0.6804  safety=0.1021  top1=0.7294  lr=2.36e-03
+  e150  loss=0.6931  task=0.6458  safety=0.0969  top1=0.7355  lr=2.36e-03
+  top1_best=0.7381  best_ep=147/150 (98%)  t=9909s
+
+======================================================================
+D     49 positions  separate proj  overlap=20%  [819 excl + 205 bridge]
+======================================================================
+  proj_params=419,328  total_params=552,064
+  e  1  loss=4.5452  task=4.4844  safety=0.1246  top1=0.1152  lr=2.36e-03
+  e 10  loss=1.5379  task=1.5126  safety=0.0518  top1=0.4224  lr=2.36e-03
+  e 20  loss=1.2710  task=1.2343  safety=0.0753  top1=0.5233  lr=2.36e-03
+  e 30  loss=0.9485  task=0.9021  safety=0.0949  top1=0.6545  lr=2.36e-03
+  e 40  loss=0.6620  task=0.6168  safety=0.0925  top1=0.7406  lr=2.36e-03
+  e 50  loss=0.4710  task=0.4389  safety=0.0658  top1=0.7918  lr=2.36e-03
+  e 60  loss=0.3924  task=0.3656  safety=0.0548  top1=0.8189  lr=2.36e-03
+  e 70  loss=0.3424  task=0.3190  safety=0.0479  top1=0.8270  lr=2.36e-03
+  e 80  loss=0.3041  task=0.2834  safety=0.0425  top1=0.8265  lr=2.36e-03
+  e 90  loss=0.2711  task=0.2526  safety=0.0379  top1=0.8252  lr=2.36e-03
+  e100  loss=0.2380  task=0.2218  safety=0.0333  top1=0.8331  lr=2.36e-03
+  e110  loss=0.2178  task=0.2029  safety=0.0304  top1=0.8408  lr=2.36e-03
+  e120  loss=0.1873  task=0.1745  safety=0.0262  top1=0.8387  lr=2.36e-03
+  e130  loss=0.1646  task=0.1533  safety=0.0230  top1=0.8400  lr=2.36e-03
+  e140  loss=0.1426  task=0.1328  safety=0.0199  top1=0.8390  lr=2.36e-03
+  e150  loss=0.1255  task=0.1169  safety=0.0175  top1=0.8372  lr=2.36e-03
+  top1_best=0.8410  best_ep=103/150 (69%)  t=9524s
+
+======================================================================
+E     8 flat groups  separate proj  overlap=20%  [819 excl + 205 bridge]
+======================================================================
+  proj_params=2,568,384  total_params=2,701,120
+  e  1  loss=4.4183  task=4.3573  safety=0.1248  top1=0.1427  lr=2.36e-03
+  e 10  loss=1.4615  task=1.4338  safety=0.0566  top1=0.4688  lr=2.36e-03
+  e 20  loss=0.9007  task=0.8596  safety=0.0841  top1=0.6810  lr=2.36e-03
+  e 30  loss=0.7147  task=0.6740  safety=0.0833  top1=0.7312  lr=2.36e-03
+  e 40  loss=0.5419  task=0.5049  safety=0.0757  top1=0.7783  lr=2.36e-03
+  e 50  loss=0.4770  task=0.4444  safety=0.0667  top1=0.7952  lr=2.36e-03
+  e 60  loss=0.4114  task=0.3833  safety=0.0575  top1=0.8059  lr=2.36e-03
+  e 70  loss=0.3517  task=0.3277  safety=0.0492  top1=0.8196  lr=2.36e-03
+  e 80  loss=0.3006  task=0.2801  safety=0.0420  top1=0.8201  lr=2.36e-03
+  e 90  loss=0.2697  task=0.2513  safety=0.0377  top1=0.8331  lr=2.36e-03
+  e100  loss=0.2486  task=0.2316  safety=0.0347  top1=0.8367  lr=2.36e-03
+  e110  loss=0.2306  task=0.2149  safety=0.0322  top1=0.8362  lr=2.36e-03
+  e120  loss=0.2139  task=0.1993  safety=0.0299  top1=0.8357  lr=2.36e-03
+  e130  loss=0.1980  task=0.1845  safety=0.0277  top1=0.8377  lr=2.36e-03
+  e140  loss=0.1846  task=0.1720  safety=0.0258  top1=0.8390  lr=2.36e-03
+  e150  loss=0.1732  task=0.1614  safety=0.0242  top1=0.8372  lr=2.36e-03
+  top1_best=0.8418  best_ep=107/150 (71%)  t=9408s
+
+-- Spatial Grouped Input @ D=64 N=1024 AntiHebb α=0.7 ------
+  Key      top1    vs Ref   proj_params  Label
+  Ref   0.7549   +0.00pp             0  Ref   K_in=50 sparse gather  n_groups=128 flat  NO proj
+  A     0.8943  +13.94pp     3,670,016  A     7 rows  separate proj  overlap=0%
+  B     0.8357   +8.08pp     2,935,296  B     7 rows  separate proj  overlap=20%
+  C     0.7381   -1.68pp     2,200,576  C     7 rows  separate proj  overlap=40%
+  D     0.8410   +8.61pp       419,328  D     49 positions  separate proj  overlap=20%
+  E     0.8418   +8.69pp     2,568,384  E     8 flat groups  separate proj  overlap=20%
+
+  Interpretation:
+  A > Ref       → learned proj outperforms K_in=50 random gather
+  B > A         → bridge neurons add value (overlap needed)
+  B vs C        → optimal bridge fraction (20% vs 40%)
+  D vs B        → position-level vs row-level resolution
+  E vs B        → VGG16 spatial structure vs flat groups
+
+Results saved → results/train_step55_spatial_grouped_input.json

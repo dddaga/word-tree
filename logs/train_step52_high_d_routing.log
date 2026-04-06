@@ -1,0 +1,78 @@
+Device: mps  Epochs: 150  Batch: 128
+Step 52: High-D geometry exploitation
+  Gen4 principle: exploit near-orthogonality, don't fight it
+  Base: D=64 N=1024 K_iter=8 AntiHebb α=0.5 (70.14%)
+  Mechanisms: Z-subspace gate / W_pos-subspace gate / projection / centering
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref   AntiHebb α=0.5 uniform  [~70.14%, step29A]
+======================================================================
+  e  1  loss=3.9346  task=3.8651  safety=0.1421  top1=0.1320  lr=2.36e-03
+  e 10  loss=1.8670  task=1.8450  safety=0.0451  top1=0.3832  lr=2.36e-03
+  e 20  loss=1.6610  task=1.6301  safety=0.0633  top1=0.5096  lr=2.36e-03
+  e 30  loss=1.5417  task=1.5043  safety=0.0766  top1=0.5310  lr=2.36e-03
+  e 40  loss=1.4425  task=1.3987  safety=0.0898  top1=0.5781  lr=2.36e-03
+  e 50  loss=1.3722  task=1.3246  safety=0.0973  top1=0.5470  lr=2.36e-03
+  e 60  loss=1.3263  task=1.2766  safety=0.1017  top1=0.5862  lr=2.36e-03
+  e 70  loss=1.2893  task=1.2377  safety=0.1055  top1=0.6410  lr=2.36e-03
+  e 80  loss=1.2641  task=1.2116  safety=0.1074  top1=0.6583  lr=2.36e-03
+  e 90  loss=1.2394  task=1.1864  safety=0.1085  top1=0.6293  lr=2.36e-03
+  e100  loss=1.2194  task=1.1656  safety=0.1101  top1=0.6639  lr=2.36e-03
+  e110  loss=1.1970  task=1.1425  safety=0.1114  top1=0.6619  lr=2.36e-03
+  e120  loss=1.1890  task=1.1340  safety=0.1127  top1=0.6688  lr=2.36e-03
+  e130  loss=1.1704  task=1.1146  safety=0.1141  top1=0.6823  lr=2.36e-03
+  e140  loss=1.1585  task=1.1022  safety=0.1153  top1=0.6662  lr=2.36e-03
+  e150  loss=1.1461  task=1.0883  safety=0.1184  top1=0.6754  lr=2.36e-03
+  top1_best=0.7075  best_ep=138/150 (92%)  diag=converged  t=14559s
+
+======================================================================
+A     Z-subspace routing split=16 + AntiHebb
+======================================================================
+  e  1  loss=2.3695  task=2.3151  safety=0.1113  top1=0.1034  lr=2.36e-03
+  e 10  loss=2.2526  task=2.2481  safety=0.0090  top1=0.1353  lr=2.36e-03
+  e 20  loss=2.2383  task=2.2354  safety=0.0059  top1=0.1271  lr=2.36e-03
+  e 30  loss=2.2283  task=2.2254  safety=0.0060  top1=0.1208  lr=2.36e-03
+  e 40  loss=2.2155  task=2.2118  safety=0.0075  top1=0.1345  lr=2.36e-03
+  e 50  loss=2.2267  task=2.2238  safety=0.0058  top1=0.1090  lr=1.18e-03
+  e 60  loss=2.2237  task=2.2210  safety=0.0055  top1=0.1233  lr=5.91e-04
+  e 70  loss=2.2190  task=2.2163  safety=0.0055  top1=0.1243  lr=5.91e-04
+  e 80  loss=2.2195  task=2.2160  safety=0.0071  top1=0.1152  lr=2.96e-04
+  Early stop at epoch 87 — best train_loss=2.2102
+  top1_best=0.1399  best_ep=37/88 (42%)  diag=training_too_short  t=10902s
+
+======================================================================
+B     Z-subspace routing split=32 + AntiHebb
+======================================================================
+  e  1  loss=2.3673  task=2.3125  safety=0.1122  top1=0.1073  lr=2.36e-03
+  e 10  loss=2.2510  task=2.2472  safety=0.0078  top1=0.1264  lr=2.36e-03
+  e 20  loss=2.2277  task=2.2251  safety=0.0052  top1=0.1368  lr=2.36e-03
+  e 30  loss=2.2319  task=2.2291  safety=0.0058  top1=0.1210  lr=2.36e-03
+  e 40  loss=2.2221  task=2.2188  safety=0.0067  top1=0.1200  lr=2.36e-03
+  e 50  loss=2.2156  task=2.2123  safety=0.0069  top1=0.1312  lr=2.36e-03
+  e 60  loss=2.2166  task=2.2131  safety=0.0071  top1=0.1164  lr=2.36e-03
+  e 70  loss=2.2226  task=2.2177  safety=0.0099  top1=0.1149  lr=2.36e-03
+  e 80  loss=2.2171  task=2.2120  safety=0.0103  top1=0.1220  lr=1.18e-03
+  e 90  loss=2.2072  task=2.2014  safety=0.0118  top1=0.1330  lr=1.18e-03
+  e100  loss=2.2018  task=2.1957  safety=0.0123  top1=0.1330  lr=5.91e-04
+  e110  loss=2.2210  task=2.2151  safety=0.0120  top1=0.1141  lr=5.91e-04
+  e120  loss=2.2200  task=2.2142  safety=0.0118  top1=0.1093  lr=2.96e-04
+  e130  loss=2.2147  task=2.2090  safety=0.0118  top1=0.1113  lr=1.48e-04
+  e140  loss=2.2139  task=2.2082  safety=0.0115  top1=0.1307  lr=7.39e-05
+  e150  loss=2.2049  task=2.1993  safety=0.0114  top1=0.1376  lr=3.69e-05
+  top1_best=0.1480  best_ep=146/150 (97%)  diag=converged  t=20518s
+
+======================================================================
+C     W_pos-subspace routing split=16 + AntiHebb
+======================================================================
+  e  1  loss=2.3663  task=2.3125  safety=0.1101  top1=0.0958  lr=2.36e-03
+  e 10  loss=2.2425  task=2.2380  safety=0.0092  top1=0.1177  lr=2.36e-03
+  e 20  loss=2.2510  task=2.2477  safety=0.0066  top1=0.1325  lr=2.36e-03
+  e 30  loss=2.2146  task=2.2111  safety=0.0070  top1=0.1457  lr=2.36e-03
+  e 40  loss=2.2246  task=2.2213  safety=0.0067  top1=0.1203  lr=2.36e-03
+  e 50  loss=2.2111  task=2.2076  safety=0.0072  top1=0.1368  lr=1.18e-03
+  e 60  loss=2.2188  task=2.2155  safety=0.0068  top1=0.1259  lr=1.18e-03
+  e 70  loss=2.2248  task=2.2214  safety=0.0069  top1=0.1203  lr=5.91e-04
+  e 80  loss=2.2259  task=2.2226  safety=0.0067  top1=0.1192  lr=2.96e-04
+  e 90  loss=2.2245  task=2.2213  safety=0.0067  top1=0.1190  lr=1.48e-04

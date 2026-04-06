@@ -1,0 +1,124 @@
+Device: mps  Epochs: 120  D=16  N=512  encoding=fourier
+Goal: W_phase as EXCITATORY teleportation portals (learned long-range routing)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. dynamic_z_geo inhibitory only  [baseline]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  top1_best=0.2856  best_ep=99  task=2.041  t=1528s
+
+======================================================================
+A. Phase exc K=8  α=0.3  inh=yes  [portal+inh]
+======================================================================
+  e  1  loss=4.3880  task=4.3697  safety=0.0313  top1=0.1177  lr=2.36e-03
+  e 10  loss=2.1066  task=2.1054  safety=0.0021  top1=0.1648  lr=2.36e-03
+  e 20  loss=2.0818  task=2.0805  safety=0.0022  top1=0.1750  lr=2.36e-03
+  e 30  loss=2.0624  task=2.0609  safety=0.0026  top1=0.2290  lr=2.36e-03
+  e 40  loss=2.0520  task=2.0502  safety=0.0030  top1=0.2362  lr=2.36e-03
+  e 50  loss=2.0437  task=2.0419  safety=0.0031  top1=0.2561  lr=2.36e-03
+  e 60  loss=2.0320  task=2.0301  safety=0.0033  top1=0.2504  lr=2.36e-03
+  e 70  loss=2.0253  task=2.0232  safety=0.0036  top1=0.2787  lr=2.36e-03
+  e 80  loss=2.0187  task=2.0164  safety=0.0039  top1=0.2711  lr=2.36e-03
+  e 90  loss=2.0131  task=2.0108  safety=0.0041  top1=0.2099  lr=2.36e-03
+  e100  loss=2.0086  task=2.0061  safety=0.0043  top1=0.2558  lr=2.36e-03
+  e110  loss=2.0068  task=2.0042  safety=0.0044  top1=0.2917  lr=2.36e-03
+  e120  loss=2.0042  task=2.0015  safety=0.0046  top1=0.2660  lr=2.36e-03
+  top1_best=0.3220  best_ep=103  task=2.002  t=1620s
+
+======================================================================
+B. Phase exc K=8  α=0.3  inh=no   [portal only]
+======================================================================
+  e  1  loss=4.4097  task=4.3915  safety=0.0313  top1=0.1299  lr=2.36e-03
+  e 10  loss=2.1038  task=2.1026  safety=0.0021  top1=0.1890  lr=2.36e-03
+  e 20  loss=2.0802  task=2.0789  safety=0.0022  top1=0.2145  lr=2.36e-03
+  e 30  loss=2.0618  task=2.0603  safety=0.0026  top1=0.2425  lr=2.36e-03
+  e 40  loss=2.0503  task=2.0486  safety=0.0030  top1=0.1924  lr=2.36e-03
+  e 50  loss=2.0373  task=2.0355  safety=0.0031  top1=0.2008  lr=2.36e-03
+  e 60  loss=2.0321  task=2.0302  safety=0.0033  top1=0.2627  lr=2.36e-03
+  e 70  loss=2.0249  task=2.0228  safety=0.0036  top1=0.2854  lr=2.36e-03
+  e 80  loss=2.0204  task=2.0181  safety=0.0039  top1=0.2795  lr=2.36e-03
+  e 90  loss=2.0159  task=2.0135  safety=0.0041  top1=0.2879  lr=2.36e-03
+  e100  loss=2.0131  task=2.0106  safety=0.0043  top1=0.3004  lr=2.36e-03
+  e110  loss=2.0085  task=2.0059  safety=0.0045  top1=0.2527  lr=2.36e-03
+  e120  loss=2.0037  task=2.0010  safety=0.0047  top1=0.2515  lr=2.36e-03
+  top1_best=0.3141  best_ep=89  task=2.002  t=1067s
+
+======================================================================
+C. Phase exc K=16 α=0.3  inh=yes  [wider portals]
+======================================================================
+  e  1  loss=4.3824  task=4.3642  safety=0.0314  top1=0.1154  lr=2.36e-03
+  e 10  loss=2.0999  task=2.0987  safety=0.0021  top1=0.1806  lr=2.36e-03
+  e 20  loss=2.0760  task=2.0747  safety=0.0023  top1=0.2247  lr=2.36e-03
+  e 30  loss=2.0615  task=2.0600  safety=0.0026  top1=0.2097  lr=2.36e-03
+  e 40  loss=2.0501  task=2.0484  safety=0.0029  top1=0.2367  lr=2.36e-03
+  e 50  loss=2.0428  task=2.0410  safety=0.0031  top1=0.2474  lr=2.36e-03
+  e 60  loss=2.0307  task=2.0288  safety=0.0033  top1=0.2999  lr=2.36e-03
+  e 70  loss=2.0271  task=2.0250  safety=0.0035  top1=0.2599  lr=2.36e-03
+  e 80  loss=2.0201  task=2.0179  safety=0.0038  top1=0.2431  lr=2.36e-03
+  e 90  loss=2.0134  task=2.0111  safety=0.0040  top1=0.2550  lr=2.36e-03
+  e100  loss=2.0083  task=2.0058  safety=0.0043  top1=0.2688  lr=2.36e-03
+  e110  loss=2.0073  task=2.0047  safety=0.0045  top1=0.3090  lr=2.36e-03
+  e120  loss=2.0056  task=2.0029  safety=0.0046  top1=0.3088  lr=2.36e-03
+  top1_best=0.3124  best_ep=109  task=2.003  t=1582s
+
+======================================================================
+D. Phase exc K=8  α=0.1  inh=yes  [weak portals]
+======================================================================
+  e  1  loss=4.2093  task=4.1910  safety=0.0315  top1=0.1126  lr=2.36e-03
+  e 10  loss=2.1093  task=2.1081  safety=0.0021  top1=0.1656  lr=2.36e-03
+  e 20  loss=2.0853  task=2.0841  safety=0.0021  top1=0.2191  lr=2.36e-03
+  e 30  loss=2.0667  task=2.0652  safety=0.0025  top1=0.2199  lr=2.36e-03
+  e 40  loss=2.0568  task=2.0551  safety=0.0029  top1=0.2194  lr=2.36e-03
+  e 50  loss=2.0478  task=2.0459  safety=0.0032  top1=0.2879  lr=2.36e-03
+  e 60  loss=2.0348  task=2.0328  safety=0.0036  top1=0.2601  lr=2.36e-03
+  e 70  loss=2.0293  task=2.0272  safety=0.0037  top1=0.2749  lr=2.36e-03
+  e 80  loss=2.0271  task=2.0249  safety=0.0038  top1=0.2787  lr=2.36e-03
+  e 90  loss=2.0241  task=2.0218  safety=0.0039  top1=0.2861  lr=2.36e-03
+  e100  loss=2.0192  task=2.0168  safety=0.0041  top1=0.2448  lr=2.36e-03
+  e110  loss=2.0155  task=2.0130  safety=0.0044  top1=0.2894  lr=2.36e-03
+  e120  loss=2.0144  task=2.0117  safety=0.0046  top1=0.2897  lr=2.36e-03
+  top1_best=0.3083  best_ep=89  task=2.011  t=1305s
+
+======================================================================
+E. Phase exc K=4  α=0.3  inh=yes  [precise portals]
+======================================================================
+  e  1  loss=4.3516  task=4.3334  safety=0.0314  top1=0.1292  lr=2.36e-03
+  e 10  loss=2.1075  task=2.1063  safety=0.0021  top1=0.2043  lr=2.36e-03
+  e 20  loss=2.0830  task=2.0817  safety=0.0021  top1=0.1852  lr=2.36e-03
+  e 30  loss=2.0664  task=2.0650  safety=0.0025  top1=0.2237  lr=2.36e-03
+  e 40  loss=2.0556  task=2.0540  safety=0.0029  top1=0.2326  lr=2.36e-03
+  e 50  loss=2.0423  task=2.0405  safety=0.0032  top1=0.2502  lr=2.36e-03
+  e 60  loss=2.0368  task=2.0348  safety=0.0035  top1=0.2583  lr=2.36e-03
+  e 70  loss=2.0303  task=2.0281  safety=0.0037  top1=0.2558  lr=2.36e-03
+  e 80  loss=2.0264  task=2.0242  safety=0.0038  top1=0.2790  lr=2.36e-03
+  e 90  loss=2.0210  task=2.0187  safety=0.0039  top1=0.2454  lr=2.36e-03
+  e100  loss=2.0189  task=2.0165  safety=0.0041  top1=0.2604  lr=2.36e-03
+  e110  loss=2.0142  task=2.0117  safety=0.0043  top1=0.2642  lr=2.36e-03
+  e120  loss=2.0148  task=2.0122  safety=0.0046  top1=0.2736  lr=2.36e-03
+  top1_best=0.3116  best_ep=96  task=2.011  t=1050s
+
+Saved -> results/train_step19_phase_excitatory.json
+
+-- Phase excitatory portals  (ref=0.2856) -------------------------
+  Config                                                      top1_best    vs_ref    t(s)
+  -------------------------------------------------------------------------------------
+  Ref                                                            0.2856   +0.0000    1528
+  A                                                              0.3220   +0.0364    1620
+  B                                                              0.3141   +0.0285    1067
+  C                                                              0.3124   +0.0268    1582
+  D                                                              0.3083   +0.0227    1304
+  E                                                              0.3116   +0.0260    1050

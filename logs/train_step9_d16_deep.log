@@ -1,0 +1,80 @@
+Device: mps  Epochs: 150  Seed: 42
+Goal: establish D=16 Fourier ceiling and compare dynamic_z vs dynamic_z_geo
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+=================================================================
+A. Fourier D=16 N=512  dynamic_z_geo  150ep  [encoding sweep winner]
+=================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  e130  loss=2.0440  task=2.0418  safety=0.0037  top1=0.2242  lr=2.36e-03
+  e140  loss=2.0398  task=2.0375  safety=0.0039  top1=0.2392  lr=2.36e-03
+  e150  loss=2.0355  task=2.0331  safety=0.0041  top1=0.2517  lr=2.36e-03
+  top1_best=0.2922  best_ep=131  task=2.034  t=654s
+
+=================================================================
+B. Fourier D=16 N=512  dynamic_z      150ep  [no geo bias]
+=================================================================
+  e  1  loss=3.3681  task=3.3498  safety=0.0314  top1=0.1340  lr=2.36e-03
+  e 10  loss=2.1314  task=2.1303  safety=0.0018  top1=0.1730  lr=2.36e-03
+  e 20  loss=2.1157  task=2.1145  safety=0.0020  top1=0.1924  lr=2.36e-03
+  e 30  loss=2.0978  task=2.0965  safety=0.0022  top1=0.1957  lr=2.36e-03
+  e 40  loss=2.0881  task=2.0867  safety=0.0024  top1=0.2018  lr=2.36e-03
+  e 50  loss=2.0781  task=2.0767  safety=0.0025  top1=0.2099  lr=2.36e-03
+  e 60  loss=2.0709  task=2.0694  safety=0.0027  top1=0.2056  lr=2.36e-03
+  e 70  loss=2.0640  task=2.0623  safety=0.0028  top1=0.2308  lr=2.36e-03
+  e 80  loss=2.0601  task=2.0583  safety=0.0030  top1=0.2403  lr=2.36e-03
+  e 90  loss=2.0555  task=2.0537  safety=0.0032  top1=0.2252  lr=2.36e-03
+  e100  loss=2.0528  task=2.0508  safety=0.0033  top1=0.2410  lr=2.36e-03
+  e110  loss=2.0501  task=2.0481  safety=0.0034  top1=0.2484  lr=2.36e-03
+  e120  loss=2.0462  task=2.0441  safety=0.0035  top1=0.2306  lr=2.36e-03
+  e130  loss=2.0407  task=2.0387  safety=0.0035  top1=0.2268  lr=1.18e-03
+  e140  loss=2.0382  task=2.0362  safety=0.0036  top1=0.2438  lr=1.18e-03
+  e150  loss=2.0390  task=2.0369  safety=0.0036  top1=0.2313  lr=1.18e-03
+  top1_best=0.2609  best_ep=145  task=2.037  t=242s
+
+=================================================================
+C. Fourier D=8  N=1024 dynamic_z_geo  150ep  [scale check]
+=================================================================
+  e  1  loss=10.3429  task=10.3370  safety=0.0120  top1=0.1195  lr=2.36e-03
+  e 10  loss=2.1453  task=2.1451  safety=0.0004  top1=0.1676  lr=2.36e-03
+  e 20  loss=2.1084  task=2.1083  safety=0.0003  top1=0.1804  lr=2.36e-03
+  e 30  loss=2.0770  task=2.0768  safety=0.0004  top1=0.1939  lr=2.36e-03
+  e 40  loss=2.0575  task=2.0572  safety=0.0005  top1=0.2018  lr=2.36e-03
+  e 50  loss=2.0362  task=2.0359  safety=0.0005  top1=0.2132  lr=2.36e-03
+  e 60  loss=2.0173  task=2.0171  safety=0.0006  top1=0.2245  lr=2.36e-03
+  e 70  loss=2.0075  task=2.0072  safety=0.0006  top1=0.2377  lr=2.36e-03
+  e 80  loss=1.9927  task=1.9923  safety=0.0008  top1=0.2298  lr=2.36e-03
+  e 90  loss=1.9872  task=1.9868  safety=0.0009  top1=0.2683  lr=2.36e-03
+  e100  loss=1.9787  task=1.9782  safety=0.0011  top1=0.2540  lr=2.36e-03
+  e110  loss=1.9774  task=1.9768  safety=0.0013  top1=0.2706  lr=2.36e-03
+  e120  loss=1.9707  task=1.9700  safety=0.0013  top1=0.2668  lr=2.36e-03
+  e130  loss=1.9744  task=1.9737  safety=0.0014  top1=0.2685  lr=2.36e-03
+  e140  loss=1.9621  task=1.9614  safety=0.0015  top1=0.2619  lr=1.18e-03
+  e150  loss=1.9601  task=1.9594  safety=0.0014  top1=0.2716  lr=1.18e-03
+  top1_best=0.2815  best_ep=131  task=1.960  t=378s
+
+Saved -> results/train_step9_d16_deep.json
+
+-- D=16 deep run (vs encoding sweep 90ep ref: 27.54%) ----------------------
+  Config                                                               top1_best    vs_enc    t(s)
+  -------------------------------------------------------------------  ---------  --------  ------
+  A                                                                       0.2922   +0.0168     654
+  B                                                                       0.2609   -0.0145     242
+  C                                                                       0.2815   +0.0061     378
+
+  New best: A. Fourier D=16 N=512  dynamic_z_geo  150ep  [encoding sweep winner]
+  top1_best=0.2922
+  Encoding sweep 90ep ref: 0.2754  iter1 ref: 0.2652

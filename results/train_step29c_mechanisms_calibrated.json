@@ -1,7 +1,7 @@
 {
-  "_partial": true,
-  "_status": "Running on Mac Studio PID 89895 — Phase 1 calibration: AntiHebb DONE, phase_exc DONE, fast_W_phase 2/4 done, interneurons pending; Phase 2 not started",
-  "_synced_at": "2026-04-03T12:05:00Z",
+  "_partial": false,
+  "_status": "Phase 1 COMPLETE. Phase 2 COMPLETE (config G still running as of 2026-04-04). Results synced from Mac Studio log.",
+  "_synced_at": "2026-04-04T14:00:00Z",
   "phase1_calibration": {
     "antihebb": {
       "alpha_0.1": {"top1_best": 0.4856, "best_epoch": 38, "epochs_run": 40},
@@ -10,36 +10,90 @@
       "alpha_0.7": {"top1_best": 0.6469, "best_epoch": 38, "epochs_run": 40},
       "alpha_1.0": {"top1_best": 0.7098, "best_epoch": 37, "epochs_run": 40},
       "_winner": "alpha=1.0 at 70.98% (40ep)",
-      "_note": "Monotonic scaling: higher alpha = better. alpha=1.0 on calibrated base exceeds step29 alpha=0.7 uncalibrated (40ep). Full AntiHebb suppression is optimal."
+      "_note": "Monotonic scaling. Full surround suppression optimal at D=64."
     },
     "phase_exc": {
       "alpha_0.1": {"top1_best": 0.5791, "best_epoch": 35, "epochs_run": 40},
       "alpha_0.3": {"top1_best": 0.5934, "best_epoch": 22, "epochs_run": 40, "_diag": "training_too_short"},
       "alpha_0.5": {"top1_best": 0.4583, "best_epoch": 36, "epochs_run": 40},
       "alpha_1.0": {"top1_best": 0.3343, "best_epoch": 37, "epochs_run": 40},
-      "_winner": "alpha=0.3 at 59.34% (but training_too_short flag)",
-      "_note": "Phase excitatory is marginal at D=64. Low alpha (0.1-0.3) matches or slightly beats no-mechanism baseline (~56.28%), but alpha>=0.5 HURTS badly. The teleportation graph interferes with established routing at higher strength."
+      "_winner": "alpha=0.3 at 59.34% (training_too_short flag)",
+      "_note": "Marginal at D=64. alpha>=0.5 catastrophic. EXCLUDED from Gen4 — Phase 2 confirms it kills AntiHebb gain."
     },
     "fast_W_phase": {
       "alpha_0.1_tau_0.25": {"top1_best": 0.4945, "best_epoch": 37, "epochs_run": 40},
       "alpha_0.3_tau_0.25": {"top1_best": 0.4930, "best_epoch": 40, "epochs_run": 40},
-      "alpha_0.1_tau_0.50": {"_status": "running"},
-      "alpha_0.1_tau_1.00": {"_status": "pending"},
-      "_winner_so_far": "Both complete configs BELOW baseline (~56.28%). Fast W_phase at D=64 clearly hurts.",
-      "_note": "Fast W_phase adaptation is harmful — D x D updates interfere with Fourier encoding structure, consistent with step30/step37 pattern."
+      "alpha_0.1_tau_0.50": {"top1_best": 0.4869, "best_epoch": 40, "epochs_run": 40},
+      "alpha_0.1_tau_1.00": {"top1_best": 0.5134, "best_epoch": 37, "epochs_run": 40},
+      "_winner": "none — all below baseline",
+      "_note": "DEAD at D=64. D x D interference with Fourier encoding. Best: tau=1.0 at 51.34%, still -5pp vs baseline."
     },
     "interneurons": {
-      "_status": "pending after fast_W_phase completes",
-      "_note": "Phase 1 interneuron calibration has not started yet."
+      "frac_25_ninput_768": {"top1_best": 0.4884, "best_epoch": 34, "epochs_run": 40},
+      "frac_50_ninput_512": {"top1_best": 0.3457, "best_epoch": 31, "epochs_run": 40},
+      "frac_75_ninput_256": {"top1_best": 0.2935, "best_epoch": 27, "epochs_run": 40},
+      "_winner": "frac=25% at 48.84% (below baseline)",
+      "_note": "Interneurons hurt at D=64. Phase 2 confirms: -1.69pp vs calibrated Ref. Excluded from Gen4."
+    },
+    "_best_params": {
+      "ah_alpha": 1.0,
+      "exc_alpha": 0.3,
+      "fp_alpha": 0.1,
+      "fp_tau": 1.0,
+      "int_n_input": 768,
+      "int_frac": 0.25
     }
   },
   "phase2_full": {
-    "_status": "not_started — blocked on Phase 1 completion"
+    "_status": "COMPLETE (config G still running)",
+    "_base_routing": {"alpha_turing": 0.3, "alpha_reflect": 0.5, "K_phase": 8, "beam_size": 16, "geo_gamma": 0.5},
+    "Ref": {
+      "label": "Ref   calibrated base, no mechanisms",
+      "top1_best": 0.5868, "best_epoch": 123, "epochs_run": 150,
+      "elapsed_s": 7536, "diag": "converged"
+    },
+    "A": {
+      "label": "A     + AntiHebb alpha=1.0",
+      "top1_best": 0.8008, "best_epoch": 123, "epochs_run": 150,
+      "elapsed_s": 5937, "diag": "converged",
+      "_note": "NEW ALL-TIME BEST. +21.40pp vs calibrated Ref. +4.84pp vs previous best (75.24%)."
+    },
+    "B": {
+      "label": "B     + phase_exc alpha=0.3",
+      "top1_best": 0.6364, "best_epoch": 130, "epochs_run": 150,
+      "elapsed_s": 6365, "diag": "converged"
+    },
+    "C": {
+      "label": "C     + interneurons 25%  n_input=768  readout=all",
+      "top1_best": 0.5699, "best_epoch": 143, "epochs_run": 150,
+      "elapsed_s": 4954, "diag": "converged",
+      "_note": "Hurts vs Ref (-1.69pp). Interneurons incompatible at D=64."
+    },
+    "D": {
+      "label": "D     + fast_W_phase alpha=0.1  tau=1.0",
+      "top1_best": 0.6110, "best_epoch": 135, "epochs_run": 150,
+      "elapsed_s": 17790, "diag": "converged"
+    },
+    "E": {
+      "label": "E     + AntiHebb alpha=1.0 + phase_exc alpha=0.3",
+      "top1_best": 0.6696, "best_epoch": 144, "epochs_run": 150,
+      "elapsed_s": 7379, "diag": "converged",
+      "_note": "CRITICAL: AntiHebb+phase_exc = 66.96% vs AntiHebb alone = 80.08%. Phase_exc kills -13.12pp."
+    },
+    "F": {
+      "label": "F     + AntiHebb alpha=1.0 + phase_exc alpha=0.3 + interneurons 25%",
+      "top1_best": 0.6693, "best_epoch": 131, "epochs_run": 150,
+      "elapsed_s": 7510, "diag": "converged"
+    },
+    "G": {
+      "label": "G     + AntiHebb alpha=1.0 + phase_exc alpha=0.3 + interneurons 25% + fast_W_phase alpha=0.1 tau=1.0  [FULL GEN4]",
+      "_status": "still running as of 2026-04-04T14:00Z"
+    }
   },
   "_analysis": {
-    "antihebb_scaling": "Monotonic: alpha 0.1->0.3->0.5->0.7->1.0 maps to 48.56%->54.42%->59.82%->64.69%->70.98%. Full suppression (alpha=1.0) is best on calibrated base. This is the key finding — at D=64, maximal surround suppression in W_pos space is optimal.",
-    "phase_exc_status": "Marginal benefit at best (alpha=0.3: +3.06pp vs baseline). High alpha destructive. Include at low strength if it compounds with AntiHebb in Phase 2.",
-    "fast_W_phase_verdict": "DEAD at D=64. Both tested configs 8-11pp below baseline. Same D x D interference pattern as cross-dim W_mix and phase matrix bank.",
-    "gen4_preliminary": "Gen4 base should use AntiHebb alpha=1.0 (up from 0.7). Phase_exc alpha=0.3 is optional — test in Phase 2 compound. Fast W_phase excluded."
+    "winner": "Config A: AntiHebb alpha=1.0 alone = 80.08%. New all-time best.",
+    "compounding_failure": "Adding phase_exc or interneurons to AntiHebb alpha=1.0 KILLS the gain. E=66.96%, F=66.93% vs A=80.08%. Mechanisms in direct opposition: AntiHebb suppresses W_pos proximity, phase_exc re-introduces W_phase proximity coupling.",
+    "gen4_decision": "AntiHebb alpha=1.0 ALONE on calibrated base (step22b params). No other mechanisms.",
+    "step32_revision": "step32 compound script no longer needed in original form. 80.08% IS the Gen4 result. Next step: fine-tune alpha near 1.0, test beam_size sensitivity, explore step52/53."
   }
 }

@@ -49,7 +49,7 @@ SEED   = 42
 DATA   = "data/store.h5"
 D      = 64
 K_ITER = 8
-ANTIHEBB_ALPHA = 0.7
+ANTIHEBB_ALPHA = 1.0
 
 N_VALUES = [512, 1024, 2048, 4096, 10000]
 
@@ -74,9 +74,9 @@ def make_model(N: int) -> nn.Module:
         norm_mode="l2", D=D, encoding_mode="fourier",
     )
     resonant = SGNNET_Resonant(
-        base=base, K_phase=8, beam_size=32,
-        theta_init=0.1, alpha_reflect=0.3, alpha_turing=0.3,
-        mode="dynamic_z_geo", resonance_threshold=0.0, geo_gamma=1.0,
+        base=base, K_phase=8, beam_size=16,
+        theta_init=0.1, alpha_reflect=0.5, alpha_turing=0.3,
+        mode="dynamic_z_geo", resonance_threshold=0.0, geo_gamma=0.5,
     )
     model = SGNNET_AntiHebbian(resonant, alpha_ahebb=ANTIHEBB_ALPHA, variant="wpos")
     return model

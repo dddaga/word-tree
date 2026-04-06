@@ -1,0 +1,123 @@
+
+[Loading]
+  13 learnings files: ['EXPERIMENT_QUEUE.md', 'LEARNINGS.md', 'LEARNINGS_arch.md', 'LEARNINGS_ops.md', 'LEARNINGS_phase5.md', 'LEARNINGS_phase5_p1_ladder.md', 'LEARNINGS_phase5_p2_diagnostics.md', 'LEARNINGS_phase5_p3_breakthrough.md', 'LEARNINGS_phase5_p4_d16.md', 'LEARNINGS_phase5_p5_phase_mechanisms.md', 'LEARNINGS_phase5_p6_gen2_gen3.md', 'LEARNINGS_research.md', 'LEARNINGS_sparse_attention_research.md']
+  22 result JSONs converted to prose
+  total corpus: 116,589 chars
+
+[Building text network]  window=4  resolution=1.0
+  graph: 1794 nodes, 15724 edges
+
+=================================================================
+  SGNNET TEXT NETWORK ANALYSIS
+=================================================================
+
+──── GRAPH STATS ────────────────────────────────────────────────
+  nodes:       1794
+  edges:       15724
+  total_weight:112048
+  communities: 14
+  modularity:  0.4286  (strong structure)
+
+──── TOPICAL CLUSTERS ───────────────────────────────────────────
+
+  [0] 13.2%  size=307
+       Top terms: sgnnet, training, neuron, top, ffn, forward
+
+  [1] 7.7%  size=208
+       Top terms: fix, loss, pos, gradient, date, spatial
+
+  [2] 9.6%  size=185
+       Top terms: phase, graph, fixed, excitatory, fast, key
+
+  [3] 7.0%  size=176
+       Top terms: routing, experiment, mechanisms, signal, base, params
+
+  [4] 5.9%  size=176
+       Top terms: neurons, active, directions, direction, zero, similar
+
+  [5] 16.7%  size=159
+       Top terms: iter, beam, variant, signed, alpha, sparse
+
+  [6] 10.6%  size=146
+       Top terms: dynamic, geo, fourier, mode, turing, results
+
+  [7] 4.4%  size=130
+       Top terms: input, random, relu, local, confirmed, structure
+
+  [8] 2.2%  size=77
+       Top terms: mps, faster, creates, ops, backward, shape
+
+  [9] 16.5%  size=74
+       Top terms: reference, accuracy, verdict, regression, parameters, baseline
+
+  [10] 2.2%  size=68
+       Top terms: learnings, architecture, research, phase5, design, combined
+
+  [11] 1.7%  size=31
+       Top terms: rule, shared, oja, hopfield, hebbian, batch
+
+  [12] 1.5%  size=30
+       Top terms: result, meaningful, conclusion, neutral, change, log
+
+  [13] 0.7%  size=27
+       Top terms: mac, studio, code, instances, workers, dataloader
+
+──── STRUCTURAL GAPS  (top 15 community pairs with low connectivity) 
+
+  ZERO-CONNECTION gaps (true structural holes):
+    ·  [8] mps, faster, creates, ops, backward, sha
+       ↔  [13] mac, studio, code, instances, workers, d
+    ·  [10] learnings, architecture, research, phase
+       ↔  [13] mac, studio, code, instances, workers, d
+
+  WEAK-CONNECTION gaps (low cross-density):
+    ·  [2] phase, graph, fixed, excitatory, fa  ↔  [13] mac, studio, code, instances, worke  (density=0.001)
+    ·  [5] iter, beam, variant, signed, alpha,  ↔  [13] mac, studio, code, instances, worke  (density=0.002)
+    ·  [4] neurons, active, directions, direct  ↔  [13] mac, studio, code, instances, worke  (density=0.003)
+    ·  [3] routing, experiment, mechanisms, si  ↔  [13] mac, studio, code, instances, worke  (density=0.006)
+    ·  [0] sgnnet, training, neuron, top, ffn,  ↔  [13] mac, studio, code, instances, worke  (density=0.006)
+    ·  [12] result, meaningful, conclusion, neu  ↔  [13] mac, studio, code, instances, worke  (density=0.007)
+    ·  [3] routing, experiment, mechanisms, si  ↔  [8] mps, faster, creates, ops, backward  (density=0.010)
+    ·  [4] neurons, active, directions, direct  ↔  [10] learnings, architecture, research,   (density=0.011)
+
+──── TOP BRIDGING CONCEPTS  [betweenness centrality — elbow cutoff] 
+  · routing                        BC=0.0978  cluster=3
+  · neurons                        BC=0.0647  cluster=4
+  · phase                          BC=0.0552  cluster=2
+  · attention                      BC=0.0454  cluster=5
+  · input                          BC=0.0405  cluster=7
+  · graph                          BC=0.0359  cluster=2
+  · dynamic                        BC=0.0348  cluster=6
+  · iter                           BC=0.0315  cluster=5
+  · sparse                         BC=0.0305  cluster=5
+  · coupling                       BC=0.0298  cluster=5
+  · fix                            BC=0.0292  cluster=1
+  · neuron                         BC=0.0275  cluster=0
+  · verdict                        BC=0.0269  cluster=9
+  · beam                           BC=0.0262  cluster=5
+  · sgnnet                         BC=0.0260  cluster=0
+  · fixed                          BC=0.0250  cluster=2
+  · forward                        BC=0.0246  cluster=0
+  · loss                           BC=0.0242  cluster=1
+  · results                        BC=0.0228  cluster=6
+  · reference                      BC=0.0218  cluster=9
+  · active                         BC=0.0202  cluster=4
+  · relu                           BC=0.0193  cluster=7
+  · mechanism                      BC=0.0171  cluster=5
+  · top                            BC=0.0169  cluster=0
+  · signed                         BC=0.0168  cluster=5
+
+──── DIVERSIVITY  [betweenness / degree — efficient bridges] ────
+  · attention                      div=0.00004  BC=0.0454  deg=1030  cluster=5
+  · fix                            div=0.00004  BC=0.0292  deg=698  cluster=1
+  · fixed                          div=0.00003  BC=0.0250  deg=728  cluster=2
+  · results                        div=0.00003  BC=0.0228  deg=672  cluster=6
+  · loss                           div=0.00003  BC=0.0242  deg=740  cluster=1
+  · input                          div=0.00003  BC=0.0405  deg=1242  cluster=7
+  · sgnnet                         div=0.00003  BC=0.0260  deg=888  cluster=0
+  · neurons                        div=0.00003  BC=0.0647  deg=2240  cluster=4
+  · routing                        div=0.00003  BC=0.0978  deg=3410  cluster=3
+  · graph                          div=0.00003  BC=0.0359  deg=1314  cluster=2
+  · active                         div=0.00002  BC=0.0202  deg=812  cluster=4
+  · top                            div=0.00002  BC=0.0169  deg=692  cluster=0
+

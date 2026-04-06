@@ -1,0 +1,135 @@
+
+[Loading]
+  13 learnings files: ['EXPERIMENT_QUEUE.md', 'LEARNINGS.md', 'LEARNINGS_arch.md', 'LEARNINGS_ops.md', 'LEARNINGS_phase5.md', 'LEARNINGS_phase5_p1_ladder.md', 'LEARNINGS_phase5_p2_diagnostics.md', 'LEARNINGS_phase5_p3_breakthrough.md', 'LEARNINGS_phase5_p4_d16.md', 'LEARNINGS_phase5_p5_phase_mechanisms.md', 'LEARNINGS_phase5_p6_gen2_gen3.md', 'LEARNINGS_research.md', 'LEARNINGS_sparse_attention_research.md']
+  22 result JSONs converted to prose
+  total corpus: 116,589 chars
+
+[Building text network]  window=4  resolution=1.0 + TF-IDF
+  graph: 1794 nodes, 15724 edges
+
+=================================================================
+  SGNNET TEXT NETWORK ANALYSIS
+=================================================================
+
+──── GRAPH STATS ────────────────────────────────────────────────
+  nodes:       1794
+  edges:       15724
+  total_weight:63261
+  communities: 16
+  modularity:  0.4669  (strong structure)
+
+──── TOPICAL CLUSTERS ───────────────────────────────────────────
+
+  [0] 12.1%  size=203
+       Top terms: ffn, top, sgnnet, relu, layer, experts
+
+  [1] 8.1%  size=188
+       Top terms: neurons, active, pos, fix, neuron, gradient
+
+  [2] 7.9%  size=160
+       Top terms: phase, graph, forward, fixed, fast, static
+
+  [3] 10.3%  size=148
+       Top terms: dynamic, geo, baseline, results, mode, sweep
+
+  [4] 6.6%  size=131
+       Top terms: training, learnings, mps, model, phase5, research
+
+  [5] 6.8%  size=130
+       Top terms: routing, attention, experiment, mechanisms, base, params
+
+  [6] 17.5%  size=129
+       Top terms: iter, verdict, signed, reference, variant, accuracy
+
+  [7] 5.5%  size=127
+       Top terms: input, random, topology, tokens, local, dependent
+
+  [8] 5.3%  size=115
+       Top terms: beam, excitatory, gated, radiation, hard, soft
+
+  [9] 4.4%  size=101
+       Top terms: date, root, experiments, cause, bug, creates
+
+  [10] 3.5%  size=90
+       Top terms: dim, stdp, cross, log, excitation, flashattention
+
+  [11] 3.5%  size=77
+       Top terms: loss, safety, task, norm, small, val
+
+  [12] 2.6%  size=70
+       Top terms: key, architecture, binding, synchrony, finding, gat
+
+  [13] 3.2%  size=66
+       Top terms: rule, shared, oja, hopfield, inhibition, direction
+
+  [14] 2.0%  size=44
+       Top terms: interneurons, readout, seeded, output, mac, signals
+
+  [15] 0.6%  size=15
+       Top terms: matters, bytes, bool, float32, param, saving
+
+──── STRUCTURAL GAPS  (top 15 community pairs with low connectivity) 
+
+  ZERO-CONNECTION gaps (true structural holes):
+    ·  [10] dim, stdp, cross, log, excitation, flash
+       ↔  [15] matters, bytes, bool, float32, param, sa
+    ·  [11] loss, safety, task, norm, small, val
+       ↔  [15] matters, bytes, bool, float32, param, sa
+    ·  [12] key, architecture, binding, synchrony, f
+       ↔  [15] matters, bytes, bool, float32, param, sa
+    ·  [13] rule, shared, oja, hopfield, inhibition,
+       ↔  [15] matters, bytes, bool, float32, param, sa
+    ·  [14] interneurons, readout, seeded, output, m
+       ↔  [15] matters, bytes, bool, float32, param, sa
+
+  WEAK-CONNECTION gaps (low cross-density):
+    ·  [4] training, learnings, mps, model, ph  ↔  [15] matters, bytes, bool, float32, para  (density=0.000)
+    ·  [1] neurons, active, pos, fix, neuron,   ↔  [15] matters, bytes, bool, float32, para  (density=0.002)
+    ·  [4] training, learnings, mps, model, ph  ↔  [14] interneurons, readout, seeded, outp  (density=0.002)
+    ·  [10] dim, stdp, cross, log, excitation,   ↔  [11] loss, safety, task, norm, small, va  (density=0.003)
+    ·  [5] routing, attention, experiment, mec  ↔  [15] matters, bytes, bool, float32, para  (density=0.003)
+    ·  [11] loss, safety, task, norm, small, va  ↔  [14] interneurons, readout, seeded, outp  (density=0.003)
+    ·  [11] loss, safety, task, norm, small, va  ↔  [12] key, architecture, binding, synchro  (density=0.004)
+    ·  [8] beam, excitatory, gated, radiation,  ↔  [12] key, architecture, binding, synchro  (density=0.004)
+
+──── TOP BRIDGING CONCEPTS  [betweenness centrality — elbow cutoff] 
+  · routing                        BC=0.1978  cluster=5
+  · verdict                        BC=0.1263  cluster=6
+  · reference                      BC=0.1046  cluster=6
+  · neurons                        BC=0.0755  cluster=1
+  · phase                          BC=0.0726  cluster=2
+  · regression                     BC=0.0648  cluster=6
+  · result                         BC=0.0641  cluster=6
+  · active                         BC=0.0597  cluster=1
+  · variant                        BC=0.0540  cluster=6
+  · attention                      BC=0.0518  cluster=5
+  · input                          BC=0.0486  cluster=7
+  · accuracy                       BC=0.0486  cluster=6
+  · graph                          BC=0.0437  cluster=2
+  · sparse                         BC=0.0429  cluster=6
+  · dynamic                        BC=0.0421  cluster=3
+  · experiment                     BC=0.0414  cluster=5
+  · forward                        BC=0.0403  cluster=2
+  · fix                            BC=0.0398  cluster=1
+  · baseline                       BC=0.0396  cluster=3
+  · beam                           BC=0.0316  cluster=8
+  · sweep                          BC=0.0309  cluster=3
+  · scale                          BC=0.0273  cluster=6
+  · fixed                          BC=0.0272  cluster=2
+  · mode                           BC=0.0265  cluster=3
+  · mechanisms                     BC=0.0263  cluster=5
+
+──── DIVERSIVITY  [betweenness / degree — efficient bridges] ────
+  · verdict                        div=0.00027  BC=0.1263  deg=477  cluster=6
+  · reference                      div=0.00021  BC=0.1046  deg=499  cluster=6
+  · routing                        div=0.00019  BC=0.1978  deg=1057  cluster=5
+  · active                         div=0.00018  BC=0.0597  deg=338  cluster=1
+  · regression                     div=0.00017  BC=0.0648  deg=373  cluster=6
+  · baseline                       div=0.00013  BC=0.0396  deg=316  cluster=3
+  · fix                            div=0.00012  BC=0.0398  deg=344  cluster=1
+  · attention                      div=0.00010  BC=0.0518  deg=533  cluster=5
+  · fixed                          div=0.00009  BC=0.0272  deg=318  cluster=2
+  · neurons                        div=0.00008  BC=0.0755  deg=920  cluster=1
+  · accuracy                       div=0.00008  BC=0.0486  deg=594  cluster=6
+  · graph                          div=0.00007  BC=0.0437  deg=591  cluster=2
+

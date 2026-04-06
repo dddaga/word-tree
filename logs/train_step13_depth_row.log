@@ -1,0 +1,113 @@
+Device: mps  Epochs: 120  D=16  encoding=fourier
+Goal: beam_size × K_iter scaling study (depth vs width in routing)
+Row: depth
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+======================================================================
+F. beam=32   K_iter=1   D=16 geo  [single-hop]
+======================================================================
+  e  1  loss=3.2056  task=3.1874  safety=0.0315  top1=0.1366  lr=2.36e-03
+  e 10  loss=2.1031  task=2.1020  safety=0.0020  top1=0.1582  lr=2.36e-03
+  e 20  loss=2.0975  task=2.0962  safety=0.0021  top1=0.1804  lr=2.36e-03
+  e 30  loss=2.0907  task=2.0894  safety=0.0022  top1=0.1758  lr=2.36e-03
+  e 40  loss=2.0883  task=2.0870  safety=0.0022  top1=0.1585  lr=2.36e-03
+  e 50  loss=2.0802  task=2.0789  safety=0.0023  top1=0.1888  lr=2.36e-03
+  e 60  loss=2.0780  task=2.0766  safety=0.0024  top1=0.2048  lr=2.36e-03
+  e 70  loss=2.0752  task=2.0737  safety=0.0026  top1=0.2140  lr=2.36e-03
+  e 80  loss=2.0700  task=2.0683  safety=0.0029  top1=0.2066  lr=2.36e-03
+  e 90  loss=2.0685  task=2.0667  safety=0.0031  top1=0.1771  lr=2.36e-03
+  e100  loss=2.0641  task=2.0623  safety=0.0032  top1=0.2115  lr=2.36e-03
+  e110  loss=2.0637  task=2.0618  safety=0.0032  top1=0.2275  lr=2.36e-03
+  e120  loss=2.0604  task=2.0585  safety=0.0033  top1=0.2102  lr=2.36e-03
+  top1_best=0.2290  best_ep=82  task=2.058  t=731s
+
+======================================================================
+G. beam=32   K_iter=2   D=16 geo
+======================================================================
+  e  1  loss=3.2905  task=3.2724  safety=0.0313  top1=0.1559  lr=2.36e-03
+  e 10  loss=2.1183  task=2.1172  safety=0.0019  top1=0.1615  lr=2.36e-03
+  e 20  loss=2.1075  task=2.1063  safety=0.0021  top1=0.1613  lr=2.36e-03
+  e 30  loss=2.0952  task=2.0940  safety=0.0022  top1=0.1817  lr=2.36e-03
+  e 40  loss=2.0902  task=2.0889  safety=0.0023  top1=0.1985  lr=2.36e-03
+  e 50  loss=2.0859  task=2.0845  safety=0.0025  top1=0.2104  lr=2.36e-03
+  e 60  loss=2.0766  task=2.0751  safety=0.0026  top1=0.1975  lr=2.36e-03
+  e 70  loss=2.0731  task=2.0715  safety=0.0028  top1=0.2155  lr=2.36e-03
+  e 80  loss=2.0675  task=2.0659  safety=0.0029  top1=0.1924  lr=2.36e-03
+  e 90  loss=2.0626  task=2.0608  safety=0.0030  top1=0.1791  lr=2.36e-03
+  e100  loss=2.0586  task=2.0568  safety=0.0032  top1=0.2206  lr=2.36e-03
+  e110  loss=2.0567  task=2.0548  safety=0.0033  top1=0.2548  lr=2.36e-03
+  e120  loss=2.0541  task=2.0522  safety=0.0033  top1=0.2000  lr=2.36e-03
+  top1_best=0.2581  best_ep=103  task=2.052  t=1129s
+
+======================================================================
+H. beam=32   K_iter=5   D=16 geo  [deeper]
+======================================================================
+  e  1  loss=3.6916  task=3.6733  safety=0.0315  top1=0.1559  lr=2.36e-03
+  e 10  loss=2.1236  task=2.1223  safety=0.0023  top1=0.1636  lr=2.36e-03
+  e 20  loss=2.0812  task=2.0797  safety=0.0025  top1=0.2619  lr=2.36e-03
+  e 30  loss=2.0479  task=2.0462  safety=0.0028  top1=0.2800  lr=2.36e-03
+  e 40  loss=2.0277  task=2.0259  safety=0.0031  top1=0.2535  lr=2.36e-03
+  e 50  loss=2.0094  task=2.0074  safety=0.0035  top1=0.2596  lr=2.36e-03
+  e 60  loss=2.0010  task=1.9988  safety=0.0039  top1=0.2996  lr=2.36e-03
+  e 70  loss=1.9927  task=1.9902  safety=0.0043  top1=0.3399  lr=2.36e-03
+  e 80  loss=1.9884  task=1.9858  safety=0.0046  top1=0.3192  lr=2.36e-03
+  e 90  loss=1.9831  task=1.9803  safety=0.0048  top1=0.3106  lr=2.36e-03
+  e100  loss=1.9789  task=1.9760  safety=0.0051  top1=0.3297  lr=2.36e-03
+  e110  loss=1.9728  task=1.9697  safety=0.0053  top1=0.3011  lr=2.36e-03
+  e120  loss=1.9666  task=1.9633  safety=0.0056  top1=0.2922  lr=2.36e-03
+  top1_best=0.3399  best_ep=70  task=1.965  t=3210s
+
+======================================================================
+I. beam=32   K_iter=8   D=16 geo  [reaches 8-hop]
+======================================================================
+  e  1  loss=5.0029  task=4.9846  safety=0.0314  top1=0.1401  lr=2.36e-03
+  e 10  loss=2.0103  task=2.0090  safety=0.0023  top1=0.2828  lr=2.36e-03
+  e 20  loss=1.9364  task=1.9343  safety=0.0035  top1=0.2810  lr=2.36e-03
+  e 30  loss=1.9108  task=1.9084  safety=0.0040  top1=0.3011  lr=2.36e-03
+  e 40  loss=1.8954  task=1.8929  safety=0.0043  top1=0.3182  lr=2.36e-03
+  e 50  loss=1.8860  task=1.8834  safety=0.0045  top1=0.2899  lr=2.36e-03
+  e 60  loss=1.8726  task=1.8699  safety=0.0047  top1=0.3396  lr=2.36e-03
+  e 70  loss=1.8693  task=1.8664  safety=0.0050  top1=0.3200  lr=2.36e-03
+  e 80  loss=1.8620  task=1.8590  safety=0.0052  top1=0.3187  lr=2.36e-03
+  e 90  loss=1.8558  task=1.8526  safety=0.0054  top1=0.3389  lr=2.36e-03
+  e100  loss=1.8519  task=1.8487  safety=0.0056  top1=0.3062  lr=2.36e-03
+  e110  loss=1.8514  task=1.8481  safety=0.0057  top1=0.3343  lr=2.36e-03
+  e120  loss=1.8503  task=1.8469  safety=0.0058  top1=0.3289  lr=2.36e-03
+  top1_best=0.3669  best_ep=63  task=1.847  t=3834s
+
+======================================================================
+J. beam=32   K_iter=12  D=16 geo  [over-smooth?]
+======================================================================
+  e  1  loss=6.2879  task=6.2697  safety=0.0314  top1=0.1152  lr=2.36e-03
+  e 10  loss=2.0340  task=2.0326  safety=0.0024  top1=0.2145  lr=2.36e-03
+  e 20  loss=2.0086  task=2.0070  safety=0.0029  top1=0.2459  lr=2.36e-03
+  e 30  loss=1.9963  task=1.9944  safety=0.0033  top1=0.2400  lr=2.36e-03
+  e 40  loss=1.9890  task=1.9870  safety=0.0034  top1=0.2461  lr=2.36e-03
+  e 50  loss=1.9828  task=1.9807  safety=0.0035  top1=0.2813  lr=2.36e-03
+  e 60  loss=1.9677  task=1.9656  safety=0.0036  top1=0.2532  lr=2.36e-03
+  e 70  loss=1.9597  task=1.9576  safety=0.0037  top1=0.2530  lr=2.36e-03
+  e 80  loss=1.9558  task=1.9535  safety=0.0039  top1=0.2823  lr=2.36e-03
+  e 90  loss=1.9509  task=1.9485  safety=0.0041  top1=0.2655  lr=2.36e-03
+  e100  loss=1.9458  task=1.9432  safety=0.0045  top1=0.2512  lr=2.36e-03
+  e110  loss=1.9433  task=1.9405  safety=0.0048  top1=0.2711  lr=2.36e-03
+  e120  loss=1.9366  task=1.9337  safety=0.0049  top1=0.2866  lr=1.18e-03
+  top1_best=0.2953  best_ep=115  task=1.935  t=1840s
+
+Saved -> results/train_step13_beam_iter_scaling_depth.json
+
+-- Beam × K_iter scaling at D=16 Fourier (ref: step9A=0.2922) ------
+  Config                                                    beam  K_iter  top1_best    vs_ref    t(s)
+  -------------------------------------------------------  -----  ------  ---------  --------  ------
+  F                                                           32       1     0.2290   -0.0632     732
+  G                                                           32       2     0.2581   -0.0341    1129
+  H                                                           32       5     0.3399   +0.0477    3210
+  I                                                           32       8     0.3669   +0.0747    3834
+  J                                                           32      12     0.2953   +0.0031    1840
+
+  === Depth sweep (beam=32) ===
+  K_iter= 1: 0.2290
+  K_iter= 2: 0.2581
+  K_iter= 5: 0.3399
+  K_iter= 8: 0.3669
+  K_iter=12: 0.2953

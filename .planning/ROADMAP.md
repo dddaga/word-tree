@@ -508,205 +508,306 @@ Compare Stage A (static only), Stage B (Exp1), Stage C (Exp2), and Phase 3 ampli
 
 ---
 
-## Phase 5 — Scalable Architecture Experiments
-**Goal:** Extend SGNNET to large neuron counts (N ≤ 20 000) by replacing O(N²) operations with O(N·K) sparse topology. Three architectural variants tested and compared. Signal reflection routing introduced as a candidate mechanism.
-**Requirements:** SCALE-01 through SCALE-06
-**Done when:** All three architectures swept across N=[256,512,1024,2048,4096,10000,20000]; comparison table produced; signal reflection experiment completed.
+## Phase 5 — Scalable Architecture Experiments & Mechanism Discovery
+**Goal:** Two parallel tracks: (A) architectural exploration — neuron scaling sweep, SGNNET_ProximityWave, and signal reflection routing at large N; (B) mechanism discovery — systematic ARM experiments to maximize accuracy at D=64/N=1024/K_iter=8. Both tracks feed the final architecture comparison. Infrastructure (SGNNET_SmallWorld, SGNNET_Resonant, SGNNET_AntiHebbian, Trainer) is complete.
+**Confirmed so far:** D=64 Fourier encoding ceiling = 56.28%; AntiHebb α=1.0 = 80.08% (+23.80pp, all-time best, step29c Config A); K_iter=3→8 gap = 15pp; signed coupling dead at D=64 (5 experiments); input-gated adjacency +2.34pp over ceiling.
+**Requirements:** SCALE-01 through SCALE-06, ARM-01 through ARM-05
+**Done when:** Neuron scaling sweep complete (N=[512,1024,2048,4096,10000]); ProximityWave trained at N=1024 and N=4096; signal reflection experiment complete; Gen4 compound result exists; dynamic connectivity question closed; spatial grouped input tested; architecture comparison table produced; final Phase 5 ceiling documented.
+
+**Primary goal (added 2026-04-04):** SGNNET as parameter-efficient FFN replacement for transformer models. O(N×K) hard constraint. N-scaling law hypothesis: increasing N incorporates higher complexity. Steps 57-61 are additional ablation experiments within Phase 5 to test new architectural mechanisms before synthesis.
 
 Plans:
-- [x] 05-01-PLAN.md — Bug fixes for SGNNET_Wave at large N (fill_diagonal_ in-place, safety loss boolean indexing), neuron scaling sweep N≤10000
-- [ ] 05-02-PLAN.md — SGNNET_SmallWorld: fixed fan-in index tables replacing dense C_hh einsum; no phases, index-based groups
-- [ ] 05-03-PLAN.md — SGNNET_ProximityWave: sparse k-NN topology + dynamic phasor routing; O(N·K) per batch; periodic W_pos-based reconnection
-- [ ] 05-04-PLAN.md — Signal reflection routing experiment
-- [ ] 05-05-PLAN.md — Architecture comparison: SmallWorld vs ProximityWave vs SGNNET_Wave across all N values
+- [x] 05-01-PLAN.md — Neuron scaling sweep (N=[512,1024,2048,4096,10000]) using SGNNET_SmallWorld baseline
+- [x] 05-02-PLAN.md — SGNNET_ProximityWave: sparse W_pos k-NN topology + dynamic phasor routing + periodic reconnection
+- [x] 05-03-PLAN.md — Signal reflection routing experiment + architecture comparison (SmallWorld vs ProximityWave)
+- [ ] 05-04-PLAN.md — ARM 1+2: Gen4 compound (step29c → step32) + new mechanisms (step48 K_iter, step52/53 high-D routing, step54 LR schedule)
+- [ ] 05-05-PLAN.md — ARM 3+4: Dynamic connectivity closure (step36/49/50/51) + input architecture (step55 spatial grouped, PCA input)
+- [ ] 05-06-PLAN.md — Phase 5 synthesis: best config identified; REQUIREMENTS updated; LEARNINGS consolidated
 
-### Plan 5.1 — SGNNET_Wave Bug Fixes & Neuron Scaling Sweep
+**New architecture experiments (2026-04-04, additional work within Phase 5):**
+- Steps 57-61 are a fast ablation wave (50% data, 75ep) testing: benchmark anchor (57), resonance-excitatory (58), beam unification (59), phase-distance routing options A/B (60), hub interneurons (61).
+- Winners from steps 58-61 compound in Wave 2 (full data, 150ep) before Phase 5 synthesis (05-06).
+- Updated by new architecture experiments step57-61 (2026-04-04)
 
-**Bugs fixed:**
-- `wave_routing.py`: `strength.fill_diagonal_(0)` in-place on tracked tensor → replaced with `strength * (1 - eye)` (out-of-place)
-- `losses.py`: `dists[mask]` boolean indexing creates backward shape mismatch at large N on MPS → replaced with element-wise masking; safety loss disabled above N=5000 (O(N²) OOM guard)
+### Infrastructure Already Complete (done in earlier Phase 5 iterations)
+
+- `src/sgnnet/model_smallworld.py` — O(N·K) sparse gather-sum routing (conn_in, conn_hh); K_in=50, K_local=4, K_random=2, n_groups=128
+- `src/sgnnet/model_resonant.py` — Beam + dynamic_z_geo routing wrapper (SGNNET_Resonant); K_phase=8, beam_size=32
+- `src/sgnnet/mechanisms_inhibitory.py` — AntiHebbian inhibition wrapper (SGNNET_AntiHebbian); variant=wpos
+- `src/sgnnet/model_spatial_grouped.py` — Learned per-group input projections + bridge neurons (step55, ready to dispatch)
+- `src/training/trainer.py` — Trainer with MPS/CUDA, FP16, plateau LR, safety valve
+- `src/training/experiment_config.py` — topology_kwargs, trainer_kwargs, run_metadata
+
+### Plan 5.1 — Neuron Scaling Sweep
+
+Sweep SGNNET_SmallWorld (with best AntiHebb α=0.7 mechanism stack) across N=[512, 1024, 2048, 4096, 10000] to establish the accuracy vs. compute trade-off at scale.
+
+**Note:** Also fixes any remaining SGNNET_Wave bugs (fill_diagonal_ in-place, safety loss boolean indexing at large N, lambda_safety scaling).
+
+**Bug fixes to carry forward:**
+- `wave_routing.py`: `strength.fill_diagonal_(0)` → `strength * (1 - eye)` (out-of-place)
+- `losses.py`: `dists[mask]` boolean indexing → element-wise masking; safety loss disabled above N=5000 (OOM guard)
 - `lambda_safety` scaled by `(256/N)^(1/D)` to compensate for denser neuron packing at large N
 
-**Sweep:** N_hidden = [512, 1024, 2048, 4096, 10000]
+**Sweep:** N_hidden = [512, 1024, 2048, 4096, 10000]; all at D=64, K_iter=8, AntiHebb α=0.7 wpos
 
 **Deliverables:**
-- Fixed `src/sgnnet/losses.py`, `src/sgnnet/wave_routing.py`
-- `scripts/train_exp1_scale_neurons.py`
-- `results/exp1_scale_{N}.json` per run; `results/exp1_neuron_scaling.json` summary
+- Fixed `src/sgnnet/losses.py` (if needed), updated safety scaling in `experiment_config.py`
+- `scripts/train_step56_n_scaling.py` — runs all N values in sequence on Mac Studio
+- `results/train_step56_n_scaling.json` — accuracy, params, time per N
+- LEARNINGS entry: accuracy vs N curve; where does performance plateau?
 
-**Verification:** All N values complete 150 epochs without crash; loss stays bounded.
+**Verification:** All N values complete 150 epochs; JSON records top-1 per N; no OOM at N=10000.
 
 ---
 
-### Plan 5.2 — SGNNET_SmallWorld
+### Plan 5.2 — SGNNET_ProximityWave at Scale
 
-Fixed fan-in topology with no phases. Replaces O(N²) C_hh dense einsum and cdist with O(N·K) gather+sum.
+Sparse topology with dynamic phasor routing. `conn_hh` built from W_pos k-NN (geometry-based, no hard group boundaries). Phase and strength computed only over K edges per neuron (O(N·K) not O(N²)).
 
 **Architecture:**
-- `conn_in [N_hidden, K_in]`: block-local input → hidden fan-in (K_in=50)
-- `conn_hh [N_hidden, K_hh]`: Watts-Strogatz small-world graph built at init; K_local=4 within-group + K_random=2 long-range shortcuts
-- No cdist, no phases — purely structural routing
+- `build_knn_conn(W_pos, K_local, K_random)` — k-NN in W_pos space + random shortcuts; overlap natural from geometry
+- `sparse_phasor_route` — per-edge distance → Gaussian strength + 2π·d/λ phase; O(N·K·B·D) per forward
+- `tick_epoch()` — rebuilds conn_hh from current W_pos every `reconnect_every` epochs (adaptive topology without per-batch O(N²) cost)
 
-**Key property:** K_random≥1 achieves ~100% graph connectivity (graph diameter ≈ O(log N)); K_random=0 leaves groups isolated (empirically 3% reachability at N=256).
+**Sweep:** N=[1024, 4096]; compare SmallWorld vs ProximityWave at each N
 
 **Deliverables:**
-- `src/sgnnet/model_smallworld.py`
-- `scripts/train_exp2_smallworld.py`
-- `results/exp2_sw_{N}.json` per run; `results/exp2_smallworld.json` summary
+- `src/sgnnet/model_proximity_wave.py` (implement or verify existing)
+- `scripts/train_exp3_proxwave.py` — N=1024 and N=4096 runs
+- `results/exp3_proxwave.json` — per-N accuracy, time per epoch, topology change logs
 
-**Verification:** N=20000 completes without OOM; backward OK at all N.
+**Verification:** At N=4096 each forward pass stays under 500ms; topology changes logged at reconnect points; no NaN gradients.
 
 ---
 
-### Plan 5.3 — SGNNET_ProximityWave
+### Plan 5.3 — Signal Reflection Routing + Architecture Comparison
 
-Sparse topology with dynamic phasor routing. `conn_hh` built from W_pos k-NN (geometry-based, no hard group boundaries). Phase and strength computed only over the K edges per neuron (O(N·K) not O(N²)).
+Signal reflection: activations propagate conditionally based on sign and magnitude. Strongly negative activations are reflected back to the originating neuron rather than propagating.
 
-**Architecture:**
-- `build_knn_conn(W_pos, K_local, K_random)` — k-NN in W_pos space + random shortcuts; no index-based groups → overlap is natural from geometry
-- `sparse_phasor_route` — per-edge distance → Gaussian strength + 2π·d/λ phase; O(N·K·B·D) per forward pass
-- `tick_epoch()` — called by Trainer each epoch; rebuilds conn_hh from current W_pos every `reconnect_every` epochs (adaptive topology without per-batch O(N²) cost)
-
-**Deliverables:**
-- `src/sgnnet/model_proximity_wave.py`
-- `scripts/train_exp3_proxwave.py`
-- `results/exp3_pw_{N}.json` per run; `results/exp3_proxwave.json` summary
-
-**Verification:** At N=10000 each forward pass stays under 500ms; topology changes logged at reconnect points.
-
----
-
-### Plan 5.4 — Signal Reflection Routing Experiment
-
-**Idea:** In the routing step, activations propagate conditionally based on sign and magnitude. Strongly negative activations are reflected back to the originating neuron rather than propagating.
-
-**Rule:**
+**Reflection rule:**
 ```
-Z_prop[h]    = relu(Z[h])             # positive part — travels to neighbours
-Z_reflect[h] = relu(-Z[h] - θ)        # only strongly negative values bounce back
+Z_prop[h]    = relu(Z[h])              # positive → travels to neighbours
+Z_reflect[h] = relu(-Z[h] - θ)         # strongly negative → bounces back
 Z_new[h]     = -Z_reflect[h] + Σ_k weight[h,k] * Z_prop[k]
 ```
-Where θ is a threshold hyperparameter (default 0.0 = any negative reflects; >0 = only strongly negative).
+θ = threshold (default 0.0 = any negative reflects; >0 = only strongly negative).
 
 **Properties expected:**
 - Sparse activation propagation: only positive neurons transmit each step
-- Self-inhibition: strongly suppressed neurons actively dampen themselves, creating routing "dead zones" that information flows around
-- Input-dependent information channels: active path through the graph shifts per input
-- Asymmetric gradient flow: gradients only propagate through connections where source was positive
+- Self-inhibition: strongly suppressed neurons dampen themselves → routing "dead zones"
+- Input-dependent information channels: active path shifts per input
+- Risk: dying neuron cascade. Mitigation: leaky reflection α=0.1 (`α·relu(-Z-θ)`)
 
-**Risk:** Dying neuron cascade — once negative a neuron may never recover. Mitigation: leaky reflection `α·relu(-Z - θ)` with α=0.1 lets negative signal drain rather than accumulate.
+**Ablation at N=1024 (100 epochs):**
+- standard routing (SmallWorld Ref)
+- leaky-reflect (α=0.1, θ=0.0)
+- hard-reflect (α=1.0, θ=0.5)
+- ProximityWave + leaky-reflect
 
-**Phasor extension:** gate on real component (in-phase = propagate, out-of-phase = reflect); imaginary component tracks phase direction.
+**Architecture comparison table (Phase 5 deliverable):**
 
-**Implementation:** Add `reflective: bool` and `reflect_threshold: float` flags to `SGNNET_ProximityWave._route()`. Compare N=1024 with/without at 100 epochs.
+| Architecture | N | top-1 | ms/epoch | Notes |
+|---|---|---|---|---|
+| SmallWorld baseline | 1024 | 56.28% | — | D=64 ceiling |
+| SmallWorld + AntiHebb | 1024 | 75.24% | — | best mech |
+| SmallWorld + AntiHebb | 4096 | ? | — | from Plan 5.1 |
+| ProximityWave | 1024 | ? | — | from Plan 5.2 |
+| SmallWorld + reflection | 1024 | ? | — | this plan |
 
 **Deliverables:**
-- `reflective` flag in `src/sgnnet/model_proximity_wave.py`
-- `scripts/train_exp4_reflection.py` — ablation at N=1024: standard vs leaky-reflect (α=0.1, θ=0.0) vs hard-reflect (α=1.0, θ=0.5)
-- `results/exp4_reflection.json` — side-by-side metrics
+- `reflective` flag added to `src/sgnnet/model_proximity_wave.py` (or new `model_reflection.py`)
+- `scripts/train_exp4_reflection.py`
+- `results/exp4_reflection.json`
+- `results/arch_comparison.md` — full architecture comparison table
 
-**Verification:** No NaN gradients; leaky variant does not produce dead neurons (monitor fraction of neurons with |Z|<ε per epoch).
+**Verification:** No NaN gradients; leaky variant has <5% dead neurons; arch_comparison.md produced.
 
 ---
 
-### Plan 5.5 — Architecture Comparison
+### Plan 5.4 — ARM 1 + ARM 2: Gen4 Compound & New Mechanisms
 
-Aggregate all three architectures across the N sweep. Identify accuracy vs. compute trade-off.
+Sync and analyze the generational compounding results (ARM 1) and new mechanism sweeps (ARM 2). Adopt winners into the definitive base configuration.
 
-**Comparison axes:**
-- top-1 accuracy and mAP at each N
-- Training time per epoch (ms/epoch) vs N
-- Forward pass memory footprint vs N
-- Whether phase routing adds measurable benefit over flat SmallWorld gather
+**ARM 1 — Gen4 compound (step29c → step32):**
+- Monitor + sync `results/train_step29c_mechanisms_calibrated.json` from Mac Studio
+- Analyze: which of (AntiHebb, phase_exc, interneurons, fast_W_phase) survive on calibrated base?
+- Write `scripts/train_step32_gen4_compound.py` with confirmed winners stacked
+- Dispatch step32; sync JSON when complete
+- Update LEARNINGS: definitive Gen4 ceiling
+
+**ARM 2 — New mechanisms (step48, step52, step53, step54):**
+- Sync step48 (K_iter={8,12,16,24,32} ± AntiHebb) and step54 (LR schedule: plateau vs CosineWarmRestarts vs cosine)
+- Dispatch step52 (high-D Z-subspace / W_pos-subspace / projection / centering routing) when slot opens
+- Dispatch step53 (low-rank + frequency-group cross-dim mixing rank-4/8) when slot opens
+- Analyze each: does K_iter > 8 help? Does CosineWarmRestarts improve convergence? Does subspace gating compound?
+
+**Decision rules:**
+- Any ARM 2 winner → adopt into Gen4 base before step32
+- If K_iter > 8 wins: update topology_kwargs default
+- If CosineWarmRestarts wins: update trainer_kwargs default
 
 **Deliverables:**
-- `results/arch_comparison.json` — all three models at all N values
-- `results/arch_comparison.md` — human-readable table
+- `results/train_step29c_mechanisms_calibrated.json` (synced)
+- `results/train_step32_gen4_compound.json`
+- `results/train_step48_kiter_sweep_d64.json`, `results/train_step54_warm_restart_lr.json` (synced)
+- `results/train_step52_*.json`, `results/train_step53_*.json`
+- `learnings/LEARNINGS_phase5_p8_arm1_arm2.md` — findings and adopted changes
+
+**Verification:** step32 JSON exists; step48/54/52/53 JSONs exist; LEARNINGS documents winners vs losers.
 
 ---
 
-## Phase 6 — PCA Compression
-**Day:** March 25 (morning)
-**Goal:** Apply PCA to 25088-dim features, sweep compression ratios, retrain SGNNET for each k, find optimal compression point.
-**Requirements:** PCA-01 through PCA-06
-**Done when:** Accuracy vs. k curve produced; optimal k identified.
+### Plan 5.5 — ARM 3 + ARM 5: Dynamic Connectivity & Input Architecture
 
-### Plan 5.1 — PCA Fitting & Analysis
-Fit PCA on training features, produce explained variance curve.
+Resolve the two remaining architectural questions: (1) can O(N·K) input-dependent topology match O(N²) signed coupling? (2) does learned spatial projection beat random K_in=50?
+
+**ARM 3 — Dynamic connectivity closure:**
+- Sync step36 final result (all gated configs); analyze vs static ceiling
+- Dispatch step49 (signed coupling K_iter threshold 3-7 sweet spot) and step50 (spatial W_pos K-NN, epoch-level rebuild) and step51 (W_pos K-NN + W_phase strength gating)
+- Render verdict: is any O(N·K) input-dependent topology viable at D=64?
+
+**ARM 5 — Input architecture (step55 spatial grouped + PCA):**
+- Rsync `src/sgnnet/model_spatial_grouped.py` + `scripts/train_step55_spatial_grouped_input.py` to Mac Studio
+- Dispatch step55 (6 configs: Ref / 7 rows 0% / 7 rows 20% / 7 rows 40% / 49 pos 20% / 8 flat 20%)
+- Separately: fit PCA on training features; test SGNNET with PCA-compressed input at k={256,512,1024}; compare vs spatial grouped
+- Best input mechanism: random K_in=50 vs learned spatial vs PCA?
 
 **Deliverables:**
-- `src/data/pca.py`: PCATransform class
-  - `fit(X_train)` — fit on 25088-dim training features
-  - `transform(X, k) -> Tensor[N, k]` — project to k components
-  - `explained_variance_ratio(ks) -> array` — fraction of variance explained
-- `results/pca_explained_variance.json`: explained variance for k ∈ {32, 64, 128, 256, 512, 1024, 2048}
-- `results/pca_explained_variance.png`: curve plot
+- `results/train_step36_input_gated.json` (all configs final)
+- `results/train_step49_*.json`, `results/train_step50_*.json`, `results/train_step51_*.json`
+- `results/train_step55_spatial_grouped_input.json`
+- `results/pca_input_sweep.json` (k sweep)
+- `learnings/LEARNINGS_phase5_p9_arm3_arm5.md` with dynamic topology verdict and best input mechanism
 
-**Verification:** PCA fitted; explained variance at k=2048 ≥ 95%.
+**Verification:** All dynamic connectivity experiments have results; step55 JSON exists; PCA sweep exists; a clear best input mechanism is documented.
 
 ---
 
-### Plan 5.2 — Compression Sweep
-Retrain SGNNET with PCA-compressed input for each k. Run in parallel (one job per k).
+### Plan 5.6 — Phase 5 Synthesis
 
-**Sweep:** k ∈ {64, 128, 256, 512, 1024, 2048}
+Consolidate all Phase 5 findings. Identify the definitive best SGNNET_SmallWorld configuration. Produce architecture comparison. Update REQUIREMENTS.
 
-For each k:
-- SGNNET: N_in = k (no adapter needed — PCA handles projection)
-- N_hidden = 512, D = 64, K = 3, sparsity = 0.90
-- Train 50 epochs, record full per-class metrics
-
-**Compute overhead per inference (for comparison):**
-- PCA transform: k × 25088 multiply-adds = k × 25088 FLOPs
-- SGNNET inference: depends on N, K
+**What this plan does:**
+- Read all Phase 5 result JSONs; assemble unified comparison table:
+  - Mechanisms ladder (D=64 ceiling → AntiHebb → Gen4 compound)
+  - Architecture comparison (SmallWorld vs ProximityWave vs Reflection at N=1024 and N=4096)
+  - Input architecture (random K_in vs spatial grouped vs PCA)
+- Identify the single best configuration for handoff to Phase 6 report
+- Update `src/training/experiment_config.py::GA_BEST` to confirmed Phase 5 ceiling
+- Write `learnings/LEARNINGS_phase5_FINAL.md` — findings, dead ends, best config
+- Update REQUIREMENTS.md to mark all Phase 5 requirements as done; record achieved accuracy
 
 **Deliverables:**
-- `results/pca_sweep.json`:
-  ```json
-  {
-    "k64":  {
-      "top1_accuracy": ..., "mAP": ..., "params": ..., "total_flops": ...,
-      "per_class": {"tench": {...}, ...}
-    },
-    "k128": {...},
-    ...
-  }
-  ```
-- `src/scripts/train_pca_sweep.py`: runs all k values
+- `learnings/LEARNINGS_phase5_FINAL.md`
+- `results/phase5_summary.json` — all experiment best results in one table
+- Updated `src/training/experiment_config.py` with correct GA_BEST
 
-**Verification:** All 6 k values trained; `pca_sweep.json` has per-class metrics for all.
+**Verification:** `phase5_summary.json` has ≥15 experiment rows; LEARNINGS_phase5_FINAL.md records definitive best config.
 
 ---
 
-### Plan 5.3 — Optimal Compression Point
-Identify the highest compression (smallest k) with accuracy drop < 2% vs. full-dim SGNNET.
+### Plan 5.2 — ARM 2: New Mechanisms Analysis
+
+Sync and analyze the ARM 2 sweep: K_iter scaling (step48), LR schedule (step54), high-D routing (step52), low-rank mixing (step53). Adopt winners into the base config.
+
+**Active experiments:** step48 (K_iter sweep), step54 (LR schedule) running on Mac Studio.
+
+**What this plan does:**
+- Sync step48/54 JSONs when complete; extract winners
+- Dispatch step52 (high-D subspace routing) and step53 (low-rank mixing) to Mac Studio when slots open
+- Analyze: does K_iter > 8 help? Does CosineWarmRestarts beat plateau? Does subspace routing compound with AntiHebb?
+- Update `learnings/EXPERIMENT_QUEUE.md` with results; mark closed questions
 
 **Deliverables:**
-- `results/pca_optimal.json`: `{"k_optimal": ..., "accuracy": ..., "compression_ratio": ...}`
-- `results/accuracy_vs_k.png`: curve plot with optimal k marked
+- `results/train_step48_kiter_sweep_d64.json`, `results/train_step54_warm_restart_lr.json` (synced)
+- `results/train_step52_*.json`, `results/train_step53_*.json` (when complete)
+- `learnings/LEARNINGS_phase5_p8_*.md` entry documenting ARM 2 findings
 
-**Verification:** `k_optimal` identified; `compression_ratio` = 25088 / k_optimal computed.
+**Verification:** All 4 steps have result JSONs and LEARNINGS entries.
 
 ---
 
-## Phase 7 — Comparative Analysis & Report
-**Day:** March 25 (afternoon)
-**Goal:** Aggregate all results into a clean comparison table. Produce final report.
-**Requirements:** ANAL-01 through ANAL-06
-**Done when:** `results/report.md` exists with all tables, plots, and key findings.
+### Plan 5.3 — ARM 3: Close Dynamic Connectivity Question
+
+Resolve whether O(N·K) input-dependent topology can recover the gains of O(N²) signed coupling. Decision must be reached before Phase 6.
+
+**Context:** step31 (Z-KNN per step) = 44-53%, failed. step36 (input-gated adjacency) = 58.62% for Ref config, gated configs pending. step49/50/51 queued.
+
+**What this plan does:**
+- Sync step36 final result; analyze gated configs
+- Dispatch step49 (signed coupling K_iter threshold), step50 (spatial W_pos K-NN), step51 (W_pos K-NN + W_phase gate) when slots open
+- Render final verdict: is there a viable input-dependent topology at O(N·K)?
+- Document in `learnings/LEARNINGS_phase5_p9_dynamic_connectivity.md`
+
+**Deliverables:**
+- `results/train_step36_input_gated.json` (final, all configs)
+- `results/train_step49_*.json`, `results/train_step50_*.json`, `results/train_step51_*.json`
+- `learnings/LEARNINGS_phase5_p9_dynamic_connectivity.md` with verdict
+
+**Verification:** All dynamic connectivity experiments have results; a go/no-go decision is documented.
+
+---
+
+### Plan 5.4 — Input Architecture: Spatial Grouped + PCA
+
+Test whether the input mechanism (currently random sparse gather K_in=50) can be improved by learned spatial projections or PCA compression.
+
+**Context:** `src/sgnnet/model_spatial_grouped.py` implemented locally; `scripts/train_step55_spatial_grouped_input.py` written. VGG16 pool5 = [512,7,7] = 25088 → spatial structure exploitable.
+
+**What this plan does:**
+- Rsync step55 files to Mac Studio; dispatch when slot opens
+- Sync result when complete; analyze: does learned per-group proj outperform random K_in=50?
+- Separately: fit PCA on training features; test SGNNET with PCA-compressed input (k=256/512/1024) as lightweight alternative to raw 25088-dim sparse gather
+- Document input architecture winner
+
+**Deliverables:**
+- `results/train_step55_spatial_grouped_input.json` (synced)
+- `results/pca_input_sweep.json` (PCA sweep across k values)
+- `learnings/LEARNINGS_phase5_p10_input_architecture.md` with best input mechanism
+
+**Verification:** step55 JSON exists; PCA sweep exists; a best input mechanism is identified.
+
+---
+
+### Plan 5.5 — Phase 5 Synthesis
+
+Consolidate all Phase 5 findings. Identify the definitive best SGNNET_SmallWorld configuration. Update REQUIREMENTS with the achieved accuracy. Write the Phase 5 LEARNINGS summary.
+
+**What this plan does:**
+- Read all Phase 5 result JSONs; assemble comparison table (Ref vs each ARM winner vs Gen4 compound)
+- Identify the single best configuration: base + K_iter + AntiHebb α + LR schedule + input architecture + any dynamic topology winner
+- Update `src/training/experiment_config.py::GA_BEST` to final Phase 5 ceiling
+- Write `learnings/LEARNINGS_phase5_FINAL.md` summarizing findings, dead ends, and the best config
+- Update REQUIREMENTS.md: mark ARM-01 through ARM-05 as done; record final top-1 achieved
+
+**Deliverables:**
+- `learnings/LEARNINGS_phase5_FINAL.md`
+- Updated `src/training/experiment_config.py` with correct GA_BEST
+- `results/phase5_summary.json` — all experiment best results in one table
+
+**Verification:** `phase5_summary.json` exists with ≥10 experiment rows; LEARNINGS_phase5_FINAL.md records the definitive best config and ceiling.
+
+---
+
+## Phase 6 — Comparative Analysis & Final Report
+**Goal:** Aggregate all Phase 5 results into a clean comparison table. Compute parameter and FLOP counts for all variants. Produce the final report showing SGNNET vs VGG16 FC across accuracy, params, and compute dimensions. The PCA input compression question is folded here from Plan 5.4.
+**Requirements:** PCA-01 through PCA-06, ANAL-01 through ANAL-06
+**Done when:** `results/report.md` exists with full comparison table, parameter accounting, and key findings from all 5 ARM phases.
 
 ### Plan 6.1 — Parameter & FLOPs Accounting
-Compute params and FLOPs per inference for all four variants with full accounting.
+
+Compute params and FLOPs per inference for all variants produced across Phases 3–5.
 
 **Four variants:**
 1. VGG16 FC (original): 123.6M params, dense matmul FLOPs
 2. Dense MLP (distilled): same architecture, same FLOPs, distilled accuracy
-3. SGNNET full (25088 input via adapter): adapter + SGNNET params
-4. SGNNET + PCA (k* input): PCA FLOPs + SGNNET params (no adapter needed)
+3. SGNNET_SmallWorld best config (from Phase 5 synthesis): params = N×D (W_pos) + K_hh×N (conn) + proj
+4. SGNNET + PCA input (best k from Plan 5.4): PCA FLOPs + SGNNET params
 
 **FLOPs accounting:**
 - Dense FC: 2 × (25088×4096 + 4096×4096 + 4096×10) multiply-adds
-- SGNNET: K × [sparse_matmul(N²×0.1, D) + cdist(N²×D) + einsum] + readout
+- SGNNET_SmallWorld: K_iter × [K_hh×N×D (sparse gather-sum)] + readout
 - PCA transform: k × 25088 multiply-adds (one-time per inference)
 
 **Deliverables:**
@@ -732,57 +833,60 @@ Aggregate all results. One aggregate table + one per-class table.
 - `results/comparison_per_class.md`:
 
 ```
-| Class              | VGG16 Acc | VGG16 AP | SGNNET Acc | SGNNET AP | SGNNET+PCA Acc | SGNNET+PCA AP |
-|--------------------|-----------|----------|------------|-----------|----------------|---------------|
-| tench              | xx%       | x.xxx    | xx%        | x.xxx     | xx%            | x.xxx         |
-| english_springer   | ...       | ...      | ...        | ...       | ...            | ...           |
-| ... (all 10)       |           |          |            |           |                |               |
+| Class              | VGG16 Acc | VGG16 AP | SGNNET Best | SGNNET+PCA |
+|--------------------|-----------|----------|-------------|------------|
+| tench              | xx%       | x.xxx    | xx%         | xx%        |
+| english_springer   | ...       | ...      | ...         | ...        |
+| ... (all 10)       |           |          |             |            |
 ```
 
 ---
 
-### Plan 6.3 — Visualizations
-Produce plots for aggregate and per-class comparisons.
+### Plan 6.2 — Visualizations & Key Findings
 
 **Deliverables:**
-- `results/map_vs_params.png`: mAP vs. parameter count scatter (all 3 variants)
-- `results/map_vs_k.png`: mAP vs. PCA k (compression sweep)
-- `results/per_class_accuracy_delta.png`: heatmap of per-class accuracy delta (SGNNET − VGG16 and SGNNET+PCA − VGG16) — shows which classes the sparse model gains or loses on
-- `results/per_class_ap_comparison.png`: grouped bar chart, AP per class for all 3 variants
-- `results/neuron_positions_before_after.png`: 2D PCA projection of W before/after training
-- `results/safety_valve_firing_rate.png`: safety valve loss over training epochs
+- `results/accuracy_vs_params.png`: top-1 accuracy vs. parameter count (all variants)
+- `results/per_class_accuracy_delta.png`: per-class accuracy delta (SGNNET − VGG16) heatmap
+- `results/mechanism_gains.png`: bar chart of each confirmed mechanism's contribution (pp gain vs baseline)
 
 ---
 
-### Plan 6.4 — Summary Report
+### Plan 6.3 — Summary Report
+
 Write final `results/report.md`.
 
 **Deliverables:**
 - `results/report.md` with sections:
   1. Experiment setup (dataset, VGG16 extraction, distillation approach)
   2. VGG16 baseline — aggregate and per-class metrics
-  3. SGNNET architecture summary (N, D, K, sparsity, N_in approach chosen)
-  4. SGNNET results — aggregate and per-class comparison vs. VGG16
-  5. PCA compression results — mAP and per-class curves vs. k
-  6. Key findings: which classes SGNNET recovers well, which it struggles on, optimal PCA k
-  7. Open questions (routing differentiability, K sensitivity, N_in strategy)
+  3. SGNNET architecture evolution: Phase 3 → Phase 4 → Phase 5 SmallWorld
+  4. Mechanism discovery findings: what works, what doesn't, why
+  5. Best config: D=64 N=1024 K_iter=8 + AntiHebb α=0.7 + [Gen4 compound] — accuracy vs VGG16
+  6. PCA compression: optimal k, accuracy vs compression trade-off
+  7. Open questions and future directions
 
-**Verification:** All 8 ANAL requirements checked off; report is a readable stand-alone document.
+**Verification:** All ANAL + PCA requirements checked off; report readable as a standalone document.
 
 ---
 
 ## Timeline Summary
 
-| Day | Phases | Target Outcome |
-|-----|--------|----------------|
-| March 23 | 1 + 2 | Tensor store ready; dense baseline trained and evaluated |
-| March 24 | 3 | SGNNET core architecture implemented (amplitude baseline) |
-| March 25+ | 4 | Wave architecture refactor; Exp1 + Exp2 GA search + training |
-| March 26+ | 5 | Scaling experiments: SmallWorld, ProximityWave, signal reflection, N≤20000 |
-| TBD | 6 + 7 | PCA sweep; final comparative report |
+| Phase | Name | Status |
+|-------|------|--------|
+| 1 | Data Pipeline | Complete |
+| 2 | Dense Baseline Benchmark | Complete |
+| 3 | SGNNET Core Architecture | Complete |
+| 4 | SGNNET Wave Architecture & Experiments | Complete |
+| 5 | Mechanism Discovery & Architecture Optimization | In progress — 3 experiments running on Mac Studio |
+| 6 | Comparative Analysis & Final Report | Not started |
 
-**Note:** Phase 4 redesigned on March 25 to implement wave-based phasor architecture with two experimental variants. Phase 5 and 6 timeline adjusted accordingly.
+**Phase 5 key findings so far (April 2026):**
+- D=64 Fourier encoding + SmallWorld = 56.28% ceiling
+- AntiHebb α=0.7 wpos = **75.24%** (+18.96pp) — all-time best
+- K_iter=3→8 = +15pp gap (all 8 steps necessary)
+- Signed coupling architecturally dead at D=64 (5 experiments confirm)
+- Input-gated adjacency (step36): +2.34pp over ceiling — best dynamic connectivity result
 
 ---
 *Roadmap created: 2026-03-23*
-*Last updated: 2026-03-26 — Phase 5 added (scalable architecture experiments + signal reflection); PCA → Phase 6; Report → Phase 7*
+*Last updated: 2026-04-03 — Phase 5 revised to reflect actual ARM-based mechanism discovery work; Phases 6+7 merged into Phase 6 (analysis + report); timeline updated*

@@ -1,0 +1,102 @@
+Device: mps  Epochs: 40 (cosine LR)  Batch: 128
+Step 49: Signed coupling × K_iter threshold sweep at D=64
+Question: Is there a K_iter sweet spot (4-7) where signed coupling works at D=64?
+Known: K_iter=3 → 25% (below ref). K_iter=8 → collapse (<15%). Gap untested.
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+PHASE 1: K_iter threshold sweep (α=0.3, 40ep cosine)
+======================================================================
+
+======================================================================
+Ref   K_iter=8  no-signed  [D=64 base, ~42% at 40ep]
+======================================================================
+  e  1  loss=3.9301  task=3.9038  safety=0.0538  top1=0.1498  lr=2.36e-03
+  e 10  loss=1.9352  task=1.9345  safety=0.0016  top1=0.3312  lr=2.02e-03
+  e 20  loss=1.8053  task=1.8044  safety=0.0019  top1=0.4227  lr=1.18e-03
+  e 30  loss=1.7559  task=1.7549  safety=0.0020  top1=0.4645  lr=3.46e-04
+  e 40  loss=1.7454  task=1.7444  safety=0.0021  top1=0.4624  lr=1.00e-07
+  top1_best=0.4685  best_ep=28/40 (70%)    mean_cos=N/A  t=3127s
+
+======================================================================
+A     K_iter=3  signed α=0.3  [step42: ~25%, confirms fail]
+======================================================================
+  e  1  loss=4.0699  task=4.0436  safety=0.0538  top1=0.1052  lr=2.36e-03
+  e 10  loss=2.1302  task=2.1296  safety=0.0014  top1=0.1794  lr=2.02e-03
+  e 20  loss=2.1072  task=2.1065  safety=0.0014  top1=0.2054  lr=1.18e-03
+  e 30  loss=2.0909  task=2.0902  safety=0.0014  top1=0.2385  lr=3.46e-04
+  e 40  loss=2.0855  task=2.0848  safety=0.0014  top1=0.2502  lr=1.00e-07
+  top1_best=0.2517  best_ep=36/40 (90%)    mean_cos=0.5205  t=1610s
+
+======================================================================
+B     K_iter=4  signed α=0.3  [first test above K_iter=3]
+======================================================================
+  e  1  loss=4.1695  task=4.1432  safety=0.0539  top1=0.1488  lr=2.36e-03
+  e 10  loss=2.1174  task=2.1167  safety=0.0014  top1=0.1839  lr=2.02e-03
+  e 20  loss=2.0785  task=2.0778  safety=0.0014  top1=0.2647  lr=1.18e-03
+  e 30  loss=2.0583  task=2.0576  safety=0.0014  top1=0.2632  lr=3.46e-04
+  e 40  loss=2.0518  task=2.0511  safety=0.0014  top1=0.2846  lr=1.00e-07
+  top1_best=0.2907  best_ep=31/40 (78%)    mean_cos=0.4978  t=2044s
+
+======================================================================
+C     K_iter=5  signed α=0.3  [mid-range sweet spot?]
+======================================================================
+  e  1  loss=4.1571  task=4.1308  safety=0.0539  top1=0.1254  lr=2.36e-03
+  e 10  loss=2.1003  task=2.0996  safety=0.0014  top1=0.2158  lr=2.02e-03
+  e 20  loss=2.0406  task=2.0399  safety=0.0014  top1=0.3011  lr=1.18e-03
+  e 30  loss=2.0125  task=2.0118  safety=0.0015  top1=0.2971  lr=3.46e-04
+  e 40  loss=2.0045  task=2.0038  safety=0.0015  top1=0.3269  lr=1.00e-07
+  top1_best=0.3289  best_ep=35/40 (88%)    mean_cos=0.4778  t=2483s
+
+======================================================================
+D     K_iter=6  signed α=0.3  [approaching collapse zone]
+======================================================================
+  e  1  loss=4.1166  task=4.0903  safety=0.0539  top1=0.1205  lr=2.36e-03
+  e 10  loss=2.0722  task=2.0715  safety=0.0014  top1=0.2864  lr=2.02e-03
+  e 20  loss=1.9936  task=1.9929  safety=0.0015  top1=0.3246  lr=1.18e-03
+  e 30  loss=1.9577  task=1.9569  safety=0.0016  top1=0.3371  lr=3.46e-04
+  e 40  loss=1.9500  task=1.9492  safety=0.0016  top1=0.3526  lr=1.00e-07
+  top1_best=0.3567  best_ep=31/40 (78%)    mean_cos=0.4590  t=2925s
+
+======================================================================
+E     K_iter=7  signed α=0.3  [one below collapse]
+======================================================================
+  e  1  loss=4.2352  task=4.2089  safety=0.0538  top1=0.1236  lr=2.36e-03
+  e 10  loss=2.0387  task=2.0380  safety=0.0014  top1=0.2963  lr=2.02e-03
+  e 20  loss=1.9442  task=1.9434  safety=0.0016  top1=0.3358  lr=1.18e-03
+  e 30  loss=1.9046  task=1.9038  safety=0.0017  top1=0.3875  lr=3.46e-04
+  e 40  loss=1.8960  task=1.8952  safety=0.0017  top1=0.3809  lr=1.00e-07
+  top1_best=0.3934  best_ep=22/40 (55%)    mean_cos=0.4382  t=3352s
+
+======================================================================
+F     K_iter=8  signed α=0.3  [known collapse, step23]
+======================================================================
+  e  1  loss=4.3515  task=4.3252  safety=0.0538  top1=0.1287  lr=2.36e-03
+  e 10  loss=2.0024  task=2.0017  safety=0.0014  top1=0.3208  lr=2.02e-03
+  e 20  loss=1.8916  task=1.8908  safety=0.0017  top1=0.3982  lr=1.18e-03
+  e 30  loss=1.8488  task=1.8479  safety=0.0018  top1=0.3952  lr=3.46e-04
+  e 40  loss=1.8392  task=1.8383  safety=0.0018  top1=0.4214  lr=1.00e-07
+  top1_best=0.4214  best_ep=38/40 (95%)    mean_cos=0.4180  t=3786s
+
+Phase 1 best: F = 0.4214  Ref_40ep = 0.4685  → Phase 2: NO (no sweet spot found)
+
+Saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step49_signed_kiter_threshold.json
+
+-- Signed coupling × K_iter threshold (Ref_40ep=0.4685) ---
+  Config                                                        top1    vs_Ref  collapse    t(s)
+  ----------------------------------------------------------------------------------------------------
+  Ref   K_iter=8  no-signed  [D=64 base, ~42% at 40ep]        0.4685   +0.0000        ok    3127
+  A     K_iter=3  signed α=0.3  [step42: ~25%, confirms fail  0.2517   -0.2168        ok    1610
+  B     K_iter=4  signed α=0.3  [first test above K_iter=3]   0.2907   -0.1778        ok    2044
+  C     K_iter=5  signed α=0.3  [mid-range sweet spot?]       0.3289   -0.1396        ok    2483
+  D     K_iter=6  signed α=0.3  [approaching collapse zone]   0.3567   -0.1118        ok    2925
+  E     K_iter=7  signed α=0.3  [one below collapse]          0.3934   -0.0752        ok    3352
+  F     K_iter=8  signed α=0.3  [known collapse, step23]      0.4214   -0.0471        ok    3786
+
+  Interpretation:
+  B/C/D/E > Ref → sweet spot exists; signed coupling viable at that K_iter
+  Monotone A→B→C→D→E < Ref → mechanism dead at D=64 regardless of K_iter
+  Collapse at config X → X is the power-iteration threshold at D=64
+  If no sweet spot: signed coupling is architecturally incompatible with D=64
+  If sweet spot found: run 150ep full experiment + AntiHebb compound

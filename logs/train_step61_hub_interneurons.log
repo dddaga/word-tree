@@ -1,0 +1,74 @@
+Loaded REF_BASELINE from step57: 0.7353
+Device: cpu  Epochs: 75  Batch: 128  Data: 50%
+Step 61: Hub interneuron mixing ablation  |  REF_BASELINE=0.7353 (step57)
+Design: 25% of neurons are blank-start hubs with high fan-in from input neurons
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref   AntiHebb alpha=1.0 wpos (no hubs)
+======================================================================
+  e  1  loss=4.4571  task=4.3836  safety=0.1506  top1=0.0833  lr=2.36e-03
+  e 10  loss=1.8010  task=1.7549  safety=0.0944  top1=0.4033  lr=2.36e-03
+  e 20  loss=1.4840  task=1.4524  safety=0.0645  top1=0.4650  lr=2.36e-03
+  e 30  loss=1.3106  task=1.2858  safety=0.0507  top1=0.5975  lr=2.36e-03
+  e 40  loss=1.1963  task=1.1751  safety=0.0434  top1=0.6349  lr=2.36e-03
+  e 50  loss=1.0951  task=1.0761  safety=0.0387  top1=0.6563  lr=2.36e-03
+  e 60  loss=1.0144  task=0.9969  safety=0.0359  top1=0.6718  lr=2.36e-03
+  e 70  loss=0.9662  task=0.9498  safety=0.0335  top1=0.7111  lr=2.36e-03
+  top1_best=0.7330  best_ep=73/75 (97%)  diag=converged  t=4454s
+
+======================================================================
+A     HubInterneuron n_input=768 fan_in=512 ah=0.0  [25% hubs large fan-in]
+======================================================================
+  e  1  loss=7.6990  task=7.6567  safety=0.0868  top1=0.0994  lr=2.36e-03
+  e 10  loss=2.1279  task=2.1273  safety=0.0014  top1=0.2155  lr=2.36e-03
+  e 20  loss=2.0663  task=2.0656  safety=0.0015  top1=0.2721  lr=2.36e-03
+  e 30  loss=2.0203  task=2.0196  safety=0.0015  top1=0.2930  lr=2.36e-03
+  e 40  loss=1.9784  task=1.9776  safety=0.0016  top1=0.3248  lr=2.36e-03
+  e 50  loss=1.9509  task=1.9500  safety=0.0017  top1=0.3643  lr=2.36e-03
+  e 60  loss=1.9243  task=1.9234  safety=0.0019  top1=0.3852  lr=2.36e-03
+  e 70  loss=1.9106  task=1.9096  safety=0.0020  top1=0.3773  lr=2.36e-03
+  top1_best=0.4051  best_ep=65/75 (87%)  diag=converged  t=14123s
+
+======================================================================
+B     HubInterneuron n_input=768 fan_in=256 ah=0.0  [25% hubs small fan-in]
+======================================================================
+  e  1  loss=7.5525  task=7.5102  safety=0.0867  top1=0.1047  lr=2.36e-03
+  e 10  loss=2.1278  task=2.1271  safety=0.0014  top1=0.2183  lr=2.36e-03
+  e 20  loss=2.0689  task=2.0682  safety=0.0015  top1=0.2693  lr=2.36e-03
+  e 30  loss=2.0218  task=2.0210  safety=0.0015  top1=0.2874  lr=2.36e-03
+  e 40  loss=1.9787  task=1.9779  safety=0.0016  top1=0.3192  lr=2.36e-03
+  e 50  loss=1.9486  task=1.9477  safety=0.0018  top1=0.3562  lr=2.36e-03
+  e 60  loss=1.9224  task=1.9214  safety=0.0019  top1=0.3704  lr=2.36e-03
+  e 70  loss=1.9095  task=1.9085  safety=0.0020  top1=0.3618  lr=2.36e-03
+  top1_best=0.3868  best_ep=73/75 (97%)  diag=converged  t=4916s
+
+======================================================================
+C     HubInterneuron n_input=768 fan_in=512 ah=1.0  [A + AntiHebb]
+======================================================================
+  e  1  loss=6.2990  task=6.2263  safety=0.1488  top1=0.0961  lr=2.36e-03
+  e 10  loss=1.8863  task=1.8489  safety=0.0767  top1=0.4010  lr=2.36e-03
+  e 20  loss=1.5828  task=1.5591  safety=0.0485  top1=0.4637  lr=2.36e-03
+  e 30  loss=1.4243  task=1.4064  safety=0.0366  top1=0.5134  lr=2.36e-03
+  e 40  loss=1.3002  task=1.2851  safety=0.0310  top1=0.5860  lr=2.36e-03
+  e 50  loss=1.2132  task=1.2002  safety=0.0267  top1=0.5924  lr=2.36e-03
+  e 60  loss=1.1588  task=1.1470  safety=0.0242  top1=0.6082  lr=2.36e-03
+  e 70  loss=1.1184  task=1.1076  safety=0.0222  top1=0.6403  lr=2.36e-03
+  top1_best=0.6405  best_ep=73/75 (97%)  diag=converged  t=23231s
+
+Saved -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step61_hub_interneurons.json
+
+-- Step 61: Hub interneuron mixing (ref=0.7330 / step57=0.7353) --
+  Config                                                          top1    vs_Ref   best_ep    t(s)
+  -----------------------------------------------------------------------------------------------
+  Ref   AntiHebb alpha=1.0 wpos (no hubs)                       0.7330   +0.0000       73      4454
+  A     HubInterneuron n_input=768 fan_in=512 ah=0.0  [25% hub  0.4051   -0.3279       65     14123
+  B     HubInterneuron n_input=768 fan_in=256 ah=0.0  [25% hub  0.3868   -0.3462       73      4916
+  C     HubInterneuron n_input=768 fan_in=512 ah=1.0  [A + Ant  0.6405   -0.0925       73     23231
+
+  Key questions:
+  A vs Ref → does a global mixing layer help beyond small-world routing?
+  B vs A   → large fan-in (512) vs smaller (256) for hub integration?
+  C vs A   → AntiHebb suppression in hub routing: helpful or redundant?
+  C vs Ref → hubs + AntiHebb vs pure AntiHebb: complementary mechanisms?

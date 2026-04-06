@@ -1,0 +1,84 @@
+Device: mps  Epochs: 120  D=16  encoding=fourier
+Goal: top-K gated conduction + excitatory radiation (W_phase replacement)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+======================================================================
+A. k_cond=4  excrad=off   [competitive conduction]
+======================================================================
+  e  1  loss=2.7089  task=2.6906  safety=0.0314  top1=0.1264  lr=2.36e-03
+  e 10  loss=2.0939  task=2.0928  safety=0.0019  top1=0.1651  lr=2.36e-03
+  e 20  loss=2.0708  task=2.0694  safety=0.0024  top1=0.1903  lr=2.36e-03
+  e 30  loss=2.0542  task=2.0526  safety=0.0028  top1=0.1903  lr=2.36e-03
+  e 40  loss=2.0434  task=2.0417  safety=0.0029  top1=0.2013  lr=2.36e-03
+  e 50  loss=2.0332  task=2.0314  safety=0.0030  top1=0.2094  lr=2.36e-03
+  e 60  loss=2.0266  task=2.0247  safety=0.0032  top1=0.2191  lr=2.36e-03
+  e 70  loss=2.0226  task=2.0206  safety=0.0035  top1=0.2316  lr=2.36e-03
+  e 80  loss=2.0146  task=2.0124  safety=0.0038  top1=0.2227  lr=2.36e-03
+  e 90  loss=2.0123  task=2.0100  safety=0.0039  top1=0.2161  lr=2.36e-03
+  e100  loss=2.0069  task=2.0045  safety=0.0042  top1=0.2308  lr=2.36e-03
+  e110  loss=2.0052  task=2.0027  safety=0.0044  top1=0.2298  lr=2.36e-03
+  e120  loss=2.0022  task=1.9996  safety=0.0045  top1=0.2329  lr=2.36e-03
+  top1_best=0.2461  best_ep=78  task=2.000  t=2344s
+
+======================================================================
+B. k_cond=2  excrad=off   [strong cond competition]
+======================================================================
+  e  1  loss=4.2003  task=4.1819  safety=0.0318  top1=0.1090  lr=2.36e-03
+  e 10  loss=2.1281  task=2.1268  safety=0.0022  top1=0.1671  lr=2.36e-03
+  e 20  loss=2.1137  task=2.1123  safety=0.0023  top1=0.1926  lr=2.36e-03
+  e 30  loss=2.1020  task=2.1006  safety=0.0024  top1=0.1949  lr=2.36e-03
+  e 40  loss=2.0956  task=2.0942  safety=0.0025  top1=0.2003  lr=2.36e-03
+  e 50  loss=2.0908  task=2.0893  safety=0.0025  top1=0.2224  lr=2.36e-03
+  e 60  loss=2.0814  task=2.0799  safety=0.0026  top1=0.2076  lr=2.36e-03
+  e 70  loss=2.0766  task=2.0751  safety=0.0027  top1=0.2189  lr=2.36e-03
+  e 80  loss=2.0691  task=2.0675  safety=0.0028  top1=0.1944  lr=2.36e-03
+  e 90  loss=2.0641  task=2.0624  safety=0.0030  top1=0.2145  lr=2.36e-03
+  e100  loss=2.0591  task=2.0572  safety=0.0033  top1=0.2201  lr=2.36e-03
+  e110  loss=2.0557  task=2.0536  safety=0.0036  top1=0.2265  lr=2.36e-03
+  e120  loss=2.0503  task=2.0481  safety=0.0039  top1=0.2074  lr=2.36e-03
+  top1_best=0.2390  best_ep=111  task=2.049  t=4195s
+
+======================================================================
+C. k_cond=1  excrad=off   [winner-take-all cond]
+======================================================================
+  e  1  loss=3.5689  task=3.5507  safety=0.0313  top1=0.0800  lr=2.36e-03
+  e 10  loss=2.2394  task=2.2380  safety=0.0024  top1=0.1299  lr=2.36e-03
+  e 20  loss=2.1945  task=2.1927  safety=0.0030  top1=0.1603  lr=2.36e-03
+  e 30  loss=2.1649  task=2.1628  safety=0.0037  top1=0.1676  lr=2.36e-03
+  e 40  loss=2.1492  task=2.1470  safety=0.0039  top1=0.1832  lr=2.36e-03
+  e 50  loss=2.1326  task=2.1302  safety=0.0042  top1=0.1995  lr=2.36e-03
+  e 60  loss=2.1247  task=2.1221  safety=0.0045  top1=0.2071  lr=2.36e-03
+  e 70  loss=2.1159  task=2.1133  safety=0.0046  top1=0.2018  lr=2.36e-03
+  e 80  loss=2.1081  task=2.1053  safety=0.0049  top1=0.2211  lr=2.36e-03
+  e 90  loss=2.1011  task=2.0980  safety=0.0052  top1=0.2262  lr=2.36e-03
+  e100  loss=2.0963  task=2.0931  safety=0.0056  top1=0.2334  lr=2.36e-03
+  e110  loss=2.0918  task=2.0883  safety=0.0060  top1=0.2344  lr=2.36e-03
+  e120  loss=2.0849  task=2.0811  safety=0.0064  top1=0.2387  lr=2.36e-03
+  top1_best=0.2474  best_ep=115  task=2.083  t=3307s
+
+======================================================================
+F. k_cond=6  excrad=16  alpha=0.3  [exc rad only]
+======================================================================
+  e  1  loss=3.3292  task=3.3110  safety=0.0314  top1=0.1340  lr=2.36e-03
+  e 10  loss=2.1284  task=2.1272  safety=0.0020  top1=0.1631  lr=2.36e-03
+  e 20  loss=2.1103  task=2.1090  safety=0.0023  top1=0.1845  lr=2.36e-03
+  e 30  loss=2.0968  task=2.0954  safety=0.0025  top1=0.1748  lr=2.36e-03
+  e 40  loss=2.0853  task=2.0838  safety=0.0026  top1=0.2064  lr=2.36e-03
+  e 50  loss=2.0782  task=2.0766  safety=0.0029  top1=0.2224  lr=2.36e-03
+  e 60  loss=2.0665  task=2.0647  safety=0.0031  top1=0.2423  lr=2.36e-03
+  e 70  loss=2.0630  task=2.0611  safety=0.0033  top1=0.2201  lr=2.36e-03
+  e 80  loss=2.0561  task=2.0541  safety=0.0035  top1=0.2326  lr=2.36e-03
+  e 90  loss=2.0507  task=2.0486  safety=0.0036  top1=0.2405  lr=2.36e-03
+  e100  loss=2.0462  task=2.0441  safety=0.0037  top1=0.2469  lr=2.36e-03
+  e110  loss=2.0447  task=2.0425  safety=0.0038  top1=0.2938  lr=2.36e-03
+  e120  loss=2.0431  task=2.0408  safety=0.0039  top1=0.2530  lr=2.36e-03
+  top1_best=0.2938  best_ep=110  task=2.040  t=4453s
+
+======================================================================
+G. k_cond=6  excrad=16  alpha=0.1  [weak exc rad]
+======================================================================
+  e  1  loss=3.3169  task=3.2987  safety=0.0314  top1=0.1434  lr=2.36e-03
+  e 10  loss=2.1297  task=2.1285  safety=0.0020  top1=0.1608  lr=2.36e-03
+  e 20  loss=2.1110  task=2.1097  safety=0.0022  top1=0.1870  lr=2.36e-03
+  e 30  loss=2.0974  task=2.0960  safety=0.0025  top1=0.1865  lr=2.36e-03

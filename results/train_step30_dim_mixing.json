@@ -1,0 +1,140 @@
+{
+  "Ref": {
+    "label": "Ref. baseline  D=16  N=512  K_iter=3  [step9 ref]",
+    "top1_best": 0.2922292947769165,
+    "best_ep": 131,
+    "ep_frac": 0.8733333333333333,
+    "t": 779.5310668945312,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T03:29:43.809612Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 16,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 512,
+    "D": 16,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  },
+  "A": {
+    "label": "A.  shared W_mix [D\u00d7D] per-step  before-norm  [D\u00b2=256 params]",
+    "top1_best": 0.29121020436286926,
+    "best_ep": 126,
+    "ep_frac": 0.84,
+    "t": 4988.435134887695,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T04:52:52.361749Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 16,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 512,
+    "D": 16,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  },
+  "B": {
+    "label": "B.  shared W_mix [D\u00d7D] per-step  after-norm   [rotation on sphere]",
+    "top1_best": 0.29350319504737854,
+    "best_ep": 123,
+    "ep_frac": 0.82,
+    "t": 13209.2339117527,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T08:33:02.033586Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 16,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 512,
+    "D": 16,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  },
+  "C": {
+    "label": "C.  per-neuron W_mix [N,D,D] per-step  [N\u00d7D\u00b2=131k params]",
+    "top1_best": 0.2866241931915283,
+    "best_ep": 121,
+    "ep_frac": 0.8066666666666666,
+    "t": 12373.341549873352,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T11:59:15.758497Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 16,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 512,
+    "D": 16,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  },
+  "D": {
+    "label": "D.  shared W_mix [D\u00d7D] once after all K_iter  [single application]",
+    "top1_best": 0.28535032272338867,
+    "best_ep": 96,
+    "ep_frac": 0.64,
+    "t": 15480.802129983902,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T16:17:16.819786Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 16,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 512,
+    "D": 16,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  },
+  "E": {
+    "label": "E.  D=64  N=1024  K_iter=3  + shared W_mix per-step  [at scale]",
+    "top1_best": 0.4096815288066864,
+    "best_ep": 141,
+    "ep_frac": 0.94,
+    "t": 23813.230682849884,
+    "_meta": {
+      "script": "train_step30_dim_mixing.py",
+      "timestamp": "2026-03-31T22:54:10.403461Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 3,
+        "mechanism": "dim_mix",
+        "epochs": 150
+      }
+    },
+    "N": 1024,
+    "D": 64,
+    "K_iter": 3,
+    "mechanism": "dim_mix"
+  }
+}

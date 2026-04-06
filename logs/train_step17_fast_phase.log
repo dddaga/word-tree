@@ -1,0 +1,143 @@
+Device: mps  Epochs: 120  D=16  N=512  encoding=fourier
+Goal: fast W_phase — intra-forward Hebbian adaptation of phase anchors
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. dynamic_z_geo no fast-phase  [baseline]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  top1_best=0.2856  best_ep=99  task=2.041  t=1413s
+
+======================================================================
+A. Oja shared  α=0.1  [stable Hebbian]
+======================================================================
+  e  1  loss=3.9685  task=3.9502  safety=0.0316  top1=0.1088  lr=2.36e-03
+  e 10  loss=2.1143  task=2.1131  safety=0.0022  top1=0.1738  lr=2.36e-03
+  e 20  loss=2.0906  task=2.0893  safety=0.0022  top1=0.1720  lr=2.36e-03
+  e 30  loss=2.0691  task=2.0676  safety=0.0026  top1=0.2038  lr=2.36e-03
+  e 40  loss=2.0591  task=2.0574  safety=0.0029  top1=0.2260  lr=2.36e-03
+  e 50  loss=2.0521  task=2.0503  safety=0.0031  top1=0.2349  lr=2.36e-03
+  e 60  loss=2.0412  task=2.0392  safety=0.0034  top1=0.2438  lr=2.36e-03
+  e 70  loss=2.0365  task=2.0344  safety=0.0036  top1=0.2746  lr=2.36e-03
+  e 80  loss=2.0307  task=2.0285  safety=0.0039  top1=0.2504  lr=2.36e-03
+  e 90  loss=2.0268  task=2.0244  safety=0.0040  top1=0.2092  lr=2.36e-03
+  e100  loss=2.0231  task=2.0207  safety=0.0041  top1=0.2550  lr=2.36e-03
+  e110  loss=2.0215  task=2.0191  safety=0.0042  top1=0.2910  lr=2.36e-03
+  e120  loss=2.0187  task=2.0161  safety=0.0044  top1=0.2484  lr=2.36e-03
+  top1_best=0.3024  best_ep=83  task=2.016  t=1744s
+
+======================================================================
+B. Oja shared  α=0.3  [stronger Oja]
+======================================================================
+  e  1  loss=3.9885  task=3.9701  safety=0.0315  top1=0.1236  lr=2.36e-03
+  e 10  loss=2.1116  task=2.1103  safety=0.0022  top1=0.1684  lr=2.36e-03
+  e 20  loss=2.0903  task=2.0890  safety=0.0022  top1=0.2048  lr=2.36e-03
+  e 30  loss=2.0716  task=2.0701  safety=0.0026  top1=0.2232  lr=2.36e-03
+  e 40  loss=2.0610  task=2.0593  safety=0.0028  top1=0.2023  lr=2.36e-03
+  e 50  loss=2.0497  task=2.0479  safety=0.0030  top1=0.2224  lr=2.36e-03
+  e 60  loss=2.0455  task=2.0436  safety=0.0033  top1=0.2596  lr=2.36e-03
+  e 70  loss=2.0399  task=2.0378  safety=0.0036  top1=0.2683  lr=2.36e-03
+  e 80  loss=2.0370  task=2.0348  safety=0.0038  top1=0.2507  lr=2.36e-03
+  e 90  loss=2.0334  task=2.0311  safety=0.0040  top1=0.2696  lr=2.36e-03
+  e100  loss=2.0313  task=2.0289  safety=0.0041  top1=0.2846  lr=2.36e-03
+  e110  loss=2.0278  task=2.0254  safety=0.0042  top1=0.2594  lr=2.36e-03
+  e120  loss=2.0229  task=2.0203  safety=0.0044  top1=0.2247  lr=2.36e-03
+  top1_best=0.3004  best_ep=103  task=2.022  t=1668s
+
+======================================================================
+C. Oja per-sample  α=0.1  [input-specific]
+======================================================================
+  e  1  loss=3.9636  task=3.9452  safety=0.0316  top1=0.1205  lr=2.36e-03
+  e 10  loss=2.1105  task=2.1093  safety=0.0022  top1=0.1771  lr=2.36e-03
+  e 20  loss=2.0872  task=2.0859  safety=0.0022  top1=0.2061  lr=2.36e-03
+  e 30  loss=2.0685  task=2.0670  safety=0.0026  top1=0.1860  lr=2.36e-03
+  e 40  loss=2.0570  task=2.0554  safety=0.0028  top1=0.2359  lr=2.36e-03
+  e 50  loss=2.0511  task=2.0493  safety=0.0031  top1=0.2346  lr=2.36e-03
+  e 60  loss=2.0398  task=2.0379  safety=0.0033  top1=0.2718  lr=2.36e-03
+  e 70  loss=2.0365  task=2.0344  safety=0.0036  top1=0.2561  lr=2.36e-03
+  e 80  loss=2.0310  task=2.0287  safety=0.0039  top1=0.2504  lr=2.36e-03
+  e 90  loss=2.0270  task=2.0247  safety=0.0040  top1=0.2471  lr=2.36e-03
+  e100  loss=2.0225  task=2.0201  safety=0.0041  top1=0.2721  lr=2.36e-03
+  e110  loss=2.0214  task=2.0189  safety=0.0043  top1=0.2932  lr=2.36e-03
+  e120  loss=2.0200  task=2.0174  safety=0.0044  top1=0.2797  lr=2.36e-03
+  top1_best=0.2996  best_ep=109  task=2.017  t=1571s
+
+======================================================================
+D. Hopfield attract  α=0.1  [Z pulled to A]
+======================================================================
+  e  1  loss=3.9558  task=3.9374  safety=0.0316  top1=0.1093  lr=2.36e-03
+  e 10  loss=2.1117  task=2.1105  safety=0.0022  top1=0.1648  lr=2.36e-03
+  e 20  loss=2.0881  task=2.0869  safety=0.0022  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0692  task=2.0677  safety=0.0026  top1=0.2176  lr=2.36e-03
+  e 40  loss=2.0605  task=2.0588  safety=0.0029  top1=0.2120  lr=2.36e-03
+  e 50  loss=2.0522  task=2.0504  safety=0.0031  top1=0.2734  lr=2.36e-03
+  e 60  loss=2.0399  task=2.0380  safety=0.0034  top1=0.2563  lr=2.36e-03
+  e 70  loss=2.0346  task=2.0325  safety=0.0037  top1=0.2688  lr=2.36e-03
+  e 80  loss=2.0320  task=2.0298  safety=0.0039  top1=0.2749  lr=2.36e-03
+  e 90  loss=2.0291  task=2.0268  safety=0.0040  top1=0.2866  lr=2.36e-03
+  e100  loss=2.0250  task=2.0226  safety=0.0041  top1=0.2341  lr=2.36e-03
+  e110  loss=2.0216  task=2.0191  safety=0.0043  top1=0.2803  lr=2.36e-03
+  e120  loss=2.0203  task=2.0178  safety=0.0045  top1=0.2823  lr=2.36e-03
+  top1_best=0.3052  best_ep=114  task=2.017  t=1227s
+
+======================================================================
+E. Hopfield attract  α=0.3  [stronger attract]
+======================================================================
+  e  1  loss=4.0166  task=3.9983  safety=0.0316  top1=0.1220  lr=2.36e-03
+  e 10  loss=2.1091  task=2.1079  safety=0.0022  top1=0.2079  lr=2.36e-03
+  e 20  loss=2.0873  task=2.0861  safety=0.0021  top1=0.1880  lr=2.36e-03
+  e 30  loss=2.0704  task=2.0689  safety=0.0025  top1=0.2043  lr=2.36e-03
+  e 40  loss=2.0610  task=2.0593  safety=0.0028  top1=0.2209  lr=2.36e-03
+  e 50  loss=2.0497  task=2.0480  safety=0.0030  top1=0.2504  lr=2.36e-03
+  e 60  loss=2.0452  task=2.0433  safety=0.0033  top1=0.2392  lr=2.36e-03
+  e 70  loss=2.0387  task=2.0366  safety=0.0036  top1=0.2543  lr=2.36e-03
+  e 80  loss=2.0345  task=2.0322  safety=0.0038  top1=0.2624  lr=2.36e-03
+  e 90  loss=2.0294  task=2.0272  safety=0.0039  top1=0.2387  lr=2.36e-03
+  e100  loss=2.0279  task=2.0256  safety=0.0041  top1=0.2622  lr=2.36e-03
+  e110  loss=2.0239  task=2.0215  safety=0.0042  top1=0.2706  lr=2.36e-03
+  e120  loss=2.0244  task=2.0218  safety=0.0044  top1=0.2721  lr=2.36e-03
+  top1_best=0.2978  best_ep=96  task=2.021  t=991s
+
+======================================================================
+F. Attention update  τ=0.25  beam=32  [sparse attention]
+======================================================================
+  e  1  loss=4.1094  task=4.0911  safety=0.0315  top1=0.1225  lr=2.36e-03
+  e 10  loss=2.1101  task=2.1089  safety=0.0022  top1=0.1559  lr=2.36e-03
+  e 20  loss=2.0829  task=2.0816  safety=0.0022  top1=0.1959  lr=2.36e-03
+  e 30  loss=2.0633  task=2.0618  safety=0.0026  top1=0.2583  lr=2.36e-03
+  e 40  loss=2.0553  task=2.0536  safety=0.0029  top1=0.2476  lr=2.36e-03
+  e 50  loss=2.0460  task=2.0442  safety=0.0031  top1=0.2838  lr=2.36e-03
+  e 60  loss=2.0358  task=2.0338  safety=0.0034  top1=0.2892  lr=2.36e-03
+  e 70  loss=2.0297  task=2.0276  safety=0.0037  top1=0.2739  lr=2.36e-03
+  e 80  loss=2.0265  task=2.0242  safety=0.0040  top1=0.2746  lr=2.36e-03
+  e 90  loss=2.0229  task=2.0206  safety=0.0040  top1=0.2961  lr=2.36e-03
+  e100  loss=2.0203  task=2.0179  safety=0.0042  top1=0.2678  lr=2.36e-03
+  e110  loss=2.0179  task=2.0154  safety=0.0043  top1=0.2797  lr=2.36e-03
+  e120  loss=2.0149  task=2.0123  safety=0.0045  top1=0.3034  lr=2.36e-03
+  top1_best=0.3106  best_ep=94  task=2.014  t=3683s
+
+Saved -> results/train_step17_fast_phase.json
+
+-- Fast W_phase experiments (ref=0.2856) --------------------------
+  Config                                                   top1_best    vs_ref    t(s)
+  ----------------------------------------------------------------------------------
+  Ref                                                         0.2856   +0.0000    1413
+  A                                                           0.3024   +0.0168    1744
+  B                                                           0.3004   +0.0148    1668
+  C                                                           0.2996   +0.0140    1571
+  D                                                           0.3052   +0.0196    1227
+  E                                                           0.2978   +0.0122     991
+  F                                                           0.3106   +0.0250    3683

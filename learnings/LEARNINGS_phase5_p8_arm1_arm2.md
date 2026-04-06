@@ -1,6 +1,6 @@
-# Phase 5 -- Part 8: ARM 1+2 Synthesis and Gen4 Configuration (2026-04-03)
+# Phase 5 -- Part 8: ARM 1+2 Synthesis and Gen4 Configuration (2026-04-03, updated 2026-04-04)
 
-Reference: D=64 N=1024 K_iter=8 | Current best: 75.24% (step29 Config C, AntiHebb alpha=0.7 uncalibrated)
+Reference: D=64 N=1024 K_iter=8 | **Current best: 80.08% (step29c Config A, AntiHebb alpha=1.0, calibrated base)**
 
 ---
 
@@ -159,11 +159,41 @@ Will dispatch when slot opens.
 
 ---
 
-## Open Questions (Pending Full Results)
+---
 
-1. Does AntiHebb alpha=1.0 on calibrated base exceed 75.24%? (step32 will answer)
+## Step 29c Phase 2: Full Compound Runs (COMPLETE — 2026-04-04, config G still running)
+
+Base: D=64 N=1024 K_iter=8, calibrated routing from step22b (alpha_reflect=0.5, beam_size=16, geo_gamma=0.5, K_phase=8).
+
+| Config | Description | top1_best | vs Ref |
+|--------|-------------|-----------|--------|
+| Ref    | calibrated base, no mechanisms | 58.68% | -- |
+| **A**  | **+ AntiHebb α=1.0** | **80.08%** | **+21.40pp ← NEW ALL-TIME BEST** |
+| B      | + phase_exc α=0.3 | 63.64% | +4.96pp |
+| C      | + interneurons 25% | 56.99% | -1.69pp |
+| D      | + fast_W_phase α=0.1 τ=1.0 | 61.10% | +2.42pp |
+| E      | + AntiHebb α=1.0 + phase_exc α=0.3 | 66.96% | +8.28pp |
+| F      | + AntiHebb α=1.0 + phase_exc α=0.3 + interneurons 25% | 66.93% | +8.25pp |
+| G      | Full Gen4 (all mechanisms) | still running | -- |
+
+**Critical finding: AntiHebb α=1.0 alone = 80.08%. Adding ANY other mechanism KILLS the gain (80% → 67%).**
+
+The compounding failure is striking:
+- E = AntiHebb + phase_exc → 66.96% (−13.12pp vs A alone)
+- F = AntiHebb + phase_exc + interneurons → 66.93% (similar to E)
+- Adding phase_exc (even α=0.3) wipes out the AntiHebb gain entirely
+
+**Why:** At α=1.0, AntiHebb enforces maximal spatial diversity — neurons with similar W_pos directions contribute zero to each other. Phase_exc then creates an excitatory graph on top of the W_phase K-NN topology, which partially re-introduces proximity coupling that AntiHebb is trying to suppress. The two mechanisms are in direct opposition at full strength.
+
+**Decision:** Gen4 compound = AntiHebb α=1.0 ALONE. No phase_exc, no interneurons, no fast_W_phase.
+
+---
+
+## Updated Open Questions
+
+1. ~~Does AntiHebb alpha=1.0 on calibrated base exceed 75.24%?~~ → **YES. 80.08%. +4.84pp over previous best.**
 2. Does K_iter > 8 + AntiHebb compound? (step48 configs E/F/G will answer)
-3. Do interneurons compound with AntiHebb at D=64? (step29c Phase 1/2 will answer)
+3. ~~Do interneurons compound with AntiHebb at D=64?~~ → **NO. 56.99% (−1.69pp vs Ref, −23.09pp vs AntiHebb alone)**
 4. Does structured sub-D mixing add anything? (step53 will answer)
 5. Does any high-D routing mode beat uniform+AntiHebb? (step52 will answer)
 
@@ -171,8 +201,7 @@ Will dispatch when slot opens.
 
 ## Timeline and Next Steps
 
-- **Now:** step29c, step48, step54 running on Mac Studio
-- **Next slot (~6-12h):** dispatch step52 or step53 (whichever slot opens first)
-- **After step29c completes:** dispatch step32 Gen4 compound
-- **Expected Gen4 ceiling:** 75-80% based on AntiHebb alpha scaling trend
-- **Plan 05-05 or 05-06:** synthesize all ARM results into final configuration
+- **step29c:** Phase 2 done (config G still running). Result already known: AntiHebb α=1.0 alone = 80.08%.
+- **Next:** dispatch step52 and/or step53 now that step29c is winding down
+- **Gen4 base confirmed:** AntiHebb α=1.0 + calibrated routing params (step22b)
+- **step32 (Gen4 compound) status:** No longer needed in original form — 80.08% IS the Gen4 result. Revise step32 to test variations around AntiHebb α=1.0 (alpha sweep near 1.0, beam_size sensitivity, etc.)

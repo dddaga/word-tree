@@ -1,0 +1,32 @@
+Device: mps  Epochs: 150
+Goal: D extension at optimal K_iter=8 — is D=16 a ceiling?
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. D=16 N=512  K_iter=8  [step13 baseline]
+======================================================================
+  e  1  loss=4.9771  task=4.9588  safety=0.0314  top1=0.1381  lr=2.36e-03
+  e 10  loss=2.0099  task=2.0086  safety=0.0023  top1=0.2711  lr=2.36e-03
+  e 20  loss=1.9384  task=1.9364  safety=0.0034  top1=0.3475  lr=2.36e-03
+  e 30  loss=1.9123  task=1.9100  safety=0.0040  top1=0.2884  lr=2.36e-03
+  e 40  loss=1.8973  task=1.8948  safety=0.0043  top1=0.2813  lr=2.36e-03
+  e 50  loss=1.8834  task=1.8807  safety=0.0045  top1=0.2940  lr=2.36e-03
+  e 60  loss=1.8745  task=1.8718  safety=0.0047  top1=0.3496  lr=2.36e-03
+  e 70  loss=1.8692  task=1.8663  safety=0.0050  top1=0.3427  lr=2.36e-03
+  e 80  loss=1.8592  task=1.8562  safety=0.0052  top1=0.2910  lr=2.36e-03
+  e 90  loss=1.8563  task=1.8531  safety=0.0054  top1=0.3327  lr=2.36e-03
+  e100  loss=1.8547  task=1.8515  safety=0.0056  top1=0.3355  lr=2.36e-03
+  e110  loss=1.8540  task=1.8507  safety=0.0057  top1=0.3488  lr=2.36e-03
+  e120  loss=1.8461  task=1.8428  safety=0.0057  top1=0.3429  lr=1.18e-03
+  e130  loss=1.8465  task=1.8432  safety=0.0057  top1=0.3465  lr=1.18e-03
+  e140  loss=1.8449  task=1.8416  safety=0.0057  top1=0.3164  lr=1.18e-03
+  e150  loss=1.8451  task=1.8418  safety=0.0057  top1=0.3511  lr=5.91e-04
+  top1_best=0.3674  best_ep=125/150 (83%)  diag=converged  task=1.842  t=3756s
+
+======================================================================
+A.  D=16 N=1024 K_iter=8  [wider, same depth]
+======================================================================
+  e  1  loss=12.2678  task=12.2539  safety=0.0285  top1=0.1060  lr=2.36e-03
+  e 10  loss=2.0111  task=2.0105  safety=0.0013  top1=0.2285  lr=2.36e-03
+  e 20  loss=1.8949  task=1.8941  safety=0.0016  top1=0.3195  lr=2.36e-03

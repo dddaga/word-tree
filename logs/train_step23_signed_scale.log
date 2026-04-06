@@ -1,0 +1,53 @@
+Device: mps  Epochs: 150
+Goal: signed coupling × scale (K_iter=8 × N=1024) — do breakthroughs stack?
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref. base resonant  D=16 N=512  K_iter=3  [step18 ref]
+======================================================================
+  e  1  loss=3.3370  task=3.3188  safety=0.0313  top1=0.1549  lr=2.36e-03
+  e 10  loss=2.1277  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1982  lr=2.36e-03
+  e 30  loss=2.0986  task=2.0972  safety=0.0025  top1=0.2046  lr=2.36e-03
+  e 40  loss=2.0892  task=2.0877  safety=0.0026  top1=0.1618  lr=2.36e-03
+  e 50  loss=2.0758  task=2.0742  safety=0.0029  top1=0.2041  lr=2.36e-03
+  e 60  loss=2.0706  task=2.0688  safety=0.0030  top1=0.2301  lr=2.36e-03
+  e 70  loss=2.0643  task=2.0624  safety=0.0032  top1=0.2311  lr=2.36e-03
+  e 80  loss=2.0565  task=2.0545  safety=0.0034  top1=0.2298  lr=2.36e-03
+  e 90  loss=2.0536  task=2.0516  safety=0.0034  top1=0.2278  lr=2.36e-03
+  e100  loss=2.0491  task=2.0471  safety=0.0035  top1=0.2775  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0438  task=2.0417  safety=0.0037  top1=0.2583  lr=2.36e-03
+  e130  loss=2.0440  task=2.0418  safety=0.0037  top1=0.2242  lr=2.36e-03
+  e140  loss=2.0398  task=2.0375  safety=0.0039  top1=0.2392  lr=2.36e-03
+  e150  loss=2.0355  task=2.0331  safety=0.0041  top1=0.2517  lr=2.36e-03
+  top1_best=0.2922  best_ep=131/150 (87%)  diag=converged  task=2.034  t=1813s
+
+======================================================================
+A.  signed α=0.3   D=16 N=512  K_iter=3  [reproduce step18A]
+======================================================================
+  e  1  loss=6.0627  task=6.0446  safety=0.0312  top1=0.1141  lr=2.36e-03
+  e 10  loss=1.8534  task=1.8519  safety=0.0026  top1=0.3490  lr=2.36e-03
+  e 20  loss=1.7768  task=1.7747  safety=0.0037  top1=0.3745  lr=2.36e-03
+  e 30  loss=1.7544  task=1.7521  safety=0.0039  top1=0.3964  lr=2.36e-03
+  e 40  loss=1.7413  task=1.7388  safety=0.0042  top1=0.3817  lr=2.36e-03
+  e 50  loss=1.7338  task=1.7311  safety=0.0045  top1=0.3839  lr=2.36e-03
+  e 60  loss=1.7248  task=1.7221  safety=0.0047  top1=0.3893  lr=2.36e-03
+  e 70  loss=1.7190  task=1.7162  safety=0.0048  top1=0.3888  lr=2.36e-03
+  e 80  loss=1.7170  task=1.7142  safety=0.0048  top1=0.3967  lr=2.36e-03
+  e 90  loss=1.7122  task=1.7094  safety=0.0049  top1=0.3725  lr=2.36e-03
+  e100  loss=1.7093  task=1.7064  safety=0.0049  top1=0.3901  lr=2.36e-03
+  e110  loss=1.7066  task=1.7037  safety=0.0050  top1=0.4023  lr=2.36e-03
+  e120  loss=1.6987  task=1.6957  safety=0.0051  top1=0.3786  lr=2.36e-03
+  e130  loss=1.6988  task=1.6958  safety=0.0052  top1=0.3903  lr=2.36e-03
+  e140  loss=1.6937  task=1.6907  safety=0.0053  top1=0.3707  lr=2.36e-03
+  e150  loss=1.6956  task=1.6924  safety=0.0054  top1=0.3954  lr=2.36e-03
+  top1_best=0.4110  best_ep=145/150 (97%)  diag=converged  task=1.693  t=2259s
+
+======================================================================
+B.  signed α=0.3   D=16 N=512  K_iter=8  [signed + deep routing]
+======================================================================
+  e  1  loss=5.0101  task=4.9918  safety=0.0315  top1=0.1017  lr=2.36e-03
+  e 10  loss=2.2778  task=2.2769  safety=0.0016  top1=0.1006  lr=2.36e-03
+  e 20  loss=2.2751  task=2.2744  safety=0.0013  top1=0.1068  lr=1.18e-03

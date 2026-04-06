@@ -1,0 +1,72 @@
+Device: mps  Epochs: 120  D=16  encoding=fourier
+Goal: W_phase static vs learned at D=16; geo bias effect at D=16
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+=================================================================
+E. resonant mode  D=16 fourier  W_phase=static  (lr_wphase=None)
+=================================================================
+  e  1  loss=3.3352  task=3.3170  safety=0.0313  top1=0.1554  lr=2.36e-03
+  e 10  loss=2.1276  task=2.1265  safety=0.0020  top1=0.1628  lr=2.36e-03
+  e 20  loss=2.1134  task=2.1121  safety=0.0023  top1=0.1990  lr=2.36e-03
+  e 30  loss=2.0987  task=2.0973  safety=0.0025  top1=0.2054  lr=2.36e-03
+  e 40  loss=2.0894  task=2.0879  safety=0.0026  top1=0.1638  lr=2.36e-03
+  e 50  loss=2.0759  task=2.0743  safety=0.0029  top1=0.2036  lr=2.36e-03
+  e 60  loss=2.0707  task=2.0689  safety=0.0030  top1=0.2293  lr=2.36e-03
+  e 70  loss=2.0644  task=2.0625  safety=0.0032  top1=0.2301  lr=2.36e-03
+  e 80  loss=2.0566  task=2.0546  safety=0.0034  top1=0.2290  lr=2.36e-03
+  e 90  loss=2.0538  task=2.0518  safety=0.0034  top1=0.2268  lr=2.36e-03
+  e100  loss=2.0493  task=2.0473  safety=0.0035  top1=0.2787  lr=2.36e-03
+  e110  loss=2.0479  task=2.0458  safety=0.0035  top1=0.2634  lr=2.36e-03
+  e120  loss=2.0440  task=2.0419  safety=0.0037  top1=0.2601  lr=2.36e-03
+  top1_best=0.2859  best_ep=99  task=2.042  t=365s
+
+=================================================================
+F. resonant mode  D=16 fourier  W_phase=learned (lr_wphase=2.36e-3)
+=================================================================
+  e  1  loss=3.3332  task=3.3150  safety=0.0313  top1=0.1373  lr=2.36e-03
+  e 10  loss=2.1325  task=2.1313  safety=0.0019  top1=0.1580  lr=2.36e-03
+  e 20  loss=2.1149  task=2.1136  safety=0.0022  top1=0.1712  lr=2.36e-03
+  e 30  loss=2.0975  task=2.0961  safety=0.0025  top1=0.1885  lr=2.36e-03
+  e 40  loss=2.0880  task=2.0865  safety=0.0026  top1=0.2048  lr=2.36e-03
+  e 50  loss=2.0809  task=2.0793  safety=0.0029  top1=0.2443  lr=2.36e-03
+  e 60  loss=2.0698  task=2.0681  safety=0.0030  top1=0.2257  lr=2.36e-03
+  e 70  loss=2.0642  task=2.0623  safety=0.0032  top1=0.2471  lr=2.36e-03
+  e 80  loss=2.0574  task=2.0554  safety=0.0034  top1=0.2362  lr=2.36e-03
+  e 90  loss=2.0527  task=2.0507  safety=0.0034  top1=0.2082  lr=2.36e-03
+  e100  loss=2.0485  task=2.0465  safety=0.0034  top1=0.2461  lr=2.36e-03
+  e110  loss=2.0464  task=2.0444  safety=0.0035  top1=0.2622  lr=2.36e-03
+  e120  loss=2.0428  task=2.0407  safety=0.0036  top1=0.2316  lr=2.36e-03
+  top1_best=0.2790  best_ep=81  task=2.041  t=332s
+
+=================================================================
+G. dynamic_z_geo  D=16 fourier  full routing  (geo_gamma=1.0)
+=================================================================
+  e  1  loss=3.3327  task=3.3145  safety=0.0313  top1=0.1526  lr=2.36e-03
+  e 10  loss=2.1289  task=2.1278  safety=0.0020  top1=0.1580  lr=2.36e-03
+  e 20  loss=2.1128  task=2.1115  safety=0.0022  top1=0.1865  lr=2.36e-03
+  e 30  loss=2.0973  task=2.0959  safety=0.0025  top1=0.1992  lr=2.36e-03
+  e 40  loss=2.0866  task=2.0850  safety=0.0026  top1=0.1847  lr=2.36e-03
+  e 50  loss=2.0744  task=2.0728  safety=0.0029  top1=0.1992  lr=2.36e-03
+  e 60  loss=2.0698  task=2.0681  safety=0.0030  top1=0.2306  lr=2.36e-03
+  e 70  loss=2.0631  task=2.0612  safety=0.0032  top1=0.2624  lr=2.36e-03
+  e 80  loss=2.0592  task=2.0573  safety=0.0034  top1=0.2252  lr=2.36e-03
+  e 90  loss=2.0549  task=2.0529  safety=0.0034  top1=0.2459  lr=2.36e-03
+  e100  loss=2.0524  task=2.0504  safety=0.0035  top1=0.2637  lr=2.36e-03
+  e110  loss=2.0477  task=2.0456  safety=0.0036  top1=0.2247  lr=2.36e-03
+  e120  loss=2.0421  task=2.0400  safety=0.0037  top1=0.2166  lr=2.36e-03
+  top1_best=0.2904  best_ep=112  task=2.041  t=906s
+
+Saved -> results/train_step10b_wphase_d16.json
+
+-- W_phase + geo re-test at D=16 (ref: enc-sweep 27.54%) --------
+  Config                                                             top1_best    vs_ref    t(s)
+  -----------------------------------------------------------------  ---------  --------  ------
+  E                                                                     0.2859   +0.0105     365
+  F                                                                     0.2790   +0.0036     332
+  G                                                                     0.2904   +0.0150     906
+
+  W_phase static (E):  0.2859
+  W_phase learned (F): 0.2790
+  geo dynamic_z (G):   0.2904
+  -> W_phase provides no additional signal (Δ=-0.0069)

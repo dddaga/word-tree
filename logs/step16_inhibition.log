@@ -1,0 +1,135 @@
+Device: mps  Epochs: 120  D=16  N=512  encoding=fourier
+Goal: divisive normalization / refractory inhibition / anti-Hebbian
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925  (in-memory, data/store.h5)
+
+======================================================================
+A. DivNorm  alpha=0.5  [mild shunting]
+======================================================================
+  e  1  loss=3.9568  task=3.9385  safety=0.0315  top1=0.1223  lr=2.36e-03
+  e 10  loss=2.1104  task=2.1091  safety=0.0021  top1=0.1753  lr=2.36e-03
+  e 20  loss=2.0888  task=2.0875  safety=0.0022  top1=0.2143  lr=2.36e-03
+  e 30  loss=2.0688  task=2.0673  safety=0.0026  top1=0.2461  lr=2.36e-03
+  e 40  loss=2.0587  task=2.0571  safety=0.0029  top1=0.1921  lr=2.36e-03
+  e 50  loss=2.0464  task=2.0446  safety=0.0031  top1=0.2303  lr=2.36e-03
+  e 60  loss=2.0405  task=2.0386  safety=0.0033  top1=0.2571  lr=2.36e-03
+  e 70  loss=2.0354  task=2.0333  safety=0.0037  top1=0.2759  lr=2.36e-03
+  e 80  loss=2.0293  task=2.0270  safety=0.0039  top1=0.2561  lr=2.36e-03
+  e 90  loss=2.0269  task=2.0246  safety=0.0040  top1=0.2650  lr=2.36e-03
+  e100  loss=2.0226  task=2.0203  safety=0.0041  top1=0.2920  lr=2.36e-03
+  e110  loss=2.0217  task=2.0192  safety=0.0043  top1=0.2869  lr=2.36e-03
+  e120  loss=2.0184  task=2.0158  safety=0.0045  top1=0.2736  lr=2.36e-03
+  top1_best=0.3106  best_ep=99  task=2.015  t=1455s
+
+======================================================================
+B. DivNorm  alpha=1.0  [moderate shunting]
+======================================================================
+  e  1  loss=3.9609  task=3.9426  safety=0.0315  top1=0.1124  lr=2.36e-03
+  e 10  loss=2.1144  task=2.1131  safety=0.0021  top1=0.1748  lr=2.36e-03
+  e 20  loss=2.0901  task=2.0889  safety=0.0022  top1=0.1735  lr=2.36e-03
+  e 30  loss=2.0683  task=2.0668  safety=0.0026  top1=0.2048  lr=2.36e-03
+  e 40  loss=2.0581  task=2.0564  safety=0.0029  top1=0.2270  lr=2.36e-03
+  e 50  loss=2.0509  task=2.0492  safety=0.0031  top1=0.2359  lr=2.36e-03
+  e 60  loss=2.0399  task=2.0379  safety=0.0034  top1=0.2441  lr=2.36e-03
+  e 70  loss=2.0353  task=2.0331  safety=0.0037  top1=0.2746  lr=2.36e-03
+  e 80  loss=2.0296  task=2.0273  safety=0.0039  top1=0.2522  lr=2.36e-03
+  e 90  loss=2.0255  task=2.0232  safety=0.0040  top1=0.2084  lr=2.36e-03
+  e100  loss=2.0218  task=2.0194  safety=0.0041  top1=0.2553  lr=2.36e-03
+  e110  loss=2.0202  task=2.0177  safety=0.0042  top1=0.2902  lr=2.36e-03
+  e120  loss=2.0174  task=2.0148  safety=0.0045  top1=0.2489  lr=2.36e-03
+  top1_best=0.3014  best_ep=83  task=2.015  t=1201s
+
+======================================================================
+C. DivNorm  alpha=2.0  [strong shunting]
+======================================================================
+  e  1  loss=3.9776  task=3.9593  safety=0.0315  top1=0.1299  lr=2.36e-03
+  e 10  loss=2.1115  task=2.1103  safety=0.0022  top1=0.1659  lr=2.36e-03
+  e 20  loss=2.0879  task=2.0867  safety=0.0022  top1=0.2076  lr=2.36e-03
+  e 30  loss=2.0678  task=2.0663  safety=0.0026  top1=0.2262  lr=2.36e-03
+  e 40  loss=2.0564  task=2.0548  safety=0.0029  top1=0.2056  lr=2.36e-03
+  e 50  loss=2.0444  task=2.0426  safety=0.0031  top1=0.2273  lr=2.36e-03
+  e 60  loss=2.0398  task=2.0379  safety=0.0034  top1=0.2619  lr=2.36e-03
+  e 70  loss=2.0344  task=2.0323  safety=0.0037  top1=0.2808  lr=2.36e-03
+  e 80  loss=2.0315  task=2.0292  safety=0.0039  top1=0.2540  lr=2.36e-03
+  e 90  loss=2.0279  task=2.0256  safety=0.0040  top1=0.2665  lr=2.36e-03
+  e100  loss=2.0257  task=2.0233  safety=0.0041  top1=0.2808  lr=2.36e-03
+  e110  loss=2.0220  task=2.0195  safety=0.0043  top1=0.2589  lr=2.36e-03
+  e120  loss=2.0169  task=2.0142  safety=0.0045  top1=0.2352  lr=2.36e-03
+  top1_best=0.3032  best_ep=103  task=2.016  t=1637s
+
+======================================================================
+D. Refract  beta=0.9  alpha_r=1.0  [slow+mild]
+======================================================================
+  e  1  loss=3.9456  task=3.9273  safety=0.0315  top1=0.1149  lr=2.36e-03
+  e 10  loss=2.1130  task=2.1118  safety=0.0022  top1=0.1761  lr=2.36e-03
+  e 20  loss=2.0866  task=2.0853  safety=0.0022  top1=0.2066  lr=2.36e-03
+  e 30  loss=2.0666  task=2.0650  safety=0.0026  top1=0.1890  lr=2.36e-03
+  e 40  loss=2.0542  task=2.0525  safety=0.0029  top1=0.2339  lr=2.36e-03
+  e 50  loss=2.0474  task=2.0455  safety=0.0032  top1=0.2382  lr=2.36e-03
+  e 60  loss=2.0357  task=2.0336  safety=0.0035  top1=0.2680  lr=2.36e-03
+  e 70  loss=2.0327  task=2.0305  safety=0.0038  top1=0.2561  lr=2.36e-03
+  e 80  loss=2.0274  task=2.0251  safety=0.0041  top1=0.2497  lr=2.36e-03
+  e 90  loss=2.0234  task=2.0209  safety=0.0042  top1=0.2489  lr=2.36e-03
+  e100  loss=2.0186  task=2.0161  safety=0.0043  top1=0.2736  lr=2.36e-03
+  e110  loss=2.0175  task=2.0149  safety=0.0045  top1=0.3014  lr=2.36e-03
+  e120  loss=2.0160  task=2.0133  safety=0.0046  top1=0.2792  lr=2.36e-03
+  top1_best=0.3014  best_ep=110  task=2.013  t=1560s
+
+======================================================================
+E. Refract  beta=0.7  alpha_r=2.0  [medium+strong]
+======================================================================
+  e  1  loss=3.1782  task=3.1599  safety=0.0314  top1=0.1511  lr=2.36e-03
+  e 10  loss=2.0967  task=2.0954  safety=0.0023  top1=0.2008  lr=2.36e-03
+  e 20  loss=2.0537  task=2.0523  safety=0.0025  top1=0.2484  lr=2.36e-03
+  e 30  loss=2.0205  task=2.0187  safety=0.0031  top1=0.2609  lr=2.36e-03
+  e 40  loss=2.0031  task=2.0010  safety=0.0036  top1=0.2726  lr=2.36e-03
+  e 50  loss=1.9898  task=1.9875  safety=0.0040  top1=0.3175  lr=2.36e-03
+  e 60  loss=1.9776  task=1.9752  safety=0.0042  top1=0.3042  lr=2.36e-03
+  e 70  loss=1.9719  task=1.9693  safety=0.0044  top1=0.2999  lr=2.36e-03
+  e 80  loss=1.9682  task=1.9656  safety=0.0045  top1=0.3111  lr=2.36e-03
+  e 90  loss=1.9629  task=1.9602  safety=0.0046  top1=0.3106  lr=2.36e-03
+  e100  loss=1.9574  task=1.9547  safety=0.0047  top1=0.3006  lr=2.36e-03
+  e110  loss=1.9527  task=1.9499  safety=0.0049  top1=0.3215  lr=2.36e-03
+  e120  loss=1.9505  task=1.9476  safety=0.0050  top1=0.3090  lr=2.36e-03
+  top1_best=0.3353  best_ep=91  task=1.947  t=1460s
+
+======================================================================
+F. Refract  beta=0.5  alpha_r=3.0  [fast+strong]
+======================================================================
+  e  1  loss=2.8551  task=2.8369  safety=0.0313  top1=0.1378  lr=2.36e-03
+  e 10  loss=2.1274  task=2.1262  safety=0.0019  top1=0.2066  lr=2.36e-03
+  e 20  loss=2.0739  task=2.0724  safety=0.0025  top1=0.2290  lr=2.36e-03
+  e 30  loss=2.0590  task=2.0575  safety=0.0026  top1=0.2349  lr=2.36e-03
+  e 40  loss=2.0545  task=2.0529  safety=0.0026  top1=0.2410  lr=2.36e-03
+  e 50  loss=2.0485  task=2.0469  safety=0.0027  top1=0.2484  lr=2.36e-03
+  e 60  loss=2.0482  task=2.0466  safety=0.0028  top1=0.2499  lr=2.36e-03
+  e 70  loss=2.0459  task=2.0442  safety=0.0029  top1=0.2540  lr=2.36e-03
+  e 80  loss=2.0450  task=2.0433  safety=0.0029  top1=0.2484  lr=2.36e-03
+  e 90  loss=2.0419  task=2.0403  safety=0.0029  top1=0.2471  lr=1.18e-03
+  e100  loss=2.0409  task=2.0392  safety=0.0029  top1=0.2436  lr=1.18e-03
+  e110  loss=2.0404  task=2.0387  safety=0.0029  top1=0.2438  lr=5.91e-04
+  e120  loss=2.0403  task=2.0386  safety=0.0029  top1=0.2532  lr=5.91e-04
+  top1_best=0.2624  best_ep=98  task=2.038  t=1373s
+
+======================================================================
+G. AntiHebb  alpha=0.3  wpos  [spatial surround]
+======================================================================
+Traceback (most recent call last):
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/scripts/train_step16_inhibition_mechanisms.py", line 144, in <module>
+    results[key] = run(label, model, meta)
+                   ~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/scripts/train_step16_inhibition_mechanisms.py", line 86, in run
+    history = trainer.train(n_epochs=EPOCHS)
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/src/training/trainer.py", line 247, in train
+    train_metrics = self.train_epoch()
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/src/training/trainer.py", line 133, in train_epoch
+    scores = self.model(features)
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/d_env/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/d_env/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/admin/ml/dhiraj/qwen2_omni/testing/src/sgnnet/mechanisms_inhibitory.py", line 142, in forward
+    pos_sim = (W_n.unsqueeze(1) * W_n[conn_hh]).sum(-1)       # [N,K_hh]
+               ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (522) must match the size of tensor b (512) at non-singleton dimension 0
