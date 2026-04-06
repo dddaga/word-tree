@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: mps-sparse
+Version: 0.1.0
+Summary: Efficient sparse matrix multiplication for PyTorch on Apple MPS
+Requires-Python: >=3.9
+Requires-Dist: torch>=2.0
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

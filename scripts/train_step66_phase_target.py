@@ -137,7 +137,7 @@ def make_ref() -> SGNNET_AntiHebbian:
         alpha_turing=0.0,
         beam_size=BEAM_SIZE,
         geo_gamma=GEO_GAMMA,
-        resonant_mode="dynamic_z_geo",
+        mode="dynamic_z_geo",
     )
     return SGNNET_AntiHebbian(resonant, alpha_ahebb=1.0, variant="wpos")
 

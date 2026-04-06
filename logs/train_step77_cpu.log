@@ -1,0 +1,80 @@
+Device: cpu  Epochs: 75  Batch: 128  Data: 50%
+Step 77: Learnable theta — theta never updated in any prior experiment
+Comparison: step69 Ref = 0.8336 (theta frozen, same arch)
+lr_wpos = 2.364e-03
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref   theta frozen=0.1 (control — reproduces step69 Ref)
+======================================================================
+  theta: FROZEN at 0.1000 (control)
+  e  1  loss=2.3488  task=2.2755  safety=0.1500  top1=0.4685  lr=2.36e-03
+  e 10  loss=1.4522  task=1.3840  safety=0.1396  top1=0.6716  lr=2.36e-03
+  e 20  loss=1.2372  task=1.1735  safety=0.1302  top1=0.7898  lr=2.36e-03
+  e 30  loss=1.1337  task=1.0734  safety=0.1234  top1=0.7641  lr=2.36e-03
+  e 40  loss=1.0416  task=0.9841  safety=0.1176  top1=0.7529  lr=2.36e-03
+  e 50  loss=0.9757  task=0.9206  safety=0.1127  top1=0.7755  lr=2.36e-03
+  e 60  loss=0.9116  task=0.8586  safety=0.1085  top1=0.8268  lr=2.36e-03
+  e 70  loss=0.9021  task=0.8508  safety=0.1050  top1=0.7873  lr=2.36e-03
+  top1_best=0.8510  best_ep=67/75 (89%)  vs_step69_ref=+0.0174  t=1782s
+  theta: mean=0.1000  std=0.0000  range=[0.1000, 0.1000]
+  [saved train_step77_learnable_theta.json]
+
+======================================================================
+A     theta learns lr=2.364e-03 (= lr_wpos)
+======================================================================
+  theta: LEARNABLE at lr=2.364e-03  init_mean=0.1000
+  e  1  loss=2.3906  task=2.3171  safety=0.1506  top1=0.3903  lr=2.36e-03
+  e 10  loss=1.5009  task=1.4342  safety=0.1365  top1=0.5804  lr=2.36e-03
+  e 20  loss=1.3245  task=1.2625  safety=0.1270  top1=0.6854  lr=2.36e-03
+  e 30  loss=1.1958  task=1.1370  safety=0.1202  top1=0.6219  lr=2.36e-03
+  e 40  loss=1.0417  task=0.9855  safety=0.1151  top1=0.7539  lr=2.36e-03
+  e 50  loss=0.9633  task=0.9091  safety=0.1110  top1=0.7682  lr=2.36e-03
+  e 60  loss=0.9206  task=0.8683  safety=0.1071  top1=0.7106  lr=2.36e-03
+  e 70  loss=0.9111  task=0.8602  safety=0.1041  top1=0.7827  lr=2.36e-03
+  top1_best=0.8329  best_ep=59/75 (79%)  vs_step69_ref=-0.0007  t=1839s
+  theta: mean=0.1006  std=0.0235  range=[0.0200, 0.1982]
+  [saved train_step77_learnable_theta.json]
+
+======================================================================
+B     theta learns lr=2.364e-04 (0.1 × lr_wpos — conservative)
+======================================================================
+  theta: LEARNABLE at lr=2.364e-04  init_mean=0.1000
+  e  1  loss=2.3994  task=2.3259  safety=0.1504  top1=0.4622  lr=2.36e-03
+  e 10  loss=1.4169  task=1.3497  safety=0.1374  top1=0.5952  lr=2.36e-03
+  e 20  loss=1.1988  task=1.1362  safety=0.1281  top1=0.7404  lr=2.36e-03
+  e 30  loss=1.0687  task=1.0096  safety=0.1209  top1=0.8094  lr=2.36e-03
+  e 40  loss=1.0051  task=0.9490  safety=0.1147  top1=0.7674  lr=2.36e-03
+  e 50  loss=0.9573  task=0.9035  safety=0.1101  top1=0.8117  lr=2.36e-03
+  e 60  loss=0.8698  task=0.8181  safety=0.1058  top1=0.8239  lr=2.36e-03
+  e 70  loss=0.8270  task=0.7769  safety=0.1026  top1=0.8344  lr=2.36e-03
+  top1_best=0.8492  best_ep=69/75 (92%)  vs_step69_ref=+0.0156  t=1828s
+  theta: mean=0.0992  std=0.0068  range=[0.0673, 0.1284]
+  [saved train_step77_learnable_theta.json]
+
+======================================================================
+C     theta learns lr=2.364e-02 (10 × lr_wpos — aggressive)
+======================================================================
+  theta: LEARNABLE at lr=2.364e-02  init_mean=0.1000
+  e  1  loss=2.7603  task=2.6877  safety=0.1486  top1=0.1638  lr=2.36e-03
+  e 10  loss=2.2078  task=2.1410  safety=0.1366  top1=0.2143  lr=2.36e-03
+  e 20  loss=1.9923  task=1.9369  safety=0.1134  top1=0.4054  lr=2.36e-03
+  e 30  loss=1.8424  task=1.7952  safety=0.0968  top1=0.4059  lr=2.36e-03
+  e 40  loss=1.6929  task=1.6499  safety=0.0881  top1=0.4831  lr=2.36e-03
+  e 50  loss=1.5357  task=1.4941  safety=0.0850  top1=0.5218  lr=2.36e-03
+  e 60  loss=1.3724  task=1.3296  safety=0.0877  top1=0.5256  lr=2.36e-03
+  e 70  loss=1.2171  task=1.1745  safety=0.0871  top1=0.6163  lr=2.36e-03
+  top1_best=0.6270  best_ep=75/75 (100%)  vs_step69_ref=-0.2066  t=1814s
+  theta: mean=0.1189  std=0.4673  range=[-1.0335, 0.9943]
+  [saved train_step77_learnable_theta.json]
+
+======================================================================
+STEP 77 COMPLETE — Learnable theta sweep
+Comparison: step69 Ref (frozen theta) = 0.8336
+
+  Key       top1   vs step69      lr_theta    θ_mean    θ_std
+  Ref   0.8510    +0.0174          frozen    0.1000   0.0000
+  A     0.8329    -0.0007        2.36e-03    0.1006   0.0235
+  B     0.8492    +0.0156        2.36e-04    0.0992   0.0068
+  C     0.6270    -0.2066        2.36e-02    0.1189   0.4673

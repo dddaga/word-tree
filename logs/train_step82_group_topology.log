@@ -1,0 +1,42 @@
+Device: mps  Epochs: 75  Batch: 128  Data: 50%
+Step 82: Group-structured hidden topology
+Ref: step69 spatial topology = 0.8336
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref  spatial topology (n_groups=128, current default)
+======================================================================
+  e  1  loss=2.3480  task=2.2747  safety=0.1499  top1=0.4698  lr=2.36e-03
+  e 10  loss=1.4516  task=1.3833  safety=0.1397  top1=0.6690  lr=2.36e-03
+  e 20  loss=1.2462  task=1.1825  safety=0.1305  top1=0.7911  lr=2.36e-03
+  e 30  loss=1.1488  task=1.0882  safety=0.1240  top1=0.7434  lr=2.36e-03
+  e 40  loss=1.0476  task=0.9899  safety=0.1182  top1=0.7809  lr=2.36e-03
+  e 50  loss=0.9946  task=0.9394  safety=0.1132  top1=0.7564  lr=2.36e-03
+  e 60  loss=0.9166  task=0.8636  safety=0.1086  top1=0.8296  lr=2.36e-03
+  e 70  loss=0.9042  task=0.8528  safety=0.1052  top1=0.7885  lr=2.36e-03
+  top1_best=0.8301  best_ep=72/75 (96%)  vs_ref=-0.0035  t=1797s
+  [saved train_step82_group_topology.json]
+
+======================================================================
+A    random-group topology, n_groups=8
+======================================================================
+  e  1  loss=2.9904  task=2.9209  safety=0.1422  top1=0.2183  lr=2.36e-03
+  e 10  loss=1.6084  task=1.5463  safety=0.1271  top1=0.7203  lr=2.36e-03
+  e 20  loss=1.4179  task=1.3618  safety=0.1148  top1=0.7164  lr=2.36e-03
+  e 30  loss=1.2895  task=1.2380  safety=0.1054  top1=0.6576  lr=2.36e-03
+  e 40  loss=1.1951  task=1.1472  safety=0.0980  top1=0.7427  lr=2.36e-03
+  e 50  loss=1.1123  task=1.0675  safety=0.0917  top1=0.7529  lr=2.36e-03
+  e 60  loss=1.0783  task=1.0359  safety=0.0867  top1=0.7676  lr=2.36e-03
+  e 70  loss=1.0148  task=0.9744  safety=0.0827  top1=0.8400  lr=2.36e-03
+  top1_best=0.8451  best_ep=72/75 (96%)  vs_ref=+0.0115  t=1793s
+  [saved train_step82_group_topology.json]
+
+======================================================================
+B    random-group topology, n_groups=16
+======================================================================
+  e  1  loss=2.7243  task=2.6505  safety=0.1511  top1=0.2899  lr=2.36e-03
+  e 10  loss=1.5717  task=1.5050  safety=0.1364  top1=0.6520  lr=2.36e-03
+  e 20  loss=1.3729  task=1.3128  safety=0.1230  top1=0.7118  lr=2.36e-03
+  e 30  loss=1.2587  task=1.2037  safety=0.1124  top1=0.8247  lr=2.36e-03
+  e 40  loss=1.1502  task=1.0995  safety=0.1037  top1=0.7480  lr=2.36e-03

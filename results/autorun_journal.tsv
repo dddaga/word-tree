@@ -1,0 +1,5 @@
+iter	timestamp	status	verdict	top1_best	top1_last	best_epoch	epochs_run	elapsed_s	params	description	N	D	K_iter	K_local	K_random	K_in	alpha_ahebb	alpha_reflect	alpha_turing	lr	n_groups	geo_gamma	beam_size	K_phase
+0	2026-04-09T17:37:34	ok	baseline	0.5962	0.5962	5	5	44.0	33664	confirmed_winners_baseline	256	64	12	2	2	50	1.0	0.5	0.0	0.002364	32	0.5	16	8
+1	2026-04-09T17:38:18	ok	loss	0.5327	0.5327	5	5	43.8	33664	beam_size:16→4	256	64	12	2	2	50	1.0	0.5	0.0	0.002364	32	0.5	4	8
+2	2026-04-09T17:39:03	ok	loss	0.5264	0.4150	3	5	45.0	33664	K_phase:8→12	256	64	12	2	2	50	1.0	0.5	0.0	0.002364	32	0.5	16	12
+3	2026-04-09T17:39:46	ok	loss	0.5075	0.4938	4	5	42.9	33664	K_in:50→25	256	64	12	2	2	25	1.0	0.5	0.0	0.002364	32	0.5	16	8

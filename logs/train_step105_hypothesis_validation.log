@@ -1,0 +1,84 @@
+Device: mps  Epochs: 75  N=1024  D=64  Data: 50%
+Step 105: Hypothesis validation on patched arch
+Baseline: step69 Ref = 0.8336
+
+HYPOTHESES UNDER TEST:
+  H1: 'AH antagonizes phase-target' → A vs B (isolated test)
+  H2: 'Compounding kills on patched arch' → C vs Ref
+  H3: 'Phase coherence routing is dead' → C on patched arch
+
+  Ref   Ref  AH alone (step69 Ref repro)
+  A     A    PhaseTarget + AH, no plasticity  (H1: isolate AH×phase)
+  B     B    PhaseTarget only, no AH           (H1: phase alone)
+  C     C    Phase coherence softmax + AH       (H3: phase routing post-patch)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref  AH alone (step69 Ref repro)
+======================================================================
+  e  1  loss=2.3487  task=2.2755  safety=0.1499  top1=0.4655  lr=2.36e-03
+  e 10  loss=1.4530  task=1.3846  safety=0.1399  top1=0.6775  lr=2.36e-03
+  e 20  loss=1.2471  task=1.1831  safety=0.1309  top1=0.7913  lr=2.36e-03
+  e 30  loss=1.1515  task=1.0909  safety=0.1239  top1=0.7187  lr=2.36e-03
+  e 40  loss=1.0447  task=0.9869  safety=0.1183  top1=0.7804  lr=2.36e-03
+  e 50  loss=0.9857  task=0.9303  safety=0.1134  top1=0.7936  lr=2.36e-03
+  e 60  loss=0.9190  task=0.8657  safety=0.1091  top1=0.8082  lr=2.36e-03
+  e 70  loss=0.9058  task=0.8541  safety=0.1059  top1=0.7850  lr=2.36e-03
+  top1=0.8247  ep=46/75  vs_ref=-0.0089  t=1820s
+  [saved train_step105_hypothesis_validation.json]
+
+======================================================================
+A    PhaseTarget + AH, no plasticity  (H1: isolate AH×phase)
+======================================================================
+  e  1  loss=2.5980  task=2.5243  safety=0.1509  top1=0.2683  lr=2.36e-03
+  e 10  loss=1.3422  task=1.2733  safety=0.1410  top1=0.7496  lr=2.36e-03
+  e 20  loss=1.1277  task=1.0653  safety=0.1277  top1=0.7781  lr=2.36e-03
+  e 30  loss=0.9982  task=0.9410  safety=0.1171  top1=0.7964  lr=2.36e-03
+  e 40  loss=0.9188  task=0.8659  safety=0.1082  top1=0.8346  lr=2.36e-03
+  e 50  loss=0.8508  task=0.8015  safety=0.1007  top1=0.8372  lr=2.36e-03
+  e 60  loss=0.8280  task=0.7818  safety=0.0945  top1=0.8420  lr=2.36e-03
+  e 70  loss=0.7801  task=0.7365  safety=0.0893  top1=0.8425  lr=2.36e-03
+  top1=0.8668  ep=71/75  vs_ref=+0.0332  t=3805s
+  [saved train_step105_hypothesis_validation.json]
+
+======================================================================
+B    PhaseTarget only, no AH           (H1: phase alone)
+======================================================================
+  e  1  loss=4.0259  task=3.9837  safety=0.0864  top1=0.0904  lr=2.36e-03
+  e 10  loss=2.2129  task=2.2122  safety=0.0015  top1=0.1546  lr=2.36e-03
+  e 20  loss=2.1404  task=2.1396  safety=0.0017  top1=0.1975  lr=2.36e-03
+  e 30  loss=2.0829  task=2.0820  safety=0.0019  top1=0.2397  lr=2.36e-03
+  e 40  loss=2.0389  task=2.0379  safety=0.0021  top1=0.2797  lr=2.36e-03
+  e 50  loss=2.0066  task=2.0055  safety=0.0023  top1=0.2981  lr=2.36e-03
+  e 60  loss=1.9682  task=1.9670  safety=0.0025  top1=0.3424  lr=2.36e-03
+  e 70  loss=1.9429  task=1.9416  safety=0.0027  top1=0.3521  lr=2.36e-03
+  top1=0.3592  ep=69/75  vs_ref=-0.4744  t=4334s
+  [saved train_step105_hypothesis_validation.json]
+
+======================================================================
+C    Phase coherence softmax + AH       (H3: phase routing post-patch)
+======================================================================
+  e  1  loss=2.9641  task=2.8912  safety=0.1493  top1=0.1557  lr=2.36e-03
+  e 10  loss=1.6321  task=1.5827  safety=0.1009  top1=0.6558  lr=2.36e-03
+  e 20  loss=1.3829  task=1.3383  safety=0.0913  top1=0.7768  lr=2.36e-03
+  e 30  loss=1.2381  task=1.1945  safety=0.0893  top1=0.7893  lr=2.36e-03
+  e 40  loss=1.1518  task=1.1077  safety=0.0902  top1=0.8217  lr=2.36e-03
+  e 50  loss=1.0882  task=1.0429  safety=0.0927  top1=0.8334  lr=2.36e-03
+  e 60  loss=1.0417  task=0.9959  safety=0.0938  top1=0.8469  lr=2.36e-03
+  e 70  loss=1.0154  task=0.9687  safety=0.0956  top1=0.8377  lr=2.36e-03
+  top1=0.8550  ep=66/75  vs_ref=+0.0214  t=2207s
+  [saved train_step105_hypothesis_validation.json]
+
+======================================================================
+STEP 105 COMPLETE — Hypothesis Validation
+
+  Key       top1    vs_ref  Hypothesis test
+  Ref   0.8247  -0.0089  Ref  AH alone (step69 Ref repro)
+  A     0.8668  +0.0332  A    PhaseTarget + AH, no plasticity  (H1: isolate AH×phase)
+  B     0.3592  -0.4744  B    PhaseTarget only, no AH           (H1: phase alone)
+  C     0.8550  +0.0214  C    Phase coherence softmax + AH       (H3: phase routing post-patch)
+
+  H1 VERDICT: AH HELPS phase-target (+0.5076). 'AH antagonizes' is WRONG.
+  H3 VERDICT: Phase coherence routing WORKS on patched arch (0.8550 > 0.8336). REOPEN phase track.

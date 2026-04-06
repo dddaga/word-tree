@@ -1,0 +1,96 @@
+Device: mps  Epochs: 75  Batch: 128  N=1024  Data: 50%
+Step 87: Pure proximity routing — no static conn_hh
+Baseline: step69 Ref = 0.8336
+
+  Ref   static     K_hh=6  K_iter=8  AH_wpos=1.0
+  A     proximity  K_hh=4  K_iter=8  AH_zact=0.0
+  B     proximity  K_hh=4  K_iter=8  AH_zact=1.0
+  C     static     K_hh=4  K_iter=8  AH_wpos=1.0
+  D     proximity  K_hh=4  K_iter=12  AH_zact=0.0
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref  static conn_hh + AH wpos  K_hh=6 K_iter=8 (patched baseline)
+======================================================================
+  e  1  loss=2.3457  task=2.2724  safety=0.1500  top1=0.4762  lr=2.36e-03
+  e 10  loss=1.4469  task=1.3788  safety=0.1393  top1=0.6655  lr=2.36e-03
+  e 20  loss=1.2431  task=1.1795  safety=0.1301  top1=0.7985  lr=2.36e-03
+  e 30  loss=1.1459  task=1.0858  safety=0.1231  top1=0.7490  lr=2.36e-03
+  e 40  loss=1.0482  task=0.9908  safety=0.1174  top1=0.7506  lr=2.36e-03
+  e 50  loss=0.9801  task=0.9251  safety=0.1126  top1=0.8038  lr=2.36e-03
+  e 60  loss=0.9180  task=0.8651  safety=0.1083  top1=0.8334  lr=2.36e-03
+  e 70  loss=0.9043  task=0.8531  safety=0.1049  top1=0.7903  lr=2.36e-03
+  top1_best=0.8428  best_ep=67/75 (89%)  vs_step69=+0.0092  t=1829s
+  [saved train_step87_proximity_routing.json]
+
+======================================================================
+A    proximity, no AH           K_hh=4 K_iter=8
+======================================================================
+  e  1  loss=5.8206  task=5.7785  safety=0.0863  top1=0.1136  lr=2.36e-03
+  e 10  loss=2.2513  task=2.2506  safety=0.0015  top1=0.1401  lr=2.36e-03
+  e 20  loss=2.2105  task=2.2098  safety=0.0015  top1=0.1241  lr=2.36e-03
+  e 30  loss=2.1679  task=2.1671  safety=0.0015  top1=0.1929  lr=2.36e-03
+  e 40  loss=2.1304  task=2.1296  safety=0.0016  top1=0.2609  lr=2.36e-03
+  e 50  loss=2.0974  task=2.0966  safety=0.0017  top1=0.2433  lr=2.36e-03
+  e 60  loss=2.0696  task=2.0687  safety=0.0018  top1=0.2797  lr=2.36e-03
+  e 70  loss=2.0468  task=2.0458  safety=0.0019  top1=0.3355  lr=2.36e-03
+  top1_best=0.3850  best_ep=72/75 (96%)  vs_step69=-0.4486  t=1268s
+  [saved train_step87_proximity_routing.json]
+
+======================================================================
+B    proximity + AH zact        K_hh=4 K_iter=8
+======================================================================
+  e  1  loss=3.4142  task=3.3719  safety=0.0865  top1=0.1080  lr=2.36e-03
+  e 10  loss=2.2643  task=2.2636  safety=0.0015  top1=0.0856  lr=2.36e-03
+  e 20  loss=2.2173  task=2.2166  safety=0.0014  top1=0.1225  lr=2.36e-03
+  e 30  loss=2.1749  task=2.1742  safety=0.0014  top1=0.1654  lr=2.36e-03
+  e 40  loss=2.1272  task=2.1265  safety=0.0015  top1=0.2769  lr=2.36e-03
+  e 50  loss=2.0885  task=2.0877  safety=0.0016  top1=0.2341  lr=2.36e-03
+  e 60  loss=2.0493  task=2.0485  safety=0.0017  top1=0.2568  lr=2.36e-03
+  e 70  loss=2.0217  task=2.0208  safety=0.0018  top1=0.3350  lr=2.36e-03
+  top1_best=0.4181  best_ep=65/75 (87%)  vs_step69=-0.4155  t=2623s
+  [saved train_step87_proximity_routing.json]
+
+======================================================================
+C    proximity + AH wpos        K_hh=4 K_iter=8  (CONFLICT test)
+======================================================================
+  e  1  loss=2.6480  task=2.5744  safety=0.1507  top1=0.3394  lr=2.36e-03
+  e 10  loss=1.4155  task=1.3484  safety=0.1372  top1=0.7638  lr=2.36e-03
+  e 20  loss=1.2228  task=1.1624  safety=0.1237  top1=0.8617  lr=2.36e-03
+  e 30  loss=1.1317  task=1.0768  safety=0.1124  top1=0.7929  lr=2.36e-03
+  e 40  loss=1.0613  task=1.0110  safety=0.1029  top1=0.8161  lr=2.36e-03
+  e 50  loss=1.0074  task=0.9609  safety=0.0951  top1=0.8140  lr=2.36e-03
+  e 60  loss=0.9789  task=0.9354  safety=0.0889  top1=0.8110  lr=2.36e-03
+  e 70  loss=0.9382  task=0.8974  safety=0.0834  top1=0.8642  lr=2.36e-03
+  top1_best=0.8680  best_ep=26/75 (35%)  vs_step69=+0.0344  t=1472s
+  [saved train_step87_proximity_routing.json]
+
+======================================================================
+D    proximity, no AH           K_hh=4 K_iter=12 (depth test)
+======================================================================
+  e  1  loss=10.3635  task=10.3211  safety=0.0867  top1=0.1032  lr=2.36e-03
+  e 10  loss=2.1965  task=2.1958  safety=0.0015  top1=0.1511  lr=2.36e-03
+  e 20  loss=2.1303  task=2.1296  safety=0.0015  top1=0.2079  lr=2.36e-03
+  e 30  loss=2.0790  task=2.0782  safety=0.0015  top1=0.2336  lr=2.36e-03
+  e 40  loss=2.0422  task=2.0414  safety=0.0016  top1=0.2966  lr=2.36e-03
+  e 50  loss=2.0113  task=2.0105  safety=0.0018  top1=0.3508  lr=2.36e-03
+  e 60  loss=1.9869  task=1.9860  safety=0.0020  top1=0.3850  lr=2.36e-03
+  e 70  loss=1.9698  task=1.9688  safety=0.0021  top1=0.3587  lr=2.36e-03
+  top1_best=0.3850  best_ep=60/75 (80%)  vs_step69=-0.4486  t=1655s
+  [saved train_step87_proximity_routing.json]
+
+======================================================================
+STEP 87 COMPLETE — Proximity Routing Ablation
+Baseline: 0.8336
+
+  Key   routing    K_hh  K_iter  AH     top1      vs_ref
+  Ref   static        6       8  wpos=1.0  0.8428    +0.0092
+  A     proximity     4       8  zact=0.0  0.3850    -0.4486
+  B     proximity     4       8  zact=1.0  0.4181    -0.4155
+  C     static        4       8  wpos=1.0  0.8680    +0.0344
+  D     proximity     4      12  zact=0.0  0.3850    -0.4486
+
+  Winner: C  (0.8680)
+  → Proximity routing does not beat static. Check curves for gate-death.

@@ -1,0 +1,108 @@
+Device: mps  Epochs: 150  Batch: 128
+Step 45: Safety valve redesign for D=64
+Gap G7: Coulomb r* ≈ 0.497 at D=64 — valve is dead (safety=0.002)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+Ref   standard safety valve (dead at D=64)
+======================================================================
+  e  1  loss=4.0509  task=4.0246  safety=0.0538  top1=0.1172  lr=2.36e-03
+  e 10  loss=1.9543  task=1.9535  safety=0.0016  top1=0.3022  lr=2.36e-03
+  e 20  loss=1.8170  task=1.8160  safety=0.0020  top1=0.4214  lr=2.36e-03
+  e 30  loss=1.7358  task=1.7347  safety=0.0024  top1=0.4652  lr=2.36e-03
+  e 40  loss=1.6825  task=1.6812  safety=0.0028  top1=0.4087  lr=2.36e-03
+  e 50  loss=1.6439  task=1.6424  safety=0.0032  top1=0.4520  lr=2.36e-03
+  e 60  loss=1.6177  task=1.6159  safety=0.0036  top1=0.5164  lr=2.36e-03
+  e 70  loss=1.5950  task=1.5931  safety=0.0040  top1=0.5220  lr=2.36e-03
+  e 80  loss=1.5724  task=1.5703  safety=0.0044  top1=0.4866  lr=2.36e-03
+  e 90  loss=1.5568  task=1.5544  safety=0.0048  top1=0.5376  lr=2.36e-03
+  e100  loss=1.5438  task=1.5413  safety=0.0052  top1=0.5304  lr=2.36e-03
+  e110  loss=1.5351  task=1.5324  safety=0.0055  top1=0.5154  lr=2.36e-03
+  e120  loss=1.5276  task=1.5248  safety=0.0057  top1=0.5679  lr=2.36e-03
+  e130  loss=1.5215  task=1.5186  safety=0.0059  top1=0.5325  lr=2.36e-03
+  e140  loss=1.5137  task=1.5108  safety=0.0060  top1=0.5376  lr=2.36e-03
+  e150  loss=1.5077  task=1.5046  safety=0.0062  top1=0.5524  lr=2.36e-03
+  top1_best=0.5679  best_ep=120/150 (80%)  diag=converged  t=11492s
+
+======================================================================
+A     no safety valve (λ_safety=0)
+======================================================================
+  e  1  loss=4.0575  task=4.0575  safety=0.0000  top1=0.1256  lr=2.36e-03
+  e 10  loss=1.9554  task=1.9554  safety=0.0000  top1=0.3389  lr=2.36e-03
+  e 20  loss=1.8195  task=1.8195  safety=0.0000  top1=0.4214  lr=2.36e-03
+  e 30  loss=1.7329  task=1.7329  safety=0.0000  top1=0.4749  lr=2.36e-03
+  e 40  loss=1.6799  task=1.6799  safety=0.0000  top1=0.4945  lr=2.36e-03
+  e 50  loss=1.6437  task=1.6437  safety=0.0000  top1=0.4660  lr=2.36e-03
+  e 60  loss=1.6148  task=1.6148  safety=0.0000  top1=0.5259  lr=2.36e-03
+  e 70  loss=1.5906  task=1.5906  safety=0.0000  top1=0.5090  lr=2.36e-03
+  e 80  loss=1.5713  task=1.5713  safety=0.0000  top1=0.5307  lr=2.36e-03
+  e 90  loss=1.5535  task=1.5535  safety=0.0000  top1=0.5047  lr=2.36e-03
+  e100  loss=1.5416  task=1.5416  safety=0.0000  top1=0.5116  lr=2.36e-03
+  e110  loss=1.5320  task=1.5320  safety=0.0000  top1=0.5103  lr=2.36e-03
+  e120  loss=1.5237  task=1.5237  safety=0.0000  top1=0.5368  lr=2.36e-03
+  e130  loss=1.5180  task=1.5180  safety=0.0000  top1=0.5006  lr=2.36e-03
+  e140  loss=1.5097  task=1.5097  safety=0.0000  top1=0.4935  lr=2.36e-03
+  e150  loss=1.5070  task=1.5070  safety=0.0000  top1=0.5310  lr=2.36e-03
+  top1_best=0.5577  best_ep=101/150 (67%)  diag=training_too_short  t=11486s
+
+======================================================================
+B     + variance regularizer λ=0.01
+======================================================================
+  e  1  loss=4.0383  task=4.0395  safety=-0.1215  top1=0.1297  lr=2.36e-03
+  e 10  loss=1.9524  task=1.9549  safety=-0.2486  top1=0.3192  lr=2.36e-03
+  e 20  loss=1.8149  task=1.8174  safety=-0.2487  top1=0.4189  lr=2.36e-03
+  e 30  loss=1.7324  task=1.7348  safety=-0.2488  top1=0.4239  lr=2.36e-03
+  e 40  loss=1.6808  task=1.6833  safety=-0.2488  top1=0.4848  lr=2.36e-03
+  e 50  loss=1.6430  task=1.6454  safety=-0.2489  top1=0.5101  lr=2.36e-03
+  e 60  loss=1.6122  task=1.6147  safety=-0.2490  top1=0.5294  lr=2.36e-03
+  e 70  loss=1.5888  task=1.5913  safety=-0.2491  top1=0.5159  lr=2.36e-03
+  e 80  loss=1.5679  task=1.5704  safety=-0.2492  top1=0.4843  lr=2.36e-03
+  e 90  loss=1.5531  task=1.5555  safety=-0.2492  top1=0.5060  lr=2.36e-03
+  e100  loss=1.5398  task=1.5423  safety=-0.2493  top1=0.5185  lr=2.36e-03
+  e110  loss=1.5306  task=1.5331  safety=-0.2494  top1=0.5080  lr=2.36e-03
+  e120  loss=1.5205  task=1.5230  safety=-0.2494  top1=0.5383  lr=2.36e-03
+  e130  loss=1.5182  task=1.5207  safety=-0.2494  top1=0.4932  lr=2.36e-03
+  e140  loss=1.5112  task=1.5137  safety=-0.2495  top1=0.5322  lr=2.36e-03
+  e150  loss=1.5045  task=1.5070  safety=-0.2495  top1=0.5121  lr=2.36e-03
+  top1_best=0.5633  best_ep=115/150 (77%)  diag=converged  t=11208s
+
+======================================================================
+C     + variance regularizer λ=0.1
+======================================================================
+  e  1  loss=4.0414  task=4.0541  safety=-0.1270  top1=0.1276  lr=2.36e-03
+  e 10  loss=1.9282  task=1.9531  safety=-0.2486  top1=0.2930  lr=2.36e-03
+  e 20  loss=1.7913  task=1.8162  safety=-0.2487  top1=0.4510  lr=2.36e-03
+  e 30  loss=1.7073  task=1.7322  safety=-0.2487  top1=0.4729  lr=2.36e-03
+  e 40  loss=1.6553  task=1.6801  safety=-0.2488  top1=0.4497  lr=2.36e-03
+  e 50  loss=1.6168  task=1.6417  safety=-0.2489  top1=0.4650  lr=2.36e-03
+  e 60  loss=1.5885  task=1.6134  safety=-0.2490  top1=0.4825  lr=2.36e-03
+  e 70  loss=1.5677  task=1.5926  safety=-0.2491  top1=0.5004  lr=2.36e-03
+  e 80  loss=1.5481  task=1.5730  safety=-0.2492  top1=0.5192  lr=2.36e-03
+  e 90  loss=1.5284  task=1.5534  safety=-0.2492  top1=0.5177  lr=2.36e-03
+  e100  loss=1.5158  task=1.5408  safety=-0.2493  top1=0.5264  lr=2.36e-03
+  e110  loss=1.5079  task=1.5329  safety=-0.2494  top1=0.5172  lr=2.36e-03
+  e120  loss=1.5020  task=1.5269  safety=-0.2494  top1=0.5363  lr=2.36e-03
+  e130  loss=1.4927  task=1.5176  safety=-0.2494  top1=0.5376  lr=2.36e-03
+  e140  loss=1.4874  task=1.5124  safety=-0.2495  top1=0.5473  lr=2.36e-03
+  e150  loss=1.4837  task=1.5086  safety=-0.2495  top1=0.5327  lr=2.36e-03
+  top1_best=0.5684  best_ep=133/150 (89%)  diag=converged  t=10281s
+
+======================================================================
+D     + spectral regularizer λ=0.01
+======================================================================
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step45_safety_valve_d64.py", line 242, in <module>
+    results[key] = run(label, model, meta,
+                   ~~~^^^^^^^^^^^^^^^^^^^^
+                       safety_mode=safety_mode, lambda_reg=lambda_reg)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step45_safety_valve_d64.py", line 198, in run
+    history = trainer.train(n_epochs=EPOCHS)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/src/training/trainer.py", line 257, in train
+    train_metrics = self.train_epoch()
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step45_safety_valve_d64.py", line 151, in train_epoch
+    safety = self._compute_reg(self.model.W_pos)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step45_safety_valve_d64.py", line 118, in _compute_reg
+    eigenvalues = torch.linalg.eigvalsh(cov)           # [D], sorted ascending
+NotImplementedError: The operator 'aten::_linalg_eigh.eigenvalues' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on https://github.com/pytorch/pytorch/issues/141287 and mention use-case, that resulted in missing op as well as commit hash 449b1768410104d3ed79d3bcfe4ba1d65c7f22c0. As a temporary fix, you can set the environment variable `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a fallback for this op. WARNING: this will be slower than running natively on MPS.

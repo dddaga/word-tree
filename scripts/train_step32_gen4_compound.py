@@ -59,7 +59,7 @@ args   = parser.parse_args()
 DEVICE = (torch.device("mps") if torch.backends.mps.is_available()
           else torch.device("cpu")) if args.device == "auto" else torch.device(args.device)
 
-EPOCHS = 150
+EPOCHS = 75
 BATCH  = 128
 SEED   = 42
 DATA   = "data/store.h5"
@@ -79,7 +79,12 @@ _loaders = None
 def get_loaders():
     global _loaders
     if _loaders is None:
-        _loaders = make_loaders(DATA, batch_size=BATCH, seed=SEED)
+        tr_full, va = make_loaders(DATA, batch_size=BATCH, seed=SEED)
+        n   = len(tr_full.dataset)
+        idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
+        subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
+        tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
+        _loaders = (tr, va)
     return _loaders
 
 

@@ -43,3 +43,90 @@ B    2-layer series passthrough + skip
   e  1  loss=4.2912  task=4.2175  safety=0.1508  top1=0.1050  lr=2.36e-03
   e 10  loss=1.7498  task=1.6973  safety=0.1073  top1=0.4329  lr=2.36e-03
   e 20  loss=1.4305  task=1.3897  safety=0.0835  top1=0.4996  lr=2.36e-03
+  e 30  loss=1.2666  task=1.2309  safety=0.0731  top1=0.5687  lr=2.36e-03
+  e 40  loss=1.1463  task=1.1135  safety=0.0670  top1=0.6349  lr=2.36e-03
+  e 50  loss=1.0334  task=1.0022  safety=0.0639  top1=0.6586  lr=2.36e-03
+  e 60  loss=0.9813  task=0.9511  safety=0.0618  top1=0.6894  lr=2.36e-03
+  e 70  loss=0.9231  task=0.8937  safety=0.0602  top1=0.6749  lr=2.36e-03
+  top1_best=0.7223  best_ep=71/75 (95%)  diag=converged  t=10697s
+
+  C    2-layer series bridge no-skip  |  params=269,568
+
+======================================================================
+C    2-layer series bridge no-skip
+======================================================================
+  e  1  loss=6.1672  task=6.0941  safety=0.1495  top1=0.0652  lr=2.36e-03
+  e 10  loss=1.9805  task=1.9208  safety=0.1222  top1=0.3146  lr=2.36e-03
+  e 20  loss=1.4782  task=1.4265  safety=0.1057  top1=0.4884  lr=2.36e-03
+  e 30  loss=1.2345  task=1.1875  safety=0.0962  top1=0.5549  lr=2.36e-03
+  e 40  loss=1.0768  task=1.0335  safety=0.0886  top1=0.6517  lr=2.36e-03
+  e 50  loss=1.0028  task=0.9624  safety=0.0827  top1=0.6606  lr=2.36e-03
+  e 60  loss=0.9681  task=0.9303  safety=0.0773  top1=0.6662  lr=2.36e-03
+  e 70  loss=0.9418  task=0.9060  safety=0.0731  top1=0.7001  lr=2.36e-03
+  top1_best=0.7075  best_ep=73/75 (97%)  diag=converged  t=8779s
+
+  D    3-layer series passthrough no-skip  |  params=398,208
+
+======================================================================
+D    3-layer series passthrough no-skip
+======================================================================
+  e  1  loss=4.3491  task=4.2741  safety=0.1535  top1=0.1246  lr=2.36e-03
+  e 10  loss=1.7247  task=1.6588  safety=0.1348  top1=0.3959  lr=2.36e-03
+  e 20  loss=1.4338  task=1.3757  safety=0.1189  top1=0.5088  lr=2.36e-03
+  e 30  loss=1.2938  task=1.2405  safety=0.1090  top1=0.5536  lr=2.36e-03
+  e 40  loss=1.2406  task=1.1906  safety=0.1023  top1=0.5564  lr=2.36e-03
+  e 50  loss=1.1640  task=1.1160  safety=0.0981  top1=0.6201  lr=2.36e-03
+  e 60  loss=1.0737  task=1.0276  safety=0.0943  top1=0.6372  lr=2.36e-03
+  e 70  loss=1.0532  task=1.0085  safety=0.0916  top1=0.6359  lr=2.36e-03
+  top1_best=0.6499  best_ep=66/75 (88%)  diag=converged  t=12537s
+
+  E    2-parallel sum fusion  |  params=265,472
+
+======================================================================
+E    2-parallel sum fusion
+======================================================================
+  e  1  loss=4.9898  task=4.9168  safety=0.1494  top1=0.0887  lr=2.36e-03
+  e 10  loss=1.9141  task=1.8804  safety=0.0690  top1=0.3620  lr=2.36e-03
+  e 20  loss=1.5591  task=1.5368  safety=0.0456  top1=0.4680  lr=2.36e-03
+  e 30  loss=1.3801  task=1.3632  safety=0.0345  top1=0.5363  lr=2.36e-03
+  e 40  loss=1.2392  task=1.2246  safety=0.0297  top1=0.6079  lr=2.36e-03
+  e 50  loss=1.1185  task=1.1055  safety=0.0266  top1=0.6589  lr=2.36e-03
+  e 60  loss=1.0565  task=1.0447  safety=0.0243  top1=0.6492  lr=2.36e-03
+  e 70  loss=1.0063  task=0.9953  safety=0.0227  top1=0.6596  lr=2.36e-03
+  top1_best=0.6910  best_ep=62/75 (83%)  diag=converged  t=8798s
+
+  F    2-parallel concat-project fusion  |  params=273,664
+
+======================================================================
+F    2-parallel concat-project fusion
+======================================================================
+  e  1  loss=4.6347  task=4.5613  safety=0.1501  top1=0.0749  lr=2.36e-03
+  e 10  loss=1.7500  task=1.7075  safety=0.0870  top1=0.4790  lr=2.36e-03
+  e 20  loss=1.3200  task=1.2917  safety=0.0578  top1=0.5585  lr=2.36e-03
+  e 30  loss=1.1636  task=1.1424  safety=0.0433  top1=0.6143  lr=2.36e-03
+  e 40  loss=1.0658  task=1.0482  safety=0.0360  top1=0.6861  lr=2.36e-03
+  e 50  loss=0.9950  task=0.9791  safety=0.0325  top1=0.6527  lr=2.36e-03
+  e 60  loss=0.9308  task=0.9163  safety=0.0298  top1=0.6708  lr=2.36e-03
+  e 70  loss=0.8931  task=0.8795  safety=0.0279  top1=0.7213  lr=2.36e-03
+  top1_best=0.7490  best_ep=75/75 (100%)  diag=converged  t=8244s
+
+Saved -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step64_stacked_sgnnet.json
+
+-- Step 64: Stacked SGNNET (run-Ref=0.7338 / step57=0.7353) --
+  Config                                                     top1    vs_Ref     vs_57      params   best_ep    t(s)
+  --------------------------------------------------------------------------------------------------------------
+  Ref  1-layer AntiHebb α=1.0 baseline                     0.7338   +0.0000   -0.0015     132,736       73    4881
+  A    2-layer series passthrough no-skip                  0.7162   -0.0176   -0.0191     265,472       73   10026
+  B    2-layer series passthrough + skip                   0.7223   -0.0115   -0.0130     265,472       71   10697
+  C    2-layer series bridge no-skip                       0.7075   -0.0262   -0.0278     269,568       73    8779
+  D    3-layer series passthrough no-skip                  0.6499   -0.0838   -0.0854     398,208       66   12537
+  E    2-parallel sum fusion                               0.6910   -0.0428   -0.0443     265,472       62    8798
+  F    2-parallel concat-project fusion                    0.7490   +0.0153   +0.0138     273,664       75    8244
+
+  Key questions:
+  A vs Ref  -> does depth at all help (any gain from 2 layers)?
+  B vs A    -> does skip connection stabilize deep routing?
+  C vs A    -> does learned bridge improve over raw Z pass-through?
+  D vs A    -> does 3 layers beat 2?
+  E vs Ref  -> does parallel diversity help?
+  F vs E    -> does richer fusion (concat-proj) beat simple sum?

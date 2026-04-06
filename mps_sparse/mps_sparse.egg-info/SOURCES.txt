@@ -1,0 +1,11 @@
+setup.py
+mps_sparse/__init__.py
+mps_sparse/modules.py
+mps_sparse/ops.py
+mps_sparse/static_sparse.py
+mps_sparse/utils.py
+mps_sparse.egg-info/PKG-INFO
+mps_sparse.egg-info/SOURCES.txt
+mps_sparse.egg-info/dependency_links.txt
+mps_sparse.egg-info/requires.txt
+mps_sparse.egg-info/top_level.txt

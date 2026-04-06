@@ -132,3 +132,74 @@ E     decay_coherence no AH lambda=1.0
   e 40  loss=4.3906  task=4.2690  safety=0.2487  top1=0.0989  lr=2.36e-03
   e 50  loss=4.1962  task=4.0732  safety=0.2515  top1=0.1029  lr=2.36e-03
   e 60  loss=3.7367  task=3.6152  safety=0.2486  top1=0.0989  lr=1.18e-03
+  e 70  loss=3.8315  task=3.7148  safety=0.2387  top1=0.1098  lr=1.18e-03
+  top1_best=0.1282  best_ep=69/75 (92%)  diag=converged  t=2466s
+
+======================================================================
+F     decay_coherence AH=1.0 lambda=1.0
+======================================================================
+  e  1  loss=10.9281  task=10.8500  safety=0.1597  top1=0.1029  lr=2.36e-03
+  e 10  loss=7.8081  task=7.6921  safety=0.2374  top1=0.1088  lr=2.36e-03
+  e 20  loss=5.4746  task=5.3450  safety=0.2651  top1=0.0876  lr=2.36e-03
+  e 30  loss=5.1674  task=5.0352  safety=0.2705  top1=0.0991  lr=2.36e-03
+  e 40  loss=4.5107  task=4.3795  safety=0.2683  top1=0.1019  lr=2.36e-03
+  e 50  loss=4.2137  task=4.0855  safety=0.2623  top1=0.1001  lr=2.36e-03
+  e 60  loss=4.2270  task=4.1035  safety=0.2527  top1=0.1078  lr=2.36e-03
+  e 70  loss=3.3264  task=3.2090  safety=0.2402  top1=0.1047  lr=1.18e-03
+  top1_best=0.1279  best_ep=2/75 (3%)  diag=training_too_short  t=2485s
+
+======================================================================
+A_prm independent harmonic-primes no AH
+======================================================================
+  e  1  loss=6.9835  task=6.9168  safety=0.1364  top1=0.0665  lr=2.36e-03
+  e 10  loss=3.2339  task=3.1785  safety=0.1135  top1=0.0879  lr=2.36e-03
+  e 20  loss=3.3715  task=3.1413  safety=0.4712  top1=0.0864  lr=1.18e-03
+  e 30  loss=3.3626  task=3.1329  safety=0.4699  top1=0.0869  lr=5.91e-04
+  e 40  loss=3.3484  task=3.1197  safety=0.4680  top1=0.0828  lr=2.96e-04
+  e 50  loss=3.3286  task=3.1013  safety=0.4652  top1=0.0912  lr=1.48e-04
+  Early stop at epoch 52 — best train_loss=3.0940
+  top1_best=0.1116  best_ep=11/53 (21%)  diag=training_too_short  t=1005s
+
+======================================================================
+B_prm coherent harmonic-primes no AH
+======================================================================
+  e  1  loss=6.1733  task=6.0927  safety=0.1651  top1=0.1006  lr=2.36e-03
+  e 10  loss=2.3660  task=2.2978  safety=0.1396  top1=0.1006  lr=2.36e-03
+  e 20  loss=2.3493  task=2.2915  safety=0.1184  top1=0.0986  lr=1.18e-03
+  e 30  loss=2.3540  task=2.3014  safety=0.1075  top1=0.0910  lr=1.18e-03
+  e 40  loss=2.3324  task=2.2852  safety=0.0966  top1=0.0910  lr=1.18e-03
+  e 50  loss=2.3318  task=2.2911  safety=0.0832  top1=0.1017  lr=1.18e-03
+  e 60  loss=2.3179  task=2.2827  safety=0.0719  top1=0.0910  lr=1.18e-03
+  e 70  loss=2.4064  task=2.3763  safety=0.0616  top1=0.0994  lr=1.18e-03
+  top1_best=0.1068  best_ep=4/75 (5%)  diag=training_too_short  t=4154s
+
+Saved -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step60_phase_routing_magnitude.json
+
+-- Step 60: PhaseRouting magnitude (ref=0.7353 / step57=0.7353) --
+  Config                                                     top1    vs_Ref   best_ep    t(s)
+  ------------------------------------------------------------------------------------------
+  Ref   AntiHebb alpha=1.0 wpos (Resonant backbone)        0.7353   +0.0000       73      5593
+  A     independent no AH  freq=capped_exp                 0.1141   -0.6211        1      1918
+  B     coherent dynamic-ref no AH  freq=capped_exp        0.1228   -0.6125       11      2173
+  C     independent AH=1.0  freq=capped_exp                0.1613   -0.5740       20      1400
+  D     coherent dynamic-ref AH=1.0  freq=capped_exp       0.1355   -0.5997       71      2180
+  A_wt  independent+mag-weighted-phase no AH               0.1544   -0.5809       73      1796
+  B_wt  coherent+mag-weighted-phase no AH                  0.1485   -0.5868       60      2520
+  B_anc coherent anchor-ref no AH                          0.1338   -0.6015       53      2251
+  B_abs coherent absolute-ref no AH                        0.1373   -0.5980       70      1964
+  E     decay_coherence no AH lambda=1.0                   0.1282   -0.6071       69      2466
+  F     decay_coherence AH=1.0 lambda=1.0                  0.1279   -0.6074        2      2486
+  A_prm independent harmonic-primes no AH                  0.1116   -0.6237       11      1005
+  B_prm coherent harmonic-primes no AH                     0.1068   -0.6285        4      4154
+
+  Key questions:
+  A/B vs Ref    -> does phase-shift routing compete with AntiHebb Resonant?
+  B vs A        -> does phase-coherent interference beat independent magnitude?
+  C/D vs A/B    -> does AntiHebb suppression help PhaseRouting?
+  A_wt vs A     -> does mag-weighted phase update help?
+  B_wt vs B     -> coherent gate + mag-weighted phase: additive gain?
+  B_anchor/abs  -> does choice of coherence reference matter?
+  E vs B        -> does decay weighting over coherent gate help?
+  F vs E        -> decay_coherence + AH: best combined config?
+  A_prime vs A  -> harmonic primes vs capped_exp frequencies?
+  B_prime vs B  -> same but with coherent gate?

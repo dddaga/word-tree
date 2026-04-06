@@ -2,11 +2,15 @@
 
 ## Project State
 SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, FashionMNIST.
-Current best: **84.36%** (D=64 + AntiHebb α=1.0 + Gen4 calibrated base, step56 N=4096, best_ep=146/150, full data 150ep). Previous best: 81.10% (step56 N=2048). Update this line when a new best is achieved.
-Phase 5 active — 6 ARM tracks. Core docs: `learnings/EXPERIMENT_QUEUE.md` · `learnings/LEARNINGS_phase5_p*.md` · `.planning/STATE.md`
+Current best: **97.86%** (D=64 + AntiHebb α=1.0 + K_hh=4 + K_iter=12 + turing=0.0 reflect=0.5, step89 Config A, N=4096, patched arch, full data 150ep, best_ep=134). Previous best: 97.58% (step89 Ref). Update this line when a new best is achieved.
+Phase 5 active. Core docs: `learnings/EXPERIMENT_QUEUE.md` · `learnings/PENDING_DISCUSSIONS.md` · `learnings/LEARNINGS_design.md` (index)
 
 **Primary goal (confirmed 2026-04-04):** Find a general-purpose deep learning architecture more parameter-efficient than transformers. Primary target: replacing the feed-forward (FFN) layer in transformer models. SGNNET is the candidate architecture with O(N×K) hard parameter budget. FashionMNIST is the testbed; the goal is a generalizable, scalable architecture. Key hypothesis: as problem complexity increases, increasing N incorporates higher orders of complexity — establishing N-scaling laws.
-Core value: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters (near-term proxy for FFN replacement viability).
+Core value: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters AND ≤1% of its FLOPs (near-term proxy for FFN replacement viability).
+
+**Two parallel research tracks:**
+1. **Accuracy track** (N=4096, D=64): maximize accuracy with confirmed defaults (K_hh=4, K_iter=12, AH=1.0, turing=0.0)
+2. **Efficiency track** (small N/D): achieve ≤1% FLOPs (~1.2M) at acceptable accuracy. Requires N=256-512 + D=16-32. Gated by step72 (N-scaling curve).
 
 ---
 
@@ -29,17 +33,21 @@ Before responding to the user on every new session or after /clear:
 Total max: 4. Prefer Mac Studio if both have slots. Launch rule: per-device count < 1 AND RAM ≥ threshold — both required.
 RAM: `vm_stat | grep -E 'free|inactive'` → (Pages free + Pages inactive) × 16384 / 1073741824
 
+**STRICT: All training launches MUST use tmux.** No bare `nohup`, no `&` backgrounding, no detached processes. tmux gives: (1) `tmux ls` shows exactly what's running, (2) `tmux capture-pane` reads live output, (3) sessions survive SSH disconnects cleanly, (4) no zombie processes burning compute silently. If `tmux ls` shows nothing, nothing is running — period. Violation of this rule caused 5 zombie processes burning 3 MPS + 2 CPU slots on Mac Studio for hours with no output (2026-04-09 incident).
+
 **Mac Studio launch (MPS):**
 ```bash
 rsync -avz scripts/SCRIPT.py mac-studio:/Users/admin/ml/dhiraj/qwen2_omni/testing/scripts/
-ssh mac-studio "cd /Users/admin/ml/dhiraj/qwen2_omni/testing && tmux new-session -d -s NAME 'd_env/bin/python3 -u scripts/SCRIPT.py --device mps 2>&1 | tee logs/SCRIPT.log'"
+ssh mac-studio "cd /Users/admin/ml/dhiraj/qwen2_omni/testing && /opt/homebrew/bin/tmux new-session -d -s NAME 'd_env/bin/python3 -u scripts/SCRIPT.py --device mps 2>&1 | tee logs/SCRIPT.log'"
 ```
 
 **Mac Studio launch (CPU):**
 ```bash
 rsync -avz scripts/SCRIPT.py mac-studio:/Users/admin/ml/dhiraj/qwen2_omni/testing/scripts/
-ssh mac-studio "cd /Users/admin/ml/dhiraj/qwen2_omni/testing && tmux new-session -d -s NAME 'd_env/bin/python3 -u scripts/SCRIPT.py --device cpu 2>&1 | tee logs/SCRIPT.log'"
+ssh mac-studio "cd /Users/admin/ml/dhiraj/qwen2_omni/testing && /opt/homebrew/bin/tmux new-session -d -s NAME 'd_env/bin/python3 -u scripts/SCRIPT.py --device cpu 2>&1 | tee logs/SCRIPT.log'"
 ```
+
+**Mac Studio status check:** `/opt/homebrew/bin/tmux ls` (tmux is at `/opt/homebrew/bin/tmux`, not in default PATH)
 
 **Mac Mini launch (MPS):** (results/logs land in repo directly — no rsync needed)
 ```bash
@@ -56,24 +64,29 @@ Python env: `/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env`
 
 ## Knowledge Persistence
 
-Three layers — always keep in sync:
+Four layers — always keep in sync:
 
 | Layer | Purpose | How |
 |---|---|---|
 | Graphiti | Semantic search across sessions | `mcp__graphiti__add_memory` |
-| `learnings/` | Sequential human-readable audit trail | Edit `LEARNINGS_phase5_p<N>.md` or `LEARNINGS_design.md` |
+| `learnings/LEARNINGS_*.md` | Sequential human-readable audit trail | Edit `LEARNINGS_phase5_p<N>.md` or `LEARNINGS_design.md` |
+| `learnings/concepts/*.md` | Consolidated per-concept wiki pages | Update relevant concept page(s) |
 | `EXPERIMENT_QUEUE.md` | Live queue + critical findings | Edit directly |
 
-**Dual-write rule:** every result, decision, or finding goes to BOTH Graphiti AND learnings/.
+**Triple-write rule:** every result, decision, or finding goes to Graphiti AND learnings/ AND the relevant concept page(s).
 
-| Event | Graphiti | Learnings |
-|---|---|---|
-| Experiment completed | step, config, result, delta, verdict | `LEARNINGS_phase5_p<N>.md` |
-| Winner confirmed | gain, config, why | `EXPERIMENT_QUEUE.md` critical findings + LEARNINGS |
-| Approach killed | why it failed | Mark KILLED in queue + LEARNINGS |
-| Calibration finding | param, best value, scale | Current LEARNINGS part |
-| Design decision | reasoning behind generation/ARM choice | Current LEARNINGS part |
-| Design discussion | hypothesis, idea, architectural debate | `learnings/LEARNINGS_design.md` (dated) |
+| Event | Graphiti | Learnings | Concepts |
+|---|---|---|---|
+| Experiment completed | step, config, result, delta, verdict | `LEARNINGS_phase5_p<N>.md` | Update relevant concept page(s) results table |
+| Winner confirmed | gain, config, why | `EXPERIMENT_QUEUE.md` + LEARNINGS | Update concept page + `learnings/INDEX.md` |
+| Approach killed | why it failed | Mark KILLED in queue + LEARNINGS | Update concept page failure table |
+| Calibration finding | param, best value, scale | Current LEARNINGS part | Update concept parameter section |
+| Design decision | reasoning behind generation/ARM choice | Current LEARNINGS part | New concept page if novel concept |
+| Design discussion | hypothesis, idea, architectural debate | `learnings/LEARNINGS_design.md` (dated) | Cross-link from relevant concept pages |
+
+**Concept pages** (`learnings/concepts/*.md`): LLM-maintained, per-concept consolidated knowledge. Sequential LEARNINGS files are the audit trail (append-only); concept pages are the compounding layer (always current). Use `[[concept_name]]` wiki-link syntax for cross-references between concept pages. When a new concept emerges (e.g., a novel mechanism), create a concept page in the same session.
+
+**Index** (`learnings/INDEX.md`): Master catalog of all concept pages, key findings, and which LEARNINGS parts cover which topics. Regenerate after any concept page is created or significantly updated.
 
 **Design discussions → scripts (STRICT):** Every design discussion is an experiment-generation session. The outcome is always a script + EXPERIMENT_QUEUE.md entry — not notes alone.
 - Before writing any code: identify all ambiguous parameters and cross-question until every config is fully specified (mode, hyperparams, ablation axis, reference config).
@@ -84,28 +97,42 @@ Three layers — always keep in sync:
 
 **Before designing any experiment:** `mcp__graphiti__search_memory_facts("<mechanism>", group_ids=["dhiraj"])` — check if already tried.
 
-```python
-mcp__graphiti__add_memory(
-    name="step29 AntiHebb result",
-    episode_body="AntiHebb α=0.5, D=64, N=1024, K_iter=8: 70.14% val acc. +13.86pp over D=64 ceiling. Must include in all future D=64 experiments.",
-    group_id="dhiraj", source="text", source_description="results/train_step29_antihebb_d64.json"
-)
-```
+**Evidence standards for findings (STRICT):**
+When logging experiment results, every causal claim MUST be tagged:
+- **CONFIRMED**: clean ablation — exactly one variable changed, control present.
+- **HYPOTHESIS**: post-hoc explanation for a result, OR confounded experiment (multiple variables changed), OR inferred from indirect evidence.
+- **STALE**: tested on a prior architecture/scale that has since changed significantly (e.g., pre-patch findings after +9.83pp arch fix).
+
+Rules:
+1. Post-hoc explanations for failures are HYPOTHESES, not facts. Never treat them as confirmed without a controlled experiment.
+2. When a hypothesis gates multiple future experiments (e.g., "compounding kills" blocking all compound work), prioritize validation — design a clean ablation to confirm or invalidate.
+3. When the base changes significantly (arch patch, new N scale, new defaults), all conclusions from the old base become STALE. Retest the load-bearing ones first.
+4. "KILLED" status requires CONFIRMED evidence. If the evidence is HYPOTHESIS or STALE, mark as "KILLED (unvalidated)" and note what control is missing.
+5. Before closing an entire research direction, verify the evidence is CONFIRMED and not confounded. One bad experiment with multiple variables changed is not sufficient to kill a direction.
+
+**Learnings propagation rule:** When a running experiment completes with a notable result, immediately check all pending/future scripts for assumptions that result changes. Update scripts in-place. Don't wait for all results before adapting.
+
+**Two-tier experiment protocol (STRICT):**
+Every new mechanism/ablation follows this pyramid — never skip Tier 0 to jump straight to Tier 1. Tier 2 (150ep full runs) is deferred until project endgame.
+
+| Tier | Budget | Data | Purpose | When to advance |
+|------|--------|------|---------|-----------------|
+| **Tier 0 (Scout)** | 20 epochs | 50% | Rejection filter. Kill obviously bad configs (large negative delta). | All configs NOT clearly failing advance to Tier 1 |
+| **Tier 1 (Calibration)** | 75 epochs | 50% | Reliable comparison. Confirm winner vs Ref. | Winner with ≥+0.5pp → add to defaults |
+
+**Tier 0 is a rejection filter, not a selection cap.** Kill configs with clearly bad performance (e.g., >5pp below Ref, or catastrophic failure). All configs with positive or neutral delta advance — do NOT artificially cap at "top-2" when multiple configs show promise.
+
+Empirical basis (46 experiments, D=64 arch): 20ep scouts predict the final winner ~80% of the time (Spearman ρ=0.80). 30ep scouts hit 91%. Tier 0 catches dead configs before wasting 75ep × 4 slots on them.
+
+**Autorun mode** (`scripts/autorun_sgnnet.py`): Autoresearch-style tight loop — runs Tier 0 scouts back-to-back with a monotonic ratchet (keep wins, revert losses). Use for overnight exploration when human is away. Journal logged to `results/autorun_journal.tsv`.
+
+**File size rule:** No file in `learnings/` should exceed 250 lines. Split into sub-files with an index when approaching the limit.
 
 ---
 
 ## GSD ↔ Graphiti Integration
 
-GSD subagents can't call Graphiti — inject context at orchestrator level before spawning.
-
-**Before /gsd:discuss-phase or /gsd:plan-phase:**
-Search `<topic> results` + `<topic> rejected failed dead` + `confirmed winners`. Inject into agent prompt: what to include, what not to re-propose.
-
-**Before /gsd:execute-phase:**
-Search running experiments + calibration findings for the mechanism being implemented. Include in executor prompt.
-
-**After any GSD phase completes:**
-One Graphiti episode: goal, key decision, what was confirmed/rejected. No task lists — decisions and rationale only.
+GSD subagents can't call Graphiti — inject context at orchestrator level. Before spawning: search recent results + dead ends. After phase completes: one Graphiti episode with decisions and rationale.
 
 ---
 

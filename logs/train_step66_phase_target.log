@@ -1,0 +1,84 @@
+Loaded REF_BASELINE from step57: 0.7353
+Device: mps  Epochs: 75  Batch: 128  Data: 50%
+Step 66: Phase-Target Routing with Local Plasticity  |  REF_BASELINE=0.7353
+W_pos=Key/Value (gradient), phase_target=Query (local plasticity only)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=4734  val=3925
+
+======================================================================
+Ref   AntiHebb α=1.0 static routing (REF_BASELINE)
+======================================================================
+  e  1  loss=2.3476  task=2.2744  safety=0.1500  top1=0.4736  lr=2.36e-03
+  e 10  loss=1.4482  task=1.3800  safety=0.1396  top1=0.6660  lr=2.36e-03
+  e 20  loss=1.2364  task=1.1727  safety=0.1304  top1=0.7901  lr=2.36e-03
+  e 30  loss=1.1398  task=1.0797  safety=0.1231  top1=0.7205  lr=2.36e-03
+  e 40  loss=1.0490  task=0.9916  safety=0.1174  top1=0.7855  lr=2.36e-03
+  e 50  loss=0.9884  task=0.9335  safety=0.1124  top1=0.8015  lr=2.36e-03
+  e 60  loss=0.9199  task=0.8670  safety=0.1083  top1=0.8234  lr=2.36e-03
+  e 70  loss=0.9104  task=0.8591  safety=0.1050  top1=0.7992  lr=2.36e-03
+  top1_best=0.8318  best_ep=67/75 (89%)  diag=converged  t=3240s
+  [saved train_step66_phase_target.json]
+
+======================================================================
+A     PhaseTarget routing only — no plasticity, no diversity, no AH
+======================================================================
+  e  1  loss=4.5058  task=4.4329  safety=0.1491  top1=0.1078  lr=2.36e-03
+  e 10  loss=2.1252  task=2.1033  safety=0.0449  top1=0.2392  lr=2.36e-03
+  e 20  loss=1.9001  task=1.8769  safety=0.0475  top1=0.4084  lr=2.36e-03
+  e 30  loss=1.6868  task=1.6502  safety=0.0749  top1=0.4168  lr=2.36e-03
+  e 40  loss=1.5128  task=1.4651  safety=0.0977  top1=0.5636  lr=2.36e-03
+  e 50  loss=1.3873  task=1.3315  safety=0.1142  top1=0.5325  lr=2.36e-03
+  e 60  loss=1.2985  task=1.2379  safety=0.1241  top1=0.5804  lr=2.36e-03
+  e 70  loss=1.2230  task=1.1580  safety=0.1330  top1=0.6232  lr=2.36e-03
+  top1_best=0.6787  best_ep=74/75 (99%)  diag=converged  t=1997s
+  [saved train_step66_phase_target.json]
+
+======================================================================
+B     PhaseTarget + plasticity (lr=0.01, K/2 split), no diversity, no AH
+======================================================================
+  e  1  loss=11.2299  task=11.1542  safety=0.1549  top1=0.0792  lr=2.36e-03
+  e 10  loss=2.2600  task=2.2151  safety=0.0919  top1=0.2201  lr=2.36e-03
+  e 20  loss=2.0596  task=2.0324  safety=0.0557  top1=0.3452  lr=2.36e-03
+  e 30  loss=1.9008  task=1.8736  safety=0.0558  top1=0.3959  lr=2.36e-03
+  e 40  loss=1.7901  task=1.7584  safety=0.0648  top1=0.4326  lr=2.36e-03
+  e 50  loss=1.7062  task=1.6710  safety=0.0718  top1=0.4805  lr=2.36e-03
+  e 60  loss=1.6180  task=1.5794  safety=0.0790  top1=0.4838  lr=2.36e-03
+  e 70  loss=1.5407  task=1.4974  safety=0.0886  top1=0.5261  lr=2.36e-03
+  top1_best=0.5761  best_ep=72/75 (96%)  diag=converged  t=1636s
+  [saved train_step66_phase_target.json]
+
+======================================================================
+C     PhaseTarget + plasticity + diversity (β=0.1), no AH
+======================================================================
+  e  1  loss=5.3701  task=5.2976  safety=0.1483  top1=0.0601  lr=2.36e-03
+  e 10  loss=2.1812  task=2.1547  safety=0.0542  top1=0.2161  lr=2.36e-03
+  e 20  loss=1.9571  task=1.9377  safety=0.0398  top1=0.3203  lr=2.36e-03
+  e 30  loss=1.7675  task=1.7395  safety=0.0574  top1=0.4018  lr=2.36e-03
+  e 40  loss=1.6237  task=1.5865  safety=0.0762  top1=0.4866  lr=2.36e-03
+  e 50  loss=1.5120  task=1.4668  safety=0.0924  top1=0.5442  lr=2.36e-03
+  e 60  loss=1.4177  task=1.3685  safety=0.1006  top1=0.5552  lr=2.36e-03
+  e 70  loss=1.3316  task=1.2778  safety=0.1100  top1=0.5916  lr=2.36e-03
+  top1_best=0.6148  best_ep=75/75 (100%)  diag=converged  t=1572s
+  [saved train_step66_phase_target.json]
+
+======================================================================
+D     PhaseTarget + plasticity + AH suppression (ah_alpha=1.0)
+======================================================================
+  e  1  loss=4.2990  task=4.2301  safety=0.1410  top1=0.1243  lr=2.36e-03
+  e 10  loss=2.1027  task=2.0975  safety=0.0107  top1=0.2020  lr=2.36e-03
+  e 20  loss=2.0457  task=2.0428  safety=0.0060  top1=0.2428  lr=2.36e-03
+  e 30  loss=2.0065  task=2.0028  safety=0.0077  top1=0.2611  lr=2.36e-03
+  e 40  loss=1.9888  task=1.9837  safety=0.0104  top1=0.2525  lr=2.36e-03
+  e 50  loss=1.9637  task=1.9575  safety=0.0127  top1=0.3445  lr=2.36e-03
+  e 60  loss=1.9525  task=1.9454  safety=0.0146  top1=0.3126  lr=2.36e-03
+  e 70  loss=1.9419  task=1.9339  safety=0.0164  top1=0.3618  lr=2.36e-03
+  top1_best=0.4033  best_ep=69/75 (92%)  diag=converged  t=1578s
+  [saved train_step66_phase_target.json]
+
+======================================================================
+STEP 66 COMPLETE  |  REF_BASELINE=0.7353
+  Ref   0.8318  (+0.0965 vs ref)  ep=67/75
+  A     0.6787  (-0.0566 vs ref)  ep=74/75
+  B     0.5761  (-0.1592 vs ref)  ep=72/75
+  C     0.6148  (-0.1205 vs ref)  ep=75/75
+  D     0.4033  (-0.3320 vs ref)  ep=69/75

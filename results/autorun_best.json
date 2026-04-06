@@ -1,0 +1,53 @@
+{
+  "top1_best": 0.5962,
+  "config": {
+    "N": 256,
+    "D": 64,
+    "K_local": 2,
+    "K_random": 2,
+    "K_in": 50,
+    "K_iter": 12,
+    "K_phase": 8,
+    "beam_size": 16,
+    "geo_gamma": 0.5,
+    "alpha_reflect": 0.5,
+    "alpha_turing": 0.0,
+    "alpha_ahebb": 1.0,
+    "lr": 0.002364,
+    "encoding_mode": "fourier",
+    "norm_mode": "l2",
+    "n_groups": 32
+  },
+  "result": {
+    "status": "ok",
+    "top1_best": 0.5962,
+    "top1_last": 0.5962,
+    "best_epoch": 5,
+    "epochs_run": 5,
+    "elapsed_s": 44.0,
+    "params": 33664
+  },
+  "_meta": {
+    "script": "autorun_sgnnet.py",
+    "timestamp": "2026-04-09T12:07:34.739341Z",
+    "git_hash": "7bfc3d2",
+    "config": {
+      "N": 256,
+      "D": 64,
+      "K_local": 2,
+      "K_random": 2,
+      "K_in": 50,
+      "K_iter": 12,
+      "K_phase": 8,
+      "beam_size": 16,
+      "geo_gamma": 0.5,
+      "alpha_reflect": 0.5,
+      "alpha_turing": 0.0,
+      "alpha_ahebb": 1.0,
+      "lr": 0.002364,
+      "encoding_mode": "fourier",
+      "norm_mode": "l2",
+      "n_groups": 32
+    }
+  }
+}
