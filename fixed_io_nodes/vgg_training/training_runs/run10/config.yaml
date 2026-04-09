@@ -1,0 +1,58 @@
+# run10 — Remove FFN: output_nodes=10, no nn.Linear head
+# Goal: test whether the GNN is doing any useful learning, or whether all classification
+#       happens in the final Linear layer. output_nodes reduced from 256 → 10 so the GNN
+#       directly outputs 10 class logits. nn.Linear is removed entirely from the model.
+# Base: run6 (best flat run, 85.81%). One structural change: output_nodes=10, no head.
+# Note: act_strength = sum(exp(mag) * cos(phase)) — a signed real value, so negative
+#       logits are possible. No expressivity concern using it directly as class logits.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run10"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 15454  # unchanged from run6; intermediate nodes = 15454 - 3136 - 10 = 12308
+  input_nodes: 3136   # 512*7*7 / vector_dim
+  output_nodes: 10    # CHANGED from 256 → 10 (one per class, no FFN head)
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run10/run10_weights.pt"
+  scheduler_save_path: "training_runs/run10/run10_scheduler.pt"
+  tensorboard_dir: "training_runs/run10/tensorboard"
+  logging:
+    log_path: "training_runs/run10/run10.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

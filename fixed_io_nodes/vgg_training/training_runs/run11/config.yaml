@@ -1,0 +1,60 @@
+# run11 — No FFN + fewer intermediate nodes
+# Goal: test whether ~1000 intermediate nodes help or hurt when the GNN must classify
+#       directly (no FFN). Compares against run10 (same no-FFN setup, ~12K intermediates).
+# Base: run10 (no FFN, output_nodes=10). One structural change: total_nodes 15454 → 4146,
+#       giving ~1000 intermediate nodes (3136 input + 1000 intermediate + 10 output).
+#
+# Context: run10 showed the GNN learns without FFN but slowly (~30% val at ep13 vs run6's
+# ~80%). All experiments from run10 onwards drop the FFN — the goal is to make the GNN
+# itself capable of classification. run6's 85.81% (with FFN) is the target to match.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run11"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146   # CHANGED from 15454 → 4146 (3136 input + 1000 intermediate + 10 output)
+  input_nodes: 3136   # unchanged
+  output_nodes: 10    # CHANGED from 256 → 10 (no FFN — direct classification)
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 20
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run11/run11_weights.pt"
+  scheduler_save_path: "training_runs/run11/run11_scheduler.pt"
+  tensorboard_dir: "training_runs/run11/tensorboard"
+  logging:
+    log_path: "training_runs/run11/run11.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

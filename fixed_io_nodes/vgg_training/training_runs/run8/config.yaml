@@ -1,7 +1,7 @@
 # --- Qdrant & Database Configuration ---
 qdrant:
   url: "http://localhost:6333"
-  collection_name: "run7"
+  collection_name: "run8"
 
 
 # --- Graph Structure & Node Initialization ---
@@ -19,15 +19,16 @@ model:
   # phase_bins: null
   # mag_bins: null
   # gamma: 1.5
-  iterations: 7
+  iterations: 15
   radiation_similarity_threshold: 0.5
-  temporal_decay: 0.8
+  temporal_decay: 1.0
   activation_threshold: 0.1
   dtype: "float32"
   scattering_prob: 0.25
   stochastic_radiation_duration: 0.08
   layernorm: true
   dropout: 0.2
+  beam_width: 500
 
 # --- Training Hyperparameters ---
 training:
@@ -43,13 +44,13 @@ training:
 
 # --- System & Logging ---
 system:
-  device: "mps"
+  device: "cpu"
   random_seed: 42
-  weights_save_path: "training_runs/run7/run7_weights.pt"
-  scheduler_save_path: "training_runs/run7/run7_scheduler.pt"
-  tensorboard_dir: "training_runs/run7/tensorboard"
+  weights_save_path: "training_runs/run8/run8_weights.pt"
+  scheduler_save_path: "training_runs/run8/run8_scheduler.pt"
+  tensorboard_dir: "training_runs/run8/tensorboard"
   logging:
-    log_path: "training_runs/run7/run7.csv"
+    log_path: "training_runs/run8/run8.csv"
     save_interval_seconds: 10
     fieldnames: ['worker_id', 'loss', 'class', 'skipped']
     verbose: false

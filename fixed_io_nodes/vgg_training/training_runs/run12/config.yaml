@@ -1,0 +1,65 @@
+# run12 — Routing temperature scaling to address gradient starvation
+# Goal: Verify that softmax routing concentration is the main bottleneck slowing
+#       down gradient flow to intermediate nodes in the FFN-free setting.
+# Base: run10 (no FFN, output_nodes=10). ONE change: model.routing_temperature=2.0
+# Diagnosis: gradient_starvation_analysis.py showed that 0.4% of nodes carry 50%
+#            of total gradient signal — extreme concentration driven by act_strength
+#            std≈4 causing winner-take-all softmax routing. Temperature=2.0 divides
+#            the logits before exp(), making routing more uniform and distributing
+#            gradient more evenly across intermediate nodes.
+# Evidence reference: vgg_training/gradient_starvation_analysis.py (2026-04-09)
+# Also: diagnose.ipynb "Distribution of change of weights" (phase 3 graph) showed
+#       near-zero weight deltas in intermediate nodes — consistent with starvation.
+# Comparison: run10 at same epoch count gives the ablation (one variable changed).
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run12"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 15454  # unchanged from run10
+  input_nodes: 3136
+  output_nodes: 10    # no FFN — GNN classifies directly
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 2.0  # CHANGED from default 1.0 — softer routing to spread gradient
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run12/run12_weights.pt"
+  scheduler_save_path: "training_runs/run12/run12_scheduler.pt"
+  tensorboard_dir: "training_runs/run12/tensorboard"
+  logging:
+    log_path: "training_runs/run12/run12.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false
