@@ -48,31 +48,31 @@
 | **step128** | 14 | **ConcatReLU / activation ablation** — weighted negative, ConcatReLU+proj, SwiGLU, LeakyReLU. 6 configs, N=1024. | Sub-threshold info recovery within-step. Complements step129 (activation fn vs norm/AH). | ✅ YES |
 | step102 | 14 | **Phase polarizer + alternating training** — Malus's law cos² filter + alternating BCD + Pauli exclusion. D=32. | step105 CONFIRMED Phase+AH synergistic (+4.21pp). Unblocked. | ✅ YES |
 | step72 | 13 | **N-scaling patched arch** — N={256-4096-8192}, K_hh=4 | Gates entire efficiency track. Can't target 1% FLOPs without this curve. | ✅ YES |
-| step117 | 13 | **Learned input projection** — W_proj [D,D], low-rank, per-neuron bias, GroupNorm. N=1024. | Bottleneck #2 (input compression 392×). Step55 showed +5pp potential. | NO |
+| step117 | 13 | **Learned input projection** — W_proj [D,D], low-rank, per-neuron bias, GroupNorm. N=1024. | Bottleneck #2 (input compression 392×). Step55 showed +5pp potential. | ✅ YES |
 
 ### P1.5 — Moderate value (score 10-12)
 
 | Step | Score | Description | Why P1.5 | Script |
 |------|-------|-------------|----------|--------|
-| step124 | 12 | **RigL topology refinement** — swap K_hh edges by gradient magnitude every 10ep | Sparse-to-sparse training. Novel for SGNNET. | NO |
+| step124 | 12 | **RigL topology refinement** — swap K_hh edges by gradient magnitude every 10ep | Sparse-to-sparse training. Novel for SGNNET. | ✅ YES |
 | step103 | 11 | **Wave interference** — distance-based phase shift + decay, D=16 | step105 confirmed phase not dead with AH. | ✅ YES |
 | step110 | 10 | **Muon optimizer ablation** — Muon, LION, schedule-free vs AdamW | Orthogonal to arch. Could unlock gains everywhere. | ✅ YES |
-| step118 | 10 | **Attention-pooling readout** — learned neuron attention, top-k pool, multi-head. N=1024. | Bottleneck #3. Mean-pool discards all graph structure. | NO |
+| step118 | 10 | **Attention-pooling readout** — learned neuron attention, top-k pool, multi-head. N=1024. | Bottleneck #3. Mean-pool discards all graph structure. | ✅ YES |
 
 ### P2 — Lower priority (score 8-9, or gated on other experiments)
 
 | Step | Score | Description | Depends on | Script |
 |------|-------|-------------|------------|--------|
-| step120 | 9 | **K_iter=16-24 + Z-bias + gradient checkpoint** at N=4096 | step115 (does Z-bias scale?) | NO |
+| step120 | 9 | **K_iter=16-24 + Z-bias + gradient checkpoint** at N=4096 | step115 (does Z-bias scale?) | ✅ YES |
 | step108 | 9 | **Hierarchical polar routing** — W_pos polar decomposition | Independent but low expected impact | ✅ YES |
 | step130 | 9 | **Beam-as-global-broadcast** — top-M active neurons broadcast to all via soft attention. M={4,8,16}, λ={0.1,0.3}, every step vs every 3rd. D=32. | Long-range info at O(M×N) cost. Beam code exists but was dead (turing=0.0). | ✅ YES |
-| step125 | 8 | **AH alpha fine-sweep** — α={1.05, 1.1, 1.2, 1.3} at N=4096, 40ep | Quick but low expected delta | NO |
-| step100 | 8 | **K_in sweep** — K_in={5,10,15,25,50} at N=4096 | FLOPs lever, never tested | NO |
-| step119 | 8 | **Adaptive K_iter per sample** — confidence-based early exit | For efficiency track | NO |
-| step123 | 8 | **Stochastic depth training** — skip random K_iter steps during training | Free regularization, trivial | NO |
+| step125 | 8 | **AH alpha fine-sweep** — α={1.05, 1.1, 1.2, 1.3} at N=4096, 40ep | Quick but low expected delta | ✅ YES |
+| step100 | 8 | **K_in sweep** — K_in={5,10,15,25,50} at N=4096 | FLOPs lever, never tested | ✅ YES |
+| step119 | 8 | **Adaptive K_iter per sample** — confidence-based early exit | For efficiency track | ✅ YES |
+| step123 | 8 | **Stochastic depth training** — skip random K_iter steps during training | Free regularization, trivial | ✅ YES |
 | step104 | — | **Compound wave+polar** | step102 + step103 results | ✅ YES |
-| step126 | — | **µP initialization for N-scaling** | step72 (need scaling curve) | NO |
-| step127 | — | **Progressive K_iter distillation** | Efficiency track | NO |
+| step126 | — | **µP initialization for N-scaling** | step72 (need scaling curve) | ✅ YES |
+| step127 | — | **Progressive K_iter distillation** | Efficiency track | ✅ YES |
 
 ### P3 — Speculative / deprioritized
 
