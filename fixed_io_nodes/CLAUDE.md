@@ -3,7 +3,7 @@
 ## Project State
 NativeNeurographLayer: sparse graph neural network replacing VGG16 FC layers, imagenette-10 classification.
 Target: **85.81%** (run6 with FFN). All runs from run10+ drop the FFN — GNN must classify directly.
-Active: gradient starvation diagnosed — softmax routing concentration (0.4% of nodes carry 50% gradient). run10 RUNNING (~30% at ep13). run11 PENDING (fewer nodes). run12 READY (routing_temperature=2.0, single-variable fix).
+Active: gradient starvation diagnosed — softmax routing concentration (0.4% of nodes carry 50% gradient). run10 DONE (40.33% ep23). run11 RUNNING (fewer nodes). run12 PENDING (routing_temperature=2.0, single-variable fix).
 Core docs: `vgg_training/learnings/EXPERIMENT_QUEUE.md`, `vgg_training/learnings/concepts/architecture.md`, `documentation/` (code-level reference)
 
 **Primary goal:** Prove that a sparse graph neural network can match or exceed VGG16's dense MLP FC layers on imagenette-10 classification with fewer parameters. NativeNeurographLayer is the candidate architecture. imagenette-10 is the testbed.
@@ -42,17 +42,17 @@ Three layers — always keep in sync:
 | Layer | Purpose | How |
 |---|---|---|
 | Graphiti | Semantic search across sessions | `mcp__graphiti__add_memory` with `group_id="sudarshan"` |
-| `vgg_training/learnings/LEARNINGS_p*.md` | Sequential human-readable audit trail | Append to current part file |
-| `vgg_training/learnings/concepts/*.md` | Consolidated per-concept wiki pages | Update relevant concept page(s) |
+| `EXPERIMENT_QUEUE.md` | Single-file overview of all runs (brief table) | Update run status/result row |
+| `training_runs/runN/notes.md` | Per-run detailed notes (config delta, full results, analysis) | Create/update for that run |
+| `vgg_training/learnings/LEARNINGS_p1.md` | Cross-cutting design notes only (no per-run content) | Append only for decisions that span multiple runs |
+| `vgg_training/learnings/concepts/*.md` | Per-concept mechanism docs (no per-run tracking) | Update mechanism, root cause, fix sections |
 
-**Triple-write rule:** every result, decision, or finding goes to Graphiti AND learnings/ AND the relevant concept page(s).
-
-| Event | Graphiti | Learnings | Concepts |
-|---|---|---|---|
-| Experiment completed | run#, config delta, result, verdict | `LEARNINGS_p*.md` | Update relevant concept page results table |
-| Winner confirmed | gain, config, why | `EXPERIMENT_QUEUE.md` + LEARNINGS | Update concept page + note confirmed default |
-| Approach killed | why it failed | Mark KILLED in queue + LEARNINGS | Update concept page failure table |
-| Design discussion | hypothesis, idea, architectural debate | `LEARNINGS_p*.md` (dated) | Cross-link from relevant concept pages |
+| Event | Graphiti | EXPERIMENT_QUEUE | Run notes | Concepts |
+|---|---|---|---|---|
+| Experiment completed | run#, config delta, result, verdict | Update status + val_best | Create/update notes.md | Update results table if mechanism-relevant |
+| Winner confirmed | gain, config, why | Mark status | Update notes.md | Note confirmed default |
+| Approach killed | why it failed | Mark KILLED | Update notes.md | Update failure section |
+| Design discussion | hypothesis, idea | — | — | Append to relevant concept page |
 
 **File size rule:** No file in `learnings/` should exceed 250 lines. Split when approaching limit.
 
@@ -68,7 +68,7 @@ Three layers — always keep in sync:
 2. A comment in that config explaining what changed from the previous run and why
 3. **Its own training script** — copy the previous run's `training_runN.py` to `training_runs/runN/training_runN.py` and modify it for that run. Never modify a completed run's script.
 4. An entry added to `EXPERIMENT_QUEUE.md` before training starts
-5. *(If a new parameter was added to shared code)* Update `documentation/architecture.md` config reference table and write to all three knowledge layers (Graphiti, LEARNINGS, concepts).
+5. *(If a new parameter was added to shared code)* Update `documentation/architecture.md` config reference table and write to all knowledge layers (Graphiti, EXPERIMENT_QUEUE, notes.md, concepts).
 
 Old runs (run1–run9) used the shared `training.py` and are not to be changed.
 

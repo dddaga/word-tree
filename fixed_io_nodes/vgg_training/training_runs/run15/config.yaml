@@ -1,0 +1,65 @@
+# run15 — Temperature annealing: T=7.0 → 1.0 over all training steps
+# Goal: Test whether starting with near-uniform routing (T=7.0) and gradually
+#       sharpening to concentrated routing (T=1.0) gives the best of both worlds:
+#       early broad gradient coverage + late winner-take-all specialization.
+# Base: run13 (T=7.0 fixed). ONE change: temperature decays linearly 7.0→1.0 per step.
+# Mechanism: training script sets model.gnn._routing_temperature = 7.0 - 6.0*(step/total_steps)
+#            at every step before the forward pass. Config routing_temperature=7.0 is the
+#            initial value only (immediately overridden).
+# Comparison: run10(T=1.0 fixed, 40.33%), run12(T=4.0 fixed, 82.19%), run13(T=7.0 fixed, pending)
+#             — adds the annealing dimension to the temperature sweep.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run15"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 15454  # same as run13
+  input_nodes: 3136
+  output_nodes: 10    # no FFN — GNN classifies directly
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 7.0  # INITIAL value only — annealed to 1.0 per-step by training script
+  temp_anneal_start: 7.0    # training script reads these for the decay schedule
+  temp_anneal_end: 1.0
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+  data_fraction: 0.5  # Use 50% of training data (stratified by class)
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run15/run15_weights.pt"
+  scheduler_save_path: "training_runs/run15/run15_scheduler.pt"
+  tensorboard_dir: "training_runs/run15/tensorboard"
+  logging:
+    log_path: "training_runs/run15/run15.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

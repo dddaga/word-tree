@@ -2,13 +2,16 @@
 run12 — Routing temperature scaling (gradient starvation fix attempt).
 
 Change from run10 (base):
-  - model.routing_temperature = 2.0 (was 1.0/default)
+  - model.routing_temperature = 4.0 (was 1.0/default)
+  - 50% training data (stratified by class) for faster iteration
   - All other config identical to run10.
 
 Hypothesis: softmax routing in update_activations concentrates gradient on ~0.4% of
-nodes (confirmed by gradient_starvation_analysis.py, 2026-04-09). Temperature=2.0 divides
+nodes (confirmed by gradient_starvation_analysis.py, 2026-04-09). Temperature=4.0 divides
 act_strength logits before exp(), distributing routing weights more uniformly and giving
 more gradient to currently-starved intermediate nodes.
+
+Part of temperature sweep: run10(T=1.0), run12(T=4.0), run13(T=7.0).
 
 Expected: faster convergence than run10 at the same epoch count. If val acc at ep20
 is significantly higher than run10's ~38% at ep20, temperature scaling is a key lever.
@@ -91,6 +94,21 @@ def _resolve_path(path_value: str, base_dir: Path) -> Path:
     return (base_dir / path).resolve()
 
 
+def _stratified_subsample(x, y, fraction=0.5, seed=42):
+    """Subsample data with proportional class representation."""
+    gen = torch.Generator().manual_seed(seed)
+    classes = y.argmax(dim=1)
+    keep = []
+    for c in classes.unique():
+        idx = (classes == c).nonzero(as_tuple=True)[0]
+        n_keep = max(1, int(len(idx) * fraction))
+        perm = torch.randperm(len(idx), generator=gen)[:n_keep]
+        keep.append(idx[perm])
+    keep = torch.cat(keep)
+    shuffle = torch.randperm(len(keep), generator=gen)
+    return x[keep[shuffle]], y[keep[shuffle]]
+
+
 class CustomHybridModel(nn.Module):
     """
     run12 variant: no nn.Linear head.
@@ -145,6 +163,11 @@ def main(config_path: str = None):
     x_val = val["data"]
     y_val = val["label"]
 
+    data_fraction = cfg.get("training", {}).get("data_fraction", 1.0)
+    if data_fraction < 1.0:
+        x_train, y_train = _stratified_subsample(x_train, y_train, fraction=data_fraction, seed=42)
+        print(f"Using {data_fraction*100:.0f}% of training data: {len(x_train)} samples")
+
     train_dataset = TensorDataset(x_train, y_train)
     val_dataset = TensorDataset(x_val, y_val)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
@@ -189,7 +212,7 @@ def main(config_path: str = None):
     criterion = nn.CrossEntropyLoss()
     total_steps = epochs * len(train_loader)
 
-    print("Training started (run12 — routing temperature=2.0, no FFN head)")
+    print("Training started (run12 — routing temperature=4.0, no FFN head, 50% data)")
     for epoch in range(start_epoch, epochs):
         model.train()
         correct = 0

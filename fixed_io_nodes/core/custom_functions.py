@@ -68,33 +68,40 @@ def update_activations(
     weight_real: torch.Tensor = None,
     weight_imag: torch.Tensor = None,
     all_destinations: bool = False,
+    temperature: float = 1.0,
 ):
     """
-    edge_index: (2, num_edges) - Directed edges from source to destination nodes. 
+    edge_index: (2, num_edges) - Directed edges from source to destination nodes.
 
-    Returns: new_phase, new_mag, new_activation_strength - all of shape (num_nodes, vector_dim). If any node was absent 
+    temperature: softmax temperature for routing weights (default 1.0 = standard softmax).
+        Values > 1.0 produce softer (more uniform) routing, giving more gradient to
+        low-activation-strength nodes. Values < 1.0 sharpen routing (not recommended).
+        Set via config model.routing_temperature. Extend to annealing by passing a
+        per-step scalar; the division is the only change needed here.
+
+    Returns: new_phase, new_mag, new_activation_strength - all of shape (num_nodes, vector_dim). If any node was absent
     in the edge_index, phase/mag activation and act strength will be unchange and returned as is.
     """
     source, dest = edge_index[0], edge_index[1]
 
-    
+
     # For each edge, we have source->dest
-    # We need need to calculate weighted superposition of 
+    # We need need to calculate weighted superposition of
     # input vectors. For this we need following:
     source_phase_activations = phase_activations[source]
     source_mag_activations = mag_activations[source]
     source_activation_strengths = activation_strengths[source]
 
-    
+
     # Step 1: Calculate routing weights
     # a) Calculate the max activation strength for each destination
     # b) Subtract this from each source's activation strength, grouped according to destination then exponentiate
-    # c) Calculate the sum of this for each destination - then divide by sum to normalize 
-    # - This is basically softmax operation but can't be done directly using torch.softmax 
+    # c) Calculate the sum of this for each destination - then divide by sum to normalize
+    # - This is basically softmax operation but can't be done directly using torch.softmax
     # since we have to do on per-destination basis - and number of incoming edges to a destination
     # destination can be different for each destination
     max_act_strength = torch.full_like(activation_strengths, -10.0**9).scatter_reduce_(0, dest, source_activation_strengths, reduce="amax", include_self=False)
-    exp_source_act_strength = torch.exp(source_activation_strengths - max_act_strength[dest])
+    exp_source_act_strength = torch.exp((source_activation_strengths - max_act_strength[dest]) / temperature)
     sum_exp_source_act_strength = torch.zeros_like(activation_strengths).scatter_add_(0, dest, exp_source_act_strength)
     routing_weights = (exp_source_act_strength / (sum_exp_source_act_strength[dest] + _EPSILON)).unsqueeze(-1)
 

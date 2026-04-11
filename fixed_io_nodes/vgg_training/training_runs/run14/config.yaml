@@ -1,0 +1,62 @@
+# run14 — Layered topology ablation against run11 (flat)
+# Goal: Clean single-variable test of layered vs flat topology on the best
+#       FFN-free config (run11: N=4146, ~1K intermediates, 61.32% val).
+# Base: run11. ONE change: topology="layered"
+# Context: runs 7-9 tested layered but were heavily confounded (wrong iters,
+#          FFN head, 12K nodes). None tested layered with the improvements
+#          that run11 confirmed (fewer nodes, no FFN). This is the first clean
+#          layered ablation on a working FFN-free config.
+# Comparison: run11 (flat, same everything else) → clean ablation.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run14"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146   # same as run11 (3136 input + 1000 intermediate + 10 output)
+  input_nodes: 3136
+  output_nodes: 10    # no FFN — GNN classifies directly
+  cardinality: 200
+  radiation_targets: 0
+  topology: "layered"  # CHANGED from flat (default) — the ONE variable being tested
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+  data_fraction: 0.5  # Use 50% of training data (stratified by class)
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run14/run14_weights.pt"
+  scheduler_save_path: "training_runs/run14/run14_scheduler.pt"
+  tensorboard_dir: "training_runs/run14/tensorboard"
+  logging:
+    log_path: "training_runs/run14/run14.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

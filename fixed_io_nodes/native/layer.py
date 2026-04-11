@@ -56,11 +56,14 @@ class NativeNeurographLayer(nn.Module):
 
         self._edge_dropout_p = model.get("dropout", 0.0)
         self._temporal_decay = model.get("temporal_decay", 1.0)
+        self._beam_width = model.get("beam_width", 0) or 0
+        self._routing_temperature = model.get("routing_temperature", 1.0)
 
         self._input_nodeids = sorted(self._node_store.input_nodeids)
         self._output_nodeids = sorted(self._node_store.output_nodeids)
         self._input_idx = None  # lazily built on correct device
         self._output_idx = None
+        self._iter_stats_hook = None  # Optional: callable(iter_idx, act_strength_detached, B, N)
 
     # ------------------------------------------------------------------
     # Public API
@@ -132,13 +135,16 @@ class NativeNeurographLayer(nn.Module):
 
         # Build a closure that optionally applies LayerNorm before update_activations,
         # so that both run inside grad_checkpoint (avoids retaining LN intermediates).
+        _temp = self._routing_temperature
         if self._use_layer_norm:
             mag_norm = self.mag_norm
             def _normed_update(pa, ma, pw, mw, a_s, edges, wr, wi, all_act):
-                return update_activations(pa, mag_norm(ma), pw, mw, a_s, edges, wr, wi, all_act)
+                return update_activations(pa, mag_norm(ma), pw, mw, a_s, edges, wr, wi, all_act, temperature=_temp)
             _update_fn = _normed_update
         else:
-            _update_fn = update_activations
+            def _default_update(pa, ma, pw, mw, a_s, edges, wr, wi, all_act):
+                return update_activations(pa, ma, pw, mw, a_s, edges, wr, wi, all_act, temperature=_temp)
+            _update_fn = _default_update
 
         # Index helpers
         input_idx = self._get_input_idx(device)
@@ -149,6 +155,11 @@ class NativeNeurographLayer(nn.Module):
         # Active mask — single-sample, since edges are identical across samples
         active_mask = torch.zeros(N, dtype=torch.bool, device=device)
         active_mask[input_idx] = True
+
+        # Beam: exempt mask (only input nodes are exempt from beam filtering)
+        if self._beam_width > 0:
+            _beam_exempt = torch.zeros(N, dtype=torch.bool, device=device)
+            _beam_exempt[input_idx] = True
 
         # Inject inputs (batched)
         phase_act, mag_act, act_strength = self._inject_inputs_batched(
@@ -181,14 +192,28 @@ class NativeNeurographLayer(nn.Module):
                 if active_mask.all():
                     all_active = True
 
-            iter_edge = self._apply_edge_dropout(iter_edge)
-            batched_edges = self._replicate_edges(iter_edge, offsets, B)
+            if self._beam_width > 0:
+                batched_edges = self._apply_beam_and_replicate(
+                    iter_edge, act_strength, B, N, offsets,
+                    _beam_exempt, active_mask, all_active, device,
+                )
+                batched_edges = self._apply_edge_dropout(batched_edges)
+            else:
+                iter_edge = self._apply_edge_dropout(iter_edge)
+                batched_edges = self._replicate_edges(iter_edge, offsets, B)
+
+            # When beam is active, some nodes may have zero incoming edges;
+            # disable the all_destinations fast path so they keep old activations.
+            effective_all_active = all_active and (self._beam_width <= 0)
             phase_act, mag_act, act_strength = grad_checkpoint(
                 _update_fn,
                 phase_act, mag_act, phase_weight, mag_weight, act_strength, batched_edges,
-                w_real, w_imag, all_active,
+                w_real, w_imag, effective_all_active,
                 use_reentrant=False,
             )
+
+            if self._iter_stats_hook is not None:
+                self._iter_stats_hook(_, act_strength.detach(), B, N)
 
             # Temporal decay: subtract lambda from log-magnitudes (equivalent to
             # multiplying linear magnitudes by temporal_decay each iteration)
@@ -253,6 +278,36 @@ class NativeNeurographLayer(nn.Module):
         keep = torch.rand(edge_index.shape[1], device=edge_index.device) >= self._edge_dropout_p
         keep = keep | (src == dst)  # preserve self-loops
         return edge_index[:, keep]
+
+    def _apply_beam_and_replicate(self, iter_edge, act_strength, B, N, offsets,
+                                   exempt_mask, active_mask, all_active, device):
+        """Beam-filter edges and replicate for B samples in one fused pass.
+
+        Only the top-K non-exempt active nodes (by activation_strength, per sample)
+        are allowed as edge sources. Fuses filtering with replication to avoid
+        constructing the full B*E mega-graph edge tensor.
+        """
+        candidate_mask = ~exempt_mask if all_active else (active_mask & ~exempt_mask)
+        num_candidates = candidate_mask.sum().item()
+        if num_candidates <= self._beam_width:
+            return self._replicate_edges(iter_edge, offsets, B)
+
+        as_2d = act_strength.view(B, N)
+        candidate_strengths = torch.where(
+            candidate_mask.unsqueeze(0), as_2d,
+            torch.tensor(float('-inf'), device=device, dtype=as_2d.dtype),
+        )
+        _, topk_idx = candidate_strengths.topk(self._beam_width, dim=1)
+
+        allowed = exempt_mask.unsqueeze(0).expand(B, -1).clone()
+        allowed.scatter_(1, topk_idx, True)
+
+        src = iter_edge[0]
+        edges_list = []
+        for b in range(B):
+            keep = allowed[b][src]
+            edges_list.append(iter_edge[:, keep] + offsets[b])
+        return torch.cat(edges_list, dim=1)
 
     # ------------------------------------------------------------------
     # Edge construction (single-sample, then replicated by forward)
