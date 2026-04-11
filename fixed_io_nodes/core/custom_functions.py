@@ -133,14 +133,15 @@ def update_activations(
     dest_real_output = dest_real_input*dest_real_weight - dest_imaginary_input * dest_imaginary_weight
     dest_imaginary_output = dest_real_input*dest_imaginary_weight + dest_imaginary_input * dest_real_weight
 
-    # New phase/mag activation and activation strength
+    # New phase/mag activation and activation strength.
+    # act_strength = sum(real) is equivalent to sum(exp(new_mag) * cos(new_phase))
+    # because exp(0.5*log(r²+i²)) * cos(atan2(i,r)) = sqrt(r²+i²) * r/sqrt(r²+i²) = r.
+    # No internal normalisation here — external LayerNorm (layer.py) owns mag
+    # normalisation and recomputes act_strength from the normalised mag post-update.
+    # See: vgg_training/learnings/concepts/mag_normalization.md
     new_phase = torch.atan2(dest_imaginary_output, dest_real_output + _EPSILON)
     new_mag = 0.5 * torch.log(dest_real_output ** 2 + dest_imaginary_output ** 2 + _EPSILON)
-    mean_log_mag = new_mag.mean(dim=-1, keepdim=True)
-    new_mag = new_mag - mean_log_mag
-    # activation_strength = sum(real / geom_mean) — direct from Cartesian outputs
-    geom_mean = torch.exp(mean_log_mag)
-    new_activation_strength = (dest_real_output / (geom_mean + _EPSILON)).sum(dim=-1)
+    new_activation_strength = dest_real_output.sum(dim=-1)
 
     if all_destinations:
         return new_phase, new_mag, new_activation_strength

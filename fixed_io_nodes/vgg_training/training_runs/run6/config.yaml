@@ -26,6 +26,11 @@ model:
   scattering_prob: 0.25
   stochastic_radiation_duration: 0.08
   layernorm: true
+  # DOCUMENTARY — not read by current code. This run used the legacy in-function
+  # mean-subtraction in update_activations. To reproduce exactly, check out
+  # git commit 7f072c4 on branch fixed_io_nodes. See:
+  # vgg_training/learnings/concepts/mag_normalization.md
+  subtract_mean: true
   dropout: 0.2
 
 # --- Training Hyperparameters ---

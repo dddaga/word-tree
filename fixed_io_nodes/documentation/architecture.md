@@ -76,13 +76,21 @@ dest_imag_out = dest_real_in * sin(phase_w) + dest_imag_in * cos(phase_w)
 
 **Step 4 — new phase/mag activation:**
 ```
-new_phase = atan2(dest_imag_out, dest_real_out)
-new_mag   = 0.5 * log(dest_real_out² + dest_imag_out²)   # log-magnitude
-new_mag   = new_mag - mean(new_mag, dim=V)                # zero-mean normalisation
-new_act_strength = sum(dest_real_out / geom_mean, dim=V)  # (N,)
+new_phase         = atan2(dest_imag_out, dest_real_out)
+new_mag           = 0.5 * log(dest_real_out² + dest_imag_out²)   # log-magnitude
+new_act_strength  = sum(dest_real_out, dim=V)                    # (N,)
 ```
 
-The zero-mean normalisation on log-magnitudes is the "LayerNorm equivalent" for the magnitude channel.
+`update_activations` no longer touches `new_mag`. When `model.layernorm: true`, the
+`NativeNeurographLayer` forward closure applies `nn.LayerNorm` to `new_mag` immediately
+after this step (post-update) and recomputes `act_strength` from the normalised mag:
+```
+new_mag          ← γ · (new_mag − μ) / σ + β              # learned γ, β per dim
+new_act_strength = sum(exp(new_mag) · cos(new_phase), dim=V)
+```
+This replaces the legacy in-function `new_mag -= mean(new_mag, dim=V)` that runs 1–16 used
+(hardcoded γ=1, β=0, no learned freedom). See:
+`vgg_training/learnings/concepts/mag_normalization.md`.
 
 ---
 

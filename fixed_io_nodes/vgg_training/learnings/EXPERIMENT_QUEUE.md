@@ -6,6 +6,8 @@
 ## Active Investigation
 **All queued runs complete. Best FFN-free: run16 (86.55% @ep40). Exceeded FFN target (85.81%) by +0.74pp. Proof-of-concept ACHIEVED.**
 
+**2026-04-11 architectural refactor (run 17+):** Removed the in-function mean-subtraction from `update_activations` (runs 1–16 had it hardcoded, no learned params) and moved LayerNorm to post-update with `act_strength` recomputed from the normalised mag. Runs 1–16 carry a documentary `subtract_mean: true` config annotation; to reproduce them exactly, check out git commit `7f072c4` on branch `fixed_io_nodes`. Full details: `concepts/mag_normalization.md`.
+
 ---
 
 ## Queue (active + pending only)

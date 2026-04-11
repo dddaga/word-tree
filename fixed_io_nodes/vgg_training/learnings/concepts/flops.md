@@ -129,19 +129,20 @@ imag_out = real_in*imag_w + imag_in*real_w   # M*V * 3
 ```
 → **6 * M * V FLOPs**
 
-**Step 4: Polar decomposition + new activation strength** (custom_functions.py:137-143)
+**Step 4: Polar decomposition + new activation strength** (custom_functions.py:137-139)
 ```python
 atan2(imag, real+eps)                  # M*V
 real^2 + imag^2 + eps → log → *0.5    # M*V * 5
-mean(dim=-1)                           # M*V
-new_mag - mean                         # M*V
-exp(mean)                              # M
-real / (geom+eps)                      # M*V
 sum(dim=-1)                            # M*V
 ```
-→ **10 * M * V + M FLOPs**
+→ **7 * M * V FLOPs**
 
-**Step 5: Selective update** (custom_functions.py:148-155)
+Note: prior to the 2026-04-11 refactor, Step 4 also did an in-function
+mean-subtraction + geom_mean division (3*M*V + M extra). That normalisation
+now lives in `native/layer.py` as post-update LayerNorm — see
+`concepts/mag_normalization.md`.
+
+**Step 5: Selective update** (custom_functions.py:145-152)
 ```python
 where(mask, new, old) × 3             # M*V + M*V + M
 ```
@@ -150,17 +151,27 @@ where(mask, new, old) × 3             # M*V + M*V + M
 #### `update_activations` total per call
 
 ```
-F_update = 7*E_b + 8*E_b*V + 18*M*V + 2*M
+F_update = 7*E_b + 8*E_b*V + 15*M*V + M
 ```
 
-#### Per iteration (with LayerNorm + temporal decay)
+#### Per iteration (with post-update LayerNorm + temporal decay)
 
-With E_b = B*N*C (batched edges), M = B*N:
+With E_b = B*N*C (batched edges), M = B*N.  For the LN path, the
+`_normed_update` closure adds LayerNorm (≈5*M*V) and recomputes act_strength
+from the normalised mag via `activation_strength_forward` (≈4*M*V: exp + cos +
+multiply + sum).
+
 ```
-F_iter = F_update + B*N*5*V [LayerNorm] + B*N*V [temporal decay]
-       = B*N * (8*C*V + 7*C + 24*V + 2)
-       ≈ B*N * (8CV + 7C + 24V)
+F_iter = F_update
+       + B*N*5*V       [LayerNorm post-update]
+       + B*N*4*V       [act_strength recompute from LN'd mag]
+       + B*N*V         [temporal decay]
+       = B*N * (8*C*V + 7*C + 25*V + 1)
+       ≈ B*N * (8CV + 7C + 25V)
 ```
+
+Net change vs pre-refactor: +1*V per node per iteration (≈+4% of `24V` term).
+Negligible for the grand total approximation.
 
 ### Phase 4: Output Extraction
 
@@ -172,14 +183,14 @@ F_iter = F_update + B*N*5*V [LayerNorm] + B*N*V [temporal decay]
 FLOPs_forward = B*n_in*V*2                           # Phase 1: input tanh
               + B*N*12*V                              # Phase 1: init
               + F_update(B*n_in, 2*B*n_in, V)         # Phase 2: injection
-              + (I-1) * B*N*(8*C*V + 7*C + 24*V)     # Phase 3: message passing
+              + (I-1) * B*N*(8*C*V + 7*C + 25*V)     # Phase 3: message passing
               + B*n_out                                # Phase 4: output
 ```
 
 **Simplified (Phase 3 dominates by 99%+):**
 
 ```
-FLOPs_forward ≈ (I-1) × B × N × (8CV + 7C + 24V)
+FLOPs_forward ≈ (I-1) × B × N × (8CV + 7C + 25V)
 ```
 
 **Per training step** (forward + backward with grad checkpointing):
@@ -221,7 +232,7 @@ def calc_flops_and_params(N, V, C, I, B, n_in, n_out,
         params += n_out * 10 + 10
 
     # FLOPs
-    flops_fwd = (I - 1) * B * N * (8*C*V + 7*C + 24*V)
+    flops_fwd = (I - 1) * B * N * (8*C*V + 7*C + 25*V)
     flops_step = 3 * flops_fwd
     effective_samples = int(num_train * data_fraction)
     steps_epoch = -(-effective_samples // B)  # ceil division

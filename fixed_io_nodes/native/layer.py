@@ -133,13 +133,22 @@ class NativeNeurographLayer(nn.Module):
             mag_act = self.mag_norm(mag_act)
         act_strength = activation_strength_forward(phase_act, mag_act, self._gamma)
 
-        # Build a closure that optionally applies LayerNorm before update_activations,
-        # so that both run inside grad_checkpoint (avoids retaining LN intermediates).
+        # Build update closure. When LayerNorm is enabled, it runs POST-update on the
+        # fresh new_mag, then activation_strength is recomputed from the normalised mag
+        # so the next iteration routes on the true current state. Keeping LN inside
+        # grad_checkpoint avoids retaining LN intermediates.
+        # See: vgg_training/learnings/concepts/mag_normalization.md
         _temp = self._routing_temperature
         if self._use_layer_norm:
             mag_norm = self.mag_norm
+            _gamma = self._gamma
             def _normed_update(pa, ma, pw, mw, a_s, edges, wr, wi, all_act):
-                return update_activations(pa, mag_norm(ma), pw, mw, a_s, edges, wr, wi, all_act, temperature=_temp)
+                new_pa, new_ma, _ = update_activations(
+                    pa, ma, pw, mw, a_s, edges, wr, wi, all_act, temperature=_temp,
+                )
+                new_ma = mag_norm(new_ma)
+                new_as = activation_strength_forward(new_pa, new_ma, _gamma)
+                return new_pa, new_ma, new_as
             _update_fn = _normed_update
         else:
             def _default_update(pa, ma, pw, mw, a_s, edges, wr, wi, all_act):
@@ -250,13 +259,25 @@ class NativeNeurographLayer(nn.Module):
 
         new_pa, new_ma, new_as = update_activations(pa, ma, pw, mw, a_s, inject_edges)
 
+        # Extract real-node slice (rows [0:Bn]); rows [Bn:2Bn] are virtual-source
+        # scaffolding and are discarded.
+        new_pa_input = new_pa[:Bn]
+        new_ma_input = new_ma[:Bn]
+        if self._use_layer_norm:
+            # Post-injection LN + recompute act_strength from the normalised mag so
+            # the first propagation iteration routes on the true current state.
+            new_ma_input = self.mag_norm(new_ma_input)
+            new_as_input = activation_strength_forward(new_pa_input, new_ma_input, self._gamma)
+        else:
+            new_as_input = new_as[:Bn]
+
         # Write back (out-of-place for autograd safety)
         phase_act = phase_act.clone()
         mag_act = mag_act.clone()
         act_strength = act_strength.clone()
-        phase_act[batched_input_idx] = new_pa[:Bn]
-        mag_act[batched_input_idx] = new_ma[:Bn]
-        act_strength[batched_input_idx] = new_as[:Bn]
+        phase_act[batched_input_idx] = new_pa_input
+        mag_act[batched_input_idx] = new_ma_input
+        act_strength[batched_input_idx] = new_as_input
 
         return phase_act, mag_act, act_strength
 
