@@ -4,15 +4,13 @@
 **All experiments from run10 onwards drop the nn.Linear FFN head.** The GNN must classify directly (output_nodes=10, act_strength as logits). `diagnose.ipynb` showed intermediate/input node weights barely changed during training — the FFN was doing most of the classification work. Since the project goal is to prove the *GNN* can replace VGG16's FC layers, keeping an FFN head defeats the purpose. Target: match run6's 85.81% without the FFN.
 
 ## Active Investigation
-**run16 RUNNING** — N=4146, T=4.0 fixed, 100% data. Tests whether run11 (N=4146) + run12 (T=4.0) improvements compound. Best FFN-free so far: run13 (85.40%).
+**All queued runs complete. Best FFN-free: run16 (86.55% @ep40). Exceeded FFN target (85.81%) by +0.74pp. Proof-of-concept ACHIEVED.**
 
 ---
 
 ## Queue (active + pending only)
 
-| Run | Status | Hypothesis | Key delta | Expected result |
-|-----|--------|------------|-----------|-----------------|
-| run16 | RUNNING | Combine run11 (N=4146) + run12 (T=4.0) — test if improvements compound | N=4146, T=4.0, 100% data, flat, no FFN, 40ep | Expected best FFN-free result; compare to run12 (82.19%) and run11 (61.32%) |
+*(empty — all runs complete)*
 
 ---
 
@@ -28,6 +26,7 @@
 | run13 | 2026-04-10 | DONE | **85.40% @ep40** | 40/40 | 15454 | 7.0 | 50% | routing_temperature=7.0 | +3.21pp vs run12; T=7.0>T=4.0>T=1.0 monotonic; 0.41pp gap from FFN target (85.81%) |
 | run14 | 2026-04-10 | DONE | 45.48% @ep40 | 40/40 | 4146 | 1.0 | 50% | topology=layered (delta from run11: layered + 50% data) | -15.84pp vs run11 (HYPOTHESIS: layered worse than flat, but data fraction confounds — not clean ablation) |
 | run15 | 2026-04-11 | DONE | 76.97% @ep27 | 40/40 | 15454 | 7→1 | 50% | routing_temperature annealed 7.0→1.0 per-step (delta from run13) | -8.43pp vs run13 (CONFIRMED: annealing HARMFUL — low-T end causes starvation, val collapses to 52.66% by ep40) |
+| **run16** | 2026-04-11 | DONE | **86.55% @ep40** | 40/40 | 4146 | 4.0 | 100% | total_nodes=4146 + data_fraction=1.0 (delta from run12) | **EXCEEDED FFN target (+0.74pp); N=4146+T=4.0 compound confirmed; still improving at ep40 — proof-of-concept ACHIEVED** |
 
 ### FFN-free Learnings
 
@@ -37,6 +36,7 @@
 - **Fewer nodes helpful (HYPOTHESIS from run11):** 1K intermediates → +20.99pp vs run10. Confounded: fewer params (66K vs 247K), denser connectivity (5% vs 1.3%), simpler landscape. Not a clean ablation.
 - **Layered topology worse than flat (HYPOTHESIS from run14):** layered→45.48% vs flat→61.32% (run11), -15.84pp gap. CONFOUNDED: run14 used 50% data vs run11's 100%. Clean ablation (run14 repeated with 100% data) needed to confirm.
 - **Temperature annealing 7→1 is HARMFUL (CONFIRMED from run15):** val_best=76.97% @ep27 vs run13 T=7.0 fixed (85.40%), -8.43pp. Single-variable ablation. Low-T end-state causes gradient starvation to return; val collapsed from 76.97% to 52.66% by ep40 as T→1. Do NOT anneal temperature downward.
+- **N=4146 + T=4.0 compound exceeds FFN target (HYPOTHESIS from run16):** run16 (N=4146, T=4.0, 100% data) → 86.55% @ep40, +4.36pp vs run12 (N=15454, T=4.0, 50% data, 82.19%), +1.15pp vs run13 (N=15454, T=7.0, 85.40%). Exceeded FFN target (85.81%) by +0.74pp. Still improving at ep40. Two variables changed vs baselines — compound effect HYPOTHESIS. Primary driver likely T=4.0 (CONFIRMED lever) with smaller graph + full data adding further gain. **Proof-of-concept ACHIEVED: GNN without FFN head exceeds FFN-based accuracy.**
 
 ---
 
@@ -88,7 +88,7 @@ Variables: `I`=iterations, `B`=batch size, `N`=total_nodes, `C`=cardinality (edg
 | run13 | **85.40%** | 40/40 | 247,280 | 3.56B | 10.7B | 15454 | 200 | 5 | No | 7.0 | 50% |
 | run14 | 45.48% @ep40 | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 1.0 | 50% |
 | run15 | 76.97% @ep27 | 40/40 | 247,280 | 3.56B | 10.7B | 15454 | 200 | 5 | No | 7→1 | 50% |
-| run16 | RUNNING | /40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| **run16** | **86.55%** | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 4.0 | 100% |
 
 Notes:
 - FLOPs/fwd = forward pass only. FLOPs/step = fwd + backward (3x with grad checkpointing).
