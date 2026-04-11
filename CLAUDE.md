@@ -1,13 +1,13 @@
 # Project: SGNNET / neuro_graph — Dhiraj (group_id: "dhiraj")
 
 ## Project State
-SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, FashionMNIST.
+SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, Imagenette.
 Current best: **97.86%** (D=64 + AntiHebb α=1.0 + K_hh=4 + K_iter=12 + turing=0.0 reflect=0.5, step89 Config A, N=4096, patched arch, full data 150ep, best_ep=134). Previous best: 97.58% (step89 Ref). Update this line when a new best is achieved.
 Phase 5 active. **EFFICIENCY MILESTONE ACHIEVED (2026-04-11): step199 FINAL = 95.52% best_ep=136 @ 0.98M FLOPs (0.79% of VGG16 FC). 67K params (0.05% of VGG16 FC). Both ≤1% FLOPs AND ≤1% params criteria met simultaneously. N-scaling ceiling: 97.17% @ 1.97M (N=4096/N=8192, D=16, step205/209).** Core docs: `learnings/EXPERIMENT_QUEUE.md` · `learnings/PENDING_DISCUSSIONS.md` · `learnings/LEARNINGS_design.md` (index)
 
 **Final efficiency config (step199):** N=2048, D=16, K_hh=2, K_iter=5, alpha_ahebb=1.0, alpha_reflect=0.5, alpha_turing=0.0. Script: `scripts/train_step199_n2048_d16_khh2_kiter5_tier2.py`. Eval: `scripts/eval_efficiency_config.py`.
 
-**Primary goal (confirmed 2026-04-04):** Find a general-purpose deep learning architecture more parameter-efficient than transformers. Primary target: replacing the feed-forward (FFN) layer in transformer models. SGNNET is the candidate architecture with O(N×K) hard parameter budget. FashionMNIST is the testbed; the goal is a generalizable, scalable architecture. Key hypothesis: as problem complexity increases, increasing N incorporates higher orders of complexity — establishing N-scaling laws.
+**Primary goal (confirmed 2026-04-04):** Find a general-purpose deep learning architecture more parameter-efficient than transformers. Primary target: replacing the feed-forward (FFN) layer in transformer models. SGNNET is the candidate architecture with O(N×K) hard parameter budget. Imagenette is the testbed; the goal is a generalizable, scalable architecture. Key hypothesis: as problem complexity increases, increasing N incorporates higher orders of complexity — establishing N-scaling laws.
 Core value: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters AND ≤1% of its FLOPs (near-term proxy for FFN replacement viability). **STATUS: BOTH CRITERIA MET (step199: 0.79% FLOPs, 0.05% params, 95.52% accuracy).**
 
 **Two parallel research tracks:**

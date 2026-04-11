@@ -6,7 +6,7 @@ O(N·K) graph neural network achieving VGG16 FC accuracy at <1% of its compute.
 
 ## Key Result
 
-**95.52% accuracy on FashionMNIST at 0.98M FLOPs — 0.79% of VGG16 FC's 123.6M FLOPs.**
+**95.52% accuracy on Imagenette (small ImageNet, ~13k images, 10 classes) at 0.98M FLOPs — 0.79% of VGG16 FC's 123.6M FLOPs.**
 
 | Metric | VGG16 FC | SGNNET (step199) | Ratio |
 |--------|----------|-------------------|-------|
@@ -22,7 +22,7 @@ Both the ≤1% FLOPs and ≤1% params criteria are met simultaneously at ≥95% 
 
 SGNNET stacks three composable modules:
 
-**SGNNET_SmallWorld** — the core sparse graph. N neurons occupy positions on the unit hypersphere S^{D-1}. Connectivity is small-world: K_local nearest-neighbor edges + K_random long-range edges per neuron. Input fan-in K_in projects the 25088-dim FashionMNIST feature map onto N neurons. Fourier encoding maps positions to D-dimensional features.
+**SGNNET_SmallWorld** — the core sparse graph. N neurons occupy positions on the unit hypersphere S^{D-1}. Connectivity is small-world: K_local nearest-neighbor edges + K_random long-range edges per neuron. Input fan-in K_in projects the 25088-dim Imagenette feature map onto N neurons. Fourier encoding maps positions to D-dimensional features.
 
 **SGNNET_Resonant** — iterative message-passing router. Runs K_iter rounds of dynamic Z-geometric routing (mode=`dynamic_z_geo`). Each round propagates activations along K_hh edges per neuron. A reflection term (alpha_reflect) stabilizes oscillations; beam_size=16 limits candidate edge set.
 
@@ -83,7 +83,7 @@ K_phase=8
 seed=42
 epochs=150
 batch_size=128
-data=100% FashionMNIST
+data=100% Imagenette
 ```
 
 FLOPs formula: `3 × 2048 × 2 × 16 × 5 = 983,040 ≈ 0.98M`
@@ -119,7 +119,7 @@ d_env/bin/python3 scripts/eval_efficiency_config.py --train --device mps
 
 **Primary goal:** Find a deep learning architecture more parameter-efficient than transformers for use as an FFN replacement. SGNNET has a hard O(N×K) parameter budget — FLOPs are determined entirely by N, K_hh, D, K_iter.
 
-**Testbed:** FashionMNIST (via VGG16 feature extractor → 25088-dim input). Accuracy target ≥95% at ≤1% of VGG16 FC FLOPs.
+**Testbed:** Imagenette (via VGG16 feature extractor → 25088-dim input). Accuracy target ≥95% at ≤1% of VGG16 FC FLOPs.
 
 **Status:** Both efficiency criteria met (step199). Next phase: cross-dataset and cross-model generalizability testing.
 

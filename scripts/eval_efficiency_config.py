@@ -35,7 +35,7 @@ K_HH     = 2       # total hidden-to-hidden edges (K_local=1, K_random=1)
 K_ITER   = 5       # routing iterations
 K_IN     = 25      # input fan-in per neuron
 N_IN     = 25088   # VGG16 feature extractor output dim
-N_OUT    = 10      # FashionMNIST classes
+N_OUT    = 10      # Imagenette classes
 ALPHA_REFLECT = 0.5
 ALPHA_TURING  = 0.0
 ALPHA_AHEBB   = 1.0

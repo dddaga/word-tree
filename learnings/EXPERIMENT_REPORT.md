@@ -2,13 +2,13 @@
 
 **Generated:** 2026-04-08  
 **Project best:** 97.38% (step70 Config B, N=4096, 529K params)  
-**Dataset:** FashionMNIST via VGG16 pool5 features (25,088-dim)
+**Dataset:** Imagenette via VGG16 pool5 features (25,088-dim)
 
 ---
 
 ## Executive Summary
 
-SGNNET achieves **97.38% top-1 accuracy** on FashionMNIST with **529,024 learnable parameters** -- **0.44% of VGG16's FC layer count** (119M params). At the best configuration (N=4096, D=64, K_iter=8, AntiHebbian alpha=1.0, turing=0.0), SGNNET exceeds VGG16's own FC accuracy (~93-94%) by +3-4pp while using **225x fewer parameters**. FLOPs per sample are 61.9M (0.52x VGG16 FC) when turing=0.0 eliminates the phase inhibition path. This validates the core hypothesis: a sparse O(N*K) graph neural network can replace dense FC layers at a fraction of the parameter and compute cost.
+SGNNET achieves **97.38% top-1 accuracy** on Imagenette with **529,024 learnable parameters** -- **0.44% of VGG16's FC layer count** (119M params). At the best configuration (N=4096, D=64, K_iter=8, AntiHebbian alpha=1.0, turing=0.0), SGNNET exceeds VGG16's own FC accuracy (~93-94%) by +3-4pp while using **225x fewer parameters**. FLOPs per sample are 61.9M (0.52x VGG16 FC) when turing=0.0 eliminates the phase inhibition path. This validates the core hypothesis: a sparse O(N*K) graph neural network can replace dense FC layers at a fraction of the parameter and compute cost.
 
 ---
 
@@ -21,7 +21,7 @@ SGNNET achieves **97.38% top-1 accuracy** on FashionMNIST with **529,024 learnab
 | FC3 (4096 -> 10) | 40,960 params / 41K FLOPs |
 | **Total FC params** | **119,578,624** (~119.6M) |
 | **Total FC FLOPs/sample** | **119,578,624** (~119.6M) |
-| **FashionMNIST accuracy** | ~93-94% (reference) |
+| **Imagenette accuracy** | ~93-94% (reference) |
 
 FLOPs here count multiply-accumulate operations in the FC layers only (input_dim x output_dim per layer). Bias terms omitted for simplicity (~14K additional).
 
@@ -161,7 +161,7 @@ Even at K_iter=6 (75% of default), N=4096 achieves 95%+ on half data. This sugge
 
 ## Parameter Efficiency Analysis
 
-| Model | Params | FashionMNIST Acc | Params per 1% Acc |
+| Model | Params | Imagenette Acc | Params per 1% Acc |
 |-------|--------|-----------------|-------------------|
 | VGG16 FC layers | 119,578,624 | ~93.5% | 1,278,381 |
 | **SGNNET (step70 B)** | **529,024** | **97.38%** | **5,432** |

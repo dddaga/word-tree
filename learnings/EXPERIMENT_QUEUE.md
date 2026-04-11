@@ -25,7 +25,7 @@
 | encoding_mode | fourier |
 | seed | 42 |
 | epochs | 150 (best_ep=136) |
-| data | 100% FashionMNIST |
+| data | 100% Imagenette |
 
 **Results:**
 
