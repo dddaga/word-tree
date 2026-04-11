@@ -3,14 +3,16 @@
 ## Project State
 SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, FashionMNIST.
 Current best: **97.86%** (D=64 + AntiHebb α=1.0 + K_hh=4 + K_iter=12 + turing=0.0 reflect=0.5, step89 Config A, N=4096, patched arch, full data 150ep, best_ep=134). Previous best: 97.58% (step89 Ref). Update this line when a new best is achieved.
-Phase 5 active. Core docs: `learnings/EXPERIMENT_QUEUE.md` · `learnings/PENDING_DISCUSSIONS.md` · `learnings/LEARNINGS_design.md` (index)
+Phase 5 active. **EFFICIENCY MILESTONE ACHIEVED (2026-04-11): step199 FINAL = 95.52% best_ep=136 @ 0.98M FLOPs (0.79% of VGG16 FC). 67K params (0.05% of VGG16 FC). Both ≤1% FLOPs AND ≤1% params criteria met simultaneously. N-scaling ceiling: 97.17% @ 1.97M (N=4096/N=8192, D=16, step205/209).** Core docs: `learnings/EXPERIMENT_QUEUE.md` · `learnings/PENDING_DISCUSSIONS.md` · `learnings/LEARNINGS_design.md` (index)
+
+**Final efficiency config (step199):** N=2048, D=16, K_hh=2, K_iter=5, alpha_ahebb=1.0, alpha_reflect=0.5, alpha_turing=0.0. Script: `scripts/train_step199_n2048_d16_khh2_kiter5_tier2.py`. Eval: `scripts/eval_efficiency_config.py`.
 
 **Primary goal (confirmed 2026-04-04):** Find a general-purpose deep learning architecture more parameter-efficient than transformers. Primary target: replacing the feed-forward (FFN) layer in transformer models. SGNNET is the candidate architecture with O(N×K) hard parameter budget. FashionMNIST is the testbed; the goal is a generalizable, scalable architecture. Key hypothesis: as problem complexity increases, increasing N incorporates higher orders of complexity — establishing N-scaling laws.
-Core value: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters AND ≤1% of its FLOPs (near-term proxy for FFN replacement viability).
+Core value: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters AND ≤1% of its FLOPs (near-term proxy for FFN replacement viability). **STATUS: BOTH CRITERIA MET (step199: 0.79% FLOPs, 0.05% params, 95.52% accuracy).**
 
 **Two parallel research tracks:**
 1. **Accuracy track** (N=4096, D=64): maximize accuracy with confirmed defaults (K_hh=4, K_iter=12, AH=1.0, turing=0.0)
-2. **Efficiency track** (small N/D): achieve ≤1% FLOPs (~1.2M) at acceptable accuracy. Requires N=256-512 + D=16-32. Gated by step72 (N-scaling curve).
+2. **Efficiency track** (small N/D): **COMPLETE** — ≤1% FLOPs criterion met at step195 (1.18M), sub-1% (0.98M) met at step199. Next: cross-dataset/model generalizability testing.
 
 ---
 
@@ -125,6 +127,28 @@ Every new mechanism/ablation follows this pyramid — never skip Tier 0 to jump 
 Empirical basis (46 experiments, D=64 arch): 20ep scouts predict the final winner ~80% of the time (Spearman ρ=0.80). 30ep scouts hit 91%. Tier 0 catches dead configs before wasting 75ep × 4 slots on them.
 
 **Autorun mode** (`scripts/autorun_sgnnet.py`): Autoresearch-style tight loop — runs Tier 0 scouts back-to-back with a monotonic ratchet (keep wins, revert losses). Use for overnight exploration when human is away. Journal logged to `results/autorun_journal.tsv`.
+
+**Training diagnostics (STRICT — all new experiments):**
+Every experiment script MUST integrate `src/training/diagnostics.py` to log architectural health metrics at epoch boundaries (every 5 epochs, not per-batch). Diagnostics run one forward pass on 32 val samples — negligible overhead.
+
+Key metrics tracked:
+- **Effective rank of Z** — how many dims the representation actually uses (low = dimensional collapse)
+- **Neuron utilization %** — dead neuron detection (should be >90% for healthy training)
+- **W_pos cosine similarity** — positional diversity (high = neurons clustering → AH failing)
+- **Separability ratio** — inter-class / intra-class distance (higher = better class separation)
+- **Gradient norms** — per param group (θ, W_pos, fc_out) — who's learning?
+
+Usage in custom training loops:
+```python
+from src.training.diagnostics import TrainingDiagnostics
+diag = TrainingDiagnostics(model, device, log_every=5)
+# At end of each epoch:
+diag.log_epoch(epoch, model, val_loader, optimizer)
+```
+
+Why: loss/accuracy are lagging indicators. Diagnostics reveal WHY training works or fails — dimensional collapse, dead neurons, positional clustering, gradient imbalance. This enables data-driven experiment design: if effective rank is low, try nuclear norm regularization; if separability is low, try contrastive loss; if W_pos diversity drops, AH strength may need tuning.
+
+**Paper materials** (`learnings/paper/`): Capture novel findings as they emerge. After every major experiment, check if the result is paper-worthy (not already in literature) and add to `learnings/paper/findings_log.md`. Cross-reference `baselines_needed.md` to track gaps toward publication.
 
 **File size rule:** No file in `learnings/` should exceed 250 lines. Split into sub-files with an index when approaching the limit.
 
