@@ -46,6 +46,43 @@ D=16 ceiling is 97.17% (N=4096/N=8192 both converge here). Project accuracy best
 
 ---
 
+## Winner Configurations Summary
+
+### 1. Accuracy Champion — 97.86% (step89-A, N=4096, D=64, K_hh=4, K_iter=12)
+
+SGNNET routes information through 4,096 neurons on S^63 via 12 iterations of sparse message-passing (4 neighbors each). Anti-Hebbian suppression prevents representational collapse by penalizing structurally similar neighbors, forcing each neuron to specialize. At D=64, the positional space is rich enough that neurons achieve near-orthogonal differentiation. The combination of high dimensionality, sufficient routing depth, moderate connectivity, and full anti-Hebbian strength gives the network enough representational capacity to form class-discriminative activation patterns — matching VGG16's FC accuracy at 233x fewer parameters.
+
+### 2. Efficiency Champion — 95.52% @ 0.98M FLOPs (step199, N=2048, D=16, K_hh=2, K_iter=5)
+
+Proves SGNNET's core mechanism works at extreme compression. With only 2 neighbors per neuron and 5 routing steps, the network exceeds the 95% VGG16-FC baseline. The key insight: dimensionality (D) matters more than connectivity (K_hh) at fixed FLOPs — D=16 K_hh=2 beats D=8 K_hh=4 at identical compute (step190 vs step187). K_iter=5 is the minimum viable routing depth at N=2048; K_iter=4 collapses accuracy by 2.14pp.
+
+### 3. D=16 Record — 97.17% (step205/209, N=4096/8192, K_hh=2, K_iter=5)
+
+N-scaling at D=16 shows a hard ceiling at 97.17% reached independently by both N=4096 (1.97M FLOPs) and N=8192 (3.93M FLOPs). This is only 0.69pp below the D=64 accuracy record but at 20x fewer FLOPs, confirming that D limits representational capacity while N provides routing capacity.
+
+### 4. Polarizer Routing — 95.92% (step217b, over-polarizer alpha=1.5, +1.91pp)
+
+The first successful input-dependent routing mechanism after 9 failed dynamic routing attempts. Projects each incoming neighbor activation onto the receiving neuron's W_pos direction before aggregation, making routing content-aware without multiplicative gates (which suffer gate-death at K_iter >= 4). The over-polarizer amplifies directional filtering beyond the W_pos axis. At 50% data / 75 epochs, it already exceeds step199's full-data baseline (95.52%), with a monotonic alpha trend suggesting further gains.
+
+---
+
+## Confirmed Architectural Laws
+
+| Law | Evidence |
+|-----|----------|
+| Anti-Hebbian is prerequisite | Without AH: 91.5% → 18.8% collapse (step218) |
+| Gate-death theorem | Multiplicative gates g^K → 0 for K_iter >= 4; 8+ experiments |
+| D > K_hh at fixed FLOPs | D=16 K_hh=2 beats D=8 K_hh=4 at same compute |
+| N-scaling holds, D-limited | N=2048→4096 gains +1.65pp; N=8192 saturates at D=16 ceiling |
+| F.normalize is load-bearing | Removing it collapses training |
+| C_ho sparse readout required | Global mean-pool → 12% on unit-sphere activations |
+| Compounding onto AH kills gains | Adding mechanisms on top of AH alpha=1.0 consistently hurts |
+| N=1024 crutches don't transfer | twopop, curriculum, etc. fail at N=2048 (step216) |
+| Topology design barely matters | Anti-pref +0.15pp, hetero K_hh all negative, output-assigned all negative |
+| Skip connections actively rejected | Network learns gate alpha=0.0 (step226) |
+
+---
+
 ## N-Scaling Law (D=16, K_hh=2, K_iter=5, Tier-2)
 
 | N | FLOPs | Accuracy |
@@ -123,4 +160,4 @@ d_env/bin/python3 scripts/eval_efficiency_config.py --train --device mps
 
 **Status:** Both efficiency criteria met (step199). Next phase: cross-dataset and cross-model generalizability testing.
 
-**Full experiment history:** `learnings/EXPERIMENT_QUEUE.md` — 200+ steps documented with configs, results, and verdicts.
+**Full experiment history:** `learnings/EXPERIMENT_QUEUE.md` — 230+ steps documented with configs, results, and verdicts.

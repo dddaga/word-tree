@@ -1,16 +1,33 @@
 # SGNNET Knowledge Index
 
+**Last updated:** 2026-04-13
+**Project best:** 97.86% (step89-A, N=4096, D=64, 150ep)
+**Efficiency best:** 95.52% @ 0.98M FLOPs (step199, N=2048, D=16, K_hh=2, K_iter=5)
+**D=16 record:** 97.17% (step205/209, N=4096/8192)
+**Current direction:** Mechanistic understanding (AH ablations, θ-edge precision), polarizer routing (+1.91pp), architecture simplification
+
 ## Concept Pages
 
 | Concept | File | Status | Key Finding |
 |---|---|---|---|
-| [[antihebbian]] | [concepts/antihebbian.md](concepts/antihebbian.md) | Confirmed winner | alpha=1.0 alone is Gen4 base; every compound kills gain |
+| [[antihebbian]] | [concepts/antihebbian.md](concepts/antihebbian.md) | Confirmed winner | alpha=1.0 alone is Gen4 base; AH = anti-collapse (eff_rank confirmed step155) |
 | [[gate_death]] | [concepts/gate_death.md](concepts/gate_death.md) | Theorem established | Multiplicative gates g^K_iter → 0; 8+ experiments confirm |
-| [[n_scaling]] | [concepts/n_scaling.md](concepts/n_scaling.md) | Active research | N=4096 peak (97.32%); N=10000 regresses; non-monotonic |
+| [[n_scaling]] | [concepts/n_scaling.md](concepts/n_scaling.md) | Active research | N=4096 peak (97.86%); N=10000 regresses; non-monotonic |
 | [[k_iter]] | [concepts/k_iter.md](concepts/k_iter.md) | N-dependent optimal | K_iter=16 at N=1024, K_iter=12 at N=4096 |
 | [[phase_routing]] | [concepts/phase_routing.md](concepts/phase_routing.md) | Wave-1 killed; revival via redistribution | All gating variants dead; softmax redistribution promising |
 | [[softmax_routing]] | [concepts/softmax_routing.md](concepts/softmax_routing.md) | First dynamic routing win | step73 D=86.34% (+1.78pp); step75 D=87.24% (+3.98pp) |
 | [[group_topology]] | [concepts/group_topology.md](concepts/group_topology.md) | +3.01pp N=1024, NULL N=4096 | Bypasses N^2 routing problem via G^2 decisions; doesn't scale |
+| [[normalization]] | [concepts/normalization.md](concepts/normalization.md) | LayerNorm winner pending N=4096 | LayerNorm +2.24pp vs L2 sphere (step116); RMSNorm −11.49pp KILLED |
+| [[readout]] | [concepts/readout.md](concepts/readout.md) | Hard architectural constraint | C_ho required for unit-sphere activations; global mean-pool → 12% (step149) |
+| [[architecture_dead_ends]] | [concepts/architecture_dead_ends.md](concepts/architecture_dead_ends.md) | Reference | All confirmed dead ends; external constraints + pruning KILLED (step152, step153) |
+
+## New Infrastructure (2026-04-10)
+
+| Component | File | Purpose |
+|---|---|---|
+| Training diagnostics | `src/training/diagnostics.py` | Effective rank, neuron util, W_pos diversity, separability, grad norms |
+| Checkpoint system | `src/training/checkpoint.py` | Save/resume full training state; best-model tracking |
+| Paper materials | `learnings/paper/` | Novel findings, claims, baseline gaps, figure plans |
 
 ## Sequential Logs (Audit Trail)
 
@@ -41,11 +58,26 @@
 | `LEARNINGS_design_2026_04_05_06.md` | Design 04-05/06 | Phase routing details, wave-1 failure analysis |
 | `LEARNINGS_design_2026_04_07_08.md` | Design 04-07 | Group topology design, group routing, gate-death synthesis |
 | `LEARNINGS_design_2026_04_08.md` | Design 04-08 | step83 post-mortem, step87 proximity architecture design |
-| `LEARNINGS_design_2026_04_09.md` | Design 04-09+ | Open design questions, FLOPs path |
+| `LEARNINGS_design_2026_04_09.md` | Design 04-09 | Gemma4/PolarQuant designs, FLOPs path, 50-experiment gap analysis |
+| `LEARNINGS_design_2026_04_10.md` | Design 04-10 | Constraint discovery, progressive capacity, diagnostics, safety removal |
+| `LEARNINGS_phase5_p16.md` | 2026-04-10 | steps 116, 149, 152, 153, 155 — normalization, diagnostics, structural constraints |
+| `LEARNINGS_phase5_p15i_topology_analysis.md` | 2026-04-11 | K_hh=2 topology graph properties; 12.5% dead-end neurons; out-degree distribution |
+| `LEARNINGS_phase5_p15j_belief_update.md` | 2026-04-11 | Belief framework; steps 216-221 unlearnings; polarizer +1.27pp; topology design KILLED; AH prerequisite confirmed |
 | `PENDING_DISCUSSIONS.md` | Pending discussions | Ideas discussed but not yet scripted |
 | `LEARNINGS_arch.md` | Architecture notes | Structural decisions |
 | `LEARNINGS_research.md` | Research directions | Literature, external ideas |
 | `LEARNINGS_sparse_attention_*.md` | Sparse attention research | External references |
+
+## Other Index Files
+
+| File | Purpose |
+|---|---|
+| `EXPERIMENT_QUEUE.md` | Live prioritized queue with status, configs, launch order |
+| `EXPERIMENT_QUEUE_CRITICAL_FINDINGS.md` | All confirmed findings and dead ends (extracted) |
+| `EXPERIMENT_REPORT.md` | Comprehensive experiment report |
+| `PENDING_DISCUSSIONS.md` | Design ideas not yet scripted |
+| `RESEARCH_routing_mechanisms.md` | Literature survey on routing mechanisms |
+| `paper/README.md` | Paper materials index |
 
 ## Confirmed Laws
 
@@ -58,8 +90,21 @@
 | Turing contribution is N-dependent | +1.68pp at N=1024, -0.12pp at N=4096 | [[n_scaling]] |
 | Redistribution routing preserves gradient | step73/75 vs wave-1 gating | [[softmax_routing]] |
 | Scale transfer failure pattern | Group topo, W_phase, turing all lose gains at N=4096 | [[antihebbian]] |
-| Per-step Z-bias = largest single gain at N=1024 | +7.42pp (step106-A, 768 params, additive) | [[antihebbian]] |
+| Per-step Z-bias = largest single gain at N=1024 | +7.42pp (step106-A, 768 params, additive) | — |
 | Phase+AH synergistic (not antagonistic) | +4.21pp combined vs phase alone useless (step105) | [[phase_routing]] |
+| N dominates over K (connectivity) | step140: more K HURTS accuracy (−8 to −44pp) | [[n_scaling]] |
+| Safety valve redundant with AH active | step154: +9.75pp when REMOVED (AH handles diversity) | [[antihebbian]] |
+| Three load-bearing walls | F.normalize, static AH, mean-pool readout — all confirmed | — |
+| AH is anti-collapse mechanism | step155: AH=0 → eff_rank collapse; AH=1.0 → eff_rank rises | [[antihebbian]] |
+| W_pos barely learns at N=4096 | grad_theta/grad_wpos = 14:1; W_pos static after early epochs | [[antihebbian]] |
+| LayerNorm > L2 sphere norm at N=1024 | +2.24pp (step116, pending N=4096) | [[normalization]] |
+| C_ho readout required for unit-sphere activations | global mean-pool → 12% (step149) | [[readout]] |
+| AH is PREREQUISITE not regularizer | Without AH: 91.5% → 18.8% collapse (step218) — 73pp drop | [[antihebbian]] |
+| N=1024 crutches don't transfer | twopop/curriculum/hetero all fail at N=2048 (step216) | [[n_scaling]] |
+| Static topology design barely matters | 3 experiments: anti-pref +0.15pp, hetero neg, output-assigned neg | — |
+| Polarizer routing is first dynamic win | +1.91pp over-polarizer α=1.5, monotonic alpha trend (step217b) | — |
+| Skip connections actively rejected | Network learns skip gate=0.0 (step226) | — |
+| D=16 ceiling confirmed at 97.17% | N=4096 and N=8192 both converge to 97.17% (step205/209) | [[n_scaling]] |
 
 ## Dead Ends (Do Not Re-Propose)
 
@@ -76,3 +121,30 @@
 | Group MoE sparsification | Routing capacity collapse | step83, step107 |
 | RNN sequential injection from zero | Zero-state bootstrapping failure | step112 |
 | DropMessage at K_hh=4 | Too sparse for any dropout | step96 |
+| Markov routing | −50 to −71pp; F.normalize + static AH load-bearing | step129 |
+| Attention readout | −60 to −67pp; mean-pool load-bearing | step118 |
+| Stochastic depth | −35 to −61pp; every K_iter step essential | step123 |
+| Beam broadcast | −3 to −40pp; hurts local routing | step130 |
+| Adaptive K_iter (ACT) | −2 to −7pp | step119 |
+| N×K tradeoff (more K for less N) | N dominates; more K hurts | step140 |
+| Low-rank W_proj at N=4096 | Scale transfer compression (+0.06pp NULL) | step132 |
+| Safety valve loss | Redundant with AH; REMOVED from defaults | step154 |
+| Load balance loss | Only +0.21pp; below noise; REMOVED | step79 |
+| Nuclear norm / L1 / contrastive / dim_gate | Network self-organizes; external constraints KILLED (−3 to −15pp) | step152 |
+| Pruning during training (all forms) | Stable connectivity required; 100% neuron util = no dead neurons | step153 |
+| RMSNorm / pre_route normalize | −11.49pp and −6.50pp vs L2 sphere; LayerNorm wins instead | step116 |
+| Global mean-pool readout | −70pp on unit-sphere activations; C_ho required | step149 |
+| Heterogeneous K_hh | All 4 variants worse than uniform (best −0.28pp) | step220 |
+| Output-assigned topology | All 3 variants worse than input-assigned (best −1.30pp) | step221 |
+| Scored dynamic topology | All neutral ±0.5pp, no benefit from per-epoch edge replacement | step224 |
+| Skip connections across K_iter | −10 to −14pp; network learns gate=0.0 | step226 |
+| Compound N=1024 winners at N=2048 | twopop −1.81pp, curriculum −58pp, α=1.05 neutral | step216 |
+| D=8 regardless of K_hh | D=8 K_hh=8 = 90.24%, D=8 K_hh=16 = 89.22%; D wall | step214/215 |
+
+## Active Research Directions (2026-04-13)
+
+1. **Mechanistic understanding**: What does hidden W_pos actually encode? θ-edge precision ablation (step233 running) tests whether AH is just learned edge weights. Step231 diagnostics pending.
+2. **Polarizer routing**: Over-polarizer α=1.5 = +1.91pp (step217b confirmed Tier-1). Monotonic alpha trend — test α=2.0+. First successful input-dependent routing after 9 failures.
+3. **Architecture simplification**: If θ-edge matches AH, replace 32K hidden W_pos + cosine computation with 4K scalar angles. 8× param reduction in hidden routing.
+4. **N-scaling continuation**: D=16 ceiling at 97.17%. N=16384 @ K_iter=3 viable (94.78%). K_hh=3 @ N=8192 at 95.44% (needs Tier-2).
+5. **Paper track**: 7 core claims, 11+ novel findings logged. MLP baselines broken (step222 trainer bug). CIFAR-10 cross-dataset pending (step223).

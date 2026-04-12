@@ -92,18 +92,37 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (cap: 4)
+## Currently Running (Mac Studio only, cap: 2)
 
 | Machine | Slot | Session | Step | Status | Note |
 |---------|------|---------|------|--------|------|
-| Mac Studio MPS | — | — | — | FREE | step212 complete |
-| Mac Studio CPU | — | — | — | FREE | step213 complete |
-| Mac Mini MPS | — | — | — | HOLD | Other sessions present (dd_exp, vgg_training, run15) |
-| Mac Mini CPU | — | — | — | HOLD | Other sessions present (dd_exp, vgg_training, run15) |
+| Mac Studio MPS | step233 | step233 | step233 | RUNNING | θ-edge precision (fixed optimizer injection) 20ep |
+| Mac Studio CPU | step235 | step235 | step235 | RUNNING | ΔW rotation ± AH ± augmentation 150ep, ep60 |
 
 ---
 
-## Priority Queue (Restructured 2026-04-10 — Efficiency + Structural Focus)
+## Priority Queue (Restructured 2026-04-11 — Compound Winners + Polarizer Routing)
+
+### P-NEW — Active experiments on step199 final config
+
+| Step | Description | Scale | FLOPs | Script | Status |
+|------|-------------|-------|-------|--------|--------|
+| **step216** | Compound winners — ALL KILLED. twopop_weight -1.81pp, twopop_theta -2.45pp, curriculum -58pp. α=1.05 neutral. | N=2048 | 0.98M | ✅ | **DONE** |
+| **step217** | Polarizer routing — **WINNER: full polarizer +1.27pp**, partial +0.89pp. Rotation neutral. | N=2048 | ~2M | ✅ | **DONE → Tier-1** |
+| **step217b** | Polarizer Tier-1 — **WINNER: over-polarizer α=1.5 = 95.92% (+1.91pp)**. Full α=1.0 = 95.18% (+1.17pp). Monotonic alpha trend. | N=2048 | ~2M | ✅ | **DONE** |
+| **step218** | Random projection ablation — Without AH: 91.5%→18.8% collapse. AH is prerequisite. Freezing bug, needs rerun. | N=2048 | 0.98M | ✅ | **DONE (partial)** |
+| **step219** | Topology comparison — barely matters. Anti-pref +0.15pp, uniform random -0.84pp. | N=2048 | 0.98M | ✅ | **DONE** |
+| **step220** | Heterogeneous K_hh — **ALL KILLED**. Uniform K_hh=2 beats all variants. Best -0.28pp, worst -2.40pp. | N=2048 | ~1M | ✅ | **DONE** |
+| **step221** | Output-assigned topology — **ALL KILLED**. Input-assigned better. Best -1.30pp, worst -2.45pp. JSON bug. | N=2048 | ~1M | ✅ | **DONE** |
+| **step222** | Paper baselines — MLP/random proj/linear all stuck ~9%. Trainer incompatibility bug. | N=2048 | varies | ✅ | **DONE (broken)** |
+| **step223** | CIFAR-10 cross-dataset generalization | N=2048 | 0.98M | ✅ | QUEUED |
+| **step224** | Scored dynamic topology — ALL NEUTRAL ±0.5pp. No benefit from per-epoch edge replacement. | N=2048 | 0.98M | ✅ | **DONE** |
+| **step225** | Equilibrium propagation pilot — train without backprop | N=2048 | 0.98M | ✅ | QUEUED |
+| **step226** | Skip connections — A/B KILLED (−10 to −14pp). C learned gate α=0 (explicitly rejected skips). | N=2048 | 0.98M | ✅ | **DONE** |
+| **step232** | Scalar edge weights — ALL ~18% (broken forward pass, gradients didn't flow). Needs redesign. | N=2048 | 0.98M | ✅ | **DONE (broken)** |
+| **step233** | θ-edge precision ablation — sinusoidal edge weights, dtype sweep (fp32/fp16/bf16/int8/fp64). Fixes step232 routing bug. | N=2048 | 0.98M | ✅ | RUNNING (Mac Mini MPS) |
+| **step234** | ΔW-vector polarizer — **BREAKTHROUGH: Config A (ΔW proj, NO AH) = 95.44% (+3.77pp)**. ΔW proj > W_pos proj > ΔW rot. Adding AH hurts (-1.2pp). | N=2048 | ~2M | ✅ | **DONE** |
+| **step235** | ΔW rotation ± AH ± augmentation — full data 150ep. Tests augmented data (hflip) benefit. | N=2048 | ~2M | ✅ | RUNNING (Mac Studio CPU) |
 
 ### P0 — Critical path: structural experiments addressing architecture ceiling
 

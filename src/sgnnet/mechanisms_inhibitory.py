@@ -43,7 +43,7 @@ class SGNNET_DivisiveNorm(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         Z         = self.m.base._seed(x)
         theta_pos = self.m.theta.abs().unsqueeze(0).unsqueeze(-1)
-        W_ph_norm = F.normalize(self.m.W_phase, dim=-1)
+        W_ph_norm = F.normalize(self.m.W_phase, dim=-1) if self.m.W_phase is not None else None
         conn_hh   = self.m.base.conn_hh
 
         for _ in range(self.m.base.K_iter):
@@ -51,8 +51,11 @@ class SGNNET_DivisiveNorm(nn.Module):
             Z_nb     = Z_fwd[:, conn_hh, :]                          # [B,N,K_hh,D]
             nb_mag   = Z_nb.norm(dim=-1).mean(dim=2, keepdim=True)   # [B,N,1]
             Z_struct = Z_nb.sum(dim=2) / (1.0 + self.alpha_div * nb_mag)
-            Z_inh    = self.m._phase_inhibit(Z, W_ph_norm, theta_pos)
-            Z = F.normalize((Z_struct + self.m.alpha_turing * Z_inh).clamp(-10, 10), dim=-1)
+            if self.m.alpha_turing != 0.0:
+                Z_inh = self.m._phase_inhibit(Z, W_ph_norm, theta_pos)
+                Z = F.normalize((Z_struct + self.m.alpha_turing * Z_inh).clamp(-10, 10), dim=-1)
+            else:
+                Z = F.normalize(Z_struct.clamp(-10, 10), dim=-1)
 
         return self.m.base._readout(Z)
 
@@ -84,7 +87,7 @@ class SGNNET_Refractory(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         Z         = self.m.base._seed(x)
         theta_pos = self.m.theta.abs().unsqueeze(0).unsqueeze(-1)
-        W_ph_norm = F.normalize(self.m.W_phase, dim=-1)
+        W_ph_norm = F.normalize(self.m.W_phase, dim=-1) if self.m.W_phase is not None else None
         conn_hh   = self.m.base.conn_hh
         B, N_h, _ = Z.shape
         r = torch.zeros(B, N_h, device=Z.device)   # refractory trace [B,N]
@@ -94,8 +97,11 @@ class SGNNET_Refractory(nn.Module):
             Z_avail      = Z * suppression
             Z_fwd        = F.relu(Z_avail - theta_pos)
             Z_struct     = Z_fwd[:, conn_hh, :].sum(dim=2)
-            Z_inh        = self.m._phase_inhibit(Z_avail, W_ph_norm, theta_pos)
-            Z_new = F.normalize((Z_struct + self.m.alpha_turing * Z_inh).clamp(-10, 10), dim=-1)
+            if self.m.alpha_turing != 0.0:
+                Z_inh = self.m._phase_inhibit(Z_avail, W_ph_norm, theta_pos)
+                Z_new = F.normalize((Z_struct + self.m.alpha_turing * Z_inh).clamp(-10, 10), dim=-1)
+            else:
+                Z_new = F.normalize(Z_struct.clamp(-10, 10), dim=-1)
             r = self.beta * r + (1.0 - self.beta) * Z.norm(dim=-1)
             Z = Z_new
 
@@ -133,7 +139,7 @@ class SGNNET_AntiHebbian(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         Z         = self.m.base._seed(x)
         theta_pos = self.m.theta.abs().unsqueeze(0).unsqueeze(-1)
-        W_ph_norm = F.normalize(self.m.W_phase, dim=-1)
+        W_ph_norm = F.normalize(self.m.W_phase, dim=-1) if self.m.W_phase is not None else None
         conn_hh   = self.m.base.conn_hh
 
         # Pre-compute static suppression weights for wpos variant (outside loop)

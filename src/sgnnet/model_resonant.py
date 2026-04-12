@@ -91,12 +91,13 @@ class SGNNET_Resonant(nn.Module):
         # Learnable per-neuron threshold (always; even in dynamic_z it gates propagation)
         self.theta = nn.Parameter(torch.full((N,), theta_init))
 
-        # W_phase: used in 'resonant' and 'dynamic_gate' modes
-        # In 'dynamic_z' it's still there but the graph is built from Z, not W_phase
-        self.W_phase = nn.Parameter(torch.rand(N, D))
-
-        # Build initial phase graph
-        self._build_phase_graph()
+        # W_phase: only needed when alpha_turing != 0 (resonant/dynamic_gate modes)
+        # When alpha_turing=0, phase inhibition is skipped entirely — W_phase is dead weight.
+        if alpha_turing != 0.0:
+            self.W_phase = nn.Parameter(torch.rand(N, D))
+            self._build_phase_graph()
+        else:
+            self.W_phase = None
 
     # ------------------------------------------------------------------
     # Graph management
@@ -133,7 +134,8 @@ class SGNNET_Resonant(nn.Module):
 
     def tick_epoch(self):
         """Called by Trainer between epochs: rebuild phase graph + delegate to base."""
-        self._build_phase_graph()
+        if self.W_phase is not None:
+            self._build_phase_graph()
         if hasattr(self.base, "tick_epoch"):
             self.base.tick_epoch()
 
