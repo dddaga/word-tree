@@ -1,0 +1,70 @@
+# run27 — Team member replica: N=2048, D=16, C=2
+#
+# Exact replication of team member's config (N=2048, D=16, K_hh=2, K_iter=5)
+# on our architecture. Their reported: 95.52% val, 0.98M FLOPs (different formula).
+#
+# In OUR formula: 5.36M FLOPs/sample, 21.4M/step (44.5x cheaper than run17).
+# Their FLOPs formula counts only 3 ops/edge/dim/iter; ours counts 654 (complex
+# routing, softmax, LN, act_strength). Definitions are incomparable.
+#
+# EXPECTED OUTCOME: FAIL. C=2 is below our run22 floor (C=4, expected to fail).
+# Our softmax routing causes gradient starvation at low cardinality (0.4% of nodes
+# carry 50% gradient). At C=2, starvation will be extreme. Their simpler aggregation
+# (no softmax/complex numbers) avoids this — so their 95.52% reflects a fundamentally
+# different architecture, not just a config difference.
+#
+# IF this somehow works: major finding — abandon cardinality/beam sweeps, pivot.
+# Early-stop rule: ep15+ val<15% → KILL (expect to hit this).
+#
+# CRITICAL: input_nodes=1568 (not 3136!) because 1568 × 16 = 25088 = VGG16 features.
+# Only 470 intermediate nodes (vs run17's 1000).
+#
+# Baseline: run17 (C=200, D=8, 86.85% @ep38).
+# Companion: run28 (C=25, D=16) — D=16 at safe cardinality.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run27"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568     # 25088 / 16 = 1568  (CHANGED from 3136 — D=16 requires this)
+  output_nodes: 10
+  cardinality: 2        # CHANGED: team member K_hh=2
+  radiation_targets: 0
+
+model:
+  vector_dim: 16        # CHANGED from 8 — team member D=16
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run27/run27_weights.pt"
+  scheduler_save_path: "training_runs/run27/run27_scheduler.pt"
+  tensorboard_dir: "training_runs/run27/tensorboard"
+  logging:
+    log_path: "training_runs/run27/run27.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

@@ -4,19 +4,38 @@
 **All experiments from run10 onwards drop the nn.Linear FFN head.** The GNN must classify directly (output_nodes=10, act_strength as logits). `diagnose.ipynb` showed intermediate/input node weights barely changed during training — the FFN was doing most of the classification work. Since the project goal is to prove the *GNN* can replace VGG16's FC layers, keeping an FFN head defeats the purpose. Target: match run6's 85.81% without the FFN.
 
 ## Active Investigation
-**All queued runs complete. Best FFN-free: run16 (86.55% @ep40). Exceeded FFN target (85.81%) by +0.74pp. Proof-of-concept ACHIEVED.**
+**LN-fix validation series COMPLETE.** run17 (T=4.0) → 86.85% @ep38 (+0.30pp vs run16, HYPOTHESIS — within variance). run18 (T=1.0) → 61.99% @ep40 (≈ run11 at 61.32%, CONFIRMED: new LN does NOT rescue T=1.0 starvation — T remains the dominant lever).
 
-**2026-04-11 architectural refactor (run 17+):** Removed the in-function mean-subtraction from `update_activations` (runs 1–16 had it hardcoded, no learned params) and moved LayerNorm to post-update with `act_strength` recomputed from the normalised mag. Runs 1–16 carry a documentary `subtract_mean: true` config annotation; to reproduce them exactly, check out git commit `7f072c4` on branch `fixed_io_nodes`. Full details: `concepts/mag_normalization.md`.
+**Next investigation: FLOPs reduction.** Current best (run17) = 0.96B FLOPs/fwd for 86.85%. Target: match/exceed at ≤0.25B FLOPs.
+
+**Cycle 1 — cardinality sweep COMPLETE:** C=200→86.85%, C=100→80.66% (-6.19pp), C=50→71.64% (-9.02pp), C=25→64.54% (-7.10pp), C=4→25.83% (cliff — starvation confirmed). Verdict: cardinality is NOT a free FLOPs lever. ~7-9pp cost per halving; C=4 falls off a cliff. Minimum viable C is between 25 and 100.
+
+**Cycle 2 — beam_width sweep (RUNNING):** Prunes source nodes per iteration to top-K active. run23 DONE (beam=2048, 86.50% @ep40, -0.35pp — lossless at N/2). run24 DONE (beam=1024, 86.68% @ep40, -0.17pp — better than beam=2048). run25 DONE (beam=512, 85.78% @ep40, -1.07pp — elbow between N/4 and N/8). run26 RUNNING (256). All else = run17 (C=200). See `concepts/beam_search.md`.
+
+**Cycle 3 — vector_dim=16 (PENDING):** Team member found N=2048, D=16, C=2 → 95.52% (same task, frozen VGG16). Their FLOPs formula (3D ops/edge/iter) gives 0.98M; our formula gives 21.4M/step (44.5x cheaper than run17). FLOPs definitions differ 6.8x — not directly comparable. run27 (exact replica C=2, expected to fail — our routing causes starvation at C<4), run28 (C=25, safer test of D=16 at cliff level). CRITICAL: D=16 forces input_nodes=1568 (not 3136) — unavoidable confound.
+
+**2026-04-11 architectural refactor (run 17+):** LN moved from pre-update (applied to source mag before aggregation — γ/β had no lasting effect on stored state) to post-update (applied to new_mag after update_activations — γ/β now genuinely learned). Hardcoded in-function mean-subtraction also removed. act_strength scale changed. To reproduce runs 1–16 exactly: `git checkout 7f072c4`. Full details: `concepts/mag_normalization.md`.
 
 ---
 
 ## Queue (active + pending only)
 
-*(empty — all runs complete)*
+| Run | Status | Hypothesis | Key delta | Expected result |
+|-----|--------|------------|-----------|-----------------|
+| run19 | DONE | Cardinality at 200 is overkill; can halve FLOPs with no accuracy loss | C=100 (else = run17) | **80.66% @ep40**, -6.19pp; still improving |
+| run20 | DONE | Cardinality can go 4x lower than best config | C=50 (else = run17) | **71.64% @ep40**, -15.21pp vs run17; 4x FLOPs but steep cost |
+| run21 | DONE | Aggressive cardinality reduction — find the cliff | C=25 (else = run17) | **64.54% @ep40**, -22.31pp vs run17; ~7-9pp cost per halving confirmed |
+| run22 | DONE | Extreme cardinality probe — anchors floor of trend | C=4 (else = run17) | **25.83% @ep40** — starvation confirmed; 2.6x random chance only |
+| run23 | DONE | Beam filtering at N/2 preserves accuracy | beam_width=2048 (else = run17) | **86.50% @ep40**, -0.35pp; lossless at N/2 |
+| run24 | DONE | Beam at N/4 — moderate filter | beam_width=1024 (else = run17) | **86.68% @ep40**, -0.17pp vs run17; *better* than beam=2048 |
+| run25 | DONE | Beam at N/8 — aggressive filter, likely elbow | beam_width=512 (else = run17) | **85.78% @ep40**, -1.07pp vs run17; elbow confirmed between N/4 and N/8 |
+| run26 | RUNNING | Beam at N/16 — cliff probe for winner-take-all | beam_width=256 (else = run17) | Accuracy may drop; identifies floor |
+| run27 | PENDING | Can our architecture replicate team member's C=2, D=16 result? | N=2048, D=16, C=2, input=1568 (else = run17) | Expected FAIL at ep15 (starvation); if works → pivot |
+| run28 | PENDING | D=16 at cliff-level cardinality — does larger dim help? | N=2048, D=16, C=25, input=1568 (else = run17) | Confounded (input_nodes halved); informative if val >run21 |
 
 ---
 
-## Completed Runs — FFN-free (runs 10–15)
+## Completed Runs — FFN-free (runs 10–17)
 
 **Note:** All FFN-free runs use output_nodes=10 with act_strength values fed directly into CrossEntropyLoss. No nn.Linear head.
 
@@ -29,6 +48,8 @@
 | run14 | 2026-04-10 | DONE | 45.48% @ep40 | 40/40 | 4146 | 1.0 | 50% | topology=layered (delta from run11: layered + 50% data) | -15.84pp vs run11 (HYPOTHESIS: layered worse than flat, but data fraction confounds — not clean ablation) |
 | run15 | 2026-04-11 | DONE | 76.97% @ep27 | 40/40 | 15454 | 7→1 | 50% | routing_temperature annealed 7.0→1.0 per-step (delta from run13) | -8.43pp vs run13 (CONFIRMED: annealing HARMFUL — low-T end causes starvation, val collapses to 52.66% by ep40) |
 | **run16** | 2026-04-11 | DONE | **86.55% @ep40** | 40/40 | 4146 | 4.0 | 100% | total_nodes=4146 + data_fraction=1.0 (delta from run12) | **EXCEEDED FFN target (+0.74pp); N=4146+T=4.0 compound confirmed; still improving at ep40 — proof-of-concept ACHIEVED** |
+| **run17** | 2026-04-11 | DONE | **86.85% @ep38** | 40/40 | 4146 | 4.0 | 100% | **NEW LN** (post-update, learnable γ/β) — all else identical to run16 | +0.30pp vs run16; HYPOTHESIS: new LN helps slightly at best config. Early epochs slower, converges faster in final stage. Train acc lower (81.7% vs 82.3%) → less overfitting |
+| run18 | 2026-04-11 | DONE | 61.99% @ep40 | 40/40 | 4146 | 1.0 | 100% | routing_temperature=1.0 (delta from run17) | ≈ run11 (61.32%); CONFIRMED: new LN does NOT rescue T=1.0 gradient starvation. T remains dominant lever under both LN regimes. |
 
 ### FFN-free Learnings
 
@@ -39,6 +60,8 @@
 - **Layered topology worse than flat (HYPOTHESIS from run14):** layered→45.48% vs flat→61.32% (run11), -15.84pp gap. CONFOUNDED: run14 used 50% data vs run11's 100%. Clean ablation (run14 repeated with 100% data) needed to confirm.
 - **Temperature annealing 7→1 is HARMFUL (CONFIRMED from run15):** val_best=76.97% @ep27 vs run13 T=7.0 fixed (85.40%), -8.43pp. Single-variable ablation. Low-T end-state causes gradient starvation to return; val collapsed from 76.97% to 52.66% by ep40 as T→1. Do NOT anneal temperature downward.
 - **N=4146 + T=4.0 compound exceeds FFN target (HYPOTHESIS from run16):** run16 (N=4146, T=4.0, 100% data) → 86.55% @ep40, +4.36pp vs run12 (N=15454, T=4.0, 50% data, 82.19%), +1.15pp vs run13 (N=15454, T=7.0, 85.40%). Exceeded FFN target (85.81%) by +0.74pp. Still improving at ep40. Two variables changed vs baselines — compound effect HYPOTHESIS. Primary driver likely T=4.0 (CONFIRMED lever) with smaller graph + full data adding further gain. **Proof-of-concept ACHIEVED: GNN without FFN head exceeds FFN-based accuracy.**
+- **New post-update LN slightly improves best config (HYPOTHESIS from run17):** run17 (new LN, all else = run16) → 86.85% @ep38, +0.30pp vs run16 (86.55%). Single-variable change (LN placement), but modest gain could be within run-to-run variance. Early epochs slower (ep10: 73.99% vs run16's 76.20%), converges faster in final stage, peaks at ep38 then slightly declines. Train acc lower (81.7% vs 82.3%) → less overfitting, better generalization. Needs γ/β inspection in diagnose.ipynb to confirm learnable params are contributing.
+- **T=1.0 starvation persists under new LN (CONFIRMED from run18):** run18 (new LN, T=1.0, else=run17) → 61.99% @ep40, matches run11 (old LN, T=1.0) at 61.32%. Clean single-variable ablation vs run17 confirms T remains the dominant lever for escaping gradient starvation, independent of normalization scheme. The LN placement fix does NOT shift the T scale. Decision gate: no T-sweep follow-up under new LN needed.
 
 ---
 
@@ -91,6 +114,16 @@ Variables: `I`=iterations, `B`=batch size, `N`=total_nodes, `C`=cardinality (edg
 | run14 | 45.48% @ep40 | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 1.0 | 50% |
 | run15 | 76.97% @ep27 | 40/40 | 247,280 | 3.56B | 10.7B | 15454 | 200 | 5 | No | 7→1 | 50% |
 | **run16** | **86.55%** | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| **run17** | **86.85%** | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| run18 | 61.99% | 40/40 | 66,352 | 0.96B | 2.88B | 4146 | 200 | 5 | No | 1.0 | 100% |
+| run19 | **DONE** | **80.66% @ep40** | 66,352 | 0.48B | 1.44B | 4146 | 100 | 5 | No | 4.0 | 100% |
+| run20 | DONE | **71.64% @ep40** | 66,352 | 0.24B | 0.72B | 4146 | 50 | 5 | No | 4.0 | 100% |
+| run21 | DONE | **64.54% @ep40** | 66,352 | 0.12B | 0.36B | 4146 | 25 | 5 | No | 4.0 | 100% |
+| run22 | DONE | **25.83% @ep40** | 66,352 | 0.02B | 0.06B | 4146 | 4 | 5 | No | 4.0 | 100% |
+| run23 | **DONE** | **86.50% @ep40** | 66,352 | ~0.57B | ~1.71B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| run24 | DONE | **86.68% @ep40** | 66,352 | ~0.37B | ~1.11B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| run25 | **85.78% @ep40** | 40/40 | 66,352 | ~0.27B | ~0.81B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| run26 | PENDING | /40 | 66,352 | ~0.22B | ~0.66B | 4146 | 200 | 5 | No | 4.0 | 100% |
 
 Notes:
 - FLOPs/fwd = forward pass only. FLOPs/step = fwd + backward (3x with grad checkpointing).

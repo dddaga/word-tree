@@ -1,0 +1,67 @@
+# run18 — T=1.0 baseline under new post-update LayerNorm (commit f11f768)
+# Goal: Check whether new LN changes T=1.0 gradient starvation behavior.
+#   run11 (old LN, T=1.0, N=4146, 100% data) → 61.32%: severe starvation.
+#   run18 (new LN, T=1.0, N=4146, 100% data) → ?
+#
+# If run18 >> run11: new LN changes starvation dynamics; T scale shifted → need T sweep.
+# If run18 ≈ run11: starvation persists; T remains primary lever under both LN regimes.
+#
+# CLEAN ABLATION vs run17: only routing_temperature differs (1.0 vs 4.0).
+# Full LN change details: vgg_training/learnings/concepts/mag_normalization.md
+#
+# Comparison targets:
+#   run11 (T=1.0, old LN, N=4146, 100% data → 61.32% @ep37)
+#   run17 (T=4.0, new LN, N=4146, 100% data → ?)
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run18"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146   # same as run17 (3136 input + 1000 intermediate + 10 output)
+  input_nodes: 3136
+  output_nodes: 10    # no FFN — GNN classifies directly
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 1.0  # CHANGED from run17 (4.0) — T=1.0 starvation test
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+  # data_fraction omitted → uses 100% of training data
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run18/run18_weights.pt"
+  scheduler_save_path: "training_runs/run18/run18_scheduler.pt"
+  tensorboard_dir: "training_runs/run18/tensorboard"
+  logging:
+    log_path: "training_runs/run18/run18.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

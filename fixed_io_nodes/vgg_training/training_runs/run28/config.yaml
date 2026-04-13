@@ -1,0 +1,64 @@
+# run28 — D=16 at safe cardinality: N=2048, D=16, C=25
+#
+# Tests vector_dim=16 with cardinality where we know learning occurs (C=25 is
+# the run21 cliff probe; D=16 may push the cliff lower). Clean follow-up to run27.
+#
+# In OUR formula: ~105M FLOPs/step (4x cheaper than run17's 955M).
+# Calculated: 4 * 2048 * (8*25*16 + 7*25 + 24*16) = 4 * 2048 * 3575 ≈ 29.3M/sample.
+# Wait — let me recalculate: (I-1)*N*(8*C*V+7*C+24*V) = 4*2048*(3200+175+384) = ~30M/sample.
+#
+# Confound: D=16 forces input_nodes=1568 (vs run17's 3136), so graph topology also
+# changes. Cannot isolate D alone. Still informative as D=16 exploratory run.
+#
+# CRITICAL: input_nodes=1568 (not 3136!) because 1568 × 16 = 25088 = VGG16 features.
+# Only 470 intermediate nodes (vs run17's 1000).
+#
+# Companion: run27 (C=2, D=16) — exact team member config.
+# Baseline: run17 (C=200, D=8, 86.85% @ep38), run21 (C=25, D=8, TBD).
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run28"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568     # 25088 / 16 = 1568  (CHANGED from 3136 — D=16 requires this)
+  output_nodes: 10
+  cardinality: 25       # Same cliff level as run21 (C=25, D=8) — tests D=16 at cliff
+  radiation_targets: 0
+
+model:
+  vector_dim: 16        # CHANGED from 8 — team member D=16
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run28/run28_weights.pt"
+  scheduler_save_path: "training_runs/run28/run28_scheduler.pt"
+  tensorboard_dir: "training_runs/run28/tensorboard"
+  logging:
+    log_path: "training_runs/run28/run28.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

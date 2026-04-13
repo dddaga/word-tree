@@ -1,0 +1,71 @@
+# run23 — FLOPs reduction cycle 2 (beam search), step 1: beam_width=2048
+# Goal: First clean single-variable ablation of beam_width under best config.
+#
+# Hypothesis: At N=4146, halving the active source set (2048 ≈ N/2) should
+#   preserve accuracy because act_strength is concentrated on roughly the top
+#   half of nodes anyway (gradient starvation regime, even under T=4.0).
+#   Beam filters sources → effective edges drop ~N/K fraction. See
+#   concepts/beam_search.md for full mechanism and FLOPs table.
+#
+# Sweep: run23 (2048), run24 (1024), run25 (512), run26 (256). All else = run17.
+# Baseline: run17 (beam_width=0, 86.85% @ep38, 0.96B FLOPs/fwd)
+# Target: ≥85% val with progressively less aggregation compute.
+#
+# NOTE: Beam has never been cleanly ablated before. Only run8 used beam_width>0
+#   (500) but was confounded with layered topology + I=15 + CPU. This is the
+#   first single-variable test.
+#
+# Clean single-variable ablation vs run17: only `beam_width` differs.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run23"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 2048   # CHANGED from run17 (0=off) — ~N/2 sources, 1.7x savings
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run23/run23_weights.pt"
+  scheduler_save_path: "training_runs/run23/run23_scheduler.pt"
+  tensorboard_dir: "training_runs/run23/tensorboard"
+  logging:
+    log_path: "training_runs/run23/run23.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

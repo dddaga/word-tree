@@ -1,0 +1,65 @@
+# run19 — FLOPs reduction cycle 1, step 1: cardinality=100
+# Goal: Halve FLOPs by halving cardinality at best-known config.
+#
+# Hypothesis: At N=4146 + T=4.0, cardinality=200 is overkill — each node already has
+#   ~5% of all other nodes as neighbors. Dropping C to 100 (~2.4% density) should
+#   preserve accuracy while reducing FLOPs by ~2x. The 8*C*V term dominates FLOPs
+#   (see concepts/flops.md), so this is the cleanest first lever to test.
+#
+# Sweep: run19 (C=100), run20 (C=50), run21 (C=25). All else identical to run17.
+# Baseline: run17 (C=200, 86.85% @ep38, 0.96B FLOPs/fwd)
+# Target: ≥85% val with ≤0.48B FLOPs/fwd (2x reduction)
+#
+# Clean single-variable ablation vs run17: only `cardinality` differs.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run19"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10    # no FFN — GNN classifies directly
+  cardinality: 100    # CHANGED from run17 (200) — 2x FLOPs reduction
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0  # same as run17 — CONFIRMED best lever
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run19/run19_weights.pt"
+  scheduler_save_path: "training_runs/run19/run19_scheduler.pt"
+  tensorboard_dir: "training_runs/run19/tensorboard"
+  logging:
+    log_path: "training_runs/run19/run19.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

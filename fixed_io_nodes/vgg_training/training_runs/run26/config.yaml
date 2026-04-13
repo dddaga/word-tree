@@ -1,0 +1,55 @@
+# run26 — FLOPs reduction cycle 2 (beam search), step 4: beam_width=256
+# Goal: ~N/16 sources — cliff probe. ~4.4x FLOPs savings vs run17.
+#
+# Hypothesis: Too aggressive — may trigger winner-take-all rich-get-richer
+#   dynamics at early epochs. Anchors the floor of the beam sweep.
+#
+# Sweep: run23 (2048), run24 (1024), run25 (512), run26 (256). All else = run17.
+# Baseline: run17 (beam=0, 86.85%). See concepts/beam_search.md.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run26"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 256    # ~N/16 sources, 4.4x savings (cliff probe)
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run26/run26_weights.pt"
+  scheduler_save_path: "training_runs/run26/run26_scheduler.pt"
+  tensorboard_dir: "training_runs/run26/tensorboard"
+  logging:
+    log_path: "training_runs/run26/run26.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

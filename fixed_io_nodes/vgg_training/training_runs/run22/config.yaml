@@ -1,0 +1,63 @@
+# run22 — FLOPs reduction cycle 1, extreme probe: cardinality=4
+# Goal: Understand how far cardinality can be pushed before the graph cannot
+#   propagate class signal at all. At C=4 with N=4146 (~0.1% density), the graph
+#   is basically a random sparse expander with tiny in-degree per node.
+#
+# Hypothesis: Likely fails badly — the aggregation is too weak. But the result
+#   anchors the "floor" of the cardinality lever and pairs with run21 (C=25),
+#   run20 (C=50), run19 (C=100), run17 (C=200) for a full trend curve.
+#
+# 50x FLOPs reduction vs run17. Part of the same cardinality sweep, not beam.
+# Clean single-variable ablation vs run17: only `cardinality` differs.
+
+# --- Qdrant & Database Configuration ---
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run22"
+
+
+# --- Graph Structure & Node Initialization ---
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 4      # CHANGED from run17 (200) — 50x FLOPs reduction (floor probe)
+  radiation_targets: 0
+
+# --- Model Architecture ---
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+
+# --- Training Hyperparameters ---
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+# --- System & Logging ---
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run22/run22_weights.pt"
+  scheduler_save_path: "training_runs/run22/run22_scheduler.pt"
+  tensorboard_dir: "training_runs/run22/tensorboard"
+  logging:
+    log_path: "training_runs/run22/run22.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false
