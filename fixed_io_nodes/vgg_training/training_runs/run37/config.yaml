@@ -1,0 +1,55 @@
+# run37 — D=16 + I=5: push accuracy past 89.55%
+#
+# run36 (D=16, I=3, N=2048): 89.55% @ 0.45B FLOPs — NEW BEST
+# run37 (D=16, I=5, N=2048): can more iterations push past 90%?
+# FLOPs: (5-1) × 4 × 2048 × 27384 = 898M = 0.9B per fwd
+#
+# Tests the accuracy ceiling of D=16 architecture with full iterations.
+# Same FLOPs as run29 but D=16 instead of D=8.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run37"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+model:
+  vector_dim: 16
+  iterations: 5            # CHANGED from 3 — push ceiling
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run37/run37_weights.pt"
+  scheduler_save_path: "training_runs/run37/run37_scheduler.pt"
+  tensorboard_dir: "training_runs/run37/tensorboard"
+  logging:
+    log_path: "training_runs/run37/run37.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

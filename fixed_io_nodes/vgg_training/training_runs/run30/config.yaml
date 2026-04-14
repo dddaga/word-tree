@@ -1,0 +1,63 @@
+# run30 — Uniform routing at C=2: does removing softmax fix starvation?
+#
+# Hypothesis: Softmax routing caused gradient starvation at low C (run22: C=4→25.83%,
+# run27: C=2→29.04%). run29 CONFIRMED uniform routing is +2.30pp better at C=200.
+# If uniform routing also works at C=2, it proves softmax was THE cause of starvation.
+#
+# This is the critical experiment: C=2 enables ~1M FLOPs forward pass.
+# Team member gets 95.52% at C=2 with gather-sum routing (no softmax).
+#
+# Expected outcomes:
+#   - If val >60% by ep15: starvation ELIMINATED — huge finding
+#   - If val <15% by ep15: starvation has a cause beyond softmax (graph topology?)
+#   - Compare with run22 (C=4 softmax: 25.83%) and run27 (C=2 softmax: 29.04%)
+#
+# Implementation: same monkey-patch as run29. core/ and native/ untouched.
+# Baseline: run29 (uniform, C=200, 89.15% @ep38), run17 (softmax, C=200, 86.85%)
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run30"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 2          # CHANGED: extreme sparsity — 2 edges per node
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run30/run30_weights.pt"
+  scheduler_save_path: "training_runs/run30/run30_scheduler.pt"
+  tensorboard_dir: "training_runs/run30/tensorboard"
+  logging:
+    log_path: "training_runs/run30/run30.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

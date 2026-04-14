@@ -1,0 +1,59 @@
+# run34 — Uniform routing at C=200, I=2: extreme iteration reduction
+#
+# run33 (I=3): 87.16% @ 0.48B FLOPs — beats run17 at half FLOPs.
+# run34 (I=2): ???  @ 0.24B FLOPs — 4x FLOPs savings vs run29.
+#
+# At I=2, we have only ONE propagation step (I-1=1) after input injection.
+# Tests the minimum iterations for useful computation. If val >75%, this is
+# a huge win — 4x FLOPs reduction while still above cardinality-reduced baselines.
+#
+# Comparison:
+#   run31 (I=5, C=50): 79.54% @ 0.24B — prior best at this FLOPs budget
+#   run34 (I=2, C=200): ??? @ 0.24B
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run34"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 2            # CHANGED from 3 — minimum useful iterations
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run34/run34_weights.pt"
+  scheduler_save_path: "training_runs/run34/run34_scheduler.pt"
+  tensorboard_dir: "training_runs/run34/tensorboard"
+  logging:
+    log_path: "training_runs/run34/run34.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

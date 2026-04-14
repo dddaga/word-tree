@@ -10,9 +10,11 @@
 
 **Cycle 1 — cardinality sweep COMPLETE:** C=200→86.85%, C=100→80.66% (-6.19pp), C=50→71.64% (-9.02pp), C=25→64.54% (-7.10pp), C=4→25.83% (cliff — starvation confirmed). Verdict: cardinality is NOT a free FLOPs lever. ~7-9pp cost per halving; C=4 falls off a cliff. Minimum viable C is between 25 and 100.
 
-**Cycle 2 — beam_width sweep (RUNNING):** Prunes source nodes per iteration to top-K active. run23 DONE (beam=2048, 86.50% @ep40, -0.35pp — lossless at N/2). run24 DONE (beam=1024, 86.68% @ep40, -0.17pp — better than beam=2048). run25 DONE (beam=512, 85.78% @ep40, -1.07pp — elbow between N/4 and N/8). run26 RUNNING (256). All else = run17 (C=200). See `concepts/beam_search.md`.
+**Cycle 2 — beam_width sweep COMPLETE:** beam=0→86.85%, beam=2048→86.50% (-0.35pp), beam=1024→86.68% (-0.17pp), beam=512→85.78% (-1.07pp), beam=256→84.20% (-2.65pp). Verdict: beam is a strong FLOPs lever. **Winner: beam=1024 (N/4) — 2.6x FLOPs at -0.17pp (lossless).** Elbow at N/4–N/8. Cost per halving accelerates below N/8. See `concepts/beam_search.md`.
 
-**Cycle 3 — vector_dim=16 (PENDING):** Team member found N=2048, D=16, C=2 → 95.52% (same task, frozen VGG16). Their FLOPs formula (3D ops/edge/iter) gives 0.98M; our formula gives 21.4M/step (44.5x cheaper than run17). FLOPs definitions differ 6.8x — not directly comparable. run27 (exact replica C=2, expected to fail — our routing causes starvation at C<4), run28 (C=25, safer test of D=16 at cliff level). CRITICAL: D=16 forces input_nodes=1568 (not 3136) — unavoidable confound.
+**Cycle 3 — vector_dim=16 DONE (run27 only):** run27 (N=2048, D=16, C=2 — team member replica) → 29.04% @ep36. CONFIRMED: our softmax routing fails at C=2 (66pp behind team member's 95.52%). run28 (C=25, D=16) deferred — routing mechanism is the priority.
+
+**Cycle 4 — routing mechanism (COMPLETE):** BREAKTHROUGHS: (1) uniform routing beats softmax at C=200 (+2.30pp). (2) Iterations > cardinality as FLOPs lever. (3) D=16 + N=2048: Pareto-dominant. (4) **MILESTONE: run37 (uniform + D=16 + I=5) = 90.45% — broke 90%!** Compound gains: uniform routing + D=16 + full iterations. (5) **Cardinality cliff confirmed between C=10 and C=25.** Pareto frontier at D=16: 0.12B→77.71%, 0.23B→85.91%, 0.45B→89.55%, 0.90B→90.45%. Config sweeps exhausted — reaching 1M FLOPs requires architectural change.
 
 **2026-04-11 architectural refactor (run 17+):** LN moved from pre-update (applied to source mag before aggregation — γ/β had no lasting effect on stored state) to post-update (applied to new_mag after update_activations — γ/β now genuinely learned). Hardcoded in-function mean-subtraction also removed. act_strength scale changed. To reproduce runs 1–16 exactly: `git checkout 7f072c4`. Full details: `concepts/mag_normalization.md`.
 
@@ -29,9 +31,23 @@
 | run23 | DONE | Beam filtering at N/2 preserves accuracy | beam_width=2048 (else = run17) | **86.50% @ep40**, -0.35pp; lossless at N/2 |
 | run24 | DONE | Beam at N/4 — moderate filter | beam_width=1024 (else = run17) | **86.68% @ep40**, -0.17pp vs run17; *better* than beam=2048 |
 | run25 | DONE | Beam at N/8 — aggressive filter, likely elbow | beam_width=512 (else = run17) | **85.78% @ep40**, -1.07pp vs run17; elbow confirmed between N/4 and N/8 |
-| run26 | RUNNING | Beam at N/16 — cliff probe for winner-take-all | beam_width=256 (else = run17) | Accuracy may drop; identifies floor |
-| run27 | PENDING | Can our architecture replicate team member's C=2, D=16 result? | N=2048, D=16, C=2, input=1568 (else = run17) | Expected FAIL at ep15 (starvation); if works → pivot |
-| run28 | PENDING | D=16 at cliff-level cardinality — does larger dim help? | N=2048, D=16, C=25, input=1568 (else = run17) | Confounded (input_nodes halved); informative if val >run21 |
+| run26 | DONE | Beam at N/16 — cliff probe for winner-take-all | beam_width=256 (else = run17) | **84.20% @ep39**, -2.65pp vs run17; curve steepens below N/8 |
+| run27 | DONE | Can our architecture replicate team member's C=2, D=16 result? | N=2048, D=16, C=2, input=1568 (else = run17) | **29.04% @ep36** — CONFIRMED: softmax routing fails at C=2, 66pp behind team member |
+| run28 | DEFERRED | D=16 at cliff-level cardinality — does larger dim help? | N=2048, D=16, C=25, input=1568 (else = run17) | Deferred — routing mechanism is the priority now |
+| run29 | DONE | Does removing softmax (uniform routing) match run17 at C=200? | **uniform 1/degree routing**, C=200 (else = run17) | **89.15% @ep38** — **+2.30pp vs run17!** Softmax HURTS accuracy. NEW BEST |
+| run30 | DONE | Does uniform routing fix starvation at C=2? | uniform routing, **C=2** (else = run17) | **18.39% @ep37** — WORSE than softmax C=2 (29.04%). Sparsity is structural, not routing |
+| run31 | DONE | Uniform routing at moderate C — where's the crossover? | uniform routing, **C=50** (else = run17) | **79.54% @ep40** — **+7.90pp vs softmax C=50**. Gain peaks at moderate C |
+| run32 | DONE | Uniform routing at C=100 — find the accuracy peak per-FLOP | uniform routing, **C=100** (else = run17) | **85.89% @ep40** — +5.23pp vs softmax, nearly matches run17 at half FLOPs |
+| run33 | DONE | Iterations as FLOPs lever — does I=3 maintain accuracy? | uniform routing, **I=3** (else = run29) | **87.16% @ep40** — beats run17 at half FLOPs! Iterations > cardinality as FLOPs lever |
+| run34 | DONE | Extreme iteration reduction — does I=2 still work? | uniform routing, **I=2** (else = run29) | **72.05% @ep40** — I=2 below iteration floor; C=50/I=5 (run31) still wins at 0.24B |
+| run35 | DONE | Fill iteration curve mid-point | uniform routing, **I=4** (else = run29) | **88.56% @ep40** — smooth curve I=3→5 confirmed, diminishing returns |
+| run36 | DONE | Does D=16 push past 89.15% ceiling? | uniform, N=2048, **D=16**, C=200, I=3 | **89.55% @ep40** — NEW BEST at HALF the FLOPs of run29! Pareto-dominant |
+| run37 | DONE | Can D=16 + I=5 break 90%? | uniform, N=2048, D=16, C=200, **I=5** | **90.45% @ep40** — BROKE 90%! NEW ABSOLUTE BEST |
+| run38 | DONE | Can D=16 + C=100 hold accuracy at half FLOPs? | uniform, D=16, **C=100**, I=3 | **85.91% @ep39** — matched D=8/C=200 at HALF FLOPs! Pareto @ 0.23B |
+| run39 | DONE | Can D=16 + C=50 extend Pareto to 0.12B? | uniform, D=16, **C=50**, I=3 | **75.49% @ep40** — below run31 (D=8, C=50, I=5: 79.54%). Low C needs high I |
+| run40 | DONE | Does I=5 rescue C=50 at D=16? | uniform, D=16, C=50, **I=5** | **83.06% @ep39** — +7.57pp from I=3→5, but run38 still better at 0.23B |
+| run41 | DONE | Can D=16 + C=10 hit viable accuracy at 0.06B FLOPs? | uniform, D=16, **C=10**, I=5 | **27.97% @ep39** — below viability floor, cliff between C=10 and C=50 |
+| run42 | DONE | Pinpoint cardinality cliff | uniform, D=16, **C=25**, I=5 | **77.71% @ep40** — viable! Cliff is between C=10 and C=25, not C=25 and C=50. Pareto-dominant at 0.12B tier |
 
 ---
 
@@ -123,7 +139,7 @@ Variables: `I`=iterations, `B`=batch size, `N`=total_nodes, `C`=cardinality (edg
 | run23 | **DONE** | **86.50% @ep40** | 66,352 | ~0.57B | ~1.71B | 4146 | 200 | 5 | No | 4.0 | 100% |
 | run24 | DONE | **86.68% @ep40** | 66,352 | ~0.37B | ~1.11B | 4146 | 200 | 5 | No | 4.0 | 100% |
 | run25 | **85.78% @ep40** | 40/40 | 66,352 | ~0.27B | ~0.81B | 4146 | 200 | 5 | No | 4.0 | 100% |
-| run26 | PENDING | /40 | 66,352 | ~0.22B | ~0.66B | 4146 | 200 | 5 | No | 4.0 | 100% |
+| run26 | **84.20% @ep39** | 40/40 | 66,352 | ~0.22B | ~0.66B | 4146 | 200 | 5 | No | 4.0 | 100% |
 
 Notes:
 - FLOPs/fwd = forward pass only. FLOPs/step = fwd + backward (3x with grad checkpointing).

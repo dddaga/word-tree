@@ -1,0 +1,54 @@
+# run39 — D=16 + C=50: test aggressive FLOPs reduction at D=16
+#
+# run38 (D=16, C=100): 85.91% @ 0.23B
+# run39 (D=16, C=50):  ??? @ ~0.12B (half of run38)
+#
+# At D=8, C=50 → 79.54% (run31). With D=16, expect +5-6pp → ~85%.
+# If >82%, new Pareto point at 0.12B — 4x cheaper than run36.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run39"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568
+  output_nodes: 10
+  cardinality: 50          # CHANGED from 100 — further halving
+  radiation_targets: 0
+
+model:
+  vector_dim: 16
+  iterations: 3
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run39/run39_weights.pt"
+  scheduler_save_path: "training_runs/run39/run39_scheduler.pt"
+  tensorboard_dir: "training_runs/run39/tensorboard"
+  logging:
+    log_path: "training_runs/run39/run39.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

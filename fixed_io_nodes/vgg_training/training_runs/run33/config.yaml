@@ -1,0 +1,59 @@
+# run33 — Uniform routing at C=200, I=3: test iterations as FLOPs lever
+#
+# run29 (uniform, I=5, C=200): 89.15% @ 0.96B FLOPs
+# run33 (uniform, I=3, C=200): ??? @ ~0.48B FLOPs (2x savings from iterations)
+#
+# FLOPs formula: (I-1) × B × N × ... — I=3 means 2 iterations instead of 4,
+# halving the propagation work. Tests whether iterations or cardinality is
+# the better FLOPs lever while preserving accuracy.
+#
+# Prior: run17 (softmax, I=5): 86.85%. No prior run with I=3.
+# Tentative hypothesis: uniform routing converges fast (run29 hit run17's best
+# by ep25 — 5 iterations aren't all needed). I=3 might still reach ~87%+.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run33"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 200         # Same as run29
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 3            # CHANGED from 5 — fewer propagation steps
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run33/run33_weights.pt"
+  scheduler_save_path: "training_runs/run33/run33_scheduler.pt"
+  tensorboard_dir: "training_runs/run33/tensorboard"
+  logging:
+    log_path: "training_runs/run33/run33.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

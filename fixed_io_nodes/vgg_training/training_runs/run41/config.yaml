@@ -1,0 +1,56 @@
+# run41 — D=16 + C=10 + I=5: aggressive FLOPs reduction toward 1M target
+#
+# Prior best at low C: run40 (D=16, C=50, I=5) → 83.06% @ 0.23B
+# run41 (D=16, C=10, I=5): very sparse, 5x fewer edges.
+# FLOPs: 4 × 4 × 2048 × (8×10×16 + 7×10 + 24×16) = ~57M = 0.057B
+#
+# 4x cheaper than run40, 16x cheaper than run36. Major step toward 1M FLOPs.
+# If val >70%, strong Pareto point at 0.06B budget.
+# If starvation occurs (val <30%), C=10 is too aggressive.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run41"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568
+  output_nodes: 10
+  cardinality: 10         # CHANGED — extreme sparsity test
+  radiation_targets: 0
+
+model:
+  vector_dim: 16
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run41/run41_weights.pt"
+  scheduler_save_path: "training_runs/run41/run41_scheduler.pt"
+  tensorboard_dir: "training_runs/run41/tensorboard"
+  logging:
+    log_path: "training_runs/run41/run41.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

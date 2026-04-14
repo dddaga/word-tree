@@ -1,0 +1,59 @@
+# run32 — Uniform routing at C=100: mapping the accuracy peak vs cardinality
+#
+# Uniform routing results so far:
+#   C=200 (run29): 89.15%  → +2.30pp vs softmax
+#   C=50  (run31): 79.54%  → +7.90pp vs softmax (still improving)
+#   C=2   (run30): 18.39%  → -10.65pp vs softmax
+# Gain peaks at moderate C. run32 tests C=100 — halfway between 50 and 200.
+#
+# Softmax baseline: run19 (C=100) = 80.66%. If uniform gives similar gain
+# to C=50 (~+7pp), expect ~87%. Sweet spot for accuracy/FLOPs?
+#
+# FLOPs/fwd: ~0.48B (2x savings vs run17). Same as run19.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run32"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 100         # CHANGED: halfway between run31 (C=50) and run29 (C=200)
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run32/run32_weights.pt"
+  scheduler_save_path: "training_runs/run32/run32_scheduler.pt"
+  tensorboard_dir: "training_runs/run32/tensorboard"
+  logging:
+    log_path: "training_runs/run32/run32.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

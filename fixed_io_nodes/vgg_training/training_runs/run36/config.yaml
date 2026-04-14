@@ -1,0 +1,62 @@
+# run36 — Uniform routing + D=16 (vector_dim): test higher expressivity
+#
+# Current ceiling: 89.15% (run29, D=8). Can D=16 push past this?
+# D=16 forces input_nodes=1568 (since 1568 × 16 = 25088).
+# Using N=2048 total (team member's config but with our routing).
+# I=3 for FLOPs efficiency — run33 showed I=3 beats softmax I=5.
+#
+# FLOPs: (3-1) × 2048 × (8×200×16 + 7×200 + 24×16)
+#      = 2 × 2048 × (25600 + 1400 + 384)
+#      = 2 × 2048 × 27384 = ~112M/sample = 449M/step
+# Similar to run33 (0.48B) but D=16 + smaller N.
+#
+# Hypothesis: D=16 gives each node 2x the feature capacity. If expressivity
+# was the bottleneck, accuracy jumps. Team member achieves 95.52% with D=16,
+# albeit with a different routing mechanism.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run36"
+
+graph:
+  total_nodes: 2048
+  input_nodes: 1568         # 25088 / 16 = 1568
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+model:
+  vector_dim: 16            # CHANGED — doubled feature dim per node
+  iterations: 3
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run36/run36_weights.pt"
+  scheduler_save_path: "training_runs/run36/run36_scheduler.pt"
+  tensorboard_dir: "training_runs/run36/tensorboard"
+  logging:
+    log_path: "training_runs/run36/run36.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

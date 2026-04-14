@@ -1,0 +1,63 @@
+# run29 — Uniform routing ablation (replace softmax with 1/degree)
+#
+# Hypothesis: Softmax routing causes gradient starvation by concentrating
+# routing weights on a few high-activation nodes (0.4% carry 50% gradient
+# at T=1.0). Replacing softmax with uniform (1/degree) routing distributes
+# gradient equally across all incoming edges per destination.
+#
+# This is a CLEAN ABLATION vs run17: only routing changes. If accuracy is
+# similar or better → softmax adds cost without benefit at C=200.
+# If worse → softmax routing IS contributing (not just starvation).
+#
+# Implementation: training_run29.py monkey-patches update_activations
+# in native.layer with a uniform-routing version. core/ and native/ untouched.
+#
+# Baseline: run17 (softmax, C=200, 86.85% @ep38)
+# Next: if run29 is viable, run30 tests C=2 with uniform routing.
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run29"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 200
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0   # Not used by uniform routing, kept for config parity
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run29/run29_weights.pt"
+  scheduler_save_path: "training_runs/run29/run29_scheduler.pt"
+  tensorboard_dir: "training_runs/run29/tensorboard"
+  logging:
+    log_path: "training_runs/run29/run29.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false

@@ -1,0 +1,61 @@
+# run31 — Uniform routing at C=50: cardinality sweep with new routing
+#
+# run29 showed uniform routing +2.30pp at C=200 (89.15% vs 86.85%).
+# run30 showed uniform routing -10.65pp at C=2 (18.39% vs 29.04%).
+# There's a crossover: uniform wins at high C, softmax wins at low C.
+#
+# run20 (softmax, C=50) got 71.64%. If uniform routing gives a big boost here,
+# we narrow the Pareto frontier between accuracy and FLOPs.
+#
+# FLOPs/fwd: ~0.24B (4x savings vs run17). Same as run20.
+# Expected: if uniform routing gain scales (~+2pp at C=200), might see
+# 73-76% here. If the gain is larger at moderate C: could be higher.
+#
+# Baseline: run20 (softmax, C=50, 71.64%), run29 (uniform, C=200, 89.15%)
+
+qdrant:
+  url: "http://localhost:6333"
+  collection_name: "run31"
+
+graph:
+  total_nodes: 4146
+  input_nodes: 3136
+  output_nodes: 10
+  cardinality: 50         # CHANGED from 200 — moderate sparsity
+  radiation_targets: 0
+
+model:
+  vector_dim: 8
+  iterations: 5
+  radiation_similarity_threshold: 0.5
+  temporal_decay: 1.0
+  activation_threshold: 0.1
+  dtype: "float32"
+  scattering_prob: 0.25
+  stochastic_radiation_duration: 0.08
+  layernorm: true
+  dropout: 0.2
+  routing_temperature: 4.0
+  beam_width: 0
+
+training:
+  lr: 0.0001
+  batch_size: 4
+  accumulation_steps: 4
+  epochs: 40
+  validation_fraction: 0.0
+  lr_decay_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1e-7
+
+system:
+  device: "mps"
+  random_seed: 42
+  weights_save_path: "training_runs/run31/run31_weights.pt"
+  scheduler_save_path: "training_runs/run31/run31_scheduler.pt"
+  tensorboard_dir: "training_runs/run31/tensorboard"
+  logging:
+    log_path: "training_runs/run31/run31.csv"
+    save_interval_seconds: 10
+    fieldnames: ['worker_id', 'loss', 'class', 'skipped']
+    verbose: false
