@@ -1,0 +1,1162 @@
+{
+  "generation": 5,
+  "elapsed_s": 2497.2,
+  "n_individuals": 50,
+  "n_failed": 0,
+  "best_fitness": 1.0571210086345673,
+  "best_accuracy": 0.9610190987586975,
+  "elite_genes": [
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.3,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.0
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 1.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 1.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    },
+    {
+      "N": 2048,
+      "D": 16,
+      "K_hh": 2,
+      "K_iter": 5,
+      "alpha_ahebb": 0.0,
+      "alpha_reflect": 0.5,
+      "routing_mode": "delta_proj",
+      "polarizer_alpha": 1.5
+    }
+  ],
+  "results": [
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.959235668182373,
+      "fitness": 1.0551592350006105,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.959235668182373,
+      "fitness": 1.0551592350006105,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9549044370651245,
+      "fitness": 1.050394880771637,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9584713578224182,
+      "fitness": 1.0543184936046601,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9526114463806152,
+      "fitness": 1.0478725910186768,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9566879272460938,
+      "fitness": 1.0523567199707031,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9594904184341431,
+      "fitness": 1.0554394602775574,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9610190987586975,
+      "fitness": 1.0571210086345673,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.0
+      },
+      "accuracy": 0.9521018862724304,
+      "fitness": 1.0473120748996736,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9574522376060486,
+      "fitness": 1.0531974613666535,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9505732655525208,
+      "fitness": 1.0456305921077729,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9490445852279663,
+      "fitness": 1.043949043750763,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9457324743270874,
+      "fitness": 1.0403057217597962,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9495541453361511,
+      "fitness": 1.0445095598697662,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9492993354797363,
+      "fitness": 1.04422926902771,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9571974277496338,
+      "fitness": 1.0529171705245972,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9485350251197815,
+      "fitness": 1.0433885276317598,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9523566961288452,
+      "fitness": 1.0475923657417299,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9459872841835022,
+      "fitness": 1.0405860126018525,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9398726224899292,
+      "fitness": 1.0338598847389222,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 53.0,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9577069878578186,
+      "fitness": 1.0534776866436006,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 49.0,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9396178126335144,
+      "fitness": 1.033579593896866,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 56.3,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9571974277496338,
+      "fitness": 1.0529171705245972,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 49.0,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9531210064888,
+      "fitness": 1.0484331071376802,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 50.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9434394836425781,
+      "fitness": 1.037783432006836,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 17,
+      "elapsed_s": 45.7,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9482802748680115,
+      "fitness": 1.0431083023548127,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9546496868133545,
+      "fitness": 1.05011465549469,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.946496844291687,
+      "fitness": 1.041146528720856,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9605095386505127,
+      "fitness": 1.056560492515564,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9472611546516418,
+      "fitness": 1.041987270116806,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 50.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9482802748680115,
+      "fitness": 1.0431083023548127,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 49.4,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9439490437507629,
+      "fitness": 1.0383439481258394,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9472611546516418,
+      "fitness": 1.041987270116806,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9556688070297241,
+      "fitness": 1.0512356877326967,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 18,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9480254650115967,
+      "fitness": 1.0428280115127564,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9508280158042908,
+      "fitness": 1.04591081738472,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9533758163452148,
+      "fitness": 1.0487133979797365,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9388535022735596,
+      "fitness": 1.0327388525009156,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 49.7,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9546496868133545,
+      "fitness": 1.05011465549469,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 42.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.946496844291687,
+      "fitness": 1.041146528720856,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 46.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 3,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.3,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9462420344352722,
+      "fitness": 0.9935541361570359,
+      "flops": 1474560.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 57.5,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 1024,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 8,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9276432991027832,
+      "fitness": 1.0204076290130617,
+      "flops": 786432.0,
+      "params": 33952,
+      "best_epoch": 19,
+      "elapsed_s": 37.3,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 4096,
+        "D": 16,
+        "K_hh": 3,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 0.0
+      },
+      "accuracy": 0.1808917224407196,
+      "fitness": 0.1808917224407196,
+      "flops": 2949120.0,
+      "params": 135328,
+      "best_epoch": 17,
+      "elapsed_s": 95.0,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 4096,
+        "D": 32,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 1.0,
+        "alpha_reflect": 0.3,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9582165479660034,
+      "fitness": 0.9582165479660034,
+      "flops": 3932160.0,
+      "params": 266560,
+      "best_epoch": 15,
+      "elapsed_s": 164.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 3,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.0,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 0.5
+      },
+      "accuracy": 0.9253503084182739,
+      "fitness": 1.0178853392601015,
+      "flops": 589824.0,
+      "params": 67744,
+      "best_epoch": 19,
+      "elapsed_s": 31.4,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9538853764533997,
+      "fitness": 1.0492739140987397,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 16,
+      "elapsed_s": 42.7,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 4096,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.5,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.968662440776825,
+      "fitness": 1.0170955628156662,
+      "flops": 1966080.0,
+      "params": 135328,
+      "best_epoch": 17,
+      "elapsed_s": 77.4,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.5,
+        "alpha_reflect": 0.5,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.0
+      },
+      "accuracy": 0.9444586038589478,
+      "fitness": 1.0389044642448426,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 20,
+      "elapsed_s": 49.9,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.0,
+        "routing_mode": "wpos_proj",
+        "polarizer_alpha": 1.5
+      },
+      "accuracy": 0.9373248219490051,
+      "fitness": 1.0310573041439057,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 16,
+      "elapsed_s": 45.8,
+      "error": null
+    },
+    {
+      "genes": {
+        "N": 2048,
+        "D": 16,
+        "K_hh": 2,
+        "K_iter": 5,
+        "alpha_ahebb": 0.0,
+        "alpha_reflect": 0.3,
+        "routing_mode": "delta_proj",
+        "polarizer_alpha": 1.0
+      },
+      "accuracy": 0.9546496868133545,
+      "fitness": 1.05011465549469,
+      "flops": 983040.0,
+      "params": 67744,
+      "best_epoch": 16,
+      "elapsed_s": 42.7,
+      "error": null
+    }
+  ]
+}

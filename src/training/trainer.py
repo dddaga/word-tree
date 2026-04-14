@@ -142,10 +142,16 @@ class Trainer:
                     soft_labels,
                     reduction="batchmean",
                 )
-                safety = safety_valve_loss(
-                    self.model.W_pos, self.box_size, task_loss=task_loss
-                )
-                lb_loss = load_balance_loss(scores.abs().sum(dim=0))
+                if self.lambda_safety > 0:
+                    safety = safety_valve_loss(
+                        self.model.W_pos, self.box_size, task_loss=task_loss
+                    )
+                else:
+                    safety = torch.tensor(0.0, device=scores.device)
+                if self.lambda_lb > 0:
+                    lb_loss = load_balance_loss(scores.abs().sum(dim=0))
+                else:
+                    lb_loss = torch.tensor(0.0, device=scores.device)
                 loss = (
                     task_loss
                     + self.lambda_safety * safety
@@ -249,11 +255,49 @@ class Trainer:
         self,
         n_epochs: int,
         log_fn: callable | None = None,
+        checkpoint_dir: str | None = None,
+        checkpoint_prefix: str = "checkpoint",
+        checkpoint_every: int = 25,
+        resume_from: str | None = None,
+        config: dict | None = None,
     ) -> list[dict]:
-        """Train for n_epochs (may stop early). Returns per-epoch history."""
-        history: list[dict] = []
+        """Train for n_epochs (may stop early). Returns per-epoch history.
 
-        for epoch in range(n_epochs):
+        Args:
+            checkpoint_dir: if set, saves checkpoints (best + periodic)
+            checkpoint_prefix: filename prefix for checkpoints
+            checkpoint_every: save every N epochs (0 = only best + final)
+            resume_from: path to checkpoint to resume from
+            config: experiment config dict to store in checkpoint
+        """
+        from src.training.checkpoint import CheckpointPolicy, load_checkpoint
+
+        history: list[dict] = []
+        start_epoch = 0
+
+        # Resume from checkpoint if provided
+        if resume_from is not None:
+            state = load_checkpoint(
+                resume_from, self.model, self.optimizer,
+                self.scheduler, self.scaler, device=self.device,
+            )
+            start_epoch = state["epoch"] + 1
+            history = state["history"]
+            print(f"  Resumed from {resume_from} at epoch {start_epoch}")
+
+        # Checkpoint policy
+        ckpt_policy = None
+        if checkpoint_dir is not None:
+            ckpt_policy = CheckpointPolicy(
+                checkpoint_dir, prefix=checkpoint_prefix,
+                save_every=checkpoint_every,
+            )
+            # Inherit best_top1 from history
+            if history:
+                ckpt_policy.best_top1 = max(
+                    h.get("val_top1", 0.0) for h in history)
+
+        for epoch in range(start_epoch, n_epochs):
             train_metrics = self.train_epoch()
             val_metrics = self.evaluate()
             train_loss = train_metrics["train_loss"]
@@ -299,10 +343,29 @@ class Trainer:
                       f"task={task:.4f}  safety={safe:.4f}  "
                       f"top1={top1:.4f}  lr={self.current_lr():.2e}")
 
+            # Checkpoint: save on best, periodic, and final
+            if ckpt_policy is not None:
+                val_top1 = val_metrics.get("val_top1", 0.0)
+                is_final = (epoch == n_epochs - 1)
+                saved = ckpt_policy.step(
+                    epoch, val_top1, is_final,
+                    self.model, self.optimizer, self.scheduler, self.scaler,
+                    history=history, config=config,
+                )
+                if saved:
+                    print(f"  ��� Saved checkpoint → {saved}")
+
             # Early stopping check (monitors train_loss)
             if self.early_stopping.step(train_loss, self.model):
                 combined["stopped_early"] = True
                 print(f"  Early stop at epoch {epoch} — best train_loss={self.early_stopping.best_loss:.4f}")
+                # Save final checkpoint on early stop
+                if ckpt_policy is not None:
+                    ckpt_policy.step(
+                        epoch, val_metrics.get("val_top1", 0.0), True,
+                        self.model, self.optimizer, self.scheduler, self.scaler,
+                        history=history, config=config,
+                    )
                 break
 
         return history

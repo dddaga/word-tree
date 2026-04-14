@@ -1,0 +1,197 @@
+
+======================================================================
+Step 152 — Constraint Discovery Mechanisms
+N=1024  D=16  K_hh=8  K_iter=8  K_in=25
+Epochs=75  Device=cpu  Data=50%
+======================================================================
+
+  Ref   Ref  standard (no constraint tools)
+  A     A    nuclear norm λ=0.01
+  B     B    bottleneck D→8→D at K//2
+  C     C    dimensional gating per-step
+  D     D    L1 sparsity λ=0.1
+  E     E    contrastive routing λ=0.1
+  F     F    nuclear+bottleneck+dim_gate
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  standard (no constraint tools)  params=17,738
+────────────────────────────────────────────────────────────
+  e  1  task=2.3163  aux=0.0000  top1=0.1045  lr=1.00e-03
+  e  2  task=2.3066  aux=0.0000  top1=0.1050  lr=1.00e-03
+  e  3  task=2.3017  aux=0.0000  top1=0.1111  lr=1.00e-03
+  e  5  task=2.2936  aux=0.0000  top1=0.1327  lr=1.00e-03
+  e 10  task=2.2398  aux=0.0000  top1=0.1878  lr=1.00e-03
+  e 15  task=2.1893  aux=0.0000  top1=0.1832  lr=1.00e-03
+  e 20  task=2.1491  aux=0.0000  top1=0.1878  lr=1.00e-03
+  e 25  task=2.1217  aux=0.0000  top1=0.1885  lr=1.00e-03
+  e 30  task=2.1043  aux=0.0000  top1=0.2005  lr=1.00e-03
+  e 35  task=2.0748  aux=0.0000  top1=0.2117  lr=1.00e-03
+  e 40  task=2.0457  aux=0.0000  top1=0.2250  lr=1.00e-03
+  e 45  task=2.0186  aux=0.0000  top1=0.2331  lr=1.00e-03
+  e 50  task=1.9917  aux=0.0000  top1=0.2604  lr=1.00e-03
+  e 55  task=1.9650  aux=0.0000  top1=0.2841  lr=1.00e-03
+  e 60  task=1.9323  aux=0.0000  top1=0.2854  lr=1.00e-03
+  e 65  task=1.9149  aux=0.0000  top1=0.3154  lr=1.00e-03
+  e 70  task=1.8854  aux=0.0000  top1=0.3261  lr=1.00e-03
+  e 75  task=1.8533  aux=0.0000  top1=0.3353  lr=1.00e-03
+
+  top1=0.3353  vs_Ref=+0.0000  params=17,738
+
+────────────────────────────────────────────────────────────
+Config A: A    nuclear norm λ=0.01  params=17,738
+────────────────────────────────────────────────────────────
+  e  1  task=2.3210  aux=0.3327  top1=0.1045  lr=1.00e-03
+  e  2  task=2.3131  aux=0.3236  top1=0.1078  lr=1.00e-03
+  e  3  task=2.3048  aux=0.3207  top1=0.1256  lr=1.00e-03
+  e  5  task=2.2901  aux=0.3178  top1=0.1592  lr=1.00e-03
+  e 10  task=2.2722  aux=0.3170  top1=0.1569  lr=1.00e-03
+  e 15  task=2.2556  aux=0.3168  top1=0.1674  lr=1.00e-03
+  e 20  task=2.2393  aux=0.3169  top1=0.1755  lr=1.00e-03
+  e 25  task=2.2236  aux=0.3171  top1=0.1789  lr=1.00e-03
+  e 30  task=2.2081  aux=0.3173  top1=0.1814  lr=1.00e-03
+  e 35  task=2.1933  aux=0.3176  top1=0.1837  lr=1.00e-03
+  e 40  task=2.1788  aux=0.3181  top1=0.1842  lr=1.00e-03
+  e 45  task=2.1645  aux=0.3182  top1=0.1679  lr=1.00e-03
+  e 50  task=2.1493  aux=0.3185  top1=0.1732  lr=1.00e-03
+  e 55  task=2.1328  aux=0.3185  top1=0.1753  lr=1.00e-03
+  e 60  task=2.1188  aux=0.3176  top1=0.1738  lr=1.00e-03
+  e 65  task=2.1075  aux=0.3169  top1=0.1717  lr=1.00e-03
+  e 70  task=2.0975  aux=0.3169  top1=0.1710  lr=1.00e-03
+  e 75  task=2.0877  aux=0.3174  top1=0.1740  lr=1.00e-03
+
+  top1=0.1842  vs_Ref=-0.1511  params=17,738
+
+────────────────────────────────────────────────────────────
+Config B: B    bottleneck D→8→D at K//2  params=17,994
+────────────────────────────────────────────────────────────
+  e  1  task=2.3124  aux=0.0000  top1=0.1019  lr=1.00e-03
+  e  2  task=2.3041  aux=0.0000  top1=0.1075  lr=1.00e-03
+  e  3  task=2.2983  aux=0.0000  top1=0.1157  lr=1.00e-03
+  e  5  task=2.2773  aux=0.0000  top1=0.1417  lr=1.00e-03
+  e 10  task=2.1628  aux=0.0000  top1=0.1778  lr=1.00e-03
+  e 15  task=2.1017  aux=0.0000  top1=0.2023  lr=1.00e-03
+  e 20  task=2.0622  aux=0.0000  top1=0.2176  lr=1.00e-03
+  e 25  task=2.0327  aux=0.0000  top1=0.2242  lr=1.00e-03
+  e 30  task=2.0046  aux=0.0000  top1=0.2206  lr=1.00e-03
+  e 35  task=1.9790  aux=0.0000  top1=0.2313  lr=1.00e-03
+  e 40  task=1.9559  aux=0.0000  top1=0.2436  lr=1.00e-03
+  e 45  task=1.9292  aux=0.0000  top1=0.2624  lr=1.00e-03
+  e 50  task=1.9056  aux=0.0000  top1=0.2532  lr=1.00e-03
+  e 55  task=1.8856  aux=0.0000  top1=0.2866  lr=1.00e-03
+  e 60  task=1.8681  aux=0.0000  top1=0.2994  lr=1.00e-03
+  e 65  task=1.8449  aux=0.0000  top1=0.2841  lr=1.00e-03
+  e 70  task=1.8256  aux=0.0000  top1=0.3106  lr=1.00e-03
+  e 75  task=1.8057  aux=0.0000  top1=0.3348  lr=1.00e-03
+
+  top1=0.3348  vs_Ref=-0.0005  params=17,994
+
+────────────────────────────────────────────────────────────
+Config C: C    dimensional gating per-step  params=17,866
+────────────────────────────────────────────────────────────
+  e  1  task=2.3269  aux=0.0000  top1=0.0983  lr=1.00e-03
+  e  2  task=2.3165  aux=0.0000  top1=0.0983  lr=1.00e-03
+  e  3  task=2.3109  aux=0.0000  top1=0.0983  lr=1.00e-03
+  e  5  task=2.3044  aux=0.0000  top1=0.1136  lr=1.00e-03
+  e 10  task=2.2883  aux=0.0000  top1=0.1197  lr=1.00e-03
+  e 15  task=2.1840  aux=0.0000  top1=0.1638  lr=1.00e-03
+  e 20  task=2.1402  aux=0.0000  top1=0.1786  lr=1.00e-03
+  e 25  task=2.1146  aux=0.0000  top1=0.1911  lr=1.00e-03
+  e 30  task=2.1072  aux=0.0000  top1=0.1890  lr=1.00e-03
+  e 35  task=2.0852  aux=0.0000  top1=0.2222  lr=1.00e-03
+  e 40  task=2.0557  aux=0.0000  top1=0.2245  lr=1.00e-03
+  e 45  task=2.0326  aux=0.0000  top1=0.2280  lr=1.00e-03
+  e 50  task=2.0179  aux=0.0000  top1=0.2400  lr=1.00e-03
+  e 55  task=1.9907  aux=0.0000  top1=0.2668  lr=1.00e-03
+  e 60  task=1.9650  aux=0.0000  top1=0.2803  lr=1.00e-03
+  e 65  task=1.9428  aux=0.0000  top1=0.2838  lr=1.00e-03
+  e 70  task=1.9187  aux=0.0000  top1=0.3009  lr=1.00e-03
+  e 75  task=1.8982  aux=0.0000  top1=0.3019  lr=1.00e-03
+
+  top1=0.3022  vs_Ref=-0.0331  params=17,866
+
+────────────────────────────────────────────────────────────
+Config D: D    L1 sparsity λ=0.1  params=17,738
+────────────────────────────────────────────────────────────
+  e  1  task=2.3162  aux=0.0089  top1=0.0991  lr=1.00e-03
+  e  2  task=2.3091  aux=0.0089  top1=0.1006  lr=1.00e-03
+  e  3  task=2.3034  aux=0.0089  top1=0.0983  lr=1.00e-03
+  e  5  task=2.2915  aux=0.0091  top1=0.1205  lr=1.00e-03
+  e 10  task=2.2551  aux=0.0103  top1=0.1740  lr=1.00e-03
+  e 15  task=2.1946  aux=0.0119  top1=0.1959  lr=1.00e-03
+  e 20  task=2.1375  aux=0.0124  top1=0.1865  lr=1.00e-03
+  e 25  task=2.0992  aux=0.0128  top1=0.1936  lr=1.00e-03
+  e 30  task=2.0695  aux=0.0131  top1=0.2048  lr=1.00e-03
+  e 35  task=2.0475  aux=0.0134  top1=0.2069  lr=1.00e-03
+  e 40  task=2.0259  aux=0.0135  top1=0.2171  lr=1.00e-03
+  e 45  task=2.0145  aux=0.0137  top1=0.2316  lr=1.00e-03
+  e 50  task=1.9891  aux=0.0138  top1=0.2538  lr=1.00e-03
+  e 55  task=1.9698  aux=0.0140  top1=0.2553  lr=1.00e-03
+  e 60  task=1.9617  aux=0.0141  top1=0.2752  lr=1.00e-03
+  e 65  task=1.9370  aux=0.0142  top1=0.2746  lr=1.00e-03
+  e 70  task=1.9183  aux=0.0142  top1=0.2958  lr=1.00e-03
+  e 75  task=1.9012  aux=0.0143  top1=0.3019  lr=1.00e-03
+
+  top1=0.3019  vs_Ref=-0.0334  params=17,738
+
+────────────────────────────────────────────────────────────
+Config E: E    contrastive routing λ=0.1  params=17,738
+────────────────────────────────────────────────────────────
+  e  1  task=2.3076  aux=0.4900  top1=0.1009  lr=1.00e-03
+  e  2  task=2.3044  aux=0.4877  top1=0.1152  lr=1.00e-03
+  e  3  task=2.3018  aux=0.4864  top1=0.1332  lr=1.00e-03
+  e  5  task=2.2925  aux=0.4817  top1=0.1358  lr=1.00e-03
+  e 10  task=2.2727  aux=0.4798  top1=0.1501  lr=1.00e-03
+  e 15  task=2.2516  aux=0.4780  top1=0.1980  lr=1.00e-03
+  e 20  task=2.2265  aux=0.4769  top1=0.2005  lr=1.00e-03
+  e 25  task=2.2051  aux=0.4768  top1=0.2020  lr=1.00e-03
+  e 30  task=2.1833  aux=0.4769  top1=0.1985  lr=1.00e-03
+  e 35  task=2.1689  aux=0.4767  top1=0.2003  lr=1.00e-03
+  e 40  task=2.1559  aux=0.4766  top1=0.1946  lr=1.00e-03
+  e 45  task=2.1496  aux=0.4768  top1=0.2000  lr=1.00e-03
+  e 50  task=2.1372  aux=0.4766  top1=0.1997  lr=1.00e-03
+  e 55  task=2.1321  aux=0.4767  top1=0.1995  lr=1.00e-03
+  e 60  task=2.1236  aux=0.4763  top1=0.2015  lr=1.00e-03
+  e 65  task=2.1203  aux=0.4765  top1=0.1913  lr=1.00e-03
+  e 70  task=2.1177  aux=0.4763  top1=0.1839  lr=1.00e-03
+  e 75  task=2.1090  aux=0.4764  top1=0.2038  lr=1.00e-03
+
+  top1=0.2051  vs_Ref=-0.1302  params=17,738
+
+────────────────────────────────────────────────────────────
+Config F: F    nuclear+bottleneck+dim_gate  params=18,122
+────────────────────────────────────────────────────────────
+  e  1  task=2.3077  aux=0.3429  top1=0.0935  lr=1.00e-03
+  e  2  task=2.2968  aux=0.3227  top1=0.1238  lr=1.00e-03
+  e  3  task=2.2732  aux=0.2889  top1=0.1335  lr=1.00e-03
+  e  5  task=2.2316  aux=0.2461  top1=0.1712  lr=1.00e-03
+  e 10  task=2.1840  aux=0.2343  top1=0.1720  lr=1.00e-03
+  e 15  task=2.1562  aux=0.2185  top1=0.1699  lr=1.00e-03
+  e 20  task=2.1276  aux=0.1902  top1=0.1870  lr=1.00e-03
+  e 25  task=2.1035  aux=0.1845  top1=0.1954  lr=1.00e-03
+  e 30  task=2.0896  aux=0.1779  top1=0.1878  lr=1.00e-03
+  e 35  task=2.0794  aux=0.1711  top1=0.1862  lr=1.00e-03
+  e 40  task=2.0708  aux=0.1627  top1=0.1870  lr=1.00e-03
+  e 45  task=2.0667  aux=0.1527  top1=0.1898  lr=1.00e-03
+  e 50  task=2.0643  aux=0.1375  top1=0.1819  lr=1.00e-03
+  e 55  task=2.0631  aux=0.1196  top1=0.1862  lr=1.00e-03
+  e 60  task=2.0612  aux=0.1070  top1=0.1832  lr=1.00e-03
+  e 65  task=2.0584  aux=0.0938  top1=0.1857  lr=1.00e-03
+  e 70  task=2.0558  aux=0.0866  top1=0.1870  lr=1.00e-03
+  e 75  task=2.0504  aux=0.0813  top1=0.1896  lr=1.00e-03
+
+  top1=0.1972  vs_Ref=-0.1381  params=18,122
+
+======================================================================
+STEP 152 SUMMARY — Constraint Discovery Mechanisms
+======================================================================
+  Ref                   base  params=  17,738  top1=0.3353  vs_Ref=+0.0000
+  A                      nuc  params=  17,738  top1=0.1842  vs_Ref=-0.1511
+  B                    bneck  params=  17,994  top1=0.3348  vs_Ref=-0.0005
+  C                     gate  params=  17,866  top1=0.3022  vs_Ref=-0.0331
+  D                       L1  params=  17,738  top1=0.3019  vs_Ref=-0.0334
+  E                      con  params=  17,738  top1=0.2051  vs_Ref=-0.1302
+  F           nuc+bneck+gate  params=  18,122  top1=0.1972  vs_Ref=-0.1381
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step152_constraint_discovery.json

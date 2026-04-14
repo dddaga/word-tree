@@ -1,0 +1,95 @@
+
+======================================================================
+Step 232 — Scalar Edge Weights: Is AH just learned edge weights?
+Running: ['Ref', 'A', 'B', 'C', 'D']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Standard AH (reference)
+────────────────────────────────────────────────────────────
+  total params=67,744  edge params=0
+  ep  1  val=0.3656
+  e  1  loss=6.1136  task=6.1136  safety=0.0000  top1=0.3656  lr=2.36e-03
+  ep  5  val=0.8339
+  ep 10  val=0.8894
+  e 10  loss=0.3966  task=0.3966  safety=0.0000  top1=0.8894  lr=2.36e-03
+  ep 15  val=0.8943
+  ep 20  val=0.9152
+  e 20  loss=0.2764  task=0.2764  safety=0.0000  top1=0.9152  lr=2.36e-03
+  → best=0.9180 @ ep18  (102s)
+
+────────────────────────────────────────────────────────────
+Config A: Scalar edge weights, mode=sigmoid
+────────────────────────────────────────────────────────────
+  total params=39,072  edge params=4,096
+  ep  1  val=0.1029
+  e  1  loss=21.8608  task=21.8608  safety=0.0000  top1=0.1029  lr=2.36e-03
+  ep  5  val=0.1434
+  ep 10  val=0.1753
+  e 10  loss=2.2323  task=2.2323  safety=0.0000  top1=0.1753  lr=2.36e-03
+  ep 15  val=0.1643
+  ep 20  val=0.1692
+  e 20  loss=2.1202  task=2.1202  safety=0.0000  top1=0.1692  lr=2.36e-03
+  edge weights: mean=0.8808, std=0.0, range=[0.8808, 0.8808]
+  → best=0.1842 @ ep11  (102s)
+
+────────────────────────────────────────────────────────────
+Config B: Scalar edge weights, mode=unconstrained
+────────────────────────────────────────────────────────────
+  total params=39,072  edge params=4,096
+  ep  1  val=0.0955
+  e  1  loss=22.2354  task=22.2354  safety=0.0000  top1=0.0955  lr=2.36e-03
+  ep  5  val=0.1445
+  ep 10  val=0.1727
+  e 10  loss=2.2417  task=2.2417  safety=0.0000  top1=0.1727  lr=2.36e-03
+  ep 15  val=0.1618
+  ep 20  val=0.1654
+  e 20  loss=2.1165  task=2.1165  safety=0.0000  top1=0.1654  lr=2.36e-03
+  edge weights: mean=1.0, std=0.0, range=[1.0, 1.0]
+  → best=0.1888 @ ep11  (102s)
+
+────────────────────────────────────────────────────────────
+Config C: Scalar edge weights, mode=fixed
+────────────────────────────────────────────────────────────
+  total params=34,976  edge params=0
+  ep  1  val=0.0854
+  e  1  loss=20.6813  task=20.6813  safety=0.0000  top1=0.0854  lr=2.36e-03
+  ep  5  val=0.1197
+  ep 10  val=0.1707
+  e 10  loss=2.2086  task=2.2086  safety=0.0000  top1=0.1707  lr=2.36e-03
+  ep 15  val=0.1753
+  ep 20  val=0.1811
+  e 20  loss=2.1261  task=2.1261  safety=0.0000  top1=0.1811  lr=2.36e-03
+  → best=0.1811 @ ep20  (98s)
+
+────────────────────────────────────────────────────────────
+Config D: Scalar edge weights, mode=none
+────────────────────────────────────────────────────────────
+  total params=34,976  edge params=0
+  ep  1  val=0.0955
+  e  1  loss=22.2354  task=22.2354  safety=0.0000  top1=0.0955  lr=2.36e-03
+  ep  5  val=0.1445
+  ep 10  val=0.1727
+  e 10  loss=2.2417  task=2.2417  safety=0.0000  top1=0.1727  lr=2.36e-03
+  ep 15  val=0.1618
+  ep 20  val=0.1654
+  e 20  loss=2.1165  task=2.1165  safety=0.0000  top1=0.1654  lr=2.36e-03
+  → best=0.1888 @ ep11  (89s)
+
+======================================================================
+STEP 232 SUMMARY — Scalar Edge Weights vs AH
+======================================================================
+  Ref (ah): 0.9180
+  A (sigmoid): 0.1842  Δ=-0.7338  (4096 edge params)
+  B (unconstrained): 0.1888  Δ=-0.7292  (4096 edge params)
+  C (fixed): 0.1811  Δ=-0.7369
+  D (none): 0.1888  Δ=-0.7292
+
+Interpretation guide:
+  A/B ≈ Ref → AH is just edge weights. Architecture can be simplified.
+  A/B << Ref → W_pos carries info beyond edge control (readout interaction?).
+  C ≈ Ref   → ANY non-uniform modulation works, learning not needed.
+  D collapses → modulation is prerequisite (confirms step218).
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step232_scalar_edge_weights.json

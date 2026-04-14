@@ -1,0 +1,91 @@
+
+======================================================================
+Step 155 — Diagnostics Baseline (Health Check)
+Epochs=20  Device=cpu  Data=50%
+======================================================================
+
+  A  A  N=4096 D=64 K4 Ki12 (best)
+  B  B  N=1024 D=16 K8 Ki8 (eff)
+  C  C  N=1024 D=32 K4 Ki8 (mid)
+  D  D  N=256  D=16 K4 Ki4 (minimal)
+  E  E  N=1024 D=16 K8 Ki8 AH=0 (ctl)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config B: B  N=1024 D=16 K8 Ki8 (eff)  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  task=7.7960  top1=0.1248  lr=1.00e-03
+  [diag] ep=  1  eff_rank=4.6/16  neuron_util=100%  wpos_cos=0.745  ∇wpos=0.9053  ∇θ=0.4248
+  e  2  task=3.1302  top1=0.2683  lr=1.00e-03
+  [diag] ep=  2  eff_rank=4.9/16  neuron_util=100%  wpos_cos=0.753  ∇wpos=0.8978  ∇θ=0.4404
+  e  5  task=1.7822  top1=0.4494  lr=1.00e-03
+  [diag] ep=  5  eff_rank=5.0/16  neuron_util=100%  wpos_cos=0.750  ∇wpos=0.6259  ∇θ=0.7799
+  e 10  task=1.5370  top1=0.5941  lr=1.00e-03
+  [diag] ep= 10  eff_rank=5.2/16  neuron_util=100%  wpos_cos=0.749  ∇wpos=0.5404  ∇θ=0.8414
+  e 15  task=1.3636  top1=0.6561  lr=1.00e-03
+  [diag] ep= 15  eff_rank=5.4/16  neuron_util=100%  wpos_cos=0.756  ∇wpos=0.5381  ∇θ=0.8429
+  e 20  task=1.2354  top1=0.6864  lr=1.00e-03
+  [diag] ep= 20  eff_rank=5.5/16  neuron_util=100%  wpos_cos=0.755  ∇wpos=0.4637  ∇θ=0.8860
+
+  top1_best=0.6925  params=33,952
+Diagnostics Summary:
+  Effective rank: 4.6 → 5.5
+  Neuron util: 100% → 100%
+  W_pos cos sim: 0.745 → 0.755
+  ∇W_pos: 0.9053 → 0.4637
+
+────────────────────────────────────────────────────────────
+Config D: D  N=256  D=16 K4 Ki4 (minimal)  params=8,608
+────────────────────────────────────────────────────────────
+  e  1  task=2.8689  top1=0.1345  lr=1.00e-03
+  [diag] ep=  1  eff_rank=9.5/16  neuron_util=100%  wpos_cos=0.748  ∇wpos=0.2258  ∇θ=0.9742
+  e  2  task=2.2221  top1=0.2510  lr=1.00e-03
+  [diag] ep=  2  eff_rank=9.4/16  neuron_util=100%  wpos_cos=0.752  ∇wpos=0.2522  ∇θ=0.9677
+  e  5  task=2.1151  top1=0.3572  lr=1.00e-03
+  [diag] ep=  5  eff_rank=9.7/16  neuron_util=100%  wpos_cos=0.755  ∇wpos=0.2958  ∇θ=0.9553
+  e 10  task=2.0127  top1=0.4089  lr=1.00e-03
+  [diag] ep= 10  eff_rank=10.0/16  neuron_util=100%  wpos_cos=0.754  ∇wpos=0.2257  ∇θ=0.9742
+  e 15  task=1.9310  top1=0.4403  lr=1.00e-03
+  [diag] ep= 15  eff_rank=10.2/16  neuron_util=100%  wpos_cos=0.754  ∇wpos=0.2067  ∇θ=0.9784
+  e 20  task=1.8543  top1=0.4683  lr=1.00e-03
+  [diag] ep= 20  eff_rank=10.2/16  neuron_util=100%  wpos_cos=0.754  ∇wpos=0.2189  ∇θ=0.9757
+
+  top1_best=0.4708  params=8,608
+Diagnostics Summary:
+  Effective rank: 9.5 → 10.2
+  Neuron util: 100% → 100%
+  W_pos cos sim: 0.748 → 0.754
+  ∇W_pos: 0.2258 → 0.2189
+
+────────────────────────────────────────────────────────────
+Config E: E  N=1024 D=16 K8 Ki8 AH=0 (ctl)  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  task=16.4216  top1=0.0874  lr=1.00e-03
+  [diag] ep=  1  eff_rank=5.2/16  neuron_util=100%  wpos_cos=0.751  ∇wpos=0.9151  ∇θ=0.4032
+  e  2  task=6.8500  top1=0.0517  lr=1.00e-03
+  [diag] ep=  2  eff_rank=5.1/16  neuron_util=100%  wpos_cos=0.755  ∇wpos=0.9339  ∇θ=0.3575
+  e  5  task=2.2368  top1=0.2153  lr=1.00e-03
+  [diag] ep=  5  eff_rank=4.9/16  neuron_util=100%  wpos_cos=0.752  ∇wpos=0.9015  ∇θ=0.4327
+  e 10  task=1.9327  top1=0.3169  lr=1.00e-03
+  [diag] ep= 10  eff_rank=4.9/16  neuron_util=100%  wpos_cos=0.761  ∇wpos=0.8431  ∇θ=0.5378
+  e 15  task=1.7739  top1=0.4183  lr=1.00e-03
+  [diag] ep= 15  eff_rank=4.8/16  neuron_util=100%  wpos_cos=0.754  ∇wpos=0.8571  ∇θ=0.5152
+  e 20  task=1.6900  top1=0.4326  lr=1.00e-03
+  [diag] ep= 20  eff_rank=4.8/16  neuron_util=100%  wpos_cos=0.762  ∇wpos=0.7639  ∇θ=0.6453
+
+  top1_best=0.4492  params=33,952
+Diagnostics Summary:
+  Effective rank: 5.2 → 4.8
+  Neuron util: 100% → 100%
+  W_pos cos sim: 0.751 → 0.762
+  ∇W_pos: 0.9151 → 0.7639
+
+======================================================================
+STEP 155 — DIAGNOSTICS BASELINE SUMMARY
+======================================================================
+  B  top1=0.6925  eff_rank=5.48/16  neuron_util=100.0%  wpos_cos=0.7547  sep_ratio=?
+  D  top1=0.4708  eff_rank=10.25/16  neuron_util=100.0%  wpos_cos=0.754  sep_ratio=?
+  E  top1=0.4492  eff_rank=4.79/16  neuron_util=100.0%  wpos_cos=0.7621  sep_ratio=?
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step155_diagnostics_baseline.json

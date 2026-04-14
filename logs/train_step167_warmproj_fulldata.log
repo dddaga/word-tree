@@ -1,0 +1,102 @@
+
+======================================================================
+Step 167 — warm+W_proj Tier-2 validation (full data 150ep)
+N=1024  D=16  K_hh=8  K_iter=8  AH=1.0
+Epochs=150  Device=cpu  Data=100%
+======================================================================
+step165-B reference (50% data 75ep): 90.96%
+
+  Teacher loaded from /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step165_teacher.pt
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  K=8 scratch full data 150ep (N=1024 D=16 ceiling)
+────────────────────────────────────────────────────────────
+  params=33,952  warm_proj=False
+  e  1  loss=4.1146  task=4.1146  safety=0.0000  top1=0.1338  lr=2.36e-03
+  ep 10  val=0.6232
+  e 10  loss=1.5108  task=1.5108  safety=0.0000  top1=0.6232  lr=2.36e-03
+  ep 20  val=0.7422
+  e 20  loss=1.0175  task=1.0175  safety=0.0000  top1=0.7422  lr=2.36e-03
+  ep 30  val=0.8000
+  e 30  loss=0.8238  task=0.8238  safety=0.0000  top1=0.8000  lr=2.36e-03
+  ep 40  val=0.8008
+  e 40  loss=0.7270  task=0.7270  safety=0.0000  top1=0.8008  lr=2.36e-03
+  ep 50  val=0.8145
+  e 50  loss=0.6536  task=0.6536  safety=0.0000  top1=0.8145  lr=2.36e-03
+  ep 60  val=0.8153
+  e 60  loss=0.5870  task=0.5870  safety=0.0000  top1=0.8153  lr=2.36e-03
+  ep 70  val=0.8492
+  e 70  loss=0.5465  task=0.5465  safety=0.0000  top1=0.8492  lr=2.36e-03
+  ep 80  val=0.8696
+  e 80  loss=0.5151  task=0.5151  safety=0.0000  top1=0.8696  lr=2.36e-03
+  ep 90  val=0.8530
+  e 90  loss=0.4844  task=0.4844  safety=0.0000  top1=0.8530  lr=2.36e-03
+  ep100  val=0.8642
+  e100  loss=0.4505  task=0.4505  safety=0.0000  top1=0.8642  lr=2.36e-03
+  ep110  val=0.8499
+  e110  loss=0.4295  task=0.4295  safety=0.0000  top1=0.8499  lr=2.36e-03
+  ep120  val=0.8874
+  e120  loss=0.4104  task=0.4104  safety=0.0000  top1=0.8874  lr=2.36e-03
+  ep130  val=0.8792
+  e130  loss=0.4072  task=0.4072  safety=0.0000  top1=0.8792  lr=2.36e-03
+  ep140  val=0.8792
+  e140  loss=0.3850  task=0.3850  safety=0.0000  top1=0.8792  lr=2.36e-03
+  ep150  val=0.8971
+  e150  loss=0.3871  task=0.3871  safety=0.0000  top1=0.8971  lr=2.36e-03
+
+  top1=0.8971  vs_Ref=+0.0000  vs_step165B=-0.0125  elapsed=29.9min
+
+────────────────────────────────────────────────────────────
+Config B: B    warm+W_proj full data 150ep (step165-B Tier-2 val)
+────────────────────────────────────────────────────────────
+  Warm-loading from teacher...
+    warm_load: 8 keys, 1 new (proj), 0 teacher-only
+  params=34,208  warm_proj=True
+  e  1  loss=2.6417  task=2.6417  safety=0.0000  top1=0.5837  lr=2.36e-03
+  ep 10  val=0.8795
+  e 10  loss=0.4560  task=0.4560  safety=0.0000  top1=0.8795  lr=2.36e-03
+  ep 20  val=0.8983
+  e 20  loss=0.3246  task=0.3246  safety=0.0000  top1=0.8983  lr=2.36e-03
+  ep 30  val=0.9055
+  e 30  loss=0.2666  task=0.2666  safety=0.0000  top1=0.9055  lr=2.36e-03
+  ep 40  val=0.9126
+  e 40  loss=0.2407  task=0.2407  safety=0.0000  top1=0.9126  lr=2.36e-03
+  ep 50  val=0.9146
+  e 50  loss=0.2176  task=0.2176  safety=0.0000  top1=0.9146  lr=2.36e-03
+  ep 60  val=0.9192
+  e 60  loss=0.1981  task=0.1981  safety=0.0000  top1=0.9192  lr=2.36e-03
+  ep 70  val=0.9238
+  e 70  loss=0.1884  task=0.1884  safety=0.0000  top1=0.9238  lr=2.36e-03
+  ep 80  val=0.9241
+  e 80  loss=0.1779  task=0.1779  safety=0.0000  top1=0.9241  lr=2.36e-03
+  ep 90  val=0.9215
+  e 90  loss=0.1720  task=0.1720  safety=0.0000  top1=0.9215  lr=2.36e-03
+  ep100  val=0.9233
+  e100  loss=0.1608  task=0.1608  safety=0.0000  top1=0.9233  lr=2.36e-03
+  ep110  val=0.9317
+  e110  loss=0.1604  task=0.1604  safety=0.0000  top1=0.9317  lr=2.36e-03
+  ep120  val=0.9274
+  e120  loss=0.1548  task=0.1548  safety=0.0000  top1=0.9274  lr=2.36e-03
+  ep130  val=0.9302
+  e130  loss=0.1490  task=0.1490  safety=0.0000  top1=0.9302  lr=2.36e-03
+  ep140  val=0.9266
+  e140  loss=0.1447  task=0.1447  safety=0.0000  top1=0.9266  lr=2.36e-03
+  ep150  val=0.9256
+  e150  loss=0.1393  task=0.1393  safety=0.0000  top1=0.9256  lr=2.36e-03
+
+  top1=0.9317  vs_Ref=+0.0346  vs_step165B=+0.0221  elapsed=27.6min
+
+======================================================================
+STEP 167 SUMMARY — warm+W_proj Tier-2 (full data 150ep)
+======================================================================
+step165-B Tier-1 reference: 90.96% (50% data 75ep)
+Key   warm_proj    params     top1    vs_Ref   vs_165B
+───────────────────────────────────────────────────────
+Ref       False    33,952  0.8971  +0.0000  -0.0125
+B          True    34,208  0.9317  +0.0346  +0.0221
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step167_warmproj_fulldata.json
+
+Target: ≥95% for efficiency track phase exit (FLOPs ~3.1M ✓ params ✓ acc ❌).

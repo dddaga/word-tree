@@ -1,0 +1,103 @@
+
+======================================================================
+Step 141 — Split-D Architecture + Residual Hypersphere
+N=1024  D=16  K_hh=8  K_iter=8  K_in=25
+Epochs=75  Device=mps  Data=50%
+======================================================================
+
+  Ref   (standard)       norm=joint     Ref  standard D=16 (1feat+15spatial), joint norm
+  A     (12act+4pos)     norm=joint     A    split 12act+4pos, joint norm
+  B     (8act+8pos)      norm=joint     B    split 8act+8pos, joint norm
+  C     (0act+0pos)      norm=residual  C    standard D=16, residual norm α=0.3
+  D     (12act+4pos)     norm=residual  D    split 12act+4pos + residual norm α=0.3
+  E     (12act+4pos)     norm=split     E    split 12act+4pos, split norm (act/pos independent)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config A: A    split 12act+4pos, joint norm
+  params=17,750  norm=joint
+────────────────────────────────────────────────────────────
+  e  1  loss=2.3162  task=2.2901  safety=0.0533  top1=0.0986  lr=2.36e-03
+  e 10  loss=2.2624  task=2.2622  safety=0.0004  top1=0.1381  lr=2.36e-03
+  e 20  loss=2.2586  task=2.2584  safety=0.0003  top1=0.1417  lr=2.36e-03
+  e 30  loss=2.2569  task=2.2567  safety=0.0002  top1=0.1442  lr=2.36e-03
+  e 40  loss=2.2557  task=2.2556  safety=0.0002  top1=0.1457  lr=2.36e-03
+  e 50  loss=2.2548  task=2.2546  safety=0.0002  top1=0.1452  lr=2.36e-03
+  e 60  loss=2.2542  task=2.2541  safety=0.0002  top1=0.1468  lr=2.36e-03
+  e 70  loss=2.2537  task=2.2536  safety=0.0002  top1=0.1457  lr=2.36e-03
+
+  top1=0.1470  vs_Ref=+0.0000  elapsed=6.7min  params=17,750
+
+────────────────────────────────────────────────────────────
+Config B: B    split 8act+8pos, joint norm
+  params=17,746  norm=joint
+────────────────────────────────────────────────────────────
+  e  1  loss=2.3047  task=2.2794  safety=0.0517  top1=0.1090  lr=2.36e-03
+  e 10  loss=2.2739  task=2.2738  safety=0.0001  top1=0.1139  lr=2.36e-03
+  e 20  loss=2.2692  task=2.2690  safety=0.0002  top1=0.1327  lr=2.36e-03
+  e 30  loss=2.2663  task=2.2662  safety=0.0002  top1=0.1246  lr=2.36e-03
+  e 40  loss=2.2646  task=2.2645  safety=0.0002  top1=0.1210  lr=2.36e-03
+  e 50  loss=2.2633  task=2.2631  safety=0.0002  top1=0.1248  lr=2.36e-03
+  e 60  loss=2.2624  task=2.2623  safety=0.0002  top1=0.1299  lr=2.36e-03
+  e 70  loss=2.2617  task=2.2615  safety=0.0002  top1=0.1241  lr=2.36e-03
+
+  top1=0.1531  vs_Ref=+0.0000  elapsed=6.5min  params=17,746
+
+────────────────────────────────────────────────────────────
+Config C: C    standard D=16, residual norm α=0.3
+  params=17,739  norm=residual
+────────────────────────────────────────────────────────────
+  e  1  loss=2.3273  task=2.3025  safety=0.0505  top1=0.0910  lr=2.36e-03
+  e 10  loss=2.2868  task=2.2868  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 20  loss=2.2846  task=2.2845  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 30  loss=2.2836  task=2.2835  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 40  loss=2.2827  task=2.2827  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 50  loss=2.2823  task=2.2822  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 60  loss=2.2821  task=2.2820  safety=0.0000  top1=0.0910  lr=2.36e-03
+  e 70  loss=2.2816  task=2.2816  safety=0.0000  top1=0.0910  lr=1.18e-03
+
+  top1=0.0910  vs_Ref=+0.0000  elapsed=3.5min  params=17,739
+
+────────────────────────────────────────────────────────────
+Config D: D    split 12act+4pos + residual norm α=0.3
+  params=17,750  norm=residual
+────────────────────────────────────────────────────────────
+  e  1  loss=2.3067  task=2.2817  safety=0.0511  top1=0.0983  lr=2.36e-03
+  e 10  loss=2.2444  task=2.2443  safety=0.0002  top1=0.1299  lr=2.36e-03
+  e 20  loss=2.2399  task=2.2398  safety=0.0002  top1=0.1353  lr=2.36e-03
+  e 30  loss=2.2375  task=2.2374  safety=0.0002  top1=0.1366  lr=2.36e-03
+  e 40  loss=2.2364  task=2.2363  safety=0.0002  top1=0.1358  lr=2.36e-03
+  e 50  loss=2.2356  task=2.2355  safety=0.0002  top1=0.1350  lr=2.36e-03
+  e 60  loss=2.2351  task=2.2350  safety=0.0002  top1=0.1363  lr=2.36e-03
+  e 70  loss=2.2347  task=2.2346  safety=0.0003  top1=0.1376  lr=2.36e-03
+
+  top1=0.1383  vs_Ref=+0.0000  elapsed=3.5min  params=17,750
+
+────────────────────────────────────────────────────────────
+Config E: E    split 12act+4pos, split norm (act/pos independent)
+  params=17,750  norm=split
+────────────────────────────────────────────────────────────
+  e  1  loss=2.3126  task=2.2872  safety=0.0517  top1=0.0994  lr=2.36e-03
+  e 10  loss=2.2765  task=2.2763  safety=0.0003  top1=0.0994  lr=2.36e-03
+  e 20  loss=2.2696  task=2.2693  safety=0.0006  top1=0.0994  lr=2.36e-03
+  e 30  loss=2.2633  task=2.2630  safety=0.0005  top1=0.0994  lr=2.36e-03
+  e 40  loss=2.2609  task=2.2605  safety=0.0006  top1=0.0994  lr=2.36e-03
+  e 50  loss=2.2577  task=2.2573  safety=0.0006  top1=0.0994  lr=2.36e-03
+  e 60  loss=2.2539  task=2.2535  safety=0.0007  top1=0.1001  lr=2.36e-03
+  e 70  loss=2.2524  task=2.2520  safety=0.0007  top1=0.1050  lr=2.36e-03
+
+  top1=0.1146  vs_Ref=+0.0000  elapsed=3.6min  params=17,750
+
+======================================================================
+STEP 141 SUMMARY — Split-D + Residual Hypersphere
+======================================================================
+Key   D_act  D_pos      norm    params     top1    vs_Ref
+────────────────────────────────────────────────────────────
+A        12      4     joint     17750  0.1470  +0.0000
+B         8      8     joint     17746  0.1531  +0.0000
+C         0      0  residual     17739  0.0910  +0.0000
+D        12      4  residual     17750  0.1383  +0.0000
+E        12      4     split     17750  0.1146  +0.0000
+
+Results saved → /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step141_splitD_residual.json

@@ -1,0 +1,50 @@
+
+======================================================================
+Step 177 — warm+W_proj N=1024 D=48 K_hh=4 Tier-2 (full data 150ep)
+N=1024  D=48  K_hh=4  K_iter=8  α=1.0  Data=100%  Epochs=150
+step172-B reference (50%/75ep): 94.01%
+step169-B reference (D=32 K_hh=8 full data): 94.01% @ ~6.1M FLOPs
+This run FLOPs ~4.65M (25% BELOW 6.18M budget) — lower FLOPs than step174
+Phase-exit target: ≥95% @ FLOPs ~4.65M
+======================================================================
+  Teacher loaded from /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step172_teacher_d48.pt
+    warm_load: 8 keys, 1 new, 0 teacher-only
+  params=102,112
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=1.5235  task=1.5235  safety=0.0000  top1=0.7822  lr=2.36e-03
+  ep 10  val=0.9134
+  e 10  loss=0.3678  task=0.3678  safety=0.0000  top1=0.9134  lr=2.36e-03
+  ep 20  val=0.9289
+  e 20  loss=0.2799  task=0.2799  safety=0.0000  top1=0.9289  lr=2.36e-03
+  ep 30  val=0.9332
+  e 30  loss=0.2435  task=0.2435  safety=0.0000  top1=0.9332  lr=2.36e-03
+  ep 40  val=0.9307
+  e 40  loss=0.2214  task=0.2214  safety=0.0000  top1=0.9307  lr=2.36e-03
+  ep 50  val=0.9404
+  e 50  loss=0.2057  task=0.2057  safety=0.0000  top1=0.9404  lr=2.36e-03
+  ep 60  val=0.9437
+  e 60  loss=0.1988  task=0.1988  safety=0.0000  top1=0.9437  lr=2.36e-03
+  ep 70  val=0.9386
+  e 70  loss=0.1869  task=0.1869  safety=0.0000  top1=0.9386  lr=2.36e-03
+  ep 80  val=0.9447
+  e 80  loss=0.1816  task=0.1816  safety=0.0000  top1=0.9447  lr=2.36e-03
+  ep 90  val=0.9470
+  e 90  loss=0.1782  task=0.1782  safety=0.0000  top1=0.9470  lr=2.36e-03
+  ep100  val=0.9462
+  e100  loss=0.1737  task=0.1737  safety=0.0000  top1=0.9462  lr=2.36e-03
+  ep110  val=0.9396
+  e110  loss=0.1696  task=0.1696  safety=0.0000  top1=0.9396  lr=2.36e-03
+  ep120  val=0.9442
+  e120  loss=0.1716  task=0.1716  safety=0.0000  top1=0.9442  lr=2.36e-03
+  ep130  val=0.9442
+  e130  loss=0.1679  task=0.1679  safety=0.0000  top1=0.9442  lr=2.36e-03
+  ep140  val=0.9411
+  e140  loss=0.1638  task=0.1638  safety=0.0000  top1=0.9411  lr=2.36e-03
+  ep150  val=0.9511 *** PHASE EXIT! ***
+  e150  loss=0.1626  task=0.1626  safety=0.0000  top1=0.9511  lr=2.36e-03
+
+======================================================================
+STEP 177: 0.9513  vs_step172B=+0.0112  vs_step174=-0.0069  ✓ PHASE EXIT ACHIEVED!
+best_ep=133  params=102,112  FLOPs~4.65M (<6.18M budget)
+Results → /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step177_d48_khh4_tier2.json
+======================================================================

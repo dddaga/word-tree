@@ -1,0 +1,58 @@
+
+======================================================================
+Step 222 — Paper baselines (Tier-0 scouts)
+N=2048 D=16 K_hh=2 K_iter=5 | 20ep 50% data
+FLOPs=983,040 (~0.98M)
+Question: does SGNNET iterative routing beat random projection?
+Running: ['Ref', 'A', 'B', 'C']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: SGNNET step199 (N=2048 D=16 K_hh=2 K_iter=5 AH=1.0)
+────────────────────────────────────────────────────────────
+  params=67,744
+  e  1  loss=6.1139  task=6.1139  safety=0.0000  top1=0.3659  lr=2.36e-03
+  e 10  loss=0.3983  task=0.3983  safety=0.0000  top1=0.8879  lr=2.36e-03
+  e 20  loss=0.2753  task=0.2753  safety=0.0000  top1=0.9134  lr=2.36e-03
+  → best=0.9175 @ ep18  (121s)
+
+────────────────────────────────────────────────────────────
+Config A: MLP 2-hidden (h=3, ReLU+BN, ~75,303p)
+────────────────────────────────────────────────────────────
+  params=75,333
+  e  1  loss=2.3644  task=2.3644  safety=0.0000  top1=0.0825  lr=2.36e-03
+  e 10  loss=2.3646  task=2.3646  safety=0.0000  top1=0.0838  lr=2.36e-03
+  e 20  loss=2.3656  task=2.3656  safety=0.0000  top1=0.0836  lr=1.18e-03
+  → best=0.0848 @ ep8  (3s)
+
+────────────────────────────────────────────────────────────
+Config B: RandProj (fixed 25088→6699) + linear head (~66,990p learned)
+────────────────────────────────────────────────────────────
+  params=67,002
+  e  1  loss=2.4563  task=2.4563  safety=0.0000  top1=0.0915  lr=2.36e-03
+  e 10  loss=2.4563  task=2.4563  safety=0.0000  top1=0.0915  lr=2.36e-03
+  e 20  loss=2.4563  task=2.4563  safety=0.0000  top1=0.0915  lr=1.18e-03
+  → best=0.0915 @ ep1  (49s)
+
+────────────────────────────────────────────────────────────
+Config C: Linear probe (25088→10, 250,890p)
+────────────────────────────────────────────────────────────
+  params=250,892
+  e  1  loss=2.5878  task=2.5878  safety=0.0000  top1=0.0777  lr=2.36e-03
+  e 10  loss=2.5878  task=2.5878  safety=0.0000  top1=0.0777  lr=2.36e-03
+  e 20  loss=2.5878  task=2.5878  safety=0.0000  top1=0.0777  lr=1.18e-03
+  → best=0.0777 @ ep1  (3s)
+
+======================================================================
+STEP 222 SUMMARY — Paper baselines
+======================================================================
+  Ref: 0.9175  params=67,744
+  A: 0.0848  params=75,333  Δ=-0.8327
+  B: 0.0915  params=67,002  Δ=-0.8260
+  C: 0.0777  params=250,892  Δ=-0.8398
+
+  SGNNET vs RandProj gap: +0.8260pp
+  (positive = SGNNET routing adds value beyond random projection)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step222_paper_baselines.json

@@ -1,0 +1,50 @@
+
+======================================================================
+Step 175 — warm+W_proj N=1024 D=32 K_hh=4 Tier-2 (full data 150ep)
+N=1024  D=32  K_hh=4  K_iter=8  α=1.05  Data=100%  Epochs=150
+step171-B reference (50%/75ep): 93.35%
+step169-B reference (K_hh=8 full data): 94.01% @ ~6.1M FLOPs
+This run FLOPs ~3.1M (HALF of step169) — same accuracy test
+Phase-exit target: ≥95% @ FLOPs ~3.1M
+======================================================================
+  Teacher loaded from /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step171_teacher_khh4_d32.pt
+    warm_load: 8 keys, 1 new, 0 teacher-only
+  params=67,904
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=1.3508  task=1.3508  safety=0.0000  top1=0.8074  lr=2.36e-03
+  ep 10  val=0.9146
+  e 10  loss=0.3050  task=0.3050  safety=0.0000  top1=0.9146  lr=2.36e-03
+  ep 20  val=0.9287
+  e 20  loss=0.2329  task=0.2329  safety=0.0000  top1=0.9287  lr=2.36e-03
+  ep 30  val=0.9266
+  e 30  loss=0.2047  task=0.2047  safety=0.0000  top1=0.9266  lr=2.36e-03
+  ep 40  val=0.9251
+  e 40  loss=0.1868  task=0.1868  safety=0.0000  top1=0.9251  lr=2.36e-03
+  ep 50  val=0.9368
+  e 50  loss=0.1732  task=0.1732  safety=0.0000  top1=0.9368  lr=2.36e-03
+  ep 60  val=0.9292
+  e 60  loss=0.1646  task=0.1646  safety=0.0000  top1=0.9292  lr=2.36e-03
+  ep 70  val=0.9340
+  e 70  loss=0.1546  task=0.1546  safety=0.0000  top1=0.9340  lr=2.36e-03
+  ep 80  val=0.9378
+  e 80  loss=0.1511  task=0.1511  safety=0.0000  top1=0.9378  lr=2.36e-03
+  ep 90  val=0.9343
+  e 90  loss=0.1512  task=0.1512  safety=0.0000  top1=0.9343  lr=2.36e-03
+  ep100  val=0.9361
+  e100  loss=0.1428  task=0.1428  safety=0.0000  top1=0.9361  lr=2.36e-03
+  ep110  val=0.9373
+  e110  loss=0.1411  task=0.1411  safety=0.0000  top1=0.9373  lr=2.36e-03
+  ep120  val=0.9386
+  e120  loss=0.1389  task=0.1389  safety=0.0000  top1=0.9386  lr=2.36e-03
+  ep130  val=0.9429
+  e130  loss=0.1366  task=0.1366  safety=0.0000  top1=0.9429  lr=2.36e-03
+  ep140  val=0.9399
+  e140  loss=0.1372  task=0.1372  safety=0.0000  top1=0.9399  lr=2.36e-03
+  ep150  val=0.9452
+  e150  loss=0.1299  task=0.1299  safety=0.0000  top1=0.9452  lr=2.36e-03
+
+======================================================================
+STEP 175: 0.9462  vs_step171B=+0.0127  vs_step169=+0.0061  (0.004pp short)
+best_ep=138  params=67,904  FLOPs~3.1M (vs step169 ~6.1M)
+Results → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step175_d32_khh4_fulldata.json
+======================================================================

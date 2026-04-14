@@ -126,8 +126,8 @@ def trainer_kwargs(
     """
     return {
         "lr_wpos": lr_wpos if lr_wpos is not None else GA_BEST["lr_Wpos"],
-        "lambda_safety": scaled_lambda_safety(n_hidden),
-        "lambda_lb": 0.01,
+        "lambda_safety": 0.0,   # removed: step154 confirmed safe, AH handles positional diversity
+        "lambda_lb": 0.0,      # removed: only +0.21pp evidence (step79), below noise
         "use_amp": True,
         "grad_clip_norm": float("inf"),  # no clipping — matches iter1 (26.52%)
         "sched_type": sched_type,

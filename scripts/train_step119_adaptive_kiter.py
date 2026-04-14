@@ -370,9 +370,9 @@ def main():
 
     print("Configs:")
     for c in CONFIGS:
+        k_str = "ACT" if c.use_act else str(c.k_iter_override or K_ITER)
         print(f"  {c.key:4s}  act={c.use_act!s:5s}  tau={c.tau:<5.2f}  "
-              f"k_iter={'ACT':>4s if c.use_act else str(c.k_iter_override or K_ITER):>4s}  "
-              f"{c.label}")
+              f"k_iter={k_str:>4s}  {c.label}")
     print()
 
     get_loaders()

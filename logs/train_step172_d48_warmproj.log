@@ -1,0 +1,110 @@
+
+======================================================================
+Step 172 — warm+W_proj N=1024 D=48 K_hh=4 (representation capacity test)
+N=1024  D=48  K_hh=4  K_in=25  Epochs=75  Data=50%
+FLOPs ~4.65M ≤ 6.18M budget ✓
+Phase-exit: ≥95% @ ≤6.18M FLOPs
+step169 D=32 K_hh=8 reference (full data): 94.01%
+======================================================================
+
+Training N=1024 D=48 K_hh=4 teacher K=12 for 75ep...
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=1.9534  task=1.9534  safety=0.0000  top1=0.7406  lr=2.36e-03
+  ep 10  val=0.8854
+  e 10  loss=0.7184  task=0.7184  safety=0.0000  top1=0.8854  lr=2.36e-03
+  ep 20  val=0.8833
+  e 20  loss=0.5975  task=0.5975  safety=0.0000  top1=0.8833  lr=2.36e-03
+  ep 30  val=0.8915
+  e 30  loss=0.5325  task=0.5325  safety=0.0000  top1=0.8915  lr=2.36e-03
+  ep 40  val=0.9098
+  e 40  loss=0.5011  task=0.5011  safety=0.0000  top1=0.9098  lr=2.36e-03
+  ep 50  val=0.8955
+  e 50  loss=0.5045  task=0.5045  safety=0.0000  top1=0.8955  lr=2.36e-03
+  ep 60  val=0.9106
+  e 60  loss=0.4639  task=0.4639  safety=0.0000  top1=0.9106  lr=2.36e-03
+  ep 70  val=0.8734
+  e 70  loss=0.4379  task=0.4379  safety=0.0000  top1=0.8734  lr=2.36e-03
+  Teacher done: 0.9144
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  K=8 scratch D=48 K_hh=4 (D=48 baseline)
+────────────────────────────────────────────────────────────
+  params=99,808  D=48  K_hh=4  alpha=1.0
+  e  1  loss=2.2537  task=2.2537  safety=0.0000  top1=0.5376  lr=2.36e-03
+  ep 10  val=0.8341
+  e 10  loss=1.0616  task=1.0616  safety=0.0000  top1=0.8341  lr=2.36e-03
+  ep 20  val=0.8145
+  e 20  loss=0.8884  task=0.8884  safety=0.0000  top1=0.8145  lr=2.36e-03
+  ep 30  val=0.8622
+  e 30  loss=0.7903  task=0.7903  safety=0.0000  top1=0.8622  lr=2.36e-03
+  ep 40  val=0.8482
+  e 40  loss=0.7465  task=0.7465  safety=0.0000  top1=0.8482  lr=2.36e-03
+  ep 50  val=0.8038
+  e 50  loss=0.7407  task=0.7407  safety=0.0000  top1=0.8038  lr=2.36e-03
+  ep 60  val=0.8696
+  e 60  loss=0.6701  task=0.6701  safety=0.0000  top1=0.8696  lr=2.36e-03
+  ep 70  val=0.8670
+  e 70  loss=0.6648  task=0.6648  safety=0.0000  top1=0.8670  lr=2.36e-03
+
+  top1=0.8884  vs_Ref=+0.0000  vs_step169=-0.0517  (0.062pp short)  elapsed=21.9min
+
+────────────────────────────────────────────────────────────
+Config B: B    warm+W_proj D=48 K_hh=4 alpha=1.0  ← primary
+────────────────────────────────────────────────────────────
+  Warm-loading from D=48 K_hh=4 teacher...
+    warm_load: 8 keys, 1 new, 0 teacher-only
+  params=102,112  D=48  K_hh=4  alpha=1.0
+  e  1  loss=1.9279  task=1.9279  safety=0.0000  top1=0.6425  lr=2.36e-03
+  ep 10  val=0.9011
+  e 10  loss=0.4630  task=0.4630  safety=0.0000  top1=0.9011  lr=2.36e-03
+  ep 20  val=0.9187
+  e 20  loss=0.3374  task=0.3374  safety=0.0000  top1=0.9187  lr=2.36e-03
+  ep 30  val=0.9231
+  e 30  loss=0.2898  task=0.2898  safety=0.0000  top1=0.9231  lr=2.36e-03
+  ep 40  val=0.9307
+  e 40  loss=0.2523  task=0.2523  safety=0.0000  top1=0.9307  lr=2.36e-03
+  ep 50  val=0.9327
+  e 50  loss=0.2343  task=0.2343  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 60  val=0.9330
+  e 60  loss=0.2185  task=0.2185  safety=0.0000  top1=0.9330  lr=2.36e-03
+  ep 70  val=0.9350
+  e 70  loss=0.2035  task=0.2035  safety=0.0000  top1=0.9350  lr=2.36e-03
+
+  top1=0.9401  vs_Ref=+0.0517  vs_step169=+0.0000  (0.010pp short)  elapsed=27.0min
+
+────────────────────────────────────────────────────────────
+Config C: C    warm+W_proj D=48 K_hh=4 alpha=1.05 ← alpha tweak
+────────────────────────────────────────────────────────────
+  Warm-loading from D=48 K_hh=4 teacher...
+    warm_load: 8 keys, 1 new, 0 teacher-only
+  params=102,112  D=48  K_hh=4  alpha=1.05
+  e  1  loss=1.8106  task=1.8106  safety=0.0000  top1=0.6706  lr=2.36e-03
+  ep 10  val=0.8754
+  e 10  loss=0.4612  task=0.4612  safety=0.0000  top1=0.8754  lr=2.36e-03
+  ep 20  val=0.9190
+  e 20  loss=0.3470  task=0.3470  safety=0.0000  top1=0.9190  lr=2.36e-03
+  ep 30  val=0.9269
+  e 30  loss=0.2988  task=0.2988  safety=0.0000  top1=0.9269  lr=2.36e-03
+  ep 40  val=0.9259
+  e 40  loss=0.2598  task=0.2598  safety=0.0000  top1=0.9259  lr=2.36e-03
+  ep 50  val=0.9304
+  e 50  loss=0.2368  task=0.2368  safety=0.0000  top1=0.9304  lr=2.36e-03
+  ep 60  val=0.9358
+  e 60  loss=0.2190  task=0.2190  safety=0.0000  top1=0.9358  lr=2.36e-03
+  ep 70  val=0.9315
+  e 70  loss=0.2073  task=0.2073  safety=0.0000  top1=0.9315  lr=2.36e-03
+
+  top1=0.9422  vs_Ref=+0.0538  vs_step169=+0.0021  (0.008pp short)  elapsed=24.4min
+
+======================================================================
+STEP 172 SUMMARY — warm+W_proj D=48 K_hh=4
+======================================================================
+step169 D=32 K_hh=8 full data reference: 94.01%
+Phase-exit target: ≥95% @ FLOPs ≤6.18M
+Key   label                                             top1    vs_Ref    vs_169    phase_exit
+──────────────────────────────────────────────────────────────────────────────────────────
+Ref   Ref  K=8 scratch D=48 K_hh=4 (D=48 baseline)   0.8884  +0.0000  -0.0517      -0.062pp
+B     B    warm+W_proj D=48 K_hh=4 alpha=1.0  ← pri  0.9401  +0.0517  +0.0000      -0.010pp
+C     C    warm+W_proj D=48 K_hh=4 alpha=1.05 ← alp  0.9422  +0.0538  +0.0021      -0.008pp
+
+Results → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step172_d48_warmproj.json

@@ -1,0 +1,52 @@
+
+======================================================================
+Step 154 — Safety Valve Loss Ablation
+N=1024  D=16  K_hh=8  K_iter=8  K_in=25
+Epochs=20  Device=mps  Data=50%
+======================================================================
+
+  Ref   Ref  standard safety (λ≈0.49)
+  A     A    no safety (λ=0.0)
+  B     B    2× safety (λ≈0.98)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  Default lambda_safety for N=1024: 0.4886
+
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  standard safety (λ≈0.49)  lambda_safety=0.4886  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  loss=5.8700  task=5.8171  safety=0.1082  top1=0.1085  lr=2.36e-03
+  e 10  loss=1.9487  task=1.9162  safety=0.0665  top1=0.4757  lr=2.36e-03
+  e 20  loss=1.4965  task=1.4681  safety=0.0581  top1=0.6408  lr=2.36e-03
+
+  top1=0.6408  vs_Ref=+0.0000  safety_last=0.058096  elapsed=3.0min
+
+────────────────────────────────────────────────────────────
+Config A: A    no safety (λ=0.0)  lambda_safety=0.0000  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  loss=6.4011  task=6.4011  safety=0.1105  top1=0.1190  lr=2.36e-03
+  e 10  loss=1.6513  task=1.6513  safety=0.1129  top1=0.5136  lr=2.36e-03
+  e 20  loss=1.2228  task=1.2228  safety=0.1191  top1=0.7383  lr=2.36e-03
+
+  top1=0.7383  vs_Ref=+0.0975  safety_last=0.119114  elapsed=2.9min
+
+────────────────────────────────────────────────────────────
+Config B: B    2× safety (λ≈0.98)  lambda_safety=0.9772  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  loss=10.8196  task=10.7139  safety=0.1081  top1=0.1068  lr=2.36e-03
+  e 10  loss=1.7292  task=1.6828  safety=0.0474  top1=0.5755  lr=2.36e-03
+  e 20  loss=1.2879  task=1.2545  safety=0.0342  top1=0.7465  lr=2.36e-03
+
+  top1=0.7465  vs_Ref=+0.1057  safety_last=0.034197  elapsed=2.9min
+
+======================================================================
+STEP 154 SUMMARY — Safety Valve Ablation
+======================================================================
+  Ref   λ_safety=0.4886  top1=0.6408  vs_Ref=+0.0000  safety_final=0.058096
+  A     λ_safety=0.0000  top1=0.7383  vs_Ref=+0.0975  safety_final=0.119114
+  B     λ_safety=0.9772  top1=0.7465  vs_Ref=+0.1057  safety_final=0.034197
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step154_safety_ablation.json
+
+  VERDICT: Safety removal is SAFE (Δ=+0.0975). Can set lambda_safety=0 globally.

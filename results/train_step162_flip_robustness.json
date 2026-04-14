@@ -1,0 +1,41 @@
+{
+  "VGG16_direct": {
+    "label": "VGG16 FC head (pretrained ImageNet, 138M params)",
+    "orig_acc": 0.9954,
+    "flip_acc": 0.9949,
+    "delta": -0.0005,
+    "robustness": 0.9995,
+    "n_params": 138357544,
+    "trained_on": "ImageNet"
+  },
+  "FC_linear": {
+    "label": "Linear(25088\u219210) \u2014 one matrix multiply",
+    "orig_acc": 0.9679,
+    "flip_acc": 0.9707,
+    "delta": 0.0028,
+    "robustness": 1.0029,
+    "n_params": 250890,
+    "epochs": 5,
+    "trained_on": "Imagenette original features"
+  },
+  "FC_mlp": {
+    "label": "MLP 25088\u2192512\u2192128\u219210 \u2014 deep but static",
+    "orig_acc": 0.9717,
+    "flip_acc": 0.9725,
+    "delta": 0.0008,
+    "robustness": 1.0008,
+    "n_params": 12912522,
+    "epochs": 20,
+    "trained_on": "Imagenette original features"
+  },
+  "SGNNET": {
+    "label": "SGNNET N=1024 D=16 K_iter=8 AH \u2014 graph routing",
+    "orig_acc": 0.8217,
+    "flip_acc": 0.8173,
+    "delta": -0.0043,
+    "robustness": 0.9947,
+    "n_params": 33952,
+    "epochs": 75,
+    "trained_on": "Imagenette original features"
+  }
+}

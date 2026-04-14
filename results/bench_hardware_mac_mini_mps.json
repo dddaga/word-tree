@@ -1,0 +1,100 @@
+{
+  "system": {
+    "hostname": "Dhirajs-Mac-mini.local",
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "cpu": "arm",
+    "device_type": "mps",
+    "gpu_name": "Apple MPS",
+    "gpu_mem_allocated_mb": 0.0
+  },
+  "models": {
+    "VGG16_FC": {
+      "flops": 247267328,
+      "params": 119586826,
+      "inference": {
+        "1": {
+          "latency_ms": 2.166,
+          "throughput_sps": 461.7,
+          "latency_p5_ms": 2.136,
+          "latency_p95_ms": 2.214,
+          "gpu_mem_mb": 478.5
+        },
+        "32": {
+          "latency_ms": 4.3,
+          "throughput_sps": 7441.5,
+          "latency_p5_ms": 4.27,
+          "latency_p95_ms": 4.356,
+          "gpu_mem_mb": 481.6
+        },
+        "128": {
+          "latency_ms": 6.199,
+          "throughput_sps": 20649.9,
+          "latency_p5_ms": 6.181,
+          "latency_p95_ms": 6.236,
+          "gpu_mem_mb": 491.2
+        },
+        "512": {
+          "latency_ms": 20.2,
+          "throughput_sps": 25345.9,
+          "latency_p5_ms": 20.082,
+          "latency_p95_ms": 20.35,
+          "gpu_mem_mb": 529.8
+        }
+      },
+      "training": {
+        "batch_size": 128,
+        "step_ms": 46.719,
+        "throughput_sps": 2739.8,
+        "step_p5_ms": 46.62,
+        "step_p95_ms": 46.877,
+        "gpu_mem_mb": 1926.7
+      },
+      "nvidia_smi_inference": {},
+      "nvidia_smi_training": {}
+    },
+    "SGNNET": {
+      "flops": 2129920,
+      "params": 35008,
+      "inference": {
+        "1": {
+          "latency_ms": 1.01,
+          "throughput_sps": 990.5,
+          "latency_p5_ms": 0.995,
+          "latency_p95_ms": 1.034,
+          "gpu_mem_mb": 1.1
+        },
+        "32": {
+          "latency_ms": 6.156,
+          "throughput_sps": 5198.1,
+          "latency_p5_ms": 6.099,
+          "latency_p95_ms": 6.205,
+          "gpu_mem_mb": 4.2
+        },
+        "128": {
+          "latency_ms": 23.855,
+          "throughput_sps": 5365.8,
+          "latency_p5_ms": 23.815,
+          "latency_p95_ms": 23.889,
+          "gpu_mem_mb": 13.8
+        },
+        "512": {
+          "latency_ms": 97.411,
+          "throughput_sps": 5256.1,
+          "latency_p5_ms": 97.314,
+          "latency_p95_ms": 97.538,
+          "gpu_mem_mb": 52.5
+        }
+      },
+      "training": {
+        "batch_size": 128,
+        "step_ms": 70.514,
+        "throughput_sps": 1815.2,
+        "step_p5_ms": 70.269,
+        "step_p95_ms": 70.605,
+        "gpu_mem_mb": 14.4
+      },
+      "nvidia_smi_inference": {},
+      "nvidia_smi_training": {}
+    }
+  }
+}

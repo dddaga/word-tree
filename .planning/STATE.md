@@ -24,8 +24,10 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Phase
 
 **Phase 5 — Scalable Architecture Experiments**
-Status: In progress (3/6 plans complete, experiments running in tmux)
-Next action: Complete remaining Phase 5 plans (04-06); dispatch exp4_reflection when Mac Studio slot opens
+Status: In progress — 155+ experiments completed, continuous launch cycle
+Focus: Structural experiments (step152 constraint discovery, step153 progressive capacity, step141 split-D), diagnostics-driven methodology, dynamic routing persistence
+Project best: **97.86%** (step89-A, N=4096, 150ep)
+Next action: Complete step133 (α=1.10 Tier-1), step141 (split-D), step155 (diagnostics baseline); launch step116/step152 when slots free
 
 ## Phase Progress
 
@@ -139,8 +141,9 @@ None currently.
 
 ## Last Session
 
-- **Stopped at:** Primary goal confirmed (SGNNET as FFN replacement); steps 57-61 designed; CLAUDE.md + EXPERIMENT_QUEUE.md + STATE.md + ROADMAP.md updated; phase plan files annotated
-- **Timestamp:** 2026-04-04T16:00:00Z
+- **Stopped at:** step235 COMPLETED (2026-04-12 20:47). ΔW-rot mechanism validated: 97.30% record at N=2048 (no AH + augmented data). GA v2 autorun ongoing: [42/50] scouts completed, optimization pool=50, fitness=acc×efficiency. Next: Tier-1 ΔW-rot validation on larger N scales.
+- **Timestamp:** 2026-04-13
+- **Running:** ga_v2 (Mac Studio MPS, autorun scouts) — [42/50] completed, continuing to [50/50]
 
 ---
 *State initialized: 2026-03-23*

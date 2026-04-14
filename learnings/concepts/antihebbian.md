@@ -114,6 +114,20 @@ Mechanisms that add to AH at N=1024 often fail at N=4096. Three confirmed cases:
 
 Hypothesis: at N=4096 with K_hh=4, connectivity is 0.1%. Structure-dependent mechanisms can't differentiate in this extreme sparsity. AH's fixed-point routing is already near-optimal. Mechanisms operating on signal (Z-bias, redistribution) may transfer because they don't depend on topology density. step115 tests this.
 
+## Diagnostics Findings (step155) [CONFIRMED]
+
+| Config | N | D | AH | eff_rank | trend | grad_theta | grad_wpos |
+|--------|---|---|----|----------|-------|------------|-----------|
+| A (best arch) | 4096 | 64 | 1.0 | — | — | 0.997 | 0.07 (14:1 ratio) |
+| B | 1024 | 16 | 1.0 | 4.6/16 | rising | — | — |
+| E (AH=0 control) | 1024 | 16 | 0.0 | 5.2/16 | collapse | — | — |
+
+**AH as anti-collapse mechanism [CONFIRMED clean ablation E vs B]:** Without AH, eff_rank collapses during training. With AH, eff_rank rises. This is the first direct mechanistic evidence for *why* AH works — it enforces dimensional diversity by suppressing co-directional neurons.
+
+**W_pos barely learns at N=4096 [CONFIRMED]:** grad_theta/grad_wpos = 14:1. wpos_norm_mean=4.609 static throughout 20ep. W_pos converges in early epochs and freezes. Implication: W_pos initialization matters most; fine-tuning W_pos LR unlikely to help; Fourier initialization provides a sufficient prior that AH locks in quickly.
+
+**Neuron utilization = 100% across all configs:** No dead neurons in any config. Every neuron is load-bearing — confirms why pruning methods (step153) fail catastrophically.
+
 ## Open Questions
 
 1. **N-scaling on patched arch**: step72 partial results show steep monotone N-scaling (256→57.9%, 512→74.5%, 1024→87.0%, 2048→93.7%). N=4096 pending.

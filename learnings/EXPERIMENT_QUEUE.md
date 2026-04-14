@@ -92,16 +92,65 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (Mac Studio only, cap: 2)
+## Currently Running (5 slots, updated 2026-04-14)
 
-| Machine | Slot | Session | Step | Status | Note |
-|---------|------|---------|------|--------|------|
-| Mac Studio MPS | step233 | step233 | step233 | RUNNING | θ-edge precision (fixed optimizer injection) 20ep |
-| Mac Studio CPU | step235 | step235 | step235 | RUNNING | ΔW rotation ± AH ± augmentation 150ep, ep60 |
+| Machine:Device | Session | Step | Status | Note |
+|---------|---------|------|--------|------|
+| mini:mps | step306 | Activation retention N=1024 | RUNNING | 20ep × 7 configs, relaunched after bug fix |
+| mini:cpu | step300 | Polarizer α sweep Tier-1 | RUNNING | 75ep × 6 configs, α={0.5,1.0,1.5,2.0,2.5}, ep~30 |
+| studio:mps | step320 | F.normalize ablation | RUNNING | 20ep × 3 configs, paper-critical |
+| studio:cpu | step321 | AH α sweep | RUNNING | 20ep × 7 configs, paper-critical |
+| 5060ti:cuda | step301 | ΔW × AH interaction | RUNNING | 8 configs, ΔW proj + weak AH sweep |
+
+**bench_hw DONE 2026-04-14:** RTX 5060Ti beats Mac Mini MPS on SGNNET training (23.7ms vs 70.5ms). SGNNET outperforms VGG FC at bs≤32 on CUDA. Results: `results/bench_hardware_5060ti_cuda.json`
+**ga_v2 DONE 2026-04-13:** GA converged to (N=2048 D=16 K_hh=2 K_iter=5, alpha_ahebb=0.0, delta_proj, pa=1.5) at 96.31% (gen 4).
 
 ---
 
 ## Priority Queue (Restructured 2026-04-11 — Compound Winners + Polarizer Routing)
+
+### P-PAPER — Paper-blocking ablations and synthesis experiments (2026-04-14)
+
+| Step | Description | Scale | FLOPs | Script | Status |
+|------|-------------|-------|-------|--------|--------|
+| **step300** | **Polarizer α Tier-1 sweep** — α={0.5,1.0,1.5,2.0,2.5}. step217b showed α=1.5 optimal at Tier-1 (95.92%); GA v2 converged pa=1.5. Confirms monotonic trend. | N=2048 D=16 | ~2M | ✅ | **RUNNING (mini:mps)** |
+| **step301** | **ΔW × AH interaction** — user hypothesis: weak AH (α<1) may serve as small-ΔW edge mask. Configs: A_proj (no AH), B_a{025,050,075,100} (ΔW proj + AH sweep), C_rot, C_rot_a050. | N=2048 D=16 | 0.98M | ✅ | **RUNNING (5060ti:cuda)** |
+| **step306** | **Activation retention mechanism** — user-proposed: keep portion of Z_fwd on sender. Static/decay/norm-conserving/reinject variants at **low N first (N=1024)**. | N=1024 D=16 | ~0.5M | ✅ | **RUNNING (mini:cpu)** |
+| **step320** | **F.normalize ablation (paper-critical)** — rerun step129 at N=2048 efficiency base. Tests "F.normalize is load-bearing" claim. A=no norm (clamp only), B=RMSNorm. | N=2048 D=16 | 0.98M | ✅ | **RUNNING (studio:mps)** |
+| **step321** | **AH α sweep (paper-critical)** — α={0.00, 0.25, 0.50, 0.75, 1.00, 1.25, 1.50}. Validates "AH is load-bearing" claim. α=0 collapse reproduces step218. | N=2048 D=16 | 0.98M | ✅ | **RUNNING (studio:cpu)** |
+| **step400** | **CIFAR-10 generalization (paper-critical)** — raw pixel input (N_IN=3072). Linear baseline + N={512,2048,4096} SGNNET. 30ep full data. Cross-dataset proof. | N=2048 D=16 | ~1M | ✅ | QUEUED |
+| **step401** | **Baselines: pruned VGG + random-proj SGNNET (paper-critical)** — Lin_direct / MLP_2 / MLP_3 / SGNNET_RandProj. Contextualize efficiency claim. 20ep Tier-0. | N=2048 | 0.98M | ✅ | QUEUED |
+| **step402** | **N-scaling law curve** — N={256,512,1024,2048,4096,8192}, D=16, K_hh=2, K_iter=5, AH=1.0. 75ep 50% data. Fit log-linear curve for paper. | various | various | ✅ | QUEUED |
+| **step403** | **ΔW Tier-1 validation + ΔW+Polarizer combo** — Ref/A_proj/A_proj_pa15/A_proj_a025. Confirms step234 breakthrough at 75ep; tests ΔW+polarizer compound. | N=2048 D=16 | 0.98M | ✅ | QUEUED |
+
+### P-CUDA — CUDA optimization for realizing SGNNET's 116x FLOPs advantage (2026-04-14)
+
+Motivation: Despite 116x fewer FLOPs, SGNNET is only 1.21x faster than VGG FC on CUDA. GPU utilization = 2.6% (memory-bandwidth-bound due to random gather indices). Research (VLDB 2025, DGL blog, PyTorch CUDA graphs) identifies 4 stacked optimizations giving 3-8x combined speedup.
+
+| Step | Description | Effort | Expected speedup | Script | Status |
+|------|-------------|--------|------------------|--------|--------|
+| **step500** | **torch.compile + CUDA graphs bench** — V0_eager / V1_compile / V2_cuda_graph / V3_fused. Also adds `src/sgnnet/model_resonant_cuda.py` dropin. CUDA-only. | 30min-2h | 1.4-2x | 🔨 agent writing | QUEUED |
+| **step520** | **RCM index reordering** — Reverse Cuthill-McKee permutation of node IDs for L2 cache locality. Mathematically identical but reorders memory layout. Also retests reordering mid-training. | 4h | 1.3-2.4x | 🔨 agent writing | QUEUED |
+| **step530** | **Triton fused kernel (gather+mul+sum)** — custom kernel eliminating [B,N,K_hh,D] intermediate tensor. Register-tiled for D=16. | 1-2d | 2-4x | DEFERRED | QUEUED |
+
+### P-KITER — Reducing sequential K_iter passes (biggest FLOPs lever) (2026-04-14)
+
+Motivation: K_iter=5 is the dominant latency factor (5 serial passes can't parallelize, theoretical max speedup = 116/5 = 23x).
+
+**Prior findings (STALE, not on current efficiency config):**
+- step163 warm-start (K=12 teacher → K=8 student weights): **+7.82pp** at N=1024 D=16 K_hh=8 (known winner)
+- step142 C curriculum LOW→HIGH (2→4→8→12): **+2.85pp** at N=1024
+- step127 distillation: **HURT** — distillation objective interferes with warm-start gain
+- step216 curriculum at N=2048 D=16: **KILLED −58pp** ("curriculum is N=1024-only capacity crutch")
+- step173 warm-start at N=2048 D=32 K_hh=4: HURT −0.23pp
+
+**Hypothesis:** warm-start/annealing may still work at efficiency config (N=2048 D=16 **K_hh=2**) — never tested at this exact config. step173 failure was at different K_hh, different D.
+
+| Step | Description | Scale | FLOPs | Script | Status |
+|------|-------------|-------|-------|--------|--------|
+| **step610** | **K_iter annealing at efficiency config** — 6 schedules tested: Ref/up/down_gentle/down_aggr/warm_switch_k5/warm_switch_k3. 75ep, 50% data. Retests step142/164 findings at current config. | N=2048 D=16 K_hh=2 | varies | 🔨 agent writing | QUEUED |
+| **step611** | **K_iter warm transfer** — teacher K=12 for 40ep, student K=5/K=3 for 35ep (reproduces step163 mechanism at efficiency config). Configs: A_12to5/B_12to3/C_8to5/D_16to5. | N=2048 D=16 K_hh=2 | final varies | 🔨 agent writing | QUEUED |
+| **step612** | **K_iter distillation at efficiency config** — retest step127 (KL distillation) on current config to confirm distillation still hurts. | N=2048 D=16 K_hh=2 | 0.60M (K=3) | 🔨 agent writing | QUEUED |
 
 ### P-NEW — Active experiments on step199 final config
 
@@ -120,9 +169,12 @@ Eval: `scripts/eval_efficiency_config.py`
 | **step225** | Equilibrium propagation pilot — train without backprop | N=2048 | 0.98M | ✅ | QUEUED |
 | **step226** | Skip connections — A/B KILLED (−10 to −14pp). C learned gate α=0 (explicitly rejected skips). | N=2048 | 0.98M | ✅ | **DONE** |
 | **step232** | Scalar edge weights — ALL ~18% (broken forward pass, gradients didn't flow). Needs redesign. | N=2048 | 0.98M | ✅ | **DONE (broken)** |
-| **step233** | θ-edge precision ablation — sinusoidal edge weights, dtype sweep (fp32/fp16/bf16/int8/fp64). Fixes step232 routing bug. | N=2048 | 0.98M | ✅ | RUNNING (Mac Mini MPS) |
+| **step233** | θ-edge precision ablation — **ALL DEAD: best 75.2% (fp32), 62-75% across all dtypes**. Sinusoidal parameterization insufficient as AH replacement. Optimizer injection fix confirmed θ learns (std=0.115) but still fails. | N=2048 | 0.98M | ✅ | **DONE — KILLED** |
 | **step234** | ΔW-vector polarizer — **BREAKTHROUGH: Config A (ΔW proj, NO AH) = 95.44% (+3.77pp)**. ΔW proj > W_pos proj > ΔW rot. Adding AH hurts (-1.2pp). | N=2048 | ~2M | ✅ | **DONE** |
-| **step235** | ΔW rotation ± AH ± augmentation — full data 150ep. Tests augmented data (hflip) benefit. | N=2048 | ~2M | ✅ | RUNNING (Mac Studio CPU) |
+| **step235** | ΔW-rot ± AH ± Augmentation (150ep full) — **WINNER: A_aug (ΔW-rot no-AH, aug) = 97.30%**. A_100 (no aug) = 96.97%. B configs (with AH) regress to 96.79-96.82%. Confirms: ΔW-rot > AH, NO synergy when combined. Augmentation helps. | N=2048 | 0.98M | ✅ | **DONE — ΔW-rot validated** |
+| **step235** | ΔW rotation ± AH ± augmentation — **A_100 (ΔW proj, no AH, 100%/150ep) = 96.97% @ ep129. NEW EFFICIENCY RECORD at 0.98M FLOPs (+1.45pp over step199)**. Ref_100=95.29%, A_50=96.10%. A_aug running. | N=2048 | 0.98M | ✅ | RUNNING (Mac Studio CPU, A_aug) |
+| **step238** | Gradient-safe θ parameterizations — cos_shifted=62%, phase_delta=75%, triangle=~65%. **ALL DEAD.** θ-edge direction confirmed killed. | N=2048 | 0.98M | ✅ | **DONE — KILLED** |
+| **ga_v2** | GA autorun v2 — pool=50 (20 elite, 20 crossbreed, 10 mutation). gen 1, individual 9/50. Early: N=4096 D=16 K_hh=2 K_iter=5 = 94.98% (strong scout). | varies | varies | ✅ | RUNNING (Mac Studio MPS) |
 
 ### P0 — Critical path: structural experiments addressing architecture ceiling
 

@@ -1,0 +1,48 @@
+
+======================================================================
+Step 184 — N=2048 D=24 K_hh=4 scratch Tier-2 (full data 150ep)
+N=2048  D=24  K_hh=4  K_iter=8  α=1.0  Data=100%  Epochs=150
+FLOPs=4,718,592 (~4.72M) — 24% BELOW 6.18M budget
+step178 Tier-1 ref: 94.57% @ ~4.72M → Tier-2 projection: ~95.6-95.8%
+step177 ref (N=1024 D=48 same FLOPs): 95.13%
+Phase-exit target: ≥95% @ FLOPs ~4.72M
+======================================================================
+  params=100,592
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=1.8009  task=1.8009  safety=0.0000  top1=0.7531  lr=2.36e-03
+  ep 10  val=0.9175
+  e 10  loss=0.2744  task=0.2744  safety=0.0000  top1=0.9175  lr=2.36e-03
+  ep 20  val=0.9310
+  e 20  loss=0.2053  task=0.2053  safety=0.0000  top1=0.9310  lr=2.36e-03
+  ep 30  val=0.9386
+  e 30  loss=0.1667  task=0.1667  safety=0.0000  top1=0.9386  lr=2.36e-03
+  ep 40  val=0.9394
+  e 40  loss=0.1481  task=0.1481  safety=0.0000  top1=0.9394  lr=2.36e-03
+  ep 50  val=0.9465
+  e 50  loss=0.1492  task=0.1492  safety=0.0000  top1=0.9465  lr=2.36e-03
+  ep 60  val=0.9470
+  e 60  loss=0.1249  task=0.1249  safety=0.0000  top1=0.9470  lr=2.36e-03
+  ep 70  val=0.9503 *** PHASE EXIT! ***
+  e 70  loss=0.1196  task=0.1196  safety=0.0000  top1=0.9503  lr=2.36e-03
+  ep 80  val=0.9488
+  e 80  loss=0.1137  task=0.1137  safety=0.0000  top1=0.9488  lr=2.36e-03
+  ep 90  val=0.9480
+  e 90  loss=0.1092  task=0.1092  safety=0.0000  top1=0.9480  lr=2.36e-03
+  ep100  val=0.9490
+  e100  loss=0.1020  task=0.1020  safety=0.0000  top1=0.9490  lr=2.36e-03
+  ep110  val=0.9401
+  e110  loss=0.0881  task=0.0881  safety=0.0000  top1=0.9401  lr=2.36e-03
+  ep120  val=0.9447
+  e120  loss=0.0953  task=0.0953  safety=0.0000  top1=0.9447  lr=2.36e-03
+  ep130  val=0.9465
+  e130  loss=0.0696  task=0.0696  safety=0.0000  top1=0.9465  lr=1.18e-03
+  ep140  val=0.9600 *** PHASE EXIT! ***
+  e140  loss=0.0582  task=0.0582  safety=0.0000  top1=0.9600  lr=5.91e-04
+  ep150  val=0.9549 *** PHASE EXIT! ***
+  e150  loss=0.0582  task=0.0582  safety=0.0000  top1=0.9549  lr=5.91e-04
+
+======================================================================
+STEP 184: 0.9600  vs_step178=+0.0143  vs_step177=+0.0087  FLOPs=4.72M  ✓ PHASE EXIT!
+best_ep=140  params=100,592
+Results → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step184_n2048_d24_tier2.json
+======================================================================

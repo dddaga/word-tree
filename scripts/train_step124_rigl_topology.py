@@ -87,7 +87,7 @@ def refine_topology_scored(model: nn.Module, loader, device: torch.device,
       - If best candidate > worst existing edge, swap (up to max_swaps per neuron)
     """
     # Get one batch for scoring
-    batch_x, _ = next(iter(loader))
+    batch_x = next(iter(loader))[0]
     batch_x = batch_x.to(device)
 
     # Forward to get Z after seeding (pre-routing activations carry spatial info)

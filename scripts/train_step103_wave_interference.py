@@ -101,11 +101,13 @@ from src.training.dataset             import make_loaders
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--device", default="auto")
+parser.add_argument("--epochs", type=int, default=75,
+                    help="Training epochs (default 75; use 20 for Tier-0 scout)")
 args   = parser.parse_args()
 DEVICE = (torch.device("mps") if torch.backends.mps.is_available()
           else torch.device("cpu")) if args.device == "auto" else torch.device(args.device)
 
-EPOCHS = 75; BATCH = 128; SEED = 42; DATA = "data/store.h5"
+EPOCHS = args.epochs; BATCH = 128; SEED = 42; DATA = "data/store.h5"
 N = 1024; N_IN = 25088; N_OUT = 10
 ALPHA_REFLECT = 0.5; ALPHA_AHEBB = 1.0
 

@@ -1,0 +1,30 @@
+
+======================================================================
+Step 203 — N=4096 D=16 K_hh=2 K_iter=5 Tier-1 (50% data 75ep)
+FLOPs=1,966,080 (~1.97M)
+N=2048 K_iter=5 T1 ref: 93.96%@ep72 → T2: 95.52%
+N-scaling probe: N×2 at sub-1% FLOPs config
+======================================================================
+  K_local=1  K_random=1  K_iter=5  n_groups=512
+  params=135,328
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=8.9656  task=8.9656  safety=0.0000  top1=0.5215  lr=2.36e-03
+  ep 10  val=0.9259
+  e 10  loss=0.1724  task=0.1724  safety=0.0000  top1=0.9259  lr=2.36e-03
+  ep 20  val=0.9427
+  e 20  loss=0.0888  task=0.0888  safety=0.0000  top1=0.9427  lr=2.36e-03
+  ep 30  val=0.9511
+  e 30  loss=0.0659  task=0.0659  safety=0.0000  top1=0.9511  lr=2.36e-03
+  ep 40  val=0.9498
+  e 40  loss=0.0507  task=0.0507  safety=0.0000  top1=0.9498  lr=2.36e-03
+  ep 50  val=0.9513
+  e 50  loss=0.0388  task=0.0388  safety=0.0000  top1=0.9513  lr=2.36e-03
+  ep 60  val=0.9587
+  e 60  loss=0.0306  task=0.0306  safety=0.0000  top1=0.9587  lr=2.36e-03
+  ep 70  val=0.9572
+  e 70  loss=0.0284  task=0.0284  safety=0.0000  top1=0.9572  lr=2.36e-03
+
+======================================================================
+STEP 203: 0.9608  vs_N2048_T1=+0.0212  FLOPs=1.97M
+best_ep=69  params=135,328  → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step203_n4096_d16_khh2_kiter5_tier1.json
+======================================================================

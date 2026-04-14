@@ -1,0 +1,58 @@
+
+======================================================================
+HARDWARE BENCHMARK: VGG16 FC vs SGNNET
+======================================================================
+Host:   His-Mac-Studio.local
+Device: mps (Apple MPS)
+Platform: macOS-26.3.1-arm64-arm-64bit-Mach-O
+
+────────────────────────────────────────────────────────────
+Model: VGG16_FC
+  FLOPs: 247,267,328 (247.27M)
+  Params: 119,586,826 (119586.8K)
+────────────────────────────────────────────────────────────
+
+  INFERENCE:
+    bs=   1  latency=   1.136ms  throughput=     880.2 samp/s  p5=1.054  p95=1.214
+    bs=  32  latency=   2.113ms  throughput=   15143.9 samp/s  p5=1.912  p95=2.857
+    bs= 128  latency=   3.967ms  throughput=   32264.2 samp/s  p5=3.705  p95=4.182
+    bs= 512  latency=  11.124ms  throughput=   46025.0 samp/s  p5=10.747  p95=13.478
+
+  TRAINING (bs=128):
+    bs=128  step=27.190ms  throughput=4707.5 samp/s  p5=25.631  p95=29.965
+
+────────────────────────────────────────────────────────────
+Model: SGNNET
+  FLOPs: 2,129,920 (2.13M)
+  Params: 35,008 (35.0K)
+────────────────────────────────────────────────────────────
+
+  INFERENCE:
+    bs=   1  latency=   2.532ms  throughput=     394.9 samp/s  p5=2.148  p95=2.797
+    bs=  32  latency=   5.643ms  throughput=    5670.4 samp/s  p5=4.974  p95=7.304
+    bs= 128  latency=  16.531ms  throughput=    7743.0 samp/s  p5=15.864  p95=17.477
+    bs= 512  latency=  62.245ms  throughput=    8225.5 samp/s  p5=59.255  p95=64.202
+
+  TRAINING (bs=128):
+    bs=128  step=48.548ms  throughput=2636.6 samp/s  p5=47.252  p95=49.874
+
+======================================================================
+COMPARISON SUMMARY
+======================================================================
+
+  FLOPs ratio:  SGNNET/VGG = 0.86%
+  Param ratio:  SGNNET/VGG = 0.029%
+
+  Metric                             VGG16 FC       SGNNET      Ratio
+  ────────────────────────────────────────────────────────────────
+  Infer latency (bs=128)              3.967ms     16.531ms      0.24x
+  Infer throughput (bs=128)        32264.2/s    7743.0/s      0.24x
+  Infer latency (bs=1)                1.136ms      2.532ms      0.45x
+  Train step (bs=128)                27.190ms     48.548ms      0.56x
+  Train throughput                  4707.5/s    2636.6/s      0.56x
+
+  Theoretical speedup (FLOPs): 116.1x
+  Actual speedup (infer bs=128): 0.2x
+  Efficiency gap: 0.2% of theoretical
+
+→ results/bench_hardware_mac_studio_mps.json

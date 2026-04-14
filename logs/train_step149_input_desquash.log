@@ -1,0 +1,78 @@
+
+======================================================================
+Step 149 — Input De-squashification
+N=1024  D=16  K_hh=8  K_iter=8  K_in=25
+Epochs=75  Device=cpu  Data=50%
+======================================================================
+
+  Ref   Ref  standard (1 feat + 15 spatial)
+  A     A    multi-feat K=4 (4 feat + 12 spa)
+  B     B    multi-feat K=8 (8 feat + 8 spa)
+  C     C    attention scatter over K_in
+  D     D    multi-feat K=4 + attention
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  standard (1 feat + 15 spatial)  params=33,952
+────────────────────────────────────────────────────────────
+  e  1  loss=5.8186  task=5.8186  safety=0.0000  top1=0.1083  lr=2.36e-03
+  e 10  loss=1.9261  task=1.9261  safety=0.0000  top1=0.4576  lr=2.36e-03
+  e 20  loss=1.5300  task=1.5300  safety=0.0000  top1=0.5850  lr=2.36e-03
+  e 30  loss=1.2354  task=1.2354  safety=0.0000  top1=0.6308  lr=2.36e-03
+  e 40  loss=1.0370  task=1.0370  safety=0.0000  top1=0.6999  lr=2.36e-03
+  e 50  loss=0.9315  task=0.9315  safety=0.0000  top1=0.7225  lr=2.36e-03
+  e 60  loss=0.8299  task=0.8299  safety=0.0000  top1=0.7890  lr=2.36e-03
+  e 70  loss=0.7621  task=0.7621  safety=0.0000  top1=0.7890  lr=2.36e-03
+
+  top1=0.8227  vs_Ref=+0.0000  params=33,952
+
+────────────────────────────────────────────────────────────
+Config A: A    multi-feat K=4 (4 feat + 12 spa)  params=17,572
+────────────────────────────────────────────────────────────
+  e  1  loss=204.7804  task=204.7804  safety=0.0000  top1=0.1068  lr=2.36e-03
+  e 10  loss=2.2856  task=2.2856  safety=0.0000  top1=0.1918  lr=2.36e-03
+  e 20  loss=2.0736  task=2.0736  safety=0.0000  top1=0.2380  lr=2.36e-03
+  e 30  loss=1.9482  task=1.9482  safety=0.0000  top1=0.3098  lr=2.36e-03
+  e 40  loss=1.8418  task=1.8418  safety=0.0000  top1=0.3373  lr=2.36e-03
+  e 50  loss=1.7633  task=1.7633  safety=0.0000  top1=0.3608  lr=2.36e-03
+  e 60  loss=1.6717  task=1.6717  safety=0.0000  top1=0.3959  lr=2.36e-03
+  e 70  loss=1.6045  task=1.6045  safety=0.0000  top1=0.4219  lr=2.36e-03
+
+  top1=0.4324  vs_Ref=-0.3903  params=17,572
+
+────────────────────────────────────────────────────────────
+Config B: B    multi-feat K=8 (8 feat + 8 spa)  params=17,576
+────────────────────────────────────────────────────────────
+  e  1  loss=142.5413  task=142.5413  safety=0.0000  top1=0.1075  lr=2.36e-03
+  e 10  loss=2.7925  task=2.7925  safety=0.0000  top1=0.1620  lr=2.36e-03
+  e 20  loss=2.4895  task=2.4895  safety=0.0000  top1=0.1350  lr=2.36e-03
+  e 30  loss=2.4018  task=2.4018  safety=0.0000  top1=0.1806  lr=2.36e-03
+  e 40  loss=2.2513  task=2.2513  safety=0.0000  top1=0.1888  lr=2.36e-03
+  e 50  loss=2.2150  task=2.2150  safety=0.0000  top1=0.1847  lr=2.36e-03
+  e 60  loss=2.1508  task=2.1508  safety=0.0000  top1=0.2308  lr=2.36e-03
+  e 70  loss=2.0647  task=2.0647  safety=0.0000  top1=0.2698  lr=2.36e-03
+
+  top1=0.2978  vs_Ref=-0.5249  params=17,576
+
+────────────────────────────────────────────────────────────
+Config C: C    attention scatter over K_in  params=43,168
+────────────────────────────────────────────────────────────
+  e  1  loss=146.7865  task=146.7865  safety=0.0000  top1=0.1246  lr=2.36e-03
+  e 10  loss=2.9482  task=2.9482  safety=0.0000  top1=0.2211  lr=2.36e-03
+  e 20  loss=2.1045  task=2.1045  safety=0.0000  top1=0.3080  lr=2.36e-03
+  e 30  loss=1.8590  task=1.8590  safety=0.0000  top1=0.3529  lr=2.36e-03
+  e 40  loss=1.7361  task=1.7361  safety=0.0000  top1=0.3682  lr=2.36e-03
+  e 50  loss=1.6376  task=1.6376  safety=0.0000  top1=0.3957  lr=2.36e-03
+  e 60  loss=1.5768  task=1.5768  safety=0.0000  top1=0.4797  lr=2.36e-03
+  e 70  loss=1.4878  task=1.4878  safety=0.0000  top1=0.4792  lr=2.36e-03
+
+  top1=0.5271  vs_Ref=-0.2956  params=43,168
+
+────────────────────────────────────────────────────────────
+Config D: D    multi-feat K=4 + attention  params=43,172
+────────────────────────────────────────────────────────────
+  e  1  loss=113.0386  task=113.0386  safety=0.0000  top1=0.0884  lr=2.36e-03
+  e 10  loss=2.7738  task=2.7738  safety=0.0000  top1=0.1345  lr=2.36e-03
+  e 20  loss=2.4882  task=2.4882  safety=0.0000  top1=0.1654  lr=2.36e-03
+  e 30  loss=2.3288  task=2.3288  safety=0.0000  top1=0.2003  lr=2.36e-03

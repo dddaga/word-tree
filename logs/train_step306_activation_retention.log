@@ -1,0 +1,117 @@
+
+======================================================================
+Step 306 — Activation retention at N=1024 D=16 (Tier-0, 20ep, 50% data)
+Running: ['Ref', 'A_static_p10', 'A_static_p30', 'A_static_p50', 'B_decay', 'C_norm_cons', 'D_reinject']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: mode=ref, p=None, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.3524
+  e  1  loss=3.3019  task=3.3019  safety=0.0000  top1=0.3524  lr=2.36e-03
+  ep  5  val=0.7422
+  ep 10  val=0.8255
+  e 10  loss=0.8459  task=0.8459  safety=0.0000  top1=0.8255  lr=2.36e-03
+  ep 15  val=0.8130
+  ep 20  val=0.8535
+  e 20  loss=0.6779  task=0.6779  safety=0.0000  top1=0.8535  lr=2.36e-03
+  → best=0.8535 @ ep20  (98s)
+
+────────────────────────────────────────────────────────────
+Config A_static_p10: mode=static, p=0.1, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.3024
+  e  1  loss=3.7399  task=3.7399  safety=0.0000  top1=0.3024  lr=2.36e-03
+  ep  5  val=0.7462
+  ep 10  val=0.8268
+  e 10  loss=0.7832  task=0.7832  safety=0.0000  top1=0.8268  lr=2.36e-03
+  ep 15  val=0.8288
+  ep 20  val=0.8525
+  e 20  loss=0.6193  task=0.6193  safety=0.0000  top1=0.8525  lr=2.36e-03
+  → best=0.8525 @ ep20  (102s)
+
+────────────────────────────────────────────────────────────
+Config A_static_p30: mode=static, p=0.3, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.3126
+  e  1  loss=3.0568  task=3.0568  safety=0.0000  top1=0.3126  lr=2.36e-03
+  ep  5  val=0.7047
+  ep 10  val=0.8071
+  e 10  loss=0.8884  task=0.8884  safety=0.0000  top1=0.8071  lr=2.36e-03
+  ep 15  val=0.8094
+  ep 20  val=0.8461
+  e 20  loss=0.7164  task=0.7164  safety=0.0000  top1=0.8461  lr=2.36e-03
+  → best=0.8461 @ ep20  (104s)
+
+────────────────────────────────────────────────────────────
+Config A_static_p50: mode=static, p=0.5, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.1564
+  e  1  loss=4.0591  task=4.0591  safety=0.0000  top1=0.1564  lr=2.36e-03
+  ep  5  val=0.6336
+  ep 10  val=0.7241
+  e 10  loss=1.1127  task=1.1127  safety=0.0000  top1=0.7241  lr=2.36e-03
+  ep 15  val=0.7411
+  ep 20  val=0.7735
+  e 20  loss=0.9379  task=0.9379  safety=0.0000  top1=0.7735  lr=2.36e-03
+  → best=0.7868 @ ep19  (102s)
+
+────────────────────────────────────────────────────────────
+Config B_decay: mode=decay, p=0.5, p_end=0.1
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.3205
+  e  1  loss=2.6542  task=2.6542  safety=0.0000  top1=0.3205  lr=2.36e-03
+  ep  5  val=0.6874
+  ep 10  val=0.7796
+  e 10  loss=0.9630  task=0.9630  safety=0.0000  top1=0.7796  lr=2.36e-03
+  ep 15  val=0.7778
+  ep 20  val=0.8211
+  e 20  loss=0.7923  task=0.7923  safety=0.0000  top1=0.8211  lr=2.36e-03
+  → best=0.8211 @ ep20  (103s)
+
+────────────────────────────────────────────────────────────
+Config C_norm_cons: mode=norm_cons, p=0.7, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.1969
+  e  1  loss=5.0202  task=5.0202  safety=0.0000  top1=0.1969  lr=2.36e-03
+  ep  5  val=0.4973
+  ep 10  val=0.6066
+  e 10  loss=1.5571  task=1.5571  safety=0.0000  top1=0.6066  lr=2.36e-03
+  ep 15  val=0.5911
+  ep 20  val=0.6482
+  e 20  loss=1.3993  task=1.3993  safety=0.0000  top1=0.6482  lr=2.36e-03
+  → best=0.6668 @ ep19  (104s)
+
+────────────────────────────────────────────────────────────
+Config D_reinject: mode=reinject, p=0.3, p_end=None
+────────────────────────────────────────────────────────────
+  params=17,568
+  ep  1  val=0.3460
+  e  1  loss=2.9159  task=2.9159  safety=0.0000  top1=0.3460  lr=2.36e-03
+  ep  5  val=0.6836
+  ep 10  val=0.7829
+  e 10  loss=0.9474  task=0.9474  safety=0.0000  top1=0.7829  lr=2.36e-03
+  ep 15  val=0.7885
+  ep 20  val=0.8015
+  e 20  loss=0.8037  task=0.8037  safety=0.0000  top1=0.8015  lr=2.36e-03
+  → best=0.8094 @ ep19  (102s)
+
+======================================================================
+STEP 306 SUMMARY — Activation retention at N=1024
+======================================================================
+  Ref            (ref       , -): 0.8535
+  A_static_p10   (static    , p=0.1): 0.8525  Δ=-0.0010
+  A_static_p30   (static    , p=0.3): 0.8461  Δ=-0.0074
+  A_static_p50   (static    , p=0.5): 0.7868  Δ=-0.0667
+  B_decay        (decay     , p=0.5): 0.8211  Δ=-0.0324
+  C_norm_cons    (norm_cons , p=0.7): 0.6668  Δ=-0.1867
+  D_reinject     (reinject  , p=0.3): 0.8094  Δ=-0.0441
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step306_activation_retention_N1024.json

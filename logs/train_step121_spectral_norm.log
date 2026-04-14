@@ -1,0 +1,97 @@
+
+======================================================================
+Step 121 — Spectral Norm / W_pos Regularisation Ablation
+N=1024  D=16  K_hh=8  K_iter=8  K_in=25  AH=1.0
+Epochs=75  Device=cpu  Data=50%
+======================================================================
+
+Configs:
+  Ref   variant=standard        Ref  standard (no W_pos regularisation)
+  A     variant=spectral_norm   A    spectral_norm on W_pos (hard σ_max=1)
+  B     variant=soft_spec       B    soft spectral reg λ=0.01: loss += λ‖σ_max−1‖²
+  C     variant=reortho         C    periodic re-orthogonalisation every 5 epochs
+  D     variant=wd              wd=0.0001  D    W_pos weight decay 1e-4
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  standard (no W_pos regularisation)
+────────────────────────────────────────────────────────────
+  e  1  loss=5.8186  task=5.8186  safety=0.0000  top1=0.1083  lr=2.36e-03
+  e 10  loss=1.9251  task=1.9251  safety=0.0000  top1=0.4711  lr=2.36e-03
+  e 20  loss=1.5248  task=1.5248  safety=0.0000  top1=0.6115  lr=2.36e-03
+  e 30  loss=1.2442  task=1.2442  safety=0.0000  top1=0.6306  lr=2.36e-03
+  e 40  loss=1.0428  task=1.0428  safety=0.0000  top1=0.6943  lr=2.36e-03
+  e 50  loss=0.9534  task=0.9534  safety=0.0000  top1=0.7279  lr=2.36e-03
+  e 60  loss=0.8489  task=0.8489  safety=0.0000  top1=0.7738  lr=2.36e-03
+  e 70  loss=0.7774  task=0.7774  safety=0.0000  top1=0.7791  lr=2.36e-03
+
+  top1=0.8117  vs_Ref=+0.0000  elapsed=8.9min  params=33,952
+
+────────────────────────────────────────────────────────────
+Config A: A    spectral_norm on W_pos (hard σ_max=1)
+────────────────────────────────────────────────────────────
+  e  1  loss=15.5928  task=15.5928  safety=0.0000  top1=0.1223  lr=2.36e-03
+  e 10  loss=15.5937  task=15.5937  safety=0.0000  top1=0.1223  lr=2.36e-03
+  e 20  loss=15.5941  task=15.5941  safety=0.0000  top1=0.1223  lr=1.18e-03
+  e 30  loss=15.5938  task=15.5938  safety=0.0000  top1=0.1223  lr=5.91e-04
+  e 40  loss=15.5931  task=15.5931  safety=0.0000  top1=0.1223  lr=2.96e-04
+  e 50  loss=15.5937  task=15.5937  safety=0.0000  top1=0.1223  lr=1.48e-04
+  Early stop at epoch 50 — best train_loss=15.5928
+
+  top1=0.1223  vs_Ref=-0.6894  elapsed=5.2min  params=33,952
+
+────────────────────────────────────────────────────────────
+Config B: B    soft spectral reg λ=0.01: loss += λ‖σ_max−1‖²
+────────────────────────────────────────────────────────────
+  e  1  loss=10.7163  task=10.7163  safety=0.0000  top1=0.1070  lr=2.36e-03
+  e 10  loss=1.7185  task=1.7185  safety=0.0000  top1=0.5213  lr=2.36e-03
+  e 20  loss=1.3212  task=1.3212  safety=0.0000  top1=0.7062  lr=2.36e-03
+  e 30  loss=1.0776  task=1.0776  safety=0.0000  top1=0.7829  lr=2.36e-03
+  e 40  loss=0.9255  task=0.9255  safety=0.0000  top1=0.7868  lr=2.36e-03
+  e 50  loss=0.7985  task=0.7985  safety=0.0000  top1=0.8020  lr=2.36e-03
+  e 60  loss=0.7170  task=0.7170  safety=0.0000  top1=0.8382  lr=2.36e-03
+  e 70  loss=0.6743  task=0.6743  safety=0.0000  top1=0.8423  lr=2.36e-03
+
+  top1=0.8471  vs_Ref=+0.0354  elapsed=9.2min  params=33,952
+
+────────────────────────────────────────────────────────────
+Config C: C    periodic re-orthogonalisation every 5 epochs
+────────────────────────────────────────────────────────────
+  e  1  loss=6.2471  task=6.2471  safety=0.0000  top1=0.1093  lr=2.36e-03
+  e 10  loss=1.6633  task=1.6633  safety=0.0000  top1=0.4487  lr=2.36e-03
+  e 20  loss=1.2578  task=1.2578  safety=0.0000  top1=0.5401  lr=2.36e-03
+  e 30  loss=1.0987  task=1.0987  safety=0.0000  top1=0.6056  lr=2.36e-03
+  e 40  loss=0.9837  task=0.9837  safety=0.0000  top1=0.6683  lr=2.36e-03
+  e 50  loss=0.9339  task=0.9339  safety=0.0000  top1=0.6989  lr=2.36e-03
+  e 60  loss=0.9607  task=0.9607  safety=0.0000  top1=0.6476  lr=2.36e-03
+  e 70  loss=0.9107  task=0.9107  safety=0.0000  top1=0.7338  lr=2.36e-03
+
+  top1=0.7368  vs_Ref=-0.0749  elapsed=9.4min  params=33,952
+
+────────────────────────────────────────────────────────────
+Config D: D    W_pos weight decay 1e-4
+────────────────────────────────────────────────────────────
+  e  1  loss=9.6977  task=9.6977  safety=0.0000  top1=0.0754  lr=2.36e-03
+  e 10  loss=1.7418  task=1.7418  safety=0.0000  top1=0.5575  lr=2.36e-03
+  e 20  loss=1.3332  task=1.3332  safety=0.0000  top1=0.6637  lr=2.36e-03
+  e 30  loss=1.1050  task=1.1050  safety=0.0000  top1=0.7055  lr=2.36e-03
+  e 40  loss=0.9392  task=0.9392  safety=0.0000  top1=0.7717  lr=2.36e-03
+  e 50  loss=0.8391  task=0.8391  safety=0.0000  top1=0.8074  lr=2.36e-03
+  e 60  loss=0.7362  task=0.7362  safety=0.0000  top1=0.8097  lr=2.36e-03
+  e 70  loss=0.6761  task=0.6761  safety=0.0000  top1=0.8239  lr=2.36e-03
+
+  top1=0.8318  vs_Ref=+0.0201  elapsed=9.2min  params=33,952
+
+======================================================================
+STEP 121 SUMMARY — W_pos Spectral / Regularisation
+======================================================================
+Key   variant           params     top1    vs_Ref
+───────────────────────────────────────────────────────
+Ref   standard          33,952  0.8117  +0.0000
+A     spectral_norm     33,952  0.1223  -0.6894
+B     soft_spec         33,952  0.8471  +0.0354
+C     reortho           33,952  0.7368  -0.0749
+D     wd                33,952  0.8318  +0.0201
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step121_spectral_norm.json

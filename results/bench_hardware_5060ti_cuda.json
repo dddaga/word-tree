@@ -1,0 +1,134 @@
+{
+  "system": {
+    "hostname": "5060ti",
+    "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+    "cpu": "x86_64",
+    "device_type": "cuda",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Ti",
+    "gpu_mem_total_mb": 16617.766912,
+    "gpu_mem_allocated_mb": 0.0,
+    "gpu_mem_reserved_mb": 0.0
+  },
+  "models": {
+    "VGG16_FC": {
+      "flops": 247267328,
+      "params": 119586826,
+      "inference": {
+        "1": {
+          "latency_ms": 1.154,
+          "throughput_sps": 866.8,
+          "latency_p5_ms": 1.153,
+          "latency_p95_ms": 1.156,
+          "gpu_mem_mb": 488.0
+        },
+        "32": {
+          "latency_ms": 2.134,
+          "throughput_sps": 14993.7,
+          "latency_p5_ms": 2.131,
+          "latency_p95_ms": 2.137,
+          "gpu_mem_mb": 491.1
+        },
+        "128": {
+          "latency_ms": 4.226,
+          "throughput_sps": 30291.8,
+          "latency_p5_ms": 4.224,
+          "latency_p95_ms": 4.228,
+          "gpu_mem_mb": 500.8
+        },
+        "512": {
+          "latency_ms": 10.648,
+          "throughput_sps": 48082.1,
+          "latency_p5_ms": 10.638,
+          "latency_p95_ms": 10.667,
+          "gpu_mem_mb": 540.4
+        }
+      },
+      "training": {
+        "batch_size": 128,
+        "step_ms": 28.641,
+        "throughput_sps": 4469.1,
+        "step_p5_ms": 28.624,
+        "step_p95_ms": 28.654,
+        "gpu_mem_mb": 1944.3
+      },
+      "nvidia_smi_inference": {
+        "gpu_util_avg": 72.4,
+        "gpu_util_max": 100,
+        "mem_used_avg_mb": 728.0,
+        "mem_used_max_mb": 756,
+        "power_avg_w": 109.2,
+        "power_max_w": 161.8,
+        "n_samples": 11
+      },
+      "nvidia_smi_training": {
+        "gpu_util_avg": 30.0,
+        "gpu_util_max": 100,
+        "mem_used_avg_mb": 2177.0,
+        "mem_used_max_mb": 2590,
+        "power_avg_w": 75.6,
+        "power_max_w": 112.4,
+        "n_samples": 10
+      }
+    },
+    "SGNNET": {
+      "flops": 2129920,
+      "params": 35008,
+      "inference": {
+        "1": {
+          "latency_ms": 0.696,
+          "throughput_sps": 1436.3,
+          "latency_p5_ms": 0.691,
+          "latency_p95_ms": 0.701,
+          "gpu_mem_mb": 18.9
+        },
+        "32": {
+          "latency_ms": 1.325,
+          "throughput_sps": 24149.1,
+          "latency_p5_ms": 1.322,
+          "latency_p95_ms": 1.329,
+          "gpu_mem_mb": 22.0
+        },
+        "128": {
+          "latency_ms": 7.514,
+          "throughput_sps": 17034.6,
+          "latency_p5_ms": 7.507,
+          "latency_p95_ms": 7.524,
+          "gpu_mem_mb": 31.6
+        },
+        "512": {
+          "latency_ms": 36.722,
+          "throughput_sps": 13942.4,
+          "latency_p5_ms": 36.709,
+          "latency_p95_ms": 36.744,
+          "gpu_mem_mb": 71.2
+        }
+      },
+      "training": {
+        "batch_size": 128,
+        "step_ms": 23.675,
+        "throughput_sps": 5406.6,
+        "step_p5_ms": 23.662,
+        "step_p95_ms": 23.693,
+        "gpu_mem_mb": 32.0
+      },
+      "nvidia_smi_inference": {
+        "gpu_util_avg": 87.4,
+        "gpu_util_max": 100,
+        "mem_used_avg_mb": 1206.0,
+        "mem_used_max_mb": 1444,
+        "power_avg_w": 100.1,
+        "power_max_w": 118.9,
+        "n_samples": 25
+      },
+      "nvidia_smi_training": {
+        "gpu_util_avg": 2.6,
+        "gpu_util_max": 3,
+        "mem_used_avg_mb": 1458.0,
+        "mem_used_max_mb": 1458,
+        "power_avg_w": 61.8,
+        "power_max_w": 111.8,
+        "n_samples": 7
+      }
+    }
+  }
+}

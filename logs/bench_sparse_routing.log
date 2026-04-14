@@ -1,0 +1,91 @@
+============================================================
+SGNNET Sparse Routing Profiler
+============================================================
+Question: Can alternative data structures beat gather-sum?
+Current impl: Z[:, conn_hh, :].sum(dim=2) — already O(N·K·D)
+Testing: scatter_add, sparse_mm, dict/hashmap, K_hh loop, JAX
+
+────────────────────────────────────────────────────────────
+Config: step199_optimal  N=2048 D=16 K_hh=2 K_iter=5 B=128
+FLOPs/sample: 983,040 (0.98M)
+Sparsity: 0.098% connected (99.90% sparse)
+Device: cpu
+────────────────────────────────────────────────────────────
+  gather_sum (current):     7.41 ms  (±0.69)
+  scatter_add:             10.06 ms  (±0.56)  0.74x
+  sparse_mm:                8.45 ms  (±0.25)  0.88x
+  dict_routing (CPU):     446.54 ms  (±1.81)  0.02x
+  loop_K_hh:                6.52 ms  (±0.19)  1.14x
+
+────────────────────────────────────────────────────────────
+Config: step195_1pct  N=2048 D=16 K_hh=2 K_iter=6 B=128
+FLOPs/sample: 1,179,648 (1.18M)
+Sparsity: 0.098% connected (99.90% sparse)
+Device: cpu
+────────────────────────────────────────────────────────────
+  gather_sum (current):     8.57 ms  (±0.75)
+  scatter_add:             11.41 ms  (±0.42)  0.75x
+  sparse_mm:                9.95 ms  (±0.31)  0.86x
+  dict_routing (CPU):     534.65 ms  (±0.78)  0.02x
+  loop_K_hh:                7.82 ms  (±0.48)  1.10x
+
+────────────────────────────────────────────────────────────
+Config: step185_floor  N=2048 D=16 K_hh=4 K_iter=8 B=128
+FLOPs/sample: 3,145,728 (3.15M)
+Sparsity: 0.195% connected (99.80% sparse)
+Device: cpu
+────────────────────────────────────────────────────────────
+  gather_sum (current):    15.77 ms  (±1.60)
+  scatter_add:             25.75 ms  (±1.48)  0.61x
+  sparse_mm:               16.76 ms  (±0.43)  0.94x
+  dict_routing (CPU):     734.24 ms  (±2.17)  0.02x
+  loop_K_hh:               16.72 ms  (±0.57)  0.94x
+
+────────────────────────────────────────────────────────────
+Config: N4096_record  N=4096 D=16 K_hh=2 K_iter=5 B=64
+FLOPs/sample: 1,966,080 (1.97M)
+Sparsity: 0.049% connected (99.95% sparse)
+Device: cpu
+────────────────────────────────────────────────────────────
+  gather_sum (current):     7.35 ms  (±0.22)
+  scatter_add:              9.89 ms  (±0.76)  0.74x
+  sparse_mm:                8.54 ms  (±0.12)  0.86x
+  dict_routing:          SKIPPED (N=4096 too large)
+  loop_K_hh:                6.93 ms  (±0.14)  1.06x
+
+────────────────────────────────────────────────────────────
+Config: N8192_large  N=8192 D=16 K_hh=2 K_iter=5 B=32
+FLOPs/sample: 3,932,160 (3.93M)
+Sparsity: 0.024% connected (99.98% sparse)
+Device: cpu
+────────────────────────────────────────────────────────────
+  gather_sum (current):     7.55 ms  (±0.22)
+  scatter_add:             10.00 ms  (±0.31)  0.76x
+  sparse_mm:                8.84 ms  (±0.27)  0.85x
+  dict_routing:          SKIPPED (N=8192 too large)
+  loop_K_hh:                7.23 ms  (±0.15)  1.04x
+
+============================================================
+SUMMARY — Speedup vs gather_sum baseline (>1.0 = faster)
+============================================================
+Config              scatter_add     sparse_mm       loop_K_hh       dict_routing    
+────────────────────────────────────────────────────────────────────────────────────
+step199_optimal     0.74x           0.88x           1.14x           0.02x           
+step195_1pct        0.75x           0.86x           1.10x           0.02x           
+step185_floor       0.61x           0.94x           0.94x           0.02x           
+N4096_record        0.74x           0.86x           1.06x           —               
+N8192_large         0.76x           0.85x           1.04x           —               
+
+Baseline times (gather_sum):
+  step199_optimal      7.41 ms
+  step195_1pct         8.57 ms
+  step185_floor        15.77 ms
+  N4096_record         7.35 ms
+  N8192_large          7.55 ms
+
+============================================================
+CONCLUSION
+============================================================
+If all speedups are ≤1.0x: gather_sum is already optimal.
+FLOPs reduction comes from architecture (D, K_hh, K_iter),
+not from data structure changes.

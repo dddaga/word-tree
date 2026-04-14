@@ -1,0 +1,77 @@
+
+======================================================================
+Step 162 — Flip Robustness: SGNNET vs VGG16-FC vs Linear Probe
+Device=cpu  Epochs=75
+======================================================================
+
+Hypothesis: SGNNET's K_iter message passing provides better robustness to
+horizontal flip than a linear FC classifier trained on the same features.
+
+VGG16 pool5 features change under horizontal flip (VGG16 is not equivariant).
+The question: can SGNNET's graph routing compensate, while FC cannot?
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+Extracting flipped val features via VGG16...
+  flipped val:   0%|          | 0/16 [00:00<?, ?it/s]  flipped val:   6%|▋         | 1/16 [00:01<00:26,  1.76s/it]  flipped val:  12%|█▎        | 2/16 [00:03<00:23,  1.67s/it]  flipped val:  19%|█▉        | 3/16 [00:05<00:21,  1.66s/it]  flipped val:  25%|██▌       | 4/16 [00:06<00:20,  1.73s/it]  flipped val:  31%|███▏      | 5/16 [00:08<00:19,  1.74s/it]  flipped val:  38%|███▊      | 6/16 [00:10<00:17,  1.74s/it]  flipped val:  44%|████▍     | 7/16 [00:12<00:15,  1.77s/it]  flipped val:  50%|█████     | 8/16 [00:13<00:14,  1.78s/it]  flipped val:  56%|█████▋    | 9/16 [00:15<00:12,  1.76s/it]  flipped val:  62%|██████▎   | 10/16 [00:17<00:10,  1.71s/it]  flipped val:  69%|██████▉   | 11/16 [00:19<00:08,  1.76s/it]  flipped val:  75%|███████▌  | 12/16 [00:21<00:07,  1.82s/it]  flipped val:  81%|████████▏ | 13/16 [00:22<00:05,  1.74s/it]  flipped val:  88%|████████▊ | 14/16 [00:24<00:03,  1.72s/it]  flipped val:  94%|█████████▍| 15/16 [00:25<00:01,  1.67s/it]  flipped val: 100%|██████████| 16/16 [00:26<00:00,  1.34s/it]  flipped val: 100%|██████████| 16/16 [00:26<00:00,  1.66s/it]
+  → torch.Size([3925, 25088])  soft_labels=torch.Size([3925, 10])  labels=torch.Size([3925])
+
+Original val:  3925 samples
+Flipped val:   3925 samples
+
+────────────────────────────────────────────────────────────
+VGG16 direct (no training, N_params=138M)
+  orig_acc=0.9954  flip_acc=0.9949  delta=-0.0005  robustness=0.999
+
+────────────────────────────────────────────────────────────
+Config FC_linear: Linear(25088→10) — one matrix multiply
+  params=250,890  epochs=5
+────────────────────────────────────────────────────────────
+  FC_linear ep  5  orig=0.9679
+
+  orig_acc=0.9679  flip_acc=0.9707  delta=+0.0028  robustness=1.003  elapsed=0.0min
+
+────────────────────────────────────────────────────────────
+Config FC_mlp: MLP 25088→512→128→10 — deep but static
+  params=12,912,522  epochs=20
+────────────────────────────────────────────────────────────
+  FC_mlp ep  5  orig=0.9732
+  FC_mlp ep 10  orig=0.9720
+  FC_mlp ep 15  orig=0.9715
+  FC_mlp ep 20  orig=0.9717
+
+  orig_acc=0.9717  flip_acc=0.9725  delta=+0.0008  robustness=1.001  elapsed=0.1min
+
+────────────────────────────────────────────────────────────
+Config SGNNET: SGNNET N=1024 D=16 K_iter=8 AH — graph routing
+  params=33,952  epochs=75
+────────────────────────────────────────────────────────────
+  e  1  loss=5.8186  task=5.8186  safety=0.0000  top1=0.1083  lr=2.36e-03
+  e 10  loss=1.9263  task=1.9263  safety=0.0000  top1=0.4688  lr=2.36e-03
+  e 20  loss=1.5240  task=1.5240  safety=0.0000  top1=0.5906  lr=2.36e-03
+  e 30  loss=1.2387  task=1.2387  safety=0.0000  top1=0.6199  lr=2.36e-03
+  e 40  loss=1.0340  task=1.0340  safety=0.0000  top1=0.6945  lr=2.36e-03
+  e 50  loss=0.9372  task=0.9372  safety=0.0000  top1=0.7315  lr=2.36e-03
+  e 60  loss=0.8258  task=0.8258  safety=0.0000  top1=0.7896  lr=2.36e-03
+  e 70  loss=0.7583  task=0.7583  safety=0.0000  top1=0.7809  lr=2.36e-03
+
+  orig_acc=0.8217  flip_acc=0.8173  delta=-0.0043  robustness=0.995  elapsed=5.8min
+
+======================================================================
+STEP 162 SUMMARY — Flip Robustness
+======================================================================
+Model               orig     flip     delta   robust        params
+─────────────────────────────────────────────────────────────────
+VGG16_direct     0.9954   0.9949   -0.0005   1.000    138,357,544
+FC_linear        0.9679   0.9707   +0.0028   1.003        250,890
+FC_mlp           0.9717   0.9725   +0.0008   1.001     12,912,522
+SGNNET           0.8217   0.8173   -0.0043   0.995         33,952
+
+Interpretation:
+  robustness=1.0 → flip_acc == orig_acc (perfectly robust)
+  robustness<1.0 → flip hurts (lower = more brittle)
+  If SGNNET robustness > FC_linear robustness → hypothesis CONFIRMED
+  If SGNNET robustness ≈ FC_linear robustness → K_iter propagation does not help
+  If SGNNET robustness < FC_linear robustness → graph routing makes it MORE brittle
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step162_flip_robustness.json

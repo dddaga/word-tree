@@ -1,0 +1,96 @@
+
+======================================================================
+Step 176 — N=2048 D=32 K_hh=4 scratch Tier-2 (full data 150ep)
+N=2048  D=32  K_hh=4  K_iter=8  Data=100%  Epochs=150
+step173-Ref reference (50%/75ep scratch): 94.93%
+step173-B (warm+W_proj): 94.70% — UNDERPERFORMS Ref (warm-start reversal)
+Tier-2 expected: ~95.5-96% (clean phase exit at ~6.1M FLOPs)
+Phase-exit target: ≥95% @ FLOPs ~6.1M
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config A: A  scratch N=2048 D=32 K_hh=4 α=1.0  (phase-exit baseline)
+────────────────────────────────────────────────────────────
+  params=133,440  α=1.0
+  e  1  loss=1.6792  task=1.6792  safety=0.0000  top1=0.7755  lr=2.36e-03
+  ep 10  val=0.9386
+  e 10  loss=0.3329  task=0.3329  safety=0.0000  top1=0.9386  lr=2.36e-03
+  ep 20  val=0.9302
+  e 20  loss=0.2621  task=0.2621  safety=0.0000  top1=0.9302  lr=2.36e-03
+  ep 30  val=0.9414
+  e 30  loss=0.2187  task=0.2187  safety=0.0000  top1=0.9414  lr=2.36e-03
+  ep 40  val=0.9493
+  e 40  loss=0.1907  task=0.1907  safety=0.0000  top1=0.9493  lr=2.36e-03
+  ep 50  val=0.9478
+  e 50  loss=0.1851  task=0.1851  safety=0.0000  top1=0.9478  lr=2.36e-03
+  ep 60  val=0.9475
+  e 60  loss=0.1703  task=0.1703  safety=0.0000  top1=0.9475  lr=2.36e-03
+  ep 70  val=0.9539 *** PHASE EXIT! ***
+  e 70  loss=0.1523  task=0.1523  safety=0.0000  top1=0.9539  lr=2.36e-03
+  ep 80  val=0.9452
+  e 80  loss=0.1531  task=0.1531  safety=0.0000  top1=0.9452  lr=2.36e-03
+  ep 90  val=0.9577 *** PHASE EXIT! ***
+  e 90  loss=0.1209  task=0.1209  safety=0.0000  top1=0.9577  lr=1.18e-03
+  ep100  val=0.9529 *** PHASE EXIT! ***
+  e100  loss=0.1204  task=0.1204  safety=0.0000  top1=0.9529  lr=1.18e-03
+  ep110  val=0.9557 *** PHASE EXIT! ***
+  e110  loss=0.1136  task=0.1136  safety=0.0000  top1=0.9557  lr=1.18e-03
+  ep120  val=0.9521 *** PHASE EXIT! ***
+  e120  loss=0.1203  task=0.1203  safety=0.0000  top1=0.9521  lr=1.18e-03
+  ep130  val=0.9439
+  e130  loss=0.1175  task=0.1175  safety=0.0000  top1=0.9439  lr=1.18e-03
+  ep140  val=0.9526 *** PHASE EXIT! ***
+  e140  loss=0.1110  task=0.1110  safety=0.0000  top1=0.9526  lr=1.18e-03
+  ep150  val=0.9569 *** PHASE EXIT! ***
+  e150  loss=0.1094  task=0.1094  safety=0.0000  top1=0.9569  lr=1.18e-03
+
+  top1=0.9618  vs_step173Ref=+0.0125  ✓ PHASE EXIT!
+
+────────────────────────────────────────────────────────────
+Config B: B  scratch N=2048 D=32 K_hh=4 α=1.05 (calibration)
+────────────────────────────────────────────────────────────
+  params=133,440  α=1.05
+  e  1  loss=1.5492  task=1.5492  safety=0.0000  top1=0.8331  lr=2.36e-03
+  ep 10  val=0.9238
+  e 10  loss=0.3053  task=0.3053  safety=0.0000  top1=0.9238  lr=2.36e-03
+  ep 20  val=0.9282
+  e 20  loss=0.2418  task=0.2418  safety=0.0000  top1=0.9282  lr=2.36e-03
+  ep 30  val=0.9455
+  e 30  loss=0.2088  task=0.2088  safety=0.0000  top1=0.9455  lr=2.36e-03
+  ep 40  val=0.9213
+  e 40  loss=0.1792  task=0.1792  safety=0.0000  top1=0.9213  lr=2.36e-03
+  ep 50  val=0.9417
+  e 50  loss=0.1613  task=0.1613  safety=0.0000  top1=0.9417  lr=2.36e-03
+  ep 60  val=0.9124
+  e 60  loss=0.1574  task=0.1574  safety=0.0000  top1=0.9124  lr=2.36e-03
+  ep 70  val=0.9406
+  e 70  loss=0.1718  task=0.1718  safety=0.0000  top1=0.9406  lr=2.36e-03
+  ep 80  val=0.9478
+  e 80  loss=0.1324  task=0.1324  safety=0.0000  top1=0.9478  lr=2.36e-03
+  ep 90  val=0.9427
+  e 90  loss=0.1302  task=0.1302  safety=0.0000  top1=0.9427  lr=2.36e-03
+  ep100  val=0.9452
+  e100  loss=0.1198  task=0.1198  safety=0.0000  top1=0.9452  lr=2.36e-03
+  ep110  val=0.9490
+  e110  loss=0.1318  task=0.1318  safety=0.0000  top1=0.9490  lr=2.36e-03
+  ep120  val=0.9575 *** PHASE EXIT! ***
+  e120  loss=0.1192  task=0.1192  safety=0.0000  top1=0.9575  lr=2.36e-03
+  ep130  val=0.9460
+  e130  loss=0.1130  task=0.1130  safety=0.0000  top1=0.9460  lr=2.36e-03
+  ep140  val=0.9572 *** PHASE EXIT! ***
+  e140  loss=0.0852  task=0.0852  safety=0.0000  top1=0.9572  lr=1.18e-03
+  ep150  val=0.9552 *** PHASE EXIT! ***
+  e150  loss=0.0839  task=0.0839  safety=0.0000  top1=0.9552  lr=1.18e-03
+
+  top1=0.9585  vs_step173Ref=+0.0092  ✓ PHASE EXIT!
+
+======================================================================
+STEP 176 SUMMARY — N=2048 D=32 K_hh=4 scratch Tier-2
+======================================================================
+step173-Ref (50% data) reference: 94.93%
+Phase-exit target: ≥95% @ FLOPs ~6.1M
+A  0.9618  best_ep=125  ✓ PHASE EXIT!
+B  0.9585  best_ep=147  ✓ PHASE EXIT!
+
+Results → /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step176_n2048_d32_scratch_tier2.json

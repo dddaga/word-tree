@@ -1,0 +1,112 @@
+
+======================================================================
+Step 164 — K_iter Annealing
+N=1024  D=16  K_hh=8  AH=1.0  Epochs=75  Device=cpu
+======================================================================
+
+Hypothesis: start with high K (rich routing, better gradient signal for W_pos),
+progressively reduce K (compression, less over-smoothing) — all in one run.
+Inspired by step163: teacher-init → K_iter reduction = +7.82pp.
+
+Schedules:
+  Ref: K=8@1-75
+  A: K=12@1-75
+  B: K=12@1-50 → K=8@51-75
+  C: K=16@1-10 → K=14@11-20 → K=12@21-30 → K=10@31-40 → K=8@41-50 → K=6@51-60 → K=4@61-75
+  D: K=16@1-10 → K=12@11-20 → K=16@21-30 → K=14@31-39 → K=12@40-48 → K=10@49-57 → K=8@58-66 → K=6@67-75
+
+
+────────────────────────────────────────────────────────────
+Config Ref: K=8 constant — efficiency baseline
+  params=33,952  K_start=8  K_end=8
+────────────────────────────────────────────────────────────
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+    ep 10  K= 8  loss=1.9260  val=0.4624  lr=2.36e-03
+    ep 20  K= 8  loss=1.5216  val=0.6079  lr=2.36e-03
+    ep 30  K= 8  loss=1.2529  val=0.6293  lr=2.36e-03
+    ep 40  K= 8  loss=1.0572  val=0.6769  lr=2.36e-03
+    ep 50  K= 8  loss=0.9538  val=0.7197  lr=2.36e-03
+    ep 60  K= 8  loss=0.8446  val=0.7822  lr=2.36e-03
+    ep 70  K= 8  loss=0.7742  val=0.7625  lr=2.36e-03
+    ep 75  K= 8  loss=0.7508  val=0.7995  lr=2.36e-03
+
+  top1=0.8069  vs_Ref=+0.0000  best_ep=71  K@best=8  elapsed=9.1min
+
+────────────────────────────────────────────────────────────
+Config A: K=12 constant — ceiling comparison
+  params=33,952  K_start=12  K_end=12
+────────────────────────────────────────────────────────────
+    ep 10  K=12  loss=1.7580  val=0.4736  lr=2.36e-03
+    ep 20  K=12  loss=1.3200  val=0.6581  lr=2.36e-03
+    ep 30  K=12  loss=1.0961  val=0.6991  lr=2.36e-03
+    ep 40  K=12  loss=0.9522  val=0.7279  lr=2.36e-03
+    ep 50  K=12  loss=0.8831  val=0.7763  lr=2.36e-03
+    ep 60  K=12  loss=0.7901  val=0.7804  lr=2.36e-03
+    ep 70  K=12  loss=0.7339  val=0.7827  lr=2.36e-03
+    ep 75  K=12  loss=0.7045  val=0.7911  lr=2.36e-03
+
+  top1=0.8117  vs_Ref=+0.0048  best_ep=66  K@best=12  elapsed=12.9min
+
+────────────────────────────────────────────────────────────
+Config B: K=12→8 hard switch at ep50
+  params=33,952  K_start=12  K_end=8
+────────────────────────────────────────────────────────────
+    ep 10  K=12  loss=1.6922  val=0.5401  lr=2.36e-03
+    ep 20  K=12  loss=1.3204  val=0.6729  lr=2.36e-03
+    ep 30  K=12  loss=1.1006  val=0.7620  lr=2.36e-03
+    ep 40  K=12  loss=0.9498  val=0.7954  lr=2.36e-03
+    ep 50  K=12  loss=0.8496  val=0.8132  lr=2.36e-03
+    ep 60  K= 8  loss=1.0768  val=0.7809  lr=2.36e-03
+    ep 70  K= 8  loss=0.9551  val=0.7755  lr=1.18e-03
+    ep 75  K= 8  loss=0.9185  val=0.8066  lr=5.91e-04
+
+  top1=0.8224  vs_Ref=+0.0155  best_ep=73  K@best=8  elapsed=11.9min
+
+────────────────────────────────────────────────────────────
+Config C: K=16→4 monotonic annealing (7 phases ~10ep each)
+  params=33,952  K_start=16  K_end=4
+────────────────────────────────────────────────────────────
+    ep 10  K=16  loss=1.8785  val=0.4283  lr=2.36e-03
+    ep 20  K=14  loss=1.5699  val=0.5837  lr=2.36e-03
+    ep 30  K=12  loss=1.3223  val=0.6838  lr=2.36e-03
+    ep 40  K=10  loss=1.1770  val=0.6846  lr=2.36e-03
+    ep 50  K= 8  loss=1.1166  val=0.7172  lr=2.36e-03
+    ep 60  K= 6  loss=1.1785  val=0.7243  lr=2.36e-03
+    ep 70  K= 4  loss=1.4649  val=0.6380  lr=1.18e-03
+    ep 75  K= 4  loss=1.3919  val=0.6645  lr=5.91e-04
+
+  top1=0.7243  vs_Ref=-0.0826  best_ep=60  K@best=6  elapsed=11.3min
+
+────────────────────────────────────────────────────────────
+Config D: K=16→12→16→14→12→10→8→6 oscillate+descend
+  params=33,952  K_start=16  K_end=6
+────────────────────────────────────────────────────────────
+    ep 10  K=16  loss=1.9525  val=0.3659  lr=2.36e-03
+    ep 20  K=12  loss=1.4657  val=0.5827  lr=2.36e-03
+    ep 30  K=16  loss=1.3954  val=0.5220  lr=2.36e-03
+    ep 40  K=12  loss=1.2416  val=0.6591  lr=2.36e-03
+    ep 50  K=10  loss=1.1349  val=0.7299  lr=2.36e-03
+    ep 60  K= 8  loss=1.1890  val=0.7024  lr=2.36e-03
+    ep 70  K= 6  loss=1.3886  val=0.6219  lr=1.18e-03
+    ep 75  K= 6  loss=1.2982  val=0.6706  lr=1.18e-03
+
+  top1=0.7671  vs_Ref=-0.0398  best_ep=57  K@best=10  elapsed=13.7min
+
+======================================================================
+STEP 164 SUMMARY — K_iter Annealing
+======================================================================
+Key   Schedule                           top1    vs_Ref   K@peak
+─────────────────────────────────────────────────────────────────
+Ref   K=8→8                           0.8069  +0.0000  K=8
+A     K=12→12                         0.8117  +0.0048  K=12
+B     K=12→8                          0.8224  +0.0155  K=8
+C     K=16→4                          0.7243  -0.0826  K=6
+D     K=16→6                          0.7671  -0.0398  K=10
+
+Key questions answered:
+  1. Does K-annealing beat constant K=8? (Ref vs C/D)
+  2. Does smooth annealing beat hard switch? (B vs C)
+  3. Where does accuracy peak — K=8, K=6, or K=4? (k_at_best)
+  4. Does oscillation before descent help? (C vs D)
+
+Results saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step164_kiter_annealing.json

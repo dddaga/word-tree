@@ -1,0 +1,62 @@
+
+======================================================================
+Step 133 — Tier-1: α=1.10 at N=4096
+N=4096  D=64  K_iter=12  Epochs=75  Device=mps  Data=50%
+======================================================================
+
+  Ref   α=1.00  Ref  α=1.00 (current default)
+  A     α=1.10  A    α=1.10 (step125 winner)
+  B     α=1.05  B    α=1.05 (runner-up)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref  α=1.00 (current default)  params=529,024
+────────────────────────────────────────────────────────────
+  e  1  loss=2.4039  task=2.3562  safety=0.1381  top1=0.8611  lr=2.36e-03
+  e 10  loss=0.2072  task=0.1970  safety=0.0296  top1=0.9159  lr=2.36e-03
+  e 20  loss=0.1621  task=0.1541  safety=0.0231  top1=0.9345  lr=2.36e-03
+  e 30  loss=0.1326  task=0.1261  safety=0.0189  top1=0.9228  lr=2.36e-03
+  e 40  loss=0.1635  task=0.1555  safety=0.0233  top1=0.9243  lr=2.36e-03
+  e 50  loss=0.0620  task=0.0590  safety=0.0088  top1=0.9580  lr=1.18e-03
+  e 60  loss=0.0433  task=0.0412  safety=0.0062  top1=0.9603  lr=1.18e-03
+  e 70  loss=0.0351  task=0.0334  safety=0.0050  top1=0.9618  lr=1.18e-03
+
+  top1_best=0.9648  vs_Ref=+0.0000  elapsed=56.6min
+
+────────────────────────────────────────────────────────────
+Config A: A    α=1.10 (step125 winner)  params=529,024
+────────────────────────────────────────────────────────────
+  e  1  loss=2.2090  task=2.1683  safety=0.1179  top1=0.8792  lr=2.36e-03
+  e 10  loss=0.0666  task=0.0633  safety=0.0095  top1=0.9434  lr=2.36e-03
+  e 20  loss=0.0558  task=0.0530  safety=0.0080  top1=0.9485  lr=2.36e-03
+  e 30  loss=0.0219  task=0.0208  safety=0.0031  top1=0.9656  lr=1.18e-03
+  e 40  loss=0.0090  task=0.0086  safety=0.0013  top1=0.9699  lr=1.18e-03
+  e 50  loss=0.0088  task=0.0084  safety=0.0013  top1=0.9669  lr=1.18e-03
+  e 60  loss=0.0052  task=0.0050  safety=0.0007  top1=0.9702  lr=5.91e-04
+  e 70  loss=0.0053  task=0.0050  safety=0.0008  top1=0.9699  lr=5.91e-04
+
+  top1_best=0.9720  vs_Ref=+0.0072  elapsed=56.6min
+
+────────────────────────────────────────────────────────────
+Config B: B    α=1.05 (runner-up)  params=529,024
+────────────────────────────────────────────────────────────
+  e  1  loss=1.8468  task=1.8068  safety=0.1160  top1=0.8808  lr=2.36e-03
+  e 10  loss=0.0788  task=0.0749  safety=0.0112  top1=0.9521  lr=2.36e-03
+  e 20  loss=0.1421  task=0.1351  safety=0.0203  top1=0.9381  lr=2.36e-03
+  e 30  loss=0.0629  task=0.0598  safety=0.0090  top1=0.9613  lr=1.18e-03
+  e 40  loss=0.0193  task=0.0183  safety=0.0027  top1=0.9643  lr=1.18e-03
+  e 50  loss=0.0164  task=0.0156  safety=0.0023  top1=0.9679  lr=1.18e-03
+  e 60  loss=0.0130  task=0.0124  safety=0.0019  top1=0.9636  lr=1.18e-03
+  e 70  loss=0.0198  task=0.0189  safety=0.0028  top1=0.9689  lr=1.18e-03
+
+  top1_best=0.9727  vs_Ref=+0.0079  elapsed=78.4min
+
+======================================================================
+STEP 133 SUMMARY — α fine-tune Tier-1 at N=4096
+======================================================================
+  Ref   α=1.00  top1=0.9648  vs_Ref=+0.0000  ep=62/75
+  A     α=1.10  top1=0.9720  vs_Ref=+0.0072  ep=67/75
+  B     α=1.05  top1=0.9727  vs_Ref=+0.0079  ep=62/75
+
+Results saved → /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step133_alpha110_tier1.json

@@ -1,0 +1,308 @@
+{
+  "A": {
+    "N": 4096,
+    "D": 64,
+    "K_hh": 4,
+    "K_iter": 12,
+    "K_in": 50,
+    "alpha_ahebb": 1.0,
+    "data_frac": 0.5,
+    "top1_best": 0.9506,
+    "best_epoch": 13,
+    "epochs_run": 20,
+    "n_params": 529024,
+    "top1_history": [
+      0.8718,
+      0.8983,
+      0.919,
+      0.9274,
+      0.9009,
+      0.9129,
+      0.9233,
+      0.8887,
+      0.894,
+      0.9302,
+      0.9144,
+      0.9304,
+      0.9506,
+      0.9256,
+      0.9411,
+      0.931,
+      0.9373,
+      0.9452,
+      0.9381,
+      0.9465
+    ],
+    "diagnostics_history": [
+      {
+        "wpos_cos_mean": 0.7502,
+        "wpos_cos_std": 0.04,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.0049,
+        "Z_abs_mean": 0.1004,
+        "Z_abs_std": 0.0744,
+        "grad_theta": 0.997115,
+        "grad_wpos": 0.0759,
+        "lr": 0.001,
+        "epoch": 1
+      },
+      {
+        "wpos_cos_mean": 0.7494,
+        "wpos_cos_std": 0.0417,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.005,
+        "Z_abs_mean": 0.1005,
+        "Z_abs_std": 0.0744,
+        "grad_theta": 0.997436,
+        "grad_wpos": 0.071562,
+        "lr": 0.001,
+        "epoch": 2
+      },
+      {
+        "wpos_cos_mean": 0.7518,
+        "wpos_cos_std": 0.0402,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.005,
+        "Z_abs_mean": 0.1004,
+        "Z_abs_std": 0.0744,
+        "grad_theta": 0.997751,
+        "grad_wpos": 0.067026,
+        "lr": 0.001,
+        "epoch": 5
+      },
+      {
+        "wpos_cos_mean": 0.7522,
+        "wpos_cos_std": 0.0374,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.0051,
+        "Z_abs_mean": 0.1004,
+        "Z_abs_std": 0.0744,
+        "grad_theta": 0.997343,
+        "grad_wpos": 0.072847,
+        "lr": 0.001,
+        "epoch": 10
+      },
+      {
+        "wpos_cos_mean": 0.751,
+        "wpos_cos_std": 0.0372,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.0053,
+        "Z_abs_mean": 0.1004,
+        "Z_abs_std": 0.0745,
+        "grad_theta": 0.99759,
+        "grad_wpos": 0.069381,
+        "lr": 0.001,
+        "epoch": 15
+      },
+      {
+        "wpos_cos_mean": 0.7494,
+        "wpos_cos_std": 0.0409,
+        "wpos_norm_mean": 4.609,
+        "neuron_util_pct": 100.0,
+        "neuron_energy_std": 0.0055,
+        "Z_abs_mean": 0.1004,
+        "Z_abs_std": 0.0745,
+        "grad_theta": 0.997361,
+        "grad_wpos": 0.072598,
+        "lr": 0.001,
+        "epoch": 20
+      }
+    ],
+    "elapsed_s": 713.2,
+    "label": "A  N=4096 D=64 K4 Ki12 (best)"
+  },
+  "B": {
+    "label": "B  N=1024 D=16 K8 Ki8 (eff)",
+    "n_params": 33952,
+    "top1_history": [
+      0.1248,
+      0.2683,
+      0.4494,
+      0.5941,
+      0.6561,
+      0.6864
+    ],
+    "diagnostics_history": [
+      {
+        "epoch": 1,
+        "eff_rank": 4.6,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.745,
+        "grad_wpos": 0.9053,
+        "grad_theta": 0.4248
+      },
+      {
+        "epoch": 2,
+        "eff_rank": 4.9,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.753,
+        "grad_wpos": 0.8978,
+        "grad_theta": 0.4404
+      },
+      {
+        "epoch": 5,
+        "eff_rank": 5.0,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.75,
+        "grad_wpos": 0.6259,
+        "grad_theta": 0.7799
+      },
+      {
+        "epoch": 10,
+        "eff_rank": 5.2,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.749,
+        "grad_wpos": 0.5404,
+        "grad_theta": 0.8414
+      },
+      {
+        "epoch": 15,
+        "eff_rank": 5.4,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.756,
+        "grad_wpos": 0.5381,
+        "grad_theta": 0.8429
+      },
+      {
+        "epoch": 20,
+        "eff_rank": 5.5,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.755,
+        "grad_wpos": 0.4637,
+        "grad_theta": 0.886
+      }
+    ],
+    "top1_best": 0.6925
+  },
+  "D": {
+    "label": "D  N=256  D=16 K4 Ki4 (minimal)",
+    "n_params": 8608,
+    "top1_history": [
+      0.1345,
+      0.251,
+      0.3572,
+      0.4089,
+      0.4403,
+      0.4683
+    ],
+    "diagnostics_history": [
+      {
+        "epoch": 1,
+        "eff_rank": 9.5,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.748,
+        "grad_wpos": 0.2258,
+        "grad_theta": 0.9742
+      },
+      {
+        "epoch": 2,
+        "eff_rank": 9.4,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.752,
+        "grad_wpos": 0.2522,
+        "grad_theta": 0.9677
+      },
+      {
+        "epoch": 5,
+        "eff_rank": 9.7,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.755,
+        "grad_wpos": 0.2958,
+        "grad_theta": 0.9553
+      },
+      {
+        "epoch": 10,
+        "eff_rank": 10.0,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.754,
+        "grad_wpos": 0.2257,
+        "grad_theta": 0.9742
+      },
+      {
+        "epoch": 15,
+        "eff_rank": 10.2,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.754,
+        "grad_wpos": 0.2067,
+        "grad_theta": 0.9784
+      },
+      {
+        "epoch": 20,
+        "eff_rank": 10.2,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.754,
+        "grad_wpos": 0.2189,
+        "grad_theta": 0.9757
+      }
+    ],
+    "top1_best": 0.4708
+  },
+  "E": {
+    "label": "E  N=1024 D=16 K8 Ki8 AH=0 (ctl)",
+    "n_params": 33952,
+    "top1_history": [
+      0.0874,
+      0.0517,
+      0.2153,
+      0.3169,
+      0.4183,
+      0.4326
+    ],
+    "diagnostics_history": [
+      {
+        "epoch": 1,
+        "eff_rank": 5.2,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.751,
+        "grad_wpos": 0.9151,
+        "grad_theta": 0.4032
+      },
+      {
+        "epoch": 2,
+        "eff_rank": 5.1,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.755,
+        "grad_wpos": 0.9339,
+        "grad_theta": 0.3575
+      },
+      {
+        "epoch": 5,
+        "eff_rank": 4.9,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.752,
+        "grad_wpos": 0.9015,
+        "grad_theta": 0.4327
+      },
+      {
+        "epoch": 10,
+        "eff_rank": 4.9,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.761,
+        "grad_wpos": 0.8431,
+        "grad_theta": 0.5378
+      },
+      {
+        "epoch": 15,
+        "eff_rank": 4.8,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.754,
+        "grad_wpos": 0.8571,
+        "grad_theta": 0.5152
+      },
+      {
+        "epoch": 20,
+        "eff_rank": 4.8,
+        "neuron_util_pct": 100.0,
+        "wpos_cos_mean": 0.762,
+        "grad_wpos": 0.7639,
+        "grad_theta": 0.6453
+      }
+    ],
+    "top1_best": 0.4492
+  }
+}

@@ -377,6 +377,107 @@ Combined: different K_iter steps could activate different group subsets, or the 
 
 ---
 
+---
+
+## step163 — Progressive K_iter Distillation (Intermediate State Matching)
+**Status:** SCRIPTED — `scripts/train_step163_progressive_kd.py`
+**Date discussed:** 2026-04-10
+
+### Motivation
+
+step127 showed that standard output-matching KD HURTS K_iter reduction:
+- K=6 scratch:          −4.28pp (best without distillation)
+- K=6 distilled α=0.5:  −8.59pp (WORSE than scratch)
+- K=6 distilled α=0.7: −12.13pp
+
+**Why step127 failed:** The teacher (K=12) has a routing trajectory — 12 intermediate
+Z states that progressively refine the representation. The student (K=6) was only
+supervised on the final output. With only final-step supervision, the student has
+no signal about HOW to reach that representation — it just sees the destination, not
+the path. The routing dynamics are the key mechanism, not just the final activations.
+
+### Hypothesis
+
+Matching intermediate K_iter states forces the student to learn the routing
+trajectory, not just the output. If the student can reproduce the teacher's
+activation distribution at corresponding intermediate steps, it should acquire
+the same routing dynamics with fewer iterations.
+
+### Distillation Mapping (K=12 teacher → K=6 student, 2:1 ratio)
+
+| Student iter | Teacher iter | Interpretation |
+|---|---|---|
+| k=1 | k=2  | Student's first step should match teacher after 2 steps |
+| k=2 | k=4  | Student's second step ≈ teacher's fourth |
+| k=3 | k=6  | Halfway through, representations should match |
+| k=4 | k=8  | |
+| k=5 | k=10 | |
+| k=6 | k=12 | Final states must match (same as step127) |
+
+Loss at each step:
+```
+L_kd_step_k = ||Z_student[k] - Z_teacher[2k]||^2_F  (or cosine similarity loss)
+L_total = L_task + α * mean(L_kd_step_k for k in 1..K_student)
+```
+
+### Why this might work
+
+1. Each routing step builds on the previous — if step k is well-aligned, step k+1
+   starts from a better place. Cumulative alignment > just terminal matching.
+2. The intermediate state loss provides dense gradient signal: 6 loss terms instead
+   of 1. The student gets corrected at every step of its routing, not just at the end.
+3. This is analogous to FitNets (hint-based distillation) but for iterative routing
+   rather than layers — proven effective in deep networks.
+4. The teacher's intermediate states encode "what should the representation look
+   like after this many hops" — exactly the routing curriculum the student needs.
+
+### Configs to test (N=1024, D=16, 75ep 50% data)
+
+| Config | K_iter | Init | Distil | Tests |
+|--------|--------|------|--------|-------|
+| Ref | 12 | from scratch (SEED=42) | — | teacher baseline |
+| A | 6 | same seed scratch (SEED=42) | — | step127 control: shared topology, random weights |
+| B | 6 | teacher weights (load_state_dict) | none | warm-start alone, no distil |
+| C | 6 | teacher weights | progressive MSE α=0.3 | core hypothesis |
+| D | 6 | teacher weights | progressive MSE α=0.5 | α sensitivity |
+| E | 8 | teacher weights | progressive MSE α=0.3 | easier alignment (8:12 ratio) |
+
+**Key ablations:**
+- A vs B: effect of weight initialization alone (shared topology, with/without warm weights)
+- B vs C/D: effect of progressive distillation on top of warm init
+- C vs D: α sensitivity
+
+**Teacher init approach:** `student.load_state_dict(teacher.state_dict())`
+- Copies ALL parameters AND buffers (conn_hh, conn_in, W_pos, theta, W_in, fc weights)
+- K_iter is NOT in state_dict (it's a plain int in the forward loop) — so load works with strict=True
+- Topology sharing is automatic — no need to manually copy buffers
+- Student starts in teacher's representation space → Z_student[k] and Z_teacher[2k] are immediately comparable
+
+**Config A (scratch control):** Use SEED=42 for student too.
+Same seed → same conn_hh/conn_in generation → same topology as teacher.
+W_pos, theta, W_in are freshly initialized (not copied). Controls for warm-start effect.
+
+**Teacher must be frozen** during student training. Teacher does K=12 forward pass to collect
+Z_teacher[1..12]. Student does K=6 (or K=8) pass, collecting Z_student[1..K_student].
+Loss: `L_total = L_task + α * mean(MSE(Z_student[k], Z_teacher[2k].detach()) for k)`
+
+**Implementation note:** Custom wrapper `SGNNET_AH_WithIntermediates` around the AH routing
+loop that returns (logits, [Z_1, Z_2, ..., Z_K]) — one list per routing step.
+
+### What blocks it
+Nothing — step127 results are in hand, teacher weights can be saved during
+step127 training or retrained at the start of step163.
+
+### Step number
+**step163** — assign when scripting.
+
+### Expected outcome
+If progressive distillation closes the gap (B/C/D > A = −4.28pp), confirms routing
+dynamics are the bottleneck in KD, not just capacity. If it fails, K_iter is
+intrinsically resistant to compression — K=12 is a hard requirement.
+
+---
+
 ## Resolved/Obsolete
 
 ### step84 — Phase-Based Inter-Group Routing

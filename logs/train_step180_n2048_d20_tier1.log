@@ -1,0 +1,33 @@
+
+======================================================================
+Step 180 — N=2048 D=20 K_hh=4 scratch Tier-1 (50% data 75ep)
+N=2048  D=20  K_hh=4  K_iter=8  α=1.0  Data=50%  Epochs=75
+FLOPs=3,932,160 (~3.93M) — 36% BELOW 6.18M budget
+step177 ref (N=1024 D=48 Tier-2): 95.13% @ ~4.72M — new min-FLOPs record
+step176-A ref (N=2048 D=32 Tier-2): 96.18% @ ~6.1M
+step178 ref (N=2048 D=24 Tier-1, running): ~4.72M probe
+Phase-exit target: ≥95% @ FLOPs ~3.93M
+======================================================================
+  params=84,168
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=3.0255  task=3.0255  safety=0.0000  top1=0.6431  lr=2.36e-03
+  ep 10  val=0.8876
+  e 10  loss=0.3069  task=0.3069  safety=0.0000  top1=0.8876  lr=2.36e-03
+  ep 20  val=0.9185
+  e 20  loss=0.2210  task=0.2210  safety=0.0000  top1=0.9185  lr=2.36e-03
+  ep 30  val=0.9236
+  e 30  loss=0.1691  task=0.1691  safety=0.0000  top1=0.9236  lr=2.36e-03
+  ep 40  val=0.9241
+  e 40  loss=0.1510  task=0.1510  safety=0.0000  top1=0.9241  lr=2.36e-03
+  ep 50  val=0.9248
+  e 50  loss=0.1413  task=0.1413  safety=0.0000  top1=0.9248  lr=2.36e-03
+  ep 60  val=0.9358
+  e 60  loss=0.1231  task=0.1231  safety=0.0000  top1=0.9358  lr=2.36e-03
+  ep 70  val=0.9213
+  e 70  loss=0.1128  task=0.1128  safety=0.0000  top1=0.9213  lr=2.36e-03
+
+======================================================================
+STEP 180: 0.9414  vs_step177=-0.0099  vs_step176A=-0.0204  FLOPs=3.93M  (0.009pp short of 95%)
+best_ep=64  params=84,168
+Results → /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step180_n2048_d20_tier1.json
+======================================================================

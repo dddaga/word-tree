@@ -1,0 +1,71 @@
+
+======================================================================
+Step 218 — Random Projection Ablation (Tier-0 scouts)
+N=2048 D=16 K_hh=2 K_iter=5 | 20ep 50% data
+Question: how much does learning hidden params matter?
+If 160-param config works: SGNNET is a structured random feature extractor
+Running: ['Ref', 'A', 'B', 'C', 'D', 'E']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: full step199 (67K params, AH + learned W_pos + theta)
+────────────────────────────────────────────────────────────
+  learnable=34,976  total=67,744
+  e  1  loss=6.1139  task=6.1139  safety=0.0000  top1=0.3656  lr=2.36e-03
+  e 10  loss=0.3984  task=0.3984  safety=0.0000  top1=0.8902  lr=2.36e-03
+  e 20  loss=0.2758  task=0.2758  safety=0.0000  top1=0.9116  lr=2.36e-03
+  → best=0.9152 @ ep18  learnable=34,976  (104s)
+
+────────────────────────────────────────────────────────────
+Config A: frozen hidden W_pos, no AH, theta learned (~2.2K params)
+────────────────────────────────────────────────────────────
+  learnable=34,976  total=67,744
+  e  1  loss=13.2992  task=13.2992  safety=0.0000  top1=0.1488  lr=2.36e-03
+  e 10  loss=2.2759  task=2.2759  safety=0.0000  top1=0.1671  lr=2.36e-03
+  e 20  loss=2.1526  task=2.1526  safety=0.0000  top1=0.1763  lr=2.36e-03
+  → best=0.1878 @ ep19  learnable=34,976  (94s)
+
+────────────────────────────────────────────────────────────
+Config B: frozen W_pos + theta, only output W_pos learned (160 params!)
+────────────────────────────────────────────────────────────
+  learnable=32,928  total=67,744
+  e  1  loss=13.2992  task=13.2992  safety=0.0000  top1=0.1488  lr=2.36e-03
+  e 10  loss=2.2759  task=2.2759  safety=0.0000  top1=0.1671  lr=2.36e-03
+  e 20  loss=2.1526  task=2.1526  safety=0.0000  top1=0.1763  lr=2.36e-03
+  → best=0.1878 @ ep19  learnable=32,928  (61s)
+
+────────────────────────────────────────────────────────────
+Config C: frozen hidden W_pos, WITH AH (frozen suppression)
+────────────────────────────────────────────────────────────
+  learnable=34,976  total=67,744
+  e  1  loss=19.6619  task=19.6619  safety=0.0000  top1=0.0922  lr=2.36e-03
+  e 10  loss=2.4927  task=2.4927  safety=0.0000  top1=0.1368  lr=2.36e-03
+  e 20  loss=2.2870  task=2.2870  safety=0.0000  top1=0.1766  lr=2.36e-03
+  → best=0.1778 @ ep19  learnable=34,976  (107s)
+
+────────────────────────────────────────────────────────────
+Config D: no AH, hidden W_pos learned (isolate AH contribution)
+────────────────────────────────────────────────────────────
+  learnable=34,976  total=67,744
+  e  1  loss=13.2992  task=13.2992  safety=0.0000  top1=0.1488  lr=2.36e-03
+  e 10  loss=2.2759  task=2.2759  safety=0.0000  top1=0.1671  lr=2.36e-03
+  e 20  loss=2.1526  task=2.1526  safety=0.0000  top1=0.1763  lr=2.36e-03
+  → best=0.1878 @ ep19  learnable=34,976  (94s)
+
+────────────────────────────────────────────────────────────
+Config E: pure random — zero learned params (lower bound)
+────────────────────────────────────────────────────────────
+  learnable=0  total=67,744
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step218_random_projection_ablation.py", line 294, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step218_random_projection_ablation.py", line 249, in main
+    p.register_hook(lambda grad, gh=grad_hook: _zero_hidden(grad, N))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/_tensor.py", line 698, in register_hook
+    raise RuntimeError(
+        "cannot register a hook on a tensor that doesn't require gradient"
+    )
+RuntimeError: cannot register a hook on a tensor that doesn't require gradient

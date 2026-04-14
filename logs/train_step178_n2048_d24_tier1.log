@@ -1,0 +1,32 @@
+
+======================================================================
+Step 178 — N=2048 D=24 K_hh=4 scratch Tier-1 (50% data 75ep)
+N=2048  D=24  K_hh=4  K_iter=8  α=1.0  Data=50%  Epochs=75
+FLOPs=4,718,592 (~4.72M) — 24% BELOW 6.18M budget
+step176-A ref (N=2048 D=32 full data): 96.18% @ ~6.1M
+step177 ref (N=1024 D=48 ~4.65M, running): ~94% expected
+Phase-exit target: ≥95% @ FLOPs ~4.72M
+======================================================================
+  params=100,592
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=2.6259  task=2.6259  safety=0.0000  top1=0.6410  lr=2.36e-03
+  ep 10  val=0.9039
+  e 10  loss=0.3533  task=0.3533  safety=0.0000  top1=0.9039  lr=2.36e-03
+  ep 20  val=0.9159
+  e 20  loss=0.2454  task=0.2454  safety=0.0000  top1=0.9159  lr=2.36e-03
+  ep 30  val=0.9271
+  e 30  loss=0.1957  task=0.1957  safety=0.0000  top1=0.9271  lr=2.36e-03
+  ep 40  val=0.9195
+  e 40  loss=0.1820  task=0.1820  safety=0.0000  top1=0.9195  lr=2.36e-03
+  ep 50  val=0.9248
+  e 50  loss=0.1834  task=0.1834  safety=0.0000  top1=0.9248  lr=2.36e-03
+  ep 60  val=0.9256
+  e 60  loss=0.1501  task=0.1501  safety=0.0000  top1=0.9256  lr=2.36e-03
+  ep 70  val=0.9243
+  e 70  loss=0.1561  task=0.1561  safety=0.0000  top1=0.9243  lr=2.36e-03
+
+======================================================================
+STEP 178: 0.9457  vs_step176A=-0.0161  FLOPs=4.72M  (0.004pp short of 95%)
+best_ep=73  params=100,592
+Results → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step178_n2048_d24_tier1.json
+======================================================================
