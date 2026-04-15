@@ -1,0 +1,70 @@
+Step 263 — K_iter=4 ΔW proj at N=4096 (Tier-1, 50% data)
+  N=4096 D=16 K_hh=2 75ep seed=43
+  Target: K=4 within ±0.2pp of K=5 (mirrors N=2048 finding)
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: ΔW proj K_iter=5 at N=4096
+────────────────────────────────────────────────────────────
+  params=69,792  K_iter=5  seed=43
+  e  1  loss=3.3268  task=3.3268  safety=0.0000  top1=0.8525  lr=2.36e-03
+  ep  5  val=0.9233
+  ep 10  val=0.9355
+  e 10  loss=0.0235  task=0.0235  safety=0.0000  top1=0.9355  lr=2.36e-03
+  ep 15  val=0.9389
+  ep 20  val=0.9432
+  e 20  loss=0.0102  task=0.0102  safety=0.0000  top1=0.9432  lr=2.36e-03
+  ep 25  val=0.9427
+  ep 30  val=0.9457
+  e 30  loss=0.0083  task=0.0083  safety=0.0000  top1=0.9457  lr=2.36e-03
+  ep 35  val=0.9460
+  ep 40  val=0.9460
+  e 40  loss=0.0065  task=0.0065  safety=0.0000  top1=0.9460  lr=1.18e-03
+  ep 45  val=0.9496
+  ep 50  val=0.9478
+  e 50  loss=0.0039  task=0.0039  safety=0.0000  top1=0.9478  lr=1.18e-03
+  ep 55  val=0.9462
+  ep 60  val=0.9483
+  e 60  loss=0.0049  task=0.0049  safety=0.0000  top1=0.9483  lr=1.18e-03
+  ep 65  val=0.9501
+  ep 70  val=0.9511
+  e 70  loss=0.0027  task=0.0027  safety=0.0000  top1=0.9511  lr=5.91e-04
+  ep 75  val=0.9516
+  → best=0.9516 @ep68  elapsed=1078s
+
+────────────────────────────────────────────────────────────
+Config A: ΔW proj K_iter=4 at N=4096
+────────────────────────────────────────────────────────────
+  params=69,792  K_iter=4  seed=43
+  e  1  loss=5.9799  task=5.9799  safety=0.0000  top1=0.7246  lr=2.36e-03
+  ep  5  val=0.9068
+  ep 10  val=0.9332
+  e 10  loss=0.0672  task=0.0672  safety=0.0000  top1=0.9332  lr=2.36e-03
+  ep 15  val=0.9419
+  ep 20  val=0.9447
+  e 20  loss=0.0232  task=0.0232  safety=0.0000  top1=0.9447  lr=2.36e-03
+  ep 25  val=0.9470
+  ep 30  val=0.9462
+  e 30  loss=0.0134  task=0.0134  safety=0.0000  top1=0.9462  lr=2.36e-03
+  ep 35  val=0.9541
+  ep 40  val=0.9524
+  e 40  loss=0.0093  task=0.0093  safety=0.0000  top1=0.9524  lr=2.36e-03
+  ep 45  val=0.9539
+  ep 50  val=0.9569
+  e 50  loss=0.0072  task=0.0072  safety=0.0000  top1=0.9569  lr=2.36e-03
+  ep 55  val=0.9585
+  ep 60  val=0.9575
+  e 60  loss=0.0060  task=0.0060  safety=0.0000  top1=0.9575  lr=2.36e-03
+  ep 65  val=0.9575
+  ep 70  val=0.9557
+  e 70  loss=0.0086  task=0.0086  safety=0.0000  top1=0.9557  lr=2.36e-03
+  ep 75  val=0.9615
+  → best=0.9615 @ep75  elapsed=957s
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step263_kiter4_n4096.py", line 167, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step263_kiter4_n4096.py", line 153, in main
+    with open(OUT_PATH, "w") as f:
+         ~~~~^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted: '/Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step263_kiter4_n4096_seed43.json'

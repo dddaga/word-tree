@@ -4,13 +4,15 @@
 
 **Dataset:** Imagenette (small ImageNet, ~13k images, 10 classes) via VGG16 pool5 features (25088-dim)
 
-**Headline Result:** 95.52% accuracy @ 0.98M FLOPs (0.79% of VGG16 FC), 67K params (0.05%)
+**Headline Result (efficiency config, step199):** 95.52% accuracy @ 0.98M routing-MACs (1.85M true FLOPs, 0.75% of VGG16 FC), 34,976 params (0.03% of VGG16 FC)
+**Best accuracy (same efficiency scale, step235 ΔW rot+aug):** 97.30% at N=2048 (single-seed 97.38%; 3-seed mean 97.13% ±0.13pp)
+**Ceiling at D=16 (step266 ΔW rot+aug):** 97.71% at N=4096
 
 ---
 
 ## 1. Abstract
 
-SGNNET: a sparse O(N·K) graph neural network where N neurons live on a D-dimensional hypersphere with fixed random connectivity. Despite having no learned edge weights and only 67K parameters (0.05% of VGG16's FC layer), SGNNET achieves 95.52% accuracy on Imagenette — matching VGG16's classifier while using <1% of its compute. We show that representational capacity (D) dominates over connectivity (K_hh) at fixed FLOPs, establish N-scaling laws with a confirmed D=16 ceiling at 97.17%, and document a gate-death theorem explaining why 27 routing mechanisms fail. 213 controlled experiments map the complete efficiency frontier.
+SGNNET: a sparse O(N·K) graph neural network where N neurons live on a D-dimensional hypersphere with fixed random connectivity. With only **34,976 parameters (0.03% of VGG16's FC layer)** and **1.85M FLOPs (0.75% of VGG16 FC)**, SGNNET achieves **97.30% accuracy** on Imagenette via ΔW-projection routing with augmentation (step235), surpassing VGG16's classifier accuracy at 3400× fewer params. At N=4096 it reaches **97.71%** (step266). We show that representational capacity (D) dominates over connectivity (K_hh) at fixed FLOPs, establish N-scaling laws with a confirmed D=16 ceiling, and document a gate-death theorem explaining why 27 routing mechanisms fail. 213+ controlled experiments map the complete efficiency frontier.
 
 ---
 

@@ -1,0 +1,87 @@
+
+======================================================================
+Step 612 -- K_iter KL Distillation at Efficiency Config (Tier-1 75ep)
+N=2048 D=16 K_hh=2  teacher_ep=40  configs=['Ref', 'A_k3_ce', 'B_k3_distill', 'C_k3_distill_hard']
+Device: mps
+======================================================================
+Data: 4734/9469 train, 3925 val
+
+------------------------------------------------------------
+Config Ref: k_student=5 distill=False T=1.0 lam=0.0
+  params=34,976
+  ep 10  val=0.9093
+  ep 20  val=0.9177
+  ep 30  val=0.9225
+  ep 40  val=0.9343
+  ep 50  val=0.9368
+  ep 60  val=0.9437
+  ep 70  val=0.9452
+  best=0.9452 @ ep70
+
+------------------------------------------------------------
+Config A_k3_ce: k_student=3 distill=False T=1.0 lam=0.0
+  params=34,976
+  ep 10  val=0.8339
+  ep 20  val=0.8558
+  ep 30  val=0.8920
+  ep 40  val=0.8869
+  ep 50  val=0.9017
+  ep 60  val=0.8999
+  ep 70  val=0.9062
+  best=0.9070 @ ep68
+
+------------------------------------------------------------
+Config B_k3_distill: k_student=3 distill=True T=2.0 lam=0.5
+  params=34,976
+  Training teacher K=5 for 40ep...
+  e  1  loss=6.1072  task=6.1072  safety=0.0000  top1=0.3704  lr=2.36e-03
+  [teacher] ep 10  val=0.8902
+  e 10  loss=0.3993  task=0.3993  safety=0.0000  top1=0.8902  lr=2.36e-03
+  [teacher] ep 20  val=0.9154
+  e 20  loss=0.2773  task=0.2773  safety=0.0000  top1=0.9154  lr=2.36e-03
+  [teacher] ep 30  val=0.9197
+  e 30  loss=0.2285  task=0.2285  safety=0.0000  top1=0.9197  lr=2.36e-03
+  [teacher] ep 40  val=0.9335
+  e 40  loss=0.1987  task=0.1987  safety=0.0000  top1=0.9335  lr=2.36e-03
+  Teacher trained. Starting distillation student K=3...
+  ep 10  val=0.8270
+  ep 20  val=0.8568
+  ep 30  val=0.8922
+  ep 40  val=0.8973
+  ep 50  val=0.9052
+  ep 60  val=0.9085
+  ep 70  val=0.9108
+  best=0.9116 @ ep66
+
+------------------------------------------------------------
+Config C_k3_distill_hard: k_student=3 distill=True T=4.0 lam=0.8
+  params=34,976
+  Training teacher K=5 for 40ep...
+  e  1  loss=6.1042  task=6.1042  safety=0.0000  top1=0.4013  lr=2.36e-03
+  [teacher] ep 10  val=0.8945
+  e 10  loss=0.4005  task=0.4005  safety=0.0000  top1=0.8945  lr=2.36e-03
+  [teacher] ep 20  val=0.9014
+  e 20  loss=0.2822  task=0.2822  safety=0.0000  top1=0.9014  lr=2.36e-03
+  [teacher] ep 30  val=0.9022
+  e 30  loss=0.2384  task=0.2384  safety=0.0000  top1=0.9022  lr=2.36e-03
+  [teacher] ep 40  val=0.9261
+  e 40  loss=0.1948  task=0.1948  safety=0.0000  top1=0.9261  lr=2.36e-03
+  Teacher trained. Starting distillation student K=3...
+  ep 10  val=0.7592
+  ep 20  val=0.8298
+  ep 30  val=0.8685
+  ep 40  val=0.8708
+  ep 50  val=0.8938
+  ep 60  val=0.8851
+  ep 70  val=0.8935
+  best=0.8971 @ ep56
+
+======================================================================
+Label                   k_stud  distill     T    lam   best_val     delta   bep
+----------------------------------------------------------------------
+  Ref                          5    False   1.0    0.0     0.9452   +0.0000    70
+  B_k3_distill                 3     True   2.0    0.5     0.9116   -0.0336    66
+  A_k3_ce                      3    False   1.0    0.0     0.9070   -0.0382    68
+  C_k3_distill_hard            3     True   4.0    0.8     0.8971   -0.0481    56
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step612_kiter_distill_efficiency.json

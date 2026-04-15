@@ -1,0 +1,76 @@
+Step 401c — CIFAR-10 baselines (Linear + MLPs)
+  data=data/store_cifar10.h5  epochs=100  device=cpu
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+  Train=50000  Val=10000
+
+────────────────────────────────────────────────────────────
+Config Lin_direct
+────────────────────────────────────────────────────────────
+  params=250,890
+  ep 10  val=0.8778  best=0.8778
+  ep 20  val=0.8770  best=0.8782
+  ep 30  val=0.8677  best=0.8782
+  ep 40  val=0.8709  best=0.8782
+  ep 50  val=0.8656  best=0.8782
+  ep 60  val=0.8676  best=0.8782
+  ep 70  val=0.8700  best=0.8782
+  ep 80  val=0.8720  best=0.8782
+  ep 90  val=0.8721  best=0.8782
+  ep100  val=0.8725  best=0.8782
+  → best=0.8782  elapsed=105s
+
+────────────────────────────────────────────────────────────
+Config MLP_2
+────────────────────────────────────────────────────────────
+  params=50,208
+  ep 10  val=0.5611  best=0.5675
+  ep 20  val=0.5566  best=0.5675
+  ep 30  val=0.5513  best=0.5675
+  ep 40  val=0.5423  best=0.5675
+  ep 50  val=0.5312  best=0.5675
+  ep 60  val=0.5323  best=0.5675
+  ep 70  val=0.5286  best=0.5675
+  ep 80  val=0.5309  best=0.5675
+  ep 90  val=0.5315  best=0.5675
+  ep100  val=0.5301  best=0.5675
+  → best=0.5675  elapsed=101s
+
+────────────────────────────────────────────────────────────
+Config MLP_3
+────────────────────────────────────────────────────────────
+  params=75,307
+  ep 10  val=0.5296  best=0.5296
+  ep 20  val=0.5234  best=0.5296
+  ep 30  val=0.5193  best=0.5296
+  ep 40  val=0.5189  best=0.5296
+  ep 50  val=0.5151  best=0.5296
+  ep 60  val=0.5144  best=0.5296
+  ep 70  val=0.5125  best=0.5296
+  ep 80  val=0.5105  best=0.5296
+  ep 90  val=0.5102  best=0.5296
+  ep100  val=0.5082  best=0.5296
+  → best=0.5296  elapsed=102s
+
+────────────────────────────────────────────────────────────
+Config MLP_64
+────────────────────────────────────────────────────────────
+  params=1,606,346
+  ep 10  val=0.8818  best=0.8818
+  ep 20  val=0.8701  best=0.8832
+  ep 30  val=0.8800  best=0.8832
+  ep 40  val=0.8732  best=0.8832
+  ep 50  val=0.8722  best=0.8832
+  ep 60  val=0.8710  best=0.8832
+  ep 70  val=0.8748  best=0.8832
+  ep 80  val=0.8765  best=0.8832
+  ep 90  val=0.8771  best=0.8832
+  ep100  val=0.8775  best=0.8832
+  → best=0.8832  elapsed=131s
+
+========== STEP 401c SUMMARY (CIFAR-10) ==========
+  Lin_direct    params=   250,890  best=0.8782
+  MLP_2         params=    50,208  best=0.5675
+  MLP_3         params=    75,307  best=0.5296
+  MLP_64        params= 1,606,346  best=0.8832
+
+(Compare vs SGNNET: step401b K=5=80.44%, K=4=80.11% @ 67,744 params)

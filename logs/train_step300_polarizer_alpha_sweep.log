@@ -111,3 +111,46 @@ Config A200: kind=polar, alpha=2.0
   e 30  loss=0.1479  task=0.1479  safety=0.0000  top1=0.9254  lr=2.36e-03
   ep 40  val=0.9361
   e 40  loss=0.1145  task=0.1145  safety=0.0000  top1=0.9361  lr=2.36e-03
+  ep 50  val=0.9322
+  e 50  loss=0.0972  task=0.0972  safety=0.0000  top1=0.9322  lr=2.36e-03
+  ep 60  val=0.9391
+  e 60  loss=0.0773  task=0.0773  safety=0.0000  top1=0.9391  lr=2.36e-03
+  ep 70  val=0.9394
+  e 70  loss=0.0658  task=0.0658  safety=0.0000  top1=0.9394  lr=2.36e-03
+  ep 75  val=0.9424
+  → best=0.9473 @ ep72  (736s)
+
+────────────────────────────────────────────────────────────
+Config A250: kind=polar, alpha=2.5
+────────────────────────────────────────────────────────────
+  params=34,976
+  ep  1  val=0.4415
+  e  1  loss=5.1282  task=5.1282  safety=0.0000  top1=0.4415  lr=2.36e-03
+  ep 10  val=0.9055
+  e 10  loss=0.2784  task=0.2784  safety=0.0000  top1=0.9055  lr=2.36e-03
+  ep 20  val=0.9243
+  e 20  loss=0.1536  task=0.1536  safety=0.0000  top1=0.9243  lr=2.36e-03
+  ep 30  val=0.9327
+  e 30  loss=0.1080  task=0.1080  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 40  val=0.9409
+  e 40  loss=0.0818  task=0.0818  safety=0.0000  top1=0.9409  lr=2.36e-03
+  ep 50  val=0.9394
+  e 50  loss=0.0640  task=0.0640  safety=0.0000  top1=0.9394  lr=2.36e-03
+  ep 60  val=0.9429
+  e 60  loss=0.0522  task=0.0522  safety=0.0000  top1=0.9429  lr=2.36e-03
+  ep 70  val=0.9447
+  e 70  loss=0.0421  task=0.0421  safety=0.0000  top1=0.9447  lr=2.36e-03
+  ep 75  val=0.9465
+  → best=0.9468 @ ep65  (671s)
+
+======================================================================
+STEP 300 SUMMARY — polarizer α sweep
+======================================================================
+  Ref (no polar): 0.9389
+  A050 (α=0.5): 0.9452  Δ=+0.0063
+  A100 (α=1.0): 0.9406  Δ=+0.0017
+  A150 (α=1.5): 0.9406  Δ=+0.0017
+  A200 (α=2.0): 0.9473  Δ=+0.0084
+  A250 (α=2.5): 0.9468  Δ=+0.0079
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step300_polarizer_alpha_sweep.json

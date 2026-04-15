@@ -1,0 +1,55 @@
+
+======================================================================
+Step 235 — Delta Rotation: full data ± augmentation, ± AH
+Running: ['A_aug']
+======================================================================
+
+────────────────────────────────────────────────────────────
+Config A_aug: ΔW rotation no AH, augmented
+────────────────────────────────────────────────────────────
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+  params=34,977  data=18,938 train / 3,925 val
+  [injected rotation_temp into optimizer]
+  ep  1  val=0.5827
+  e  1  loss=6.9049  task=6.9049  safety=0.0000  top1=0.5827  lr=2.36e-03
+  ep 10  val=0.9506
+  e 10  loss=0.0679  task=0.0679  safety=0.0000  top1=0.9506  lr=2.36e-03
+  ep 20  val=0.9631
+  e 20  loss=0.0323  task=0.0323  safety=0.0000  top1=0.9631  lr=2.36e-03
+  ep 30  val=0.9631
+  e 30  loss=0.0204  task=0.0204  safety=0.0000  top1=0.9631  lr=2.36e-03
+  ep 40  val=0.9605
+  e 40  loss=0.0174  task=0.0174  safety=0.0000  top1=0.9605  lr=2.36e-03
+  ep 50  val=0.9631
+  e 50  loss=0.0110  task=0.0110  safety=0.0000  top1=0.9631  lr=2.36e-03
+  ep 60  val=0.9654
+  e 60  loss=0.0134  task=0.0134  safety=0.0000  top1=0.9654  lr=2.36e-03
+  ep 70  val=0.9676
+  e 70  loss=0.0053  task=0.0053  safety=0.0000  top1=0.9676  lr=1.18e-03
+  ep 80  val=0.9712
+  e 80  loss=0.0061  task=0.0061  safety=0.0000  top1=0.9712  lr=1.18e-03
+  ep 90  val=0.9682
+  e 90  loss=0.0036  task=0.0036  safety=0.0000  top1=0.9682  lr=5.91e-04
+  ep100  val=0.9689
+  e100  loss=0.0038  task=0.0038  safety=0.0000  top1=0.9689  lr=5.91e-04
+  ep110  val=0.9692
+  e110  loss=0.0028  task=0.0028  safety=0.0000  top1=0.9692  lr=2.96e-04
+  ep120  val=0.9682
+  e120  loss=0.0028  task=0.0028  safety=0.0000  top1=0.9682  lr=2.96e-04
+  ep130  val=0.9682
+  e130  loss=0.0027  task=0.0027  safety=0.0000  top1=0.9682  lr=2.96e-04
+  ep140  val=0.9692
+  e140  loss=0.0026  task=0.0026  safety=0.0000  top1=0.9692  lr=2.96e-04
+  ep150  val=0.9684
+  e150  loss=0.0024  task=0.0024  safety=0.0000  top1=0.9684  lr=2.96e-04
+  final rotation_temp=1.7387
+  → best=0.9712 @ ep80  (5491s)
+
+======================================================================
+STEP 235 SUMMARY — Delta Rotation ± AH ± Augmentation
+======================================================================
+  A_aug      (ΔW-rot no-AH): 0.9712  Δ=+0.9712  (augmented)
+
+Augmentation effect:
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step235_delta_rotation_fulldata.json

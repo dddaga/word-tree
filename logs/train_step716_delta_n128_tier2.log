@@ -1,0 +1,89 @@
+
+======================================================================
+Step 716 — ΔW proj N=128 Tier-2 (150ep 100% data, paper-ready)
+N=128 FLOPs=0.061M (6% of old 0.98M record)  Device=mps
+Tier-1: Ref≈42.8%  A_proj≈64.7%  Δ≈+21.9pp
+Tier-2 curve: N=2048(+1.56) N=1024(+4.68) N=512(+10.96) N=256(+20.02) N=128(?)
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=9469  Val=3925
+
+──────────────────────────────────────────────────
+Ref
+──────────────────────────────────────────────────
+  params=2,336
+  e  1  loss=2.5119  task=2.5119  safety=0.0000  top1=0.2010  lr=2.36e-03
+  ep 10  val=0.3620
+  e 10  loss=1.9890  task=1.9890  safety=0.0000  top1=0.3620  lr=2.36e-03
+  ep 20  val=0.4066
+  e 20  loss=1.9335  task=1.9335  safety=0.0000  top1=0.4066  lr=2.36e-03
+  ep 30  val=0.4191
+  e 30  loss=1.9046  task=1.9046  safety=0.0000  top1=0.4191  lr=2.36e-03
+  ep 40  val=0.3924
+  e 40  loss=1.8890  task=1.8890  safety=0.0000  top1=0.3924  lr=2.36e-03
+  ep 50  val=0.4071
+  e 50  loss=1.8764  task=1.8764  safety=0.0000  top1=0.4071  lr=2.36e-03
+  ep 60  val=0.4255
+  e 60  loss=1.8712  task=1.8712  safety=0.0000  top1=0.4255  lr=2.36e-03
+  ep 70  val=0.4270
+  e 70  loss=1.8663  task=1.8663  safety=0.0000  top1=0.4270  lr=2.36e-03
+  ep 80  val=0.4275
+  e 80  loss=1.8601  task=1.8601  safety=0.0000  top1=0.4275  lr=2.36e-03
+  ep 90  val=0.4464
+  e 90  loss=1.8519  task=1.8519  safety=0.0000  top1=0.4464  lr=2.36e-03
+  ep100  val=0.4349
+  e100  loss=1.8511  task=1.8511  safety=0.0000  top1=0.4349  lr=2.36e-03
+  ep110  val=0.4423
+  e110  loss=1.8482  task=1.8482  safety=0.0000  top1=0.4423  lr=2.36e-03
+  ep120  val=0.4461
+  e120  loss=1.8486  task=1.8486  safety=0.0000  top1=0.4461  lr=2.36e-03
+  ep130  val=0.4474
+  e130  loss=1.8470  task=1.8470  safety=0.0000  top1=0.4474  lr=2.36e-03
+  ep140  val=0.4334
+  e140  loss=1.8467  task=1.8467  safety=0.0000  top1=0.4334  lr=2.36e-03
+  ep150  val=0.4326
+  e150  loss=1.8423  task=1.8423  safety=0.0000  top1=0.4326  lr=1.18e-03
+  → best=0.4555 @ ep141
+
+──────────────────────────────────────────────────
+A_proj
+──────────────────────────────────────────────────
+  params=2,336
+  e  1  loss=2.3662  task=2.3662  safety=0.0000  top1=0.3060  lr=2.36e-03
+  ep 10  val=0.5727
+  e 10  loss=1.3968  task=1.3968  safety=0.0000  top1=0.5727  lr=2.36e-03
+  ep 20  val=0.6168
+  e 20  loss=1.2335  task=1.2335  safety=0.0000  top1=0.6168  lr=2.36e-03
+  ep 30  val=0.6400
+  e 30  loss=1.1543  task=1.1543  safety=0.0000  top1=0.6400  lr=2.36e-03
+  ep 40  val=0.6466
+  e 40  loss=1.1229  task=1.1229  safety=0.0000  top1=0.6466  lr=2.36e-03
+  ep 50  val=0.6637
+  e 50  loss=1.0947  task=1.0947  safety=0.0000  top1=0.6637  lr=2.36e-03
+  ep 60  val=0.6688
+  e 60  loss=1.0837  task=1.0837  safety=0.0000  top1=0.6688  lr=2.36e-03
+  ep 70  val=0.6566
+  e 70  loss=1.0664  task=1.0664  safety=0.0000  top1=0.6566  lr=2.36e-03
+  ep 80  val=0.6632
+  e 80  loss=1.0512  task=1.0512  safety=0.0000  top1=0.6632  lr=2.36e-03
+  ep 90  val=0.6594
+  e 90  loss=1.0385  task=1.0385  safety=0.0000  top1=0.6594  lr=2.36e-03
+  ep100  val=0.6772
+  e100  loss=1.0278  task=1.0278  safety=0.0000  top1=0.6772  lr=2.36e-03
+  ep110  val=0.6861
+  e110  loss=1.0196  task=1.0196  safety=0.0000  top1=0.6861  lr=2.36e-03
+  ep120  val=0.6825
+  e120  loss=1.0121  task=1.0121  safety=0.0000  top1=0.6825  lr=2.36e-03
+  ep130  val=0.6866
+  e130  loss=1.0091  task=1.0091  safety=0.0000  top1=0.6866  lr=2.36e-03
+  ep140  val=0.6920
+  e140  loss=0.9996  task=0.9996  safety=0.0000  top1=0.6920  lr=2.36e-03
+  ep150  val=0.6869
+  e150  loss=0.9940  task=0.9940  safety=0.0000  top1=0.6869  lr=2.36e-03
+  → best=0.6973 @ ep148
+
+======================================================================
+Ref=0.4555  A_proj=0.6973  Δ=+0.2418
+Headroom curve Tier-2: N=2048(+1.56) N=1024(+4.68) N=512(+10.96) N=256(+20.02) N=128(+24.18pp)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step716_delta_n128_tier2.json

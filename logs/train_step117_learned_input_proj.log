@@ -1,0 +1,47 @@
+
+======================================================================
+Step 117 — Learned Input Projection
+N=1024  D=64  K_iter=12  K_hh=4  AH=1.0
+Epochs=150  Device=cpu  Data=50%
+======================================================================
+
+Configs:
+  Ref   proj=none        Ref  Standard AH (no input proj)
+  A     proj=linear      A    Shared W_proj [D,D] after scatter-sum (4096 params)
+  B     proj=lowrank     B    Low-rank [D,16]*[16,D] after scatter-sum (2048 params)
+  C     proj=bias        C    Per-neuron bias Z[h] += b[h] (65536 params)
+  D     proj=layernorm   D    LayerNorm on seeded Z (~128 params)
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config B: B    Low-rank [D,16]*[16,D] after scatter-sum (2048 params)
+  params=69,248  proj_mode=lowrank
+────────────────────────────────────────────────────────────
+  e  1  loss=1.7067  task=1.7067  safety=0.0000  top1=0.7954  lr=2.36e-03
+  e 10  loss=0.3194  task=0.3194  safety=0.0000  top1=0.9282  lr=2.36e-03
+  e 20  loss=0.2371  task=0.2371  safety=0.0000  top1=0.9386  lr=2.36e-03
+  e 30  loss=0.1956  task=0.1956  safety=0.0000  top1=0.9353  lr=2.36e-03
+  e 40  loss=0.1753  task=0.1753  safety=0.0000  top1=0.9422  lr=2.36e-03
+  e 50  loss=0.1581  task=0.1581  safety=0.0000  top1=0.9427  lr=2.36e-03
+  e 60  loss=0.1493  task=0.1493  safety=0.0000  top1=0.9490  lr=2.36e-03
+  e 70  loss=0.1434  task=0.1434  safety=0.0000  top1=0.9480  lr=2.36e-03
+  e 80  loss=0.1382  task=0.1382  safety=0.0000  top1=0.9470  lr=2.36e-03
+  e 90  loss=0.1338  task=0.1338  safety=0.0000  top1=0.9485  lr=2.36e-03
+  e100  loss=0.1282  task=0.1282  safety=0.0000  top1=0.9422  lr=2.36e-03
+  e110  loss=0.1209  task=0.1209  safety=0.0000  top1=0.9401  lr=2.36e-03
+  e120  loss=0.1166  task=0.1166  safety=0.0000  top1=0.9468  lr=2.36e-03
+  e130  loss=0.1131  task=0.1131  safety=0.0000  top1=0.9470  lr=2.36e-03
+  e140  loss=0.1108  task=0.1108  safety=0.0000  top1=0.9508  lr=2.36e-03
+  e150  loss=0.1106  task=0.1106  safety=0.0000  top1=0.9483  lr=2.36e-03
+
+  top1_best=0.9524  vs_Ref=+0.0000  elapsed=130.8min
+
+======================================================================
+STEP 117 SUMMARY
+======================================================================
+Config        proj    params     top1    vs_Ref  best_ep
+────────────────────────────────────────────────────────────
+B          lowrank    69,248  0.9524  +0.0000      136
+
+Results saved -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step117_learned_input_proj.json

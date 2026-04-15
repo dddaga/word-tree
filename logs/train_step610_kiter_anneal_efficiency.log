@@ -1,0 +1,583 @@
+
+======================================================================
+Step 610 — K_iter annealing on efficiency config
+N=2048  D=16  K_hh=2  K_in=25  AH=1.0
+Epochs=75  Device=cpu  Data=50%  Tier-1
+Running: ['Ref', 'A_up', 'B_down_gentle', 'C_down_aggressive', 'D_warm_switch', 'E_warm_switch_k3']
+======================================================================
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: Ref   K_iter=5 constant
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 5
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.3997  lr=2.36e-03
+  ep  1  K_iter=5  val=0.3997
+  e  1  loss=1.3883  task=1.3883  safety=0.0000  top1=0.6713  lr=2.36e-03
+  e  1  loss=0.9102  task=0.9102  safety=0.0000  top1=0.7689  lr=2.36e-03
+  e  1  loss=0.7224  task=0.7224  safety=0.0000  top1=0.8107  lr=2.36e-03
+  e  1  loss=0.6108  task=0.6108  safety=0.0000  top1=0.8199  lr=2.36e-03
+  e  1  loss=0.5325  task=0.5325  safety=0.0000  top1=0.8497  lr=2.36e-03
+  e  1  loss=0.5017  task=0.5017  safety=0.0000  top1=0.8629  lr=2.36e-03
+  e  1  loss=0.4528  task=0.4528  safety=0.0000  top1=0.8780  lr=2.36e-03
+  e  1  loss=0.4111  task=0.4111  safety=0.0000  top1=0.8882  lr=2.36e-03
+  e  1  loss=0.3904  task=0.3904  safety=0.0000  top1=0.9006  lr=2.36e-03
+  ep 10  K_iter=5  val=0.9006
+  e  1  loss=0.3685  task=0.3685  safety=0.0000  top1=0.8927  lr=2.36e-03
+  e  1  loss=0.3544  task=0.3544  safety=0.0000  top1=0.8996  lr=2.36e-03
+  e  1  loss=0.3376  task=0.3376  safety=0.0000  top1=0.9037  lr=2.36e-03
+  e  1  loss=0.3220  task=0.3220  safety=0.0000  top1=0.8961  lr=2.36e-03
+  e  1  loss=0.3185  task=0.3185  safety=0.0000  top1=0.8904  lr=2.36e-03
+  e  1  loss=0.2991  task=0.2991  safety=0.0000  top1=0.9124  lr=2.36e-03
+  e  1  loss=0.2966  task=0.2966  safety=0.0000  top1=0.9124  lr=2.36e-03
+  e  1  loss=0.2951  task=0.2951  safety=0.0000  top1=0.9167  lr=2.36e-03
+  e  1  loss=0.2801  task=0.2801  safety=0.0000  top1=0.9149  lr=2.36e-03
+  e  1  loss=0.2769  task=0.2769  safety=0.0000  top1=0.9164  lr=2.36e-03
+  ep 20  K_iter=5  val=0.9164
+  e  1  loss=0.2657  task=0.2657  safety=0.0000  top1=0.9241  lr=2.36e-03
+  e  1  loss=0.2614  task=0.2614  safety=0.0000  top1=0.9175  lr=2.36e-03
+  e  1  loss=0.2580  task=0.2580  safety=0.0000  top1=0.9098  lr=2.36e-03
+  e  1  loss=0.2484  task=0.2484  safety=0.0000  top1=0.9154  lr=2.36e-03
+  e  1  loss=0.2442  task=0.2442  safety=0.0000  top1=0.9093  lr=2.36e-03
+  e  1  loss=0.2449  task=0.2449  safety=0.0000  top1=0.9284  lr=2.36e-03
+  e  1  loss=0.2338  task=0.2338  safety=0.0000  top1=0.9241  lr=2.36e-03
+  e  1  loss=0.2282  task=0.2282  safety=0.0000  top1=0.9200  lr=2.36e-03
+  e  1  loss=0.2280  task=0.2280  safety=0.0000  top1=0.9264  lr=2.36e-03
+  e  1  loss=0.2284  task=0.2284  safety=0.0000  top1=0.9248  lr=2.36e-03
+  ep 30  K_iter=5  val=0.9248
+  e  1  loss=0.2242  task=0.2242  safety=0.0000  top1=0.9203  lr=2.36e-03
+  e  1  loss=0.2245  task=0.2245  safety=0.0000  top1=0.9297  lr=2.36e-03
+  e  1  loss=0.2124  task=0.2124  safety=0.0000  top1=0.9090  lr=2.36e-03
+  e  1  loss=0.2148  task=0.2148  safety=0.0000  top1=0.9154  lr=2.36e-03
+  e  1  loss=0.2189  task=0.2189  safety=0.0000  top1=0.9287  lr=2.36e-03
+  e  1  loss=0.2056  task=0.2056  safety=0.0000  top1=0.9172  lr=2.36e-03
+  e  1  loss=0.2099  task=0.2099  safety=0.0000  top1=0.9274  lr=2.36e-03
+  e  1  loss=0.2004  task=0.2004  safety=0.0000  top1=0.9325  lr=2.36e-03
+  e  1  loss=0.1982  task=0.1982  safety=0.0000  top1=0.9315  lr=2.36e-03
+  e  1  loss=0.2027  task=0.2027  safety=0.0000  top1=0.9162  lr=2.36e-03
+  ep 40  K_iter=5  val=0.9162
+  e  1  loss=0.2036  task=0.2036  safety=0.0000  top1=0.9256  lr=2.36e-03
+  e  1  loss=0.1929  task=0.1929  safety=0.0000  top1=0.9327  lr=2.36e-03
+  e  1  loss=0.1951  task=0.1951  safety=0.0000  top1=0.9307  lr=2.36e-03
+  e  1  loss=0.1898  task=0.1898  safety=0.0000  top1=0.9261  lr=2.36e-03
+  e  1  loss=0.1909  task=0.1909  safety=0.0000  top1=0.9251  lr=2.36e-03
+  e  1  loss=0.1936  task=0.1936  safety=0.0000  top1=0.9108  lr=2.36e-03
+  e  1  loss=0.1856  task=0.1856  safety=0.0000  top1=0.9332  lr=2.36e-03
+  e  1  loss=0.1787  task=0.1787  safety=0.0000  top1=0.9233  lr=2.36e-03
+  e  1  loss=0.1975  task=0.1975  safety=0.0000  top1=0.9279  lr=2.36e-03
+  e  1  loss=0.1862  task=0.1862  safety=0.0000  top1=0.9180  lr=2.36e-03
+  ep 50  K_iter=5  val=0.9180
+  e  1  loss=0.1896  task=0.1896  safety=0.0000  top1=0.9320  lr=2.36e-03
+  e  1  loss=0.1933  task=0.1933  safety=0.0000  top1=0.9261  lr=2.36e-03
+  e  1  loss=0.1787  task=0.1787  safety=0.0000  top1=0.9233  lr=2.36e-03
+  e  1  loss=0.1777  task=0.1777  safety=0.0000  top1=0.9215  lr=2.36e-03
+  e  1  loss=0.1750  task=0.1750  safety=0.0000  top1=0.9284  lr=2.36e-03
+  e  1  loss=0.1716  task=0.1716  safety=0.0000  top1=0.9312  lr=2.36e-03
+  e  1  loss=0.1784  task=0.1784  safety=0.0000  top1=0.9287  lr=2.36e-03
+  e  1  loss=0.1727  task=0.1727  safety=0.0000  top1=0.9317  lr=2.36e-03
+  e  1  loss=0.1743  task=0.1743  safety=0.0000  top1=0.9330  lr=2.36e-03
+  e  1  loss=0.1705  task=0.1705  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 60  K_iter=5  val=0.9327
+  e  1  loss=0.1647  task=0.1647  safety=0.0000  top1=0.9259  lr=2.36e-03
+  e  1  loss=0.1720  task=0.1720  safety=0.0000  top1=0.9312  lr=2.36e-03
+  e  1  loss=0.1634  task=0.1634  safety=0.0000  top1=0.9175  lr=2.36e-03
+  e  1  loss=0.1627  task=0.1627  safety=0.0000  top1=0.9317  lr=2.36e-03
+  e  1  loss=0.1551  task=0.1551  safety=0.0000  top1=0.9317  lr=2.36e-03
+  e  1  loss=0.1564  task=0.1564  safety=0.0000  top1=0.9299  lr=2.36e-03
+  e  1  loss=0.1575  task=0.1575  safety=0.0000  top1=0.9177  lr=2.36e-03
+  e  1  loss=0.1605  task=0.1605  safety=0.0000  top1=0.9338  lr=2.36e-03
+  e  1  loss=0.1543  task=0.1543  safety=0.0000  top1=0.9302  lr=2.36e-03
+  e  1  loss=0.1589  task=0.1589  safety=0.0000  top1=0.9284  lr=2.36e-03
+  ep 70  K_iter=5  val=0.9284
+  e  1  loss=0.1555  task=0.1555  safety=0.0000  top1=0.9254  lr=2.36e-03
+  e  1  loss=0.1557  task=0.1557  safety=0.0000  top1=0.9394  lr=2.36e-03
+  e  1  loss=0.1601  task=0.1601  safety=0.0000  top1=0.9315  lr=2.36e-03
+  e  1  loss=0.1567  task=0.1567  safety=0.0000  top1=0.9353  lr=2.36e-03
+  e  1  loss=0.1576  task=0.1576  safety=0.0000  top1=0.9294  lr=2.36e-03
+
+  best=0.9394 @ ep72 (K_iter=5)  vs_Ref=+0.0000  final_K=5  7.3min
+
+────────────────────────────────────────────────────────────
+Config A_up: A_up  3→5→7→9 monotonic UP (4 phases, ~19ep each)
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 3
+  e  1  loss=10.0411  task=10.0411  safety=0.0000  top1=0.1618  lr=2.36e-03
+  ep  1  K_iter=3  val=0.1618
+  e  1  loss=2.7056  task=2.7056  safety=0.0000  top1=0.2739  lr=2.36e-03
+  e  1  loss=2.0395  task=2.0395  safety=0.0000  top1=0.3465  lr=2.36e-03
+  e  1  loss=1.7534  task=1.7534  safety=0.0000  top1=0.4296  lr=2.36e-03
+  e  1  loss=1.5559  task=1.5559  safety=0.0000  top1=0.5233  lr=2.36e-03
+  e  1  loss=1.4002  task=1.4002  safety=0.0000  top1=0.5768  lr=2.36e-03
+  e  1  loss=1.2786  task=1.2786  safety=0.0000  top1=0.6619  lr=2.36e-03
+  e  1  loss=1.1821  task=1.1821  safety=0.0000  top1=0.6520  lr=2.36e-03
+  e  1  loss=1.1132  task=1.1132  safety=0.0000  top1=0.6976  lr=2.36e-03
+  e  1  loss=1.0641  task=1.0641  safety=0.0000  top1=0.7162  lr=2.36e-03
+  ep 10  K_iter=3  val=0.7162
+  e  1  loss=1.0174  task=1.0174  safety=0.0000  top1=0.7029  lr=2.36e-03
+  e  1  loss=0.9842  task=0.9842  safety=0.0000  top1=0.6848  lr=2.36e-03
+  e  1  loss=0.9377  task=0.9377  safety=0.0000  top1=0.7358  lr=2.36e-03
+  e  1  loss=0.8971  task=0.8971  safety=0.0000  top1=0.7715  lr=2.36e-03
+  e  1  loss=0.8516  task=0.8516  safety=0.0000  top1=0.7794  lr=2.36e-03
+  e  1  loss=0.8342  task=0.8342  safety=0.0000  top1=0.7615  lr=2.36e-03
+  e  1  loss=0.8070  task=0.8070  safety=0.0000  top1=0.7781  lr=2.36e-03
+  e  1  loss=0.7863  task=0.7863  safety=0.0000  top1=0.8079  lr=2.36e-03
+    [schedule ep=19] K_iter → 5
+  e  1  loss=3.0116  task=3.0116  safety=0.0000  top1=0.7108  lr=2.36e-03
+  e  1  loss=0.8048  task=0.8048  safety=0.0000  top1=0.7992  lr=2.36e-03
+  ep 20  K_iter=5  val=0.7992
+  e  1  loss=0.6134  task=0.6134  safety=0.0000  top1=0.8227  lr=2.36e-03
+  e  1  loss=0.5192  task=0.5192  safety=0.0000  top1=0.8596  lr=2.36e-03
+  e  1  loss=0.4798  task=0.4798  safety=0.0000  top1=0.8652  lr=2.36e-03
+  e  1  loss=0.4385  task=0.4385  safety=0.0000  top1=0.8729  lr=2.36e-03
+  e  1  loss=0.4097  task=0.4097  safety=0.0000  top1=0.8876  lr=2.36e-03
+  e  1  loss=0.3923  task=0.3923  safety=0.0000  top1=0.8864  lr=2.36e-03
+  e  1  loss=0.3791  task=0.3791  safety=0.0000  top1=0.8871  lr=2.36e-03
+  e  1  loss=0.3601  task=0.3601  safety=0.0000  top1=0.8871  lr=2.36e-03
+  e  1  loss=0.3507  task=0.3507  safety=0.0000  top1=0.8879  lr=2.36e-03
+  e  1  loss=0.3511  task=0.3511  safety=0.0000  top1=0.8953  lr=2.36e-03
+  ep 30  K_iter=5  val=0.8953
+  e  1  loss=0.3339  task=0.3339  safety=0.0000  top1=0.8994  lr=2.36e-03
+  e  1  loss=0.3265  task=0.3265  safety=0.0000  top1=0.9009  lr=2.36e-03
+  e  1  loss=0.3102  task=0.3102  safety=0.0000  top1=0.9050  lr=2.36e-03
+  e  1  loss=0.3028  task=0.3028  safety=0.0000  top1=0.9103  lr=2.36e-03
+  e  1  loss=0.3025  task=0.3025  safety=0.0000  top1=0.9101  lr=2.36e-03
+  e  1  loss=0.2953  task=0.2953  safety=0.0000  top1=0.9029  lr=2.36e-03
+  e  1  loss=0.2904  task=0.2904  safety=0.0000  top1=0.8999  lr=2.36e-03
+    [schedule ep=38] K_iter → 7
+  e  1  loss=2.6315  task=2.6315  safety=0.0000  top1=0.7646  lr=2.36e-03
+  e  1  loss=0.5322  task=0.5322  safety=0.0000  top1=0.8459  lr=2.36e-03
+  e  1  loss=0.3801  task=0.3801  safety=0.0000  top1=0.8718  lr=2.36e-03
+  ep 40  K_iter=7  val=0.8718
+  e  1  loss=0.3180  task=0.3180  safety=0.0000  top1=0.8917  lr=2.36e-03
+  e  1  loss=0.2913  task=0.2913  safety=0.0000  top1=0.8963  lr=2.36e-03
+  e  1  loss=0.2694  task=0.2694  safety=0.0000  top1=0.8912  lr=2.36e-03
+  e  1  loss=0.2549  task=0.2549  safety=0.0000  top1=0.9009  lr=2.36e-03
+  e  1  loss=0.2433  task=0.2433  safety=0.0000  top1=0.8961  lr=2.36e-03
+  e  1  loss=0.2283  task=0.2283  safety=0.0000  top1=0.8996  lr=2.36e-03
+  e  1  loss=0.2177  task=0.2177  safety=0.0000  top1=0.9096  lr=2.36e-03
+  e  1  loss=0.2078  task=0.2078  safety=0.0000  top1=0.9062  lr=2.36e-03
+  e  1  loss=0.2009  task=0.2009  safety=0.0000  top1=0.9047  lr=2.36e-03
+  e  1  loss=0.1969  task=0.1969  safety=0.0000  top1=0.9108  lr=2.36e-03
+  ep 50  K_iter=7  val=0.9108
+  e  1  loss=0.1915  task=0.1915  safety=0.0000  top1=0.9113  lr=2.36e-03
+  e  1  loss=0.1913  task=0.1913  safety=0.0000  top1=0.9075  lr=2.36e-03
+  e  1  loss=0.1840  task=0.1840  safety=0.0000  top1=0.9162  lr=2.36e-03
+  e  1  loss=0.1847  task=0.1847  safety=0.0000  top1=0.9042  lr=2.36e-03
+  e  1  loss=0.1738  task=0.1738  safety=0.0000  top1=0.9167  lr=2.36e-03
+  e  1  loss=0.1689  task=0.1689  safety=0.0000  top1=0.9169  lr=2.36e-03
+    [schedule ep=57] K_iter → 9
+  e  1  loss=1.3839  task=1.3839  safety=0.0000  top1=0.7921  lr=2.36e-03
+  e  1  loss=0.4635  task=0.4635  safety=0.0000  top1=0.8586  lr=2.36e-03
+  e  1  loss=0.3284  task=0.3284  safety=0.0000  top1=0.8652  lr=2.36e-03
+  e  1  loss=0.2873  task=0.2873  safety=0.0000  top1=0.8795  lr=2.36e-03
+  ep 60  K_iter=9  val=0.8795
+  e  1  loss=0.2512  task=0.2512  safety=0.0000  top1=0.8884  lr=2.36e-03
+  e  1  loss=0.2227  task=0.2227  safety=0.0000  top1=0.8897  lr=2.36e-03
+  e  1  loss=0.2212  task=0.2212  safety=0.0000  top1=0.8945  lr=2.36e-03
+  e  1  loss=0.2008  task=0.2008  safety=0.0000  top1=0.8927  lr=2.36e-03
+  e  1  loss=0.1910  task=0.1910  safety=0.0000  top1=0.8996  lr=2.36e-03
+  e  1  loss=0.1782  task=0.1782  safety=0.0000  top1=0.9039  lr=2.36e-03
+  e  1  loss=0.1795  task=0.1795  safety=0.0000  top1=0.8999  lr=1.18e-03
+  e  1  loss=0.1416  task=0.1416  safety=0.0000  top1=0.9116  lr=1.18e-03
+  e  1  loss=0.1139  task=0.1139  safety=0.0000  top1=0.9144  lr=1.18e-03
+  e  1  loss=0.1043  task=0.1043  safety=0.0000  top1=0.9167  lr=1.18e-03
+  ep 70  K_iter=9  val=0.9167
+  e  1  loss=0.1025  task=0.1025  safety=0.0000  top1=0.9175  lr=1.18e-03
+  e  1  loss=0.0934  task=0.0934  safety=0.0000  top1=0.9169  lr=1.18e-03
+  e  1  loss=0.0920  task=0.0920  safety=0.0000  top1=0.9164  lr=1.18e-03
+  e  1  loss=0.0881  task=0.0881  safety=0.0000  top1=0.9172  lr=1.18e-03
+  e  1  loss=0.0873  task=0.0873  safety=0.0000  top1=0.9141  lr=1.18e-03
+
+  best=0.9175 @ ep71 (K_iter=9)  vs_Ref=-0.0219  final_K=9  10.9min
+
+────────────────────────────────────────────────────────────
+Config B_down_gentle: B_down_gentle  9→7→5 (3 phases, 25ep each)
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 9
+  e  1  loss=2.0119  task=2.0119  safety=0.0000  top1=0.7536  lr=2.36e-03
+  ep  1  K_iter=9  val=0.7536
+  e  1  loss=0.5423  task=0.5423  safety=0.0000  top1=0.8334  lr=2.36e-03
+  e  1  loss=0.3888  task=0.3888  safety=0.0000  top1=0.8578  lr=2.36e-03
+  e  1  loss=0.3142  task=0.3142  safety=0.0000  top1=0.8746  lr=2.36e-03
+  e  1  loss=0.2748  task=0.2748  safety=0.0000  top1=0.8777  lr=2.36e-03
+  e  1  loss=0.2611  task=0.2611  safety=0.0000  top1=0.8899  lr=2.36e-03
+  e  1  loss=0.2236  task=0.2236  safety=0.0000  top1=0.8999  lr=2.36e-03
+  e  1  loss=0.2029  task=0.2029  safety=0.0000  top1=0.8986  lr=2.36e-03
+  e  1  loss=0.1949  task=0.1949  safety=0.0000  top1=0.8996  lr=2.36e-03
+  e  1  loss=0.1939  task=0.1939  safety=0.0000  top1=0.9001  lr=2.36e-03
+  ep 10  K_iter=9  val=0.9001
+  e  1  loss=0.1735  task=0.1735  safety=0.0000  top1=0.9017  lr=2.36e-03
+  e  1  loss=0.1694  task=0.1694  safety=0.0000  top1=0.9024  lr=2.36e-03
+  e  1  loss=0.1612  task=0.1612  safety=0.0000  top1=0.8991  lr=2.36e-03
+  e  1  loss=0.1633  task=0.1633  safety=0.0000  top1=0.9027  lr=2.36e-03
+  e  1  loss=0.1470  task=0.1470  safety=0.0000  top1=0.9124  lr=2.36e-03
+  e  1  loss=0.1356  task=0.1356  safety=0.0000  top1=0.9065  lr=2.36e-03
+  e  1  loss=0.1360  task=0.1360  safety=0.0000  top1=0.9062  lr=2.36e-03
+  e  1  loss=0.1355  task=0.1355  safety=0.0000  top1=0.9146  lr=2.36e-03
+  e  1  loss=0.1322  task=0.1322  safety=0.0000  top1=0.9190  lr=2.36e-03
+  e  1  loss=0.1190  task=0.1190  safety=0.0000  top1=0.9131  lr=2.36e-03
+  ep 20  K_iter=9  val=0.9131
+  e  1  loss=0.1210  task=0.1210  safety=0.0000  top1=0.9129  lr=2.36e-03
+  e  1  loss=0.1152  task=0.1152  safety=0.0000  top1=0.9131  lr=2.36e-03
+  e  1  loss=0.1162  task=0.1162  safety=0.0000  top1=0.9164  lr=2.36e-03
+  e  1  loss=0.1168  task=0.1168  safety=0.0000  top1=0.9121  lr=2.36e-03
+    [schedule ep=25] K_iter → 7
+  e  1  loss=2.1310  task=2.1310  safety=0.0000  top1=0.8120  lr=2.36e-03
+  e  1  loss=0.4766  task=0.4766  safety=0.0000  top1=0.8708  lr=2.36e-03
+  e  1  loss=0.3435  task=0.3435  safety=0.0000  top1=0.8935  lr=2.36e-03
+  e  1  loss=0.2880  task=0.2880  safety=0.0000  top1=0.8996  lr=2.36e-03
+  e  1  loss=0.2574  task=0.2574  safety=0.0000  top1=0.8973  lr=2.36e-03
+  e  1  loss=0.2489  task=0.2489  safety=0.0000  top1=0.9052  lr=2.36e-03
+  ep 30  K_iter=7  val=0.9052
+  e  1  loss=0.2260  task=0.2260  safety=0.0000  top1=0.9159  lr=2.36e-03
+  e  1  loss=0.2141  task=0.2141  safety=0.0000  top1=0.9164  lr=2.36e-03
+  e  1  loss=0.1974  task=0.1974  safety=0.0000  top1=0.9157  lr=1.18e-03
+  e  1  loss=0.1785  task=0.1785  safety=0.0000  top1=0.9241  lr=1.18e-03
+  e  1  loss=0.1696  task=0.1696  safety=0.0000  top1=0.9261  lr=1.18e-03
+  e  1  loss=0.1668  task=0.1668  safety=0.0000  top1=0.9233  lr=1.18e-03
+  e  1  loss=0.1627  task=0.1627  safety=0.0000  top1=0.9248  lr=1.18e-03
+  e  1  loss=0.1600  task=0.1600  safety=0.0000  top1=0.9228  lr=1.18e-03
+  e  1  loss=0.1595  task=0.1595  safety=0.0000  top1=0.9261  lr=1.18e-03
+  e  1  loss=0.1567  task=0.1567  safety=0.0000  top1=0.9243  lr=1.18e-03
+  ep 40  K_iter=7  val=0.9243
+  e  1  loss=0.1554  task=0.1554  safety=0.0000  top1=0.9205  lr=1.18e-03
+  e  1  loss=0.1589  task=0.1589  safety=0.0000  top1=0.9271  lr=1.18e-03
+  e  1  loss=0.1534  task=0.1534  safety=0.0000  top1=0.9254  lr=1.18e-03
+  e  1  loss=0.1502  task=0.1502  safety=0.0000  top1=0.9264  lr=5.91e-04
+  e  1  loss=0.1414  task=0.1414  safety=0.0000  top1=0.9279  lr=5.91e-04
+  e  1  loss=0.1382  task=0.1382  safety=0.0000  top1=0.9287  lr=5.91e-04
+  e  1  loss=0.1375  task=0.1375  safety=0.0000  top1=0.9287  lr=5.91e-04
+  e  1  loss=0.1362  task=0.1362  safety=0.0000  top1=0.9302  lr=5.91e-04
+  e  1  loss=0.1357  task=0.1357  safety=0.0000  top1=0.9310  lr=5.91e-04
+  e  1  loss=0.1354  task=0.1354  safety=0.0000  top1=0.9302  lr=5.91e-04
+  ep 50  K_iter=7  val=0.9302
+    [schedule ep=51] K_iter → 5
+  e  1  loss=3.5247  task=3.5247  safety=0.0000  top1=0.4369  lr=5.91e-04
+  e  1  loss=1.2801  task=1.2801  safety=0.0000  top1=0.7047  lr=5.91e-04
+  e  1  loss=0.9318  task=0.9318  safety=0.0000  top1=0.7799  lr=5.91e-04
+  e  1  loss=0.7806  task=0.7806  safety=0.0000  top1=0.8260  lr=5.91e-04
+  e  1  loss=0.6898  task=0.6898  safety=0.0000  top1=0.8413  lr=2.96e-04
+  e  1  loss=0.6354  task=0.6354  safety=0.0000  top1=0.8504  lr=2.96e-04
+  e  1  loss=0.6078  task=0.6078  safety=0.0000  top1=0.8624  lr=2.96e-04
+  e  1  loss=0.5848  task=0.5848  safety=0.0000  top1=0.8642  lr=2.96e-04
+  e  1  loss=0.5667  task=0.5667  safety=0.0000  top1=0.8726  lr=2.96e-04
+  e  1  loss=0.5497  task=0.5497  safety=0.0000  top1=0.8752  lr=2.96e-04
+  ep 60  K_iter=5  val=0.8752
+  e  1  loss=0.5321  task=0.5321  safety=0.0000  top1=0.8777  lr=2.96e-04
+  e  1  loss=0.5206  task=0.5206  safety=0.0000  top1=0.8782  lr=2.96e-04
+  e  1  loss=0.5059  task=0.5059  safety=0.0000  top1=0.8810  lr=2.96e-04
+  e  1  loss=0.4934  task=0.4934  safety=0.0000  top1=0.8871  lr=2.96e-04
+  e  1  loss=0.4820  task=0.4820  safety=0.0000  top1=0.8897  lr=2.96e-04
+  e  1  loss=0.4701  task=0.4701  safety=0.0000  top1=0.8930  lr=1.48e-04
+  e  1  loss=0.4612  task=0.4612  safety=0.0000  top1=0.8925  lr=1.48e-04
+  e  1  loss=0.4567  task=0.4567  safety=0.0000  top1=0.8940  lr=1.48e-04
+  e  1  loss=0.4510  task=0.4510  safety=0.0000  top1=0.8955  lr=1.48e-04
+  e  1  loss=0.4462  task=0.4462  safety=0.0000  top1=0.8938  lr=1.48e-04
+  ep 70  K_iter=5  val=0.8938
+  e  1  loss=0.4424  task=0.4424  safety=0.0000  top1=0.8958  lr=1.48e-04
+  e  1  loss=0.4380  task=0.4380  safety=0.0000  top1=0.8981  lr=1.48e-04
+  Early stop at epoch 0 — best train_loss=0.1152
+  e  1  loss=4.0010  task=4.0010  safety=0.0000  top1=0.1203  lr=1.48e-04
+  Early stop at epoch 0 — best train_loss=0.1152
+  e  1  loss=4.2657  task=4.2657  safety=0.0000  top1=0.1340  lr=1.48e-04
+  Early stop at epoch 0 — best train_loss=0.1152
+  e  1  loss=4.1908  task=4.1908  safety=0.0000  top1=0.1210  lr=1.48e-04
+  Early stop at epoch 0 — best train_loss=0.1152
+
+  best=0.9310 @ ep49 (K_iter=7)  vs_Ref=-0.0084  final_K=5  9.4min
+
+────────────────────────────────────────────────────────────
+Config C_down_aggressive: C_down_aggressive  12→8→5→3 (4 phases, ~19ep each)
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 12
+  e  1  loss=2.8169  task=2.8169  safety=0.0000  top1=0.5809  lr=2.36e-03
+  ep  1  K_iter=12  val=0.5809
+  e  1  loss=0.9124  task=0.9124  safety=0.0000  top1=0.7241  lr=2.36e-03
+  e  1  loss=0.6674  task=0.6674  safety=0.0000  top1=0.7521  lr=2.36e-03
+  e  1  loss=0.5505  task=0.5505  safety=0.0000  top1=0.7829  lr=2.36e-03
+  e  1  loss=0.4721  task=0.4721  safety=0.0000  top1=0.8084  lr=2.36e-03
+  e  1  loss=0.4299  task=0.4299  safety=0.0000  top1=0.8161  lr=2.36e-03
+  e  1  loss=0.4113  task=0.4113  safety=0.0000  top1=0.8158  lr=2.36e-03
+  e  1  loss=0.4009  task=0.4009  safety=0.0000  top1=0.8359  lr=2.36e-03
+  e  1  loss=0.3727  task=0.3727  safety=0.0000  top1=0.8222  lr=2.36e-03
+  e  1  loss=0.3475  task=0.3475  safety=0.0000  top1=0.8346  lr=2.36e-03
+  ep 10  K_iter=12  val=0.8346
+  e  1  loss=0.3433  task=0.3433  safety=0.0000  top1=0.8362  lr=2.36e-03
+  e  1  loss=0.3342  task=0.3342  safety=0.0000  top1=0.8454  lr=2.36e-03
+  e  1  loss=0.3198  task=0.3198  safety=0.0000  top1=0.8474  lr=2.36e-03
+  e  1  loss=0.3158  task=0.3158  safety=0.0000  top1=0.8410  lr=2.36e-03
+  e  1  loss=0.3066  task=0.3066  safety=0.0000  top1=0.8492  lr=2.36e-03
+  e  1  loss=0.3022  task=0.3022  safety=0.0000  top1=0.8548  lr=2.36e-03
+  e  1  loss=0.2968  task=0.2968  safety=0.0000  top1=0.8688  lr=2.36e-03
+  e  1  loss=0.2945  task=0.2945  safety=0.0000  top1=0.8601  lr=2.36e-03
+    [schedule ep=19] K_iter → 8
+  e  1  loss=2.8192  task=2.8192  safety=0.0000  top1=0.7162  lr=2.36e-03
+  e  1  loss=0.6469  task=0.6469  safety=0.0000  top1=0.8301  lr=2.36e-03
+  ep 20  K_iter=8  val=0.8301
+  e  1  loss=0.4440  task=0.4440  safety=0.0000  top1=0.8471  lr=2.36e-03
+  e  1  loss=0.3692  task=0.3692  safety=0.0000  top1=0.8639  lr=2.36e-03
+  e  1  loss=0.3225  task=0.3225  safety=0.0000  top1=0.8846  lr=2.36e-03
+  e  1  loss=0.2898  task=0.2898  safety=0.0000  top1=0.8823  lr=2.36e-03
+  e  1  loss=0.2678  task=0.2678  safety=0.0000  top1=0.8917  lr=2.36e-03
+  e  1  loss=0.2541  task=0.2541  safety=0.0000  top1=0.9011  lr=2.36e-03
+  e  1  loss=0.2412  task=0.2412  safety=0.0000  top1=0.8981  lr=2.36e-03
+  e  1  loss=0.2331  task=0.2331  safety=0.0000  top1=0.8978  lr=2.36e-03
+  e  1  loss=0.2205  task=0.2205  safety=0.0000  top1=0.9027  lr=2.36e-03
+  e  1  loss=0.2105  task=0.2105  safety=0.0000  top1=0.8999  lr=2.36e-03
+  ep 30  K_iter=8  val=0.8999
+  e  1  loss=0.2094  task=0.2094  safety=0.0000  top1=0.9022  lr=2.36e-03
+  e  1  loss=0.1938  task=0.1938  safety=0.0000  top1=0.9090  lr=2.36e-03
+  e  1  loss=0.1864  task=0.1864  safety=0.0000  top1=0.9062  lr=2.36e-03
+  e  1  loss=0.1831  task=0.1831  safety=0.0000  top1=0.9065  lr=2.36e-03
+  e  1  loss=0.1804  task=0.1804  safety=0.0000  top1=0.9085  lr=2.36e-03
+  e  1  loss=0.1693  task=0.1693  safety=0.0000  top1=0.9131  lr=2.36e-03
+  e  1  loss=0.1640  task=0.1640  safety=0.0000  top1=0.9169  lr=2.36e-03
+    [schedule ep=38] K_iter → 5
+  e  1  loss=2.5528  task=2.5528  safety=0.0000  top1=0.6031  lr=2.36e-03
+  e  1  loss=0.9437  task=0.9437  safety=0.0000  top1=0.7722  lr=2.36e-03
+  e  1  loss=0.7359  task=0.7359  safety=0.0000  top1=0.8089  lr=2.36e-03
+  ep 40  K_iter=5  val=0.8089
+  e  1  loss=0.6368  task=0.6368  safety=0.0000  top1=0.8382  lr=2.36e-03
+  e  1  loss=0.5638  task=0.5638  safety=0.0000  top1=0.8642  lr=2.36e-03
+  e  1  loss=0.5140  task=0.5140  safety=0.0000  top1=0.8754  lr=2.36e-03
+  e  1  loss=0.4825  task=0.4825  safety=0.0000  top1=0.8780  lr=2.36e-03
+  e  1  loss=0.4548  task=0.4548  safety=0.0000  top1=0.8810  lr=2.36e-03
+  e  1  loss=0.4371  task=0.4371  safety=0.0000  top1=0.8899  lr=2.36e-03
+  e  1  loss=0.4195  task=0.4195  safety=0.0000  top1=0.8912  lr=2.36e-03
+  e  1  loss=0.4048  task=0.4048  safety=0.0000  top1=0.8841  lr=1.18e-03
+  e  1  loss=0.3879  task=0.3879  safety=0.0000  top1=0.8882  lr=1.18e-03
+  e  1  loss=0.3772  task=0.3772  safety=0.0000  top1=0.9029  lr=1.18e-03
+  ep 50  K_iter=5  val=0.9029
+  e  1  loss=0.3674  task=0.3674  safety=0.0000  top1=0.9027  lr=1.18e-03
+  e  1  loss=0.3632  task=0.3632  safety=0.0000  top1=0.8991  lr=1.18e-03
+  e  1  loss=0.3588  task=0.3588  safety=0.0000  top1=0.9004  lr=1.18e-03
+  e  1  loss=0.3552  task=0.3552  safety=0.0000  top1=0.9060  lr=1.18e-03
+  e  1  loss=0.3461  task=0.3461  safety=0.0000  top1=0.8994  lr=1.18e-03
+  e  1  loss=0.3427  task=0.3427  safety=0.0000  top1=0.9004  lr=1.18e-03
+    [schedule ep=57] K_iter → 3
+  e  1  loss=5.5295  task=5.5295  safety=0.0000  top1=0.1809  lr=1.18e-03
+  e  1  loss=2.1600  task=2.1600  safety=0.0000  top1=0.2874  lr=1.18e-03
+  e  1  loss=1.8955  task=1.8955  safety=0.0000  top1=0.3878  lr=5.91e-04
+  e  1  loss=1.7455  task=1.7455  safety=0.0000  top1=0.4487  lr=5.91e-04
+  ep 60  K_iter=3  val=0.4487
+  e  1  loss=1.6709  task=1.6709  safety=0.0000  top1=0.4555  lr=5.91e-04
+  e  1  loss=1.6126  task=1.6126  safety=0.0000  top1=0.4981  lr=5.91e-04
+  e  1  loss=1.5593  task=1.5593  safety=0.0000  top1=0.5317  lr=5.91e-04
+  e  1  loss=1.5145  task=1.5145  safety=0.0000  top1=0.5552  lr=5.91e-04
+  e  1  loss=1.4755  task=1.4755  safety=0.0000  top1=0.5654  lr=5.91e-04
+  e  1  loss=1.4357  task=1.4357  safety=0.0000  top1=0.5913  lr=5.91e-04
+  e  1  loss=1.3990  task=1.3990  safety=0.0000  top1=0.6148  lr=5.91e-04
+  e  1  loss=1.3630  task=1.3630  safety=0.0000  top1=0.6387  lr=5.91e-04
+  e  1  loss=1.3382  task=1.3382  safety=0.0000  top1=0.6359  lr=5.91e-04
+  e  1  loss=1.3054  task=1.3054  safety=0.0000  top1=0.6260  lr=2.96e-04
+  ep 70  K_iter=3  val=0.6260
+  e  1  loss=1.2788  task=1.2788  safety=0.0000  top1=0.6662  lr=2.96e-04
+  e  1  loss=1.2664  task=1.2664  safety=0.0000  top1=0.6685  lr=2.96e-04
+  e  1  loss=1.2527  task=1.2527  safety=0.0000  top1=0.6696  lr=2.96e-04
+  e  1  loss=1.2403  task=1.2403  safety=0.0000  top1=0.6828  lr=2.96e-04
+  e  1  loss=1.2272  task=1.2272  safety=0.0000  top1=0.6930  lr=2.96e-04
+
+  best=0.9169 @ ep37 (K_iter=8)  vs_Ref=-0.0225  final_K=3  8.3min
+
+────────────────────────────────────────────────────────────
+Config D_warm_switch: D_warm_switch  K=12 for ep1-40, switch to K=5 at ep41
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 12
+  e  1  loss=3.0881  task=3.0881  safety=0.0000  top1=0.5592  lr=2.36e-03
+  ep  1  K_iter=12  val=0.5592
+  e  1  loss=0.9626  task=0.9626  safety=0.0000  top1=0.6899  lr=2.36e-03
+  e  1  loss=0.7007  task=0.7007  safety=0.0000  top1=0.7488  lr=2.36e-03
+  e  1  loss=0.5860  task=0.5860  safety=0.0000  top1=0.7781  lr=2.36e-03
+  e  1  loss=0.5250  task=0.5250  safety=0.0000  top1=0.7990  lr=2.36e-03
+  e  1  loss=0.4593  task=0.4593  safety=0.0000  top1=0.8115  lr=2.36e-03
+  e  1  loss=0.4221  task=0.4221  safety=0.0000  top1=0.8268  lr=2.36e-03
+  e  1  loss=0.4062  task=0.4062  safety=0.0000  top1=0.8239  lr=2.36e-03
+  e  1  loss=0.3958  task=0.3958  safety=0.0000  top1=0.8306  lr=2.36e-03
+  e  1  loss=0.3729  task=0.3729  safety=0.0000  top1=0.8364  lr=2.36e-03
+  ep 10  K_iter=12  val=0.8364
+  e  1  loss=0.3591  task=0.3591  safety=0.0000  top1=0.8448  lr=2.36e-03
+  e  1  loss=0.3463  task=0.3463  safety=0.0000  top1=0.8311  lr=2.36e-03
+  e  1  loss=0.3479  task=0.3479  safety=0.0000  top1=0.8420  lr=2.36e-03
+  e  1  loss=0.3380  task=0.3380  safety=0.0000  top1=0.8558  lr=2.36e-03
+  e  1  loss=0.3136  task=0.3136  safety=0.0000  top1=0.8540  lr=2.36e-03
+  e  1  loss=0.2960  task=0.2960  safety=0.0000  top1=0.8530  lr=2.36e-03
+  e  1  loss=0.2860  task=0.2860  safety=0.0000  top1=0.8545  lr=2.36e-03
+  e  1  loss=0.3042  task=0.3042  safety=0.0000  top1=0.8357  lr=2.36e-03
+  e  1  loss=0.3240  task=0.3240  safety=0.0000  top1=0.8459  lr=2.36e-03
+  e  1  loss=0.2864  task=0.2864  safety=0.0000  top1=0.8583  lr=2.36e-03
+  ep 20  K_iter=12  val=0.8583
+  e  1  loss=0.2772  task=0.2772  safety=0.0000  top1=0.8527  lr=2.36e-03
+  e  1  loss=0.2950  task=0.2950  safety=0.0000  top1=0.8632  lr=2.36e-03
+  e  1  loss=0.2884  task=0.2884  safety=0.0000  top1=0.8685  lr=2.36e-03
+  e  1  loss=0.2869  task=0.2869  safety=0.0000  top1=0.8624  lr=2.36e-03
+  e  1  loss=0.2854  task=0.2854  safety=0.0000  top1=0.8650  lr=2.36e-03
+  e  1  loss=0.2773  task=0.2773  safety=0.0000  top1=0.8617  lr=2.36e-03
+  e  1  loss=0.2830  task=0.2830  safety=0.0000  top1=0.8629  lr=2.36e-03
+  e  1  loss=0.2755  task=0.2755  safety=0.0000  top1=0.8614  lr=2.36e-03
+  e  1  loss=0.2838  task=0.2838  safety=0.0000  top1=0.8642  lr=2.36e-03
+  e  1  loss=0.2767  task=0.2767  safety=0.0000  top1=0.8622  lr=2.36e-03
+  ep 30  K_iter=12  val=0.8622
+  e  1  loss=0.2814  task=0.2814  safety=0.0000  top1=0.8752  lr=2.36e-03
+  e  1  loss=0.2684  task=0.2684  safety=0.0000  top1=0.8749  lr=2.36e-03
+  e  1  loss=0.2507  task=0.2507  safety=0.0000  top1=0.8808  lr=2.36e-03
+  e  1  loss=0.2451  task=0.2451  safety=0.0000  top1=0.8792  lr=2.36e-03
+  e  1  loss=0.2490  task=0.2490  safety=0.0000  top1=0.8736  lr=2.36e-03
+  e  1  loss=0.2319  task=0.2319  safety=0.0000  top1=0.8744  lr=2.36e-03
+  e  1  loss=0.2260  task=0.2260  safety=0.0000  top1=0.8848  lr=2.36e-03
+  e  1  loss=0.2252  task=0.2252  safety=0.0000  top1=0.8792  lr=2.36e-03
+  e  1  loss=0.2294  task=0.2294  safety=0.0000  top1=0.8854  lr=2.36e-03
+  e  1  loss=0.2313  task=0.2313  safety=0.0000  top1=0.8696  lr=2.36e-03
+  ep 40  K_iter=12  val=0.8696
+    [schedule ep=41] K_iter → 5
+  e  1  loss=4.1398  task=4.1398  safety=0.0000  top1=0.4815  lr=2.36e-03
+  e  1  loss=1.1522  task=1.1522  safety=0.0000  top1=0.7518  lr=2.36e-03
+  e  1  loss=0.8443  task=0.8443  safety=0.0000  top1=0.8130  lr=2.36e-03
+  e  1  loss=0.7207  task=0.7207  safety=0.0000  top1=0.8408  lr=2.36e-03
+  e  1  loss=0.6344  task=0.6344  safety=0.0000  top1=0.8555  lr=2.36e-03
+  e  1  loss=0.5834  task=0.5834  safety=0.0000  top1=0.8566  lr=2.36e-03
+  e  1  loss=0.5441  task=0.5441  safety=0.0000  top1=0.8769  lr=2.36e-03
+  e  1  loss=0.5153  task=0.5153  safety=0.0000  top1=0.8769  lr=2.36e-03
+  e  1  loss=0.4887  task=0.4887  safety=0.0000  top1=0.8780  lr=1.18e-03
+  e  1  loss=0.4668  task=0.4668  safety=0.0000  top1=0.8859  lr=1.18e-03
+  ep 50  K_iter=5  val=0.8859
+  e  1  loss=0.4583  task=0.4583  safety=0.0000  top1=0.8882  lr=1.18e-03
+  e  1  loss=0.4494  task=0.4494  safety=0.0000  top1=0.8910  lr=1.18e-03
+  e  1  loss=0.4432  task=0.4432  safety=0.0000  top1=0.8932  lr=1.18e-03
+  e  1  loss=0.4315  task=0.4315  safety=0.0000  top1=0.8912  lr=1.18e-03
+  e  1  loss=0.4238  task=0.4238  safety=0.0000  top1=0.8920  lr=1.18e-03
+  e  1  loss=0.4164  task=0.4164  safety=0.0000  top1=0.8856  lr=1.18e-03
+  e  1  loss=0.4060  task=0.4060  safety=0.0000  top1=0.8897  lr=1.18e-03
+  e  1  loss=0.4015  task=0.4015  safety=0.0000  top1=0.8932  lr=1.18e-03
+  e  1  loss=0.3950  task=0.3950  safety=0.0000  top1=0.9001  lr=1.18e-03
+  e  1  loss=0.3916  task=0.3916  safety=0.0000  top1=0.8932  lr=5.91e-04
+  ep 60  K_iter=5  val=0.8932
+  e  1  loss=0.3811  task=0.3811  safety=0.0000  top1=0.8945  lr=5.91e-04
+  e  1  loss=0.3774  task=0.3774  safety=0.0000  top1=0.9055  lr=5.91e-04
+  e  1  loss=0.3737  task=0.3737  safety=0.0000  top1=0.9019  lr=5.91e-04
+  e  1  loss=0.3717  task=0.3717  safety=0.0000  top1=0.9006  lr=5.91e-04
+  e  1  loss=0.3684  task=0.3684  safety=0.0000  top1=0.9004  lr=5.91e-04
+  e  1  loss=0.3651  task=0.3651  safety=0.0000  top1=0.9024  lr=5.91e-04
+  e  1  loss=0.3625  task=0.3625  safety=0.0000  top1=0.9062  lr=5.91e-04
+  e  1  loss=0.3596  task=0.3596  safety=0.0000  top1=0.9045  lr=5.91e-04
+  e  1  loss=0.3572  task=0.3572  safety=0.0000  top1=0.9060  lr=5.91e-04
+  e  1  loss=0.3548  task=0.3548  safety=0.0000  top1=0.9057  lr=5.91e-04
+  ep 70  K_iter=5  val=0.9057
+  e  1  loss=0.3539  task=0.3539  safety=0.0000  top1=0.9047  lr=2.96e-04
+  e  1  loss=0.3483  task=0.3483  safety=0.0000  top1=0.9060  lr=2.96e-04
+  e  1  loss=0.3467  task=0.3467  safety=0.0000  top1=0.9070  lr=2.96e-04
+  e  1  loss=0.3454  task=0.3454  safety=0.0000  top1=0.9106  lr=2.96e-04
+  e  1  loss=0.3440  task=0.3440  safety=0.0000  top1=0.9073  lr=2.96e-04
+
+  best=0.9106 @ ep74 (K_iter=5)  vs_Ref=-0.0288  final_K=5  10.0min
+
+────────────────────────────────────────────────────────────
+Config E_warm_switch_k3: E_warm_switch_k3  K=12 for ep1-40, switch to K=3 at ep41
+  params=34,976
+────────────────────────────────────────────────────────────
+    [schedule ep=1] K_iter → 12
+  e  1  loss=2.4781  task=2.4781  safety=0.0000  top1=0.6079  lr=2.36e-03
+  ep  1  K_iter=12  val=0.6079
+  e  1  loss=0.8941  task=0.8941  safety=0.0000  top1=0.7266  lr=2.36e-03
+  e  1  loss=0.6727  task=0.6727  safety=0.0000  top1=0.7659  lr=2.36e-03
+  e  1  loss=0.5689  task=0.5689  safety=0.0000  top1=0.7926  lr=2.36e-03
+  e  1  loss=0.5202  task=0.5202  safety=0.0000  top1=0.8176  lr=2.36e-03
+  e  1  loss=0.4567  task=0.4567  safety=0.0000  top1=0.8122  lr=2.36e-03
+  e  1  loss=0.4181  task=0.4181  safety=0.0000  top1=0.8273  lr=2.36e-03
+  e  1  loss=0.3983  task=0.3983  safety=0.0000  top1=0.8270  lr=2.36e-03
+  e  1  loss=0.4015  task=0.4015  safety=0.0000  top1=0.8196  lr=2.36e-03
+  e  1  loss=0.4048  task=0.4048  safety=0.0000  top1=0.8354  lr=2.36e-03
+  ep 10  K_iter=12  val=0.8354
+  e  1  loss=0.3781  task=0.3781  safety=0.0000  top1=0.8459  lr=2.36e-03
+  e  1  loss=0.3393  task=0.3393  safety=0.0000  top1=0.8448  lr=2.36e-03
+  e  1  loss=0.3396  task=0.3396  safety=0.0000  top1=0.8471  lr=2.36e-03
+  e  1  loss=0.3250  task=0.3250  safety=0.0000  top1=0.8520  lr=2.36e-03
+  e  1  loss=0.3484  task=0.3484  safety=0.0000  top1=0.8502  lr=2.36e-03
+  e  1  loss=0.3316  task=0.3316  safety=0.0000  top1=0.8568  lr=2.36e-03
+  e  1  loss=0.3236  task=0.3236  safety=0.0000  top1=0.8558  lr=2.36e-03
+  e  1  loss=0.2981  task=0.2981  safety=0.0000  top1=0.8571  lr=2.36e-03
+  e  1  loss=0.2742  task=0.2742  safety=0.0000  top1=0.8642  lr=2.36e-03
+  e  1  loss=0.2717  task=0.2717  safety=0.0000  top1=0.8606  lr=2.36e-03
+  ep 20  K_iter=12  val=0.8606
+  e  1  loss=0.2992  task=0.2992  safety=0.0000  top1=0.8660  lr=2.36e-03
+  e  1  loss=0.2709  task=0.2709  safety=0.0000  top1=0.8657  lr=2.36e-03
+  e  1  loss=0.2829  task=0.2829  safety=0.0000  top1=0.8645  lr=2.36e-03
+  e  1  loss=0.2844  task=0.2844  safety=0.0000  top1=0.8673  lr=2.36e-03
+  e  1  loss=0.2722  task=0.2722  safety=0.0000  top1=0.8713  lr=2.36e-03
+  e  1  loss=0.2663  task=0.2663  safety=0.0000  top1=0.8665  lr=2.36e-03
+  e  1  loss=0.2704  task=0.2704  safety=0.0000  top1=0.8726  lr=2.36e-03
+  e  1  loss=0.2704  task=0.2704  safety=0.0000  top1=0.8655  lr=2.36e-03
+  e  1  loss=0.2722  task=0.2722  safety=0.0000  top1=0.8701  lr=2.36e-03
+  e  1  loss=0.2742  task=0.2742  safety=0.0000  top1=0.8629  lr=2.36e-03
+  ep 30  K_iter=12  val=0.8629
+  e  1  loss=0.2676  task=0.2676  safety=0.0000  top1=0.8680  lr=2.36e-03
+  e  1  loss=0.2750  task=0.2750  safety=0.0000  top1=0.8744  lr=2.36e-03
+  e  1  loss=0.2641  task=0.2641  safety=0.0000  top1=0.8568  lr=2.36e-03
+  e  1  loss=0.2783  task=0.2783  safety=0.0000  top1=0.8729  lr=2.36e-03
+  e  1  loss=0.2909  task=0.2909  safety=0.0000  top1=0.8583  lr=2.36e-03
+  e  1  loss=0.2844  task=0.2844  safety=0.0000  top1=0.8645  lr=2.36e-03
+  e  1  loss=0.2745  task=0.2745  safety=0.0000  top1=0.8678  lr=2.36e-03
+  e  1  loss=0.2768  task=0.2768  safety=0.0000  top1=0.8683  lr=2.36e-03
+  e  1  loss=0.2765  task=0.2765  safety=0.0000  top1=0.8634  lr=2.36e-03
+  e  1  loss=0.2838  task=0.2838  safety=0.0000  top1=0.8706  lr=2.36e-03
+  ep 40  K_iter=12  val=0.8706
+    [schedule ep=41] K_iter → 3
+  e  1  loss=10.3854  task=10.3854  safety=0.0000  top1=0.1873  lr=2.36e-03
+  e  1  loss=2.1935  task=2.1935  safety=0.0000  top1=0.3508  lr=2.36e-03
+  e  1  loss=1.7576  task=1.7576  safety=0.0000  top1=0.4318  lr=2.36e-03
+  e  1  loss=1.6085  task=1.6085  safety=0.0000  top1=0.4966  lr=1.18e-03
+  e  1  loss=1.5096  task=1.5096  safety=0.0000  top1=0.5541  lr=1.18e-03
+  e  1  loss=1.4642  task=1.4642  safety=0.0000  top1=0.5722  lr=1.18e-03
+  e  1  loss=1.4191  task=1.4191  safety=0.0000  top1=0.5893  lr=1.18e-03
+  e  1  loss=1.3774  task=1.3774  safety=0.0000  top1=0.6222  lr=1.18e-03
+  e  1  loss=1.3446  task=1.3446  safety=0.0000  top1=0.6324  lr=1.18e-03
+  e  1  loss=1.3125  task=1.3125  safety=0.0000  top1=0.6619  lr=1.18e-03
+  ep 50  K_iter=3  val=0.6619
+  e  1  loss=1.2773  task=1.2773  safety=0.0000  top1=0.6813  lr=1.18e-03
+  e  1  loss=1.2392  task=1.2392  safety=0.0000  top1=0.6769  lr=1.18e-03
+  e  1  loss=1.2070  task=1.2070  safety=0.0000  top1=0.6902  lr=1.18e-03
+  e  1  loss=1.1790  task=1.1790  safety=0.0000  top1=0.7009  lr=1.18e-03
+  e  1  loss=1.1569  task=1.1569  safety=0.0000  top1=0.7083  lr=5.91e-04
+  e  1  loss=1.1332  task=1.1332  safety=0.0000  top1=0.7246  lr=5.91e-04
+  e  1  loss=1.1220  task=1.1220  safety=0.0000  top1=0.7276  lr=5.91e-04
+  e  1  loss=1.1100  task=1.1100  safety=0.0000  top1=0.7350  lr=5.91e-04
+  e  1  loss=1.0994  task=1.0994  safety=0.0000  top1=0.7325  lr=5.91e-04
+  e  1  loss=1.0885  task=1.0885  safety=0.0000  top1=0.7439  lr=5.91e-04
+  ep 60  K_iter=3  val=0.7439
+  e  1  loss=1.0792  task=1.0792  safety=0.0000  top1=0.7541  lr=5.91e-04
+  e  1  loss=1.0736  task=1.0736  safety=0.0000  top1=0.7524  lr=5.91e-04
+  e  1  loss=1.0600  task=1.0600  safety=0.0000  top1=0.7615  lr=5.91e-04
+  e  1  loss=1.0519  task=1.0519  safety=0.0000  top1=0.7506  lr=5.91e-04
+  e  1  loss=1.0379  task=1.0379  safety=0.0000  top1=0.7648  lr=5.91e-04
+  e  1  loss=1.0281  task=1.0281  safety=0.0000  top1=0.7669  lr=2.96e-04
+  e  1  loss=1.0192  task=1.0192  safety=0.0000  top1=0.7725  lr=2.96e-04
+  e  1  loss=1.0152  task=1.0152  safety=0.0000  top1=0.7697  lr=2.96e-04
+  e  1  loss=1.0113  task=1.0113  safety=0.0000  top1=0.7725  lr=2.96e-04
+  e  1  loss=1.0044  task=1.0044  safety=0.0000  top1=0.7620  lr=2.96e-04
+  ep 70  K_iter=3  val=0.7620
+  e  1  loss=1.0016  task=1.0016  safety=0.0000  top1=0.7699  lr=2.96e-04
+  e  1  loss=0.9970  task=0.9970  safety=0.0000  top1=0.7661  lr=2.96e-04
+  e  1  loss=0.9918  task=0.9918  safety=0.0000  top1=0.7753  lr=2.96e-04
+  e  1  loss=0.9883  task=0.9883  safety=0.0000  top1=0.7755  lr=2.96e-04
+  e  1  loss=0.9828  task=0.9828  safety=0.0000  top1=0.7842  lr=2.96e-04
+
+  best=0.8744 @ ep32 (K_iter=12)  vs_Ref=-0.0650  final_K=3  10.3min
+
+======================================================================
+STEP 610 SUMMARY — K_iter annealing
+======================================================================
+Key                        best    vs_Ref  final_K   K@best   FLOPs_M
+──────────────────────────────────────────────────────────────────────
+Ref                     0.9394  +0.0000        5        5      2.29
+A_up                    0.9175  -0.0219        9        9      3.21
+B_down_gentle           0.9310  -0.0084        5        7      2.29
+C_down_aggressive       0.9169  -0.0225        3        8      1.84
+D_warm_switch           0.9106  -0.0288        5        5      2.29
+E_warm_switch_k3        0.8744  -0.0650        3       12      1.84
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step610_kiter_anneal_efficiency.json

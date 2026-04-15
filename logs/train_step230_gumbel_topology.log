@@ -1,0 +1,62 @@
+
+======================================================================
+Step 230 — Gumbel-Softmax Differentiable Topology (Tier-0 scouts)
+N=2048 D=16 K_hh=2 K_cand=8 K_iter=5
+20ep 50% data | FLOPs=983,040 (~0.98M)
+Decoupled ST-GS (2024): τ_fwd decoupled from τ_bwd for better gradients
+edge_logits adds 16,384 params (16.4K)
+Running: ['Ref', 'A', 'B', 'C']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: static conn_hh (standard backprop — control)
+────────────────────────────────────────────────────────────
+  params=34,976  (static topology — control)
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4003  lr=2.36e-03
+  e 10  loss=0.3907  task=0.3907  safety=0.0000  top1=0.9024  lr=2.36e-03
+  e 20  loss=0.2765  task=0.2765  safety=0.0000  top1=0.9180  lr=2.36e-03
+  → best=0.9180 @ ep20  (94s)  topo_ent=None
+
+────────────────────────────────────────────────────────────
+Config A: Gumbel-Softmax τ_fwd=0.1, τ_bwd=1.0 (Decoupled ST-GS, constant τ)
+────────────────────────────────────────────────────────────
+  params=51,360  (Gumbel τ_fwd=0.1, τ_bwd=1.0, constant)
+  e  5  loss=3.6959  top1=0.1203  τ_bwd=1.000  topo_ent=2.067
+  e 10  loss=3.3773  top1=0.4515  τ_bwd=1.000  topo_ent=2.053
+  e 15  loss=3.5810  top1=0.2846  τ_bwd=1.000  topo_ent=2.041
+  e 20  loss=3.2752  top1=0.3964  τ_bwd=1.000  topo_ent=2.028
+  → best=0.4515 @ ep10  (194s)  topo_ent=2.0284
+
+────────────────────────────────────────────────────────────
+Config B: Gumbel-Softmax with τ_bwd annealing: 2.0 → 0.1 over training
+────────────────────────────────────────────────────────────
+  params=51,360  (Gumbel τ_bwd annealing: 2.0 → 0.1)
+  e  5  loss=3.6599  top1=0.1618  τ_bwd=1.525  topo_ent=2.065
+  e 10  loss=3.2951  top1=0.4874  τ_bwd=1.050  topo_ent=2.046
+  e 15  loss=4.0959  top1=0.2512  τ_bwd=0.575  topo_ent=2.023
+  e 20  loss=2.9573  top1=0.4189  τ_bwd=0.100  topo_ent=1.990
+  → best=0.4874 @ ep10  (192s)  topo_ent=1.9903
+
+────────────────────────────────────────────────────────────
+Config C: Gumbel-Softmax + AH on learned topology (τ_fwd=0.1, τ_bwd=1.0)
+────────────────────────────────────────────────────────────
+  params=51,360  (Gumbel + AH on learned topology, higher LR logits)
+  e  5  loss=3.4030  top1=0.2772  τ_bwd=1.000  topo_ent=1.974
+  e 10  loss=2.7441  top1=0.4301  τ_bwd=1.000  topo_ent=1.868
+  e 15  loss=3.1736  top1=0.3383  τ_bwd=1.000  topo_ent=1.770
+  e 20  loss=2.5135  top1=0.3870  τ_bwd=1.000  topo_ent=1.679
+  → best=0.4670 @ ep4  (214s)  topo_ent=1.6786
+
+======================================================================
+STEP 230 SUMMARY — Gumbel-Softmax Differentiable Topology
+======================================================================
+  Ref: 0.9180
+  A: 0.4515  Δ=-0.4665 → KILL  ent=2.028
+  B: 0.4874  Δ=-0.4306 → KILL  ent=1.990
+  C: 0.4670  Δ=-0.4510 → KILL  ent=1.679
+
+  Topology entropy: 2.028 / 2.079 max  (98% of uniform)
+  → High entropy: topology still exploring (needs more epochs)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step230_gumbel_topology.json

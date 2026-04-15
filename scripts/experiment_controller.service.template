@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# experiment_controller.service.template
+#
+# TWO OPTIONS for keeping the controller alive on Mac mini.
+# Use EITHER Option A (launchd) or Option B (nohup launcher).
+# Do NOT install automatically — review then run manually once.
+#
+# ============================================================================
+# OPTION A — launchd plist (recommended; auto-restart on crash, survives reboots)
+# ============================================================================
+#
+# 1. Copy the plist below to ~/Library/LaunchAgents/com.sgnnet.controller.plist
+# 2. Load it:
+#      launchctl load ~/Library/LaunchAgents/com.sgnnet.controller.plist
+# 3. To stop:
+#      launchctl unload ~/Library/LaunchAgents/com.sgnnet.controller.plist
+# 4. Logs go to logs/experiment_controller.log (as configured in the plist)
+#
+# IMPORTANT: adjust WorkingDirectory and ProgramArguments paths if the repo moves.
+
+cat > /tmp/com.sgnnet.controller.plist << 'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.sgnnet.controller</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/bin/python3</string>
+        <string>/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/experiment_controller.py</string>
+        <string>--port</string>
+        <string>7433</string>
+        <string>--tick</string>
+        <string>30</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Volumes/T9/IndraAstra/dhiraj/neuro_graph</string>
+
+    <!-- Inherit the login environment so SGNNET_USER, SSH keys, etc. are available -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>SGNNET_USER</key>
+        <string>controller</string>
+        <key>HOME</key>
+        <string>/Users/indra</string>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+    </dict>
+
+    <!-- Restart if it crashes -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Wait 5s before restart -->
+    <key>ThrottleInterval</key>
+    <integer>5</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/experiment_controller_stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/experiment_controller_stderr.log</string>
+
+    <!-- Start on load -->
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+PLIST
+
+echo "Plist written to /tmp/com.sgnnet.controller.plist"
+echo ""
+echo "To install:"
+echo "  cp /tmp/com.sgnnet.controller.plist ~/Library/LaunchAgents/"
+echo "  launchctl load ~/Library/LaunchAgents/com.sgnnet.controller.plist"
+echo ""
+echo "To verify:"
+echo "  launchctl list | grep sgnnet"
+echo "  curl http://localhost:7433/status"
+
+# ============================================================================
+# OPTION B — simple nohup launcher (no auto-restart, simpler)
+# ============================================================================
+#
+# Run on Mac mini:
+#
+#   cd /Volumes/T9/IndraAstra/dhiraj/neuro_graph
+#   nohup d_env/bin/python3 scripts/experiment_controller.py \
+#       --port 7433 --tick 30 \
+#       >> logs/experiment_controller.log 2>&1 &
+#   echo $! > .controller/controller.pid
+#   echo "Controller PID: $(cat .controller/controller.pid)"
+#
+# To stop:
+#   kill $(cat .controller/controller.pid)
+#
+# To check health:
+#   curl http://localhost:7433/status
+#   curl http://mac-mini.local:7433/status   # from another machine

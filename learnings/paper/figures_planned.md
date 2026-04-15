@@ -22,7 +22,7 @@ Paired bar chart: mechanism Δ at N=1024 vs N=4096 for W_proj, group topology, R
 Ablation heatmap: removing each component (F.normalize, AH, mean-pool, K_iter steps) and the resulting accuracy drop.
 
 ## Table 1: Main results
-Accuracy, params, FLOPs for SGNNET vs all baselines on FashionMNIST (and CIFAR-10 when available).
+Accuracy, params, FLOPs for SGNNET vs all baselines on Imagenette (and CIFAR-10 when available).
 
 ## Table 2: Comprehensive ablation
 Every architectural choice and its isolated effect. One row per ablation.

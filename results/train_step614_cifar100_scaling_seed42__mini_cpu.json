@@ -1,0 +1,38 @@
+{
+  "MLP_256": {
+    "config": "MLP_256",
+    "n_params": 6448484,
+    "flops_routing_macs": 12896256,
+    "top1_best": 0.6715,
+    "best_epoch": 47,
+    "elapsed_s": 186.2,
+    "epochs": 50
+  },
+  "MLP_512": {
+    "config": "MLP_512",
+    "n_params": 12896868,
+    "flops_routing_macs": 25792512,
+    "top1_best": 0.6775,
+    "best_epoch": 48,
+    "elapsed_s": 335.7,
+    "epochs": 50
+  },
+  "MLP_1024": {
+    "config": "MLP_1024",
+    "n_params": 25793636,
+    "flops_routing_macs": 51585024,
+    "top1_best": 0.6721,
+    "best_epoch": 46,
+    "elapsed_s": 612.3,
+    "epochs": 50
+  },
+  "MLP_2048": {
+    "config": "MLP_2048",
+    "n_params": 51587172,
+    "flops_routing_macs": 103170048,
+    "top1_best": 0.6813,
+    "best_epoch": 48,
+    "elapsed_s": 1101.8,
+    "epochs": 50
+  }
+}

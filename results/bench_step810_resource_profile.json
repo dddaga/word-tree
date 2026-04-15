@@ -1,0 +1,26 @@
+{
+  "device": "cpu",
+  "bs_inf": 32,
+  "bs_train": 128,
+  "eager": {
+    "Linear": {
+      "n_params": 250890,
+      "inference": {
+        "median_ms": 0.10054200538434088,
+        "p95_ms": 0.10156639327760786,
+        "p99_ms": 0.10167967237066478,
+        "mean_ms": 0.10069159616250545,
+        "throughput_sps": 318274.93272760906
+      },
+      "training": {
+        "median_ms": 1.013979002891574,
+        "throughput_sps": 126235.35559906183
+      },
+      "memory": {
+        "peak_mib": -1.0,
+        "reserved_mib": -1.0
+      },
+      "compile": false
+    }
+  }
+}

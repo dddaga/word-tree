@@ -1,0 +1,169 @@
+
+======================================================================
+Step 702 — K_iter × K_hh Pareto Frontier (Tier-0 30ep)
+N=2048 D=16 AH=1.0  Grid: K_iter=[2, 3, 4, 5] × K_hh=[1, 2, 4]
+Device: mps
+======================================================================
+Data: 4734/9469 train samples, 3925 val
+
+  [ki2_kh1]  K_iter=2  K_hh=1
+    params=34,976  routing_MACs=0.131M
+    step_time=43.99ms/step
+  e  1  loss=2.7849  task=2.7849  safety=0.0000  top1=0.1564  lr=2.36e-03
+    ep 10  val=0.5396
+  e 10  loss=1.5884  task=1.5884  safety=0.0000  top1=0.5396  lr=2.36e-03
+    ep 20  val=0.6150
+  e 20  loss=1.2636  task=1.2636  safety=0.0000  top1=0.6150  lr=2.36e-03
+    ep 30  val=0.7192
+  e 30  loss=1.0502  task=1.0502  safety=0.0000  top1=0.7192  lr=2.36e-03
+    best=0.7192 @ ep30
+
+  [ki2_kh2]  K_iter=2  K_hh=2
+    params=34,976  routing_MACs=0.262M
+    step_time=52.13ms/step
+  e  1  loss=2.6980  task=2.6980  safety=0.0000  top1=0.2303  lr=2.36e-03
+    ep 10  val=0.7445
+  e 10  loss=1.0224  task=1.0224  safety=0.0000  top1=0.7445  lr=2.36e-03
+    ep 20  val=0.8199
+  e 20  loss=0.6887  task=0.6887  safety=0.0000  top1=0.8199  lr=2.36e-03
+    ep 30  val=0.8517
+  e 30  loss=0.5429  task=0.5429  safety=0.0000  top1=0.8517  lr=2.36e-03
+    best=0.8525 @ ep29
+
+  [ki2_kh4]  K_iter=2  K_hh=4
+    params=34,976  routing_MACs=0.524M
+    step_time=81.98ms/step
+  e  1  loss=3.7002  task=3.7002  safety=0.0000  top1=0.2387  lr=2.36e-03
+    ep 10  val=0.7857
+  e 10  loss=1.0040  task=1.0040  safety=0.0000  top1=0.7857  lr=2.36e-03
+    ep 20  val=0.8092
+  e 20  loss=0.6932  task=0.6932  safety=0.0000  top1=0.8092  lr=2.36e-03
+    ep 30  val=0.8757
+  e 30  loss=0.5641  task=0.5641  safety=0.0000  top1=0.8757  lr=2.36e-03
+    best=0.8759 @ ep26
+
+  [ki3_kh1]  K_iter=3  K_hh=1
+    params=34,976  routing_MACs=0.197M
+    step_time=71.25ms/step
+  e  1  loss=2.9280  task=2.9280  safety=0.0000  top1=0.2183  lr=2.36e-03
+    ep 10  val=0.6726
+  e 10  loss=1.1722  task=1.1722  safety=0.0000  top1=0.6726  lr=2.36e-03
+    ep 20  val=0.7470
+  e 20  loss=0.9809  task=0.9809  safety=0.0000  top1=0.7470  lr=2.36e-03
+    ep 30  val=0.7493
+  e 30  loss=0.8707  task=0.8707  safety=0.0000  top1=0.7493  lr=2.36e-03
+    best=0.7934 @ ep24
+
+  [ki3_kh2]  K_iter=3  K_hh=2
+    params=34,976  routing_MACs=0.393M
+    step_time=92.16ms/step
+  e  1  loss=2.7873  task=2.7873  safety=0.0000  top1=0.2586  lr=2.36e-03
+    ep 10  val=0.7722
+  e 10  loss=0.8340  task=0.8340  safety=0.0000  top1=0.7722  lr=2.36e-03
+    ep 20  val=0.8369
+  e 20  loss=0.6010  task=0.6010  safety=0.0000  top1=0.8369  lr=2.36e-03
+    ep 30  val=0.8647
+  e 30  loss=0.4889  task=0.4889  safety=0.0000  top1=0.8647  lr=2.36e-03
+    best=0.8647 @ ep30
+
+  [ki3_kh4]  K_iter=3  K_hh=4
+    params=34,976  routing_MACs=0.786M
+    step_time=114.73ms/step
+  e  1  loss=3.1009  task=3.1009  safety=0.0000  top1=0.3029  lr=2.36e-03
+    ep 10  val=0.7819
+  e 10  loss=0.8703  task=0.8703  safety=0.0000  top1=0.7819  lr=2.36e-03
+    ep 20  val=0.8586
+  e 20  loss=0.6154  task=0.6154  safety=0.0000  top1=0.8586  lr=2.36e-03
+    ep 30  val=0.8690
+  e 30  loss=0.5088  task=0.5088  safety=0.0000  top1=0.8690  lr=2.36e-03
+    best=0.8782 @ ep28
+
+  [ki4_kh1]  K_iter=4  K_hh=1
+    params=34,976  routing_MACs=0.262M
+    step_time=80.54ms/step
+  e  1  loss=2.3797  task=2.3797  safety=0.0000  top1=0.3768  lr=2.36e-03
+    ep 10  val=0.7834
+  e 10  loss=0.8603  task=0.8603  safety=0.0000  top1=0.7834  lr=2.36e-03
+    ep 20  val=0.8331
+  e 20  loss=0.6933  task=0.6933  safety=0.0000  top1=0.8331  lr=2.36e-03
+    ep 30  val=0.8479
+  e 30  loss=0.6116  task=0.6116  safety=0.0000  top1=0.8479  lr=2.36e-03
+    best=0.8555 @ ep26
+
+  [ki4_kh2]  K_iter=4  K_hh=2
+    params=34,976  routing_MACs=0.524M
+    step_time=97.50ms/step
+  e  1  loss=2.1842  task=2.1842  safety=0.0000  top1=0.5536  lr=2.36e-03
+    ep 10  val=0.8703
+  e 10  loss=0.4459  task=0.4459  safety=0.0000  top1=0.8703  lr=2.36e-03
+    ep 20  val=0.9070
+  e 20  loss=0.3432  task=0.3432  safety=0.0000  top1=0.9070  lr=2.36e-03
+    ep 30  val=0.9014
+  e 30  loss=0.2819  task=0.2819  safety=0.0000  top1=0.9014  lr=2.36e-03
+    best=0.9106 @ ep27
+
+  [ki4_kh4]  K_iter=4  K_hh=4
+    params=34,976  routing_MACs=1.049M
+    step_time=125.00ms/step
+  e  1  loss=2.2578  task=2.2578  safety=0.0000  top1=0.4538  lr=2.36e-03
+    ep 10  val=0.8553
+  e 10  loss=0.6168  task=0.6168  safety=0.0000  top1=0.8553  lr=2.36e-03
+    ep 20  val=0.8820
+  e 20  loss=0.4453  task=0.4453  safety=0.0000  top1=0.8820  lr=2.36e-03
+    ep 30  val=0.8955
+  e 30  loss=0.3617  task=0.3617  safety=0.0000  top1=0.8955  lr=2.36e-03
+    best=0.8966 @ ep28
+
+  [ki5_kh1]  K_iter=5  K_hh=1
+    params=34,976  routing_MACs=0.328M
+    step_time=113.28ms/step
+  e  1  loss=2.1018  task=2.1018  safety=0.0000  top1=0.5860  lr=2.36e-03
+    ep 10  val=0.8094
+  e 10  loss=0.5610  task=0.5610  safety=0.0000  top1=0.8094  lr=2.36e-03
+    ep 20  val=0.8683
+  e 20  loss=0.4423  task=0.4423  safety=0.0000  top1=0.8683  lr=2.36e-03
+    ep 30  val=0.8724
+  e 30  loss=0.3988  task=0.3988  safety=0.0000  top1=0.8724  lr=2.36e-03
+    best=0.8818 @ ep29
+
+  [ki5_kh2]  K_iter=5  K_hh=2
+    params=34,976  routing_MACs=0.655M
+    step_time=121.18ms/step
+  e  1  loss=1.7815  task=1.7815  safety=0.0000  top1=0.6808  lr=2.36e-03
+    ep 10  val=0.8976
+  e 10  loss=0.3290  task=0.3290  safety=0.0000  top1=0.8976  lr=2.36e-03
+    ep 20  val=0.9185
+  e 20  loss=0.2433  task=0.2433  safety=0.0000  top1=0.9185  lr=2.36e-03
+    ep 30  val=0.9118
+  e 30  loss=0.2149  task=0.2149  safety=0.0000  top1=0.9118  lr=2.36e-03
+    best=0.9264 @ ep28
+
+  [ki5_kh4]  K_iter=5  K_hh=4
+    params=34,976  routing_MACs=1.311M
+    step_time=155.04ms/step
+  e  1  loss=2.0194  task=2.0194  safety=0.0000  top1=0.5264  lr=2.36e-03
+    ep 10  val=0.8940
+  e 10  loss=0.4885  task=0.4885  safety=0.0000  top1=0.8940  lr=2.36e-03
+    ep 20  val=0.8994
+  e 20  loss=0.3591  task=0.3591  safety=0.0000  top1=0.8994  lr=2.36e-03
+    ep 30  val=0.9185
+  e 30  loss=0.2752  task=0.2752  safety=0.0000  top1=0.9185  lr=2.36e-03
+    best=0.9185 @ ep22
+
+======================================================================
+Label         K_iter   K_hh      MACs   step_ms   best_val  best_ep
+----------------------------------------------------------------------
+  ki5_kh2            5      2    0.655M   121.18ms(1.00x)     0.9264 (+0.0000)  ep 28
+  ki5_kh4            5      4    1.311M   155.04ms(0.78x)     0.9185 (-0.0079)  ep 22
+  ki4_kh2            4      2    0.524M    97.50ms(1.24x)     0.9106 (-0.0158)  ep 27
+  ki4_kh4            4      4    1.049M   125.00ms(0.97x)     0.8966 (-0.0298)  ep 28
+  ki5_kh1            5      1    0.328M   113.28ms(1.07x)     0.8818 (-0.0446)  ep 29
+  ki3_kh4            3      4    0.786M   114.73ms(1.06x)     0.8782 (-0.0482)  ep 28
+  ki2_kh4            2      4    0.524M    81.98ms(1.48x)     0.8759 (-0.0505)  ep 26
+  ki3_kh2            3      2    0.393M    92.16ms(1.31x)     0.8647 (-0.0617)  ep 30
+  ki4_kh1            4      1    0.262M    80.54ms(1.50x)     0.8555 (-0.0709)  ep 26
+  ki2_kh2            2      2    0.262M    52.13ms(2.32x)     0.8525 (-0.0739)  ep 29
+  ki3_kh1            3      1    0.197M    71.25ms(1.70x)     0.7934 (-0.1330)  ep 24
+  ki2_kh1            2      1    0.131M    43.99ms(2.75x)     0.7192 (-0.2072)  ep 30
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step702_kiter_khh_frontier.json

@@ -1,0 +1,28 @@
+Step 401b — SGNNET on CIFAR-10 (cross-dataset)
+  data=data/store_cifar10.h5  seed=42  epochs=100  device=mps
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+  Train=50000  Val=10000
+
+────────────────────────────────────────────────────────────
+Config Ref: CIFAR-10 ΔW proj K=5
+────────────────────────────────────────────────────────────
+  params=34,976  K_iter=5
+  e  1  loss=1.3766  task=1.3766  safety=0.0000  top1=0.6573  lr=2.36e-03
+  ep 10  val=0.7666
+  e 10  loss=0.6456  task=0.6456  safety=0.0000  top1=0.7666  lr=2.36e-03
+  ep 20  val=0.7771
+  e 20  loss=0.5788  task=0.5788  safety=0.0000  top1=0.7771  lr=2.36e-03
+  ep 30  val=0.7704
+  e 30  loss=0.5528  task=0.5528  safety=0.0000  top1=0.7704  lr=2.36e-03
+  ep 40  val=0.7875
+  e 40  loss=0.5375  task=0.5375  safety=0.0000  top1=0.7875  lr=2.36e-03
+  ep 50  val=0.7829
+  e 50  loss=0.5202  task=0.5202  safety=0.0000  top1=0.7829  lr=2.36e-03
+  ep 60  val=0.7960
+  e 60  loss=0.5072  task=0.5072  safety=0.0000  top1=0.7960  lr=2.36e-03
+  ep 70  val=0.7549
+  e 70  loss=0.4956  task=0.4956  safety=0.0000  top1=0.7549  lr=2.36e-03
+  ep 80  val=0.7650
+  e 80  loss=0.4871  task=0.4871  safety=0.0000  top1=0.7650  lr=2.36e-03
+  ep 90  val=0.7956
+  e 90  loss=0.4894  task=0.4894  safety=0.0000  top1=0.7956  lr=2.36e-03

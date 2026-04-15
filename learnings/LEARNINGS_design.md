@@ -14,6 +14,7 @@ This file is a table of contents. All discussions have been split by date into s
 | [LEARNINGS_design_2026_04_08.md](LEARNINGS_design_2026_04_08.md) | 2026-04-08 | step83 post-mortem failure analysis, step87 proximity architecture design |
 | [LEARNINGS_design_2026_04_09.md](LEARNINGS_design_2026_04_09.md) | 2026-04-09 | Gemma4/PolarQuant-inspired designs (steps 106-109), 50-experiment gap analysis, FLOPs path |
 | [LEARNINGS_design_2026_04_10.md](LEARNINGS_design_2026_04_10.md) | 2026-04-10 | Constraint discovery (step152), progressive capacity (step153), safety/LB removal, diagnostics system, checkpoint system, paper track |
+| [LEARNINGS_design_2026_04_14.md](LEARNINGS_design_2026_04_14.md) | 2026-04-14 | K_hh scaling rule confirmed, latency-Pareto track, seed variance ΔW proj vs AH-only, ConnGA v2 scoring |
 
 ---
 

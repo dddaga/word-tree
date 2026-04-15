@@ -1,0 +1,24 @@
+{
+  "warmup_best": 0.6998726114649682,
+  "Ref_static": {
+    "top1_best": 0.7796178343949045,
+    "top1_last": 0.7681528662420383,
+    "rewire_events": 0,
+    "total_swaps": 0,
+    "elapsed_s": 151.30309200286865
+  },
+  "A_coact_low": {
+    "top1_best": 0.7301910828025477,
+    "top1_last": 0.7243312101910828,
+    "rewire_events": 3,
+    "total_swaps": 1523,
+    "elapsed_s": 148.8644242286682
+  },
+  "B_coact_hi": {
+    "top1_best": 0.7554140127388536,
+    "top1_last": 0.7220382165605096,
+    "rewire_events": 3,
+    "total_swaps": 1315,
+    "elapsed_s": 148.2523548603058
+  }
+}

@@ -1,0 +1,47 @@
+
+======================================================================
+Step 227 — Forward-Forward Algorithm (Tier-0 scouts)
+N=2048 D=16 K_hh=2 K_iter=5 | 20ep 50% data
+FLOPs=983,040 (~0.98M)
+FF threshold=2.0 | goodness on final Z (no backprop through routing)
+Running: ['Ref', 'A', 'B']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: standard backprop + AH (control)
+────────────────────────────────────────────────────────────
+  params=34,976  (standard backprop)
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  e 10  loss=0.3912  task=0.3912  safety=0.0000  top1=0.9014  lr=2.36e-03
+  e 20  loss=0.2764  task=0.2764  safety=0.0000  top1=0.9169  lr=2.36e-03
+  → best=0.9169 @ ep20  (133s)
+
+────────────────────────────────────────────────────────────
+Config A: FF whole-network goodness (class-conditioned ||Z||²·alignment)
+────────────────────────────────────────────────────────────
+  params=34,976  (forward-forward, goodness_mode=whole_network)
+  e  5  loss=2.1190  top1=0.1004
+  e 10  loss=2.1155  top1=0.1004
+  e 15  loss=2.1130  top1=0.1017
+  e 20  loss=2.1097  top1=0.1251
+  → best=0.1251 @ ep20  (400s)
+
+────────────────────────────────────────────────────────────
+Config B: FF per-neuron goodness (local ||Z||² maximization)
+────────────────────────────────────────────────────────────
+  params=34,976  (forward-forward, goodness_mode=per_neuron)
+  e  5  loss=2.1269  top1=0.1004
+  e 10  loss=2.1269  top1=0.1004
+  e 15  loss=2.1269  top1=0.1004
+  e 20  loss=2.1269  top1=0.1004
+  → best=0.1004 @ ep1  (264s)
+
+======================================================================
+STEP 227 SUMMARY — Forward-Forward vs Backprop
+======================================================================
+  Ref: 0.9169
+  A: 0.1251  Δ=-0.7918 → KILL
+  B: 0.1004  Δ=-0.8165 → KILL
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step227_forward_forward.json

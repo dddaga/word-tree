@@ -72,3 +72,66 @@ Config B_a075: mode=proj, α_AH=0.75
   ep 10  val=0.8586
   e 10  loss=0.4288  task=0.4288  safety=0.0000  top1=0.8586  lr=2.36e-03
   ep 15  val=0.8846
+  ep 20  val=0.8973
+  e 20  loss=0.2428  task=0.2428  safety=0.0000  top1=0.8973  lr=2.36e-03
+  → best=0.8973 @ ep19  (152s)
+
+────────────────────────────────────────────────────────────
+Config B_a100: mode=proj, α_AH=1.0
+────────────────────────────────────────────────────────────
+  params=34,977
+  ep  1  val=0.1139
+  e  1  loss=15.8456  task=15.8456  safety=0.0000  top1=0.1139  lr=2.36e-03
+  ep  5  val=0.6273
+  ep 10  val=0.8140
+  e 10  loss=0.6123  task=0.6123  safety=0.0000  top1=0.8140  lr=2.36e-03
+  ep 15  val=0.8571
+  ep 20  val=0.8843
+  e 20  loss=0.3379  task=0.3379  safety=0.0000  top1=0.8843  lr=2.36e-03
+  → best=0.8843 @ ep20  (157s)
+
+────────────────────────────────────────────────────────────
+Config C_rot: mode=rot, α_AH=0.0
+────────────────────────────────────────────────────────────
+  params=34,977
+  ep  1  val=0.1121
+  e  1  loss=12.0645  task=12.0645  safety=0.0000  top1=0.1121  lr=2.36e-03
+  ep  5  val=0.8031
+  ep 10  val=0.9225
+  e 10  loss=0.2892  task=0.2892  safety=0.0000  top1=0.9225  lr=2.36e-03
+  ep 15  val=0.9350
+  ep 20  val=0.9432
+  e 20  loss=0.1001  task=0.1001  safety=0.0000  top1=0.9432  lr=2.36e-03
+  → best=0.9439 @ ep17  (329s)
+
+────────────────────────────────────────────────────────────
+Config C_rot_a050: mode=rot, α_AH=0.5
+────────────────────────────────────────────────────────────
+  params=34,977
+  ep  1  val=0.1299
+  e  1  loss=10.7407  task=10.7407  safety=0.0000  top1=0.1299  lr=2.36e-03
+  ep  5  val=0.6420
+  ep 10  val=0.8825
+  e 10  loss=0.5386  task=0.5386  safety=0.0000  top1=0.8825  lr=2.36e-03
+  ep 15  val=0.9113
+  ep 20  val=0.9335
+  e 20  loss=0.1980  task=0.1980  safety=0.0000  top1=0.9335  lr=2.36e-03
+  → best=0.9335 @ ep20  (257s)
+
+======================================================================
+STEP 301 SUMMARY — ΔW × AH interaction
+======================================================================
+  Ref          (ref, ): 0.9187  Δref=+0.0000
+  A_proj       (proj, α=0.0): 0.9401  Δref=+0.0214
+  B_a025       (proj, α=0.25): 0.9399  Δref=+0.0212  Δproj=-0.0002
+  B_a050       (proj, α=0.5): 0.9238  Δref=+0.0051  Δproj=-0.0163
+  B_a075       (proj, α=0.75): 0.8973  Δref=-0.0214  Δproj=-0.0428
+  B_a100       (proj, α=1.0): 0.8843  Δref=-0.0344  Δproj=-0.0558
+  C_rot        (rot, α=0.0): 0.9439  Δref=+0.0252  Δproj=+0.0038
+  C_rot_a050   (rot, α=0.5): 0.9335  Δref=+0.0148  Δproj=-0.0066
+
+Interpretation:
+  If best B_a* > A_proj: weak AH IS complementary to ΔW proj
+  If A_proj stays best: ΔW proj alone is sufficient (step234/235 confirmed)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step301_delta_ah_interaction.json

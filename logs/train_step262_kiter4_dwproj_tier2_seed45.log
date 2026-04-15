@@ -1,0 +1,88 @@
+Step 262 — K_iter=4 ΔW proj TIER-2 (150ep 100% data)
+  N=2048 D=16 K_hh=2 seed=45  device=cpu
+  Target: K_iter=4 Tier-2 ≥ K_iter=5 step706 (96.87%)
+  Running: ['Ref', 'A']
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=9469  Val=3925
+
+────────────────────────────────────────────────────────────
+Config Ref: ΔW proj K_iter=5 (step706-equivalent)
+────────────────────────────────────────────────────────────
+  params=34,976  K_iter=5  seed=45
+  e  1  loss=1.8537  task=1.8537  safety=0.0000  top1=0.8545  lr=2.36e-03
+  ep 10  val=0.9424
+  e 10  loss=0.0766  task=0.0766  safety=0.0000  top1=0.9424  lr=2.36e-03
+  ep 20  val=0.9546
+  e 20  loss=0.0349  task=0.0349  safety=0.0000  top1=0.9546  lr=2.36e-03
+  ep 30  val=0.9567
+  e 30  loss=0.0201  task=0.0201  safety=0.0000  top1=0.9567  lr=2.36e-03
+  ep 40  val=0.9536
+  e 40  loss=0.0192  task=0.0192  safety=0.0000  top1=0.9536  lr=2.36e-03
+  ep 50  val=0.9582
+  e 50  loss=0.0165  task=0.0165  safety=0.0000  top1=0.9582  lr=2.36e-03
+  ep 60  val=0.9572
+  e 60  loss=0.0358  task=0.0358  safety=0.0000  top1=0.9572  lr=2.36e-03
+  ep 70  val=0.9646
+  e 70  loss=0.0064  task=0.0064  safety=0.0000  top1=0.9646  lr=1.18e-03
+  ep 80  val=0.9618
+  e 80  loss=0.0061  task=0.0061  safety=0.0000  top1=0.9618  lr=1.18e-03
+  ep 90  val=0.9623
+  e 90  loss=0.0042  task=0.0042  safety=0.0000  top1=0.9623  lr=5.91e-04
+  ep100  val=0.9636
+  e100  loss=0.0041  task=0.0041  safety=0.0000  top1=0.9636  lr=5.91e-04
+  ep110  val=0.9633
+  e110  loss=0.0033  task=0.0033  safety=0.0000  top1=0.9633  lr=2.96e-04
+  ep120  val=0.9625
+  e120  loss=0.0032  task=0.0032  safety=0.0000  top1=0.9625  lr=2.96e-04
+  ep130  val=0.9631
+  e130  loss=0.0030  task=0.0030  safety=0.0000  top1=0.9631  lr=1.48e-04
+  ep140  val=0.9623
+  e140  loss=0.0029  task=0.0029  safety=0.0000  top1=0.9623  lr=1.48e-04
+  ep150  val=0.9638
+  e150  loss=0.0029  task=0.0029  safety=0.0000  top1=0.9638  lr=1.48e-04
+  → best=0.9654 @ep117  elapsed=1818s
+
+────────────────────────────────────────────────────────────
+Config A: ΔW proj K_iter=4 (candidate winner)
+────────────────────────────────────────────────────────────
+  params=34,976  K_iter=4  seed=45
+  e  1  loss=2.5125  task=2.5125  safety=0.0000  top1=0.7977  lr=2.36e-03
+  ep 10  val=0.9432
+  e 10  loss=0.1250  task=0.1250  safety=0.0000  top1=0.9432  lr=2.36e-03
+  ep 20  val=0.9480
+  e 20  loss=0.0694  task=0.0694  safety=0.0000  top1=0.9480  lr=2.36e-03
+  ep 30  val=0.9544
+  e 30  loss=0.0431  task=0.0431  safety=0.0000  top1=0.9544  lr=2.36e-03
+  ep 40  val=0.9493
+  e 40  loss=0.0353  task=0.0353  safety=0.0000  top1=0.9493  lr=2.36e-03
+  ep 50  val=0.9603
+  e 50  loss=0.0248  task=0.0248  safety=0.0000  top1=0.9603  lr=2.36e-03
+  ep 60  val=0.9585
+  e 60  loss=0.0203  task=0.0203  safety=0.0000  top1=0.9585  lr=2.36e-03
+  ep 70  val=0.9608
+  e 70  loss=0.0190  task=0.0190  safety=0.0000  top1=0.9608  lr=2.36e-03
+  ep 80  val=0.9628
+  e 80  loss=0.0151  task=0.0151  safety=0.0000  top1=0.9628  lr=2.36e-03
+  ep 90  val=0.9455
+  e 90  loss=0.0161  task=0.0161  safety=0.0000  top1=0.9455  lr=2.36e-03
+  ep100  val=0.9643
+  e100  loss=0.0075  task=0.0075  safety=0.0000  top1=0.9643  lr=1.18e-03
+  ep110  val=0.9651
+  e110  loss=0.0070  task=0.0070  safety=0.0000  top1=0.9651  lr=1.18e-03
+  ep120  val=0.9643
+  e120  loss=0.0067  task=0.0067  safety=0.0000  top1=0.9643  lr=1.18e-03
+  ep130  val=0.9631
+  e130  loss=0.0083  task=0.0083  safety=0.0000  top1=0.9631  lr=1.18e-03
+  ep140  val=0.9651
+  e140  loss=0.0050  task=0.0050  safety=0.0000  top1=0.9651  lr=5.91e-04
+  ep150  val=0.9646
+  e150  loss=0.0054  task=0.0054  safety=0.0000  top1=0.9646  lr=5.91e-04
+  → best=0.9684 @ep109  elapsed=990s
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step262_kiter4_dwproj_tier2.py", line 167, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/train_step262_kiter4_dwproj_tier2.py", line 151, in main
+    with open(OUT_PATH, "w") as f:
+         ~~~~^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted: '/Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step262_kiter4_dwproj_tier2_seed45.json'

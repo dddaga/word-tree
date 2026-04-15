@@ -1,0 +1,123 @@
+
+==============================================================================
+SGNNET CUDA OPTIMIZATION BENCHMARK
+==============================================================================
+Device  : cuda:0 (NVIDIA GeForce RTX 5060 Ti)
+Host    : 5060ti
+PyTorch : 2.11.0+cu128
+Config  : N=2048 D=16 K_hh=2 K_iter=5 AH=1.0 reflect=0.5 turing=0.0
+Iters   : warmup=50  bench=200  train=200
+
+── Numerical equivalence checks ──
+  [check] V0 equivalence: max_diff=0.00e+00  PASSED
+  [check] V0 vs V3 (eager): max_diff=0.00e+00  PASSED
+
+── V0_eager  (baseline) ──
+  Inference:
+    bs=   1  lat=   0.519ms  tput=    1925.1 sps  mem=25.2MB
+    bs=  32  lat=   2.908ms  tput=   11002.8 sps  mem=287.3MB
+    bs= 128  lat=  13.986ms  tput=    9152.0 sps  mem=1126.2MB
+    bs= 512  lat=  62.309ms  tput=    8217.1 sps  mem=4481.6MB
+  Training (bs=128):
+    step=25.450ms  tput=5029.6 sps  GPU util avg=99.0%
+
+── V1_compile  (torch.compile module-level) ──
+  Triggering compile...
+/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/compile_fx.py:322: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+W0414 10:08:40.726000 6538 venv/lib/python3.12/site-packages/torch/_inductor/utils.py:1731] [0/0] Not enough SMs to use max_autotune_gemm mode
+  Inference:
+    bs=   1  lat=   0.080ms  tput=   12428.7 sps  mem=130.0MB
+    bs=  32  lat=   0.511ms  tput=   62570.8 sps  mem=130.0MB
+    bs= 128  lat=   2.151ms  tput=   59512.5 sps  mem=130.0MB
+    bs= 512  lat=   9.402ms  tput=   54456.1 sps  mem=450.9MB
+  Training (bs=128):
+    step=6.083ms  tput=21043.2 sps  GPU util avg=99.6%
+
+── V2_cuda_graph  (manual CUDA graph, inference @ static bs=32) ──
+    [cuda_graph] captured at bs=32
+  Inference (bs=32 uses CUDA graph, others eager fallback):
+    bs=   1 [eager]  lat=   0.533ms  tput=    1874.8 sps  mem=759.2MB
+    bs=  32 [graph]  lat=   2.800ms  tput=   11428.8 sps  mem=759.2MB
+    bs= 128 [eager]  lat=  13.990ms  tput=    9149.6 sps  mem=1803.6MB
+    bs= 512 [eager]  lat=  62.303ms  tput=    8217.9 sps  mem=5159.0MB
+  Training (bs=128, eager — graph capture only for inference):
+    step=25.474ms  tput=5024.7 sps  GPU util avg=99.0%
+
+── V3_cuda_optimized  (SGNNET_AntiHebbian_CUDA) ──
+  Triggering compile...
+Traceback (most recent call last):
+  File "/home/indra/sgnnet_bench/scripts/bench_cuda_optimizations.py", line 657, in <module>
+    main()
+  File "/home/indra/sgnnet_bench/scripts/bench_cuda_optimizations.py", line 642, in main
+    bench_results = run_benchmark(device, args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/scripts/bench_cuda_optimizations.py", line 535, in run_benchmark
+    v3(_dummy)
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/src/sgnnet/model_resonant_cuda.py", line 336, in forward
+    Z, Z_reflected = self._routing_fn(
+                     ^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/src/sgnnet/model_resonant_cuda.py", line 52, in _routing_step_ah_wpos
+    def _routing_step_ah_wpos(
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1263, in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/aot_autograd.py", line 1200, in forward
+    return compiled_fn(full_args)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py", line 580, in runtime_wrapper
+    all_outs = call_func_at_runtime_with_args(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py", line 138, in call_func_at_runtime_with_args
+    out = normalize_as_list(f(args))
+                            ^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py", line 2298, in __call__
+    return self.compiled_fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py", line 783, in wrapper
+    return compiled_fn(runtime_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py", line 1011, in inner_fn
+    outs = compiled_fn(args)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/output_code.py", line 656, in __call__
+    return self.current_callable(inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/torchinductor_indra/xs/cxsl7i7qx65onhuthjzwskdyzi537qxvwlsj5illngciun4g3ger.py", line 207, in call
+    (buf0, buf3) = self.partitions[0](partition0_args)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/compile_fx.py", line 1875, in run
+    return compiled_fn(new_inputs)  # type: ignore[arg-type]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 420, in deferred_cudagraphify
+    return fn(inputs)
+           ^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/utils.py", line 3401, in run
+    out = model(new_inputs)
+          ^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 2113, in run
+    out = self._run(new_inputs, function_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 2303, in _run
+    return self.record_function(new_inputs, function_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 2339, in record_function
+    format_inputs_log(new_inputs),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 139, in format_inputs_log
+    parts = [format_item(i, inp) for i, inp in enumerate(inputs[:max_items])]
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/cudagraph_trees.py", line 126, in format_item
+    f"dtype={inp.dtype}, data_ptr=0x{inp.data_ptr():X})"
+                                     ^^^^^^^^^^^^^^
+RuntimeError: Error: accessing tensor output of CUDAGraphs that has been overwritten by a subsequent run. Stack trace: File "/home/indra/sgnnet_bench/src/sgnnet/model_resonant_cuda.py", line 65, in _routing_step_ah_wpos
+    Z_reflected_new = alpha_reflect * Z_reflected + Z_remainder. To prevent overwriting, clone the tensor outside of torch.compile() or call torch.compiler.cudagraph_mark_step_begin() before each model invocation.

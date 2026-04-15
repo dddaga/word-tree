@@ -1,0 +1,170 @@
+
+======================================================================
+Step 235 — Delta Rotation: full data ± augmentation, ± AH
+Running: ['Ref_100', 'Ref_aug', 'A_100', 'A_aug', 'B_100', 'B_aug']
+======================================================================
+
+────────────────────────────────────────────────────────────
+Config Ref_100: Standard AH, 100% original
+────────────────────────────────────────────────────────────
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  params=34,976  data=9,469 train / 3,925 val
+  ep  1  val=0.6902
+  e  1  loss=2.4616  task=2.4616  safety=0.0000  top1=0.6902  lr=2.36e-03
+  ep 10  val=0.9116
+  e 10  loss=0.2911  task=0.2911  safety=0.0000  top1=0.9116  lr=2.36e-03
+  ep 20  val=0.9233
+  e 20  loss=0.2188  task=0.2188  safety=0.0000  top1=0.9233  lr=2.36e-03
+  ep 30  val=0.9246
+  e 30  loss=0.1883  task=0.1883  safety=0.0000  top1=0.9246  lr=2.36e-03
+  ep 40  val=0.9289
+  e 40  loss=0.1754  task=0.1754  safety=0.0000  top1=0.9289  lr=2.36e-03
+  ep 50  val=0.9404
+  e 50  loss=0.1566  task=0.1566  safety=0.0000  top1=0.9404  lr=2.36e-03
+  ep 60  val=0.9383
+  e 60  loss=0.1437  task=0.1437  safety=0.0000  top1=0.9383  lr=2.36e-03
+  ep 70  val=0.9424
+  e 70  loss=0.1338  task=0.1338  safety=0.0000  top1=0.9424  lr=2.36e-03
+  ep 75  val=0.9276
+  → best=0.9457 @ ep47  (609s)
+
+────────────────────────────────────────────────────────────
+Config Ref_aug: Standard AH, augmented
+────────────────────────────────────────────────────────────
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+  params=34,976  data=18,938 train / 3,925 val
+  ep  1  val=0.8115
+  e  1  loss=1.6411  task=1.6411  safety=0.0000  top1=0.8115  lr=2.36e-03
+  ep 10  val=0.9269
+  e 10  loss=0.2192  task=0.2192  safety=0.0000  top1=0.9269  lr=2.36e-03
+  ep 20  val=0.9345
+  e 20  loss=0.1732  task=0.1732  safety=0.0000  top1=0.9345  lr=2.36e-03
+  ep 30  val=0.9419
+  e 30  loss=0.1517  task=0.1517  safety=0.0000  top1=0.9419  lr=2.36e-03
+  ep 40  val=0.9231
+  e 40  loss=0.1360  task=0.1360  safety=0.0000  top1=0.9231  lr=2.36e-03
+  ep 50  val=0.9450
+  e 50  loss=0.1319  task=0.1319  safety=0.0000  top1=0.9450  lr=2.36e-03
+  ep 60  val=0.9526
+  e 60  loss=0.1216  task=0.1216  safety=0.0000  top1=0.9526  lr=2.36e-03
+  ep 70  val=0.9513
+  e 70  loss=0.1172  task=0.1172  safety=0.0000  top1=0.9513  lr=2.36e-03
+  ep 75  val=0.9434
+  → best=0.9526 @ ep60  (1146s)
+
+────────────────────────────────────────────────────────────
+Config A_100: ΔW rotation no AH, 100% original
+────────────────────────────────────────────────────────────
+  params=34,977  data=9,469 train / 3,925 val
+  [injected rotation_temp into optimizer]
+  ep  1  val=0.1552
+  e  1  loss=11.9360  task=11.9360  safety=0.0000  top1=0.1552  lr=2.36e-03
+  ep 10  val=0.9485
+  e 10  loss=0.1417  task=0.1417  safety=0.0000  top1=0.9485  lr=2.36e-03
+  ep 20  val=0.9590
+  e 20  loss=0.0528  task=0.0528  safety=0.0000  top1=0.9590  lr=2.36e-03
+  ep 30  val=0.9590
+  e 30  loss=0.0243  task=0.0243  safety=0.0000  top1=0.9590  lr=2.36e-03
+  ep 40  val=0.9643
+  e 40  loss=0.0140  task=0.0140  safety=0.0000  top1=0.9643  lr=2.36e-03
+  ep 50  val=0.9643
+  e 50  loss=0.0136  task=0.0136  safety=0.0000  top1=0.9643  lr=2.36e-03
+  ep 60  val=0.9646
+  e 60  loss=0.0101  task=0.0101  safety=0.0000  top1=0.9646  lr=2.36e-03
+  ep 70  val=0.9605
+  e 70  loss=0.0115  task=0.0115  safety=0.0000  top1=0.9605  lr=2.36e-03
+  ep 75  val=0.9618
+  final rotation_temp=1.5599
+  → best=0.9664 @ ep54  (1378s)
+
+────────────────────────────────────────────────────────────
+Config A_aug: ΔW rotation no AH, augmented
+────────────────────────────────────────────────────────────
+  params=34,977  data=18,938 train / 3,925 val
+  [injected rotation_temp into optimizer]
+  ep  1  val=0.5712
+  e  1  loss=6.8379  task=6.8379  safety=0.0000  top1=0.5712  lr=2.36e-03
+  ep 10  val=0.9631
+  e 10  loss=0.0696  task=0.0696  safety=0.0000  top1=0.9631  lr=2.36e-03
+  ep 20  val=0.9671
+  e 20  loss=0.0293  task=0.0293  safety=0.0000  top1=0.9671  lr=2.36e-03
+  ep 30  val=0.9643
+  e 30  loss=0.0173  task=0.0173  safety=0.0000  top1=0.9643  lr=2.36e-03
+  ep 40  val=0.9702
+  e 40  loss=0.0120  task=0.0120  safety=0.0000  top1=0.9702  lr=2.36e-03
+  ep 50  val=0.9656
+  e 50  loss=0.0103  task=0.0103  safety=0.0000  top1=0.9656  lr=2.36e-03
+  ep 60  val=0.9692
+  e 60  loss=0.0103  task=0.0103  safety=0.0000  top1=0.9692  lr=2.36e-03
+  ep 70  val=0.9654
+  e 70  loss=0.0117  task=0.0117  safety=0.0000  top1=0.9654  lr=2.36e-03
+  ep 75  val=0.9636
+  final rotation_temp=1.6685
+  → best=0.9702 @ ep40  (2675s)
+
+────────────────────────────────────────────────────────────
+Config B_100: ΔW rotation +AH, 100% original
+────────────────────────────────────────────────────────────
+  params=34,977  data=9,469 train / 3,925 val
+  [injected rotation_temp into optimizer]
+  ep  1  val=0.6958
+  e  1  loss=2.4592  task=2.4592  safety=0.0000  top1=0.6958  lr=2.36e-03
+  ep 10  val=0.9154
+  e 10  loss=0.2853  task=0.2853  safety=0.0000  top1=0.9154  lr=2.36e-03
+  ep 20  val=0.9350
+  e 20  loss=0.1903  task=0.1903  safety=0.0000  top1=0.9350  lr=2.36e-03
+  ep 30  val=0.9348
+  e 30  loss=0.1537  task=0.1537  safety=0.0000  top1=0.9348  lr=2.36e-03
+  ep 40  val=0.9389
+  e 40  loss=0.1191  task=0.1191  safety=0.0000  top1=0.9389  lr=2.36e-03
+  ep 50  val=0.9503
+  e 50  loss=0.0965  task=0.0965  safety=0.0000  top1=0.9503  lr=2.36e-03
+  ep 60  val=0.9544
+  e 60  loss=0.0879  task=0.0879  safety=0.0000  top1=0.9544  lr=2.36e-03
+  ep 70  val=0.9508
+  e 70  loss=0.0689  task=0.0689  safety=0.0000  top1=0.9508  lr=2.36e-03
+  ep 75  val=0.9452
+  final rotation_temp=2.935
+  → best=0.9557 @ ep68  (1481s)
+
+────────────────────────────────────────────────────────────
+Config B_aug: ΔW rotation +AH, augmented
+────────────────────────────────────────────────────────────
+  params=34,977  data=18,938 train / 3,925 val
+  [injected rotation_temp into optimizer]
+  ep  1  val=0.8211
+  e  1  loss=1.6450  task=1.6450  safety=0.0000  top1=0.8211  lr=2.36e-03
+  ep 10  val=0.9320
+  e 10  loss=0.2031  task=0.2031  safety=0.0000  top1=0.9320  lr=2.36e-03
+  ep 20  val=0.9518
+  e 20  loss=0.1323  task=0.1323  safety=0.0000  top1=0.9518  lr=2.36e-03
+  ep 30  val=0.9534
+  e 30  loss=0.0972  task=0.0972  safety=0.0000  top1=0.9534  lr=2.36e-03
+  ep 40  val=0.9549
+  e 40  loss=0.0722  task=0.0722  safety=0.0000  top1=0.9549  lr=2.36e-03
+  ep 50  val=0.9521
+  e 50  loss=0.0546  task=0.0546  safety=0.0000  top1=0.9521  lr=2.36e-03
+  ep 60  val=0.9539
+  e 60  loss=0.0423  task=0.0423  safety=0.0000  top1=0.9539  lr=2.36e-03
+  ep 70  val=0.9600
+  e 70  loss=0.0360  task=0.0360  safety=0.0000  top1=0.9600  lr=2.36e-03
+  ep 75  val=0.9651
+  final rotation_temp=4.2177
+  → best=0.9682 @ ep73  (2757s)
+
+======================================================================
+STEP 235 SUMMARY — Delta Rotation ± AH ± Augmentation
+======================================================================
+  Ref_100    (AH-ref): 0.9457
+  Ref_aug    (AH-ref): 0.9526  Δ=+0.0069  (augmented)
+  A_100      (ΔW-rot no-AH): 0.9664  Δ=+0.0207
+  A_aug      (ΔW-rot no-AH): 0.9702  Δ=+0.0245  (augmented)
+  B_100      (ΔW-rot +AH): 0.9557  Δ=+0.0100
+  B_aug      (ΔW-rot +AH): 0.9682  Δ=+0.0225  (augmented)
+
+Augmentation effect:
+  Ref: aug vs 100% = +0.0069pp (helps)
+  A: aug vs 100% = +0.0038pp (helps)
+  B: aug vs 100% = +0.0125pp (helps)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step235_delta_rotation_fulldata.json

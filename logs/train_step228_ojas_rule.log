@@ -1,0 +1,61 @@
+
+======================================================================
+Step 228 — Oja's Rule for W_pos (Tier-0 scouts)
+N=2048 D=16 K_hh=2 K_iter=5 | 20ep 50% data
+FLOPs=983,040 (~0.98M) | Oja LR=0.001
+Question: can local Hebbian W_pos learning match backprop?
+Question: does Oja make AH redundant?
+Running: ['Ref', 'A', 'B', 'C']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: standard backprop + AH (control)
+────────────────────────────────────────────────────────────
+  params=34,976  (standard backprop)
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.3997  lr=2.36e-03
+  e 10  loss=0.3895  task=0.3895  safety=0.0000  top1=0.9014  lr=2.36e-03
+  e 20  loss=0.2764  task=0.2764  safety=0.0000  top1=0.9175  lr=2.36e-03
+  → best=0.9192 @ ep18  (117s)
+
+────────────────────────────────────────────────────────────
+Config A: Oja for W_pos + backprop fc_out only (with AH)
+────────────────────────────────────────────────────────────
+  params=34,976  (Oja + AH)
+  e  5  loss=0.5955  top1=0.7771
+  e 10  loss=0.5162  top1=0.8454
+  e 15  loss=0.4599  top1=0.8441
+  e 20  loss=0.4591  top1=0.8311
+  → best=0.8611 @ ep19  (113s)
+
+────────────────────────────────────────────────────────────
+Config B: Oja for W_pos + backprop fc_out only (WITHOUT AH — Oja replaces AH?)
+────────────────────────────────────────────────────────────
+  params=34,976  (Oja only, no AH)
+  e  5  loss=2.8576  top1=0.4161
+  e 10  loss=1.1587  top1=0.6800
+  e 15  loss=0.9520  top1=0.7338
+  e 20  loss=0.8564  top1=0.7697
+  → best=0.7697 @ ep20  (101s)
+
+────────────────────────────────────────────────────────────
+Config C: Hybrid — Oja during routing + backprop refines W_pos
+────────────────────────────────────────────────────────────
+  params=34,976  (Oja + backprop hybrid)
+  e  5  loss=0.5483  top1=0.7941
+  e 10  loss=0.4369  top1=0.8650
+  e 15  loss=0.3729  top1=0.8731
+  e 20  loss=0.3551  top1=0.8780
+  → best=0.8780 @ ep20  (114s)
+
+======================================================================
+STEP 228 SUMMARY — Oja's Rule vs Backprop for W_pos
+======================================================================
+  Ref: 0.9192
+  A: 0.8611  Δ=-0.0581 → KILL
+  B: 0.7697  Δ=-0.1495 → KILL
+  C: 0.8780  Δ=-0.0412 → KILL
+
+  NOTE: B < A (Δ=-0.0914) — AH still needed even with Oja
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step228_ojas_rule.json

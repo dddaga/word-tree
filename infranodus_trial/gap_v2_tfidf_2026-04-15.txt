@@ -1,0 +1,117 @@
+
+[Loading]
+  62 learnings files: ['._EXPERIMENT_QUEUE.md', '._LEARNINGS_design_2026_04_15.md', 'CLAUDE_MD_REVIEW_2026-04-14.md', 'EXPERIMENT_QUEUE.md', 'EXPERIMENT_QUEUE_CRITICAL_FINDINGS.md', 'EXPERIMENT_REPORT.md', 'EXPERIMENT_REPORT_ADDENDUM.md', 'EXPERIMENT_REPORT_VERIFICATION.md', 'HISTORICAL_SPECS.md', 'INDEX.md', 'LEARNINGS.md', 'LEARNINGS_arch.md', 'LEARNINGS_design.md', 'LEARNINGS_design_2026_04_04.md', 'LEARNINGS_design_2026_04_05_06.md', 'LEARNINGS_design_2026_04_07_08.md', 'LEARNINGS_design_2026_04_08.md', 'LEARNINGS_design_2026_04_09.md', 'LEARNINGS_design_2026_04_10.md', 'LEARNINGS_design_2026_04_14.md', 'LEARNINGS_design_2026_04_15.md', 'LEARNINGS_ops.md', 'LEARNINGS_phase5.md', 'LEARNINGS_phase5_p11_n_scaling.md', 'LEARNINGS_phase5_p12_proxwave.md', 'LEARNINGS_phase5_p13_reflection.md', 'LEARNINGS_phase5_p14_wave1_verdict.md', 'LEARNINGS_phase5_p15_post_wave1.md', 'LEARNINGS_phase5_p15a_wave1_closure.md', 'LEARNINGS_phase5_p15b_arch_patch.md', 'LEARNINGS_phase5_p15c_kiter_flops.md', 'LEARNINGS_phase5_p15d_flops_track.md', 'LEARNINGS_phase5_p15e_dynamic_routing_postmortem.md', 'LEARNINGS_phase5_p15f_warmstart_efficiency.md', 'LEARNINGS_phase5_p15g_flops_floor.md', 'LEARNINGS_phase5_p15h_kiter_axis.md', 'LEARNINGS_phase5_p15i_topology_analysis.md', 'LEARNINGS_phase5_p15j_belief_update.md', 'LEARNINGS_phase5_p16.md', 'LEARNINGS_phase5_p1_ladder.md', 'LEARNINGS_phase5_p2_diagnostics.md', 'LEARNINGS_phase5_p3_breakthrough.md', 'LEARNINGS_phase5_p4_d16.md', 'LEARNINGS_phase5_p5_phase_mechanisms.md', 'LEARNINGS_phase5_p6_gen2_experiments.md', 'LEARNINGS_phase5_p6_gen2_gen3.md', 'LEARNINGS_phase5_p7_gen3_arm_status.md', 'LEARNINGS_phase5_p8_arm1_arm2.md', 'LEARNINGS_phase5_p9_arm3_arm5.md', 'LEARNINGS_research.md', 'LEARNINGS_sparse_attention_mechanisms.md', 'LEARNINGS_sparse_attention_research.md', 'LEARNINGS_sparse_attention_sgnnet.md', 'PENDING_DISCUSSIONS.md', 'PRUNE_REVIEW_2026_04_14.md', 'RESEARCH_learning_algorithms.md', 'RESEARCH_learning_algorithms_p1.md', 'RESEARCH_learning_algorithms_p2.md', 'RESEARCH_routing_mechanisms.md', 'SCRIPT_AUDIT_2026_04_14.md', 'WINNERS.md', 'learningsA.md']
+  169 result JSONs converted to prose
+  total corpus: 656,092 chars
+
+[Building text network]  window=4  resolution=1.0 + TF-IDF
+  graph: 4418 nodes, 78753 edges
+
+=================================================================
+  SGNNET TEXT NETWORK ANALYSIS
+=================================================================
+
+──── GRAPH STATS ────────────────────────────────────────────────
+  nodes:       4418
+  edges:       78753
+  total_weight:288191
+  communities: 14
+  modularity:  0.3297  (moderate structure)
+
+──── TOPICAL CLUSTERS ───────────────────────────────────────────
+
+  [0] 20.7%  size=968
+       Top terms: pos, topology, neurons, group, graph, static
+
+  [1] 23.7%  size=637
+       Top terms: iter, tier, done, flops, killed, proj
+
+  [2] 11.3%  size=526
+       Top terms: sgnnet, design, script, learnings, key, hypothesis
+
+  [3] 6.4%  size=389
+       Top terms: training, claude, project, model, high, gap
+
+  [4] 5.1%  size=349
+       Top terms: loss, load, norm, collapse, pre, safety
+
+  [5] 7.8%  size=343
+       Top terms: phase, alpha, data, turing, frac, activation
+
+  [6] 7.1%  size=319
+       Top terms: routing, dynamic, gate, signal, mechanisms, softmax
+
+  [7] 4.0%  size=245
+       Top terms: forward, soft, multi, pass, root, class
+
+  [8] 2.9%  size=166
+       Top terms: dead, experiments, signed, attention, sparse, rule
+
+  [9] 1.7%  size=116
+       Top terms: input, layer, readout, fix, dependent, interneurons
+
+  [10] 5.2%  size=111
+       Top terms: experiment, verdict, accuracy, reference, variant, winner
+
+  [11] 1.7%  size=99
+       Top terms: low, cross, rank, shared, dim, mixing
+
+  [12] 1.7%  size=86
+       Top terms: scaling, non, arch, patched, law, additive
+
+  [13] 0.7%  size=64
+       Top terms: weight, don, curriculum, need, twopop, prune
+
+──── STRUCTURAL GAPS  (top 15 community pairs with low connectivity) 
+
+  WEAK-CONNECTION gaps (low cross-density):
+    ·  [2] sgnnet, design, script, learnings,   ↔  [13] weight, don, curriculum, need, twop  (density=0.007)
+    ·  [3] training, claude, project, model, h  ↔  [4] loss, load, norm, collapse, pre, sa  (density=0.008)
+    ·  [4] loss, load, norm, collapse, pre, sa  ↔  [13] weight, don, curriculum, need, twop  (density=0.008)
+    ·  [3] training, claude, project, model, h  ↔  [13] weight, don, curriculum, need, twop  (density=0.008)
+    ·  [7] forward, soft, multi, pass, root, c  ↔  [11] low, cross, rank, shared, dim, mixi  (density=0.008)
+    ·  [3] training, claude, project, model, h  ↔  [7] forward, soft, multi, pass, root, c  (density=0.009)
+    ·  [7] forward, soft, multi, pass, root, c  ↔  [13] weight, don, curriculum, need, twop  (density=0.009)
+    ·  [11] low, cross, rank, shared, dim, mixi  ↔  [13] weight, don, curriculum, need, twop  (density=0.010)
+
+──── TOP BRIDGING CONCEPTS  [betweenness centrality — elbow cutoff] 
+  · experiment                     BC=0.2219  cluster=10
+  · verdict                        BC=0.2051  cluster=10
+  · reference                      BC=0.1020  cluster=10
+  · out                            BC=0.0906  cluster=10
+  · accuracy                       BC=0.0855  cluster=10
+  · winner                         BC=0.0831  cluster=10
+  · change                         BC=0.0780  cluster=10
+  · variant                        BC=0.0771  cluster=10
+  · routing                        BC=0.0730  cluster=6
+  · baseline                       BC=0.0564  cluster=10
+  · gain                           BC=0.0424  cluster=10
+  · phase                          BC=0.0375  cluster=5
+  · training                       BC=0.0355  cluster=3
+  · graph                          BC=0.0312  cluster=0
+  · topology                       BC=0.0280  cluster=0
+  · confirmed                      BC=0.0270  cluster=1
+  · static                         BC=0.0268  cluster=0
+  · mechanism                      BC=0.0262  cluster=1
+  · local                          BC=0.0255  cluster=0
+  · neurons                        BC=0.0253  cluster=0
+  · regression                     BC=0.0237  cluster=10
+  · rejected                       BC=0.0226  cluster=10
+  · sgnnet                         BC=0.0217  cluster=2
+  · signal                         BC=0.0209  cluster=6
+  · pure                           BC=0.0206  cluster=2
+
+──── DIVERSIVITY  [betweenness / degree — efficient bridges] ────
+  · reference                      div=0.00008  BC=0.1020  deg=1265  cluster=10
+  · accuracy                       div=0.00005  BC=0.0855  deg=1801  cluster=10
+  · variant                        div=0.00004  BC=0.0771  deg=1796  cluster=10
+  · training                       div=0.00003  BC=0.0355  deg=1133  cluster=3
+  · static                         div=0.00002  BC=0.0268  deg=1140  cluster=0
+  · signal                         div=0.00002  BC=0.0209  deg=1171  cluster=6
+  · routing                        div=0.00002  BC=0.0730  deg=4661  cluster=6
+  · params                         div=0.00002  BC=0.0175  deg=1153  cluster=1
+  · neurons                        div=0.00001  BC=0.0253  deg=1695  cluster=0
+  · mechanism                      div=0.00001  BC=0.0262  deg=1878  cluster=1
+  · confirmed                      div=0.00001  BC=0.0270  deg=1960  cluster=1
+  · random                         div=0.00001  BC=0.0167  deg=1253  cluster=0
+

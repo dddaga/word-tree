@@ -457,38 +457,41 @@ def run_benchmark(device: torch.device, args) -> dict:
     del v0; torch.cuda.empty_cache()
 
     # ── V1: module-level torch.compile ───────────────────────────────────────
-    print("\n── V1_compile  (torch.compile module-level) ──")
-    torch.cuda.empty_cache()
-    v1_base = _make_base(device)
-    v1 = torch.compile(v1_base, mode="reduce-overhead")
+    if "V1" in args._skip_variants:
+        print("\n── V1_compile  SKIPPED (via --skip-compile or --skip-variants V1) ──")
+        results["V1_compile"] = {"skipped": True}
+    else:
+        print("\n── V1_compile  (torch.compile module-level) ──")
+        torch.cuda.empty_cache()
+        v1_base = _make_base(device)
+        v1 = torch.compile(v1_base, mode="reduce-overhead")
 
-    # Trigger compile with a warmup forward pass
-    print("  Triggering compile...")
-    _dummy = torch.randn(TRAIN_BS, N_IN, device=device)
-    with torch.no_grad():
-        v1(_dummy)
-    sync_cuda()
-    del _dummy
+        print("  Triggering compile...")
+        _dummy = torch.randn(TRAIN_BS, N_IN, device=device)
+        with torch.no_grad():
+            v1(_dummy)
+        sync_cuda()
+        del _dummy
 
-    print(f"  Inference:")
-    v1_inf = bench_inference(v1, device, BATCH_SIZES, args.warmup, args.iters)
-    for bs, r in v1_inf.items():
-        print(f"    bs={bs:4d}  lat={r['latency_ms']:8.3f}ms  "
-              f"tput={r['throughput_sps']:10.1f} sps  mem={r['gpu_mem_reserved_mb']}MB")
+        print(f"  Inference:")
+        v1_inf = bench_inference(v1, device, BATCH_SIZES, args.warmup, args.iters)
+        for bs, r in v1_inf.items():
+            print(f"    bs={bs:4d}  lat={r['latency_ms']:8.3f}ms  "
+                  f"tput={r['throughput_sps']:10.1f} sps  mem={r['gpu_mem_reserved_mb']}MB")
 
-    print(f"  Training (bs={TRAIN_BS}):")
-    v1_train, v1_smi = bench_training(v1, device, TRAIN_BS, args.warmup, args.train_iters)
-    v1_smi_sum = _smi_summary(v1_smi)
-    print(f"    step={v1_train['step_ms']:.3f}ms  "
-          f"tput={v1_train['throughput_sps']:.1f} sps  "
-          f"GPU util avg={v1_smi_sum.get('gpu_util_avg', 'N/A')}%")
+        print(f"  Training (bs={TRAIN_BS}):")
+        v1_train, v1_smi = bench_training(v1, device, TRAIN_BS, args.warmup, args.train_iters)
+        v1_smi_sum = _smi_summary(v1_smi)
+        print(f"    step={v1_train['step_ms']:.3f}ms  "
+              f"tput={v1_train['throughput_sps']:.1f} sps  "
+              f"GPU util avg={v1_smi_sum.get('gpu_util_avg', 'N/A')}%")
 
-    results["V1_compile"] = {
-        "inference": {str(k): v for k, v in v1_inf.items()},
-        "training":  v1_train,
-        "nvidia_smi": v1_smi_sum,
-    }
-    del v1, v1_base; torch.cuda.empty_cache()
+        results["V1_compile"] = {
+            "inference": {str(k): v for k, v in v1_inf.items()},
+            "training":  v1_train,
+            "nvidia_smi": v1_smi_sum,
+        }
+        del v1, v1_base; torch.cuda.empty_cache()
 
     # ── V2: manual CUDA graph (inference only — training graphs are tricky) ──
     print("\n── V2_cuda_graph  (manual CUDA graph, inference @ static bs=32) ──")
@@ -595,13 +598,21 @@ def main():
     parser.add_argument("--iters",        type=int, default=BENCH_ITERS)
     parser.add_argument("--train-iters",  type=int, default=BENCH_ITERS, dest="train_iters")
     parser.add_argument("--output",       default=None)
+    parser.add_argument("--skip-compile", action="store_true",
+                        help="Skip V1 (torch.compile) variant if Triton build env is broken")
+    parser.add_argument("--skip-variants", default="",
+                        help="Comma-separated variants to skip, e.g. 'V1,V2'")
     args = parser.parse_args()
+    _skip = set(v.strip() for v in args.skip_variants.split(",") if v.strip())
+    if args.skip_compile:
+        _skip.add("V1")
+    args._skip_variants = _skip
 
     if not torch.cuda.is_available():
         print("ERROR: torch.cuda.is_available() is False. This benchmark is CUDA-only.")
         sys.exit(1)
 
-    device = torch.device(args.device)
+    device = torch.device(args.device if ":" in args.device else f"{args.device}:0")
     torch.cuda.set_device(device)
 
     print(f"\n{'='*78}")

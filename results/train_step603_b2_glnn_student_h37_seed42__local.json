@@ -1,0 +1,29 @@
+{
+  "hidden": 37,
+  "n_params": 928673,
+  "flops": 1857252,
+  "scratch_top1": 0.9771,
+  "teacher_top1": 0.9312,
+  "T_stored": 4.0,
+  "epochs": 2,
+  "seed": 42,
+  "best_config": "T4_lam05",
+  "best_top1": 0.9643,
+  "configs": {
+    "T4_lam05": {
+      "T": 4.0,
+      "lam": 0.5,
+      "top1_best": 0.9643,
+      "top1_last": 0.9643,
+      "best_epoch": 2,
+      "top1_history": [
+        0.9633,
+        0.9643
+      ],
+      "elapsed_s": 1.5,
+      "verdict": "MEDIUM",
+      "beat_scratch": false,
+      "beat_teacher": true
+    }
+  }
+}

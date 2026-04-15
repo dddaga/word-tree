@@ -1,0 +1,18 @@
+{
+  "Ref": {
+    "label": "K=5 \u0394W rot + aug at N=4096 (baseline)",
+    "K_iter": 5,
+    "n_params": 69793,
+    "top1_best": 0.9770700931549072,
+    "best_epoch": 113,
+    "elapsed_s": 1611.6383559703827
+  },
+  "A_k4": {
+    "label": "K=4 \u0394W rot + aug at N=4096 (ALL WINNERS combo)",
+    "K_iter": 4,
+    "n_params": 69793,
+    "top1_best": 0.9765605330467224,
+    "best_epoch": 108,
+    "elapsed_s": 1323.5035846233368
+  }
+}

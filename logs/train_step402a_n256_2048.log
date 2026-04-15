@@ -1,0 +1,120 @@
+
+======================================================================
+Step 402 — N-scaling law (D=16, K_hh=2, K_iter=5, AH=1.0, Tier-1)
+Fitting power-law curve for paper: accuracy ~ f(N)
+Running N: [256, 512, 1024, 2048]
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+N=256  FLOPs=122,880 (0.123M, 0.10% VGG16-FC)
+────────────────────────────────────────────────────────────
+  params=4,512  n_groups=32
+  ep  1  val=0.2293
+  e  1  loss=2.4450  task=2.4450  safety=0.0000  top1=0.2293  lr=2.36e-03
+  ep 10  val=0.4474
+  e 10  loss=1.7761  task=1.7761  safety=0.0000  top1=0.4474  lr=2.36e-03
+  ep 20  val=0.5238
+  e 20  loss=1.6650  task=1.6650  safety=0.0000  top1=0.5238  lr=2.36e-03
+  ep 30  val=0.4882
+  e 30  loss=1.6033  task=1.6033  safety=0.0000  top1=0.4882  lr=2.36e-03
+  ep 40  val=0.5804
+  e 40  loss=1.5596  task=1.5596  safety=0.0000  top1=0.5804  lr=2.36e-03
+  ep 50  val=0.5781
+  e 50  loss=1.5228  task=1.5228  safety=0.0000  top1=0.5781  lr=2.36e-03
+  ep 60  val=0.5720
+  e 60  loss=1.5042  task=1.5042  safety=0.0000  top1=0.5720  lr=2.36e-03
+  ep 70  val=0.5926
+  e 70  loss=1.4859  task=1.4859  safety=0.0000  top1=0.5926  lr=2.36e-03
+  ep 75  val=0.5906
+  → best=0.5939 @ ep72  (75s)
+  (checkpoint saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step402_n_scaling_imagenette.json)
+
+────────────────────────────────────────────────────────────
+N=512  FLOPs=245,760 (0.246M, 0.20% VGG16-FC)
+────────────────────────────────────────────────────────────
+  params=8,864  n_groups=64
+  ep  1  val=0.2232
+  e  1  loss=2.7301  task=2.7301  safety=0.0000  top1=0.2232  lr=2.36e-03
+  ep 10  val=0.6662
+  e 10  loss=1.4359  task=1.4359  safety=0.0000  top1=0.6662  lr=2.36e-03
+  ep 20  val=0.6726
+  e 20  loss=1.2868  task=1.2868  safety=0.0000  top1=0.6726  lr=2.36e-03
+  ep 30  val=0.7220
+  e 30  loss=1.1896  task=1.1896  safety=0.0000  top1=0.7220  lr=2.36e-03
+  ep 40  val=0.7124
+  e 40  loss=1.1099  task=1.1099  safety=0.0000  top1=0.7124  lr=2.36e-03
+  ep 50  val=0.7269
+  e 50  loss=1.0555  task=1.0555  safety=0.0000  top1=0.7269  lr=2.36e-03
+  ep 60  val=0.7516
+  e 60  loss=1.0303  task=1.0303  safety=0.0000  top1=0.7516  lr=2.36e-03
+  ep 70  val=0.7595
+  e 70  loss=0.9876  task=0.9876  safety=0.0000  top1=0.7595  lr=2.36e-03
+  ep 75  val=0.7506
+  → best=0.7745 @ ep74  (119s)
+  (checkpoint saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step402_n_scaling_imagenette.json)
+
+────────────────────────────────────────────────────────────
+N=1024  FLOPs=491,520 (0.492M, 0.40% VGG16-FC)
+────────────────────────────────────────────────────────────
+  params=17,568  n_groups=128
+  ep  1  val=0.3544
+  e  1  loss=3.3018  task=3.3018  safety=0.0000  top1=0.3544  lr=2.36e-03
+  ep 10  val=0.8262
+  e 10  loss=0.8462  task=0.8462  safety=0.0000  top1=0.8262  lr=2.36e-03
+  ep 20  val=0.8576
+  e 20  loss=0.6759  task=0.6759  safety=0.0000  top1=0.8576  lr=2.36e-03
+  ep 30  val=0.8403
+  e 30  loss=0.6117  task=0.6117  safety=0.0000  top1=0.8403  lr=2.36e-03
+  ep 40  val=0.8639
+  e 40  loss=0.5661  task=0.5661  safety=0.0000  top1=0.8639  lr=2.36e-03
+  ep 50  val=0.8665
+  e 50  loss=0.5291  task=0.5291  safety=0.0000  top1=0.8665  lr=2.36e-03
+  ep 60  val=0.8744
+  e 60  loss=0.5118  task=0.5118  safety=0.0000  top1=0.8744  lr=2.36e-03
+  ep 70  val=0.8726
+  e 70  loss=0.4950  task=0.4950  safety=0.0000  top1=0.8726  lr=2.36e-03
+  ep 75  val=0.8759
+  → best=0.8795 @ ep56  (204s)
+  (checkpoint saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step402_n_scaling_imagenette.json)
+
+────────────────────────────────────────────────────────────
+N=2048  FLOPs=983,040 (0.983M, 0.80% VGG16-FC)
+────────────────────────────────────────────────────────────
+  params=34,976  n_groups=256
+  ep  1  val=0.4003
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4003  lr=2.36e-03
+  ep 10  val=0.9017
+  e 10  loss=0.3898  task=0.3898  safety=0.0000  top1=0.9017  lr=2.36e-03
+  ep 20  val=0.9185
+  e 20  loss=0.2772  task=0.2772  safety=0.0000  top1=0.9185  lr=2.36e-03
+  ep 30  val=0.9231
+  e 30  loss=0.2276  task=0.2276  safety=0.0000  top1=0.9231  lr=2.36e-03
+  ep 40  val=0.9136
+  e 40  loss=0.2029  task=0.2029  safety=0.0000  top1=0.9136  lr=2.36e-03
+  ep 50  val=0.9197
+  e 50  loss=0.1849  task=0.1849  safety=0.0000  top1=0.9197  lr=2.36e-03
+  ep 60  val=0.9343
+  e 60  loss=0.1719  task=0.1719  safety=0.0000  top1=0.9343  lr=2.36e-03
+  ep 70  val=0.9348
+  e 70  loss=0.1584  task=0.1584  safety=0.0000  top1=0.9348  lr=2.36e-03
+  ep 75  val=0.9304
+  → best=0.9411 @ ep72  (385s)
+  (checkpoint saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step402_n_scaling_imagenette.json)
+
+======================================================================
+STEP 402 SUMMARY — N-scaling law
+======================================================================
+  N      FLOPs(M)   FLOPs%    Acc%     Params     best_ep
+  -------------------------------------------------------
+  256    0.123      0.10      59.39    4,512      72
+  512    0.246      0.20      77.45    8,864      74
+  1024   0.491      0.40      87.95    17,568     56
+  2048   0.983      0.80      94.11    34,976     72
+
+Prior known points (for curve fitting):
+  N=2048 → 95.52% @ 0.98M FLOPs  (step199, efficiency milestone)
+  N=4096 → 97.17% @ 1.97M FLOPs  (step205/209)
+  N=8192 → 97.17% @ 3.93M FLOPs  (step209, D=16 ceiling)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step402_n_scaling_imagenette.json

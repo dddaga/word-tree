@@ -1,263 +1,173 @@
-"""Step 611: K_iter warm transfer (teacher→student weight handoff).
+"""Step 611: K_iter warm transfer at efficiency config.
 
 MOTIVATION
 ==========
-Step163 warm-start (K=12 teacher → K=8 student, same weights) won +7.82pp over
-constant K=8 at N=1024 D=16 K_hh=8. This re-tests on the efficiency config
-(N=2048, D=16, K_hh=2) and pushes the student K further down to K=3.
+step163 showed K=12->K=8 warm transfer gave +7.82pp at N=1024 D=16 K_hh=8.
+step173 HURT at N=2048 D=32 K_hh=4 (-0.23pp).
+step610 annealing running on mini_cpu.
 
-The mechanism: a higher-K teacher develops a rich representation that enables the
-student to converge faster with fewer routing steps. Weight transfer, not
-distillation — same model, just K_iter reduced at the transition point.
+Hypothesis: warm transfer (large-K teacher -> small-K student) may work at
+efficiency config (N=2048 D=16 K_hh=2). K_iter is just a loop counter --
+teacher and student share identical weights. Mid-training swap
+`model.m.base.K_iter` from teacher_k to student_k at SWITCH_EP.
 
-CONFIGS (N=2048, D=16, K_hh=2, AH=1.0, 75ep total, 50% data — Tier-1)
-=======================================================================
-  Ref      : K_iter=5 constant throughout (75ep single phase)
-  A_12to5  : Teacher K=12 for 40ep, Student K=5 for 35ep
-  B_12to3  : Teacher K=12 for 40ep, Student K=3 for 35ep
-  C_8to5   : Teacher K=8  for 40ep, Student K=5 for 35ep (smaller compression)
-  D_16to5  : Teacher K=16 for 30ep, Student K=5 for 45ep (bigger teacher)
+Configs:
+  Ref       : scratch K_iter=5 all 75ep (control)
+  A_12to5   : teacher K=12 -> student K=5 at ep40
+  B_12to3   : teacher K=12 -> student K=3 at ep40
+  C_8to5    : teacher K=8  -> student K=5 at ep40
+  D_16to5   : teacher K=16 -> student K=5 at ep40
 
-CRITICAL: Optimizer state (LR, Adam momentum) is NOT reset at transition.
-The switch is just model.m.base.K_iter = STUDENT_K between epochs.
-
-Tracks: effective_final_flops (student K × N × K_hh × D factor).
+Scale: N=2048 D=16 K_hh=2, 75ep 50% data (Tier-1)
+Ref: step197=93.96% (scratch K=5 Tier-1)
 """
 from __future__ import annotations
 
 import argparse
 import json
-import sys
-import time
-from dataclasses import dataclass
 from pathlib import Path
-
-ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(ROOT))
+import sys
 
 import numpy as np
 import torch
 
-from src.sgnnet.model_smallworld       import SGNNET_SmallWorld
-from src.sgnnet.model_resonant         import SGNNET_Resonant
-from src.sgnnet.mechanisms_inhibitory  import SGNNET_AntiHebbian
-from src.training.trainer              import Trainer
-from src.training.experiment_config    import trainer_kwargs
-from src.training.dataset              import make_loaders
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-# ---------------------------------------------------------------------------
-# Args
-# ---------------------------------------------------------------------------
-parser = argparse.ArgumentParser()
-parser.add_argument("--device",  default="auto")
-parser.add_argument("--epochs",  type=int, default=75,
-                    help="Total epochs per config (default 75)")
-parser.add_argument("--configs", default="",
-                    help="Comma-separated config keys. Empty = all.")
-args = parser.parse_args()
-DEVICE = (torch.device("mps") if torch.backends.mps.is_available()
-          else torch.device("cpu")) if args.device == "auto" else torch.device(args.device)
+from src.sgnnet.model_smallworld import SGNNET_SmallWorld
+from src.sgnnet.model_resonant import SGNNET_Resonant
+from src.sgnnet.mechanisms_inhibitory import SGNNET_AntiHebbian
+from src.training.experiment_config import trainer_kwargs
+from src.training.trainer import Trainer
+from src.training.dataset import H5Dataset
 
-EPOCHS = args.epochs; BATCH = 128; SEED = 42; DATA = "data/store.h5"
-N = 2048; N_IN = 25088; N_OUT = 10
-D = 16; K_HH = 2; K_IN = 25
-ALPHA_AHEBB = 1.0; ALPHA_REFLECT = 0.5; ALPHA_TURING = 0.0
+N_IN, N_CLASSES = 25088, 10
+N, D            = 2048, 16
+K_HH            = 2
+K_IN            = 25
+ALPHA_AHEBB     = 1.0
+ALPHA_REFLECT   = 0.5
+ALPHA_TURING    = 0.0
+EPOCHS          = 75
+SWITCH_EP       = 40
+FRAC_DATA       = 0.5
+BATCH           = 128
+SEED            = 42
 
-OUT_PATH = ROOT / "results" / "train_step611_kiter_warm_transfer.json"
-
-
-# ---------------------------------------------------------------------------
-# Config definitions
-# ---------------------------------------------------------------------------
-@dataclass
-class Config:
-    key: str
-    label: str
-    teacher_k: int      # K_iter during teacher phase
-    teacher_ep: int     # epochs in teacher phase (student gets EPOCHS - teacher_ep)
-    student_k: int      # K_iter during student phase
-
-    @property
-    def student_ep(self) -> int:
-        return EPOCHS - self.teacher_ep
+CONFIGS = {
+    "Ref":     {"teacher_k": 5,  "student_k": 5,  "switch": False},
+    "A_12to5": {"teacher_k": 12, "student_k": 5,  "switch": True},
+    "B_12to3": {"teacher_k": 12, "student_k": 3,  "switch": True},
+    "C_8to5":  {"teacher_k": 8,  "student_k": 5,  "switch": True},
+    "D_16to5": {"teacher_k": 16, "student_k": 5,  "switch": True},
+}
 
 
-CONFIGS = [
-    Config("Ref",     "Ref     K_iter=5 constant (75ep)",    teacher_k=5,  teacher_ep=EPOCHS, student_k=5),
-    Config("A_12to5", "A_12to5 Teacher K=12 40ep → Student K=5 35ep", teacher_k=12, teacher_ep=40, student_k=5),
-    Config("B_12to3", "B_12to3 Teacher K=12 40ep → Student K=3 35ep", teacher_k=12, teacher_ep=40, student_k=3),
-    Config("C_8to5",  "C_8to5  Teacher K=8  40ep → Student K=5 35ep", teacher_k=8,  teacher_ep=40, student_k=5),
-    Config("D_16to5", "D_16to5 Teacher K=16 30ep → Student K=5 45ep", teacher_k=16, teacher_ep=30, student_k=5),
-]
+def make_model(device, k_iter):
+    torch.manual_seed(SEED)
+    n_groups = max(8, N // 8)
+    K_local  = max(1, K_HH - max(1, K_HH // 4))
+    K_random = K_HH - K_local
+    sw = SGNNET_SmallWorld(
+        N_hidden=N, N_out=N_CLASSES, D=D, N_in=N_IN,
+        K_in=K_IN, K_local=K_local, K_random=K_random,
+        n_groups=n_groups, K_iter=k_iter,
+        norm_mode="l2", encoding_mode="fourier",
+    ).to(device)
+    res = SGNNET_Resonant(
+        base=sw, alpha_reflect=ALPHA_REFLECT,
+        alpha_turing=ALPHA_TURING, mode="dynamic_z_geo",
+    ).to(device)
+    return SGNNET_AntiHebbian(base=res, alpha_ahebb=ALPHA_AHEBB, variant="wpos").to(device)
 
 
-# ---------------------------------------------------------------------------
-# Data (cached, 50%)
-# ---------------------------------------------------------------------------
-_loaders = None
-def get_loaders():
-    global _loaders
-    if _loaders is None:
-        tr_full, va = make_loaders(ROOT / DATA, batch_size=BATCH, seed=SEED)
-        n = len(tr_full.dataset)
-        idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
-        subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
-        tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
-        _loaders = (tr, va)
-    return _loaders
+def run_config(label, cfg, device, tr, va):
+    teacher_k = cfg["teacher_k"]
+    student_k = cfg["student_k"]
+    do_switch = cfg["switch"]
 
+    print(f"\n{'--'*30}")
+    print(f"Config {label}: teacher_k={teacher_k} student_k={student_k}")
+    model = make_model(device, teacher_k)
+    n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f"  params={n_params:,}")
 
-# ---------------------------------------------------------------------------
-# Model factory
-# ---------------------------------------------------------------------------
-def make_model(init_k: int, seed_offset: int = 0):
-    torch.manual_seed(SEED + seed_offset)
-    K_r = max(1, K_HH // 4); K_l = K_HH - K_r
-    ng = max(8, N // 8)
-    base = SGNNET_SmallWorld(N_hidden=N, N_out=N_OUT, D=D, N_in=N_IN,
-                              K_in=K_IN, K_iter=init_k,
-                              K_local=K_l, K_random=K_r, n_groups=ng,
-                              norm_mode="l2", encoding_mode="fourier")
-    resonant = SGNNET_Resonant(base, K_phase=8, alpha_reflect=ALPHA_REFLECT,
-                               alpha_turing=ALPHA_TURING, beam_size=16, geo_gamma=0.5,
-                               mode="dynamic_z_geo", resonance_threshold=0.0)
-    return SGNNET_AntiHebbian(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
+    top1h = []
 
+    def _log(m):
+        ep = m['epoch'] + 1
+        top1h.append(round(m.get('val_top1', 0.0), 4))
+        if ep % 10 == 0:
+            print(f"  ep{ep:3d}  val={top1h[-1]:.4f}", flush=True)
+        if do_switch and ep == SWITCH_EP:
+            model.m.base.K_iter = student_k
+            print(f"  *** ep{ep}: K_iter {teacher_k} -> {student_k} ***", flush=True)
 
-def _get_base(model) -> SGNNET_SmallWorld:
-    return model.m.base
-
-
-def compute_flops(k_iter: int) -> int:
-    seed     = N * K_IN * D
-    per_step = N * K_HH * D * 2 + N * D + N * D * 2
-    routing  = k_iter * per_step
-    readout  = N * N_OUT * D
-    return seed + routing + readout
-
-
-# ---------------------------------------------------------------------------
-# Two-phase training
-# ---------------------------------------------------------------------------
-def train_two_phase(model, cfg: Config) -> dict:
-    """Run teacher phase then student phase. Optimizer state preserved across."""
-    tr, va = get_loaders()
-    # Build trainer for the full budget (LR schedule spans all epochs)
     kw = trainer_kwargs(N, n_epochs=EPOCHS)
-    trainer = Trainer(model=model, train_loader=tr, val_loader=va,
-                      device=DEVICE, **kw)
-    base = _get_base(model)
-    top1_hist = []
-    k_hist = []
+    trainer = Trainer(model=model, train_loader=tr, val_loader=va, device=str(device), **kw)
+    trainer.train(n_epochs=EPOCHS, log_fn=_log)
 
-    # Teacher phase
-    base.K_iter = cfg.teacher_k
-    print(f"    [teacher phase] K_iter={cfg.teacher_k} for ep1-{cfg.teacher_ep}", flush=True)
-    for ep in range(1, cfg.teacher_ep + 1):
-        ep_hist = trainer.train(n_epochs=1)
-        v = round(ep_hist[-1].get("val_top1", 0.0), 4)
-        top1_hist.append(v)
-        k_hist.append(cfg.teacher_k)
-        if ep % 10 == 0 or ep == 1:
-            print(f"  ep{ep:3d} [teacher K={cfg.teacher_k}]  val={v:.4f}", flush=True)
-
-    if cfg.student_ep > 0:
-        # Student phase — no optimizer reset
-        base.K_iter = cfg.student_k
-        print(f"    [student phase] K_iter → {cfg.student_k} at ep{cfg.teacher_ep+1}", flush=True)
-        for ep in range(cfg.teacher_ep + 1, EPOCHS + 1):
-            ep_hist = trainer.train(n_epochs=1)
-            v = round(ep_hist[-1].get("val_top1", 0.0), 4)
-            top1_hist.append(v)
-            k_hist.append(cfg.student_k)
-            if (ep - cfg.teacher_ep) % 10 == 0 or ep == cfg.teacher_ep + 1:
-                print(f"  ep{ep:3d} [student K={cfg.student_k}]  val={v:.4f}", flush=True)
-
-    best_idx = int(np.argmax(top1_hist))
+    best = max(top1h) if top1h else 0.0
+    bep  = int(np.argmax(top1h)) + 1 if top1h else 0
+    print(f"  best={best:.4f} @ ep{bep}")
     return {
-        "top1_history": top1_hist,
-        "k_iter_history": k_hist,
-        "best_top1": max(top1_hist),
-        "best_epoch": best_idx + 1,
-        "k_at_best": k_hist[best_idx],
-        "final_k_iter": k_hist[-1],
+        "label": label, "teacher_k": teacher_k, "student_k": student_k,
+        "switch": do_switch, "switch_ep": SWITCH_EP if do_switch else None,
+        "n_params": n_params, "top1_best": best, "best_epoch": bep,
+        "top1_last": top1h[-1] if top1h else None, "top1_history": top1h,
     }
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
 def main():
-    cfg_filter = [k.strip() for k in args.configs.split(",") if k.strip()] if args.configs else []
-    # Need to update Ref's teacher_ep to match EPOCHS (handles --epochs override)
-    for c in CONFIGS:
-        if c.key == "Ref":
-            c.teacher_ep = EPOCHS
-    active = [(i, c) for i, c in enumerate(CONFIGS)
-              if not cfg_filter or c.key in cfg_filter]
+    parser = argparse.ArgumentParser(description="Step 611: K_iter warm transfer")
+    parser.add_argument("--device",  default="cuda")
+    parser.add_argument("--epochs",  type=int, default=EPOCHS)
+    parser.add_argument("--configs", default="", help="Comma-separated keys")
+    parser.add_argument("--output",  default=None)
+    args = parser.parse_args()
+    device = torch.device(args.device)
+    selected = [k.strip() for k in args.configs.split(",") if k.strip()] or list(CONFIGS.keys())
 
     print(f"\n{'='*70}")
-    print(f"Step 611 — K_iter warm transfer (teacher→student)")
-    print(f"N={N}  D={D}  K_hh={K_HH}  K_in={K_IN}  AH={ALPHA_AHEBB}")
-    print(f"Total epochs={EPOCHS}  Device={DEVICE}  Data=50%  Tier-1")
-    print(f"Running: {[c.key for _, c in active]}")
-    print(f"{'='*70}\n")
-
-    get_loaders()
-    results = {}
-
-    for i, cfg in active:
-        n_params = sum(p.numel() for p in make_model(cfg.teacher_k).parameters()
-                       if p.requires_grad)
-        student_flops = compute_flops(cfg.student_k)
-        print(f"\n{'─'*60}")
-        print(f"Config {cfg.key}: {cfg.label}")
-        print(f"  teacher_k={cfg.teacher_k}  teacher_ep={cfg.teacher_ep}")
-        print(f"  student_k={cfg.student_k}  student_ep={cfg.student_ep}")
-        print(f"  params={n_params:,}  student_flops={student_flops/1e6:.2f}M")
-        print(f"{'─'*60}")
-
-        model = make_model(cfg.teacher_k, seed_offset=i).to(DEVICE)
-        t0 = time.time()
-        r = train_two_phase(model, cfg)
-        elapsed = time.time() - t0
-
-        results[cfg.key] = {
-            "N": N, "D": D, "K_hh": K_HH, "K_in": K_IN,
-            "alpha_ahebb": ALPHA_AHEBB, "data_frac": 0.5,
-            "label": cfg.label,
-            "teacher_k": cfg.teacher_k, "teacher_ep": cfg.teacher_ep,
-            "student_k": cfg.student_k, "student_ep": cfg.student_ep,
-            **r,
-            "effective_final_flops": student_flops,
-            "effective_final_flops_M": round(student_flops / 1e6, 2),
-            "n_params": n_params,
-            "elapsed_s": round(elapsed, 1),
-        }
-
-        ref_best = results.get("Ref", {}).get("best_top1", 0)
-        vs_ref = r["best_top1"] - ref_best if ref_best > 0 else 0
-        print(f"\n  best={r['best_top1']:.4f} @ ep{r['best_epoch']} "
-              f"(K_iter={r['k_at_best']})  vs_Ref={vs_ref:+.4f}  "
-              f"student_K={cfg.student_k}  {elapsed/60:.1f}min")
-
-        OUT_PATH.parent.mkdir(exist_ok=True)
-        OUT_PATH.write_text(json.dumps(results, indent=2))
-
-    # Summary
-    ref_best = results.get("Ref", {}).get("best_top1", 0)
-    print(f"\n{'='*70}")
-    print(f"STEP 611 SUMMARY — K_iter warm transfer")
+    print(f"Step 611 -- K_iter Warm Transfer (Tier-1 {args.epochs}ep)")
+    print(f"N={N} D={D} K_hh={K_HH}  switch_ep={SWITCH_EP}  configs={selected}")
+    print(f"Device: {device}")
     print(f"{'='*70}")
-    print(f"{'Key':12s}  {'T_K':>4}  {'T_ep':>5}  {'S_K':>4}  "
-          f"{'best':>7}  {'vs_Ref':>8}  {'eff_FLOPs_M':>12}")
-    print(f"{'─'*65}")
-    for key, r in results.items():
-        vs = r["best_top1"] - ref_best if ref_best > 0 else 0
-        print(f"{key:12s}  {r['teacher_k']:>4}  {r['teacher_ep']:>5}  "
-              f"{r['student_k']:>4}  {r['best_top1']:.4f}  {vs:>+.4f}  "
-              f"{r['effective_final_flops_M']:>12.2f}")
-    print(f"\n→ {OUT_PATH}")
+
+    train_ds = H5Dataset(str(ROOT / "data/store.h5"), split="train")
+    val_ds   = H5Dataset(str(ROOT / "data/store.h5"), split="val")
+    n_train  = int(len(train_ds) * FRAC_DATA)
+    g  = torch.Generator().manual_seed(SEED)
+    idx = torch.randperm(len(train_ds), generator=g)[:n_train].tolist()
+    train_sub = torch.utils.data.Subset(train_ds, idx)
+    g2 = torch.Generator().manual_seed(SEED)
+    tr = torch.utils.data.DataLoader(train_sub, batch_size=BATCH, shuffle=True, generator=g2)
+    va = torch.utils.data.DataLoader(val_ds,    batch_size=BATCH, shuffle=False)
+    print(f"Data: {n_train}/{len(train_ds)} train, {len(val_ds)} val")
+
+    results = {}
+    for label in selected:
+        results[label] = run_config(label, CONFIGS[label], device, tr, va)
+
+    ref_acc = results.get("Ref", {}).get("top1_best")
+    print(f"\n{'='*70}")
+    print(f"{'Label':<12}  {'teacher_k':>9}  {'student_k':>9}  {'best_val':>9}  {'delta':>8}  {'best_ep':>7}")
+    print(f"{'-'*70}")
+    for label, r in sorted(results.items(), key=lambda x: -x[1]["top1_best"]):
+        delta = f"{r['top1_best']-ref_acc:+.4f}" if ref_acc else "--"
+        print(f"  {label:<12}  {r['teacher_k']:>9}  {r['student_k']:>9}  "
+              f"{r['top1_best']:>9.4f}  {delta:>8}  ep{r['best_epoch']:>3}")
+
+    out_data = {
+        "config": {"N": N, "D": D, "K_hh": K_HH, "alpha_ahebb": ALPHA_AHEBB,
+                   "epochs": args.epochs, "switch_ep": SWITCH_EP, "device": str(device)},
+        "results": results,
+    }
+    out_path = args.output or str(ROOT / "results" / "train_step611_kiter_warm_transfer.json")
+    Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out_data, f, indent=2)
+    print(f"\n-> {out_path}")
 
 
 if __name__ == "__main__":

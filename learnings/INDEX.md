@@ -1,10 +1,12 @@
 # SGNNET Knowledge Index
 
-**Last updated:** 2026-04-13
+**Last updated:** 2026-04-14
 **Project best:** 97.86% (step89-A, N=4096, D=64, 150ep)
-**Efficiency best:** 95.52% @ 0.98M FLOPs (step199, N=2048, D=16, K_hh=2, K_iter=5)
-**D=16 record:** 97.17% (step205/209, N=4096/8192)
-**Current direction:** Mechanistic understanding (AH ablations, θ-edge precision), polarizer routing (+1.91pp), architecture simplification
+**Efficiency best:** 95.52% @ 0.98M routing MACs (step199, N=2048, D=16, K_hh=2, K_iter=5); 96.87% with ΔW proj (step706)
+**True FLOPs (ncu-validated):** 1.85M/sample = **0.75% of VGG16 FC** (step800). Paper must label "routing MACs" vs "total MACs".
+**D=16 ceiling:** 97.17% (step205/209, N=4096/8192)
+**CUDA throughput:** 4.7× faster than VGG FC training with torch.compile (step500, 5060ti)
+**Current direction (2026-04-14):** Paper 1 packaging — cross-domain validation (language task pending), manuscript soft conclusion. Exploration paused.
 
 ## Concept Pages
 
@@ -14,12 +16,13 @@
 | [[gate_death]] | [concepts/gate_death.md](concepts/gate_death.md) | Theorem established | Multiplicative gates g^K_iter → 0; 8+ experiments confirm |
 | [[n_scaling]] | [concepts/n_scaling.md](concepts/n_scaling.md) | Active research | N=4096 peak (97.86%); N=10000 regresses; non-monotonic |
 | [[k_iter]] | [concepts/k_iter.md](concepts/k_iter.md) | N-dependent optimal | K_iter=16 at N=1024, K_iter=12 at N=4096 |
-| [[phase_routing]] | [concepts/phase_routing.md](concepts/phase_routing.md) | Wave-1 killed; revival via redistribution | All gating variants dead; softmax redistribution promising |
+| [[phase_routing]] | [concepts/phase_routing.md](concepts/phase_routing.md) (INDEX) | Wave-1 killed; revival via redistribution | All gating variants dead; softmax redistribution promising |
 | [[softmax_routing]] | [concepts/softmax_routing.md](concepts/softmax_routing.md) | First dynamic routing win | step73 D=86.34% (+1.78pp); step75 D=87.24% (+3.98pp) |
 | [[group_topology]] | [concepts/group_topology.md](concepts/group_topology.md) | +3.01pp N=1024, NULL N=4096 | Bypasses N^2 routing problem via G^2 decisions; doesn't scale |
 | [[normalization]] | [concepts/normalization.md](concepts/normalization.md) | LayerNorm winner pending N=4096 | LayerNorm +2.24pp vs L2 sphere (step116); RMSNorm −11.49pp KILLED |
 | [[readout]] | [concepts/readout.md](concepts/readout.md) | Hard architectural constraint | C_ho required for unit-sphere activations; global mean-pool → 12% (step149) |
 | [[architecture_dead_ends]] | [concepts/architecture_dead_ends.md](concepts/architecture_dead_ends.md) | Reference | All confirmed dead ends; external constraints + pruning KILLED (step152, step153) |
+| [[delta_w]] | [concepts/delta_w.md](concepts/delta_w.md) | Confirmed winner (N≤2048) | ΔW projection +1.56pp at efficiency config; non-monotone peak +24pp at N=128; proj 3× cheaper than rot |
 
 ## New Infrastructure (2026-04-10)
 
@@ -53,31 +56,53 @@
 | `LEARNINGS_phase5_p15c_kiter_flops.md` | K_iter + routing | steps 71, 73, 75-77, 79-83 |
 | `LEARNINGS_phase5_p15d_flops_track.md` | FLOPs track | steps 86, 88 — Pareto + K_hh defaults |
 | `LEARNINGS_phase5_p15e_dynamic_routing_postmortem.md` | Dynamic routing post-mortem | Full failure analysis + next directions |
+| `LEARNINGS_phase5_p15f_warmstart_efficiency.md` | Warmstart/efficiency INDEX | TOC for part1/part2 split |
+| `LEARNINGS_phase5_p15f_warmstart_efficiency_part1.md` | Warmstart/efficiency pt1 | steps 149–169: encoding killed, distillation, warm+W_proj, D=16/32 ceilings |
+| `LEARNINGS_phase5_p15f_warmstart_efficiency_part2.md` | Warmstart/efficiency pt2 | Efficiency Track Status, steps 170–174, PHASE EXIT |
+| `CLAUDE_MD_REVIEW_2026-04-14.md` | CLAUDE.md review INDEX | TOC for part1/part2 split |
+| `CLAUDE_MD_REVIEW_2026-04-14_part1.md` | CLAUDE.md review pt1 | Sections A–C: Karpathy differences, Current Strengths, Proposed Additions |
+| `CLAUDE_MD_REVIEW_2026-04-14_part2.md` | CLAUDE.md review pt2 | Sections D–F: Redundancies, Style Drift, Open Questions |
 | `LEARNINGS_design.md` | Design discussions INDEX | TOC for date-split design files |
 | `LEARNINGS_design_2026_04_04.md` | Design 04-04 | Phase routing, resonance, ablation protocol |
 | `LEARNINGS_design_2026_04_05_06.md` | Design 04-05/06 | Phase routing details, wave-1 failure analysis |
 | `LEARNINGS_design_2026_04_07_08.md` | Design 04-07 | Group topology design, group routing, gate-death synthesis |
 | `LEARNINGS_design_2026_04_08.md` | Design 04-08 | step83 post-mortem, step87 proximity architecture design |
-| `LEARNINGS_design_2026_04_09.md` | Design 04-09 | Gemma4/PolarQuant designs, FLOPs path, 50-experiment gap analysis |
+| `LEARNINGS_design_2026_04_09.md` | Design 04-09 INDEX | TOC for date-split design files (Gemma4/PolarQuant, FLOPs path) |
+| `LEARNINGS_design_2026_04_09_part1.md` | Design 04-09 pt1 | Phase-Polarized Neurons, AH Compatibility, Open Design Questions |
+| `LEARNINGS_design_2026_04_09_part2.md` | Design 04-09 pt2 | Gemma4/PolarQuant steps 106–109, FLOPs path, gap analysis |
 | `LEARNINGS_design_2026_04_10.md` | Design 04-10 | Constraint discovery, progressive capacity, diagnostics, safety removal |
 | `LEARNINGS_phase5_p16.md` | 2026-04-10 | steps 116, 149, 152, 153, 155 — normalization, diagnostics, structural constraints |
 | `LEARNINGS_phase5_p15i_topology_analysis.md` | 2026-04-11 | K_hh=2 topology graph properties; 12.5% dead-end neurons; out-degree distribution |
 | `LEARNINGS_phase5_p15j_belief_update.md` | 2026-04-11 | Belief framework; steps 216-221 unlearnings; polarizer +1.27pp; topology design KILLED; AH prerequisite confirmed |
-| `PENDING_DISCUSSIONS.md` | Pending discussions | Ideas discussed but not yet scripted |
+| `PENDING_DISCUSSIONS.md` | Pending discussions INDEX | TOC for part1/part2 split |
+| `PENDING_DISCUSSIONS_part1.md` | Pending pt1 | SCRIPTED entries, steps 87/G4/72/85/60-Redux, Delayed Routing, research-review SCRIPTED/PENDING, step106 |
+| `PENDING_DISCUSSIONS_part2.md` | Pending pt2 | Gemma4/PolarQuant (step107–109), gap analysis (step99–101), step163 KD, Resolved |
 | `LEARNINGS_arch.md` | Architecture notes | Structural decisions |
 | `LEARNINGS_research.md` | Research directions | Literature, external ideas |
 | `LEARNINGS_sparse_attention_*.md` | Sparse attention research | External references |
+| `HISTORICAL_SPECS.md` | Phase 1-4 archival specs | Data pipeline UAT, Phase 2 baselines, Phase 3 rejected approaches, Phase 4 wave/phasor decisions |
+| `LEARNINGS_ops.md` | Operations reference | MPS gotchas, training stability, perf benchmarks, known script bugs, smoke-test protocol |
 
 ## Other Index Files
 
 | File | Purpose |
 |---|---|
-| `EXPERIMENT_QUEUE.md` | Live prioritized queue with status, configs, launch order |
+| `EXPERIMENT_QUEUE.md` | Live prioritized queue — RUNNING + QUEUED only |
+| `EXPERIMENT_QUEUE_history.md` | Historical DONE/KILLED entries P0–P1 |
+| `EXPERIMENT_QUEUE_history_part2.md` | Historical DONE/KILLED entries P1–P3, Completed Experiments |
 | `EXPERIMENT_QUEUE_CRITICAL_FINDINGS.md` | All confirmed findings and dead ends (extracted) |
 | `EXPERIMENT_REPORT.md` | Comprehensive experiment report |
-| `PENDING_DISCUSSIONS.md` | Design ideas not yet scripted |
+| `PENDING_DISCUSSIONS.md` | Design ideas not yet scripted (INDEX) |
 | `RESEARCH_routing_mechanisms.md` | Literature survey on routing mechanisms |
 | `paper/README.md` | Paper materials index |
+| `paper/MANUSCRIPT_DRAFT.md` | Manuscript INDEX | TOC for sec1–sec4 split |
+| `paper/MANUSCRIPT_DRAFT_sec1_abstract_intro_related.md` | Manuscript sec1 | Abstract, Introduction, Related Work (lines 1–214) |
+| `paper/MANUSCRIPT_DRAFT_sec2_arch_experiments_findings.md` | Manuscript sec2 | Architecture, Experimental Setup, Key Findings (lines 215–415) |
+| `paper/MANUSCRIPT_DRAFT_sec3_efficiency_discussion.md` | Manuscript sec3 | Efficiency Frontier, Discussion, Baselines, Future Work (lines 416–524) |
+| `paper/MANUSCRIPT_DRAFT_sec4_appendices.md` | Manuscript sec4 | Appendices: Dead Ends, Hyperparams, N-Scaling Detail (lines 525–645) |
+| `paper/findings_log.md` | Findings log INDEX | TOC for part1/part2 split |
+| `paper/findings_log_part1.md` | Findings log pt1 | 2026-04-04 through 2026-04-14 (bench_step811) |
+| `paper/findings_log_part2.md` | Findings log pt2 | 2026-04-14 (step260+) through 2026-04-15 |
 
 ## Confirmed Laws
 
@@ -105,6 +130,14 @@
 | Polarizer routing is first dynamic win | +1.91pp over-polarizer α=1.5, monotonic alpha trend (step217b) | — |
 | Skip connections actively rejected | Network learns skip gate=0.0 (step226) | — |
 | D=16 ceiling confirmed at 97.17% | N=4096 and N=8192 both converge to 97.17% (step205/209) | [[n_scaling]] |
+| ΔW projection mechanism is specifically load-bearing | random direction = chance (step708); receiver-only = weak; ΔW=W[recv]−W[send] = +2.11pp | [[delta_w]] |
+| ΔW proj headroom curve non-monotone, peak at N=128 | N=64(+17pp) < N=128(+24pp) > N=256(+20pp) > N=512(+12) > N=1024(+4.7) > N=2048(+1.6); HURTS at N=4096 | [[delta_w]] |
+| ΔW proj vs rot crossover at N=1024→2048 | proj dominates ≤1024; tie at 2048; rot marginal at 4096. Proj 3× cheaper (~2D vs ~6D MACs/edge) | [[delta_w]] |
+| Sequential K_iter is load-bearing (not unrollable) | multi-hop precompute (step700) and parallel branches (step701) both killed (−3 to −34pp) | [[k_iter]] |
+| W_pos learned geometry is the primary accuracy source | random W_pos (step401) = 10.04% chance; learned = 95.52%. Delta = 81pp | [[antihebbian]] |
+| K_iter annealing/distillation/warm-transfer all KILLED at efficiency config | steps 610/611/612 — K=5 sequential passes are architecturally necessary | [[k_iter]] |
+| SGNNET is at 0.75% of VGG16 FC true MACs (ncu-validated) | step800 — paper must use "message-passing MACs" (0.98M) vs "total MACs" (1.85M); VGG FC = 247M | — |
+| torch.compile gives 4.7× training speedup over VGG FC on 5060ti | step500 — V0 eager 2.6% GPU util → V1 compiled 99.6% (compute-bound). bf16+scaler = 4.4× SLOWER (step801) | — |
 
 ## Dead Ends (Do Not Re-Propose)
 
@@ -140,11 +173,30 @@
 | Skip connections across K_iter | −10 to −14pp; network learns gate=0.0 | step226 |
 | Compound N=1024 winners at N=2048 | twopop −1.81pp, curriculum −58pp, α=1.05 neutral | step216 |
 | D=8 regardless of K_hh | D=8 K_hh=8 = 90.24%, D=8 K_hh=16 = 89.22%; D wall | step214/215 |
+| ConnGA evolutionary topology | ConnGA_rand=68.36% (−1.81pp), deg=70.32% (neutral); static small-world already optimal | step709 |
+| Multi-hop gather (K_iter parallelization) | All variants −3.5 to −13pp AND slower; flattening loses nonlinearity stacking | step700 |
+| Parallel routing branches (K_iter parallelization) | All −7 to −34pp; learned branch weights stayed uniform, no differentiation | step701 |
+| Per-sample adaptive K_iter at inference | All thresholds catastrophic (−80pp); logit cosine_sim is NOT a convergence proxy | step703 |
+| ΔW projection at N=4096 (ceiling) | −0.74pp CUDA, −0.89pp MPS — N-specific, breaks down near D=16 ceiling | step704 |
+| Activation retention (static/decay/norm_cons/reinject) | All variants hurt (−0.10 to −18.67pp); Ref wins | step306 |
+| Equilibrium propagation | β=0.1/0.5 collapse to chance 10%; EP incompatible with L2-normalized routing | step225 |
+| Gradient-safe θ parameterizations | cos_shifted/phase_delta/triangle all 62–75%; θ-edge direction fully killed | step238 |
+| K_iter annealing at efficiency config | All 5 schedules hurt −0.84 to −6.50pp; K=5 is load-bearing at N=2048 | step610 |
+| K_iter warm-transfer (teacher→student) | All hurt; higher teacher K → worse student (C_8to5=−0.74pp, D_16to5=−6.06pp) | step611 |
+| K_iter distillation at efficiency config | All hurt −3.36 to −4.76pp at K=3 vs K=5 Ref | step612 |
+| bf16 training with GradScaler | 4.4× SLOWER than fp32 on 5060ti; GradScaler per-step overhead dominates | step801 |
+| CIFAR-10 on raw pixels (end-to-end SGNNET) | Linear=37.94% > N2048=32.09% > N4096=33.32%; SGNNET needs feature-extracted inputs | step400 |
+| RCM index reordering on CUDA | 0.993× speedup = no-op; only helps when memory-BW-bound (we're compute-bound post-compile) | step520 |
+| CUDA graph make_graphed_callables (fwd+bwd) | `cudaErrorStreamCaptureInvalidated` on int64 gather indices; needs Triton kernel (step530) | step803 |
 
-## Active Research Directions (2026-04-13)
+## Active Research Directions (2026-04-14)
 
-1. **Mechanistic understanding**: What does hidden W_pos actually encode? θ-edge precision ablation (step233 running) tests whether AH is just learned edge weights. Step231 diagnostics pending.
-2. **Polarizer routing**: Over-polarizer α=1.5 = +1.91pp (step217b confirmed Tier-1). Monotonic alpha trend — test α=2.0+. First successful input-dependent routing after 9 failures.
-3. **Architecture simplification**: If θ-edge matches AH, replace 32K hidden W_pos + cosine computation with 4K scalar angles. 8× param reduction in hidden routing.
-4. **N-scaling continuation**: D=16 ceiling at 97.17%. N=16384 @ K_iter=3 viable (94.78%). K_hh=3 @ N=8192 at 95.44% (needs Tier-2).
-5. **Paper track**: 7 core claims, 11+ novel findings logged. MLP baselines broken (step222 trainer bug). CIFAR-10 cross-dataset pending (step223).
+**Priority shift 2026-04-14:** User directed paper 1 soft-conclusion to take priority. Exploration paused; paper-blocking experiments preferred.
+
+1. **PAPER 1 PACKAGING (top priority)**: manuscript soft-conclusion. Paper framing: "SGNNET as a general-purpose classification head replacing fully-connected layers for pre-trained feature extractors, validated across vision AND language domains." See `paper/MANUSCRIPT_DRAFT.md`, `paper/claims.md`.
+2. **Cross-domain validation (paper-blocking)**: language experiment needed. SGNNET on transformer CLS embeddings. Model choice pending (DistilBERT 768-dim vs BERT-tiny 128-dim). Task choice pending (SST-2 vs AG News).
+3. **Baselines at matched FLOPs (paper-nice-to-have)**: step401 has matched-params baselines (MLP_64=97.20% at 24× more params). Matched-FLOPs comparison computable analytically.
+4. **ΔW mechanism (complete)**: headroom curve N=64–4096 done; proj vs rot crossover complete. See [[delta_w]].
+5. **CUDA optimization (on-hold)**: step530 Triton fused kernel deferred — 4.7× from torch.compile alone already exceeds paper efficiency claim.
+6. **K_iter reduction (CLOSED)**: all paths killed (annealing, warm-transfer, distillation, multi-hop, parallel branches, adaptive inference). K=5 is architecturally necessary at efficiency config.
+7. **Running now**: step729 N=4096 T1 rot vs proj on 5060ti (ceiling verdict — last exploration experiment before paper packaging).

@@ -53,6 +53,7 @@ parser.add_argument("--epochs", type=int, default=75,
                     help="Training epochs (default 75; use 20 for Tier-0 scout)")
 parser.add_argument("--configs", default="",
                     help="Comma-separated config keys to run (e.g. A,D). Empty = run all.")
+parser.add_argument("--full_data", action="store_true", help="Use 100 percent data (Tier-2)")
 args   = parser.parse_args()
 DEVICE = (torch.device("mps") if torch.backends.mps.is_available()
           else torch.device("cpu")) if args.device == "auto" else torch.device(args.device)
@@ -130,7 +131,7 @@ class SGNNET_AH_InputProj(nn.Module):
 
         # --- Routing loop (identical to SGNNET_AntiHebbian) ---
         theta_pos = self.m.theta.abs().unsqueeze(0).unsqueeze(-1)
-        W_ph_norm = F.normalize(self.m.W_phase, dim=-1)
+        # W_ph_norm removed — unused dead code; W_phase is None when alpha_turing=0
         conn_hh   = self.m.base.conn_hh
 
         # Pre-compute static AH suppression (wpos variant)
@@ -227,11 +228,14 @@ def get_loaders():
     global _loaders
     if _loaders is None:
         tr_full, va = make_loaders(ROOT / DATA, batch_size=BATCH, seed=SEED)
-        n = len(tr_full.dataset)
-        idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
-        subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
-        tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
-        _loaders = (tr, va)
+        if getattr(args, "full_data", False):
+            _loaders = (tr_full, va)
+        else:
+            n = len(tr_full.dataset)
+            idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
+            subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
+            tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
+            _loaders = (tr, va)
     return _loaders
 
 

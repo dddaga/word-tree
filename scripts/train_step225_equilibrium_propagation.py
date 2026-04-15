@@ -92,8 +92,8 @@ class SGNNETCore(nn.Module):
         # Precompute AH suppression weights (static, W_pos-based)
         W_n = F.normalize(base_sw.W_pos[:N_h], dim=-1)
         pos_sim = (W_n.unsqueeze(1) * W_n[base_sw.conn_hh]).sum(-1)
-        self._supp_w = (1.0 - alpha_ahebb * pos_sim.clamp(min=0)
-                        ).unsqueeze(0).unsqueeze(-1)  # [1, N, K_hh, 1]
+        self.register_buffer('_supp_w', (1.0 - alpha_ahebb * pos_sim.clamp(min=0)
+                        ).unsqueeze(0).unsqueeze(-1).detach())  # [1, N, K_hh, 1]
 
     @property
     def W_pos(self):   return self.base_sw.W_pos
@@ -245,9 +245,8 @@ def _make_base_resonant():
     base = SGNNET_SmallWorld(N_hidden=N, N_out=N_OUT, D=D, N_in=N_IN,
                               K_in=K_IN, K_iter=K_ITER, K_local=K_l, K_random=K_r,
                               n_groups=ng, norm_mode="l2", encoding_mode="fourier")
-    resonant = SGNNET_Resonant(base, K_phase=8, alpha_reflect=ALPHA_REFLECT,
-                               alpha_turing=ALPHA_TURING, beam_size=16, geo_gamma=0.5,
-                               mode="dynamic_z_geo", resonance_threshold=0.0)
+    resonant = SGNNET_Resonant(base=base, alpha_reflect=ALPHA_REFLECT,
+                               alpha_turing=ALPHA_TURING, mode="dynamic_z_geo")
     return base, resonant
 
 
@@ -273,7 +272,7 @@ def main():
     print(f"Running: {run_keys}")
     print(f"{'='*70}")
 
-    tr_full, va = make_loaders(ROOT / DATA, batch_size=BATCH, seed=SEED)
+    tr_full, va = make_loaders(str(ROOT / DATA), batch_size=BATCH, seed=SEED)
     n = len(tr_full.dataset)
     idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
     subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())

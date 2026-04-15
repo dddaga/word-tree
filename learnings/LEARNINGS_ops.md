@@ -96,3 +96,67 @@ Only valid for inference — training needs sequential steps for gradient flow t
 Mac Studio 256GB RAM: 22.8GB active, 244GB free (2026-03-29).
 Single model at N=512: ~2-3GB RAM. Can safely run 5-6 parallel tmux sessions.
 Data (store.h5): 1.34GB cached in RAM per process. Shared by OS page cache if same file.
+
+---
+
+## Known Failure Modes from GSD archive
+
+### step222: MLP baseline trainer incompatibility
+**Symptom:** MLP baselines broken — trainer not compatible with standard nn.Sequential MLP.
+**Status:** Bug confirmed; CIFAR-10/MLP baselines blocked until fixed.
+**Impact:** paper/baselines_needed.md gap — MLP comparison pending.
+
+### step232: Broken gradient flow
+**Symptom:** ΔW mechanism initial implementation had broken gradient flow; mechanism appeared to fail.
+**Fix:** Gradient flow repaired in step234 — ΔW proj (no AH) = 95.44% (+3.77pp). May replace AH.
+**Lesson:** When a novel mechanism underperforms, verify gradient flow before killing it.
+
+### step66: kwarg bug
+**Symptom:** Script used incorrect kwarg name; silently ran with wrong hyperparameter.
+**Lesson:** Always print config dict at epoch 0 to verify all kwargs land correctly.
+
+### step306 line 204: sum-on-tensors bug
+**Symptom:** `sum()` called on a list of tensors — produces scalar sum not tensor stack.
+**Fix:** Use `torch.stack(...).sum(0)` or explicit loop with tensor accumulator.
+**Lesson:** Python `sum()` on tensor lists silently does scalar accumulation.
+
+---
+
+## Environment Setup
+
+### Python environments
+- Mac Mini: `/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/bin/python3`
+- Mac Studio: `/Users/admin/ml/dhiraj/qwen2_omni/testing/d_env/bin/python3`
+
+### Required env vars (set at top of all experiment scripts)
+```python
+import os
+os.environ.setdefault("PYTORCH_MPS_HIGH_WATERMARK_RATIO", "0.0")
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+```
+
+### Device detection pattern
+```python
+device = "mps" if torch.backends.mps.is_available() else "cpu"
+```
+
+### MPS DataLoader requirements
+- `num_workers=0` — spawn incompatible with MPS on macOS
+- `pin_memory=False` — auto-detect or set explicitly
+
+### PyTorch version gates
+- GradScaler on MPS: requires PyTorch ≥2.3 (MPS inf-detection bug before 2.3)
+- `torch.autocast('mps', ...)`: PyTorch ≥2.0
+- CSR sparse tensors: NOT supported on MPS — use COO or fixed fan-in gather
+
+---
+
+## Script Smoke-Testing Protocol
+
+Before dispatching any new script to Mac Studio:
+1. Run locally for 2 epochs: `d_env/bin/python3 scripts/SCRIPT.py --device cpu`
+2. Verify config dict prints at epoch 0 (all kwargs correct)
+3. Verify loss is finite (not NaN/inf) after epoch 1
+4. Verify checkpoint saves without error
+5. Check no in-place tensor ops on tracked tensors (use `tensor * mask`, not `tensor[mask]`)
+6. Confirm tmux session name is unique: `tmux ls` before launch

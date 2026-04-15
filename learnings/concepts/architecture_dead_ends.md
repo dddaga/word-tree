@@ -49,6 +49,46 @@ Confirmed dead ends for SGNNET. Do not re-propose without new theoretical motiva
 | Load balance loss | step79 | Only +0.21pp; below noise |
 | Signed coupling at D=64 | step49 | cos-sim on S^63 = noise |
 | Dynamic Z-KNN | step31 | Unstable on S^63 per step |
+| Gumbel-Softmax differentiable topology | step230 | All 3 configs KILLED at 20ep T0. Best 48.74% vs ref 91.8% (Δ≈−43pp). Topology entropy stays near uniform (98% of max) — straight-through estimator fails to learn discrete edge structure during training. Decoupled ST-GS (τ_fwd=0.1, τ_bwd=1.0) didn't help. Confirms: simultaneous training + topology learning fails (co-adaptation bug). |
+
+## Dynamic Connectivity at N=512 [CONFIRMED DEAD, steps 511/512/513/514, all 6 variants]
+
+4 experiments, 6 mechanism variants, all fail. Comprehensive closure of the direction at efficiency scale.
+
+| Step | Rule | Protocol | Δ vs Ref_static |
+|------|------|----------|-----------------|
+| 511 | co_act_low destructive | K_hh=2, every 5ep, all-replace | **−3.21pp** |
+| 512-A | co_act_low guarded | K_hh=2, every 15ep, ≤1 swap, δ=0.02 | **−2.34pp** |
+| 512-B | co_act_hi guarded | K_hh=2, every 15ep, ≤1 swap, δ=0.02 | **−2.24pp** |
+| 513-A | co_act_low K_hh=4 | K_hh=4, guarded | **−4.94pp** |
+| 513-B | co_act_hi K_hh=4 | K_hh=4, guarded | **−2.42pp** |
+| 514 | additive K_hh expansion | K_hh 2→3→4→5 non-destructive | **−0.56pp** |
+
+**Root cause:** At N=512 on Imagenette, (a) pairwise activation correlations are at noise level (50% data, 9.5K train), (b) any topology deviation from warmup-learned state disrupts co-adapted W_pos/θ/C_ho, (c) even non-destructive edge addition hurts because readout C_ho is tuned to the original K_hh=2 routing. Static small-world is near-optimal at this scale.
+
+**Design rule:** Do not attempt dynamic connectivity at N≤2048 on Imagenette without a jointly-trained routing policy. Future revisit should (i) use richer data for correlation signal, or (ii) learn the rewiring rule end-to-end instead of hand-coding correlation thresholds.
+
+## Connectivity Genetic Algorithm (ConnGA v2) [CONFIRMED DEAD, steps 740/741, N=512]
+
+**Hypothesis:** Evolutionary search over hidden-layer connectivity (conn_hh) can find better topologies than random small-world initialisation.
+
+**Protocol:** Population=8, 4 generations, 30–40 epochs/child per eval. Three scoring modes tested. Elite carried forward. Weights retrained from scratch for each evaluation.
+
+| Variant | Scoring | best_seen | Ref | Δ | Steps |
+|---------|---------|-----------|-----|---|-------|
+| step740 | softmax (τ=0.5) | 72.18% | 79.11% | **−6.93pp** | step740 |
+| step741 | rank | 76.05% | 77.81% | **−1.76pp** | step741 |
+| step742 | top_k_avg (k=2) | 74.65% | 77.40% | **−2.75pp** | step742 |
+
+**Gen progression step741 (rank):** 74.37 → 76.05 → 74.29 → 74.22. Peaked Gen2, then degraded — no sustained improvement from evolution.
+
+**Root cause (HYPOTHESIS):** Random small-world topology already captures the key property that matters (local structure + random long-range shortcuts). The GA's mutation/crossover on integer edge indices explores a space where most perturbations are neutral or harmful. The fitness landscape is flat near the small-world optimum — random init lands in a wide basin, so evolution provides no gradient signal.
+
+**Supporting evidence from seed variance:** AH-only at N=512 has σ≈0.5pp (see step760). ConnGA best_seen variance across children within one gen is ~2–3pp — much larger than σ. This means 30ep evaluation is noisy relative to true fitness, making selection unreliable.
+
+**All three scoring variants failed (CONFIRMED):** softmax −6.93pp, rank −1.76pp, top_k_avg −2.75pp. No variant found a topology better than random small-world. ConnGA track closed.
+
+**Design rule:** Do not attempt topology search via GA on SGNNET. Random small-world is optimal; no evolutionary topology search has beaten it.
 
 ## See Also
 

@@ -3,7 +3,7 @@
 ## Claim 1: Random sparse graphs are effective feature extractors
 **Status: CONFIRMED (strong)**
 
-SGNNET uses random, fixed input connectivity (K_in=25 out of 25088 pixels per neuron) and random small-world hidden connectivity (K_hh=4). No learned edge weights. Achieves 97.86% on FashionMNIST.
+SGNNET uses random, fixed input connectivity (K_in=25 out of 25088 pixels per neuron) and random small-world hidden connectivity (K_hh=4). No learned edge weights. Achieves 97.86% on Imagenette.
 
 Evidence:
 - step89-A: 97.86% accuracy, N=4096, D=64, 529K params, 150ep full data
@@ -86,7 +86,7 @@ Evidence: step131 Tier-1, N=1024, clean 4-config ablation (Ref, A-only, B-only, 
 Current: 38.8M FLOPs (31.4% of VGG16 FC). Target: ≤6.18M (5%).
 step140 (N×K tradeoff) running now. Need to demonstrate competitive accuracy at ≤5% FLOPs.
 
-### Generalization beyond FashionMNIST
+### Generalization beyond Imagenette
 **Status: NOT STARTED**
 
 Critical for publication. Need at least:
@@ -106,3 +106,70 @@ Need head-to-head comparisons:
 **Status: HYPOTHESIS ONLY**
 
 Core hypothesis: physical data has compact constraint structure → random projections sample it → iterative routing discovers it. This needs formalization or at least empirical validation beyond one dataset.
+
+---
+
+## Claim 7: SGNNET teacher enables MLP student to exceed scratch via knowledge distillation (GLNN)
+**Status: CONFIRMED on 1 dataset/model — NEEDS VALIDATION across datasets and model scales**
+
+### Confirmed evidence
+- step603 (B2 GLNN, Imagenette, MLP_37 student, T=2 λ=0.5, 150ep): student=**97.81%** vs scratch=97.71% (+0.10pp, STRONG condition met)
+- Interpretation: SGNNET routing discovers structure expressible by a static MLP — teacher's soft targets encode routing geometry that the student can absorb
+
+### What "GLNN distillation generalises" would mean for the paper
+If the teacher→student gain appears across datasets and student model sizes, it supports the claim that SGNNET extracts genuinely transferable representations, not just task-specific shortcuts on one benchmark.
+
+### Validation plan (QUEUED — launch after CIFAR-10 results confirm cross-dataset generalization)
+
+| Experiment | Teacher | Student | Dataset | Status |
+|---|---|---|---|---|
+| step603 | SGNNET ΔW-proj K=5 | MLP_37 | Imagenette | **DONE** +0.10pp STRONG |
+| step620 | SGNNET ΔW-proj K=5 | MLP_37 | CIFAR-10 | TODO — needs step401b to complete first |
+| step621 | SGNNET ΔW-proj K=5 | MLP_h3 (matched params) | Imagenette | TODO — tests whether gain holds at tiny student |
+| step622 | SGNNET ΔW-proj K=5 | MLP_256 | CIFAR-100 | TODO — needs CIFAR-100 to converge for SGNNET first |
+
+### Acceptance criteria
+- **STRONG across datasets**: gain appears on CIFAR-10 and CIFAR-100 → paper Section 4 claim
+- **MEDIUM**: gain on Imagenette only → footnote, not main claim
+- **KILLED**: student on CIFAR-10 below scratch → remove claim, keep as Imagenette-specific finding
+
+### Note on mechanism
+Low temperature (T=2) optimal — high T blurs soft targets, loses routing signal. This is a diagnostic: if T=2 wins consistently, it means SGNNET's soft targets encode sharp near-certain routing decisions, not diffuse probabilities.
+
+---
+
+## Claim 8: Anti-Hebbian routing signal on S^{D-1} is a novel architectural primitive
+**Status: NOVEL (literature search 2026-04-15, confirmed no prior art)**
+
+### What SGNNET does
+- W_pos[i], W_pos[j] are unit-norm embeddings on S^{D-1}
+- After co-activation, W_pos[i] and W_pos[j] are pushed APART (anti-Hebbian repulsion)
+- ΔW = W_pos[i] − W_pos[j] is used as a live routing signal encoding geometric displacement
+- Trained end-to-end in supervised classification
+
+### Prior art coverage (does NOT overlap with SGNNET's mechanism)
+
+| Paper | What it does | Gap |
+|-------|-------------|-----|
+| Földiák 1990 | Anti-Hebbian lateral inhibition for sparse codes | Unsupervised; no routing; no sphere |
+| Pehlevan & Chklovskii 2015/2018 | H/aH from similarity matching for PCA/ICA | Unsupervised; no GNN; no routing signal |
+| Liu et al. NeurIPS 2017 | Deep Hyperspherical Learning, geodesic conv | No anti-Hebbian; no routing |
+| Sabour et al. 2017 (Capsules) | Iterative routing-by-AGREEMENT via cosine sim | Hebbian-like (route TO agreement), not repulsion; no ΔW |
+| HyperGRL arXiv 2512.24062 | Repulsion on S^{D-1} as regularizer in GNN | Repulsion is regularizer, NOT routing signal; no ΔW; no plasticity |
+
+### Novelty verdict
+**Claim (a): Anti-Hebbian learning in GNN routing — NOVEL.** No paper combines anti-Hebbian plasticity with graph routing.
+
+**Claim (b): ΔW as geometric routing signal on S^{D-1} — NOVEL.** No paper uses the displacement vector between sphere-embedded nodes to gate routing. Capsules use scalar cosine; HyperGRL uses scalar potentials.
+
+**Key inversion:** Prior routing (capsules) routes TO nodes you agree with (Hebbian attraction). SGNNET uses repulsion to encode geometric displacement, then routes via that displacement — a mechanistic inversion with no prior art.
+
+### Related work positioning
+"While prior work uses anti-Hebbian rules for unsupervised decorrelation (Földiák 1990, Pehlevan 2015) and hyperspherical embeddings for regularization (Liu et al. 2017, HyperGRL 2025), SGNNET introduces the first use of anti-Hebbian repulsion dynamics as a supervised routing signal in a graph network — specifically, ΔW = W_pos[i] − W_pos[j] on S^{D-1} encodes live geometric displacement and gates sparse routing, replacing fixed or similarity-attracted aggregation."
+
+### Key references
+1. Földiák 1990 — sparse anti-Hebbian coding. Biological Cybernetics.
+2. Pehlevan & Chklovskii 2015 — H/aH from similarity matching. Neural Computation.
+3. Liu et al. 2017 — Deep Hyperspherical Learning. NeurIPS.
+4. Sabour, Frosst & Hinton 2017 — Dynamic Routing Between Capsules. NeurIPS.
+5. arXiv 2512.24062 (Dec 2025) — Hyperspherical Graph RL. Most recent intersection of S^{D-1} + GNN + repulsion.

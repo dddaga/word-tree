@@ -1,0 +1,88 @@
+
+======================================================================
+Step 714 — ΔW proj N=512 Tier-2 (150ep 100% data, paper-ready)
+N=512 FLOPs=0.246M (25% of old 0.98M record)  Device=cpu
+Tier-1: Ref=76.38% A_proj=89.20% +12.82pp  |  N=1024 T2: A_proj=95.18%@0.49M
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=9469  Val=3925
+
+──────────────────────────────────────────────────
+Ref
+──────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=2.3473  task=2.3473  safety=0.0000  top1=0.4036  lr=2.36e-03
+  ep 10  val=0.6627
+  e 10  loss=1.2744  task=1.2744  safety=0.0000  top1=0.6627  lr=2.36e-03
+  ep 20  val=0.7332
+  e 20  loss=1.1079  task=1.1079  safety=0.0000  top1=0.7332  lr=2.36e-03
+  ep 30  val=0.7027
+  e 30  loss=1.0329  task=1.0329  safety=0.0000  top1=0.7027  lr=2.36e-03
+  ep 40  val=0.7814
+  e 40  loss=0.9913  task=0.9913  safety=0.0000  top1=0.7814  lr=2.36e-03
+  ep 50  val=0.7682
+  e 50  loss=0.9667  task=0.9667  safety=0.0000  top1=0.7682  lr=2.36e-03
+  ep 60  val=0.7577
+  e 60  loss=0.9458  task=0.9458  safety=0.0000  top1=0.7577  lr=2.36e-03
+  ep 70  val=0.7725
+  e 70  loss=0.9292  task=0.9292  safety=0.0000  top1=0.7725  lr=2.36e-03
+  ep 80  val=0.7628
+  e 80  loss=0.9205  task=0.9205  safety=0.0000  top1=0.7628  lr=2.36e-03
+  ep 90  val=0.7985
+  e 90  loss=0.9040  task=0.9040  safety=0.0000  top1=0.7985  lr=1.18e-03
+  ep100  val=0.7969
+  e100  loss=0.9008  task=0.9008  safety=0.0000  top1=0.7969  lr=1.18e-03
+  ep110  val=0.8018
+  e110  loss=0.8914  task=0.8914  safety=0.0000  top1=0.8018  lr=5.91e-04
+  ep120  val=0.8094
+  e120  loss=0.8907  task=0.8907  safety=0.0000  top1=0.8094  lr=5.91e-04
+  ep130  val=0.7982
+  e130  loss=0.8910  task=0.8910  safety=0.0000  top1=0.7982  lr=5.91e-04
+  ep140  val=0.8061
+  e140  loss=0.8835  task=0.8835  safety=0.0000  top1=0.8061  lr=2.96e-04
+  ep150  val=0.8064
+  e150  loss=0.8816  task=0.8816  safety=0.0000  top1=0.8064  lr=1.48e-04
+  → best=0.8094 @ ep120
+
+──────────────────────────────────────────────────
+A_proj
+──────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=1.7671  task=1.7671  safety=0.0000  top1=0.6815  lr=2.36e-03
+  ep 10  val=0.8685
+  e 10  loss=0.4350  task=0.4350  safety=0.0000  top1=0.8685  lr=2.36e-03
+  ep 20  val=0.8797
+  e 20  loss=0.3225  task=0.3225  safety=0.0000  top1=0.8797  lr=2.36e-03
+  ep 30  val=0.8920
+  e 30  loss=0.2695  task=0.2695  safety=0.0000  top1=0.8920  lr=2.36e-03
+  ep 40  val=0.8961
+  e 40  loss=0.2495  task=0.2495  safety=0.0000  top1=0.8961  lr=2.36e-03
+  ep 50  val=0.8994
+  e 50  loss=0.2355  task=0.2355  safety=0.0000  top1=0.8994  lr=2.36e-03
+  ep 60  val=0.9080
+  e 60  loss=0.2148  task=0.2148  safety=0.0000  top1=0.9080  lr=2.36e-03
+  ep 70  val=0.9019
+  e 70  loss=0.2061  task=0.2061  safety=0.0000  top1=0.9019  lr=2.36e-03
+  ep 80  val=0.9111
+  e 80  loss=0.1986  task=0.1986  safety=0.0000  top1=0.9111  lr=2.36e-03
+  ep 90  val=0.9093
+  e 90  loss=0.1924  task=0.1924  safety=0.0000  top1=0.9093  lr=2.36e-03
+  ep100  val=0.9085
+  e100  loss=0.1824  task=0.1824  safety=0.0000  top1=0.9085  lr=2.36e-03
+  ep110  val=0.9141
+  e110  loss=0.1830  task=0.1830  safety=0.0000  top1=0.9141  lr=2.36e-03
+  ep120  val=0.9144
+  e120  loss=0.1751  task=0.1751  safety=0.0000  top1=0.9144  lr=2.36e-03
+  ep130  val=0.9118
+  e130  loss=0.1741  task=0.1741  safety=0.0000  top1=0.9118  lr=2.36e-03
+  ep140  val=0.9159
+  e140  loss=0.1637  task=0.1637  safety=0.0000  top1=0.9159  lr=2.36e-03
+  ep150  val=0.9113
+  e150  loss=0.1644  task=0.1644  safety=0.0000  top1=0.9113  lr=2.36e-03
+  → best=0.9208 @ ep129
+
+======================================================================
+Ref=0.8094  A_proj=0.9208  Δ=+0.1114
+  NEW EFFICIENCY RECORD @ 0.246M FLOPs
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step714_delta_n512_tier2.json

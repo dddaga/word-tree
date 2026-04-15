@@ -125,7 +125,7 @@ def test_h1_class_specificity(model, val_loader, device, top_k=50):
     class_activations = defaultdict(list)  # class -> list of [N] activation magnitudes
 
     with torch.no_grad():
-        for x, y_soft in val_loader:
+        for x, y_soft, y_hard in val_loader:
             x = x.to(device)
             labels = y_soft.argmax(dim=-1)
             _ = model(x)
@@ -201,7 +201,7 @@ def test_h3_iterative_refinement(model, val_loader, device):
     with torch.no_grad():
         W_out = F.normalize(model.W_pos[N:], dim=-1)  # [10, D]
 
-        for x, y_soft in val_loader:
+        for x, y_soft, y_hard in val_loader:
             x = x.to(device)
             labels = y_soft.argmax(dim=-1)
             _ = model(x)
@@ -233,7 +233,7 @@ def test_h4_input_dependence(model, val_loader, device, top_k=100):
     class_samples = {}  # class -> Z_final for one batch
 
     with torch.no_grad():
-        for x, y_soft in val_loader:
+        for x, y_soft, y_hard in val_loader:
             x = x.to(device)
             labels = y_soft.argmax(dim=-1)
             _ = model(x)

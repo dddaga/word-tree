@@ -1,0 +1,15 @@
+{
+  "step": "604",
+  "role": "teacher",
+  "K_iter": 5,
+  "N": 2048,
+  "D": 16,
+  "K_hh": 2,
+  "n_params": 34976,
+  "top1_best": 0.9184713363647461,
+  "top1_last": 0.9184713363647461,
+  "best_epoch": 3,
+  "elapsed_train_s": 54.231998920440674,
+  "seed": 42,
+  "cache_path": null
+}

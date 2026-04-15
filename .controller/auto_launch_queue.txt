@@ -1,0 +1,66 @@
+# Auto-launch order — pending experiments to fire when slots free.
+# Read by next-tick monitor agent; one experiment per line.
+# Format: <slot_pref|any> <script> <args...>
+# Comments (#) and blank lines ignored. Done items get "# DONE" prefix.
+
+# === step601: 10x complexity test (USER REQUEST) ===
+# Extract CIFAR-100 VGG16 features first (one-time, ~30-60min MPS or ~2hr CPU).
+# Then 6-way comparison: MLP_{37,64,128,256} vs SGNNET_AH vs SGNNET_DeltaProj at 100 classes.
+# Tests hypothesis: MLP_37 collapses at higher class count; SGNNET routing rescues.
+# DONE any            scripts/extract_cifar100_vgg16_features.py  (launched mini_mps 2026-04-15)
+# After CIFAR-100 features extracted, training comparison:
+# DONE any            scripts/train_step601_complexity_test.py --epochs 75  (launched studio_mps 2026-04-15)
+
+# === Multi-seed paper validations — PAUSED per user directive (multi-seed only after final winners) ===
+# DONE any            scripts/train_step235_delta_rotation_fulldata.py --seed 43 --epochs 75  (launched mini_cpu 2026-04-15)
+# DONE any            scripts/train_step235_delta_rotation_fulldata.py --seed 44 --epochs 75  (launched mini_mps 2026-04-15)
+# DONE any            scripts/train_step268_dwproj_aug_k4.py --seed 43 --epochs 75  (launched studio_mps 2026-04-15)
+# PAUSED any            scripts/train_step268_dwproj_aug_k4.py --seed 44 --epochs 75
+# PAUSED 5060ti_cuda    scripts/train_step266_all_winners_n4096.py --seed 43 --epochs 75
+# PAUSED 5060ti_cuda    scripts/train_step266_all_winners_n4096.py --seed 44 --epochs 75
+
+# === step405 with seed differentiation — PAUSED per user directive (multi-seed only after final winners) ===
+# any            scripts/train_step405_sgnnet_sst2.py --phase train --seed 43
+# any            scripts/train_step405_sgnnet_sst2.py --phase train --seed 44
+
+# === step602/603: B2 GLNN distillation (Opus mediation candidate B2) ===
+# Step 602: Train SGNNET ΔW-rotation teacher (75ep, full data) + cache logits at T=4
+#   → writes data/teacher_logits_step602.h5 then results/train_step602_b2_glnn_teacher_*.json
+# Step 603: Train MLP_37 student with KL+CE loss, sweep 5 (T,λ) configs (150ep each)
+#   → requires step602 to complete first (logits file must exist)
+#   Win condition STRONG: student ≥ teacher AND student > 97.71% (scratch MLP_37)
+#   Win condition MEDIUM: student ≥ teacher (matching teacher)
+#   Win condition WEAK  : student ≥ 97.71% (no distillation gain over scratch)
+#   Budget: ~30-45min teacher (MPS/CUDA) + ~15-30min student (5 configs, tiny model)
+# DONE 5060ti_cuda  scripts/train_step602_b2_glnn_teacher.py --epochs 75  (launched 2026-04-15, RUNNING)
+# DONE 5060ti_cuda  scripts/train_step603_b2_glnn_student.py --epochs 150  (RUNNING 2026-04-15; T2_lam05 STRONG=0.9781)
+
+# === step604/605: B1 Consistency-DEQ distillation (Opus mediation candidate B1) ===
+# Step 604: Train K=5 ΔW-proj teacher (75ep, full data) + cache Z_final+logits
+#   → writes data/teacher_trajectory_step604.h5 (~1.75 GB fp32, or ~0.87 GB fp16)
+#   → results/train_step604_b1_consistency_teacher_seed42__<slot>.json
+#   Note: add --cache_fp16 to halve storage if disk is tight
+# Step 605: Sweep 6 (α,β,T) configs of K=1 student with consistency-DEQ loss
+#   → requires step604 cache to exist first
+#   Win condition: K=1 student ≥ K=5 teacher top1 at 5× fewer routing steps
+#   VIABLE threshold: within 1pp of teacher; EXPLORE: 1-3pp gap; ABANDON: >3pp
+#   Budget: ~45min teacher (CUDA/MPS) + ~2h student 6-config sweep (CUDA/MPS)
+# DONE 5060ti_cuda  scripts/train_step604_b1_consistency_teacher.py --epochs 75  (RUNNING 2026-04-15, ep10=94.65%)
+any            scripts/train_step605_b1_consistency_student.py --epochs 75
+
+# === step610: low-rank MLP sweep (highest-EV from FC-fission meditation) ===
+# T0 20ep 50% data. 7 configs: LR_pure/relu × r=8,16,32 + MLP_37_ref.
+# STRONG: LR_relu_r16 ≥ 97.71% → feature space rank ≤16, reframes paper.
+# DONE any            scripts/train_step610_lowrank_mlp.py --epochs 20  (launched studio_mps 2026-04-15)
+
+# === step612: group-level ΔW granularity probe (decisive MoE↔SGNNET test) ===
+# T0 20ep 50% data. Ref (per-neuron) vs GroupDW (per-group, 6.8× ΔW savings).
+# STRONG: GroupDW within 0.5pp → group routing suffices.
+# ABANDON: GroupDW >3pp below → per-neuron routing confirmed real.
+# DONE 5060ti_cuda  scripts/train_step612_group_dw.py --epochs 20  (ABANDON: GroupDW=21.73% vs Ref=93.91%, −72pp, per-neuron routing confirmed)
+
+# === DONE this session ===
+# DONE 5060ti_cuda    scripts/bench_step832_pyg_scatter.py     (V_ref_c=0.284ms, NOT a win vs PyTorch 0.280ms)
+# DONE 5060ti_cuda    scripts/train_step522_muon_optimizer.py  (AdamW=0.9569 DONE; Muon CRASHED — AssertionError in muon.py:67 matrix_params, needs fix)
+# DONE any            scripts/train_step405_sgnnet_sst2.py --phase extract
+# DONE any            scripts/train_step405_sgnnet_sst2.py --phase train  (4× duplicate seed=42 runs — known)

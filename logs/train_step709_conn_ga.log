@@ -1,0 +1,377 @@
+
+======================================================================
+Step 709 — Evolutionary Connectivity GA
+N=512 D=16 K_hh=2 K_iter=5 | 5gen × 10cand × 10ep + 20ep eval
+FLOPs=245,760 (~0.246M)  Device=mps
+Running: ['Ref', 'ConnGA_rand', 'ConnGA_deg']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=4734  Val=3925
+
+────────────────────────────────────────────────────────────
+Config Ref: static small-world topology, 20ep
+────────────────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=2.7495  task=2.7495  safety=0.0000  top1=0.2280  lr=2.36e-03
+  e 10  loss=1.4432  task=1.4432  safety=0.0000  top1=0.6387  lr=2.36e-03
+  e 20  loss=1.2836  task=1.2836  safety=0.0000  top1=0.6354  lr=2.36e-03
+  → Ref acc=0.7017  (29s)
+
+============================================================
+ConnGA [ConnGA_rand]  explore=1.0  5gen × 10cand × 10ep
+============================================================
+
+  Gen 1/5:
+  e  1  loss=2.6114  task=2.6114  safety=0.0000  top1=0.1620  lr=2.36e-03
+  e 10  loss=1.4127  task=1.4127  safety=0.0000  top1=0.6250  lr=2.36e-03
+    cand  1: acc=0.6339
+  e  1  loss=2.7441  task=2.7441  safety=0.0000  top1=0.2423  lr=2.36e-03
+  e 10  loss=1.4179  task=1.4179  safety=0.0000  top1=0.6448  lr=2.36e-03
+    cand  2: acc=0.6448
+  e  1  loss=3.2679  task=3.2679  safety=0.0000  top1=0.1641  lr=2.36e-03
+  e 10  loss=1.4495  task=1.4495  safety=0.0000  top1=0.6405  lr=2.36e-03
+    cand  3: acc=0.6451
+  e  1  loss=3.0123  task=3.0123  safety=0.0000  top1=0.2051  lr=2.36e-03
+  e 10  loss=1.4573  task=1.4573  safety=0.0000  top1=0.6456  lr=2.36e-03
+    cand  4: acc=0.6456
+  e  1  loss=2.6406  task=2.6406  safety=0.0000  top1=0.2405  lr=2.36e-03
+  e 10  loss=1.4127  task=1.4127  safety=0.0000  top1=0.6555  lr=2.36e-03
+    cand  5: acc=0.6624
+  e  1  loss=2.5488  task=2.5488  safety=0.0000  top1=0.2718  lr=2.36e-03
+  e 10  loss=1.4098  task=1.4098  safety=0.0000  top1=0.6479  lr=2.36e-03
+    cand  6: acc=0.6604
+  e  1  loss=2.5932  task=2.5932  safety=0.0000  top1=0.2741  lr=2.36e-03
+  e 10  loss=1.4185  task=1.4185  safety=0.0000  top1=0.6283  lr=2.36e-03
+    cand  7: acc=0.6436
+  e  1  loss=2.7926  task=2.7926  safety=0.0000  top1=0.2324  lr=2.36e-03
+  e 10  loss=1.3944  task=1.3944  safety=0.0000  top1=0.6433  lr=2.36e-03
+    cand  8: acc=0.6433
+  e  1  loss=2.6236  task=2.6236  safety=0.0000  top1=0.2665  lr=2.36e-03
+  e 10  loss=1.4228  task=1.4228  safety=0.0000  top1=0.6395  lr=2.36e-03
+    cand  9: acc=0.6395
+  e  1  loss=2.3714  task=2.3714  safety=0.0000  top1=0.3019  lr=2.36e-03
+  e 10  loss=1.3805  task=1.3805  safety=0.0000  top1=0.6290  lr=2.36e-03
+    cand 10: acc=0.6290
+  Gen 1 summary: mean=0.6448 max=0.6624
+
+  Gen 2/5:
+  e  1  loss=3.8509  task=3.8509  safety=0.0000  top1=0.1057  lr=2.36e-03
+  e 10  loss=1.5071  task=1.5071  safety=0.0000  top1=0.5875  lr=2.36e-03
+    cand  1: acc=0.6054
+  e  1  loss=2.5638  task=2.5638  safety=0.0000  top1=0.3075  lr=2.36e-03
+  e 10  loss=1.3717  task=1.3717  safety=0.0000  top1=0.6721  lr=2.36e-03
+    cand  2: acc=0.6721
+  e  1  loss=2.6849  task=2.6849  safety=0.0000  top1=0.2968  lr=2.36e-03
+  e 10  loss=1.3262  task=1.3262  safety=0.0000  top1=0.6520  lr=2.36e-03
+    cand  3: acc=0.6520
+  e  1  loss=2.4433  task=2.4433  safety=0.0000  top1=0.3376  lr=2.36e-03
+  e 10  loss=1.3596  task=1.3596  safety=0.0000  top1=0.6298  lr=2.36e-03
+    cand  4: acc=0.6637
+  e  1  loss=3.8768  task=3.8768  safety=0.0000  top1=0.1671  lr=2.36e-03
+  e 10  loss=1.4667  task=1.4667  safety=0.0000  top1=0.6268  lr=2.36e-03
+    cand  5: acc=0.6268
+  e  1  loss=3.0772  task=3.0772  safety=0.0000  top1=0.1890  lr=2.36e-03
+  e 10  loss=1.5328  task=1.5328  safety=0.0000  top1=0.6127  lr=2.36e-03
+    cand  6: acc=0.6127
+  e  1  loss=2.9221  task=2.9221  safety=0.0000  top1=0.2089  lr=2.36e-03
+  e 10  loss=1.4356  task=1.4356  safety=0.0000  top1=0.6234  lr=2.36e-03
+    cand  7: acc=0.6234
+  e  1  loss=2.9096  task=2.9096  safety=0.0000  top1=0.1967  lr=2.36e-03
+  e 10  loss=1.4264  task=1.4264  safety=0.0000  top1=0.6410  lr=2.36e-03
+    cand  8: acc=0.6410
+  e  1  loss=2.7803  task=2.7803  safety=0.0000  top1=0.2380  lr=2.36e-03
+  e 10  loss=1.4237  task=1.4237  safety=0.0000  top1=0.6548  lr=2.36e-03
+    cand  9: acc=0.6548
+  e  1  loss=3.5412  task=3.5412  safety=0.0000  top1=0.1768  lr=2.36e-03
+  e 10  loss=1.4634  task=1.4634  safety=0.0000  top1=0.6066  lr=2.36e-03
+    cand 10: acc=0.6166
+  Gen 2 summary: mean=0.6369 max=0.6721
+
+  Gen 3/5:
+  e  1  loss=3.2891  task=3.2891  safety=0.0000  top1=0.1924  lr=2.36e-03
+  e 10  loss=1.4471  task=1.4471  safety=0.0000  top1=0.6189  lr=2.36e-03
+    cand  1: acc=0.6189
+  e  1  loss=3.0777  task=3.0777  safety=0.0000  top1=0.1893  lr=2.36e-03
+  e 10  loss=1.4888  task=1.4888  safety=0.0000  top1=0.5982  lr=2.36e-03
+    cand  2: acc=0.6237
+  e  1  loss=3.0194  task=3.0194  safety=0.0000  top1=0.2071  lr=2.36e-03
+  e 10  loss=1.4319  task=1.4319  safety=0.0000  top1=0.6487  lr=2.36e-03
+    cand  3: acc=0.6487
+  e  1  loss=3.0560  task=3.0560  safety=0.0000  top1=0.2082  lr=2.36e-03
+  e 10  loss=1.4586  task=1.4586  safety=0.0000  top1=0.6336  lr=2.36e-03
+    cand  4: acc=0.6482
+  e  1  loss=2.2056  task=2.2056  safety=0.0000  top1=0.3485  lr=2.36e-03
+  e 10  loss=1.3609  task=1.3609  safety=0.0000  top1=0.6451  lr=2.36e-03
+    cand  5: acc=0.6451
+  e  1  loss=2.8970  task=2.8970  safety=0.0000  top1=0.1936  lr=2.36e-03
+  e 10  loss=1.4450  task=1.4450  safety=0.0000  top1=0.6130  lr=2.36e-03
+    cand  6: acc=0.6163
+  e  1  loss=3.3831  task=3.3831  safety=0.0000  top1=0.1659  lr=2.36e-03
+  e 10  loss=1.4673  task=1.4673  safety=0.0000  top1=0.6499  lr=2.36e-03
+    cand  7: acc=0.6499
+  e  1  loss=3.4494  task=3.4494  safety=0.0000  top1=0.2028  lr=2.36e-03
+  e 10  loss=1.5184  task=1.5184  safety=0.0000  top1=0.6120  lr=2.36e-03
+    cand  8: acc=0.6120
+  e  1  loss=3.3681  task=3.3681  safety=0.0000  top1=0.1763  lr=2.36e-03
+  e 10  loss=1.4802  task=1.4802  safety=0.0000  top1=0.6168  lr=2.36e-03
+    cand  9: acc=0.6168
+  e  1  loss=2.8582  task=2.8582  safety=0.0000  top1=0.1689  lr=2.36e-03
+  e 10  loss=1.5097  task=1.5097  safety=0.0000  top1=0.6288  lr=2.36e-03
+    cand 10: acc=0.6288
+  Gen 3 summary: mean=0.6308 max=0.6499
+
+  Gen 4/5:
+  e  1  loss=2.6582  task=2.6582  safety=0.0000  top1=0.1977  lr=2.36e-03
+  e 10  loss=1.3980  task=1.3980  safety=0.0000  top1=0.6487  lr=2.36e-03
+    cand  1: acc=0.6487
+  e  1  loss=2.7452  task=2.7452  safety=0.0000  top1=0.2894  lr=2.36e-03
+  e 10  loss=1.3496  task=1.3496  safety=0.0000  top1=0.6915  lr=2.36e-03
+    cand  2: acc=0.6915
+  e  1  loss=2.8013  task=2.8013  safety=0.0000  top1=0.2576  lr=2.36e-03
+  e 10  loss=1.4238  task=1.4238  safety=0.0000  top1=0.6334  lr=2.36e-03
+    cand  3: acc=0.6334
+  e  1  loss=2.7878  task=2.7878  safety=0.0000  top1=0.2683  lr=2.36e-03
+  e 10  loss=1.4328  task=1.4328  safety=0.0000  top1=0.6132  lr=2.36e-03
+    cand  4: acc=0.6132
+  e  1  loss=2.7917  task=2.7917  safety=0.0000  top1=0.2273  lr=2.36e-03
+  e 10  loss=1.3978  task=1.3978  safety=0.0000  top1=0.6586  lr=2.36e-03
+    cand  5: acc=0.6586
+  e  1  loss=3.0182  task=3.0182  safety=0.0000  top1=0.1995  lr=2.36e-03
+  e 10  loss=1.4375  task=1.4375  safety=0.0000  top1=0.6316  lr=2.36e-03
+    cand  6: acc=0.6316
+  e  1  loss=2.5842  task=2.5842  safety=0.0000  top1=0.2746  lr=2.36e-03
+  e 10  loss=1.4184  task=1.4184  safety=0.0000  top1=0.6410  lr=2.36e-03
+    cand  7: acc=0.6492
+  e  1  loss=2.5854  task=2.5854  safety=0.0000  top1=0.2558  lr=2.36e-03
+  e 10  loss=1.4568  task=1.4568  safety=0.0000  top1=0.6048  lr=2.36e-03
+    cand  8: acc=0.6048
+  e  1  loss=2.7648  task=2.7648  safety=0.0000  top1=0.1646  lr=2.36e-03
+  e 10  loss=1.5068  task=1.5068  safety=0.0000  top1=0.5931  lr=2.36e-03
+    cand  9: acc=0.6173
+  e  1  loss=3.3163  task=3.3163  safety=0.0000  top1=0.1824  lr=2.36e-03
+  e 10  loss=1.4785  task=1.4785  safety=0.0000  top1=0.6199  lr=2.36e-03
+    cand 10: acc=0.6199
+  Gen 4 summary: mean=0.6368 max=0.6915
+
+  Gen 5/5:
+  e  1  loss=2.6857  task=2.6857  safety=0.0000  top1=0.2619  lr=2.36e-03
+  e 10  loss=1.4184  task=1.4184  safety=0.0000  top1=0.6525  lr=2.36e-03
+    cand  1: acc=0.6527
+  e  1  loss=3.1059  task=3.1059  safety=0.0000  top1=0.2166  lr=2.36e-03
+  e 10  loss=1.4386  task=1.4386  safety=0.0000  top1=0.6390  lr=2.36e-03
+    cand  2: acc=0.6390
+  e  1  loss=3.7044  task=3.7044  safety=0.0000  top1=0.1862  lr=2.36e-03
+  e 10  loss=1.4981  task=1.4981  safety=0.0000  top1=0.5875  lr=2.36e-03
+    cand  3: acc=0.5875
+  e  1  loss=2.8645  task=2.8645  safety=0.0000  top1=0.2237  lr=2.36e-03
+  e 10  loss=1.3937  task=1.3937  safety=0.0000  top1=0.6115  lr=2.36e-03
+    cand  4: acc=0.6115
+  e  1  loss=2.4196  task=2.4196  safety=0.0000  top1=0.2555  lr=2.36e-03
+  e 10  loss=1.4372  task=1.4372  safety=0.0000  top1=0.6097  lr=2.36e-03
+    cand  5: acc=0.6097
+  e  1  loss=2.6540  task=2.6540  safety=0.0000  top1=0.2158  lr=2.36e-03
+  e 10  loss=1.4208  task=1.4208  safety=0.0000  top1=0.6222  lr=2.36e-03
+    cand  6: acc=0.6357
+  e  1  loss=2.8581  task=2.8581  safety=0.0000  top1=0.2446  lr=2.36e-03
+  e 10  loss=1.3846  task=1.3846  safety=0.0000  top1=0.6400  lr=2.36e-03
+    cand  7: acc=0.6400
+  e  1  loss=2.9327  task=2.9327  safety=0.0000  top1=0.2102  lr=2.36e-03
+  e 10  loss=1.4554  task=1.4554  safety=0.0000  top1=0.6161  lr=2.36e-03
+    cand  8: acc=0.6301
+  e  1  loss=2.6298  task=2.6298  safety=0.0000  top1=0.3098  lr=2.36e-03
+  e 10  loss=1.3896  task=1.3896  safety=0.0000  top1=0.6515  lr=2.36e-03
+    cand  9: acc=0.6515
+  e  1  loss=2.6274  task=2.6274  safety=0.0000  top1=0.2808  lr=2.36e-03
+  e 10  loss=1.3796  task=1.3796  safety=0.0000  top1=0.6359  lr=2.36e-03
+    cand 10: acc=0.6520
+  Gen 5 summary: mean=0.6310 max=0.6527
+
+  Final eval: aggregate topology, 20ep
+  e  1  loss=2.7105  task=2.7105  safety=0.0000  top1=0.2183  lr=2.36e-03
+  e 10  loss=1.4584  task=1.4584  safety=0.0000  top1=0.6242  lr=2.36e-03
+  e 20  loss=1.2839  task=1.2839  safety=0.0000  top1=0.6836  lr=2.36e-03
+  Final acc=0.6836
+
+============================================================
+ConnGA [ConnGA_deg]  explore=0.3  5gen × 10cand × 10ep
+============================================================
+
+  Gen 1/5:
+  e  1  loss=3.4127  task=3.4127  safety=0.0000  top1=0.2043  lr=2.36e-03
+  e 10  loss=1.4563  task=1.4563  safety=0.0000  top1=0.6199  lr=2.36e-03
+    cand  1: acc=0.6357
+  e  1  loss=2.7922  task=2.7922  safety=0.0000  top1=0.2387  lr=2.36e-03
+  e 10  loss=1.4867  task=1.4867  safety=0.0000  top1=0.6224  lr=2.36e-03
+    cand  2: acc=0.6316
+  e  1  loss=2.4455  task=2.4455  safety=0.0000  top1=0.3223  lr=2.36e-03
+  e 10  loss=1.4527  task=1.4527  safety=0.0000  top1=0.6229  lr=2.36e-03
+    cand  3: acc=0.6229
+  e  1  loss=2.5927  task=2.5927  safety=0.0000  top1=0.2107  lr=2.36e-03
+  e 10  loss=1.5286  task=1.5286  safety=0.0000  top1=0.6104  lr=2.36e-03
+    cand  4: acc=0.6189
+  e  1  loss=4.0617  task=4.0617  safety=0.0000  top1=0.1368  lr=2.36e-03
+  e 10  loss=1.4692  task=1.4692  safety=0.0000  top1=0.6331  lr=2.36e-03
+    cand  5: acc=0.6331
+  e  1  loss=3.2007  task=3.2007  safety=0.0000  top1=0.2400  lr=2.36e-03
+  e 10  loss=1.4455  task=1.4455  safety=0.0000  top1=0.6311  lr=2.36e-03
+    cand  6: acc=0.6451
+  e  1  loss=2.7415  task=2.7415  safety=0.0000  top1=0.2181  lr=2.36e-03
+  e 10  loss=1.4142  task=1.4142  safety=0.0000  top1=0.6189  lr=2.36e-03
+    cand  7: acc=0.6448
+  e  1  loss=2.6816  task=2.6816  safety=0.0000  top1=0.2217  lr=2.36e-03
+  e 10  loss=1.4062  task=1.4062  safety=0.0000  top1=0.6512  lr=2.36e-03
+    cand  8: acc=0.6532
+  e  1  loss=3.0043  task=3.0043  safety=0.0000  top1=0.1952  lr=2.36e-03
+  e 10  loss=1.4312  task=1.4312  safety=0.0000  top1=0.6385  lr=2.36e-03
+    cand  9: acc=0.6385
+  e  1  loss=2.8449  task=2.8449  safety=0.0000  top1=0.2242  lr=2.36e-03
+  e 10  loss=1.4960  task=1.4960  safety=0.0000  top1=0.5957  lr=2.36e-03
+    cand 10: acc=0.5985
+  Gen 1 summary: mean=0.6322 max=0.6532
+
+  Gen 2/5:
+  e  1  loss=3.8616  task=3.8616  safety=0.0000  top1=0.1539  lr=2.36e-03
+  e 10  loss=1.5096  task=1.5096  safety=0.0000  top1=0.5997  lr=2.36e-03
+    cand  1: acc=0.5997
+  e  1  loss=2.9473  task=2.9473  safety=0.0000  top1=0.1740  lr=2.36e-03
+  e 10  loss=1.4376  task=1.4376  safety=0.0000  top1=0.6318  lr=2.36e-03
+    cand  2: acc=0.6318
+  e  1  loss=2.9758  task=2.9758  safety=0.0000  top1=0.1789  lr=2.36e-03
+  e 10  loss=1.4531  task=1.4531  safety=0.0000  top1=0.6313  lr=2.36e-03
+    cand  3: acc=0.6313
+  e  1  loss=2.7143  task=2.7143  safety=0.0000  top1=0.2678  lr=2.36e-03
+  e 10  loss=1.3626  task=1.3626  safety=0.0000  top1=0.6716  lr=2.36e-03
+    cand  4: acc=0.6716
+  e  1  loss=2.3582  task=2.3582  safety=0.0000  top1=0.3254  lr=2.36e-03
+  e 10  loss=1.3959  task=1.3959  safety=0.0000  top1=0.6334  lr=2.36e-03
+    cand  5: acc=0.6759
+  e  1  loss=2.6651  task=2.6651  safety=0.0000  top1=0.2805  lr=2.36e-03
+  e 10  loss=1.4626  task=1.4626  safety=0.0000  top1=0.6553  lr=2.36e-03
+    cand  6: acc=0.6553
+  e  1  loss=3.0806  task=3.0806  safety=0.0000  top1=0.2260  lr=2.36e-03
+  e 10  loss=1.4436  task=1.4436  safety=0.0000  top1=0.6591  lr=2.36e-03
+    cand  7: acc=0.6591
+  e  1  loss=3.5082  task=3.5082  safety=0.0000  top1=0.1860  lr=2.36e-03
+  e 10  loss=1.4353  task=1.4353  safety=0.0000  top1=0.6092  lr=2.36e-03
+    cand  8: acc=0.6092
+  e  1  loss=3.7438  task=3.7438  safety=0.0000  top1=0.1687  lr=2.36e-03
+  e 10  loss=1.4909  task=1.4909  safety=0.0000  top1=0.6275  lr=2.36e-03
+    cand  9: acc=0.6293
+  e  1  loss=2.6280  task=2.6280  safety=0.0000  top1=0.2441  lr=2.36e-03
+  e 10  loss=1.4426  task=1.4426  safety=0.0000  top1=0.6273  lr=2.36e-03
+    cand 10: acc=0.6273
+  Gen 2 summary: mean=0.6390 max=0.6759
+
+  Gen 3/5:
+  e  1  loss=2.6116  task=2.6116  safety=0.0000  top1=0.2866  lr=2.36e-03
+  e 10  loss=1.3372  task=1.3372  safety=0.0000  top1=0.6344  lr=2.36e-03
+    cand  1: acc=0.6344
+  e  1  loss=2.6895  task=2.6895  safety=0.0000  top1=0.2303  lr=2.36e-03
+  e 10  loss=1.4203  task=1.4203  safety=0.0000  top1=0.6410  lr=2.36e-03
+    cand  2: acc=0.6538
+  e  1  loss=3.2433  task=3.2433  safety=0.0000  top1=0.2013  lr=2.36e-03
+  e 10  loss=1.4691  task=1.4691  safety=0.0000  top1=0.6069  lr=2.36e-03
+    cand  3: acc=0.6069
+  e  1  loss=2.8473  task=2.8473  safety=0.0000  top1=0.2255  lr=2.36e-03
+  e 10  loss=1.4670  task=1.4670  safety=0.0000  top1=0.5957  lr=2.36e-03
+    cand  4: acc=0.6115
+  e  1  loss=2.7775  task=2.7775  safety=0.0000  top1=0.2173  lr=2.36e-03
+  e 10  loss=1.3727  task=1.3727  safety=0.0000  top1=0.6372  lr=2.36e-03
+    cand  5: acc=0.6433
+  e  1  loss=3.1913  task=3.1913  safety=0.0000  top1=0.1814  lr=2.36e-03
+  e 10  loss=1.5159  task=1.5159  safety=0.0000  top1=0.6084  lr=2.36e-03
+    cand  6: acc=0.6084
+  e  1  loss=2.5650  task=2.5650  safety=0.0000  top1=0.2724  lr=2.36e-03
+  e 10  loss=1.4001  task=1.4001  safety=0.0000  top1=0.6036  lr=2.36e-03
+    cand  7: acc=0.6487
+  e  1  loss=2.7864  task=2.7864  safety=0.0000  top1=0.2186  lr=2.36e-03
+  e 10  loss=1.4799  task=1.4799  safety=0.0000  top1=0.5852  lr=2.36e-03
+    cand  8: acc=0.6056
+  e  1  loss=2.7552  task=2.7552  safety=0.0000  top1=0.2239  lr=2.36e-03
+  e 10  loss=1.4370  task=1.4370  safety=0.0000  top1=0.6448  lr=2.36e-03
+    cand  9: acc=0.6642
+  e  1  loss=2.5433  task=2.5433  safety=0.0000  top1=0.2624  lr=2.36e-03
+  e 10  loss=1.4252  task=1.4252  safety=0.0000  top1=0.6561  lr=2.36e-03
+    cand 10: acc=0.6561
+  Gen 3 summary: mean=0.6333 max=0.6642
+
+  Gen 4/5:
+  e  1  loss=2.9939  task=2.9939  safety=0.0000  top1=0.2268  lr=2.36e-03
+  e 10  loss=1.4447  task=1.4447  safety=0.0000  top1=0.6456  lr=2.36e-03
+    cand  1: acc=0.6456
+  e  1  loss=2.8760  task=2.8760  safety=0.0000  top1=0.2433  lr=2.36e-03
+  e 10  loss=1.4258  task=1.4258  safety=0.0000  top1=0.6168  lr=2.36e-03
+    cand  2: acc=0.6222
+  e  1  loss=3.9800  task=3.9800  safety=0.0000  top1=0.1391  lr=2.36e-03
+  e 10  loss=1.5579  task=1.5579  safety=0.0000  top1=0.5697  lr=2.36e-03
+    cand  3: acc=0.5727
+  e  1  loss=2.6438  task=2.6438  safety=0.0000  top1=0.2349  lr=2.36e-03
+  e 10  loss=1.3817  task=1.3817  safety=0.0000  top1=0.5959  lr=2.36e-03
+    cand  4: acc=0.6250
+  e  1  loss=2.5181  task=2.5181  safety=0.0000  top1=0.2846  lr=2.36e-03
+  e 10  loss=1.4403  task=1.4403  safety=0.0000  top1=0.6041  lr=2.36e-03
+    cand  5: acc=0.6183
+  e  1  loss=2.4641  task=2.4641  safety=0.0000  top1=0.2884  lr=2.36e-03
+  e 10  loss=1.3888  task=1.3888  safety=0.0000  top1=0.6589  lr=2.36e-03
+    cand  6: acc=0.6589
+  e  1  loss=3.7106  task=3.7106  safety=0.0000  top1=0.1964  lr=2.36e-03
+  e 10  loss=1.5069  task=1.5069  safety=0.0000  top1=0.5944  lr=2.36e-03
+    cand  7: acc=0.5944
+  e  1  loss=2.5810  task=2.5810  safety=0.0000  top1=0.2614  lr=2.36e-03
+  e 10  loss=1.3805  task=1.3805  safety=0.0000  top1=0.6229  lr=2.36e-03
+    cand  8: acc=0.6441
+  e  1  loss=2.6485  task=2.6485  safety=0.0000  top1=0.2329  lr=2.36e-03
+  e 10  loss=1.4201  task=1.4201  safety=0.0000  top1=0.6189  lr=2.36e-03
+    cand  9: acc=0.6189
+  e  1  loss=2.7316  task=2.7316  safety=0.0000  top1=0.2571  lr=2.36e-03
+  e 10  loss=1.4261  task=1.4261  safety=0.0000  top1=0.6092  lr=2.36e-03
+    cand 10: acc=0.6298
+  Gen 4 summary: mean=0.6230 max=0.6589
+
+  Gen 5/5:
+  e  1  loss=2.9307  task=2.9307  safety=0.0000  top1=0.2214  lr=2.36e-03
+  e 10  loss=1.3499  task=1.3499  safety=0.0000  top1=0.6591  lr=2.36e-03
+    cand  1: acc=0.6591
+  e  1  loss=2.6134  task=2.6134  safety=0.0000  top1=0.2423  lr=2.36e-03
+  e 10  loss=1.4460  task=1.4460  safety=0.0000  top1=0.5980  lr=2.36e-03
+    cand  2: acc=0.6145
+  e  1  loss=2.4400  task=2.4400  safety=0.0000  top1=0.2425  lr=2.36e-03
+  e 10  loss=1.4705  task=1.4705  safety=0.0000  top1=0.6112  lr=2.36e-03
+    cand  3: acc=0.6112
+  e  1  loss=2.6568  task=2.6568  safety=0.0000  top1=0.2940  lr=2.36e-03
+  e 10  loss=1.3396  task=1.3396  safety=0.0000  top1=0.6787  lr=2.36e-03
+    cand  4: acc=0.6838
+  e  1  loss=3.7198  task=3.7198  safety=0.0000  top1=0.1506  lr=2.36e-03
+  e 10  loss=1.5361  task=1.5361  safety=0.0000  top1=0.5804  lr=2.36e-03
+    cand  5: acc=0.5804
+  e  1  loss=3.6552  task=3.6552  safety=0.0000  top1=0.1355  lr=2.36e-03
+  e 10  loss=1.4994  task=1.4994  safety=0.0000  top1=0.5794  lr=2.36e-03
+    cand  6: acc=0.5794
+  e  1  loss=3.1738  task=3.1738  safety=0.0000  top1=0.1585  lr=2.36e-03
+  e 10  loss=1.4420  task=1.4420  safety=0.0000  top1=0.6288  lr=2.36e-03
+    cand  7: acc=0.6293
+  e  1  loss=2.8162  task=2.8162  safety=0.0000  top1=0.2033  lr=2.36e-03
+  e 10  loss=1.4308  task=1.4308  safety=0.0000  top1=0.6326  lr=2.36e-03
+    cand  8: acc=0.6326
+  e  1  loss=2.6881  task=2.6881  safety=0.0000  top1=0.1913  lr=2.36e-03
+  e 10  loss=1.4594  task=1.4594  safety=0.0000  top1=0.6033  lr=2.36e-03
+    cand  9: acc=0.6033
+  e  1  loss=3.9080  task=3.9080  safety=0.0000  top1=0.1817  lr=2.36e-03
+  e 10  loss=1.4822  task=1.4822  safety=0.0000  top1=0.6092  lr=2.36e-03
+    cand 10: acc=0.6092
+  Gen 5 summary: mean=0.6203 max=0.6838
+
+  Final eval: aggregate topology, 20ep
+  e  1  loss=2.9230  task=2.9230  safety=0.0000  top1=0.1783  lr=2.36e-03
+  e 10  loss=1.4210  task=1.4210  safety=0.0000  top1=0.6054  lr=2.36e-03
+  e 20  loss=1.2247  task=1.2247  safety=0.0000  top1=0.6874  lr=2.36e-03
+  Final acc=0.7032
+
+======================================================================
+STEP 709 SUMMARY — Evolutionary Connectivity GA
+======================================================================
+  Ref (static): 0.7017
+  ConnGA_rand: 0.6836  Δ=-0.0181  → TOPOLOGY GA HURTS
+  ConnGA_deg: 0.7032  Δ=+0.0015  → NEUTRAL
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step709_conn_ga.json

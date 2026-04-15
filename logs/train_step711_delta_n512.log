@@ -1,0 +1,65 @@
+
+======================================================================
+Step 711 — ΔW projection at N=512 (headroom curve extension)
+N=512 D=16 K_hh=2 K_iter=5 | 75ep 50% data
+FLOPs=245,760 (~0.246M)  Device=cpu
+Headroom curve: N=4096(−0.74pp) → N=2048(+1.56pp) → N=1024(+4.87pp) → N=512(?)
+Running: ['Ref', 'A_proj']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=4734  Val=3925
+
+────────────────────────────────────────────────────────────
+Config Ref: AH α=1.0 (N=512 baseline)
+────────────────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=2.7494  task=2.7494  safety=0.0000  top1=0.2283  lr=2.36e-03
+  ep 10  val=0.6448
+  e 10  loss=1.4363  task=1.4363  safety=0.0000  top1=0.6448  lr=2.36e-03
+  ep 20  val=0.6487
+  e 20  loss=1.2764  task=1.2764  safety=0.0000  top1=0.6487  lr=2.36e-03
+  ep 30  val=0.7182
+  e 30  loss=1.1740  task=1.1740  safety=0.0000  top1=0.7182  lr=2.36e-03
+  ep 40  val=0.7246
+  e 40  loss=1.1320  task=1.1320  safety=0.0000  top1=0.7246  lr=2.36e-03
+  ep 50  val=0.7248
+  e 50  loss=1.0897  task=1.0897  safety=0.0000  top1=0.7248  lr=2.36e-03
+  ep 60  val=0.7544
+  e 60  loss=1.0514  task=1.0514  safety=0.0000  top1=0.7544  lr=2.36e-03
+  ep 70  val=0.7636
+  e 70  loss=1.0302  task=1.0302  safety=0.0000  top1=0.7636  lr=2.36e-03
+  → best=0.7638 @ ep66  (162s)
+
+────────────────────────────────────────────────────────────
+Config A_proj: ΔW projection, no AH
+────────────────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=2.2325  task=2.2325  safety=0.0000  top1=0.4846  lr=2.36e-03
+  ep 10  val=0.8380
+  e 10  loss=0.5445  task=0.5445  safety=0.0000  top1=0.8380  lr=2.36e-03
+  ep 20  val=0.8652
+  e 20  loss=0.3921  task=0.3921  safety=0.0000  top1=0.8652  lr=2.36e-03
+  ep 30  val=0.8690
+  e 30  loss=0.3302  task=0.3302  safety=0.0000  top1=0.8690  lr=2.36e-03
+  ep 40  val=0.8795
+  e 40  loss=0.2935  task=0.2935  safety=0.0000  top1=0.8795  lr=2.36e-03
+  ep 50  val=0.8838
+  e 50  loss=0.2691  task=0.2691  safety=0.0000  top1=0.8838  lr=2.36e-03
+  ep 60  val=0.8831
+  e 60  loss=0.2344  task=0.2344  safety=0.0000  top1=0.8831  lr=2.36e-03
+  ep 70  val=0.8764
+  e 70  loss=0.2236  task=0.2236  safety=0.0000  top1=0.8764  lr=2.36e-03
+  → best=0.8920 @ ep69  (178s)
+
+======================================================================
+STEP 711 SUMMARY — ΔW projection N=512 (headroom curve)
+======================================================================
+  Headroom curve so far:
+    N=4096: −0.74pp (KILLED, near ceiling)
+    N=2048: +1.56pp (step706 Tier-2)
+    N=1024: +4.87pp (step707 Tier-1)
+    N=512 : 0.7638 ()
+0.8920 (Δ=+0.1282)
+  Verdict: HEADROOM SCALES — gain increases with distance from ceiling
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step711_delta_n512.json

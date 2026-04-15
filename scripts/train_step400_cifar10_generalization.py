@@ -177,15 +177,51 @@ def build_sgnnet(n_hidden: int) -> nn.Module:
         n_groups=ng, norm_mode="l2", encoding_mode="fourier",
     )
     resonant = SGNNET_Resonant(
-        base, K_phase=8, alpha_reflect=ALPHA_REFLECT,
-        alpha_turing=ALPHA_TURING, beam_size=16, geo_gamma=0.5,
-        mode="dynamic_z_geo", resonance_threshold=0.0,
+        base, alpha_reflect=ALPHA_REFLECT,
+        alpha_turing=ALPHA_TURING, mode="dynamic_z_geo",
     )
     ah_model = SGNNET_AntiHebbian(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
     return FlattenWrapper(ah_model)
 
 
-# ── Training helper ───────────────────────────────────────────────────────────
+# ── Training helpers ──────────────────────────────────────────────────────────
+
+def run_linear(label: str, model: nn.Module, tr, va) -> dict:
+    """Standalone training loop for LinearBaseline — bypasses SGNNET Trainer."""
+    model = model.to(DEVICE)
+    n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f"\n  [{label}]  params={n_params:,}  (Adam lr=1e-3)")
+    opt  = torch.optim.Adam(model.fc.parameters(), lr=1e-3)
+    crit = nn.CrossEntropyLoss()
+    t0   = time.time()
+    top1h = []
+    for ep in range(EPOCHS):
+        model.train()
+        for feats, _, labels in tr:
+            feats, labels = feats.to(DEVICE), labels.to(DEVICE)
+            opt.zero_grad()
+            crit(model(feats), labels).backward()
+            opt.step()
+        model.eval()
+        correct = total = 0
+        with torch.no_grad():
+            for feats, _, labels in va:
+                feats, labels = feats.to(DEVICE), labels.to(DEVICE)
+                correct += (model(feats).argmax(1) == labels).sum().item()
+                total   += labels.size(0)
+        acc = correct / total
+        top1h.append(round(acc, 4))
+        if (ep + 1) % 10 == 0:
+            print(f"    ep{ep+1:3d}  val={acc:.4f}", flush=True)
+    elapsed = time.time() - t0
+    best = max(top1h)
+    bep  = int(np.argmax(top1h)) + 1
+    return {"label": label, "N": 1, "D": 0, "K_hh": 0, "K_iter": 0,
+            "alpha_ahebb": 0, "n_params": n_params, "flops": 0,
+            "top1_best": best, "top1_last": top1h[-1], "best_epoch": bep,
+            "epochs_run": len(top1h), "elapsed_s": round(elapsed, 1),
+            "top1_history": top1h}
+
 
 def run_config(label: str, model: nn.Module, tr, va, n: int) -> dict:
     model = model.to(DEVICE)
@@ -209,7 +245,7 @@ def run_config(label: str, model: nn.Module, tr, va, n: int) -> dict:
     best    = max(top1h)
     bep     = int(np.argmax(top1h)) + 1
 
-    flops = 3 * n * K_HH * D * K_ITER if n > 1 else 0  # 0 for linear baseline
+    flops = 3 * n * K_HH * D * K_ITER if n > 1 else 0
     return {
         "label":        label,
         "N":            n,
@@ -241,16 +277,12 @@ def main():
     torch.manual_seed(SEED)
     tr, va = make_cifar_loaders(batch_size=BATCH, seed=SEED)
 
-    configs = [
-        ("Linear",  LinearBaseline(N_IN, N_OUT), 1),
-        ("N512",    build_sgnnet(512),            512),
-        ("N2048",   build_sgnnet(2048),           2048),
-        ("N4096",   build_sgnnet(4096),           4096),
-    ]
-
     results = {}
-    for label, model, n in configs:
-        results[label] = run_config(label, model, tr, va, n)
+    # Linear baseline: use dedicated loop (Trainer LR is SGNNET-calibrated)
+    results["Linear"] = run_linear("Linear", LinearBaseline(N_IN, N_OUT), tr, va)
+    # SGNNET configs
+    for label, n in [("N512", 512), ("N2048", 2048), ("N4096", 4096)]:
+        results[label] = run_config(label, build_sgnnet(n), tr, va, n)
 
     # ── Summary table ─────────────────────────────────────────────────────────
     print(f"\n{'='*70}")

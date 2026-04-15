@@ -246,13 +246,15 @@ class RigLTopology:
                 conn_hh[i, :K_HH] = torch.tensor(new_edges[:K_HH],
                                                    dtype=torch.long)
 
+        # Count rewired edges BEFORE copy (base.conn_hh = old, conn_hh = new)
+        rewired = (base.conn_hh != conn_hh.to(base.conn_hh.device)).sum().item() // 2
+
         # Mutate buffer in-place (conn_hh is a registered buffer = not a param)
         base.conn_hh.copy_(conn_hh)
 
         # Reset co-activation EMA after topology change
         self._coact_ema.zero_()
 
-        rewired = (base.conn_hh != conn_hh.to(base.conn_hh.device)).sum().item() // 2
         return rewired
 
 

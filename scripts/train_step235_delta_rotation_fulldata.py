@@ -42,13 +42,14 @@ from src.training.dataset            import make_loaders
 parser = argparse.ArgumentParser()
 parser.add_argument("--device", default="auto")
 parser.add_argument("--epochs", type=int, default=150)
+parser.add_argument("--seed",   type=int, default=42)
 parser.add_argument("--configs", default="",
                     help="Comma-separated config keys. Empty = all.")
 args   = parser.parse_args()
 DEVICE = (torch.device("mps") if torch.backends.mps.is_available()
           else torch.device("cpu")) if args.device == "auto" else torch.device(args.device)
 
-EPOCHS = args.epochs; BATCH = 128; SEED = 42
+EPOCHS = args.epochs; BATCH = 128; SEED = args.seed
 DATA_100 = "data/store.h5"
 DATA_AUG = "data/store_aug.h5"
 N = 2048; N_IN = 25088; N_OUT = 10

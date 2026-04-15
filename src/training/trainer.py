@@ -77,12 +77,19 @@ class Trainer:
             param_groups.append({"params": [model.W_phase], "lr": lr_wphase})
         self.optimizer = torch.optim.AdamW(param_groups)
 
-        # FP16 GradScaler setup (D-09); disabled when use_amp=False or on CPU
-        # AMP on CPU uses bfloat16 which is slower than float32 for small models
+        # FP16 GradScaler setup (D-09); disabled when use_amp=False or on CPU/MPS.
+        # AMP on CPU uses bfloat16 which is slower than float32 for small models.
+        # MPS: GradScaler("mps") has a known hook-registration bug in PyTorch —
+        # scaler.step() raises "No inf checks recorded" because MPS float16
+        # autocast doesn't trigger the GradScaler backward hooks. Autocast is
+        # still enabled on MPS (gives ~10% speedup via bf16 ops) but without
+        # gradient scaling, which is not needed for bf16 anyway.
         _device_str = str(device)
-        _amp_supported = _device_str != "cpu" and "cpu" not in _device_str
-        self.use_amp = use_amp and _amp_supported
-        self.use_grad_scaler = self.use_amp and _check_grad_scaler_support()
+        _is_cpu = _device_str == "cpu" or "cpu" in _device_str
+        _is_mps = "mps" in _device_str
+        self.use_amp = use_amp and not _is_cpu
+        # GradScaler: CUDA only. MPS scaler hooks are unreliable.
+        self.use_grad_scaler = self.use_amp and not _is_mps and _check_grad_scaler_support()
         if self.use_grad_scaler:
             self.scaler = torch.amp.GradScaler(device)
         else:

@@ -1,0 +1,77 @@
+
+======================================================================
+Step 725 — ΔW rot vs proj N=2048 Tier-1 (crossover confirmation)
+N=2048 D=16 FLOPs=0.983M  Device=mps
+Curve: N=256(proj+11.24) N=512(proj+6.85) N=1024(proj+1.91) N=2048(?)
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+──────────────────────────────────────────────────
+Ref
+──────────────────────────────────────────────────
+  params=34,976
+  e  1  loss=6.1387  task=6.1387  safety=0.0000  top1=0.3768  lr=2.36e-03
+  ep 10  val=0.8861
+  e 10  loss=0.4068  task=0.4068  safety=0.0000  top1=0.8861  lr=2.36e-03
+  ep 20  val=0.9159
+  e 20  loss=0.2775  task=0.2775  safety=0.0000  top1=0.9159  lr=2.36e-03
+  ep 30  val=0.9121
+  e 30  loss=0.2279  task=0.2279  safety=0.0000  top1=0.9121  lr=2.36e-03
+  ep 40  val=0.9294
+  e 40  loss=0.2008  task=0.2008  safety=0.0000  top1=0.9294  lr=2.36e-03
+  ep 50  val=0.9330
+  e 50  loss=0.1772  task=0.1772  safety=0.0000  top1=0.9330  lr=2.36e-03
+  ep 60  val=0.9340
+  e 60  loss=0.1734  task=0.1734  safety=0.0000  top1=0.9340  lr=2.36e-03
+  ep 70  val=0.9236
+  e 70  loss=0.1667  task=0.1667  safety=0.0000  top1=0.9236  lr=2.36e-03
+  → best=0.9386 @ ep64
+
+──────────────────────────────────────────────────
+A_proj
+──────────────────────────────────────────────────
+  params=34,977
+  e  1  loss=2.5844  task=2.5844  safety=0.0000  top1=0.7608  lr=2.36e-03
+  ep 10  val=0.9287
+  e 10  loss=0.0807  task=0.0807  safety=0.0000  top1=0.9287  lr=2.36e-03
+  ep 20  val=0.9381
+  e 20  loss=0.0344  task=0.0344  safety=0.0000  top1=0.9381  lr=2.36e-03
+  ep 30  val=0.9457
+  e 30  loss=0.0211  task=0.0211  safety=0.0000  top1=0.9457  lr=2.36e-03
+  ep 40  val=0.9478
+  e 40  loss=0.0149  task=0.0149  safety=0.0000  top1=0.9478  lr=2.36e-03
+  ep 50  val=0.9501
+  e 50  loss=0.0109  task=0.0109  safety=0.0000  top1=0.9501  lr=2.36e-03
+  ep 60  val=0.9501
+  e 60  loss=0.0107  task=0.0107  safety=0.0000  top1=0.9501  lr=2.36e-03
+  ep 70  val=0.9521
+  e 70  loss=0.0074  task=0.0074  safety=0.0000  top1=0.9521  lr=1.18e-03
+  → best=0.9526 @ ep73
+
+──────────────────────────────────────────────────
+A_rot
+──────────────────────────────────────────────────
+  params=34,977
+  e  1  loss=12.1702  task=12.1702  safety=0.0000  top1=0.1287  lr=2.36e-03
+  ep 10  val=0.8647
+  e 10  loss=0.7112  task=0.7112  safety=0.0000  top1=0.8647  lr=2.36e-03
+  ep 20  val=0.9164
+  e 20  loss=0.3222  task=0.3222  safety=0.0000  top1=0.9164  lr=2.36e-03
+  ep 30  val=0.9350
+  e 30  loss=0.2173  task=0.2173  safety=0.0000  top1=0.9350  lr=2.36e-03
+  ep 40  val=0.9327
+  e 40  loss=0.1776  task=0.1776  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 50  val=0.9424
+  e 50  loss=0.1417  task=0.1417  safety=0.0000  top1=0.9424  lr=2.36e-03
+  ep 60  val=0.9473
+  e 60  loss=0.1199  task=0.1199  safety=0.0000  top1=0.9473  lr=2.36e-03
+  ep 70  val=0.9424
+  e 70  loss=0.1087  task=0.1087  safety=0.0000  top1=0.9424  lr=2.36e-03
+  → best=0.9524 @ ep64
+
+======================================================================
+Ref=0.9386  A_proj=0.9526(Δ=+0.0140)  A_rot=0.9524(Δ=+0.0138)
+  Winner: A_proj by 0.02pp
+  Crossover curve: N=256(proj+11.2) N=512(proj+6.9) N=1024(proj+1.9) N=2048(proj+0.0)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step725_rotation_n2048.json

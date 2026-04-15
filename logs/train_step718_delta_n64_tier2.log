@@ -1,0 +1,90 @@
+
+======================================================================
+Step 718 — ΔW proj N=64 Tier-2 (150ep 100% data, paper-ready)
+N=64 FLOPs=0.031M (3% of old 0.98M record)  Device=mps
+Tier-1: Ref≈37%  A_proj≈53%  Δ≈+16pp
+GOAL: confirm non-monotone peak. N=128(+23.9pp) > N=64(?) < N=256(+20pp)?
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=9469  Val=3925
+
+──────────────────────────────────────────────────
+Ref
+──────────────────────────────────────────────────
+  params=1,248
+  e  1  loss=2.2709  task=2.2709  safety=0.0000  top1=0.1636  lr=2.36e-03
+  ep 10  val=0.3197
+  e 10  loss=2.0701  task=2.0701  safety=0.0000  top1=0.3197  lr=2.36e-03
+  ep 20  val=0.3529
+  e 20  loss=2.0025  task=2.0025  safety=0.0000  top1=0.3529  lr=2.36e-03
+  ep 30  val=0.3654
+  e 30  loss=1.9818  task=1.9818  safety=0.0000  top1=0.3654  lr=2.36e-03
+  ep 40  val=0.3580
+  e 40  loss=1.9732  task=1.9732  safety=0.0000  top1=0.3580  lr=2.36e-03
+  ep 50  val=0.3261
+  e 50  loss=1.9643  task=1.9643  safety=0.0000  top1=0.3261  lr=2.36e-03
+  ep 60  val=0.3761
+  e 60  loss=1.9570  task=1.9570  safety=0.0000  top1=0.3761  lr=2.36e-03
+  ep 70  val=0.3654
+  e 70  loss=1.9538  task=1.9538  safety=0.0000  top1=0.3654  lr=2.36e-03
+  ep 80  val=0.3651
+  e 80  loss=1.9462  task=1.9462  safety=0.0000  top1=0.3651  lr=2.36e-03
+  ep 90  val=0.3704
+  e 90  loss=1.9441  task=1.9441  safety=0.0000  top1=0.3704  lr=2.36e-03
+  ep100  val=0.3610
+  e100  loss=1.9350  task=1.9350  safety=0.0000  top1=0.3610  lr=2.36e-03
+  ep110  val=0.3722
+  e110  loss=1.9278  task=1.9278  safety=0.0000  top1=0.3722  lr=2.36e-03
+  ep120  val=0.3936
+  e120  loss=1.9166  task=1.9166  safety=0.0000  top1=0.3936  lr=2.36e-03
+  ep130  val=0.3847
+  e130  loss=1.9163  task=1.9163  safety=0.0000  top1=0.3847  lr=2.36e-03
+  ep140  val=0.3804
+  e140  loss=1.9135  task=1.9135  safety=0.0000  top1=0.3804  lr=2.36e-03
+  ep150  val=0.3969
+  e150  loss=1.9119  task=1.9119  safety=0.0000  top1=0.3969  lr=1.18e-03
+  → best=0.3997 @ ep131
+
+──────────────────────────────────────────────────
+A_proj
+──────────────────────────────────────────────────
+  params=1,248
+  e  1  loss=2.2293  task=2.2293  safety=0.0000  top1=0.2436  lr=2.36e-03
+  ep 10  val=0.4487
+  e 10  loss=1.7459  task=1.7459  safety=0.0000  top1=0.4487  lr=2.36e-03
+  ep 20  val=0.4950
+  e 20  loss=1.6063  task=1.6063  safety=0.0000  top1=0.4950  lr=2.36e-03
+  ep 30  val=0.5068
+  e 30  loss=1.5442  task=1.5442  safety=0.0000  top1=0.5068  lr=2.36e-03
+  ep 40  val=0.5335
+  e 40  loss=1.5025  task=1.5025  safety=0.0000  top1=0.5335  lr=2.36e-03
+  ep 50  val=0.5192
+  e 50  loss=1.4810  task=1.4810  safety=0.0000  top1=0.5192  lr=2.36e-03
+  ep 60  val=0.5335
+  e 60  loss=1.4673  task=1.4673  safety=0.0000  top1=0.5335  lr=2.36e-03
+  ep 70  val=0.5307
+  e 70  loss=1.4542  task=1.4542  safety=0.0000  top1=0.5307  lr=2.36e-03
+  ep 80  val=0.5389
+  e 80  loss=1.4427  task=1.4427  safety=0.0000  top1=0.5389  lr=2.36e-03
+  ep 90  val=0.5450
+  e 90  loss=1.4319  task=1.4319  safety=0.0000  top1=0.5450  lr=2.36e-03
+  ep100  val=0.5498
+  e100  loss=1.4311  task=1.4311  safety=0.0000  top1=0.5498  lr=2.36e-03
+  ep110  val=0.5559
+  e110  loss=1.4198  task=1.4198  safety=0.0000  top1=0.5559  lr=2.36e-03
+  ep120  val=0.5445
+  e120  loss=1.4146  task=1.4146  safety=0.0000  top1=0.5445  lr=2.36e-03
+  ep130  val=0.5544
+  e130  loss=1.4158  task=1.4158  safety=0.0000  top1=0.5544  lr=2.36e-03
+  ep140  val=0.5536
+  e140  loss=1.4061  task=1.4061  safety=0.0000  top1=0.5536  lr=2.36e-03
+  ep150  val=0.5526
+  e150  loss=1.4056  task=1.4056  safety=0.0000  top1=0.5526  lr=2.36e-03
+  → best=0.5595 @ ep114
+
+======================================================================
+Ref=0.3997  A_proj=0.5595  Δ=+0.1598 (+15.98pp)
+Curve T2: N=64(+16.0) N=128(+23.9) N=256(+20.0) N=512(+11.0) N=1024(+4.7) N=2048(+1.6)
+  → NON-MONOTONE CONFIRMED: N=128 is local maximum in ΔW headroom curve
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step718_delta_n64_tier2.json

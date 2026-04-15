@@ -1,0 +1,27 @@
+{
+  "Config_0": {
+    "key": "Config_0",
+    "alpha": 0.7,
+    "beta": 0.2,
+    "T": 4.0,
+    "label": "trajectory-dominated (recommended)",
+    "K_iter_student": 1,
+    "n_params": 34976,
+    "top1_best": 0.6873885350318472,
+    "top1_last": 0.6873885350318472,
+    "best_epoch": 3,
+    "top1_history": [
+      0.32203821656050957,
+      0.5467515923566879,
+      0.6873885350318472
+    ],
+    "elapsed_s": 14.3
+  },
+  "_meta": {
+    "teacher_top1": 0.95,
+    "teacher_K_iter": 5,
+    "student_K_iter": 1,
+    "bench_k1_ms": 10.646596669976134,
+    "bench_k5_ref_ms": 0.28
+  }
+}

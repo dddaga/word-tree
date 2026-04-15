@@ -1,0 +1,43 @@
+Device: mps  Epochs: 150  N=1024  K_iter=12  Data: 50%
+Step 128: ConcatReLU / activation function ablation
+Baseline: step69 Ref = 0.8336
+
+  Ref   Ref  standard AH (relu + reflection)
+  A     A    weighted_neg beta=0.3 + reflect
+  B     B    weighted_neg beta=0.3, NO reflect
+  C     C    ConcatReLU + W_proj(2D→D) + reflect
+  D     D    SwiGLU silu(Z-theta)*Z + reflect
+  E     E    LeakyReLU(0.1) + reflect
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset: train=9469  val=3925
+
+======================================================================
+A    weighted_neg beta=0.3 + reflect
+======================================================================
+  e  1  loss=1.6025  task=1.6025  safety=0.0000  top1=0.7980  lr=2.36e-03
+  e 10  loss=0.3368  task=0.3368  safety=0.0000  top1=0.8938  lr=2.36e-03
+  e 20  loss=0.2901  task=0.2901  safety=0.0000  top1=0.9108  lr=2.36e-03
+  e 30  loss=0.2376  task=0.2376  safety=0.0000  top1=0.9167  lr=2.36e-03
+  e 40  loss=0.2111  task=0.2111  safety=0.0000  top1=0.9248  lr=2.36e-03
+  e 50  loss=0.1997  task=0.1997  safety=0.0000  top1=0.9177  lr=2.36e-03
+  e 60  loss=0.2141  task=0.2141  safety=0.0000  top1=0.9266  lr=2.36e-03
+  e 70  loss=0.1534  task=0.1534  safety=0.0000  top1=0.9396  lr=1.18e-03
+  e 80  loss=0.1294  task=0.1294  safety=0.0000  top1=0.9424  lr=1.18e-03
+  e 90  loss=0.1249  task=0.1249  safety=0.0000  top1=0.9345  lr=1.18e-03
+  e100  loss=0.0901  task=0.0901  safety=0.0000  top1=0.9483  lr=5.91e-04
+  e110  loss=0.0934  task=0.0934  safety=0.0000  top1=0.9394  lr=5.91e-04
+  e120  loss=0.0882  task=0.0882  safety=0.0000  top1=0.9490  lr=5.91e-04
+  e130  loss=0.0879  task=0.0879  safety=0.0000  top1=0.9498  lr=5.91e-04
+  e140  loss=0.0773  task=0.0773  safety=0.0000  top1=0.9498  lr=2.96e-04
+  e150  loss=0.0727  task=0.0727  safety=0.0000  top1=0.9518  lr=2.96e-04
+  top1=0.9526  ep=141/150  vs_ref=+0.1190  t=9178s  params=67200
+  [saved train_step128_concat_relu.json]
+
+======================================================================
+STEP 128 COMPLETE
+
+  Key                   mode    params      top1    vs_ref
+  A             weighted_neg     67200  0.9526  +0.1190
+
+  Winner: A

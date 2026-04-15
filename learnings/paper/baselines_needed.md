@@ -1,44 +1,53 @@
 # Baselines and Experiments Needed for Publication
 
-## Critical (blocks submission)
+**Last updated:** 2026-04-14
+**Priority shift:** Paper 1 soft-conclusion. Only blockers proceed.
 
-### 1. Baseline comparisons at equivalent param count
-- [ ] **MLP** at 67K params (same as step199 efficiency config) — what does a standard MLP achieve?
-- [ ] **Pruned VGG16 FC** — prune to 67K params, report accuracy
-- [ ] **Random features + linear** — same random projections as SGNNET but NO iterative routing. Just project → linear classifier. Isolates the contribution of routing.
-- [ ] **Standard GNN (GCN/GAT)** at 529K params on same task — SGNNET vs established GNN baselines
+## BLOCKING (paper 1 cannot submit without)
 
-### 2. Second dataset (generalization)
-- [ ] **CIFAR-10** via VGG16 features (same pipeline, drop-in replacement)
-- [ ] **Tabular dataset** — something non-vision to show architecture-agnostic benefit (e.g., Forest Cover Type, or a Kaggle classification task)
+### 1. Cross-modal validation (paper's core claim)
+Paper positions SGNNET as a **universal classification head** replacing the FC layer across pre-trained feature extractors. Requires validation across modalities:
 
-### 3. FLOPs efficiency demonstration
-- [ ] Show competitive accuracy at ≤5% VGG16 FLOPs (≤6.18M)
-- [ ] step140 (N×K tradeoff) results will inform this
-- [ ] Pareto frontier: accuracy vs FLOPs curve with multiple N/D/K configurations
+| Modality | Feature extractor | Feature dim | Task options | Status |
+|---|---|---|---|---|
+| Vision (CNN) | VGG16 conv | 25088 | Imagenette 10-class | ✅ 95.52% @ 0.98M routing MACs |
+| Text | DistilBERT (66M) | 768 CLS | SST-2, AG News, IMDB | ⏳ PENDING |
+| Audio | Whisper-tiny (39M) | 384 | Speech Commands, ESC-50, UrbanSound8K | ⏳ PENDING |
+| LLM | Qwen2.5-0.5B (494M, h=896) | 896 last-token | text cls (SST-2 via LLM) | ⏳ PENDING |
 
-## Important (strengthens paper)
+For each modality: feature extraction → SGNNET classifier → report {accuracy, params, FLOPs} vs {linear probe, MLP at same param budget, standard FC head}.
 
-### 4. Ablation table (comprehensive)
-- [ ] Full ablation of each component: conn_in random vs learned, K_iter sweep, K_hh sweep, AH on/off, reflect on/off, F.normalize on/off, encoding type
-- [ ] Most data exists across experiments — needs to be consolidated into one table
+### 2. Matched-FLOPs baselines (existing data mostly analytical)
+- [x] Same-params baselines done (step401: Lin=96.92%, MLP_64=97.20%, MLP_2=46.98%, MLP_3=45.91%, RandProj=10.04%)
+- [ ] **Matched-FLOPs MLP**: MLP sized to equal 0.98M routing MACs (or 1.85M true MACs). Can compute analytically.
+- [ ] **Matched-FLOPs pruned VGG FC**: prune FC to reach ≤1M MACs, report retained accuracy
 
-### 5. N-scaling curve
-- [ ] Accuracy vs N for N={256, 512, 1024, 2048, 4096, 8192} at fixed D, K_hh, K_iter
-- [ ] step72 script exists but hasn't been run yet
+## STRONG-TO-HAVE (makes paper more rigorous)
 
-### 6. Convergence analysis
-- [ ] Training curves showing how SGNNET converges — does it need fewer epochs?
-- [ ] Learning rate sensitivity
+### 3. Random features + linear classifier baseline
+Isolates the contribution of iterative routing. Feed same random W_pos projections into a plain linear classifier (no K_iter loop). If linear ≈ SGNNET → routing contributes nothing and the paper loses its main mechanism claim. If SGNNET >> linear → confirms routing is the value-add. **Note:** step401 SGNNET_RandProj = 10.04% covers part of this (random fixed W_pos in SGNNET architecture), but not "random + vanilla linear classifier" baseline.
 
-## Nice to have
+### 4. Standard GNN baselines (GCN / GAT / GIN)
+SGNNET is a graph-neural-network. Should compare to established GNNs at matched params/FLOPs on the same pipeline (VGG16 features → GNN head → classification). Reviewers will ask.
 
-### 7. Theoretical analysis
-- [ ] Connection to random feature theory (Rahimi & Recht)
-- [ ] Connection to graph signal processing (diffusion on random graphs)
-- [ ] Why F.normalize is essential — connection to spherical representations
+## DONE (no longer needed)
 
-### 8. Visualization
-- [ ] t-SNE/UMAP of neuron activations before/after routing
-- [ ] Which neurons are "important" — activation magnitude heatmap
-- [ ] Connectivity pattern visualization
+- [x] N-scaling curve — step72, step402, step402a (log-linear confirmed N=256→8192)
+- [x] Ablation: F.normalize (step129/320 CONFIRMED load-bearing −11pp to −71pp)
+- [x] Ablation: AH (step321 CONFIRMED load-bearing, α=0 collapses to 18.78%)
+- [x] Ablation: W_pos learned vs random (step401 CONFIRMED +81pp delta)
+- [x] Ablation: K_iter sequential vs parallel (step700/701 CONFIRMED load-bearing)
+- [x] Ablation: ΔW relational axis (step708 CONFIRMED; random direction = chance)
+- [x] Pareto frontier: multiple N/D/K configs (step192/193/195/199/205 all on frontier)
+- [x] CIFAR-10 on raw pixels (step400 CONFIRMED design flaw — needs feature extractor; addressed by cross-modal plan)
+- [x] CUDA throughput: 4.7× faster than VGG FC with torch.compile (step500)
+- [x] ncu-validated true FLOPs: 1.85M = 0.75% of VGG16 FC (step800)
+
+## DEFERRED to future work (not paper 1)
+
+- Theoretical analysis (random feature connection, graph signal processing)
+- t-SNE/UMAP of neuron activations
+- Connectivity pattern visualization
+- Triton fused kernel (step530) — 4.7× from compile alone already exceeds paper claim
+- ΔW proj × K_hh=4 compound (step730 drafted, not launched)
+- Additional scale N=16384+ extensions

@@ -131,7 +131,7 @@ def load_learnings(include_queue: bool = True) -> list[tuple[str, str]]:
     files = sorted((BASE / "learnings").glob("*.md"))
     if not include_queue:
         files = [f for f in files if "EXPERIMENT_QUEUE" not in f.name]
-    return [(f.name, f.read_text().strip()) for f in files]
+    return [(f.name, f.read_text(errors='replace').strip()) for f in files]
 
 
 def load_results() -> list[tuple[str, str]]:

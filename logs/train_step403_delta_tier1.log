@@ -1,0 +1,12 @@
+
+======================================================================
+Step 403 — ΔW projection Tier-1 validation (75ep, 50% data)
+Testing ΔW alone + DeltaPolar combo vs AH baseline
+Running: ['Ref', 'A_proj', 'A_proj_pa15', 'A_proj_a025']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: kind=ref, param=None
+────────────────────────────────────────────────────────────
+  params=34,976

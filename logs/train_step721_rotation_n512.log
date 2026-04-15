@@ -1,0 +1,76 @@
+
+======================================================================
+Step 721 — ΔW rotation vs projection at N=512 Tier-1
+N=512 D=16 FLOPs=0.246M  Device=mps
+Prior: proj +11pp (step714 T2). Rot beat proj by +0.4pp at N=2048 (step301).
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+──────────────────────────────────────────────────
+Ref
+──────────────────────────────────────────────────
+  params=8,864
+  e  1  loss=2.7495  task=2.7495  safety=0.0000  top1=0.2280  lr=2.36e-03
+  ep 10  val=0.6471
+  e 10  loss=1.4337  task=1.4337  safety=0.0000  top1=0.6471  lr=2.36e-03
+  ep 20  val=0.6510
+  e 20  loss=1.2723  task=1.2723  safety=0.0000  top1=0.6510  lr=2.36e-03
+  ep 30  val=0.7205
+  e 30  loss=1.1754  task=1.1754  safety=0.0000  top1=0.7205  lr=2.36e-03
+  ep 40  val=0.7276
+  e 40  loss=1.1332  task=1.1332  safety=0.0000  top1=0.7276  lr=2.36e-03
+  ep 50  val=0.7223
+  e 50  loss=1.0902  task=1.0902  safety=0.0000  top1=0.7223  lr=2.36e-03
+  ep 60  val=0.7460
+  e 60  loss=1.0515  task=1.0515  safety=0.0000  top1=0.7460  lr=2.36e-03
+  ep 70  val=0.7671
+  e 70  loss=1.0286  task=1.0286  safety=0.0000  top1=0.7671  lr=2.36e-03
+  → best=0.7671 @ ep70
+
+──────────────────────────────────────────────────
+A_proj
+──────────────────────────────────────────────────
+  params=8,865
+  e  1  loss=2.2317  task=2.2317  safety=0.0000  top1=0.4825  lr=2.36e-03
+  ep 10  val=0.8400
+  e 10  loss=0.5404  task=0.5404  safety=0.0000  top1=0.8400  lr=2.36e-03
+  ep 20  val=0.8668
+  e 20  loss=0.3909  task=0.3909  safety=0.0000  top1=0.8668  lr=2.36e-03
+  ep 30  val=0.8708
+  e 30  loss=0.3246  task=0.3246  safety=0.0000  top1=0.8708  lr=2.36e-03
+  ep 40  val=0.8777
+  e 40  loss=0.2896  task=0.2896  safety=0.0000  top1=0.8777  lr=2.36e-03
+  ep 50  val=0.8864
+  e 50  loss=0.2697  task=0.2697  safety=0.0000  top1=0.8864  lr=2.36e-03
+  ep 60  val=0.8828
+  e 60  loss=0.2323  task=0.2323  safety=0.0000  top1=0.8828  lr=2.36e-03
+  ep 70  val=0.8820
+  e 70  loss=0.2207  task=0.2207  safety=0.0000  top1=0.8820  lr=2.36e-03
+  → best=0.8935 @ ep52
+
+──────────────────────────────────────────────────
+A_rot
+──────────────────────────────────────────────────
+  params=8,865
+  e  1  loss=5.4442  task=5.4442  safety=0.0000  top1=0.1452  lr=2.36e-03
+  ep 10  val=0.4861
+  e 10  loss=1.7868  task=1.7868  safety=0.0000  top1=0.4861  lr=2.36e-03
+  ep 20  val=0.6953
+  e 20  loss=1.2203  task=1.2203  safety=0.0000  top1=0.6953  lr=2.36e-03
+  ep 30  val=0.7727
+  e 30  loss=0.9735  task=0.9735  safety=0.0000  top1=0.7727  lr=2.36e-03
+  ep 40  val=0.7878
+  e 40  loss=0.8552  task=0.8552  safety=0.0000  top1=0.7878  lr=2.36e-03
+  ep 50  val=0.7911
+  e 50  loss=0.7706  task=0.7706  safety=0.0000  top1=0.7911  lr=2.36e-03
+  ep 60  val=0.8087
+  e 60  loss=0.7094  task=0.7094  safety=0.0000  top1=0.8087  lr=2.36e-03
+  ep 70  val=0.8048
+  e 70  loss=0.6775  task=0.6775  safety=0.0000  top1=0.8048  lr=2.36e-03
+  → best=0.8250 @ ep75
+
+======================================================================
+Ref=0.7671  A_proj=0.8935(Δ=+0.1264)  A_rot=0.8250(Δ=+0.0579)
+  Winner: A_proj by 6.85pp at N=512
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step721_rotation_n512.json

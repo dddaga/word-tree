@@ -1,0 +1,58 @@
+
+======================================================================
+Step 706 — ΔW projection Tier-2 (paper-ready, 150ep, 100% data)
+N=2048 D=16 K_hh=2 K_iter=5 | 150ep 100% data
+FLOPs=983,040 (~0.98M)  Device=cpu
+Tier-1 refs: Ref=94.14% A_proj=95.75% (+1.61pp) — step403
+Tier-2 Ref known: 95.52% (step199)
+Running: ['A_proj']
+======================================================================
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Train=9469  Val=3925
+
+────────────────────────────────────────────────────────────
+Config A_proj: ΔW projection, no AH (step403 Tier-1 winner +1.61pp)
+────────────────────────────────────────────────────────────
+  params=34,976
+  e  1  loss=1.5217  task=1.5217  safety=0.0000  top1=0.8624  lr=2.36e-03
+  ep 10  val=0.9452
+  e 10  loss=0.0680  task=0.0680  safety=0.0000  top1=0.9452  lr=2.36e-03
+  ep 20  val=0.9549
+  e 20  loss=0.0293  task=0.0293  safety=0.0000  top1=0.9549  lr=2.36e-03
+  ep 30  val=0.9554
+  e 30  loss=0.0194  task=0.0194  safety=0.0000  top1=0.9554  lr=2.36e-03
+  ep 40  val=0.9580
+  e 40  loss=0.0300  task=0.0300  safety=0.0000  top1=0.9580  lr=2.36e-03
+  ep 50  val=0.9643
+  e 50  loss=0.0071  task=0.0071  safety=0.0000  top1=0.9643  lr=1.18e-03
+  ep 60  val=0.9664
+  e 60  loss=0.0065  task=0.0065  safety=0.0000  top1=0.9664  lr=1.18e-03
+  ep 70  val=0.9656
+  e 70  loss=0.0080  task=0.0080  safety=0.0000  top1=0.9656  lr=1.18e-03
+  ep 80  val=0.9643
+  e 80  loss=0.0046  task=0.0046  safety=0.0000  top1=0.9643  lr=5.91e-04
+  ep 90  val=0.9676
+  e 90  loss=0.0056  task=0.0056  safety=0.0000  top1=0.9676  lr=5.91e-04
+  ep100  val=0.9656
+  e100  loss=0.0038  task=0.0038  safety=0.0000  top1=0.9656  lr=2.96e-04
+  ep110  val=0.9646
+  e110  loss=0.0039  task=0.0039  safety=0.0000  top1=0.9646  lr=2.96e-04
+  ep120  val=0.9666
+  e120  loss=0.0034  task=0.0034  safety=0.0000  top1=0.9666  lr=1.48e-04
+  ep130  val=0.9656
+  e130  loss=0.0033  task=0.0033  safety=0.0000  top1=0.9656  lr=1.48e-04
+  ep140  val=0.9654
+  e140  loss=0.0033  task=0.0033  safety=0.0000  top1=0.9654  lr=1.48e-04
+  ep150  val=0.9654
+  e150  loss=0.0032  task=0.0032  safety=0.0000  top1=0.9654  lr=1.48e-04
+  → best=0.9676 @ ep90  (1410s)
+
+======================================================================
+STEP 706 SUMMARY — ΔW projection Tier-2 (paper-ready)
+======================================================================
+  Tier-1 (75ep 50%): Ref=94.14%  A_proj=95.75%  Δ=+1.61pp  (step403)
+  Tier-2 (step199):  Ref=95.52%  (known)
+  Tier-2 (this run):
+    A_proj: 0.9676
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step706_delta_tier2.json
