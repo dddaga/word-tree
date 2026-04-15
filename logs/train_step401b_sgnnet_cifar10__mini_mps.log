@@ -26,3 +26,14 @@ Config Ref: CIFAR-10 ΔW proj K=5
   e 80  loss=0.4871  task=0.4871  safety=0.0000  top1=0.7650  lr=2.36e-03
   ep 90  val=0.7956
   e 90  loss=0.4894  task=0.4894  safety=0.0000  top1=0.7956  lr=2.36e-03
+  ep100  val=0.7917
+  e100  loss=0.4844  task=0.4844  safety=0.0000  top1=0.7917  lr=2.36e-03
+  → best=0.8022 @ep86  elapsed=4294s
+
+────────────────────────────────────────────────────────────
+Config A_k4: CIFAR-10 ΔW proj K=4 (step265 winner)
+────────────────────────────────────────────────────────────
+  params=34,976  K_iter=4
+  e  1  loss=1.5431  task=1.5431  safety=0.0000  top1=0.6523  lr=2.36e-03
+  ep 10  val=0.7527
+  e 10  loss=0.6782  task=0.6782  safety=0.0000  top1=0.7527  lr=2.36e-03

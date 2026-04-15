@@ -160,3 +160,17 @@ Before dispatching any new script to Mac Studio:
 4. Verify checkpoint saves without error
 5. Check no in-place tensor ops on tracked tensors (use `tensor * mask`, not `tensor[mask]`)
 6. Confirm tmux session name is unique: `tmux ls` before launch
+
+## 2026-04-15 — Seed gather optimization: spatial precomputation
+
+**Finding:** SGNNET `_seed()` creates [B, N_in, D] intermediate tensor then gathers [B, N, K_in, D]. Since spatial_coords is fixed, the spatial sum per neuron is precomputable at `__init__`. This is a **mathematical identity** — zero accuracy change, no hyperparameters.
+
+**Implementation:** `model_smallworld.py` — added `self.spatial_sum = spatial[conn_in].sum(dim=1)` buffer. Rewrote `_seed()` to gather x[:, conn_in].sum() only then cat with precomputed spatial_sum.
+
+**Benchmarks:**
+- Seed FLOPs: 1.64M → 0.05M (16× reduction, N×K_in×D → N×K_in MACs)
+- Memory: [B, N_in, D] + [B, N, K_in, D] eliminated → [B, N, K_in] only (14× less)
+- Speed: CPU=8.6×, MPS=10×, CUDA=5.3× (all at B=128)
+- T0 stability: 91.77% at 20ep — identical to pre-optimization behavior
+
+**Scripts:** `bench_step831_seed_opt_cuda.py` (CUDA validation), `train_step631_kin_sweep.py` (K_in sweep T1)

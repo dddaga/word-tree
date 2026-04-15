@@ -64,15 +64,15 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (5 slots, updated 2026-04-15 evening)
+## Currently Running (5 slots, updated 2026-04-15 late)
 
 | Machine:Device | Session | Step | Status | Note |
 |---------|---------|------|--------|------|
-| mini:mps | sgn-indra-mini_mps-train_step401b_sgnnet_cifar10 | step401b | RUNNING ep30 val=77% | SGNNET cross-dataset CIFAR-10 |
+| mini:mps | sgn-indra-mini_mps-train_step401b_sgnnet_cifar10 | step401b | RUNNING | SGNNET cross-dataset CIFAR-10 |
 | mini:cpu | sgn-indra-mini_cpu-train_step614_cifar100_scaling | step614 MLP | RUNNING | CIFAR-100 MLP hidden-scaling CPU |
 | studio:mps | sgn-indra-studio_mps-train_step614_cifar100_scaling | step614 all | RUNNING | CIFAR-100 full scaling (SGNNET+MLP) |
-| studio:cpu | sgn-indra-studio_cpu-train_step615_fair_mlp_matched | step615 | RUNNING | fair matched-params MLP (LeakyReLU, He-init, dropout, label-smooth, 150ep) |
-| 5060ti:cuda | — | step614 SGNNET large-N | PENDING rsync | waiting for store_cifar100.h5 transfer |
+| studio:cpu | sgn-indra-studio_cpu-train_step631_kin_sweep | step631 | RUNNING | K_in sweep T1 (75ep, 50% data) — validates optimized _seed stability |
+| 5060ti:cuda | sgn-indra-5060ti_cuda-train_step614_cifar100_scaling | step614 SGNNET | RUNNING | CIFAR-100 SGNNET N=4096/8192 |
 
 **Auto-launch queue when slots free** (`.controller/auto_launch_queue.txt`):
 1. bench_step832 PyG torch_scatter (5060ti) — needs CUDA
@@ -98,11 +98,23 @@ All scripts smoke-tested with `--help`. Launch via `scripts/queue_submit.sh` (on
 | **step526/527** | INT8 QAT sweep. Part A weight-only: −0.20pp (lossless). W+Z: −1.27pp. Part B QAT accum=1: −0.97pp viable; cliff at accum=4 (−16.31pp). fp32 ref=87.90%. | N=2048 | `scripts/train_step526_int8_qat.py` | **DONE (mini_mps)**. Result: `results/train_step527_int8_qat_k4_seed42__mini_mps.json` |
 | **bench_step830** | K=4 direct wall-clock measurement (V3 Blocker-7) — currently paper says "20% reduction projected"; this measures it. 6 variants: K5/K4 × eager/reduce-overhead/max-autotune fp32. Prints pass/fail vs the ≤0.85× criterion. | N=2048 bs=32 | `scripts/bench_step830_k4_wallclock.py` | QUEUED (5060ti only) |
 
+### P-SPEED — Seed Gather Optimization (2026-04-15)
+
+**Spatial precomputation (mathematical identity) — SHIPPED to model_smallworld.py.**
+FLOPs: seed 1.64M → 0.05M (16× less). Memory: 14× less. Speed: 5–10× (device-dependent).
+Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — STABLE.
+
+| Step | Description | Script | Status |
+|------|-------------|--------|--------|
+| **bench_step831** | CUDA seed speedup validation — DONE: 5.26× @B=128, 1.98× @B=32. Correctness ✓ | `scripts/bench_step831_seed_opt_cuda.py` | **DONE** |
+| **step630** | K=1 clean benchmark (Ref_k5 / Scratch_k1 / Distill_k1), clean inference timing | `scripts/train_step630_k1_clean_benchmark.py` | QUEUED (needs slot) |
+| **step631** | K_in sweep T1 (K_in=25/15/10/5) — can we reduce fan-in without accuracy loss? | `scripts/train_step631_kin_sweep.py` | **RUNNING (studio_cpu)** |
+
 ### P-CUDA — Deferred
 
 | Step | Description | Script | Status |
 |------|-------------|--------|--------|
-| **step530** | **Triton fused kernel (gather+mul+sum)** — custom kernel eliminating [B,N,K_hh,D] intermediate tensor. Register-tiled for D=16. | DEFERRED | QUEUED |
+| **step530** | **Triton fused kernel (gather+mul+sum)** — custom kernel eliminating [B,N,K_hh,D] intermediate tensor. Register-tiled for D=16. Lower priority now that spatial precomputation handles main bottleneck. | DEFERRED | QUEUED |
 
 ---
 
