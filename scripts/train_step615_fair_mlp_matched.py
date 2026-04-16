@@ -30,6 +30,7 @@ that the bottleneck is nonlinearity, not parameter count.
 To run:
     python -u scripts/train_step615_fair_mlp_matched.py --device mps --epochs 150
 """
+# CUDA-5060ti-validated — pure MLP, no SGNNET routing; no GradScaler; device-agnostic
 from __future__ import annotations
 import argparse, json, os, sys, time
 from pathlib import Path

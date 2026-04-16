@@ -1,0 +1,53 @@
+{
+  "device": "cuda",
+  "bs": 32,
+  "k_iter": 5,
+  "has_pyg": true,
+  "variants": {
+    "V_ref": {
+      "median_ms": 0.990135500614997,
+      "p95_ms": 0.9971370047423989,
+      "p99_ms": 1.0000700040109223,
+      "mean_ms": 0.9908280699649671,
+      "throughput_sps": 32318.80887022436,
+      "peak_mib": 57.4794921875,
+      "desc": "fancy-index eager fp32"
+    },
+    "V_ref_c": {
+      "median_ms": 0.15125099525903352,
+      "p95_ms": 0.15926000160106923,
+      "p99_ms": 0.16846999584231503,
+      "mean_ms": 0.15297245680509755,
+      "throughput_sps": 211568.85576320722,
+      "peak_mib": 41.26953125,
+      "desc": "fancy-index max-autotune fp32"
+    },
+    "V_scat": {
+      "median_ms": 1.030421000905335,
+      "p95_ms": 1.0358386000007158,
+      "p99_ms": 1.0385019969544373,
+      "mean_ms": 1.03049113007728,
+      "throughput_sps": 31055.2676739746,
+      "peak_mib": 49.65234375,
+      "desc": "scatter_add eager fp32"
+    },
+    "V_scat_c": {
+      "median_ms": 0.21749200095655397,
+      "p95_ms": 0.2236915002868045,
+      "p99_ms": 0.22504248860059303,
+      "mean_ms": 0.2183569966291543,
+      "throughput_sps": 147131.84788065974,
+      "peak_mib": 57.76953125,
+      "desc": "scatter_add max-autotune fp32"
+    },
+    "V_scat_cg": {
+      "median_ms": 0.8957350000855513,
+      "p95_ms": 0.9007524986373028,
+      "p99_ms": 0.9037168040231336,
+      "mean_ms": 0.8961241569098396,
+      "throughput_sps": 35724.85165472343,
+      "peak_mib": 57.76953125,
+      "desc": "scatter_add CUDA Graph fp32"
+    }
+  }
+}

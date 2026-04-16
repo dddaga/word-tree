@@ -38,7 +38,7 @@
 |--------|-------|-------------|
 | Accuracy | 95.52% | +0.52pp |
 | FLOPs | 0.98M | **0.79%** |
-| Params | 67K | **0.05%** |
+| Params | **34,976** | **0.029%** (CONFIRMED — 67K was STALE pre-spatial-precomputation refactor) |
 
 **Efficiency frontier (D=16, K_hh=2 family):**
 
@@ -64,19 +64,28 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (5 slots, updated 2026-04-16 session 3)
+## Currently Running (5 slots, updated 2026-04-16 session 10)
 
 | Machine:Device | Session | Step | Status | Note |
 |---------|---------|------|--------|------|
-| mini:mps | sgn-indra-mini_mps-train_step296_kin10_aug_n16384_t1 | step296 | RUNNING | K_in=10+aug T1 @ N=16384 (compound test of new best K_in) |
-| mini:cpu | sgn-indra-mini_cpu-train_step295_kin5_t1_n16384 | step295 | RUNNING | K_in=5 T1 @ N=16384 (extend curve; K_in=10 was best so far at +1.53pp) |
-| studio:mps | sgn-indra-studio_mps-train_step291_kin15_aug_n16384_t2 | step291 | RUNNING | K_in=15 compound T2 @ N=16384 (C_k15_naug + D_k15_aug, 150ep) |
-| studio:cpu | sgn-indra-studio_cpu-train_step407_sgnnet_agnews | step407 | RUNNING | AG News 4-class cross-modal (DistilBERT features) |
-| 5060ti:cuda | sgn-indra-5060ti_cuda-train_step410_sst2_config_sweep | step410 | RUNNING | **P0 GAP-CLOSE: SST-2 config sweep** — close SGNNET-vs-Linear gap at low-dim features |
+| mini:mps | sgn-indra-mini_mps-train_step297_kin10_aug_n16384_t2 | step297 | RUNNING | K_in=10+aug T2 @ N=16384 — ep80 val=96.82% (re-launched, prev session died) |
+| mini:cpu | sgn-indra-mini_cpu-train_step760_seed_variance | step760 | RUNNING | Seed variance step706 config cross-device CPU validation (5 seeds T1) |
+| studio:mps | sgn-indra-studio_mps-train_step411_agnews_config_sweep | step411 | RUNNING | AG News config sweep (5 configs vs Linear=91.18%, MLP_64=92.53%) |
+| studio:cpu | sgn-indra-studio_cpu-train_step760_seed_variance | step760 | RUNNING | Seed variance step199 config cross-device CPU validation (5 seeds T1) |
+| 5060ti:cuda | — | — | HOLD | RAM 13GB < 16GB threshold |
 
 ---
 
 ## Priority Queue — Active / QUEUED
+
+### P-PAPER-2026-04-16 — Params efficiency baseline (session 6)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| **step850** | VGG-FC Pareto curve: MLP_16=97.50%, MLP_128=97.78%, MLP_256=97.91%, MLP_512=97.83%, VGG_37_2L=97.61%, VGG_128_2L=97.73%. **Plain MLPs beat SGNNET at every FLOPs level. Paper pivot: params efficiency is SGNNET's advantage, not FLOPs.** | **DONE** |
+| **step851** | MLP param-threshold crossover: h=4 (100K)=95.01% (trails SGNNET 95.52%), **h=6 (150K)=96.31% (CROSSOVER)**. Min MLP to beat SGNNET = 150K params = **2.22× SGNNET's 67K**. Paper claim: "SGNNET achieves VGG-level accuracy at 2.22× fewer params than minimum competitive MLP." | **DONE** |
+| **step615** | Fair MLP at matched params: best-practices MLP (LeakyReLU, He init, label smooth 0.1, dropout 0.3, cosine LR) at h=3 (75K) and h=2 (50K). Tests if best-optimized MLP at 67K-equivalent params can close the gap vs SGNNET. D_skip_h3 missing from MODEL_MAP (not implemented). | **DONE (A/B/C/E)** |
+| **bench_step832** | PyG scatter vs fancy-index compiled: V_ref_c=0.151ms (6.55× over eager). scatter_add compiled=0.217ms — fancy-index wins. torch.compile max-autotune is the kernel speedup path. | **DONE** |
 
 ### P-PAPER-2026-04-15 — Scripts added from V3 gap-analysis + design log (2026-04-15)
 
@@ -85,10 +94,10 @@ All scripts smoke-tested with `--help`. Launch via `scripts/queue_submit.sh` (on
 | Step | Description | Scale | Script | Status |
 |------|-------------|-------|--------|--------|
 | **step267** | ΔW rot + aug + K=4 @ N=4096 (V3 Gap 2.1) — **SUPERSEDED.** step266 Ref (K=5)=97.71%, A_k4 (K=4)=97.66% ALREADY COMPLETE. Local JSON was stale sync artifact; authoritative result synced from 5060ti. No new script needed. | N=4096 | (n/a) | **DONE — confirmed from synced step266 log** |
-| **step268** | ΔW proj + aug + K=4 combo @ N=2048 Tier-1 (V3 Gap 2.2) — stack K=4 equivalence + aug gain. 4-config ablation: Ref K5 no-aug, A K4 no-aug, B K4 aug (COMBO), C K5 aug. | N=2048 | `scripts/train_step268_dwproj_aug_k4.py` | **RUNNING (mini_cpu)** |
+| **step268** | ΔW proj + aug + K=4 combo @ N=2048 Tier-1 (V3 Gap 2.2) — stack K=4 equivalence + aug gain. 4-config ablation: Ref K5 no-aug, A K4 no-aug, B K4 aug (COMBO), C K5 aug. | N=2048 | `scripts/train_step268_dwproj_aug_k4.py` | **DONE** |
 | **step403b** | Matched-FLOPs MLP_37 baseline — MLP_37=97.71% @ep36 at 1.86M FLOPs. Paper baseline confirmed. | N_in=25088→h=37→10 | `scripts/train_step403b_matched_flops_mlp.py` | **DONE (studio_mps)** |
 | **step404** | GCN / GAT / GIN baselines. GCN=48.9%, GAT=48.7%, GIN=15.5% vs SGNNET=95.52%. SGNNET crushes all GNN baselines by ~47pp. | N=2048 | `scripts/train_step404_gnn_baselines.py` | **DONE** |
-| **step405** | SST-2 cross-modal SGNNET (V3 Gap 2.8 paper-blocker) — DistilBERT CLS [768-d] → Linear / MLP_64 / SGNNET comparison. 2-phase: `--phase extract` (one-time) then `--phase train`. Requires `pip install transformers datasets h5py`. | N=2048 D=16 | `scripts/train_step405_sgnnet_sst2.py` | QUEUED |
+| **step405** | SST-2 cross-modal SGNNET (V3 Gap 2.8 paper-blocker) — DistilBERT CLS [768-d] → Linear / MLP_64 / SGNNET comparison. 2-phase: `--phase extract` (one-time) then `--phase train`. Requires `pip install transformers datasets h5py`. | N=2048 D=16 | `scripts/train_step405_sgnnet_sst2.py` | **DONE — Linear=84.63%, MLP_64=84.52%, SGNNET=83.60% (−1.03pp). Text gap confirmed.** |
 | **step524-S1** | Edge-β scalar on frozen topology. Ref=93.94%, S1_init0=93.91% (−0.03pp), S1_init1=93.07% (−0.87pp). | N=2048 | `scripts/train_step524_s1_edge_beta.py` | **DONE — KILLED. Edge-β adds no value. Dynamic direction CLOSED.** |
 | **step526/527** | INT8 QAT sweep. Part A weight-only: −0.20pp (lossless). W+Z: −1.27pp. Part B QAT accum=1: −0.97pp viable; cliff at accum=4 (−16.31pp). fp32 ref=87.90%. | N=2048 | `scripts/train_step526_int8_qat.py` | **DONE (mini_mps)**. Result: `results/train_step527_int8_qat_k4_seed42__mini_mps.json` |
 | **bench_step830** | K=4 direct wall-clock measurement (V3 Blocker-7) — currently paper says "20% reduction projected"; this measures it. 6 variants: K5/K4 × eager/reduce-overhead/max-autotune fp32. Prints pass/fail vs the ≤0.85× criterion. | N=2048 bs=32 | `scripts/bench_step830_k4_wallclock.py` | QUEUED (5060ti only) |
@@ -105,7 +114,7 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step630** | K=1 clean benchmark. Ref_k5=95.46% (1.97ms B1), Scratch_k1=91.69% (0.82ms), Distill_k1=92.13% (+0.44pp over scratch). Speedup vs K=5: 2.3× B1, 3.0× B32. Verdict: MEDIUM — distillation helps but −3.3pp cost too large for efficiency claim. | `scripts/train_step630_k1_clean_benchmark.py` | **DONE** |
 | **step631** | K_in sweep T1. Ref=94.01%, K15=93.66% (−0.36pp ADVANCES), K10=92.84% FAILS, K5=91.26% FAILS. K_in=15 minimum viable. 26.7× compound seed reduction. | `scripts/train_step631_kin_sweep.py` | **DONE** |
 | **step632** | K_in=15 T2. Ref_k25=95.46%, A_k15=95.13% (Δ=−0.33pp). **CONFIRMED for paper.** 26.7× seed reduction, <0.5pp cost. | `scripts/train_step632_kin15_t2.py` | **DONE** |
-| **step633** | K_in plot sweep K_in=1..25 (T1 75ep 50% data). For publication accuracy-vs-seed-MACs curve. Existing T1 data at K_in=5,10,15,25 from step631 (resumable). New: K_in=1,2,3,7,20. | `scripts/train_step633_kin_plot_sweep.py` | **QUEUED → 5060ti when step269 done** |
+| **step633** | K_in plot sweep K_in=1..25. K_in=20=94.50% is the true knee (beats K_in=15=93.89% and K_in=25=94.01%). Publishable curve. Both 5060ti+mini_cpu results consistent. | `scripts/train_step633_kin_plot_sweep.py` | **DONE** |
 | **step621** | GLNN distillation Imagenette. h=256: −0.18pp. h=2: collapsed (−60pp). KILLED at both student sizes. | `scripts/train_step621_glnn_imagenette_mlp.py` | **DONE — KILLED** |
 
 ### P-CUDA — Deferred
@@ -141,11 +150,12 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step287** | N=16384+aug T2. Ref=95.87%, A_n16384_aug=96.87% (**+0.99pp** — strongest aug T2 delta at any N). | **DONE** |
 | **step288** | K_in=15+aug@N=16384 T1. C_k15_naug=94.70% (+1.27pp), D_k15_aug=95.92% (+2.50pp). **ANOMALY: K_in=15 > K_in=25 at N=16384.** | **DONE** |
 | **step289** | K_in=20,10 T0 @ N=16384. K_in=20=91.01% (-2.42pp DEAD), K_in=10=92.43% (-0.99pp ADVANCES). | **DONE** |
-| **step290** | K_in=10,20 T1 @ N=16384. Validates K_in anomaly curve. RUNNING on mini_cpu. | **RUNNING (mini_cpu)** |
-| **step291** | K_in=15 compound T2 @ N=16384 (C_k15_naug + D_k15_aug, 150ep). Validates step288 +1.27pp/+2.50pp. ep40 val=95.97%. | **RUNNING (studio_mps)** |
+| **step290** | K_in=10,20 T1 @ N=16384. Validates K_in anomaly curve. | **DONE** |
+| **step291** | K_in=15 compound T2 @ N=16384. C_k15_naug=**96.13%** @ep65, D_k15_aug=**96.89%** @ep74. K_in=15+aug matches K_in=25+aug (96.87%) at 40% fewer seed connections. **CONFIRMED.** | **DONE** |
 | **step293** | K_in=15 no-aug T1 @ N=4096,8192. N=4096=96.18% (+0.33pp), N=8192=95.18% (+0.38pp). Crossover between N=2048-4096. | **DONE** |
 | **step294** | K_in=15 no-aug T2 @ N=4096 = 97.07% (Ref T2=97.12%, Δ=-0.05pp — tied). T1 delta compressed to parity. | **DONE** |
-| **step296** | K_in=10+aug T1 @ N=16384. Tests compound of new best K_in (+1.53pp) with aug (+2.11pp). | **RUNNING (mini_mps)** |
+| **step296** | K_in=10+aug T1 @ N=16384. A_k10_aug=**96.56%** @ep57 (+3.13pp vs Ref, +1.60pp vs K_in=10 alone). ADVANCES to T2 (step297). | **DONE** |
+| **step297** | K_in=10+aug T2 @ N=16384. Validate vs step291 D (96.89%). Key: does K_in=10 beat K_in=15 at N=16384? Session died at ep80 (96.82%). Re-launched. | **RUNNING (mini_mps)** |
 | **step606** | K=1 + K_in=15 compound at N=2048 T1. Ref_k25=95.69%, A_k15_KD=94.96% (-0.73pp), B_k15_scratch=95.29% (-0.40pp). **COMPOUND FAILS at N=2048** — K_in=15 hurts at K=1 when no routing to compensate. Need to retest at N>=4096. | **DONE — compound KILLED at N=2048** |
 | **step607** | K=1 pure-KD T2 @ N=2048. A_pure_kd=95.92% (-0.76pp vs teacher), B_balanced=95.95% (-0.74pp). T2 OVERFITS T1 (step605=96.33% at 75ep was better). Early-stop @ep75 for best. | **DONE** |
 | **bench_step608** | K=1 wall-time bench. SGNNET K=1 @ B=32 = **12.7us** (5.3× faster than VGG_FC 66.7us, 3418× fewer params). K=1 vs K=5 = 2-2.5× wall-time reduction. Memory anomaly: K=5 B=128 regresses (45.4us > B=32's 31.2us) — CUDA optim candidate. | **DONE** |
@@ -163,13 +173,15 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 
 | Step | Description | Status |
 |------|-------------|--------|
-| **step410** | SST-2 config sweep: Ref(N=2048,K=25), small-N(N=512), low-K_in(K_in=10), low-K_iter(K=2), combined. 5 configs × 100ep on CUDA. | **RUNNING (5060ti)** |
-| **step411** | AG News config sweep — same 5 configs, 150ep, once SST-2 winner identified. | QUEUED (needs sync of agnews h5 features) |
+| **step410** | SST-2 config sweep. All 5 configs trail Linear=84.63%. Best: Ref_orig=83.72% (−0.91pp). Compression worsens monotonically — D_combined worst at −2.06pp. **Gap NOT closed. Architecture investigation needed.** | **DONE** |
+| **step411** | AG News config sweep — same 5 configs vs Linear=91.18%, MLP_64=92.53%. Launched studio_mps 2026-04-16. h5 on mac-studio. | **RUNNING (studio_mps)** |
 | **step412** | If step410 winner ≥ Linear: validate scaling on SST-5 (5-class text) and RTE (low-data). | QUEUED (depends on 410) |
 
 **Exit criterion:** SGNNET config X on text tasks Pareto-dominates (accuracy, params, FLOPs, wall-time) vs Linear/MLP_64. If yes → paper claim expands from "VGG-FC-replacement" to "general high-efficiency FC replacement." If no → scope refinement stands with honest low-dim failure mode documented.
-| **step295** | K_in=5 T1 @ N=16384. Extends K_in curve; K_in=10 was +1.53pp so K_in=5 may continue or break. | **RUNNING (mini_cpu)** |
+| **step295** | K_in=5 T1 @ N=16384. A_k5=93.78% (+0.36pp vs Ref, −1.18pp vs K_in=10). K_in=5 continues to improve but sublinear — K_in=10 still stronger. | **DONE** |
 | **step633** | K_in=1..25 sweep. K_in=15 is knee (−0.08pp vs K_in=25). K_in=20/25 identical. Publishable curve. | **DONE** |
+| **step634** | K_in=20 T2 validation @ N=2048. Ref_k25=95.36%, A_k20=95.29% (Δ=−0.07pp), B_k15=95.06% (Δ=−0.30pp). K_in=20 ≈ K_in=25. K_in=15 confirmed <0.5pp cost. T1 crossover was noise. | **DONE — K_in=15 paper default stands.** |
+| **step760** | Seed variance: step199 T1 mean=93.88%±0.43pp; step706 (ΔW proj) T1 mean=95.33%±0.20pp; step729 (N=4096 ΔW rot) T1 mean=96.69%±0.20pp; step750 (N=4096 K_hh=4 K_iter=3) T1 mean=94.48%±0.39pp. ΔW mechanisms halve variance. CPU cross-device validation running. | **DONE (4 configs). CPU cross-device RUNNING.** |
 
 ## Paper-critical experiments (2026-04-15 session)
 
@@ -184,7 +196,7 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step605** | B1 consistency-DEQ student — K=1 student, 6 configs 75ep. ep30=95.26%, learning. | **RUNNING (5060ti_cuda)** |
 | **step405** | SST-2 cross-modal — Linear=84.63%, MLP_64=84.52% (MPS). SGNNET=83.60% (CPU, −1pp). SGNNET competitive. NOTE: MPS run fails (49%, numerical issue) — use CPU result. | **DONE** |
 | **step406** | ESC-50 audio cross-modal. Linear=64.5%, MLP_64=64.5%, SGNNET=50.5% (-14pp). KILLED. Audio fails. | **DONE — KILLED** |
-| **step407** | AG News 4-class text cross-modal (DistilBERT features). Extends SST-2 to multi-class text. | **RUNNING (studio_cpu)** |
+| **step407** | AG News 4-class text cross-modal (DistilBERT features). Linear=91.18%, MLP_64=92.53%, SGNNET=90.91% (−0.27pp vs Linear, −1.62pp vs MLP_64). Text gap confirmed on multi-class. | **DONE** |
 
 ## GLNN distillation validation — cross-dataset/scale (Claim 7)
 
@@ -204,13 +216,13 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 |------|-------------|--------|
 | **step523** | **Alternating W_pos / edge training cycle.** Ref=77.68%, A_low=74.85% (−2.83pp), B_high=75.03% (−2.65pp). Both fail. Edge rewiring destroys weights; recovery incomplete. **KILLED — dynamic connectivity direction CONFIRMED dead (7/7 negative including step511-514).** | **DONE** |
 | **step521** | Deep supervision on K_iter routing. Ref=94.85%, A_ds_3to5=88.36% (-6.5pp), B_ds_2to5=88.87% (-6.0pp). **KILLED — routing disrupted by intermediate supervision.** C/D still running but expected dead. | **DONE — KILLED** |
-| **step522** | Muon optimizer vs AdamW at N=2048 K=5 ΔW proj. Measures convergence speed (epochs-to-93/94/95) AND final accuracy — user directive: "same accuracy at faster convergence is a win". Requires `pip install muon-optimizer`. **Script ready, queue for CUDA slot (after env check).** | QUEUED |
+| **step522** | Muon optimizer vs AdamW at N=2048 K=5 ΔW proj. Ref_adamw=95.64% (ep_to_95=38), A_muon=95.39% (ep_to_95=42). Muon −0.25pp vs AdamW at T1. No convergence benefit. | **DONE — KILLED. AdamW remains default.** |
 | **direct K=4 wall-clock bench** | Measure SGNNET K=4 inference latency directly (currently projected 0.224ms based on 20% reduction). Add to bench_step811 variant list. | TODO |
 | **step524** | **Edge-SHIFT probes** (post-step523 follow-up). 6 configs at N=1024 T0: Ref / P1 step523+Adam-reset / P2 alt-schedule+0%cap / S1 edge-β scalar / S2 W_pos-passive-rebind / S4 cyclic-shift-null-control. Tests H1-H2-H5 of step523 failure + 2 continuous-parameterization alternatives + 1 null control. ~4h one slot. Design in LEARNINGS_design_2026_04_15.md. | TODO (script) |
 | **step526** | **INT8 QAT + inference impact + grad-accum sweep.** Part A: fp32 train → quant eval for 3 modes (saturate/modular/crt) × {W only, W+Z}. Tests hypothesis: L2-norm at D=16 bounds components to ±0.25 × scale=100 → int8 range ±25, so wrap never fires. Part B: QAT from scratch (fake-quant+STE forward, fp32 master), grad_accum ∈ {1,4,16,64}. Telemetry: wrap_rate per forward. Script ready: `train_step526_int8_qat.py`. | TODO (launch) |
 | **Param count reconciliation** | Bench reports SGNNET=34,976; training reports 67,744. Diff ≈ 32K. Find missing component (likely K_in=25 seed projection). Resolve before paper. | TODO |
-| **bench_step832** | **PyTorch Geometric `torch_scatter` wall-clock probe** on 5060ti. Install `torch-scatter`, re-implement routing loop in edge-list format, benchmark vs V2 max-autotune (0.280ms K=5). Hypothesis: 2-3× if memory-BW-bound. Missing baseline — reviewers will ask. | TODO |
-| **bench_step830** | **Direct K=4 wall-clock + fullgraph=True audit** on 5060ti. Cheap — measure projected 0.224ms directly AND eliminate torch.compile graph breaks. | TODO |
+| **bench_step832** | PyG scatter vs fancy-index. V_ref_c (compiled) = **0.151ms** (6.55× over eager). Scatter_add compiled = 0.217ms — fancy-index wins. CUDA Graph approach (0.896ms) slower. Best: `torch.compile(max-autotune)` on fancy-index. | **DONE** |
+| **bench_step830** | K=4 vs K=5 wall-clock. K=4 compiled=0.140ms vs K=5=0.154ms → **1.10× compiled, 1.18× eager**. Paper claim updated: "10–18% latency reduction" (was "20% projected"). | **DONE** |
 
 ## Parked — Resume after arch experiments complete
 

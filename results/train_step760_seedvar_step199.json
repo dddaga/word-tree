@@ -1,0 +1,53 @@
+{
+  "config": "step199",
+  "config_params": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "dw_mode": null
+  },
+  "per_seed": [
+    {
+      "seed": 42,
+      "top1_best": 0.9389,
+      "best_epoch": 56,
+      "elapsed_s": 295.8,
+      "n_params": 34976
+    },
+    {
+      "seed": 43,
+      "top1_best": 0.9343,
+      "best_epoch": 72,
+      "elapsed_s": 296.0,
+      "n_params": 34976
+    },
+    {
+      "seed": 44,
+      "top1_best": 0.9457,
+      "best_epoch": 74,
+      "elapsed_s": 291.8,
+      "n_params": 34976
+    },
+    {
+      "seed": 45,
+      "top1_best": 0.9363,
+      "best_epoch": 64,
+      "elapsed_s": 308.0,
+      "n_params": 34976
+    },
+    {
+      "seed": 46,
+      "top1_best": 0.9389,
+      "best_epoch": 74,
+      "elapsed_s": 294.4,
+      "n_params": 34976
+    }
+  ],
+  "mean": 0.93882,
+  "std": 0.00430488095073486,
+  "min": 0.9343,
+  "max": 0.9457,
+  "range_pp": 1.1399999999999966,
+  "n_seeds": 5
+}

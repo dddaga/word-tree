@@ -1,0 +1,20 @@
+{
+  "Linear": {
+    "n_params": 3076,
+    "top1_best": 0.9118421052631579,
+    "best_epoch": 89,
+    "elapsed_s": 112.53979921340942
+  },
+  "MLP_64": {
+    "n_params": 49476,
+    "top1_best": 0.9252631578947368,
+    "best_epoch": 61,
+    "elapsed_s": 204.13224291801453
+  },
+  "SGNNET": {
+    "n_params": 67648,
+    "top1_best": 0.9090789473684211,
+    "best_epoch": 125,
+    "elapsed_s": 10194.536885023117
+  }
+}

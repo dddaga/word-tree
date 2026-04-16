@@ -8,7 +8,7 @@ SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, Imagen
 - **Standard seed:** SGNNET_SmallWorld with spatial precomputation is the enforced base. Legacy variants (`model.py`, `model_wave.py`, `model_proximity_wave.py`) emit DeprecationWarning. 16× seed FLOP reduction, bit-exact.
 - **Current defaults:** N=2048, D=16, K_hh=2, K_iter=5, α_AH=1.0, α_reflect=0.5 (for K=1 student: distil from K=5 ΔW teacher). K_in=15 for N≥4096, K_in=25 at N=2048.
 
-Active focus: (1) cross-dataset generalization (CIFAR-10 step401, AG News step407); (2) text-modality gap-close (step410 SST-2 config sweep, P0); (3) baseline comparisons (pruned VGG, random projection — blocking paper).
+Active focus: (1) N=16384 record: step297 K_in=10+aug T2 running (watching >96.89%); (2) text gap confirmed negative (step410 SST-2, step407 AG News — step411 AG News config sweep running); (3) paper results largely complete — params=34,976 (CONFIRMED, not 67K which was STALE pre-refactor), 0.029% of VGG_FC.
 
 ## Primary Goal
 **Long-term goal (stubborn):** improve memory footprint + energy efficiency of deep learning in general.

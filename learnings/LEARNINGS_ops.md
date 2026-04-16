@@ -192,3 +192,16 @@ Next: step632 K_in=15 T2 validation (150ep, 100% data).
 **Symptom:** `ERROR: pip install soundfile` — script crashed at extraction phase; slot freed immediately.
 **Fix:** `d_env/bin/pip install soundfile` before launch.
 **Lesson:** Audio cross-modal scripts require `soundfile`. Add to deps check: `transformers datasets h5py soundfile`.
+
+## step522 Muon optimizer — BROKEN (2026-04-16)
+Root cause: Muon crashes with 'lerp_() got NoneType' — some 2D params in matrix_params receive no gradient (not in computation path for SGNNET_AntiHebbian). zero_grad(set_to_none=False) doesn't fix it. Need to filter matrix_params to params that actually receive gradients after first backward, or use a Nesterov-based Muon variant that handles None grads.
+AdamW baseline captured: Ref_adamw=95.67%, reaches 95% @ep21.
+Fix needed: run one backward, check which params have non-None grad, use those as matrix_params.
+
+
+## 2026-04-16 session 10 — Param count reconciliation
+**Finding:** step199 actual trainable params = 34,976 (W_pos=32,928 + theta=2,048).
+The "67K" figure in CLAUDE.md / EXPERIMENT_QUEUE was STALE — measured before the spatial precomputation refactoring removed learned seed projection weights.
+Post-refactoring: seed connections are structural (non-learnable indexing). Only W_pos and theta are trainable.
+Paper correction: params = 34,976 = 0.029% of VGG_FC (not 0.05%). Stronger claim.
+Step851 MLP crossover also stronger: h=6 (150K params) = 4.29× SGNNET (not 2.22× if 67K was used).

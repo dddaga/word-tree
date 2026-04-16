@@ -1,0 +1,14 @@
+{
+  "A_k10_aug": {
+    "label": "N=16384 K_in=10 + aug T1 (compound test)",
+    "N": 16384,
+    "K_in": 10,
+    "use_aug": true,
+    "top1_best": 0.9656050801277161,
+    "best_epoch": 57,
+    "delta_vs_ref": 0.0313,
+    "delta_vs_aug": 0.0102,
+    "delta_vs_k10": 0.016,
+    "elapsed_s": 3303
+  }
+}

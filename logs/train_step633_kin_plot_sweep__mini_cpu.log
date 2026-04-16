@@ -1,0 +1,144 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 633 — K_in plot sweep (T1: 75ep, 50% data)
+  device=cpu  seed=42  K_in values=[1, 2, 3, 5, 7, 10, 15, 20, 25]
+  N=2048  D=16  K_iter=5  Train=4734  Val=3925
+
+───────────────────────────────────────────────────────
+K_in= 1  seed_MACs=2,048  (orig=32,768)
+  e  1  loss=4.0074  task=4.0074  safety=0.0000  top1=0.2645  lr=2.36e-03
+  e 10  loss=0.7536  task=0.7536  safety=0.0000  top1=0.7493  lr=2.36e-03
+  e 20  loss=0.5666  task=0.5666  safety=0.0000  top1=0.7972  lr=2.36e-03
+  ep 25  val=0.8104
+  e 30  loss=0.5056  task=0.5056  safety=0.0000  top1=0.8107  lr=2.36e-03
+  e 40  loss=0.4491  task=0.4491  safety=0.0000  top1=0.8262  lr=2.36e-03
+  ep 50  val=0.8247
+  e 50  loss=0.4244  task=0.4244  safety=0.0000  top1=0.8247  lr=2.36e-03
+  e 60  loss=0.3870  task=0.3870  safety=0.0000  top1=0.8369  lr=2.36e-03
+  e 70  loss=0.3737  task=0.3737  safety=0.0000  top1=0.8405  lr=2.36e-03
+  ep 75  val=0.8400
+  → K_in=1  best=0.8471 @ep72  Δ=+84.71pp  285s
+───────────────────────────────────────────────────────
+K_in= 2  seed_MACs=4,096  (orig=65,536)
+  e  1  loss=4.7374  task=4.7374  safety=0.0000  top1=0.2851  lr=2.36e-03
+  e 10  loss=0.6560  task=0.6560  safety=0.0000  top1=0.7804  lr=2.36e-03
+  e 20  loss=0.4556  task=0.4556  safety=0.0000  top1=0.8334  lr=2.36e-03
+  ep 25  val=0.8492
+  e 30  loss=0.3825  task=0.3825  safety=0.0000  top1=0.8535  lr=2.36e-03
+  e 40  loss=0.3368  task=0.3368  safety=0.0000  top1=0.8606  lr=2.36e-03
+  ep 50  val=0.8520
+  e 50  loss=0.3159  task=0.3159  safety=0.0000  top1=0.8520  lr=2.36e-03
+  e 60  loss=0.2930  task=0.2930  safety=0.0000  top1=0.8647  lr=2.36e-03
+  e 70  loss=0.2744  task=0.2744  safety=0.0000  top1=0.8701  lr=2.36e-03
+  ep 75  val=0.8825
+  → K_in=2  best=0.8831 @ep66  Δ=+88.31pp  287s
+───────────────────────────────────────────────────────
+K_in= 3  seed_MACs=6,144  (orig=98,304)
+  e  1  loss=5.1874  task=5.1874  safety=0.0000  top1=0.2864  lr=2.36e-03
+  e 10  loss=0.5877  task=0.5877  safety=0.0000  top1=0.7982  lr=2.36e-03
+  e 20  loss=0.4078  task=0.4078  safety=0.0000  top1=0.8466  lr=2.36e-03
+  ep 25  val=0.8632
+  e 30  loss=0.3376  task=0.3376  safety=0.0000  top1=0.8675  lr=2.36e-03
+  e 40  loss=0.3066  task=0.3066  safety=0.0000  top1=0.8759  lr=2.36e-03
+  ep 50  val=0.8741
+  e 50  loss=0.2784  task=0.2784  safety=0.0000  top1=0.8741  lr=2.36e-03
+  e 60  loss=0.2560  task=0.2560  safety=0.0000  top1=0.8874  lr=2.36e-03
+  e 70  loss=0.2409  task=0.2409  safety=0.0000  top1=0.8940  lr=2.36e-03
+  ep 75  val=0.8930
+  → K_in=3  best=0.8940 @ep70  Δ=+89.40pp  287s
+───────────────────────────────────────────────────────
+K_in= 5  seed_MACs=10,240  (orig=163,840)
+  e  1  loss=5.0703  task=5.0703  safety=0.0000  top1=0.2955  lr=2.36e-03
+  e 10  loss=0.5202  task=0.5202  safety=0.0000  top1=0.8397  lr=2.36e-03
+  e 20  loss=0.3736  task=0.3736  safety=0.0000  top1=0.8759  lr=2.36e-03
+  ep 25  val=0.8805
+  e 30  loss=0.3066  task=0.3066  safety=0.0000  top1=0.8859  lr=2.36e-03
+  e 40  loss=0.2783  task=0.2783  safety=0.0000  top1=0.9004  lr=2.36e-03
+  ep 50  val=0.8981
+  e 50  loss=0.2586  task=0.2586  safety=0.0000  top1=0.8981  lr=2.36e-03
+  e 60  loss=0.2341  task=0.2341  safety=0.0000  top1=0.9090  lr=2.36e-03
+  e 70  loss=0.2219  task=0.2219  safety=0.0000  top1=0.9121  lr=2.36e-03
+  ep 75  val=0.8991
+  → K_in=5  best=0.9121 @ep70  Δ=+91.21pp  292s
+───────────────────────────────────────────────────────
+K_in= 7  seed_MACs=14,336  (orig=229,376)
+  e  1  loss=6.6945  task=6.6945  safety=0.0000  top1=0.2489  lr=2.36e-03
+  e 10  loss=0.4842  task=0.4842  safety=0.0000  top1=0.8566  lr=2.36e-03
+  e 20  loss=0.3307  task=0.3307  safety=0.0000  top1=0.8856  lr=2.36e-03
+  ep 25  val=0.8864
+  e 30  loss=0.2703  task=0.2703  safety=0.0000  top1=0.8968  lr=2.36e-03
+  e 40  loss=0.2381  task=0.2381  safety=0.0000  top1=0.9096  lr=2.36e-03
+  ep 50  val=0.9050
+  e 50  loss=0.2094  task=0.2094  safety=0.0000  top1=0.9050  lr=2.36e-03
+  e 60  loss=0.1902  task=0.1902  safety=0.0000  top1=0.9139  lr=2.36e-03
+  e 70  loss=0.1820  task=0.1820  safety=0.0000  top1=0.9231  lr=2.36e-03
+  ep 75  val=0.9233
+  → K_in=7  best=0.9233 @ep75  Δ=+92.33pp  290s
+───────────────────────────────────────────────────────
+K_in=10  seed_MACs=20,480  (orig=327,680)
+  e  1  loss=5.2812  task=5.2812  safety=0.0000  top1=0.3918  lr=2.36e-03
+  e 10  loss=0.4529  task=0.4529  safety=0.0000  top1=0.8675  lr=2.36e-03
+  e 20  loss=0.3163  task=0.3163  safety=0.0000  top1=0.9024  lr=2.36e-03
+  ep 25  val=0.8971
+  e 30  loss=0.2713  task=0.2713  safety=0.0000  top1=0.9039  lr=2.36e-03
+  e 40  loss=0.2268  task=0.2268  safety=0.0000  top1=0.9108  lr=2.36e-03
+  ep 50  val=0.9118
+  e 50  loss=0.2149  task=0.2149  safety=0.0000  top1=0.9118  lr=2.36e-03
+  e 60  loss=0.1957  task=0.1957  safety=0.0000  top1=0.9210  lr=2.36e-03
+  e 70  loss=0.1814  task=0.1814  safety=0.0000  top1=0.9279  lr=2.36e-03
+  ep 75  val=0.9197
+  → K_in=10  best=0.9279 @ep64  Δ=+92.79pp  290s
+───────────────────────────────────────────────────────
+K_in=15  seed_MACs=30,720  (orig=491,520)
+  e  1  loss=6.1867  task=6.1867  safety=0.0000  top1=0.3001  lr=2.36e-03
+  e 10  loss=0.4350  task=0.4350  safety=0.0000  top1=0.8787  lr=2.36e-03
+  e 20  loss=0.3038  task=0.3038  safety=0.0000  top1=0.9106  lr=2.36e-03
+  ep 25  val=0.9185
+  e 30  loss=0.2421  task=0.2421  safety=0.0000  top1=0.9126  lr=2.36e-03
+  e 40  loss=0.2211  task=0.2211  safety=0.0000  top1=0.9197  lr=2.36e-03
+  ep 50  val=0.9185
+  e 50  loss=0.1959  task=0.1959  safety=0.0000  top1=0.9185  lr=2.36e-03
+  e 60  loss=0.1780  task=0.1780  safety=0.0000  top1=0.9340  lr=2.36e-03
+  e 70  loss=0.1654  task=0.1654  safety=0.0000  top1=0.9363  lr=2.36e-03
+  ep 75  val=0.9304
+  → K_in=15  best=0.9389 @ep72  Δ=+93.89pp  298s
+───────────────────────────────────────────────────────
+K_in=20  seed_MACs=40,960  (orig=655,360)
+  e  1  loss=6.8012  task=6.8012  safety=0.0000  top1=0.3623  lr=2.36e-03
+  e 10  loss=0.4220  task=0.4220  safety=0.0000  top1=0.8925  lr=2.36e-03
+  e 20  loss=0.2954  task=0.2954  safety=0.0000  top1=0.9144  lr=2.36e-03
+  ep 25  val=0.9228
+  e 30  loss=0.2474  task=0.2474  safety=0.0000  top1=0.9157  lr=2.36e-03
+  e 40  loss=0.2125  task=0.2125  safety=0.0000  top1=0.9203  lr=2.36e-03
+  ep 50  val=0.9264
+  e 50  loss=0.1987  task=0.1987  safety=0.0000  top1=0.9264  lr=2.36e-03
+  e 60  loss=0.1780  task=0.1780  safety=0.0000  top1=0.9322  lr=2.36e-03
+  e 70  loss=0.1631  task=0.1631  safety=0.0000  top1=0.9363  lr=2.36e-03
+  ep 75  val=0.9269
+  → K_in=20  best=0.9450 @ep72  Δ=+94.50pp  291s
+───────────────────────────────────────────────────────
+K_in=25  seed_MACs=51,200  (orig=819,200)
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  e 10  loss=0.3903  task=0.3903  safety=0.0000  top1=0.9006  lr=2.36e-03
+  e 20  loss=0.2771  task=0.2771  safety=0.0000  top1=0.9177  lr=2.36e-03
+  ep 25  val=0.9121
+  e 30  loss=0.2274  task=0.2274  safety=0.0000  top1=0.9223  lr=2.36e-03
+  e 40  loss=0.2033  task=0.2033  safety=0.0000  top1=0.9136  lr=2.36e-03
+  ep 50  val=0.9175
+  e 50  loss=0.1856  task=0.1856  safety=0.0000  top1=0.9175  lr=2.36e-03
+  e 60  loss=0.1706  task=0.1706  safety=0.0000  top1=0.9338  lr=2.36e-03
+  e 70  loss=0.1605  task=0.1605  safety=0.0000  top1=0.9307  lr=2.36e-03
+  ep 75  val=0.9266
+  → K_in=25  best=0.9401 @ep72  Δ=+0.00pp  299s
+
+=======================================================
+STEP 633 — K_in sweep plot data
+  K_in   seed_MACs     best     Δ_k25
+     1       2,048   0.8471    -9.30pp
+     2       4,096   0.8831    -5.71pp
+     3       6,144   0.8940    -4.61pp
+     5      10,240   0.9121    -2.80pp
+     7      14,336   0.9233    -1.68pp
+    10      20,480   0.9279    -1.22pp
+    15      30,720   0.9389    -0.13pp
+    20      40,960   0.9450    +0.48pp
+    25      51,200   0.9401    +0.00pp

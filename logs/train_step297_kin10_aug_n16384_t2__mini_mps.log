@@ -1,0 +1,7 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 297 — K_in=10+aug T2 @ N=16384 (150ep, 100% data, device=mps)
+  Baselines: Ref=93.43% | aug_T2=96.87% | k15_aug_T2=96.89% | T1=96.56%
+  Train=18938  Val=3925
+  N=16384 K_in=10 params=278,688
+  e  1  loss=1.9063  task=1.9063  safety=0.0000  top1=0.8955  lr=2.36e-03

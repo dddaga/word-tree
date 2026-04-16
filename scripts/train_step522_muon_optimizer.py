@@ -50,6 +50,13 @@ from src.training.dataset             import make_loaders
 try:
     from muon import Muon           # pip install muon-optimizer
     MUON_AVAILABLE = True
+    # Muon uses dist.get_world_size() internally — init process group for single-process use.
+    import torch.distributed as dist
+    if not dist.is_initialized():
+        import os
+        os.environ.setdefault("MASTER_ADDR", "localhost")
+        os.environ.setdefault("MASTER_PORT", "29501")
+        dist.init_process_group(backend="gloo", rank=0, world_size=1)
 except ImportError:
     MUON_AVAILABLE = False
 
@@ -117,7 +124,20 @@ def build_model():
     return SGNNET_DeltaAH(res, alpha_ahebb=0.0)
 
 
-def build_optimizer(model, which: str):
+def _warmup_grads(model, tr, device):
+    """Run one dummy forward+backward to identify which params actually receive gradients."""
+    model.train()
+    batch = next(iter(tr))
+    x = batch[0][:2].to(device)
+    y = batch[2][:2].to(device) if len(batch) > 2 else batch[1][:2].to(device)
+    model.zero_grad()
+    model(x).sum().backward()
+    active = {n for n, p in model.named_parameters() if p.grad is not None}
+    model.zero_grad()
+    return active
+
+
+def build_optimizer(model, which: str, tr=None, device=None):
     """which: 'adamw' | 'muon'. Muon falls back to AdamW if not installed."""
     if which == "muon" and not MUON_AVAILABLE:
         print("  WARNING: muon-optimizer not installed — falling back to AdamW")
@@ -130,9 +150,17 @@ def build_optimizer(model, which: str):
             {"params": other_params, "lr": 1e-3, "weight_decay": 1e-5},
         ])
     elif which == "muon":
-        # Muon handles 2D+ params; 1D use AdamW
-        matrix_params = [p for p in other_params if p.dim() >= 2]
-        vector_params = [p for p in other_params if p.dim() < 2]
+        # Warmup: identify which 2D+ params actually receive gradients (avoids None-grad crash in Muon)
+        if tr is not None and device is not None:
+            active = _warmup_grads(model, tr, device)
+            matrix_params = [p for n, p in model.named_parameters()
+                             if n != "m.base.W_pos" and p.requires_grad and p.dim() >= 2 and n in active]
+            vector_params = [p for n, p in model.named_parameters()
+                             if n != "m.base.W_pos" and p.requires_grad and (p.dim() < 2 or n not in active)]
+        else:
+            # Muon handles 2D+ params; 1D use AdamW
+            matrix_params = [p for p in other_params if p.dim() >= 2]
+            vector_params = [p for p in other_params if p.dim() < 2]
         print(f"  Muon: matrix_params={len(matrix_params)} ({[tuple(p.shape) for p in matrix_params]}), vector_params={len(vector_params)}")
         if not matrix_params:
             print("  WARNING: no 2D+ params found for Muon — falling back to AdamW")
@@ -152,7 +180,8 @@ def train_epoch(model, optimizer, loader, device):
         x = batch[0].to(device)
         y = batch[2].to(device) if len(batch) > 2 else batch[1].to(device)
         if isinstance(optimizer, list):
-            for opt in optimizer: opt.zero_grad(set_to_none=True)
+            # Muon requires grad tensors (not None) to init momentum buffer on first step.
+            for opt in optimizer: opt.zero_grad(set_to_none=False)
         else:
             optimizer.zero_grad(set_to_none=True)
         out = model(x)
@@ -198,7 +227,7 @@ def main():
         model = build_model().to(DEVICE)
         n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         print(f"  params={n_params:,}  optimizer={opt_name}")
-        optimizer = build_optimizer(model, opt_name)
+        optimizer = build_optimizer(model, opt_name, tr=tr, device=DEVICE)
         epochs_to = {"93": None, "94": None, "95": None}
         hist = []
         epoch_times = []

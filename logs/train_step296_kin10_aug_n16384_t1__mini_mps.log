@@ -15,3 +15,11 @@ A_k10_aug: N=16384 K_in=10 + aug T1 (compound test)  K_in=10  aug=True  params=2
   e 50  loss=0.0393  task=0.0393  safety=0.0000  top1=0.9498  lr=1.18e-03
   ep 60  val=0.9595
   e 60  loss=0.0180  task=0.0180  safety=0.0000  top1=0.9595  lr=5.91e-04
+  e 70  loss=0.0261  task=0.0261  safety=0.0000  top1=0.9475  lr=2.96e-04
+  ep 75  val=0.9587
+  → best=0.9656 @ep57  Δ_Ref=+3.13pp  Δ_Aug=+1.02pp  Δ_K10=+1.60pp  3303s
+
+============================================================
+STEP 296 summary
+  Ref_k25=93.43% | aug_k25~95.54% | k10_naug=94.96%
+  A_k10_aug  best=0.9656  Δ_Ref=+3.13pp

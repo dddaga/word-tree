@@ -1,0 +1,53 @@
+{
+  "config": "step706",
+  "config_params": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "dw_mode": "proj"
+  },
+  "per_seed": [
+    {
+      "seed": 42,
+      "top1_best": 0.9557,
+      "best_epoch": 73,
+      "elapsed_s": 91.0,
+      "n_params": 34977
+    },
+    {
+      "seed": 43,
+      "top1_best": 0.9518,
+      "best_epoch": 66,
+      "elapsed_s": 90.4,
+      "n_params": 34977
+    },
+    {
+      "seed": 44,
+      "top1_best": 0.9552,
+      "best_epoch": 66,
+      "elapsed_s": 90.4,
+      "n_params": 34977
+    },
+    {
+      "seed": 45,
+      "top1_best": 0.9513,
+      "best_epoch": 67,
+      "elapsed_s": 90.5,
+      "n_params": 34977
+    },
+    {
+      "seed": 46,
+      "top1_best": 0.9524,
+      "best_epoch": 73,
+      "elapsed_s": 90.3,
+      "n_params": 34977
+    }
+  ],
+  "mean": 0.95328,
+  "std": 0.002026573462769117,
+  "min": 0.9513,
+  "max": 0.9557,
+  "range_pp": 0.43999999999999595,
+  "n_seeds": 5
+}
