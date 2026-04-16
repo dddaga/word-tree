@@ -12,7 +12,17 @@ CONFIGS (state exact scale and what changes)
   Ref  : baseline reference (cite step199 or whatever the relevant Ref is)
   A_X  : variation A — describe the single variable change
   B_Y  : variation B — ...
+
+CUDA-5060ti-validated
+=====================
+This template uses the CUDA-optimized code paths enforced by
+`.claude/skills/sgnnet-research/CUDA_CHECKLIST.md` and audited by
+`scripts/launch_slot.sh` for the `5060ti_cuda` slot. Keep the markers
+(SGNNET_Resonant_CUDA / pin_memory=True / non_blocking=True) intact unless
+you have a documented reason to diverge.
 """
+# CUDA-5060ti-validated — this template meets the 5060ti checklist
+# (see .claude/skills/sgnnet-research/CUDA_CHECKLIST.md).
 from __future__ import annotations
 import argparse, json, os, sys, time
 from pathlib import Path
@@ -26,8 +36,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from src.sgnnet.model_smallworld     import SGNNET_SmallWorld
-from src.sgnnet.model_resonant       import SGNNET_Resonant
-from src.sgnnet.mechanisms_inhibitory import SGNNET_AntiHebbian
+# CUDA-optimized model path (torch.compile fused routing loop, step500: 2.6%→99.6% util, 4× speedup).
+# For CPU/MPS the eager SGNNET_Resonant still works but is 4× slower on CUDA.
+from src.sgnnet.model_resonant_cuda  import SGNNET_Resonant_CUDA, SGNNET_AntiHebbian_CUDA
 from src.training.trainer            import Trainer
 from src.training.experiment_config  import trainer_kwargs
 from src.training.dataset            import make_loaders
@@ -73,7 +84,7 @@ CONFIGS = {
 
 
 def build_model(variant: str) -> nn.Module:
-    """Build model for a given variant key."""
+    """Build model for a given variant key. Uses CUDA-optimized path."""
     torch.manual_seed(SEED)
     K_r = max(1, K_HH // 4); K_l = K_HH - K_r; ng = max(8, N // 8)
     base = SGNNET_SmallWorld(
@@ -81,11 +92,15 @@ def build_model(variant: str) -> nn.Module:
         K_in=K_IN, K_iter=K_ITER, K_local=K_l, K_random=K_r,
         n_groups=ng, norm_mode="l2", encoding_mode="fourier",
     )
-    resonant = SGNNET_Resonant(
-        base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=ALPHA_TURING,
+    # torch.compile enabled by default (step500 evidence). Compilation fires on first
+    # forward call (~30s one-time cost), then the K_iter routing loop fuses to one kernel.
+    # NOTE: SGNNET_Resonant_CUDA requires alpha_turing=0 (efficiency config hardcodes it).
+    resonant = SGNNET_Resonant_CUDA(
+        base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=0.0,
         beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo", resonance_threshold=0.0,
+        compile=True,
     )
-    model = SGNNET_AntiHebbian(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
+    model = SGNNET_AntiHebbian_CUDA(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
 
     # --- Apply variant-specific modifications here ---
     # Example:
@@ -110,7 +125,10 @@ def main():
     # 50% subset for Tier-0/Tier-1 (comment out for Tier-2)
     idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
     subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
-    tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
+    # pin_memory=True + non_blocking=True in transfer: DMA overlap with compute on CUDA.
+    # num_workers=0 is optimal for in-RAM H5 datasets (no I/O to parallelize).
+    tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True,
+                                     num_workers=0, pin_memory=True)
 
     results = {}
     for key in run_keys:

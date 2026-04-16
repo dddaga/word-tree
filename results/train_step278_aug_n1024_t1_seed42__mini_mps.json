@@ -1,0 +1,24 @@
+{
+  "Ref_n1024": {
+    "label": "N=1024 no-aug baseline",
+    "N": 1024,
+    "use_aug": false,
+    "routing_macs": 327680,
+    "n_params": 17568,
+    "top1_best": 0.8815286755561829,
+    "best_epoch": 56,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 127
+  },
+  "A_n1024_aug": {
+    "label": "N=1024 + aug (bottom of scaling curve)",
+    "N": 1024,
+    "use_aug": true,
+    "routing_macs": 327680,
+    "n_params": 17568,
+    "top1_best": 0.8945223093032837,
+    "best_epoch": 44,
+    "delta_vs_ref": 0.013,
+    "elapsed_s": 192
+  }
+}

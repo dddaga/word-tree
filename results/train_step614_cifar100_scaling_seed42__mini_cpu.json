@@ -34,5 +34,14 @@
     "best_epoch": 48,
     "elapsed_s": 1101.8,
     "epochs": 50
+  },
+  "MLP_4096": {
+    "config": "MLP_4096",
+    "n_params": 103174244,
+    "flops_routing_macs": 206340096,
+    "top1_best": 0.6773,
+    "best_epoch": 47,
+    "elapsed_s": 2044.1,
+    "epochs": 50
   }
 }

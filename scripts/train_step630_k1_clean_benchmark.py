@@ -111,13 +111,17 @@ def load_teacher_logits(path: str):
     try:
         import h5py
         with h5py.File(p, "r") as f:
-            # Expected format: f["train_logits"][i] = soft logits for sample i
-            if "train_logits" in f:
-                logits = torch.from_numpy(f["train_logits"][:]).float()  # [N_train, N_OUT]
-                print(f"  Loaded teacher logits: {logits.shape}")
+            # Format: f["train"]["logits_T4"] = [N_train, N_OUT] float32
+            if "train" in f and "logits_T4" in f["train"]:
+                logits = torch.from_numpy(f["train"]["logits_T4"][:]).float()
+                print(f"  Loaded teacher logits (train/logits_T4): {logits.shape}")
+                return logits
+            elif "train_logits" in f:
+                logits = torch.from_numpy(f["train_logits"][:]).float()
+                print(f"  Loaded teacher logits (train_logits): {logits.shape}")
                 return logits
             else:
-                print(f"  WARNING: 'train_logits' key not found in {p}. Keys: {list(f.keys())}")
+                print(f"  WARNING: expected key not found in {p}. Keys: {list(f.keys())}")
                 return None
     except Exception as e:
         print(f"  WARNING: Could not load teacher logits: {e}")

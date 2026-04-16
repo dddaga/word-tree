@@ -1,0 +1,41 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 283 — K_in=15+aug compound @ N=1024 (T1: 75ep, 50% data)
+  device=mps  seed=42  N=1024  D=16  K_iter=5
+  Train=4734  Val=3925
+
+────────────────────────────────────────────────────────────
+Ref_n1024: N=1024 K_in=25 no-aug ref
+  K_in=25  aug=no  seed_MACs=25,600  params=17,568
+  e  1  loss=3.3018  task=3.3018  safety=0.0000  top1=0.3539  lr=2.36e-03
+  e 10  loss=0.8445  task=0.8445  safety=0.0000  top1=0.8250  lr=2.36e-03
+  e 20  loss=0.6750  task=0.6750  safety=0.0000  top1=0.8589  lr=2.36e-03
+  ep 25  val=0.8397
+  e 30  loss=0.6123  task=0.6123  safety=0.0000  top1=0.8420  lr=2.36e-03
+  e 40  loss=0.5702  task=0.5702  safety=0.0000  top1=0.8606  lr=2.36e-03
+  ep 50  val=0.8665
+  e 50  loss=0.5338  task=0.5338  safety=0.0000  top1=0.8665  lr=2.36e-03
+  e 60  loss=0.5129  task=0.5129  safety=0.0000  top1=0.8780  lr=2.36e-03
+  e 70  loss=0.5022  task=0.5022  safety=0.0000  top1=0.8721  lr=2.36e-03
+  ep 75  val=0.8764
+  → Ref_n1024  best=0.8813 @ep56  Δ=+0.00pp  131s
+────────────────────────────────────────────────────────────
+C_k15_aug_n1024: N=1024 K_in=15 + aug (COMPOUND bottom of curve)
+  K_in=15  aug=yes  seed_MACs=15,360  params=17,568
+  e  1  loss=2.4016  task=2.4016  safety=0.0000  top1=0.5452  lr=2.36e-03
+  e 10  loss=0.6942  task=0.6942  safety=0.0000  top1=0.8183  lr=2.36e-03
+  e 20  loss=0.5676  task=0.5676  safety=0.0000  top1=0.8599  lr=2.36e-03
+  ep 25  val=0.8754
+  e 30  loss=0.4992  task=0.4992  safety=0.0000  top1=0.8696  lr=2.36e-03
+  e 40  loss=0.4684  task=0.4684  safety=0.0000  top1=0.8838  lr=2.36e-03
+  ep 50  val=0.8617
+  e 50  loss=0.4398  task=0.4398  safety=0.0000  top1=0.8617  lr=2.36e-03
+  e 60  loss=0.4288  task=0.4288  safety=0.0000  top1=0.8968  lr=2.36e-03
+  e 70  loss=0.4181  task=0.4181  safety=0.0000  top1=0.8787  lr=2.36e-03
+  ep 75  val=0.8800
+  → C_k15_aug_n1024  best=0.8978 @ep61  Δ=+1.66pp  231s
+
+============================================================
+STEP 283 SUMMARY — K_in=15+aug compound @ N=1024 (T1)
+  Ref_n1024                  K_in=25 aug=n  best=0.8813  Δ=+0.00pp  seed=1.0×
+  C_k15_aug_n1024            K_in=15 aug=y  best=0.8978  Δ=+1.66pp  seed=1.7×

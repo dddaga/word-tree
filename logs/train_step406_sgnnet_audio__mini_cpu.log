@@ -1,0 +1,72 @@
+Phase 1: extracting ESC-50 audio features with Whisper-tiny encoder
+  ESC-50: 2000 clips, 50 classes, 5 folds
+Loading weights:   0%|          | 0/167 [00:00<?, ?it/s]Loading weights: 100%|██████████| 167/167 [00:00<00:00, 20329.38it/s]
+    200/2000
+    400/2000
+    600/2000
+    800/2000
+    1000/2000
+    1200/2000
+    1400/2000
+    1600/2000
+    1800/2000
+    2000/2000
+  Saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/esc50/store_esc50_whisper.h5  train=1600  val=400
+Phase 2: training  Train=1600  Val=400  dim=384
+
+────────────────────────────────────────────────────────────
+Config: Linear
+────────────────────────────────────────────────────────────
+  params=19,250  device=cpu
+  ep  1  val=0.0975
+  ep 15  val=0.4800
+  ep 30  val=0.5475
+  ep 45  val=0.5950
+  ep 60  val=0.6200
+  ep 75  val=0.6350
+  ep 90  val=0.6350
+  ep105  val=0.6400
+  ep120  val=0.6375
+  ep135  val=0.6375
+  ep150  val=0.6375
+  → Linear  best=0.6450 @ep116  elapsed=2s
+
+────────────────────────────────────────────────────────────
+Config: MLP_64
+────────────────────────────────────────────────────────────
+  params=27,890  device=cpu
+  ep  1  val=0.0675
+  ep 15  val=0.4200
+  ep 30  val=0.5250
+  ep 45  val=0.5425
+  ep 60  val=0.5775
+  ep 75  val=0.6175
+  ep 90  val=0.6250
+  ep105  val=0.6400
+  ep120  val=0.6450
+  ep135  val=0.6400
+  ep150  val=0.6400
+  → MLP_64  best=0.6450 @ep118  elapsed=2s
+
+────────────────────────────────────────────────────────────
+Config: SGNNET
+────────────────────────────────────────────────────────────
+  params=35,616  device=cpu
+  ep  1  val=0.0350
+  ep 15  val=0.2825
+  ep 30  val=0.2625
+  ep 45  val=0.3425
+  ep 60  val=0.3700
+  ep 75  val=0.4125
+  ep 90  val=0.4250
+  ep105  val=0.4650
+  ep120  val=0.4900
+  ep135  val=0.5000
+  ep150  val=0.4975
+  → SGNNET  best=0.5050 @ep129  elapsed=194s
+
+============================================================
+STEP 406 SUMMARY — ESC-50 audio (Whisper-tiny encoder)
+  Linear    params=  19,250  best=0.6450
+  MLP_64    params=  27,890  best=0.6450
+  SGNNET    params=  35,616  best=0.5050

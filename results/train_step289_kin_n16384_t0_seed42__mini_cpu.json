@@ -1,0 +1,20 @@
+{
+  "A_k20": {
+    "label": "N=16384 K_in=20 no-aug T0",
+    "N": 16384,
+    "K_in": 20,
+    "top1_best": 0.9100636839866638,
+    "best_epoch": 16,
+    "delta_vs_ref": -0.0242,
+    "elapsed_s": 416
+  },
+  "B_k10": {
+    "label": "N=16384 K_in=10 no-aug T0",
+    "N": 16384,
+    "K_in": 10,
+    "top1_best": 0.9243311882019043,
+    "best_epoch": 12,
+    "delta_vs_ref": -0.0099,
+    "elapsed_s": 531
+  }
+}

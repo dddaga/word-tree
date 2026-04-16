@@ -1,0 +1,38 @@
+{
+  "Ref": {
+    "label": "K=5 \u0394W proj no-aug (ref)",
+    "K_iter": 5,
+    "data": "data/store.h5",
+    "n_params": 34976,
+    "top1_best": 0.9533758163452148,
+    "best_epoch": 67,
+    "elapsed_s": 248.44639992713928
+  },
+  "A_proj_k4": {
+    "label": "K=4 \u0394W proj no-aug",
+    "K_iter": 4,
+    "data": "data/store.h5",
+    "n_params": 34976,
+    "top1_best": 0.9554139971733093,
+    "best_epoch": 74,
+    "elapsed_s": 203.17739582061768
+  },
+  "B_proj_aug_k4": {
+    "label": "K=4 \u0394W proj + aug (COMBO)",
+    "K_iter": 4,
+    "data": "data/store_aug.h5",
+    "n_params": 34976,
+    "top1_best": 0.9645859599113464,
+    "best_epoch": 73,
+    "elapsed_s": 365.2941589355469
+  },
+  "C_proj_aug_k5": {
+    "label": "K=5 \u0394W proj + aug (baseline aug)",
+    "K_iter": 5,
+    "data": "data/store_aug.h5",
+    "n_params": 34976,
+    "top1_best": 0.9666242003440857,
+    "best_epoch": 64,
+    "elapsed_s": 440.8728709220886
+  }
+}

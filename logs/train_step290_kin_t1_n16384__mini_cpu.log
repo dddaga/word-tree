@@ -1,0 +1,41 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 290 — K_in T1 @ N=16384 (75ep, 50% data)
+  device=cpu  Ref=93.43% (step286)  K_in=15=94.70% (step288 C)
+
+A_k20: N=16384 K_in=20 T1 (directional: T0=-2.42pp)  K_in=20  params=278,688
+  e  1  loss=10.4494  task=10.4494  safety=0.0000  top1=0.7585  lr=2.36e-03
+  e 10  loss=0.0363  task=0.0363  safety=0.0000  top1=0.9052  lr=2.36e-03
+  ep 15  val=0.9083
+  e 20  loss=0.0472  task=0.0472  safety=0.0000  top1=0.8869  lr=2.36e-03
+  ep 30  val=0.9307
+  e 30  loss=0.0160  task=0.0160  safety=0.0000  top1=0.9307  lr=1.18e-03
+  e 40  loss=0.0245  task=0.0245  safety=0.0000  top1=0.9251  lr=1.18e-03
+  ep 45  val=0.9343
+  e 50  loss=0.0081  task=0.0081  safety=0.0000  top1=0.9310  lr=5.91e-04
+  ep 60  val=0.9299
+  e 60  loss=0.0233  task=0.0233  safety=0.0000  top1=0.9299  lr=5.91e-04
+  e 70  loss=0.0061  task=0.0061  safety=0.0000  top1=0.9343  lr=2.96e-04
+  ep 75  val=0.9304
+  → best=0.9361 @ep43  Δ_Ref=+0.18pp  Δ_K15=-1.09pp  2203s
+
+B_k10: N=16384 K_in=10 T1 (directional: T0=-0.99pp)  K_in=10  params=278,688
+  e  1  loss=5.8679  task=5.8679  safety=0.0000  top1=0.7827  lr=2.36e-03
+  e 10  loss=0.0735  task=0.0735  safety=0.0000  top1=0.9083  lr=2.36e-03
+  ep 15  val=0.9090
+  e 20  loss=0.0313  task=0.0313  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 30  val=0.9121
+  e 30  loss=0.0555  task=0.0555  safety=0.0000  top1=0.9121  lr=2.36e-03
+  e 40  loss=0.0252  task=0.0252  safety=0.0000  top1=0.9447  lr=1.18e-03
+  ep 45  val=0.9445
+  e 50  loss=0.0157  task=0.0157  safety=0.0000  top1=0.9424  lr=5.91e-04
+  ep 60  val=0.9470
+  e 60  loss=0.0115  task=0.0115  safety=0.0000  top1=0.9470  lr=5.91e-04
+  e 70  loss=0.0052  task=0.0052  safety=0.0000  top1=0.9462  lr=2.96e-04
+  ep 75  val=0.9480
+  → best=0.9496 @ep52  Δ_Ref=+1.53pp  Δ_K15=+0.26pp  2160s
+
+============================================================
+STEP 290 — K_in T1 @ N=16384 summary
+  Ref_k25=93.43% (step286)  K_in=15=94.70% (step288 C)
+  A_k20  K_in=20  best=0.9361  Δ_Ref=+0.18pp  Δ_K15=-1.09pp
+  B_k10  K_in=10  best=0.9496  Δ_Ref=+1.53pp  Δ_K15=+0.26pp

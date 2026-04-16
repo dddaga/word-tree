@@ -3,12 +3,18 @@
     "n_params": 1538,
     "top1_best": 0.8463302752293578,
     "best_epoch": 18,
-    "elapsed_s": 37.65903425216675
+    "elapsed_s": 34.88493800163269
   },
   "MLP_64": {
     "n_params": 49346,
-    "top1_best": 0.8463302752293578,
-    "best_epoch": 13,
-    "elapsed_s": 66.89262700080872
+    "top1_best": 0.841743119266055,
+    "best_epoch": 28,
+    "elapsed_s": 62.23962116241455
+  },
+  "SGNNET": {
+    "n_params": 34848,
+    "top1_best": 0.8394495412844036,
+    "best_epoch": 61,
+    "elapsed_s": 6527.397917985916
   }
 }

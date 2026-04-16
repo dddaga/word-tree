@@ -1,0 +1,24 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 295 — K_in=5 T1 @ N=16384 (75ep, 50% data)
+  Ref(K_in=25)=93.43%  K_in=10=94.96% (best so far)
+
+
+A_k5: N=16384 K_in=5 T1 (extend curve beyond K_in=10)  K_in=5  params=278,688
+  e  1  loss=6.4325  task=6.4325  safety=0.0000  top1=0.7455  lr=2.36e-03
+  e 10  loss=0.0479  task=0.0479  safety=0.0000  top1=0.9052  lr=2.36e-03
+  ep 15  val=0.9169
+  e 20  loss=0.0325  task=0.0325  safety=0.0000  top1=0.9141  lr=2.36e-03
+  ep 30  val=0.9307
+  e 30  loss=0.0296  task=0.0296  safety=0.0000  top1=0.9307  lr=1.18e-03
+  e 40  loss=0.0185  task=0.0185  safety=0.0000  top1=0.9205  lr=1.18e-03
+  ep 45  val=0.9317
+  e 50  loss=0.0128  task=0.0128  safety=0.0000  top1=0.9327  lr=5.91e-04
+  ep 60  val=0.9320
+  e 60  loss=0.0207  task=0.0207  safety=0.0000  top1=0.9320  lr=5.91e-04
+  e 70  loss=0.0048  task=0.0048  safety=0.0000  top1=0.9376  lr=2.96e-04
+  ep 75  val=0.9363
+  → best=0.9378 @ep74  Δ_Ref=+0.36pp  Δ_K10=-1.18pp  2281s
+
+============================================================
+STEP 295 — K_in=5 T1 @ N=16384
+  A_k5  K_in=5  best=0.9378  Δ_Ref=+0.36pp

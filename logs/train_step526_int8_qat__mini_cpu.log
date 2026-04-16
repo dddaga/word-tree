@@ -1,0 +1,93 @@
+Step 526 — INT8 inference impact + QAT grad-accum sweep
+  data=data/store.h5  seed=42  epochs=20  device=cpu
+  scale_w=100.0  scale_z=100.0
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  Train=4734  Val=3925
+
+============================================================
+PART A — fp32 train → quant eval
+============================================================
+  params=34,976
+    ep  5 val=0.8290
+    ep 10 val=0.8769
+    ep 15 val=0.8899
+    ep 20 val=0.8948
+  fp32 training done: best=0.8961 elapsed=72s
+  A_w_sat      mode=saturate qw=True qz=False  val=0.8948  Δ=-0.13pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_wz_sat     mode=saturate qw=True qz=True  val=0.8746  Δ=-2.14pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_w_mod      mode=modular  qw=True qz=False  val=0.8948  Δ=-0.13pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_wz_mod     mode=modular  qw=True qz=True  val=0.8746  Δ=-2.14pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_w_crt      mode=crt      qw=True qz=False  val=0.8948  Δ=-0.13pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_wz_crt     mode=crt      qw=True qz=True  val=0.8746  Δ=-2.14pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_w_abs      mode=abs_mod  qw=True qz=False  val=0.8922  Δ=-0.38pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+  A_wz_abs     mode=abs_mod  qw=True qz=True  val=0.8703  Δ=-2.57pp  wrap_w=0.00e+00  wrap_z=0.00e+00
+
+============================================================
+PART B — QAT grad-accum sweep
+============================================================
+
+── B_qat_a1  (mode=saturate accum=1)
+    ep  5 val=0.8150
+    ep 10 val=0.8713
+    ep 15 val=0.8762
+    ep 20 val=0.8874
+  best=0.8874  ep→90%=None  elapsed=86s  wrap_w_total=0
+
+── B_qat_a4  (mode=saturate accum=4)
+    ep  5 val=0.5654
+    ep 10 val=0.7289
+    ep 15 val=0.7707
+    ep 20 val=0.7738
+  best=0.7776  ep→90%=None  elapsed=86s  wrap_w_total=0
+
+── B_qat_a16  (mode=saturate accum=16)
+    ep  5 val=0.2168
+    ep 10 val=0.2920
+    ep 15 val=0.4061
+    ep 20 val=0.4364
+  best=0.4372  ep→90%=None  elapsed=85s  wrap_w_total=0
+
+── B_qat_a64  (mode=saturate accum=64)
+    ep  5 val=0.1103
+    ep 10 val=0.1047
+    ep 15 val=0.1526
+    ep 20 val=0.1600
+  best=0.1600  ep→90%=None  elapsed=85s  wrap_w_total=0
+
+── B_qat_abs_a16  (mode=abs_mod accum=16)
+    ep  5 val=0.2191
+    ep 10 val=0.2935
+    ep 15 val=0.4087
+    ep 20 val=0.4346
+  best=0.4346  ep→90%=None  elapsed=92s  wrap_w_total=0
+
+── B_qat_abs_a64  (mode=abs_mod accum=64)
+    ep  5 val=0.1103
+    ep 10 val=0.1052
+    ep 15 val=0.1508
+    ep 20 val=0.1592
+  best=0.1592  ep→90%=None  elapsed=93s  wrap_w_total=0
+
+============================================================
+STEP 526 SUMMARY
+============================================================
+
+Part A  fp32 ref=0.8961
+  A_w_sat      mode=saturate qw=True qz=False  Δ=-0.13pp  wrap_w_rate=0.00e+00
+  A_wz_sat     mode=saturate qw=True qz=True  Δ=-2.14pp  wrap_w_rate=0.00e+00
+  A_w_mod      mode=modular  qw=True qz=False  Δ=-0.13pp  wrap_w_rate=0.00e+00
+  A_wz_mod     mode=modular  qw=True qz=True  Δ=-2.14pp  wrap_w_rate=0.00e+00
+  A_w_crt      mode=crt      qw=True qz=False  Δ=-0.13pp  wrap_w_rate=0.00e+00
+  A_wz_crt     mode=crt      qw=True qz=True  Δ=-2.14pp  wrap_w_rate=0.00e+00
+  A_w_abs      mode=abs_mod  qw=True qz=False  Δ=-0.38pp  wrap_w_rate=0.00e+00
+  A_wz_abs     mode=abs_mod  qw=True qz=True  Δ=-2.57pp  wrap_w_rate=0.00e+00
+
+Part B  QAT grad-accum sweep:
+  B_qat_a1   accum=  1  best=0.8874  Δ_vs_fp32=-0.87pp  ep→90%=None
+  B_qat_a4   accum=  4  best=0.7776  Δ_vs_fp32=-11.85pp  ep→90%=None
+  B_qat_a16  accum= 16  best=0.4372  Δ_vs_fp32=-45.89pp  ep→90%=None
+  B_qat_a64  accum= 64  best=0.1600  Δ_vs_fp32=-73.61pp  ep→90%=None
+  B_qat_abs_a16 accum= 16  best=0.4346  Δ_vs_fp32=-46.14pp  ep→90%=None
+  B_qat_abs_a64 accum= 64  best=0.1592  Δ_vs_fp32=-73.68pp  ep→90%=None
+
+Saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step526_int8_qat_k5_seed42__mini_cpu.json

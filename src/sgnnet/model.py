@@ -75,6 +75,13 @@ class SGNNET(nn.Module):
         box_size: float = 1.0,
     ):
         super().__init__()
+        import warnings
+        warnings.warn(
+            "SGNNET (model.py) is the original pre-Wave architecture and is deprecated. "
+            "Use SGNNET_SmallWorld (model_smallworld.py) — current base with spatial-sum "
+            "precomputation (16x fewer seed FLOPs) and O(N*K) routing.",
+            DeprecationWarning, stacklevel=2,
+        )
         self.N_hidden = N_hidden
         self.N_out = N_out
         self.D = D

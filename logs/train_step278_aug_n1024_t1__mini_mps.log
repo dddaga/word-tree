@@ -1,0 +1,39 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 278 — Aug @ N=1024 T1 (75ep, 50% data)
+  device=mps  seed=42  N=1024  D=16  K_iter=5
+  routing_MACs=328K  Train=4734  Val=3925
+
+────────────────────────────────────────────────────────────
+Ref_n1024: N=1024 no-aug baseline  params=17,568  routing=328K MACs
+  e  1  loss=3.3019  task=3.3019  safety=0.0000  top1=0.3529  lr=2.36e-03
+  e 10  loss=0.8465  task=0.8465  safety=0.0000  top1=0.8290  lr=2.36e-03
+  e 20  loss=0.6761  task=0.6761  safety=0.0000  top1=0.8591  lr=2.36e-03
+  ep 25  val=0.8413
+  e 30  loss=0.6101  task=0.6101  safety=0.0000  top1=0.8431  lr=2.36e-03
+  e 40  loss=0.5642  task=0.5642  safety=0.0000  top1=0.8622  lr=2.36e-03
+  ep 50  val=0.8645
+  e 50  loss=0.5234  task=0.5234  safety=0.0000  top1=0.8645  lr=2.36e-03
+  e 60  loss=0.5039  task=0.5039  safety=0.0000  top1=0.8752  lr=2.36e-03
+  e 70  loss=0.4915  task=0.4915  safety=0.0000  top1=0.8734  lr=2.36e-03
+  ep 75  val=0.8777
+  → Ref_n1024  best=0.8815 @ep56  Δ=+0.00pp  127s
+────────────────────────────────────────────────────────────
+A_n1024_aug: N=1024 + aug (bottom of scaling curve)  params=17,568  routing=328K MACs
+  e  1  loss=2.4878  task=2.4878  safety=0.0000  top1=0.5763  lr=2.36e-03
+  e 10  loss=0.7059  task=0.7059  safety=0.0000  top1=0.7967  lr=2.36e-03
+  e 20  loss=0.5879  task=0.5879  safety=0.0000  top1=0.8711  lr=2.36e-03
+  ep 25  val=0.8746
+  e 30  loss=0.5339  task=0.5339  safety=0.0000  top1=0.8828  lr=2.36e-03
+  e 40  loss=0.4975  task=0.4975  safety=0.0000  top1=0.8869  lr=2.36e-03
+  ep 50  val=0.8782
+  e 50  loss=0.4689  task=0.4689  safety=0.0000  top1=0.8782  lr=2.36e-03
+  e 60  loss=0.4479  task=0.4479  safety=0.0000  top1=0.8866  lr=2.36e-03
+  e 70  loss=0.4314  task=0.4314  safety=0.0000  top1=0.8843  lr=2.36e-03
+  ep 75  val=0.8708
+  → A_n1024_aug  best=0.8945 @ep44  Δ=+1.30pp  192s
+
+============================================================
+STEP 278 SUMMARY — Aug @ N=1024 T1 (scaling curve bottom)
+  Ref_n1024        aug=n  best=0.8815  Δ=+0.00pp
+  A_n1024_aug      aug=y  best=0.8945  Δ=+1.30pp

@@ -1,0 +1,55 @@
+{
+  "Linear": {
+    "label": "Linear (no hidden, 250K params)",
+    "hidden": [],
+    "n_params": 250890,
+    "best": 0.8775,
+    "best_ep": 17,
+    "delta_vs_sgnnet": 0.0716,
+    "elapsed_s": 157
+  },
+  "MLP_h1": {
+    "label": "MLP h=1 (~25K params, trivial bottleneck)",
+    "hidden": [
+      1
+    ],
+    "n_params": 25109,
+    "best": 0.1,
+    "best_ep": 1,
+    "delta_vs_sgnnet": -0.7059,
+    "elapsed_s": 95
+  },
+  "MLP_h3": {
+    "label": "MLP h=3 (~75K params, matched SGNNET budget)",
+    "hidden": [
+      3
+    ],
+    "n_params": 75307,
+    "best": 0.3041,
+    "best_ep": 26,
+    "delta_vs_sgnnet": -0.5018,
+    "elapsed_s": 153
+  },
+  "MLP_h37": {
+    "label": "MLP h=37 (~930K params, matched step403b FLOPs)",
+    "hidden": [
+      37
+    ],
+    "n_params": 928673,
+    "best": 0.8824,
+    "best_ep": 12,
+    "delta_vs_sgnnet": 0.0765,
+    "elapsed_s": 165
+  },
+  "MLP_h256": {
+    "label": "MLP h=256 (~6.4M params, large baseline)",
+    "hidden": [
+      256
+    ],
+    "n_params": 6425354,
+    "best": 0.8845,
+    "best_ep": 139,
+    "delta_vs_sgnnet": 0.0786,
+    "elapsed_s": 507
+  }
+}

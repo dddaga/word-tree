@@ -1,0 +1,53 @@
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+Step 403c — CIFAR-10 MLP baselines (T2)
+  device=cpu  epochs=150  train=50000  val=10000
+
+──────────────────────────────────────────────────
+Linear: Linear (no hidden, 250K params)  params=250,890
+  ep 30  val=0.8748
+  ep 60  val=0.8753
+  ep 90  val=0.8703
+  ep120  val=0.8673
+  ep150  val=0.8664
+  → best=0.8775 @ep17  Δ_SGNNET=+7.16pp  157s
+──────────────────────────────────────────────────
+MLP_h1: MLP h=1 (~25K params, trivial bottleneck)  params=25,109
+  ep 30  val=0.1000
+  ep 60  val=0.1000
+  ep 90  val=0.1000
+  ep120  val=0.1000
+  ep150  val=0.1000
+  → best=0.1000 @ep1  Δ_SGNNET=-70.59pp  95s
+──────────────────────────────────────────────────
+MLP_h3: MLP h=3 (~75K params, matched SGNNET budget)  params=75,307
+  ep 30  val=0.2994
+  ep 60  val=0.2968
+  ep 90  val=0.2948
+  ep120  val=0.2944
+  ep150  val=0.2946
+  → best=0.3041 @ep26  Δ_SGNNET=-50.18pp  153s
+──────────────────────────────────────────────────
+MLP_h37: MLP h=37 (~930K params, matched step403b FLOPs)  params=928,673
+  ep 30  val=0.8803
+  ep 60  val=0.8782
+  ep 90  val=0.8712
+  ep120  val=0.8731
+  ep150  val=0.8717
+  → best=0.8824 @ep12  Δ_SGNNET=+7.65pp  165s
+──────────────────────────────────────────────────
+MLP_h256: MLP h=256 (~6.4M params, large baseline)  params=6,425,354
+  ep 30  val=0.8719
+  ep 60  val=0.8739
+  ep 90  val=0.8826
+  ep120  val=0.8836
+  ep150  val=0.8845
+  → best=0.8845 @ep139  Δ_SGNNET=+7.86pp  507s
+
+==================================================
+STEP 403c SUMMARY — CIFAR-10 MLP baselines
+  SGNNET K=4 reference: 0.8059 (step401b)
+  Linear       params= 250,890  best=0.8775  Δ_SGNNET=+7.16pp
+  MLP_h1       params=  25,109  best=0.1000  Δ_SGNNET=-70.59pp
+  MLP_h3       params=  75,307  best=0.3041  Δ_SGNNET=-50.18pp
+  MLP_h37      params= 928,673  best=0.8824  Δ_SGNNET=+7.65pp
+  MLP_h256     params=6,425,354  best=0.8845  Δ_SGNNET=+7.86pp

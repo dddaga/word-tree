@@ -1,0 +1,41 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 293 — K_in=15 crossover T1 (75ep, 50% data, no aug)
+  device=mps  K_in=15 vs Refs: N=4096~95.85%, N=8192~94.80%
+
+A_n4096_k15: N=4096 K_in=15 no-aug T1 (crossover test)  params=69,792  Ref~95.85%
+  e  1  loss=4.9769  task=4.9769  safety=0.0000  top1=0.7707  lr=2.36e-03
+  e 10  loss=0.1173  task=0.1173  safety=0.0000  top1=0.9297  lr=2.36e-03
+  ep 15  val=0.9401
+  e 20  loss=0.0694  task=0.0694  safety=0.0000  top1=0.9460  lr=2.36e-03
+  ep 30  val=0.9406
+  e 30  loss=0.0574  task=0.0574  safety=0.0000  top1=0.9406  lr=2.36e-03
+  e 40  loss=0.0410  task=0.0410  safety=0.0000  top1=0.9429  lr=2.36e-03
+  ep 45  val=0.9536
+  e 50  loss=0.0311  task=0.0311  safety=0.0000  top1=0.9460  lr=2.36e-03
+  ep 60  val=0.9531
+  e 60  loss=0.0417  task=0.0417  safety=0.0000  top1=0.9531  lr=2.36e-03
+  e 70  loss=0.0160  task=0.0160  safety=0.0000  top1=0.9575  lr=1.18e-03
+  ep 75  val=0.9572
+  → best=0.9618 @ep72  Δ=+0.33pp vs Ref  527s
+B_n8192_k15: N=8192 K_in=15 no-aug T1 (crossover test)  params=139,424  Ref~94.80%
+  e  1  loss=9.1742  task=9.1742  safety=0.0000  top1=0.7580  lr=2.36e-03
+  e 10  loss=0.0871  task=0.0871  safety=0.0000  top1=0.9149  lr=2.36e-03
+  ep 15  val=0.9172
+  e 20  loss=0.0408  task=0.0408  safety=0.0000  top1=0.9327  lr=2.36e-03
+  ep 30  val=0.9373
+  e 30  loss=0.0270  task=0.0270  safety=0.0000  top1=0.9373  lr=2.36e-03
+  e 40  loss=0.0630  task=0.0630  safety=0.0000  top1=0.9274  lr=1.18e-03
+  ep 45  val=0.9475
+  e 50  loss=0.0076  task=0.0076  safety=0.0000  top1=0.9465  lr=1.18e-03
+  ep 60  val=0.9429
+  e 60  loss=0.0122  task=0.0122  safety=0.0000  top1=0.9429  lr=1.18e-03
+  e 70  loss=0.0044  task=0.0044  safety=0.0000  top1=0.9516  lr=5.91e-04
+  ep 75  val=0.9513
+  → best=0.9518 @ep68  Δ=+0.38pp vs Ref  1029s
+
+============================================================
+STEP 293 — K_in=15 crossover summary
+  N=2048 K_in=15 T2: -0.33pp (step632) — COSTS
+  N=16384 K_in=15 T1: +1.27pp (step288) — HELPS
+  A_n4096_k15  N=4096  best=0.9618  Δ=+0.33pp
+  B_n8192_k15  N=8192  best=0.9518  Δ=+0.38pp

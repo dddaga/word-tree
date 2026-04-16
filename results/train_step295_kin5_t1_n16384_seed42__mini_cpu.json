@@ -1,0 +1,12 @@
+{
+  "A_k5": {
+    "label": "N=16384 K_in=5 T1 (extend curve beyond K_in=10)",
+    "N": 16384,
+    "K_in": 5,
+    "top1_best": 0.9378343820571899,
+    "best_epoch": 74,
+    "delta_vs_ref": 0.0036,
+    "delta_vs_k10": -0.0118,
+    "elapsed_s": 2281
+  }
+}

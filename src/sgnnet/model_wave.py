@@ -10,6 +10,8 @@ Binary C matrices are registered as buffers (D-05: no learned values).
 
 from __future__ import annotations
 
+import warnings
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -54,7 +56,14 @@ def _make_binary_c(
 # -------------------------------------------------------------------
 
 class SGNNET_Wave(nn.Module):
-    """Sparse Geometric Neural Network with wave/phasor architecture.
+    """DEPRECATED — use SGNNET_SmallWorld instead.
+
+    SGNNET_Wave is the pre-SmallWorld architecture (O(N^2) cdist routing, no
+    spatial-sum precomputation). All current experiments use SGNNET_SmallWorld
+    which has 16x fewer seed FLOPs and O(N·K) routing.
+
+    Kept for historical reproducibility of early experiments (train_exp1*.py,
+    step55, step10b). Not for new work.
 
     Parameters
     ----------
@@ -82,6 +91,12 @@ class SGNNET_Wave(nn.Module):
         use_wphase: bool = False,
     ):
         super().__init__()
+        warnings.warn(
+            "SGNNET_Wave is deprecated — use SGNNET_SmallWorld (model_smallworld.py). "
+            "Wave has O(N^2) routing and no spatial-sum precomputation; SmallWorld "
+            "has 16x fewer seed FLOPs and O(N*K) routing.",
+            DeprecationWarning, stacklevel=2,
+        )
         self.N_hidden = N_hidden
         self.N_out = N_out
         self.D = D

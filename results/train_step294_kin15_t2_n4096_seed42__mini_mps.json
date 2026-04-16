@@ -1,0 +1,12 @@
+{
+  "A_k15": {
+    "label": "N=4096 K_in=15 no-aug T2 (validates step293 T1 +0.33pp)",
+    "N": 4096,
+    "K_in": 15,
+    "top1_best": 0.9707006216049194,
+    "best_epoch": 140,
+    "ref_acc": 0.9712,
+    "delta_vs_ref": -0.0005,
+    "elapsed_s": 1809
+  }
+}

@@ -1,0 +1,28 @@
+Step 403b — Matched-FLOPs MLP (h=37)
+  FLOPs=1,857,252 (1.86M)  — target 1.85M
+  params=928,673
+  data=data/store_aug.h5  seed=42  epochs=150  device=mps
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+  Train=18938  Val=3925
+  ep  1  val=0.9682
+  ep 10  val=0.9761
+  ep 20  val=0.9768
+  ep 30  val=0.9269
+  ep 40  val=0.9753
+  ep 50  val=0.9758
+  ep 60  val=0.9786
+  ep 70  val=0.9738
+  ep 80  val=0.9758
+  ep 90  val=0.9771
+  ep100  val=0.9791
+  ep110  val=0.9799
+  ep120  val=0.9796
+  ep130  val=0.9791
+  ep140  val=0.9801
+  ep150  val=0.9796
+
+========== STEP 403b SUMMARY ==========
+  MLP_37  params=928,673  flops=1.86M  best=0.9809 @ep109
+  Compare: SGNNET_Ref 95.52% at 1.85M FLOPs, MLP_3 52.41% at 75K params
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step403b_matched_flops_mlp_h37_seed42__mini_mps.json

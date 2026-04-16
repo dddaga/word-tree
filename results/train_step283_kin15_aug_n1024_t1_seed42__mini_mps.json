@@ -1,0 +1,26 @@
+{
+  "Ref_n1024": {
+    "label": "N=1024 K_in=25 no-aug ref",
+    "N": 1024,
+    "K_in": 25,
+    "use_aug": false,
+    "seed_macs": 25600,
+    "n_params": 17568,
+    "top1_best": 0.8812738656997681,
+    "best_epoch": 56,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 131
+  },
+  "C_k15_aug_n1024": {
+    "label": "N=1024 K_in=15 + aug (COMPOUND bottom of curve)",
+    "N": 1024,
+    "K_in": 15,
+    "use_aug": true,
+    "seed_macs": 15360,
+    "n_params": 17568,
+    "top1_best": 0.8978344202041626,
+    "best_epoch": 61,
+    "delta_vs_ref": 0.0166,
+    "elapsed_s": 231
+  }
+}

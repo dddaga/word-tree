@@ -1,0 +1,24 @@
+{
+  "Ref_n1024": {
+    "label": "N=1024 no-aug T2 ref",
+    "N": 1024,
+    "use_aug": false,
+    "routing_macs": 327680,
+    "n_params": 17568,
+    "top1_best": 0.9057325124740601,
+    "best_epoch": 141,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 458
+  },
+  "A_n1024_aug": {
+    "label": "N=1024 + aug T2 (step278 T1 advance: +1.30pp)",
+    "N": 1024,
+    "use_aug": true,
+    "routing_macs": 327680,
+    "n_params": 17568,
+    "top1_best": 0.9110828042030334,
+    "best_epoch": 149,
+    "delta_vs_ref": 0.0054,
+    "elapsed_s": 804
+  }
+}

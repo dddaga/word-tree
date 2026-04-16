@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/bench_step830_k4_wallclock.py", line 50, in <module>
+    assert DEVICE.type == "cuda", "step830 is CUDA-only"
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: step830 is CUDA-only

@@ -1,0 +1,100 @@
+Step 268 — ΔW proj + aug + K=4 compound @ N=2048 Tier-1
+  seed=42  epochs=75  device=cpu  full_data=False
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config Ref: K=5 ΔW proj no-aug (ref)
+────────────────────────────────────────────────────────────
+  data=data/store.h5  Train=4734  Val=3925
+  params=34,976  K_iter=5
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7669  lr=2.36e-03
+  ep 10  val=0.9307
+  e 10  loss=0.0833  task=0.0833  safety=0.0000  top1=0.9307  lr=2.36e-03
+  ep 20  val=0.9389
+  e 20  loss=0.0355  task=0.0355  safety=0.0000  top1=0.9389  lr=2.36e-03
+  ep 30  val=0.9427
+  e 30  loss=0.0212  task=0.0212  safety=0.0000  top1=0.9427  lr=2.36e-03
+  ep 40  val=0.9437
+  e 40  loss=0.0159  task=0.0159  safety=0.0000  top1=0.9437  lr=2.36e-03
+  ep 50  val=0.9490
+  e 50  loss=0.0117  task=0.0117  safety=0.0000  top1=0.9490  lr=2.36e-03
+  ep 60  val=0.9457
+  e 60  loss=0.0116  task=0.0116  safety=0.0000  top1=0.9457  lr=2.36e-03
+  ep 70  val=0.9524
+  e 70  loss=0.0094  task=0.0094  safety=0.0000  top1=0.9524  lr=1.18e-03
+  → best=0.9549 @ep72  elapsed=315s
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config A_proj_k4: K=4 ΔW proj no-aug
+────────────────────────────────────────────────────────────
+  data=data/store.h5  Train=4734  Val=3925
+  params=34,976  K_iter=4
+  e  1  loss=2.5493  task=2.5493  safety=0.0000  top1=0.6696  lr=2.36e-03
+  ep 10  val=0.9236
+  e 10  loss=0.1484  task=0.1484  safety=0.0000  top1=0.9236  lr=2.36e-03
+  ep 20  val=0.9363
+  e 20  loss=0.0724  task=0.0724  safety=0.0000  top1=0.9363  lr=2.36e-03
+  ep 30  val=0.9457
+  e 30  loss=0.0452  task=0.0452  safety=0.0000  top1=0.9457  lr=2.36e-03
+  ep 40  val=0.9493
+  e 40  loss=0.0297  task=0.0297  safety=0.0000  top1=0.9493  lr=2.36e-03
+  ep 50  val=0.9462
+  e 50  loss=0.0240  task=0.0240  safety=0.0000  top1=0.9462  lr=2.36e-03
+  ep 60  val=0.9480
+  e 60  loss=0.0196  task=0.0196  safety=0.0000  top1=0.9480  lr=2.36e-03
+  ep 70  val=0.9518
+  e 70  loss=0.0152  task=0.0152  safety=0.0000  top1=0.9518  lr=2.36e-03
+  → best=0.9559 @ep69  elapsed=199s
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+
+────────────────────────────────────────────────────────────
+Config B_proj_aug_k4: K=4 ΔW proj + aug (COMBO)
+────────────────────────────────────────────────────────────
+  data=data/store_aug.h5  Train=9469  Val=3925
+  params=34,976  K_iter=4
+  e  1  loss=1.5576  task=1.5576  safety=0.0000  top1=0.8395  lr=2.36e-03
+  ep 10  val=0.9411
+  e 10  loss=0.0921  task=0.0921  safety=0.0000  top1=0.9411  lr=2.36e-03
+  ep 20  val=0.9541
+  e 20  loss=0.0453  task=0.0453  safety=0.0000  top1=0.9541  lr=2.36e-03
+  ep 30  val=0.9521
+  e 30  loss=0.0307  task=0.0307  safety=0.0000  top1=0.9521  lr=2.36e-03
+  ep 40  val=0.9597
+  e 40  loss=0.0245  task=0.0245  safety=0.0000  top1=0.9597  lr=2.36e-03
+  ep 50  val=0.9577
+  e 50  loss=0.0197  task=0.0197  safety=0.0000  top1=0.9577  lr=2.36e-03
+  ep 60  val=0.9597
+  e 60  loss=0.0196  task=0.0196  safety=0.0000  top1=0.9597  lr=2.36e-03
+  ep 70  val=0.9648
+  e 70  loss=0.0147  task=0.0147  safety=0.0000  top1=0.9648  lr=1.18e-03
+  → best=0.9656 @ep75  elapsed=408s
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+
+────────────────────────────────────────────────────────────
+Config C_proj_aug_k5: K=5 ΔW proj + aug (baseline aug)
+────────────────────────────────────────────────────────────
+  data=data/store_aug.h5  Train=9469  Val=3925
+  params=34,976  K_iter=5
+  e  1  loss=1.5272  task=1.5272  safety=0.0000  top1=0.8576  lr=2.36e-03
+  ep 10  val=0.9513
+  e 10  loss=0.0608  task=0.0608  safety=0.0000  top1=0.9513  lr=2.36e-03
+  ep 20  val=0.9577
+  e 20  loss=0.0287  task=0.0287  safety=0.0000  top1=0.9577  lr=2.36e-03
+  ep 30  val=0.9595
+  e 30  loss=0.0175  task=0.0175  safety=0.0000  top1=0.9595  lr=2.36e-03
+  ep 40  val=0.9638
+  e 40  loss=0.0173  task=0.0173  safety=0.0000  top1=0.9638  lr=2.36e-03
+  ep 50  val=0.9610
+  e 50  loss=0.0270  task=0.0270  safety=0.0000  top1=0.9610  lr=2.36e-03
+  ep 60  val=0.9664
+  e 60  loss=0.0061  task=0.0061  safety=0.0000  top1=0.9664  lr=1.18e-03
+  ep 70  val=0.9689
+  e 70  loss=0.0058  task=0.0058  safety=0.0000  top1=0.9689  lr=1.18e-03
+  → best=0.9689 @ep70  elapsed=485s
+
+========== STEP 268 SUMMARY (N=2048 T1 seed=42) ==========
+  Ref               best=0.9549  Δ_vs_Ref=+0.00pp  K=5 ΔW proj no-aug (ref)
+  A_proj_k4         best=0.9559  Δ_vs_Ref=+0.10pp  K=4 ΔW proj no-aug
+  B_proj_aug_k4     best=0.9656  Δ_vs_Ref=+1.07pp  K=4 ΔW proj + aug (COMBO)
+  C_proj_aug_k5     best=0.9689  Δ_vs_Ref=+1.40pp  K=5 ΔW proj + aug (baseline aug)

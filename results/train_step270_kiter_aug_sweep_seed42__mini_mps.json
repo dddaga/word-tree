@@ -1,0 +1,46 @@
+{
+  "Ref": {
+    "label": "K_iter=5 no-aug (step268 ref)",
+    "K_iter": 5,
+    "use_aug": false,
+    "routing_macs": 655360,
+    "n_params": 34976,
+    "top1_best": 0.9391082525253296,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 256
+  },
+  "A_k3_naug": {
+    "label": "K_iter=3 no-aug (FLOPs baseline)",
+    "K_iter": 3,
+    "use_aug": false,
+    "routing_macs": 393216,
+    "n_params": 34976,
+    "top1_best": 0.8881528377532959,
+    "best_epoch": 68,
+    "delta_vs_ref": -0.051,
+    "elapsed_s": 166
+  },
+  "B_k3_aug": {
+    "label": "K_iter=3 + aug (40% FLOPs reduction)",
+    "K_iter": 3,
+    "use_aug": true,
+    "routing_macs": 393216,
+    "n_params": 34976,
+    "top1_best": 0.9113375544548035,
+    "best_epoch": 72,
+    "delta_vs_ref": -0.0278,
+    "elapsed_s": 291
+  },
+  "C_k2_aug": {
+    "label": "K_iter=2 + aug (60% FLOPs reduction)",
+    "K_iter": 2,
+    "use_aug": true,
+    "routing_macs": 262144,
+    "n_params": 34976,
+    "top1_best": 0.9113375544548035,
+    "best_epoch": 74,
+    "delta_vs_ref": -0.0278,
+    "elapsed_s": 209
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "Ref": {
+    "label": "K_in=25 no-aug (step199 ref)",
+    "K_in": 25,
+    "use_aug": false,
+    "seed_macs": 51200,
+    "n_params": 34976,
+    "top1_best": 0.9385987520217896,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 256
+  },
+  "A_k15": {
+    "label": "K_in=15 no-aug (step632: \u22120.33pp)",
+    "K_in": 15,
+    "use_aug": false,
+    "seed_macs": 30720,
+    "n_params": 34976,
+    "top1_best": 0.9398726224899292,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 255
+  },
+  "B_aug": {
+    "label": "K_in=25 + aug (step269 C: +0.66pp T2)",
+    "K_in": 25,
+    "use_aug": true,
+    "seed_macs": 51200,
+    "n_params": 34976,
+    "top1_best": 0.9462420344352722,
+    "best_epoch": 63,
+    "delta_vs_ref": 0.0076,
+    "elapsed_s": 453
+  },
+  "C_k15_aug": {
+    "label": "K_in=15 + aug (compound: efficiency + accuracy)",
+    "K_in": 15,
+    "use_aug": true,
+    "seed_macs": 30720,
+    "n_params": 34976,
+    "top1_best": 0.9454777240753174,
+    "best_epoch": 66,
+    "delta_vs_ref": 0.0069,
+    "elapsed_s": 449
+  }
+}

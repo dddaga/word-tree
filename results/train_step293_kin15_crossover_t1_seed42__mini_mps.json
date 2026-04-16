@@ -1,0 +1,22 @@
+{
+  "A_n4096_k15": {
+    "label": "N=4096 K_in=15 no-aug T1 (crossover test)",
+    "N": 4096,
+    "K_in": 15,
+    "top1_best": 0.9617834687232971,
+    "best_epoch": 72,
+    "ref_acc": 0.9585,
+    "delta_vs_ref": 0.0033,
+    "elapsed_s": 527
+  },
+  "B_n8192_k15": {
+    "label": "N=8192 K_in=15 no-aug T1 (crossover test)",
+    "N": 8192,
+    "K_in": 15,
+    "top1_best": 0.9518471360206604,
+    "best_epoch": 68,
+    "ref_acc": 0.948,
+    "delta_vs_ref": 0.0038,
+    "elapsed_s": 1029
+  }
+}

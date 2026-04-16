@@ -1,0 +1,24 @@
+{
+  "Ref": {
+    "label": "K_in=25 no-aug (step199/step632 ref, 95.52%)",
+    "K_in": 25,
+    "use_aug": false,
+    "seed_macs": 51200,
+    "n_params": 34976,
+    "top1_best": 0.95286625623703,
+    "best_epoch": 128,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 905
+  },
+  "C_k15_aug": {
+    "label": "K_in=15 + aug (compound: 26.7\u00d7 seed reduction + accuracy gain)",
+    "K_in": 15,
+    "use_aug": true,
+    "seed_macs": 30720,
+    "n_params": 34976,
+    "top1_best": 0.9546496868133545,
+    "best_epoch": 150,
+    "delta_vs_ref": 0.0018,
+    "elapsed_s": 1681
+  }
+}

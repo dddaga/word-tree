@@ -64,20 +64,15 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (5 slots, updated 2026-04-15 late)
+## Currently Running (5 slots, updated 2026-04-16 session 3)
 
 | Machine:Device | Session | Step | Status | Note |
 |---------|---------|------|--------|------|
-| mini:mps | sgn-indra-mini_mps-train_step401b_sgnnet_cifar10 | step401b | RUNNING | SGNNET cross-dataset CIFAR-10 |
-| mini:cpu | sgn-indra-mini_cpu-train_step614_cifar100_scaling | step614 MLP | RUNNING | CIFAR-100 MLP hidden-scaling CPU |
-| studio:mps | sgn-indra-studio_mps-train_step614_cifar100_scaling | step614 all | RUNNING | CIFAR-100 full scaling (SGNNET+MLP) |
-| studio:cpu | sgn-indra-studio_cpu-train_step631_kin_sweep | step631 | RUNNING | K_in sweep T1 (75ep, 50% data) — validates optimized _seed stability |
-| 5060ti:cuda | sgn-indra-5060ti_cuda-train_step614_cifar100_scaling | step614 SGNNET | RUNNING | CIFAR-100 SGNNET N=4096/8192 |
-
-**Auto-launch queue when slots free** (`.controller/auto_launch_queue.txt`):
-1. bench_step832 PyG torch_scatter (5060ti) — needs CUDA
-2. step522 Muon optimizer (5060ti) — needs CUDA
-3. step401b CIFAR-10 SGNNET cross-dataset (mini_mps after extract completes)
+| mini:mps | sgn-indra-mini_mps-train_step296_kin10_aug_n16384_t1 | step296 | RUNNING | K_in=10+aug T1 @ N=16384 (compound test of new best K_in) |
+| mini:cpu | sgn-indra-mini_cpu-train_step295_kin5_t1_n16384 | step295 | RUNNING | K_in=5 T1 @ N=16384 (extend curve; K_in=10 was best so far at +1.53pp) |
+| studio:mps | sgn-indra-studio_mps-train_step291_kin15_aug_n16384_t2 | step291 | RUNNING | K_in=15 compound T2 @ N=16384 (C_k15_naug + D_k15_aug, 150ep) |
+| studio:cpu | sgn-indra-studio_cpu-train_step407_sgnnet_agnews | step407 | RUNNING | AG News 4-class cross-modal (DistilBERT features) |
+| 5060ti:cuda | sgn-indra-5060ti_cuda-train_step410_sst2_config_sweep | step410 | RUNNING | **P0 GAP-CLOSE: SST-2 config sweep** — close SGNNET-vs-Linear gap at low-dim features |
 
 ---
 
@@ -90,9 +85,9 @@ All scripts smoke-tested with `--help`. Launch via `scripts/queue_submit.sh` (on
 | Step | Description | Scale | Script | Status |
 |------|-------------|-------|--------|--------|
 | **step267** | ΔW rot + aug + K=4 @ N=4096 (V3 Gap 2.1) — **SUPERSEDED.** step266 Ref (K=5)=97.71%, A_k4 (K=4)=97.66% ALREADY COMPLETE. Local JSON was stale sync artifact; authoritative result synced from 5060ti. No new script needed. | N=4096 | (n/a) | **DONE — confirmed from synced step266 log** |
-| **step268** | ΔW proj + aug + K=4 combo @ N=2048 Tier-1 (V3 Gap 2.2) — stack K=4 equivalence + aug gain. 4-config ablation: Ref K5 no-aug, A K4 no-aug, B K4 aug (COMBO), C K5 aug. | N=2048 | `scripts/train_step268_dwproj_aug_k4.py` | QUEUED |
+| **step268** | ΔW proj + aug + K=4 combo @ N=2048 Tier-1 (V3 Gap 2.2) — stack K=4 equivalence + aug gain. 4-config ablation: Ref K5 no-aug, A K4 no-aug, B K4 aug (COMBO), C K5 aug. | N=2048 | `scripts/train_step268_dwproj_aug_k4.py` | **RUNNING (mini_cpu)** |
 | **step403b** | Matched-FLOPs MLP_37 baseline — MLP_37=97.71% @ep36 at 1.86M FLOPs. Paper baseline confirmed. | N_in=25088→h=37→10 | `scripts/train_step403b_matched_flops_mlp.py` | **DONE (studio_mps)** |
-| **step404** | GCN / GAT / GIN baselines — RUNNING on studio_mps. | N=2048 | `scripts/train_step404_gnn_baselines.py` | **RUNNING (studio_mps)** |
+| **step404** | GCN / GAT / GIN baselines. GCN=48.9%, GAT=48.7%, GIN=15.5% vs SGNNET=95.52%. SGNNET crushes all GNN baselines by ~47pp. | N=2048 | `scripts/train_step404_gnn_baselines.py` | **DONE** |
 | **step405** | SST-2 cross-modal SGNNET (V3 Gap 2.8 paper-blocker) — DistilBERT CLS [768-d] → Linear / MLP_64 / SGNNET comparison. 2-phase: `--phase extract` (one-time) then `--phase train`. Requires `pip install transformers datasets h5py`. | N=2048 D=16 | `scripts/train_step405_sgnnet_sst2.py` | QUEUED |
 | **step524-S1** | Edge-β scalar on frozen topology. Ref=93.94%, S1_init0=93.91% (−0.03pp), S1_init1=93.07% (−0.87pp). | N=2048 | `scripts/train_step524_s1_edge_beta.py` | **DONE — KILLED. Edge-β adds no value. Dynamic direction CLOSED.** |
 | **step526/527** | INT8 QAT sweep. Part A weight-only: −0.20pp (lossless). W+Z: −1.27pp. Part B QAT accum=1: −0.97pp viable; cliff at accum=4 (−16.31pp). fp32 ref=87.90%. | N=2048 | `scripts/train_step526_int8_qat.py` | **DONE (mini_mps)**. Result: `results/train_step527_int8_qat_k4_seed42__mini_mps.json` |
@@ -107,8 +102,11 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | Step | Description | Script | Status |
 |------|-------------|--------|--------|
 | **bench_step831** | CUDA seed speedup validation — DONE: 5.26× @B=128, 1.98× @B=32. Correctness ✓ | `scripts/bench_step831_seed_opt_cuda.py` | **DONE** |
-| **step630** | K=1 clean benchmark (Ref_k5 / Scratch_k1 / Distill_k1), clean inference timing | `scripts/train_step630_k1_clean_benchmark.py` | QUEUED (needs slot) |
-| **step631** | K_in sweep T1 (K_in=25/15/10/5) — can we reduce fan-in without accuracy loss? | `scripts/train_step631_kin_sweep.py` | **RUNNING (studio_cpu)** |
+| **step630** | K=1 clean benchmark. Ref_k5=95.46% (1.97ms B1), Scratch_k1=91.69% (0.82ms), Distill_k1=92.13% (+0.44pp over scratch). Speedup vs K=5: 2.3× B1, 3.0× B32. Verdict: MEDIUM — distillation helps but −3.3pp cost too large for efficiency claim. | `scripts/train_step630_k1_clean_benchmark.py` | **DONE** |
+| **step631** | K_in sweep T1. Ref=94.01%, K15=93.66% (−0.36pp ADVANCES), K10=92.84% FAILS, K5=91.26% FAILS. K_in=15 minimum viable. 26.7× compound seed reduction. | `scripts/train_step631_kin_sweep.py` | **DONE** |
+| **step632** | K_in=15 T2. Ref_k25=95.46%, A_k15=95.13% (Δ=−0.33pp). **CONFIRMED for paper.** 26.7× seed reduction, <0.5pp cost. | `scripts/train_step632_kin15_t2.py` | **DONE** |
+| **step633** | K_in plot sweep K_in=1..25 (T1 75ep 50% data). For publication accuracy-vs-seed-MACs curve. Existing T1 data at K_in=5,10,15,25 from step631 (resumable). New: K_in=1,2,3,7,20. | `scripts/train_step633_kin_plot_sweep.py` | **QUEUED → 5060ti when step269 done** |
+| **step621** | GLNN distillation Imagenette. h=256: −0.18pp. h=2: collapsed (−60pp). KILLED at both student sizes. | `scripts/train_step621_glnn_imagenette_mlp.py` | **DONE — KILLED** |
 
 ### P-CUDA — Deferred
 
@@ -117,6 +115,61 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step530** | **Triton fused kernel (gather+mul+sum)** — custom kernel eliminating [B,N,K_hh,D] intermediate tensor. Register-tiled for D=16. Lower priority now that spatial precomputation handles main bottleneck. | DEFERRED | QUEUED |
 
 ---
+
+## Aug N-scaling + K_in compound (2026-04-16 session)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| **step269** | K=5+aug T2. Ref=95.29%, C_aug_k5=95.46% (+0.18pp). Aug confirmed T2. | **DONE** |
+| **step270** | K_iter=3/2 + aug sweep T1. K_iter=3: −5.10pp no-aug, −2.78pp aug. K_iter=2: −2.78pp. KILLED. | **DONE** |
+| **step271** | K_in=15+aug compound T1. Ref=93.85%, C_k15_aug=94.55% (+0.69pp). Compound ADVANCES. | **DONE** |
+| **step272** | N=4096+aug T1. Ref=95.85%, A_n4096_aug=96.71% (+0.87pp). ADVANCES to T2. | **DONE** |
+| **step273** | N=4096+aug T2. Ref=97.12%, A_n4096_aug=97.68% (+0.56pp). NEW D=16 ACCURACY RECORD. | **DONE** |
+| **step274** | K_in=15+aug compound T2. Ref=95.29%, C_k15_aug=95.46% (+0.18pp). CONFIRMED. 26.7× seed reduction publishable. | **DONE** |
+| **step275** | N=8192+aug T1. Ref=94.80%, A_n8192_aug=96.46% (+1.66pp). ADVANCES to T2. | **DONE** |
+| **step276** | N=8192+aug T2. Ref=96.94%, A_n8192_aug=97.38% (+0.43pp). CONFIRMED. Aug scale-invariant. | **DONE** |
+| **step277** | K_in=15+aug @ N=4096 T1. Ref=96.23%, C_k15_aug=96.56% (+0.33pp). ADVANCES to T2 (step279). | **DONE** |
+| **step278** | N=1024+aug T1. Ref=88.15%, A_n1024_aug=89.45% (+1.30pp). Completes bottom of scaling curve. | **DONE** |
+| **step279** | K_in=15+aug @ N=4096 T2. Ref=97.12%, C_k15_aug=97.30% (+0.18pp). CONFIRMED. | **DONE** |
+| **step280** | N=1024+aug T2. Ref=90.57%, A_n1024_aug=91.11% (+0.54pp). Aug N-scaling curve COMPLETE. | **DONE** |
+| **step281** | K_in=15+aug compound @ N=8192 T1. Ref=94.90%, C_k15_aug=96.05% (+1.15pp). ADVANCES to T2. | **DONE** |
+| **step282** | K_in=15+aug compound @ N=8192 T2. Ref=96.94%, C_k15_aug=97.30% (+0.36pp). CONFIRMED. | **DONE** |
+| **step283** | K_in=15+aug compound @ N=1024 T1. Ref=88.13%, C_k15_aug=89.78% (+1.66pp). ADVANCES to T2. | **DONE** |
+| **step284** | K_in=15+aug compound @ N=1024 T2. Ref=90.52%, C_k15_aug=91.31% (+0.79pp). CONFIRMED. | **DONE** |
+| **step285** | K=4+aug @ N=2048 T2. Ref=95.46%, B_k4_aug=94.17% (−1.30pp). K=4 routing KILLED. K_hh=2 is minimum viable. | **DONE — KILLED** |
+| **step286** | N=16384+aug T1. Ref=93.43%, A_n16384_aug=95.54% (+2.11pp). ADVANCES. Non-monotonic T1 gain. | **DONE** |
+| **step287** | N=16384+aug T2. Ref=95.87%, A_n16384_aug=96.87% (**+0.99pp** — strongest aug T2 delta at any N). | **DONE** |
+| **step288** | K_in=15+aug@N=16384 T1. C_k15_naug=94.70% (+1.27pp), D_k15_aug=95.92% (+2.50pp). **ANOMALY: K_in=15 > K_in=25 at N=16384.** | **DONE** |
+| **step289** | K_in=20,10 T0 @ N=16384. K_in=20=91.01% (-2.42pp DEAD), K_in=10=92.43% (-0.99pp ADVANCES). | **DONE** |
+| **step290** | K_in=10,20 T1 @ N=16384. Validates K_in anomaly curve. RUNNING on mini_cpu. | **RUNNING (mini_cpu)** |
+| **step291** | K_in=15 compound T2 @ N=16384 (C_k15_naug + D_k15_aug, 150ep). Validates step288 +1.27pp/+2.50pp. ep40 val=95.97%. | **RUNNING (studio_mps)** |
+| **step293** | K_in=15 no-aug T1 @ N=4096,8192. N=4096=96.18% (+0.33pp), N=8192=95.18% (+0.38pp). Crossover between N=2048-4096. | **DONE** |
+| **step294** | K_in=15 no-aug T2 @ N=4096 = 97.07% (Ref T2=97.12%, Δ=-0.05pp — tied). T1 delta compressed to parity. | **DONE** |
+| **step296** | K_in=10+aug T1 @ N=16384. Tests compound of new best K_in (+1.53pp) with aug (+2.11pp). | **RUNNING (mini_mps)** |
+| **step606** | K=1 + K_in=15 compound at N=2048 T1. Ref_k25=95.69%, A_k15_KD=94.96% (-0.73pp), B_k15_scratch=95.29% (-0.40pp). **COMPOUND FAILS at N=2048** — K_in=15 hurts at K=1 when no routing to compensate. Need to retest at N>=4096. | **DONE — compound KILLED at N=2048** |
+| **step607** | K=1 pure-KD T2 @ N=2048. A_pure_kd=95.92% (-0.76pp vs teacher), B_balanced=95.95% (-0.74pp). T2 OVERFITS T1 (step605=96.33% at 75ep was better). Early-stop @ep75 for best. | **DONE** |
+| **bench_step608** | K=1 wall-time bench. SGNNET K=1 @ B=32 = **12.7us** (5.3× faster than VGG_FC 66.7us, 3418× fewer params). K=1 vs K=5 = 2-2.5× wall-time reduction. Memory anomaly: K=5 B=128 regresses (45.4us > B=32's 31.2us) — CUDA optim candidate. | **DONE** |
+
+---
+
+## P0 GAP-CLOSE (2026-04-16, user directive): Close SGNNET-vs-FC gap at low-dim features
+
+**Mindset:** instead of accepting "SGNNET stops working below N_in=1000", actively close the gap so SGNNET wins on Pareto efficiency at low-dim too.
+
+**Hypothesis:** default SGNNET (N=2048, K_in=25, K_iter=5) is tuned for VGG16's N_in=25088. At N_in=768 (DistilBERT):
+- N=2048 may be overparameterized
+- K_in=25 covers 3.3% of features (vs 0.1% at N_in=25088) — too dense
+- K_iter=5 may be excessive for low-dim features
+
+| Step | Description | Status |
+|------|-------------|--------|
+| **step410** | SST-2 config sweep: Ref(N=2048,K=25), small-N(N=512), low-K_in(K_in=10), low-K_iter(K=2), combined. 5 configs × 100ep on CUDA. | **RUNNING (5060ti)** |
+| **step411** | AG News config sweep — same 5 configs, 150ep, once SST-2 winner identified. | QUEUED (needs sync of agnews h5 features) |
+| **step412** | If step410 winner ≥ Linear: validate scaling on SST-5 (5-class text) and RTE (low-data). | QUEUED (depends on 410) |
+
+**Exit criterion:** SGNNET config X on text tasks Pareto-dominates (accuracy, params, FLOPs, wall-time) vs Linear/MLP_64. If yes → paper claim expands from "VGG-FC-replacement" to "general high-efficiency FC replacement." If no → scope refinement stands with honest low-dim failure mode documented.
+| **step295** | K_in=5 T1 @ N=16384. Extends K_in curve; K_in=10 was +1.53pp so K_in=5 may continue or break. | **RUNNING (mini_cpu)** |
+| **step633** | K_in=1..25 sweep. K_in=15 is knee (−0.08pp vs K_in=25). K_in=20/25 identical. Publishable curve. | **DONE** |
 
 ## Paper-critical experiments (2026-04-15 session)
 
@@ -129,7 +182,9 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step603** | B2 GLNN student — T2_lam05 STRONG=97.81% (+0.10pp over scratch). T=2 λ=0.5 optimal. | **DONE (5060ti_cuda)** |
 | **step604** | B1 consistency-DEQ teacher — best=96.69% @ep75. Cache 1.7GB saved. | **DONE (5060ti_cuda)** |
 | **step605** | B1 consistency-DEQ student — K=1 student, 6 configs 75ep. ep30=95.26%, learning. | **RUNNING (5060ti_cuda)** |
-| **step405** | SST-2 cross-modal — MLP_37/64 done (84.63%). SGNNET relaunched (fixed use_trainer+Fourier encoding). ep1=78.44%, healthy. 150ep. | **RUNNING (studio_cpu)** |
+| **step405** | SST-2 cross-modal — Linear=84.63%, MLP_64=84.52% (MPS). SGNNET=83.60% (CPU, −1pp). SGNNET competitive. NOTE: MPS run fails (49%, numerical issue) — use CPU result. | **DONE** |
+| **step406** | ESC-50 audio cross-modal. Linear=64.5%, MLP_64=64.5%, SGNNET=50.5% (-14pp). KILLED. Audio fails. | **DONE — KILLED** |
+| **step407** | AG News 4-class text cross-modal (DistilBERT features). Extends SST-2 to multi-class text. | **RUNNING (studio_cpu)** |
 
 ## GLNN distillation validation — cross-dataset/scale (Claim 7)
 
@@ -147,8 +202,8 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 
 | Step | Description | Status |
 |------|-------------|--------|
-| **step523** | **Alternating W_pos / edge training cycle** (user directive). 30ep warmup → [20ep W_pos / 20ep edges] × 2 cycles → 10ep final. Edge cap 1% per event (≤10 swaps at N=512 K_hh=2). Tests whether temporal separation of W_pos and topology updates rescues the dynamic connectivity direction that step511-514 failed (6/6 variants all negative). **Script ready, queue for next CPU slot.** | QUEUED |
-| **step521** | Multi-forward-backward (deep supervision on K_iter). k_only_forward ∈ {0,1,2,3} compared to Ref (single loss). Implemented as accumulated-loss deep supervision, single backward. **Script ready, queue for CUDA slot.** | QUEUED |
+| **step523** | **Alternating W_pos / edge training cycle.** Ref=77.68%, A_low=74.85% (−2.83pp), B_high=75.03% (−2.65pp). Both fail. Edge rewiring destroys weights; recovery incomplete. **KILLED — dynamic connectivity direction CONFIRMED dead (7/7 negative including step511-514).** | **DONE** |
+| **step521** | Deep supervision on K_iter routing. Ref=94.85%, A_ds_3to5=88.36% (-6.5pp), B_ds_2to5=88.87% (-6.0pp). **KILLED — routing disrupted by intermediate supervision.** C/D still running but expected dead. | **DONE — KILLED** |
 | **step522** | Muon optimizer vs AdamW at N=2048 K=5 ΔW proj. Measures convergence speed (epochs-to-93/94/95) AND final accuracy — user directive: "same accuracy at faster convergence is a win". Requires `pip install muon-optimizer`. **Script ready, queue for CUDA slot (after env check).** | QUEUED |
 | **direct K=4 wall-clock bench** | Measure SGNNET K=4 inference latency directly (currently projected 0.224ms based on 20% reduction). Add to bench_step811 variant list. | TODO |
 | **step524** | **Edge-SHIFT probes** (post-step523 follow-up). 6 configs at N=1024 T0: Ref / P1 step523+Adam-reset / P2 alt-schedule+0%cap / S1 edge-β scalar / S2 W_pos-passive-rebind / S4 cyclic-shift-null-control. Tests H1-H2-H5 of step523 failure + 2 continuous-parameterization alternatives + 1 null control. ~4h one slot. Design in LEARNINGS_design_2026_04_15.md. | TODO (script) |

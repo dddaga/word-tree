@@ -32,8 +32,82 @@ SLOT="$1"
 SCRIPT="$2"
 shift 2
 
+# Check for --unsafe-cuda-launch flag anywhere in remaining args
+UNSAFE_CUDA_LAUNCH=0
+NEW_ARGS=()
+for arg in "$@"; do
+  if [[ "$arg" == "--unsafe-cuda-launch" ]]; then
+    UNSAFE_CUDA_LAUNCH=1
+  else
+    NEW_ARGS+=("$arg")
+  fi
+done
+set -- "${NEW_ARGS[@]+"${NEW_ARGS[@]}"}"
+
 USER_PREFIX="${SGNNET_USER:-$(whoami)}"
 REPO_LOCAL="/Volumes/T9/IndraAstra/dhiraj/neuro_graph"
+
+# ----- Layer 1 guard: CUDA checklist audit -----------------------------------
+# For 5060ti_cuda launches, enforce known-good markers from
+# .claude/skills/sgnnet-research/CUDA_CHECKLIST.md.
+# Override with --unsafe-cuda-launch.
+audit_cuda_script() {
+  local script="$1"
+  if [[ ! -f "$script" ]]; then
+    echo "ERROR: CUDA audit cannot read script: $script" >&2
+    return 1
+  fi
+  local content
+  content=$(cat "$script")
+  local fails=()
+
+  # Blanket pass: explicit human-review marker. Use when the script delegates
+  # transfer/compile to an audited helper (Trainer, etc.) and you've verified
+  # the path is CUDA-optimal.
+  if grep -q "# CUDA-5060ti-validated" <<< "$content"; then
+    return 0
+  fi
+
+  # Required markers (grep literal substring anywhere — imports, calls, or comments)
+  if ! grep -qE "SGNNET_Resonant_CUDA|SGNNET_AntiHebbian_CUDA" <<< "$content"; then
+    fails+=("  - Missing CUDA variant: import SGNNET_Resonant_CUDA or SGNNET_AntiHebbian_CUDA. Evidence: step500 (2.6%→99.6% util, 4x speedup).")
+  fi
+  if ! grep -q "pin_memory=True" <<< "$content"; then
+    fails+=("  - Missing pin_memory=True on DataLoader. Needed for async H→D overlap.")
+  fi
+  if ! grep -q "non_blocking=True" <<< "$content"; then
+    fails+=("  - Missing non_blocking=True on .to(device). Needed to overlap transfer with compute.")
+  fi
+  # GradScaler absence is OK; if present, must be disabled (step801 evidence)
+  if grep -q "GradScaler" <<< "$content" && \
+     ! grep -qE "GradScaler\([^)]*enabled=False|use_amp=False" <<< "$content"; then
+    fails+=("  - GradScaler present without enabled=False. On Blackwell fp16+GradScaler is 4.4x SLOWER (step801). Disable it.")
+  fi
+
+  if [[ ${#fails[@]} -gt 0 ]]; then
+    echo "" >&2
+    echo "┌── CUDA LAUNCH BLOCKED: $script" >&2
+    echo "│   Failing the 5060ti_cuda checklist. See:" >&2
+    echo "│     .claude/skills/sgnnet-research/CUDA_CHECKLIST.md" >&2
+    echo "│" >&2
+    for f in "${fails[@]}"; do
+      echo "│ $f" >&2
+    done
+    echo "│" >&2
+    echo "│   To override (last resort): append --unsafe-cuda-launch to the command." >&2
+    echo "└──" >&2
+    return 1
+  fi
+  return 0
+}
+
+if [[ "$SLOT" == "5060ti_cuda" ]]; then
+  if [[ "$UNSAFE_CUDA_LAUNCH" == "1" ]]; then
+    echo "WARNING: --unsafe-cuda-launch set; skipping CUDA checklist audit for $SCRIPT" >&2
+  else
+    audit_cuda_script "$SCRIPT" || exit 1
+  fi
+fi
 
 case "$SLOT" in
   mini_mps)    DEVICE=mps;  HOST=local;      REMOTE_DIR="$REPO_LOCAL";                            TMUX="tmux";                    PY="d_env/bin/python3" ;;

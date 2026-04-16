@@ -204,6 +204,13 @@ class SGNNET_ProximityWave(nn.Module):
         anti_hebb_alpha: float = 0.0,
     ):
         super().__init__()
+        import warnings
+        warnings.warn(
+            "SGNNET_ProximityWave is deprecated — use SGNNET_SmallWorld (model_smallworld.py). "
+            "ProximityWave was a wave-1 era variant; wave-1 routing is killed (gate-death). "
+            "SmallWorld has spatial-sum precomputation (16x fewer seed FLOPs) and is the current base.",
+            DeprecationWarning, stacklevel=2,
+        )
         self.N_hidden = N_hidden
         self.N_out = N_out
         self.D = D

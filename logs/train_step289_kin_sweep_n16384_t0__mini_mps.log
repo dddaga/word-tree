@@ -1,0 +1,16 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 289 — K_in sweep @ N=16384 T0 (20ep, 50% data)
+  device=mps  Ref=93.43% (step286)  K_in=15=94.70% (step288)
+
+A_k20: N=16384 K_in=20 no-aug T0  K_in=20  params=278,688
+  e  1  loss=10.4594  task=10.4594  safety=0.0000  top1=0.7597  lr=2.36e-03
+  ep 10  val=0.8994
+  e 10  loss=0.0350  task=0.0350  safety=0.0000  top1=0.8994  lr=2.36e-03
+  ep 20  val=0.8718
+  e 20  loss=0.0403  task=0.0403  safety=0.0000  top1=0.8718  lr=2.36e-03
+  → best=0.9139 @ep16  Δ=-2.04pp vs Ref  508s
+
+============================================================
+STEP 289 — K_in @ N=16384 T0 summary
+  Ref_k25 =93.43% (step286)  K_in=15=94.70% (step288 C)
+  A_k20  K_in=20  best=0.9139  Δ=-2.04pp

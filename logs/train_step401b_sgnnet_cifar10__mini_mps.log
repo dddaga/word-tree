@@ -7,33 +7,56 @@ Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
 Config Ref: CIFAR-10 ΔW proj K=5
 ────────────────────────────────────────────────────────────
   params=34,976  K_iter=5
-  e  1  loss=1.3766  task=1.3766  safety=0.0000  top1=0.6573  lr=2.36e-03
-  ep 10  val=0.7666
-  e 10  loss=0.6456  task=0.6456  safety=0.0000  top1=0.7666  lr=2.36e-03
-  ep 20  val=0.7771
-  e 20  loss=0.5788  task=0.5788  safety=0.0000  top1=0.7771  lr=2.36e-03
-  ep 30  val=0.7704
-  e 30  loss=0.5528  task=0.5528  safety=0.0000  top1=0.7704  lr=2.36e-03
-  ep 40  val=0.7875
-  e 40  loss=0.5375  task=0.5375  safety=0.0000  top1=0.7875  lr=2.36e-03
-  ep 50  val=0.7829
-  e 50  loss=0.5202  task=0.5202  safety=0.0000  top1=0.7829  lr=2.36e-03
-  ep 60  val=0.7960
-  e 60  loss=0.5072  task=0.5072  safety=0.0000  top1=0.7960  lr=2.36e-03
-  ep 70  val=0.7549
-  e 70  loss=0.4956  task=0.4956  safety=0.0000  top1=0.7549  lr=2.36e-03
-  ep 80  val=0.7650
-  e 80  loss=0.4871  task=0.4871  safety=0.0000  top1=0.7650  lr=2.36e-03
-  ep 90  val=0.7956
-  e 90  loss=0.4894  task=0.4894  safety=0.0000  top1=0.7956  lr=2.36e-03
-  ep100  val=0.7917
-  e100  loss=0.4844  task=0.4844  safety=0.0000  top1=0.7917  lr=2.36e-03
-  → best=0.8022 @ep86  elapsed=4294s
+  e  1  loss=1.3753  task=1.3753  safety=0.0000  top1=0.6588  lr=2.36e-03
+  ep 10  val=0.7632
+  e 10  loss=0.6486  task=0.6486  safety=0.0000  top1=0.7632  lr=2.36e-03
+  ep 20  val=0.7766
+  e 20  loss=0.5819  task=0.5819  safety=0.0000  top1=0.7766  lr=2.36e-03
+  ep 30  val=0.7645
+  e 30  loss=0.5575  task=0.5575  safety=0.0000  top1=0.7645  lr=2.36e-03
+  ep 40  val=0.7857
+  e 40  loss=0.5359  task=0.5359  safety=0.0000  top1=0.7857  lr=2.36e-03
+  ep 50  val=0.7845
+  e 50  loss=0.5203  task=0.5203  safety=0.0000  top1=0.7845  lr=2.36e-03
+  ep 60  val=0.7979
+  e 60  loss=0.5065  task=0.5065  safety=0.0000  top1=0.7979  lr=2.36e-03
+  ep 70  val=0.7431
+  e 70  loss=0.4981  task=0.4981  safety=0.0000  top1=0.7431  lr=2.36e-03
+  ep 80  val=0.7768
+  e 80  loss=0.4875  task=0.4875  safety=0.0000  top1=0.7768  lr=2.36e-03
+  ep 90  val=0.7986
+  e 90  loss=0.4901  task=0.4901  safety=0.0000  top1=0.7986  lr=2.36e-03
+  ep100  val=0.7916
+  e100  loss=0.4823  task=0.4823  safety=0.0000  top1=0.7916  lr=2.36e-03
+  → best=0.8008 @ep93  elapsed=3136s
 
 ────────────────────────────────────────────────────────────
 Config A_k4: CIFAR-10 ΔW proj K=4 (step265 winner)
 ────────────────────────────────────────────────────────────
   params=34,976  K_iter=4
-  e  1  loss=1.5431  task=1.5431  safety=0.0000  top1=0.6523  lr=2.36e-03
-  ep 10  val=0.7527
-  e 10  loss=0.6782  task=0.6782  safety=0.0000  top1=0.7527  lr=2.36e-03
+  e  1  loss=1.5425  task=1.5425  safety=0.0000  top1=0.6513  lr=2.36e-03
+  ep 10  val=0.7542
+  e 10  loss=0.6820  task=0.6820  safety=0.0000  top1=0.7542  lr=2.36e-03
+  ep 20  val=0.7718
+  e 20  loss=0.6077  task=0.6077  safety=0.0000  top1=0.7718  lr=2.36e-03
+  ep 30  val=0.7862
+  e 30  loss=0.5796  task=0.5796  safety=0.0000  top1=0.7862  lr=2.36e-03
+  ep 40  val=0.7821
+  e 40  loss=0.5566  task=0.5566  safety=0.0000  top1=0.7821  lr=2.36e-03
+  ep 50  val=0.7769
+  e 50  loss=0.5536  task=0.5536  safety=0.0000  top1=0.7769  lr=2.36e-03
+  ep 60  val=0.7821
+  e 60  loss=0.5333  task=0.5333  safety=0.0000  top1=0.7821  lr=2.36e-03
+  ep 70  val=0.7990
+  e 70  loss=0.5400  task=0.5400  safety=0.0000  top1=0.7990  lr=2.36e-03
+  ep 80  val=0.7914
+  e 80  loss=0.5282  task=0.5282  safety=0.0000  top1=0.7914  lr=2.36e-03
+  ep 90  val=0.7998
+  e 90  loss=0.5184  task=0.5184  safety=0.0000  top1=0.7998  lr=2.36e-03
+  ep100  val=0.7776
+  e100  loss=0.5144  task=0.5144  safety=0.0000  top1=0.7776  lr=2.36e-03
+  → best=0.7998 @ep90  elapsed=2398s
+
+========== STEP 401b SUMMARY (CIFAR-10 seed=42) ==========
+  Ref     K_iter=5  best=0.8008 @ep93
+  A_k4    K_iter=4  best=0.7998 @ep90

@@ -1,0 +1,22 @@
+{
+  "A_k20": {
+    "label": "N=16384 K_in=20 T1 (directional: T0=-2.42pp)",
+    "N": 16384,
+    "K_in": 20,
+    "top1_best": 0.9360509514808655,
+    "best_epoch": 43,
+    "delta_vs_ref": 0.0018,
+    "delta_vs_k15": -0.0109,
+    "elapsed_s": 2203
+  },
+  "B_k10": {
+    "label": "N=16384 K_in=10 T1 (directional: T0=-0.99pp)",
+    "N": 16384,
+    "K_in": 10,
+    "top1_best": 0.9495541453361511,
+    "best_epoch": 52,
+    "delta_vs_ref": 0.0153,
+    "delta_vs_k15": 0.0026,
+    "elapsed_s": 2160
+  }
+}

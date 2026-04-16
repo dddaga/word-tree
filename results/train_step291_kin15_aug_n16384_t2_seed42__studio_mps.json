@@ -1,0 +1,22 @@
+{
+  "C_k15_naug": {
+    "label": "N=16384 K_in=15 no-aug T2 (validates +1.27pp T1 anomaly)",
+    "N": 16384,
+    "K_in": 15,
+    "use_aug": false,
+    "top1_best": 0.9612739086151123,
+    "best_epoch": 65,
+    "delta_vs_ref_t1": 0.027,
+    "elapsed_s": 2380
+  },
+  "D_k15_aug": {
+    "label": "N=16384 K_in=15+aug T2 (validates +2.50pp T1 compound)",
+    "N": 16384,
+    "K_in": 15,
+    "use_aug": true,
+    "top1_best": 0.968917191028595,
+    "best_epoch": 74,
+    "delta_vs_ref_t1": 0.0346,
+    "elapsed_s": 4421
+  }
+}

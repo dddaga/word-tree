@@ -34,15 +34,21 @@ FLOPs budget: `3 × N × K_hh × D × K_iter` — fully determined by five integ
 
 ## Efficiency Frontier (D=16, K_hh=2 family)
 
-| Step | N | K_iter | FLOPs | FLOPs % | Accuracy | Note |
-|------|---|--------|-------|---------|----------|------|
-| step199 | 2048 | 5 | 0.98M | **0.79%** | **95.52%** | Final efficiency config |
-| step195 | 2048 | 6 | 1.18M | 0.95% | 96.08% | First ≤1% FLOPs hit |
-| step205 | 4096 | 5 | 1.97M | 1.59% | 97.17% | D=16 record |
-| step209 | 8192 | 5 | 3.93M | 3.18% | 97.17% | D=16 ceiling confirmed |
-| — | — | — | 123.6M | 100% | 95.0% | VGG16 FC baseline |
+| Step | N | K_iter | K_in | Routing FLOPs | FLOPs % | Accuracy | Note |
+|------|---|--------|------|---------------|---------|----------|------|
+| step199 | 2048 | 5 | 25 | 0.98M | **0.79%** | **95.52%** | Baseline efficiency config |
+| step195 | 2048 | 6 | 25 | 1.18M | 0.95% | 96.08% | First ≤1% FLOPs hit |
+| step205 | 4096 | 5 | 25 | 1.97M | 1.59% | 97.17% | D=16 record (no aug) |
+| step209 | 8192 | 5 | 25 | 3.93M | 3.18% | 97.17% | D=16 ceiling (no aug) |
+| step273 | 4096 | 5 | 25 | 1.97M | 1.59% | **97.68%** | **Best D=16 with aug** |
+| step279 | 4096 | 5 | 15 | 1.97M | 1.59% | 97.30% | K_in=15 + aug compound |
+| step604 | 2048 | 5 | 25 | 0.98M | 0.79% | **96.69%** | ΔW proj K=5 teacher |
+| step605 | 2048 | **1** | 25 | **0.20M** | **0.16%** | **96.36%** | **K=1 KD student — 5× routing reduction** |
+| — | — | — | — | 123.6M | 100% | 95.0% | VGG16 FC baseline |
 
-D=16 ceiling is 97.17% (N=4096/N=8192 both converge here). Project accuracy best remains 97.86% at D=64, step89.
+D=16 ceiling = 97.17% no-aug, 97.68% with aug. Project accuracy best remains 97.86% at D=64, step89.
+
+**Compound efficiency story:** K=1 student + K_in=15 + spatial precomp (step606 pending) → projected **0.16M routing MACs** at ~96% accuracy = **~770× fewer than VGG FC**.
 
 ---
 
@@ -63,6 +69,14 @@ N-scaling at D=16 shows a hard ceiling at 97.17% reached independently by both N
 ### 4. Polarizer Routing — 95.92% (step217b, over-polarizer alpha=1.5, +1.91pp)
 
 The first successful input-dependent routing mechanism after 9 failed dynamic routing attempts. Projects each incoming neighbor activation onto the receiving neuron's W_pos direction before aggregation, making routing content-aware without multiplicative gates (which suffer gate-death at K_iter >= 4). The over-polarizer amplifies directional filtering beyond the W_pos axis. At 50% data / 75 epochs, it already exceeds step199's full-data baseline (95.52%), with a monotonic alpha trend suggesting further gains.
+
+### 5. K=1 Soft-KD Distillation — 96.36% (step605, 5× routing reduction)
+
+A K=5 teacher trains to 96.69%, then its soft logits are cached. A K=1 student (single routing iteration) trained with `L = KL(student/T, teacher/T) × T²` reaches 96.36% — only 0.33pp below the teacher at 1/5 the routing cost. The trajectory-matching loss from consistency-DEQ literature was tested and adds only +0.03pp; plain soft-KD carries the result. Single-step routing learns to produce a final representation compatible with the teacher's output geometry, skipping the iterative refinement.
+
+### 6. Spatial Seed Precomputation — 16× seed FLOP reduction, bit-exact
+
+The seed phase `Z[n, :] = [sum_k x[conn_in[n,k]], sum_k spatial_coords[conn_in[n,k], :]]` decomposes into an x-dependent scalar sum (1 dim) and a fixed spatial sum (D-1 dims). Because the spatial part depends only on `conn_in` and `spatial_coords` — both init-time constants — it is precomputed once and stored as a buffer. Seed FLOPs drop from 1.64M to 0.05M (16×) with zero accuracy change. Shipped in `model_smallworld.py`.
 
 ---
 

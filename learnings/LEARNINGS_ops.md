@@ -174,3 +174,21 @@ Before dispatching any new script to Mac Studio:
 - T0 stability: 91.77% at 20ep — identical to pre-optimization behavior
 
 **Scripts:** `bench_step831_seed_opt_cuda.py` (CUDA validation), `train_step631_kin_sweep.py` (K_in sweep T1)
+
+### 2026-04-15 — step631 K_in sweep T1 results
+**Config:** N=2048 D=16 K_hh=2 K_iter=5, 75ep 50% data, Trainer (production). Tests minimum viable K_in after spatial precomputation.
+
+| Config | K_in | best T1 | Δ_vs_ref | seed MACs | Advance? |
+|--------|------|---------|----------|-----------|---------|
+| Ref    | 25   | 94.01%  | —        | 51,200    | ref     |
+| A_k15  | 15   | 93.66%  | −0.36pp  | 30,720    | **YES** |
+| B_k10  | 10   | 92.84%  | −1.17pp  | 20,480    | NO      |
+| C_k5   | 5    | 91.26%  | −2.75pp  | 10,240    | NO      |
+
+**K_in=15 advances.** Compound seed reduction: 16× (precomputation) × 1.67× (K_in 25→15) = **26.7× total seed FLOP reduction** vs original. Routing (655K MACs) now dominates — K_iter reduction (step630) is the next lever.
+Next: step632 K_in=15 T2 validation (150ep, 100% data).
+
+### step406: soundfile missing dep crash
+**Symptom:** `ERROR: pip install soundfile` — script crashed at extraction phase; slot freed immediately.
+**Fix:** `d_env/bin/pip install soundfile` before launch.
+**Lesson:** Audio cross-modal scripts require `soundfile`. Add to deps check: `transformers datasets h5py soundfile`.

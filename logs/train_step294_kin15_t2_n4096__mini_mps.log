@@ -1,0 +1,32 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Step 294 — K_in=15 T2 @ N=4096 (150ep, 100% data)
+  device=mps  T1 delta (step293)=+0.33pp  Ref T2=97.12%
+
+A_k15: N=4096 K_in=15 no-aug T2 (validates step293 T1 +0.33pp)  K_in=15  params=69,792
+  e  1  loss=2.7937  task=2.7937  safety=0.0000  top1=0.8693  lr=2.36e-03
+  e 10  loss=0.1100  task=0.1100  safety=0.0000  top1=0.9465  lr=2.36e-03
+  e 20  loss=0.0867  task=0.0867  safety=0.0000  top1=0.9513  lr=2.36e-03
+  ep 25  val=0.9620
+  e 30  loss=0.0633  task=0.0633  safety=0.0000  top1=0.9623  lr=2.36e-03
+  e 40  loss=0.0470  task=0.0470  safety=0.0000  top1=0.9524  lr=2.36e-03
+  ep 50  val=0.9590
+  e 50  loss=0.0465  task=0.0465  safety=0.0000  top1=0.9590  lr=2.36e-03
+  e 60  loss=0.0404  task=0.0404  safety=0.0000  top1=0.9577  lr=2.36e-03
+  e 70  loss=0.0336  task=0.0336  safety=0.0000  top1=0.9557  lr=2.36e-03
+  ep 75  val=0.9654
+  e 80  loss=0.0165  task=0.0165  safety=0.0000  top1=0.9671  lr=1.18e-03
+  e 90  loss=0.0119  task=0.0119  safety=0.0000  top1=0.9687  lr=5.91e-04
+  ep100  val=0.9664
+  e100  loss=0.0127  task=0.0127  safety=0.0000  top1=0.9664  lr=5.91e-04
+  e110  loss=0.0092  task=0.0092  safety=0.0000  top1=0.9684  lr=2.96e-04
+  e120  loss=0.0096  task=0.0096  safety=0.0000  top1=0.9692  lr=2.96e-04
+  ep125  val=0.9671
+  e130  loss=0.0084  task=0.0084  safety=0.0000  top1=0.9692  lr=1.48e-04
+  e140  loss=0.0084  task=0.0084  safety=0.0000  top1=0.9707  lr=1.48e-04
+  ep150  val=0.9694
+  e150  loss=0.0078  task=0.0078  safety=0.0000  top1=0.9694  lr=7.39e-05
+  → best=0.9707 @ep140  Δ_T2=-0.05pp  1809s
+
+============================================================
+STEP 294 summary: K_in=15 T2 @ N=4096
+  A_k15  best=0.9707  Δ_T2=-0.05pp

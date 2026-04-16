@@ -33,6 +33,8 @@ Computational cost:
 
 from __future__ import annotations
 
+import warnings
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -98,6 +100,10 @@ class SGNNET_Resonant(nn.Module):
             self._build_phase_graph()
         else:
             self.W_phase = None
+
+        # One-shot CUDA perf warning flag. Fires from forward() the first time it
+        # sees a CUDA tensor so CPU/MPS runs stay silent.
+        self._cuda_warning_fired = False
 
     # ------------------------------------------------------------------
     # Graph management
@@ -165,6 +171,14 @@ class SGNNET_Resonant(nn.Module):
     # ------------------------------------------------------------------
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if not self._cuda_warning_fired and x.device.type == "cuda":
+            self._cuda_warning_fired = True
+            warnings.warn(
+                "SGNNET_Resonant on CUDA uses eager PyTorch — use SGNNET_Resonant_CUDA "
+                "(torch.compile) for ~4x speedup (step500 evidence). See "
+                ".claude/skills/sgnnet-research/CUDA_CHECKLIST.md.",
+                UserWarning, stacklevel=2,
+            )
         Z = self.base._seed(x)   # [B, N, D]
 
         theta_pos = self.theta.abs().unsqueeze(0).unsqueeze(-1)   # [1, N, 1]

@@ -1,0 +1,40 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 269 — K=4+aug T2 (150ep, full data)
+  device=mps  epochs=150  seed=42
+
+────────────────────────────────────────────────────────────
+C_aug_k5: K=5 + aug (aug-only isolation)
+  params=34,976  K_iter=5  aug=yes  routing=655K MACs
+  e  1  loss=2.3277  task=2.3277  safety=0.0000  top1=0.8138  lr=2.36e-03
+  e 10  loss=0.2269  task=0.2269  safety=0.0000  top1=0.9159  lr=2.36e-03
+  ep 15  val=0.9373
+  e 20  loss=0.1702  task=0.1702  safety=0.0000  top1=0.9139  lr=2.36e-03
+  ep 30  val=0.9434
+  e 30  loss=0.1532  task=0.1532  safety=0.0000  top1=0.9434  lr=2.36e-03
+  e 40  loss=0.1332  task=0.1332  safety=0.0000  top1=0.9422  lr=2.36e-03
+  ep 45  val=0.9470
+  e 50  loss=0.1235  task=0.1235  safety=0.0000  top1=0.9493  lr=2.36e-03
+  ep 60  val=0.9468
+  e 60  loss=0.1192  task=0.1192  safety=0.0000  top1=0.9468  lr=2.36e-03
+  e 70  loss=0.1117  task=0.1117  safety=0.0000  top1=0.9465  lr=2.36e-03
+  ep 75  val=0.9432
+  e 80  loss=0.1099  task=0.1099  safety=0.0000  top1=0.9455  lr=2.36e-03
+  ep 90  val=0.9447
+  e 90  loss=0.1188  task=0.1188  safety=0.0000  top1=0.9447  lr=2.36e-03
+  e100  loss=0.0897  task=0.0897  safety=0.0000  top1=0.9552  lr=1.18e-03
+  ep105  val=0.9516
+  e110  loss=0.0887  task=0.0887  safety=0.0000  top1=0.9559  lr=1.18e-03
+  ep120  val=0.9483
+  e120  loss=0.0892  task=0.0892  safety=0.0000  top1=0.9483  lr=1.18e-03
+  e130  loss=0.0789  task=0.0789  safety=0.0000  top1=0.9595  lr=5.91e-04
+  ep135  val=0.9549
+  e140  loss=0.0801  task=0.0801  safety=0.0000  top1=0.9559  lr=5.91e-04
+  ep150  val=0.9562
+  e150  loss=0.0750  task=0.0750  safety=0.0000  top1=0.9562  lr=2.96e-04
+  → K_iter=5 aug=y  best=0.9597 @ep142  Δ=+95.97pp  1499s
+
+============================================================
+STEP 269 SUMMARY — K=4+aug T2
+============================================================
+  C_aug_k5     K=5 aug=y  best=0.9597  Δ_ref=+95.97pp  Δ_199=+0.45pp

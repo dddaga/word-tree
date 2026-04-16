@@ -1,12 +1,17 @@
 # SGNNET Knowledge Index
 
-**Last updated:** 2026-04-14
+**Last updated:** 2026-04-16
 **Project best:** 97.86% (step89-A, N=4096, D=64, 150ep)
-**Efficiency best:** 95.52% @ 0.98M routing MACs (step199, N=2048, D=16, K_hh=2, K_iter=5); 96.87% with ΔW proj (step706)
+**Efficiency best:** 95.52% @ 0.98M routing MACs (step199); 96.69% K=5 teacher (step604); 96.36% K=1 KD student @ 5× routing reduction (step605)
 **True FLOPs (ncu-validated):** 1.85M/sample = **0.75% of VGG16 FC** (step800). Paper must label "routing MACs" vs "total MACs".
-**D=16 ceiling:** 97.17% (step205/209, N=4096/8192)
-**CUDA throughput:** 4.7× faster than VGG FC training with torch.compile (step500, 5060ti)
-**Current direction (2026-04-14):** Paper 1 packaging — cross-domain validation (language task pending), manuscript soft conclusion. Exploration paused.
+**D=16 ceiling:** 97.17% (step205/209); **97.30% with K_in=15+aug compound** at N=4096/8192 (steps 279/282)
+**Aug N-scaling:** scale-invariant +0.4–0.8pp at N=1024–8192 T2 (steps 269/273/276/280)
+**K_in reduction:** 26.7× seed FLOP reduction (spatial precomp 16× × K_in 25→15 1.67×); universal at N>=4096 (step293)
+**CUDA throughput:** 4.7× vs VGG FC training (step500); 5.26× seed speedup (bench_step831)
+**Cross-modal:** Vision ✓, Text ✓ (SST-2 -1pp), Audio KILLED (ESC-50 -14pp), AG News running
+**Current direction (2026-04-16):** Paper 1 packaging. Next: K=1+K_in=15 compound (step606 P0 for CUDA), aug T2 validation at N=16384 (step287), cross-modal AG News (step407).
+
+**Updated findings log:** [paper/findings_log_part3.md](paper/findings_log_part3.md) — 2026-04-16 session results (steps 282–294, 604–605).
 
 ## Concept Pages
 
@@ -138,6 +143,14 @@
 | K_iter annealing/distillation/warm-transfer all KILLED at efficiency config | steps 610/611/612 — K=5 sequential passes are architecturally necessary | [[k_iter]] |
 | SGNNET is at 0.75% of VGG16 FC true MACs (ncu-validated) | step800 — paper must use "message-passing MACs" (0.98M) vs "total MACs" (1.85M); VGG FC = 247M | — |
 | torch.compile gives 4.7× training speedup over VGG FC on 5060ti | step500 — V0 eager 2.6% GPU util → V1 compiled 99.6% (compute-bound). bf16+scaler = 4.4× SLOWER (step801) | — |
+| Spatial precomputation gives 16× seed FLOP reduction (mathematical identity) | bench_step831 — 5.26× CUDA speedup, 14× memory reduction, accuracy bit-exact | — |
+| K_in=15 helps at N>=4096, costs at N=2048 | step293 (N=4096: +0.33pp, N=8192: +0.38pp T1), step288 (N=16384: +1.27pp T1), step631 (N=2048: -0.36pp); crossover between N=2048-4096 | — |
+| Augmentation is scale-invariant (+0.4-0.8pp at all N) | step269/273/276/280 T2 curve; aug delta does not compress at larger N | — |
+| Soft-label KD enables K=1 routing with -0.36pp cost | step604/605 — K=5 teacher 96.69% → K=1 student 96.33%; 5× routing reduction; trajectory loss adds only +0.03pp (not load-bearing) | — |
+| Deep supervision on K_iter routing KILLED (-5 to -6.5pp) | step521 — all 4 DS variants destroy representation-building dynamics; single final-loss is correct training signal | — |
+| Standard GNNs fail as FC replacements (~48% vs SGNNET 95.52%) | step404 — GCN/GAT/GIN assume sparse structural graphs, not dense feature similarity spaces | — |
+| SGNNET competitive on text (SST-2: -1pp vs Linear) | step405 — 83.60% CPU vs Linear 84.63%; MPS fails at N_in=768 (numerical issue) | — |
+| Audio cross-modal fails (ESC-50: -14pp vs Linear) | step406 — Whisper-tiny 384-dim features don't have enough structure for graph routing | — |
 
 ## Dead Ends (Do Not Re-Propose)
 

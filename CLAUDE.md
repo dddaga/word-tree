@@ -1,17 +1,19 @@
 # Project: SGNNET / neuro_graph — Dhiraj (group_id: "dhiraj")
 
-## Project State
+## Project State (2026-04-16)
 SGNNET: sparse O(N·K) graph neural network, Fourier encoding on S^{D-1}, Imagenette testbed.
 
-- **Efficiency record:** 95.52% @ 0.98M FLOPs (0.79% of VGG16 FC), 67K params (0.05%) — step199.
-- **D=16 ceiling:** 97.17% @ 1.97M FLOPs — step205/N=4096 and step209/N=8192.
-- **Accuracy record:** 97.86% (D=64, step89) — accuracy track PAUSED (FLOPs budget).
-- **Efficiency config:** N=2048, D=16, K_hh=2, K_iter=5, α_AH=1.0, α_reflect=0.5, α_turing=0.0.
+- **Efficiency champion:** step605 K=1 soft-KD student — 95.95% @ 0.20M FLOPs (0.16% of VGG16 FC), 34,976 params (0.029%), 12.7µs B=32 wall-time (**5.26× faster than VGG_FC** on RTX 5060 Ti, bench_step608). Pareto-dominates VGG_FC on 4/5 dimensions (loses only peak memory).
+- **D=16 ceiling (no distillation):** 97.30% T2 @ 0.98M FLOPs — step291 D / step235 Aug.
+- **Standard seed:** SGNNET_SmallWorld with spatial precomputation is the enforced base. Legacy variants (`model.py`, `model_wave.py`, `model_proximity_wave.py`) emit DeprecationWarning. 16× seed FLOP reduction, bit-exact.
+- **Current defaults:** N=2048, D=16, K_hh=2, K_iter=5, α_AH=1.0, α_reflect=0.5 (for K=1 student: distil from K=5 ΔW teacher). K_in=15 for N≥4096, K_in=25 at N=2048.
 
-Active focus: paper validation (ablations, cross-dataset, baselines), CUDA optimization to realize the 116× FLOPs advantage, K_iter reduction.
+Active focus: (1) cross-dataset generalization (CIFAR-10 step401, AG News step407); (2) text-modality gap-close (step410 SST-2 config sweep, P0); (3) baseline comparisons (pruned VGG, random projection — blocking paper).
 
-## Primary Goal — Paper First
-Write a paper demonstrating SGNNET as a general-purpose DL architecture more parameter-efficient than transformers. Near-term proxy for viability: replace VGG16's FC layer at ≤1% params AND ≤1% FLOPs — **BOTH MET (step199).** Next milestones: cross-dataset generalization (CIFAR-10), baseline comparisons (pruned VGG, random projection), N-scaling law.
+## Primary Goal
+**Long-term goal (stubborn):** improve memory footprint + energy efficiency of deep learning in general.
+**First milestone (stubborn):** ship a paper. Current paper vehicle is SGNNET as an FC-replacement for VGG16 (≤1% params + ≤5% FLOPs + ≥95% accuracy — all met via step199→step605).
+**Vehicle (flexible):** the amount of focus on SGNNET specifically is open for discussion — if a different approach serves the milestone better, pivot. **Evaluate on the full Pareto table (accuracy + params + FLOPs + wall-time + memory), never on accuracy alone.** When SGNNET trails a baseline, first ask *"what closes the gap so SGNNET wins on efficiency?"* — not *"narrow the scope."*
 
 ## Core Tenet — Every Claim Needs Evidence
 We are writing a paper. **Every hypothesis, speculation, or design choice must be validated by an experiment or cited research paper** — never intuition alone. Create many hypotheses; each hypothesis owes a planned experiment or a reference.
@@ -31,7 +33,8 @@ Rules:
 1. `mcp__graphiti__search_memory_facts("recent experiments results running", group_ids=["dhiraj"])`
 2. Read `learnings/EXPERIMENT_QUEUE.md`
 3. `scripts/slot_status.sh` — verify queue matches real tmux state; investigate ghost `RUNNING` entries before launching replacements.
-4. Create training monitor cron (20 min, recurring, background Agent — see Training Monitor below).
+4. **Meditation check** — read `learnings/meditations/TRACKER.md`. If DONE count since last meditation ≥ 25, surface a one-line notice ("Meditation due — run now or defer?"). Don't auto-run; user decides. Protocol: `.claude/skills/sgnnet-meditation/SKILL.md`.
+5. Create training monitor cron (20 min, recurring, background Agent — see Training Monitor below).
 
 ## Session End
 Before closing a session with completed experiments:

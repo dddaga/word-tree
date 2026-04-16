@@ -1,0 +1,71 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 284 — K_in=15+aug compound @ N=1024 T2 (150ep, 100% data)
+  device=cpu  seed=42  N=1024  D=16  K_iter=5
+  Train=9469  Val=3925
+
+────────────────────────────────────────────────────────────
+Ref_n1024: N=1024 K_in=25 no-aug T2 ref
+  K_in=25  aug=no  seed_MACs=25,600  params=17,568
+  e  1  loss=2.4728  task=2.4728  safety=0.0000  top1=0.5982  lr=2.36e-03
+  e 10  loss=0.7036  task=0.7036  safety=0.0000  top1=0.8448  lr=2.36e-03
+  ep 15  val=0.8731
+  e 20  loss=0.5718  task=0.5718  safety=0.0000  top1=0.8645  lr=2.36e-03
+  ep 30  val=0.8670
+  e 30  loss=0.5112  task=0.5112  safety=0.0000  top1=0.8670  lr=2.36e-03
+  e 40  loss=0.4788  task=0.4788  safety=0.0000  top1=0.8887  lr=2.36e-03
+  ep 45  val=0.8910
+  e 50  loss=0.4501  task=0.4501  safety=0.0000  top1=0.8861  lr=2.36e-03
+  ep 60  val=0.8739
+  e 60  loss=0.4328  task=0.4328  safety=0.0000  top1=0.8739  lr=2.36e-03
+  e 70  loss=0.4190  task=0.4190  safety=0.0000  top1=0.8752  lr=2.36e-03
+  ep 75  val=0.8925
+  e 80  loss=0.4127  task=0.4127  safety=0.0000  top1=0.8889  lr=2.36e-03
+  ep 90  val=0.8856
+  e 90  loss=0.4099  task=0.4099  safety=0.0000  top1=0.8856  lr=2.36e-03
+  e100  loss=0.3989  task=0.3989  safety=0.0000  top1=0.8927  lr=2.36e-03
+  ep105  val=0.8976
+  e110  loss=0.3915  task=0.3915  safety=0.0000  top1=0.8945  lr=2.36e-03
+  ep120  val=0.9037
+  e120  loss=0.3945  task=0.3945  safety=0.0000  top1=0.9037  lr=2.36e-03
+  e130  loss=0.3865  task=0.3865  safety=0.0000  top1=0.8815  lr=2.36e-03
+  ep135  val=0.8746
+  e140  loss=0.3780  task=0.3780  safety=0.0000  top1=0.9011  lr=2.36e-03
+  ep150  val=0.9047
+  e150  loss=0.3840  task=0.3840  safety=0.0000  top1=0.9047  lr=2.36e-03
+  → Ref_n1024  best=0.9052 @ep86  Δ=+0.00pp  501s
+────────────────────────────────────────────────────────────
+C_k15_aug_n1024: N=1024 K_in=15 + aug T2 (COMPOUND bottom of curve)
+  K_in=15  aug=yes  seed_MACs=15,360  params=17,568
+  e  1  loss=1.8293  task=1.8293  safety=0.0000  top1=0.7052  lr=2.36e-03
+  e 10  loss=0.5791  task=0.5791  safety=0.0000  top1=0.8494  lr=2.36e-03
+  ep 15  val=0.8815
+  e 20  loss=0.4822  task=0.4822  safety=0.0000  top1=0.8805  lr=2.36e-03
+  ep 30  val=0.8869
+  e 30  loss=0.4366  task=0.4366  safety=0.0000  top1=0.8869  lr=2.36e-03
+  e 40  loss=0.4097  task=0.4097  safety=0.0000  top1=0.8938  lr=2.36e-03
+  ep 45  val=0.8904
+  e 50  loss=0.3991  task=0.3991  safety=0.0000  top1=0.8955  lr=2.36e-03
+  ep 60  val=0.8953
+  e 60  loss=0.3868  task=0.3868  safety=0.0000  top1=0.8953  lr=2.36e-03
+  e 70  loss=0.3799  task=0.3799  safety=0.0000  top1=0.8912  lr=2.36e-03
+  ep 75  val=0.8961
+  e 80  loss=0.3683  task=0.3683  safety=0.0000  top1=0.9027  lr=2.36e-03
+  ep 90  val=0.8932
+  e 90  loss=0.3733  task=0.3733  safety=0.0000  top1=0.8932  lr=2.36e-03
+  e100  loss=0.3628  task=0.3628  safety=0.0000  top1=0.9068  lr=2.36e-03
+  ep105  val=0.9039
+  e110  loss=0.3632  task=0.3632  safety=0.0000  top1=0.9088  lr=2.36e-03
+  ep120  val=0.8955
+  e120  loss=0.3405  task=0.3405  safety=0.0000  top1=0.8955  lr=1.18e-03
+  e130  loss=0.3384  task=0.3384  safety=0.0000  top1=0.9052  lr=1.18e-03
+  ep135  val=0.9062
+  e140  loss=0.3412  task=0.3412  safety=0.0000  top1=0.9075  lr=1.18e-03
+  ep150  val=0.9108
+  e150  loss=0.3310  task=0.3310  safety=0.0000  top1=0.9108  lr=5.91e-04
+  → C_k15_aug_n1024  best=0.9131 @ep149  Δ=+0.79pp  941s
+
+============================================================
+STEP 284 SUMMARY — K_in=15+aug compound @ N=1024 T2
+  Ref_n1024                  K_in=25 aug=n  best=0.9052  Δ=+0.00pp  seed=1.0×
+  C_k15_aug_n1024            K_in=15 aug=y  best=0.9131  Δ=+0.79pp  seed=1.7×

@@ -20,32 +20,53 @@ Config: Linear
   ep130  val=0.8337
   ep140  val=0.8326
   ep150  val=0.8326
-  → best=0.8463 @ep18  elapsed=38s
+  → best=0.8463 @ep18  elapsed=35s
 
 ────────────────────────────────────────────────────────────
 Config: MLP_64
 ────────────────────────────────────────────────────────────
   params=49,346
   ep  1  val=0.8108
-  ep 10  val=0.8314
-  ep 20  val=0.8360
-  ep 30  val=0.8314
-  ep 40  val=0.8291
-  ep 50  val=0.8394
-  ep 60  val=0.8234
-  ep 70  val=0.8085
-  ep 80  val=0.8280
-  ep 90  val=0.8142
-  ep100  val=0.8234
-  ep110  val=0.8222
+  ep 10  val=0.8268
+  ep 20  val=0.8406
+  ep 30  val=0.8165
+  ep 40  val=0.8154
+  ep 50  val=0.8257
+  ep 60  val=0.8257
+  ep 70  val=0.8211
+  ep 80  val=0.8188
+  ep 90  val=0.8200
+  ep100  val=0.8108
+  ep110  val=0.8177
   ep120  val=0.8177
-  ep130  val=0.8165
-  ep140  val=0.8131
-  ep150  val=0.8142
-  → best=0.8463 @ep13  elapsed=67s
+  ep130  val=0.8142
+  ep140  val=0.8108
+  ep150  val=0.8119
+  → best=0.8417 @ep28  elapsed=62s
 
 ────────────────────────────────────────────────────────────
 Config: SGNNET
 ────────────────────────────────────────────────────────────
   params=34,848
-  e  1  loss=0.0000  task=0.0000  safety=0.0000  top1=0.4908  lr=2.36e-03
+  ep  1  val=0.7741
+  ep 10  val=0.6812
+  ep 20  val=0.8291
+  ep 30  val=0.7374
+  ep 40  val=0.7317
+  ep 50  val=0.8222
+  ep 60  val=0.8234
+  ep 70  val=0.8326
+  ep 80  val=0.8211
+  ep 90  val=0.8211
+  ep100  val=0.8291
+  ep110  val=0.8245
+  ep120  val=0.8039
+  ep130  val=0.8234
+  ep140  val=0.8211
+  ep150  val=0.8188
+  → best=0.8394 @ep61  elapsed=6527s
+
+========== STEP 405 SUMMARY (SST-2, DistilBERT CLS) ==========
+  Linear    params=   1,538  best=0.8463
+  MLP_64    params=  49,346  best=0.8417
+  SGNNET    params=  34,848  best=0.8394

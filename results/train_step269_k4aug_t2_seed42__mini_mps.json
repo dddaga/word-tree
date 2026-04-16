@@ -1,0 +1,13 @@
+{
+  "C_aug_k5": {
+    "label": "K=5 + aug (aug-only isolation)",
+    "K_iter": 5,
+    "use_aug": true,
+    "n_params": 34976,
+    "routing_macs": 655360,
+    "best": 0.9597452282905579,
+    "best_ep": 142,
+    "delta_vs_ref": 0.9597,
+    "elapsed_s": 1499
+  }
+}

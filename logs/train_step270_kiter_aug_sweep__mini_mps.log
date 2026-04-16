@@ -1,0 +1,74 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+Dataset loaded into RAM: train=18938  val=3925  (2.29 GB features)
+Step 270 — K_iter + aug sweep (T1: 75ep, 50% data)
+  device=mps  seed=42  N=2048  D=16  K_hh=2
+  Train=4734  Val=3925
+
+────────────────────────────────────────────────────────────
+Ref: K_iter=5 no-aug (step268 ref)
+  K_iter=5  aug=no  routing=655K MACs  params=34,976
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4010  lr=2.36e-03
+  e 10  loss=0.3907  task=0.3907  safety=0.0000  top1=0.9022  lr=2.36e-03
+  e 20  loss=0.2766  task=0.2766  safety=0.0000  top1=0.9169  lr=2.36e-03
+  ep 25  val=0.9098
+  e 30  loss=0.2270  task=0.2270  safety=0.0000  top1=0.9228  lr=2.36e-03
+  e 40  loss=0.2022  task=0.2022  safety=0.0000  top1=0.9149  lr=2.36e-03
+  ep 50  val=0.9197
+  e 50  loss=0.1853  task=0.1853  safety=0.0000  top1=0.9197  lr=2.36e-03
+  e 60  loss=0.1714  task=0.1714  safety=0.0000  top1=0.9332  lr=2.36e-03
+  e 70  loss=0.1592  task=0.1592  safety=0.0000  top1=0.9317  lr=2.36e-03
+  ep 75  val=0.9279
+  → Ref  best=0.9391 @ep72  Δ=+0.00pp  256s
+────────────────────────────────────────────────────────────
+A_k3_naug: K_iter=3 no-aug (FLOPs baseline)
+  K_iter=3  aug=no  routing=393K MACs  params=34,976
+  e  1  loss=5.6360  task=5.6360  safety=0.0000  top1=0.1676  lr=2.36e-03
+  e 10  loss=0.9311  task=0.9311  safety=0.0000  top1=0.7439  lr=2.36e-03
+  e 20  loss=0.6607  task=0.6607  safety=0.0000  top1=0.8138  lr=2.36e-03
+  ep 25  val=0.8318
+  e 30  loss=0.5413  task=0.5413  safety=0.0000  top1=0.8436  lr=2.36e-03
+  e 40  loss=0.4661  task=0.4661  safety=0.0000  top1=0.8571  lr=2.36e-03
+  ep 50  val=0.8678
+  e 50  loss=0.4100  task=0.4100  safety=0.0000  top1=0.8678  lr=2.36e-03
+  e 60  loss=0.3751  task=0.3751  safety=0.0000  top1=0.8696  lr=2.36e-03
+  e 70  loss=0.3375  task=0.3375  safety=0.0000  top1=0.8831  lr=2.36e-03
+  ep 75  val=0.8754
+  → A_k3_naug  best=0.8882 @ep68  Δ=-5.10pp  166s
+────────────────────────────────────────────────────────────
+B_k3_aug: K_iter=3 + aug (40% FLOPs reduction)
+  K_iter=3  aug=yes  routing=393K MACs  params=34,976
+  e  1  loss=3.9938  task=3.9938  safety=0.0000  top1=0.3124  lr=2.36e-03
+  e 10  loss=0.6824  task=0.6824  safety=0.0000  top1=0.8143  lr=2.36e-03
+  e 20  loss=0.4801  task=0.4801  safety=0.0000  top1=0.8655  lr=2.36e-03
+  ep 25  val=0.8764
+  e 30  loss=0.3843  task=0.3843  safety=0.0000  top1=0.8759  lr=2.36e-03
+  e 40  loss=0.3239  task=0.3239  safety=0.0000  top1=0.8882  lr=2.36e-03
+  ep 50  val=0.8884
+  e 50  loss=0.2867  task=0.2867  safety=0.0000  top1=0.8884  lr=2.36e-03
+  e 60  loss=0.2629  task=0.2629  safety=0.0000  top1=0.9029  lr=2.36e-03
+  e 70  loss=0.2370  task=0.2370  safety=0.0000  top1=0.8976  lr=2.36e-03
+  ep 75  val=0.9098
+  → B_k3_aug  best=0.9113 @ep72  Δ=-2.78pp  291s
+────────────────────────────────────────────────────────────
+C_k2_aug: K_iter=2 + aug (60% FLOPs reduction)
+  K_iter=2  aug=yes  routing=262K MACs  params=34,976
+  e  1  loss=3.8524  task=3.8524  safety=0.0000  top1=0.2945  lr=2.36e-03
+  e 10  loss=0.8006  task=0.8006  safety=0.0000  top1=0.8171  lr=2.36e-03
+  e 20  loss=0.5043  task=0.5043  safety=0.0000  top1=0.8609  lr=2.36e-03
+  ep 25  val=0.8759
+  e 30  loss=0.3984  task=0.3984  safety=0.0000  top1=0.8861  lr=2.36e-03
+  e 40  loss=0.3353  task=0.3353  safety=0.0000  top1=0.8950  lr=2.36e-03
+  ep 50  val=0.8958
+  e 50  loss=0.2911  task=0.2911  safety=0.0000  top1=0.8958  lr=2.36e-03
+  e 60  loss=0.2577  task=0.2577  safety=0.0000  top1=0.9055  lr=2.36e-03
+  e 70  loss=0.2351  task=0.2351  safety=0.0000  top1=0.9101  lr=2.36e-03
+  ep 75  val=0.9090
+  → C_k2_aug  best=0.9113 @ep74  Δ=-2.78pp  209s
+
+============================================================
+STEP 270 SUMMARY — K_iter + aug sweep (T1)
+============================================================
+  Ref            K=5 aug=n  best=0.9391  Δ_ref=+0.00pp  Δ_199=-1.61pp  MARGINAL
+  A_k3_naug      K=3 aug=n  best=0.8882  Δ_ref=-5.10pp  Δ_199=-6.70pp  KILLED
+  B_k3_aug       K=3 aug=y  best=0.9113  Δ_ref=-2.78pp  Δ_199=-4.39pp  KILLED
+  C_k2_aug       K=2 aug=y  best=0.9113  Δ_ref=-2.78pp  Δ_199=-4.39pp  KILLED

@@ -9,6 +9,18 @@ Shared infrastructure skill for the SGNNET project. Multiple teammates work acro
 
 ---
 
+## 0. Current State (as of 2026-04-16) — read first
+
+- **Goal (long-term):** improve memory footprint + energy efficiency of DL in general.
+- **Milestone 1:** ship a paper. Current vehicle: SGNNET as FC-replacement for VGG16.
+- **Efficiency champion:** step605 K=1 soft-KD student — 95.95% @ 0.20M FLOPs, 12.7µs B=32 (**5.26× faster than VGG_FC**, 3418× fewer params). See `bench_step608` for the full Pareto table.
+- **Standard model:** `src/sgnnet/model_smallworld.py::SGNNET_SmallWorld` with spatial precomputation. Legacy `model.py` / `model_wave.py` / `model_proximity_wave.py` emit DeprecationWarning — do not use in new experiments.
+- **Evaluation rule:** always the full Pareto table (accuracy + params + FLOPs + wall-time + memory). Never accuracy alone.
+- **Gap-close attitude:** when trailing a baseline on any dimension, first ask *"what closes the gap?"* — not *"narrow the scope."*
+- **Meditation:** periodic action-driven reflection, `.claude/skills/sgnnet-meditation/SKILL.md`. Every 25 DONE experiments or on-demand. Always closes with ≥ 3 committed scripts.
+
+---
+
 ## 1. Core Principle: Every Claim Needs Evidence
 
 We are writing a paper. Every hypothesis, speculation, or design choice must be validated by **an experiment or a cited research paper** — not intuition. When you log a finding, tag it:
