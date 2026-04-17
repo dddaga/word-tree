@@ -230,6 +230,26 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **bench_step832** | PyG scatter vs fancy-index. V_ref_c (compiled) = **0.151ms** (6.55× over eager). Scatter_add compiled = 0.217ms — fancy-index wins. CUDA Graph approach (0.896ms) slower. Best: `torch.compile(max-autotune)` on fancy-index. | **DONE** |
 | **bench_step830** | K=4 vs K=5 wall-clock. K=4 compiled=0.140ms vs K=5=0.154ms → **1.10× compiled, 1.18× eager**. Paper claim updated: "10–18% latency reduction" (was "20% projected"). | **DONE** |
 
+## Meditation P0 — 2026-04-17 (step860–863)
+
+From meditation 001 (step267→step859). Scripts written and smoke-tested. All slots currently RUNNING.
+
+| Step | Description | Script | Slot | Status |
+|------|-------------|--------|------|--------|
+| **step860** | K=1 KD student @ N=4096 T0. Configs: Ref_k5, A_k1_scratch, B_k1_kd (uses step604 teacher cache). Cross-N KD valid: same 25088-dim input. | `scripts/train_step860_k1_n4096_t0.py` | 5060ti_cuda | QUEUED |
+| **step861** | Soft routing T1 — confirm step859 B_soft_anneal +1.22pp. β annealing 0.5→5.0, 75ep/50% data. Configs: Ref, B_soft_anneal, C_soft_ah, D_soft_dwproj. | `scripts/train_step861_soft_routing_t1.py` | 5060ti_cuda | QUEUED |
+| **step862** | CIFAR-10 cross-dataset T0. Paper requirement (≥2 datasets). VGG pool5 512-dim features. Configs: Linear, MLP_37, MLP_256, Ref_SGNNET. N=512, D=8. | `scripts/train_step862_cifar10_crossdataset.py` | mini_mps | QUEUED |
+| **step863** | D=8 efficiency probe T0. W_pos shrinks from 32,928→16,464 params (~18K total vs 35K). Configs: Ref_D16, A_D8, B_D8_K10, C_D12. | `scripts/train_step863_d8_efficiency.py` | mini_cpu | QUEUED |
+
+**Parking lot (wait for above results):**
+- step864: Three-way compound (soft+AH+ΔW) — wait for step859 C/D T0 results
+- step865: K_hh=1 probe — low priority
+- step867: K=1 + soft routing — wait for step860 + step861
+
+| **step866** | Soft routing → HNSW eval mode T0. Beam M=32 all-pairs soft training → exact top-K eval. 5 configs: Ref, A_soft_static (step859 K_hh=2), B_beam_topk (K=8 eval), C_beam_wider (K=16 eval), D_beam_train (dense eval). Measures soft→hard transition cost. | `scripts/train_step866_hnsw_eval_mode.py` | mini_cpu | QUEUED |
+
+---
+
 ## Parked — Resume after arch experiments complete
 
 ### bench_step840: Concurrent users / hardware democratization claim
