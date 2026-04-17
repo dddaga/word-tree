@@ -64,15 +64,15 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (5 slots, updated 2026-04-16 session 10)
+## Currently Running (5 slots, updated 2026-04-16 session 12)
 
 | Machine:Device | Session | Step | Status | Note |
 |---------|---------|------|--------|------|
-| mini:mps | sgn-indra-mini_mps-train_step297_kin10_aug_n16384_t2 | step297 | RUNNING | K_in=10+aug T2 @ N=16384 — ep80 val=96.82% (re-launched, prev session died) |
-| mini:cpu | sgn-indra-mini_cpu-train_step760_seed_variance | step760 | RUNNING | Seed variance step706 config cross-device CPU validation (5 seeds T1) |
-| studio:mps | sgn-indra-studio_mps-train_step411_agnews_config_sweep | step411 | RUNNING | AG News config sweep (5 configs vs Linear=91.18%, MLP_64=92.53%) |
-| studio:cpu | sgn-indra-studio_cpu-train_step760_seed_variance | step760 | RUNNING | Seed variance step199 config cross-device CPU validation (5 seeds T1) |
-| 5060ti:cuda | — | — | HOLD | RAM 13GB < 16GB threshold |
+| mini:mps | — | — | FREE | step297 DONE: K_in=10+aug T2 @ N=16384 — best=97.197% @ ep39, final ep150=96.66%. **+0.31pp N=16384 record** over step291. |
+| mini:cpu | — | — | FREE | step411 DEAD: store_agnews_distilbert.h5 missing on mini. Text gap confirmed negative (step405/407), skip unless data recovered. |
+| studio:mps | — | — | FREE | step532 cleared. |
+| studio:cpu | — | — | FREE | step760 DONE (3 configs): step199 std=0.43pp, step706 ΔW proj std=0.24pp, step750 N=4096 K_hh=4 std=0.37pp. ΔW proj halves variance. |
+| 5060ti:cuda | — | — | FREE | step634 DONE: K25=95.49% > K20=95.26% > K15=94.83%. K_in=25 confirmed best at N=2048. K_in=20 does NOT beat K_in=25 (T1 result was noise). |
 
 ---
 
@@ -83,9 +83,14 @@ Eval: `scripts/eval_efficiency_config.py`
 | Step | Description | Status |
 |------|-------------|--------|
 | **step850** | VGG-FC Pareto curve: MLP_16=97.50%, MLP_128=97.78%, MLP_256=97.91%, MLP_512=97.83%, VGG_37_2L=97.61%, VGG_128_2L=97.73%. **Plain MLPs beat SGNNET at every FLOPs level. Paper pivot: params efficiency is SGNNET's advantage, not FLOPs.** | **DONE** |
-| **step851** | MLP param-threshold crossover: h=4 (100K)=95.01% (trails SGNNET 95.52%), **h=6 (150K)=96.31% (CROSSOVER)**. Min MLP to beat SGNNET = 150K params = **2.22× SGNNET's 67K**. Paper claim: "SGNNET achieves VGG-level accuracy at 2.22× fewer params than minimum competitive MLP." | **DONE** |
+| **step851** | MLP param-threshold crossover: h=4 (100K)=95.00% (trails SGNNET 95.52%), **h=6 (150K)=96.31% (CROSSOVER)**. Min MLP to beat SGNNET = 150K = **4.3× SGNNET's 34,976** (updated from 2.22× — old ratio used stale 67K param count). Paper claim: "SGNNET achieves VGG-level accuracy at 4.3× fewer params than minimum competitive MLP." | **DONE** |
 | **step615** | Fair MLP at matched params: best-practices MLP (LeakyReLU, He init, label smooth 0.1, dropout 0.3, cosine LR) at h=3 (75K) and h=2 (50K). Tests if best-optimized MLP at 67K-equivalent params can close the gap vs SGNNET. D_skip_h3 missing from MODEL_MAP (not implemented). | **DONE (A/B/C/E)** |
 | **bench_step832** | PyG scatter vs fancy-index compiled: V_ref_c=0.151ms (6.55× over eager). scatter_add compiled=0.217ms — fancy-index wins. torch.compile max-autotune is the kernel speedup path. | **DONE** |
+| **step852** | **conn_hh rebuild cadence ablation** (8 configs, T0 @ N=2048). Ref=91.92%, A_wpos_static=88.18% (-3.74pp), B_wpos_batch=65.12%, E_wpos_ep10=90.01% (-1.91pp) best dynamic. **ALL dynamic rebuilds trail static. Static random Watts-Strogatz WINS. Data-driven topology kills learning mid-run. Also: W_pos-based static KNN worse than random (-3.74pp).** | **DONE — KILLED** |
+| **step853** | **C_ho sparsity ablation** (8 configs T0 mini_cpu + T1 5060ti). T0: Ref=91.69%, D_very(0.98)=91.85% (+0.16pp), dense=84.87% (-6.82pp). T1: Ref=93.91%, **D_very=94.27% (+0.36pp CONFIRMED)**. Sweet spot at sparsity~0.98 (208/class). K_ho=10/class collapses regardless of selection (F_tiny=-17pp, G_geometric=-23pp). Dense readout catastrophic (-6.82pp). New default: sparsity=0.98. | **DONE — D_very T1 WIN** |
+| **step856** | **C_ho sparsity=0.98 multi-seed T1** (5 seeds, 75ep, 50% data). Confirms step853 D_very +0.36pp is not noise. Same protocol as step760 seed variance. | QUEUED |
+| **step855** | **Sparse BFS routing T0** (5 configs, 20ep, 50% data). Tests beam-gated broadcaster selection: only top-M active nodes broadcast per K_iter step. Configs: Ref/A_fixed_M16/B_cascade/C_quiet_zero/D_readout_active. HYPOTHESIS: 128× routing FLOP reduction at M=16 with <0.5pp accuracy loss. Script: `scripts/train_step855_sparse_bfs.py`. | QUEUED (mini_cpu) |
+| **step859** | **Soft distance-weighted routing T0** (5 configs, 20ep, 50% data). Tests softmax over static K_hh neighbor positions (W_pos distance). β annealing 0.5→3.0. Configs: Ref/A_soft_β1/B_soft_anneal/C_soft_ah/D_soft_dwproj — tests both AH and ΔW-proj on soft routing. HYPOTHESIS: W_pos gradient through distance term improves topology. Script: `scripts/train_step859_soft_routing.py`. | QUEUED (mini_cpu) |
 
 ### P-PAPER-2026-04-15 — Scripts added from V3 gap-analysis + design log (2026-04-15)
 
@@ -121,7 +126,8 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 
 | Step | Description | Script | Status |
 |------|-------------|--------|--------|
-| **step530** | **Triton fused kernel (gather+mul+sum)** — custom kernel eliminating [B,N,K_hh,D] intermediate tensor. Register-tiled for D=16. Lower priority now that spatial precomputation handles main bottleneck. | DEFERRED | QUEUED |
+| **step530** | **Triton fused gather+sum+L2norm kernel** — 1.17-1.18× over torch.compile max-autotune (K_iter=5, N=2048, D=16, B=32/128, 5060ti). Kernel integrated into `model_smallworld._route()` with CUDA+l2+power-of-2-D guard. Fallback=eager on CPU/MPS. | **DONE — integrated** |
+| **step531** | T0 smoke-test: Triton _route() vs eager Ref. Verifies accuracy preserved after integration. 20ep 50% data. **91.85% PASS (>87% floor). 3 bugs found+fixed in SGNNET_AntiHebbian_CUDA: (1) cudagraph_mark_step_begin unconditioned on _compiled, (2) supp_w cached with live grad_fn, (3) supp_w detached killed W_pos hidden-row gradients. Guard-rail test added: tests/test_cuda_model_training.py.** | **DONE** |
 
 ---
 
@@ -155,7 +161,7 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step293** | K_in=15 no-aug T1 @ N=4096,8192. N=4096=96.18% (+0.33pp), N=8192=95.18% (+0.38pp). Crossover between N=2048-4096. | **DONE** |
 | **step294** | K_in=15 no-aug T2 @ N=4096 = 97.07% (Ref T2=97.12%, Δ=-0.05pp — tied). T1 delta compressed to parity. | **DONE** |
 | **step296** | K_in=10+aug T1 @ N=16384. A_k10_aug=**96.56%** @ep57 (+3.13pp vs Ref, +1.60pp vs K_in=10 alone). ADVANCES to T2 (step297). | **DONE** |
-| **step297** | K_in=10+aug T2 @ N=16384. Validate vs step291 D (96.89%). Key: does K_in=10 beat K_in=15 at N=16384? Session died at ep80 (96.82%). Re-launched. | **RUNNING (mini_mps)** |
+| **step297** | K_in=10+aug T2 @ N=16384. Best=**97.197% @ ep39** (+0.31pp over step291 K_in=15+aug=96.89%), final ep150=96.66%, 11669s, 278,688 params. New N=16384 record; still below step279 N=4096 (97.30%) — N=16384 capacity-limited at D=16. Result: `results/train_step297_kin10_aug_n16384_t2_seed42__mini_mps.json`. | **DONE — 97.20% N=16384 record** |
 | **step606** | K=1 + K_in=15 compound at N=2048 T1. Ref_k25=95.69%, A_k15_KD=94.96% (-0.73pp), B_k15_scratch=95.29% (-0.40pp). **COMPOUND FAILS at N=2048** — K_in=15 hurts at K=1 when no routing to compensate. Need to retest at N>=4096. | **DONE — compound KILLED at N=2048** |
 | **step607** | K=1 pure-KD T2 @ N=2048. A_pure_kd=95.92% (-0.76pp vs teacher), B_balanced=95.95% (-0.74pp). T2 OVERFITS T1 (step605=96.33% at 75ep was better). Early-stop @ep75 for best. | **DONE** |
 | **bench_step608** | K=1 wall-time bench. SGNNET K=1 @ B=32 = **12.7us** (5.3× faster than VGG_FC 66.7us, 3418× fewer params). K=1 vs K=5 = 2-2.5× wall-time reduction. Memory anomaly: K=5 B=128 regresses (45.4us > B=32's 31.2us) — CUDA optim candidate. | **DONE** |
@@ -181,7 +187,7 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | **step295** | K_in=5 T1 @ N=16384. A_k5=93.78% (+0.36pp vs Ref, −1.18pp vs K_in=10). K_in=5 continues to improve but sublinear — K_in=10 still stronger. | **DONE** |
 | **step633** | K_in=1..25 sweep. K_in=15 is knee (−0.08pp vs K_in=25). K_in=20/25 identical. Publishable curve. | **DONE** |
 | **step634** | K_in=20 T2 validation @ N=2048. Ref_k25=95.36%, A_k20=95.29% (Δ=−0.07pp), B_k15=95.06% (Δ=−0.30pp). K_in=20 ≈ K_in=25. K_in=15 confirmed <0.5pp cost. T1 crossover was noise. | **DONE — K_in=15 paper default stands.** |
-| **step760** | Seed variance: step199 T1 mean=93.88%±0.43pp; step706 (ΔW proj) T1 mean=95.33%±0.20pp; step729 (N=4096 ΔW rot) T1 mean=96.69%±0.20pp; step750 (N=4096 K_hh=4 K_iter=3) T1 mean=94.48%±0.39pp. ΔW mechanisms halve variance. CPU cross-device validation running. | **DONE (4 configs). CPU cross-device RUNNING.** |
+| **step760** | Seed variance (5 seeds T1): step199 ±0.43pp (mini+studio CPU agree); step706 ΔW proj ±0.20–0.24pp (3-device confirmed: CUDA/mini_cpu/studio_cpu); step729 N=4096 ΔW rot ±0.20pp (CUDA); step750 N=4096 K_hh=4 ±0.39pp (studio_mps). ΔW halves variance. step729 studio_cpu CPU cross-device running; step750 mini_cpu CPU cross-device running. | **DONE (4 configs). CPU cross-device ongoing.** |
 
 ## Paper-critical experiments (2026-04-15 session)
 

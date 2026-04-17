@@ -41,6 +41,7 @@ import torch.nn as nn
 from src.sgnnet.model_smallworld      import SGNNET_SmallWorld
 from src.sgnnet.model_resonant        import SGNNET_Resonant
 from src.sgnnet.mechanisms_inhibitory import SGNNET_AntiHebbian
+from src.sgnnet.model_resonant_cuda   import SGNNET_Resonant_CUDA, SGNNET_AntiHebbian_CUDA
 from src.training.trainer             import Trainer
 from src.training.experiment_config   import trainer_kwargs
 from src.training.dataset             import make_loaders
@@ -83,10 +84,20 @@ def make_model(K_in: int) -> nn.Module:
         N_hidden=N, N_out=N_OUT, D=D, N_in=N_IN,
         K_in=K_in, K_iter=K_ITER, K_local=K_l, K_random=K_r,
         n_groups=max(8, N // 8), norm_mode="l2", encoding_mode="fourier")
-    resonant = SGNNET_Resonant(
-        base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=ALPHA_TURING,
-        beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo", resonance_threshold=0.0)
-    return SGNNET_AntiHebbian(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
+    if DEVICE.type == "cuda":
+        # CUDA path: use_amp=False (Blackwell fp16 4.4× slower, step801)
+        # non_blocking=True transfers handled in Trainer; pin_memory=True on loader
+        resonant = SGNNET_Resonant_CUDA(
+            base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=0.0,
+            beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo",
+            resonance_threshold=0.0, compile=True)
+        return SGNNET_AntiHebbian_CUDA(resonant, alpha_ahebb=ALPHA_AHEBB,
+                                       variant="wpos", compile=True)
+    else:
+        resonant = SGNNET_Resonant(
+            base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=ALPHA_TURING,
+            beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo", resonance_threshold=0.0)
+        return SGNNET_AntiHebbian(resonant, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
 
 
 def main():
@@ -94,7 +105,8 @@ def main():
     if not data_path.exists():
         print(f"ERROR: {data_path} not found."); sys.exit(1)
 
-    tr, va = make_loaders(str(data_path), batch_size=BATCH, seed=SEED)
+    tr, va = make_loaders(str(data_path), batch_size=BATCH, seed=SEED,
+                          pin_memory=(DEVICE.type == "cuda"))  # pin_memory=True on CUDA
     print(f"Step 634 — K_in=20 T2 validation (150ep, 100% data)")
     print(f"  device={DEVICE}  epochs={EPOCHS}  seed={SEED}")
     print(f"  Refs: step199(K_in=25)={STEP199_REF:.4f}  step632(K_in=15)={STEP632_K15:.4f}")
@@ -116,6 +128,8 @@ def main():
         print(f"  K_in={K_in}  params={n_p:,}  seed_MACs={seed_macs/1e3:.0f}K  routing={routing_macs/1e3:.0f}K")
 
         kw = trainer_kwargs(N, n_epochs=EPOCHS)
+        if DEVICE.type == "cuda":
+            kw["use_amp"] = False  # use_amp=False: Blackwell fp16 4.4× slower (step801)
         trainer = Trainer(model=model, train_loader=tr, val_loader=va, device=DEVICE, **kw)
         t0 = time.time()
         history = trainer.train(n_epochs=EPOCHS, log_fn=lambda m: (

@@ -1,0 +1,53 @@
+{
+  "config": "step750",
+  "config_params": {
+    "N": 4096,
+    "D": 16,
+    "K_hh": 4,
+    "K_iter": 3,
+    "dw_mode": null
+  },
+  "per_seed": [
+    {
+      "seed": 42,
+      "top1_best": 0.9498,
+      "best_epoch": 75,
+      "elapsed_s": 459.1,
+      "n_params": 69792
+    },
+    {
+      "seed": 43,
+      "top1_best": 0.9422,
+      "best_epoch": 62,
+      "elapsed_s": 463.0,
+      "n_params": 69792
+    },
+    {
+      "seed": 44,
+      "top1_best": 0.9455,
+      "best_epoch": 62,
+      "elapsed_s": 462.7,
+      "n_params": 69792
+    },
+    {
+      "seed": 45,
+      "top1_best": 0.9411,
+      "best_epoch": 72,
+      "elapsed_s": 461.5,
+      "n_params": 69792
+    },
+    {
+      "seed": 46,
+      "top1_best": 0.948,
+      "best_epoch": 70,
+      "elapsed_s": 461.3,
+      "n_params": 69792
+    }
+  ],
+  "mean": 0.94532,
+  "std": 0.0037022965845539347,
+  "min": 0.9411,
+  "max": 0.9498,
+  "range_pp": 0.869999999999993,
+  "n_seeds": 5
+}

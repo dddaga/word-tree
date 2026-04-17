@@ -32,6 +32,11 @@ import torch.nn.functional as F
 
 from .encoding import compute_spatial_encoding, compute_fourier_encoding
 from .norm_masked import masked_normalize
+try:
+    from .triton.gather_norm import route_k_iter as _triton_route, is_supported as _triton_ok
+except Exception:
+    _triton_route = None
+    _triton_ok = lambda D: False
 
 
 # -------------------------------------------------------------------
@@ -217,6 +222,52 @@ class SGNNET_SmallWorld(nn.Module):
 
     # ---------------------------------------------------------------
 
+    def rebuild_conn_hh(self, mode: str = "wpos_knn", random_mix: int = 0) -> None:
+        """Rebuild conn_hh from learned W_pos using torch.cdist k-NN.
+
+        Closes the W_pos→routing gradient-influence gap: default conn_hh is
+        a static Watts-Strogatz graph built once at init, so W_pos never
+        shapes the hidden→hidden topology. This method re-derives conn_hh
+        from the learned W_pos geometry.
+
+        Parameters
+        ----------
+        mode : {"wpos_knn", "hybrid"}
+            "wpos_knn" — top-K_hh nearest neighbours in W_pos space (self excluded)
+            "hybrid"   — top-(K_hh-random_mix) from W_pos + random_mix random edges
+        random_mix : int
+            Number of random edges to keep (hybrid mode only).
+
+        Notes
+        -----
+        In-place update of self.conn_hh. Pair with `_churn_vs(prev)` to
+        track Hamming churn across rebuilds.
+        """
+        with torch.no_grad():
+            W = self.W_pos[:self.N_hidden].detach()              # [N, D]
+            dist = torch.cdist(W, W)                              # [N, N]
+            K_hh = self.conn_hh.shape[1]
+            K_geo = K_hh - random_mix if mode == "hybrid" else K_hh
+            if K_geo <= 0:
+                raise ValueError(
+                    f"rebuild_conn_hh: K_geo={K_geo} after random_mix={random_mix} "
+                    f"on K_hh={K_hh}; need K_geo >= 1"
+                )
+            # Exclude self by pushing diagonal to inf
+            dist.fill_diagonal_(float("inf"))
+            _, idx = dist.topk(K_geo, dim=-1, largest=False)      # [N, K_geo]
+            if mode == "hybrid" and random_mix > 0:
+                N = self.N_hidden
+                rand_idx = torch.randint(
+                    0, N, (N, random_mix), device=idx.device, dtype=idx.dtype
+                )
+                idx = torch.cat([idx, rand_idx], dim=1)            # [N, K_hh]
+            self.conn_hh.copy_(idx.to(self.conn_hh.dtype))
+
+    def _churn_vs(self, prev_conn_hh: torch.Tensor) -> float:
+        """Return Hamming fraction of conn_hh entries that differ vs prev."""
+        return (self.conn_hh != prev_conn_hh).float().mean().item()
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         Z = self._seed(x)
         Z = self._route(Z)
@@ -252,7 +303,18 @@ class SGNNET_SmallWorld(nn.Module):
 
         Each round: gather K_hh neighbours per neuron and sum.
         O(N · K_hh · B · D) — no cdist, no N×N matrix.
+
+        Fast path: Triton fused gather+sum+L2-normalize when CUDA + l2 norm +
+        power-of-2 D. Benchmarked 1.17-1.18× over torch.compile max-autotune
+        (step530, RTX 5060 Ti, N=2048 D=16 K_iter=5).
         """
+        if (self.norm_mode == "l2"
+                and _triton_route is not None
+                and Z.device.type == "cuda"
+                and _triton_ok(Z.shape[-1])
+                and not torch.is_grad_enabled()):   # inference-only: kernel has no backward
+            return _triton_route(Z, self.conn_hh, self.K_iter)
+
         for _ in range(self.K_iter):
             Z = Z[:, self.conn_hh, :].sum(dim=2)  # [B, N, K_hh, D] → [B, N, D]
             Z = self._normalise(Z)

@@ -1,7 +1,7 @@
 
 ======================================================================
-Step 760 — seed-variance replication: step706
-Config: {'N': 2048, 'D': 16, 'K_hh': 2, 'K_iter': 5, 'dw_mode': 'proj'}  Seeds: [42, 43, 44, 45, 46]  Device: cpu
+Step 760 — seed-variance replication: step750
+Config: {'N': 4096, 'D': 16, 'K_hh': 4, 'K_iter': 3, 'dw_mode': None}  Seeds: [42, 43, 44, 45, 46]  Device: cpu
 Data seed FIXED at 42 — varies only network init + topology
 ======================================================================
 Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
@@ -9,16 +9,106 @@ Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
 ──────────────────────────────────────────────────
 SEED 42
 ──────────────────────────────────────────────────
-  e  1  loss=2.5366  task=2.5366  safety=0.0000  top1=0.7715  lr=2.36e-03
-  ep 10  val=0.9274
-  e 10  loss=0.0847  task=0.0847  safety=0.0000  top1=0.9274  lr=2.36e-03
-  ep 20  val=0.9419
-  e 20  loss=0.0339  task=0.0339  safety=0.0000  top1=0.9419  lr=2.36e-03
-  ep 30  val=0.9452
-  e 30  loss=0.0213  task=0.0213  safety=0.0000  top1=0.9452  lr=2.36e-03
-  ep 40  val=0.9518
-  e 40  loss=0.0144  task=0.0144  safety=0.0000  top1=0.9518  lr=2.36e-03
-  ep 50  val=0.9534
-  e 50  loss=0.0125  task=0.0125  safety=0.0000  top1=0.9534  lr=2.36e-03
-  ep 60  val=0.9511
-  e 60  loss=0.0107  task=0.0107  safety=0.0000  top1=0.9511  lr=2.36e-03
+  e  1  loss=13.1081  task=13.1081  safety=0.0000  top1=0.2696  lr=2.36e-03
+  ep 10  val=0.8762
+  e 10  loss=0.5452  task=0.5452  safety=0.0000  top1=0.8762  lr=2.36e-03
+  ep 20  val=0.9187
+  e 20  loss=0.3364  task=0.3364  safety=0.0000  top1=0.9187  lr=2.36e-03
+  ep 30  val=0.9205
+  e 30  loss=0.2551  task=0.2551  safety=0.0000  top1=0.9205  lr=2.36e-03
+  ep 40  val=0.9378
+  e 40  loss=0.2130  task=0.2130  safety=0.0000  top1=0.9378  lr=2.36e-03
+  ep 50  val=0.9381
+  e 50  loss=0.1881  task=0.1881  safety=0.0000  top1=0.9381  lr=2.36e-03
+  ep 60  val=0.9302
+  e 60  loss=0.1631  task=0.1631  safety=0.0000  top1=0.9302  lr=2.36e-03
+  ep 70  val=0.9345
+  e 70  loss=0.1527  task=0.1527  safety=0.0000  top1=0.9345  lr=2.36e-03
+  → seed=42: best=0.9498 @ep75
+
+──────────────────────────────────────────────────
+SEED 43
+──────────────────────────────────────────────────
+  e  1  loss=28.5330  task=28.5330  safety=0.0000  top1=0.1093  lr=2.36e-03
+  ep 10  val=0.8599
+  e 10  loss=0.5636  task=0.5636  safety=0.0000  top1=0.8599  lr=2.36e-03
+  ep 20  val=0.9014
+  e 20  loss=0.3623  task=0.3623  safety=0.0000  top1=0.9014  lr=2.36e-03
+  ep 30  val=0.9180
+  e 30  loss=0.2624  task=0.2624  safety=0.0000  top1=0.9180  lr=2.36e-03
+  ep 40  val=0.9287
+  e 40  loss=0.2133  task=0.2133  safety=0.0000  top1=0.9287  lr=2.36e-03
+  ep 50  val=0.9350
+  e 50  loss=0.1910  task=0.1910  safety=0.0000  top1=0.9350  lr=2.36e-03
+  ep 60  val=0.9348
+  e 60  loss=0.1606  task=0.1606  safety=0.0000  top1=0.9348  lr=2.36e-03
+  ep 70  val=0.9386
+  e 70  loss=0.1504  task=0.1504  safety=0.0000  top1=0.9386  lr=2.36e-03
+  → seed=43: best=0.9422 @ep62
+
+──────────────────────────────────────────────────
+SEED 44
+──────────────────────────────────────────────────
+  e  1  loss=8.5549  task=8.5549  safety=0.0000  top1=0.3276  lr=2.36e-03
+  ep 10  val=0.8777
+  e 10  loss=0.4384  task=0.4384  safety=0.0000  top1=0.8777  lr=2.36e-03
+  ep 20  val=0.9103
+  e 20  loss=0.2754  task=0.2754  safety=0.0000  top1=0.9103  lr=2.36e-03
+  ep 30  val=0.9248
+  e 30  loss=0.2091  task=0.2091  safety=0.0000  top1=0.9248  lr=2.36e-03
+  ep 40  val=0.9279
+  e 40  loss=0.1700  task=0.1700  safety=0.0000  top1=0.9279  lr=2.36e-03
+  ep 50  val=0.9276
+  e 50  loss=0.1430  task=0.1430  safety=0.0000  top1=0.9276  lr=2.36e-03
+  ep 60  val=0.9358
+  e 60  loss=0.1291  task=0.1291  safety=0.0000  top1=0.9358  lr=2.36e-03
+  ep 70  val=0.9404
+  e 70  loss=0.1132  task=0.1132  safety=0.0000  top1=0.9404  lr=2.36e-03
+  → seed=44: best=0.9455 @ep62
+
+──────────────────────────────────────────────────
+SEED 45
+──────────────────────────────────────────────────
+  e  1  loss=15.5085  task=15.5085  safety=0.0000  top1=0.1740  lr=2.36e-03
+  ep 10  val=0.8583
+  e 10  loss=0.5222  task=0.5222  safety=0.0000  top1=0.8583  lr=2.36e-03
+  ep 20  val=0.8968
+  e 20  loss=0.3389  task=0.3389  safety=0.0000  top1=0.8968  lr=2.36e-03
+  ep 30  val=0.9167
+  e 30  loss=0.2625  task=0.2625  safety=0.0000  top1=0.9167  lr=2.36e-03
+  ep 40  val=0.9172
+  e 40  loss=0.2166  task=0.2166  safety=0.0000  top1=0.9172  lr=2.36e-03
+  ep 50  val=0.9371
+  e 50  loss=0.1868  task=0.1868  safety=0.0000  top1=0.9371  lr=2.36e-03
+  ep 60  val=0.9322
+  e 60  loss=0.1580  task=0.1580  safety=0.0000  top1=0.9322  lr=2.36e-03
+  ep 70  val=0.9259
+  e 70  loss=0.1434  task=0.1434  safety=0.0000  top1=0.9259  lr=2.36e-03
+  → seed=45: best=0.9411 @ep72
+
+──────────────────────────────────────────────────
+SEED 46
+──────────────────────────────────────────────────
+  e  1  loss=14.2846  task=14.2846  safety=0.0000  top1=0.1600  lr=2.36e-03
+  ep 10  val=0.8815
+  e 10  loss=0.5464  task=0.5464  safety=0.0000  top1=0.8815  lr=2.36e-03
+  ep 20  val=0.9139
+  e 20  loss=0.3460  task=0.3460  safety=0.0000  top1=0.9139  lr=2.36e-03
+  ep 30  val=0.9157
+  e 30  loss=0.2565  task=0.2565  safety=0.0000  top1=0.9157  lr=2.36e-03
+  ep 40  val=0.9376
+  e 40  loss=0.2091  task=0.2091  safety=0.0000  top1=0.9376  lr=2.36e-03
+  ep 50  val=0.9452
+  e 50  loss=0.1835  task=0.1835  safety=0.0000  top1=0.9452  lr=2.36e-03
+  ep 60  val=0.9401
+  e 60  loss=0.1537  task=0.1537  safety=0.0000  top1=0.9401  lr=2.36e-03
+  ep 70  val=0.9480
+  e 70  loss=0.1422  task=0.1422  safety=0.0000  top1=0.9480  lr=2.36e-03
+  → seed=46: best=0.9480 @ep70
+
+======================================================================
+SUMMARY (step750, 5 seeds):
+  mean=94.532%  std=0.370pp  range=0.870pp  min=94.11%  max=94.98%
+  95% CI ≈ mean ± 0.740pp  (assuming Gaussian)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step760_seedvar_step750.json

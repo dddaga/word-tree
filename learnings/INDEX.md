@@ -28,6 +28,10 @@
 | [[readout]] | [concepts/readout.md](concepts/readout.md) | Hard architectural constraint | C_ho required for unit-sphere activations; global mean-pool → 12% (step149) |
 | [[architecture_dead_ends]] | [concepts/architecture_dead_ends.md](concepts/architecture_dead_ends.md) | Reference | All confirmed dead ends; external constraints + pruning KILLED (step152, step153) |
 | [[delta_w]] | [concepts/delta_w.md](concepts/delta_w.md) | Confirmed winner (N≤2048) | ΔW projection +1.56pp at efficiency config; non-monotone peak +24pp at N=128; proj 3× cheaper than rot |
+| [[sparse_bfs_routing]] | [concepts/sparse_bfs_routing.md](concepts/sparse_bfs_routing.md) | HYPOTHESIS | Beam-gated BFS frontier ≤M·K_hh^(K_iter-1)=176; preserves static conn_hh; reduces per-step cost |
+| [[soft_routing_hnsw]] | [concepts/soft_routing_hnsw.md](concepts/soft_routing_hnsw.md) | HYPOTHESIS | Dense training (softmax) → HNSW inference (β-annealed); replaces conn_hh entirely; step855 scripted |
+| [[activation_retention]] | [concepts/activation_retention.md](concepts/activation_retention.md) | HYPOTHESIS | Z_t = α·Z_{t-1} + route(...); recurrent SGNNET; step306 killed static/decay/norm_cons — new context needed |
+| [[streaming_input]] | [concepts/streaming_input.md](concepts/streaming_input.md) | HYPOTHESIS | Cascading progressive seed; partial features at inference; latency-accuracy tradeoff |
 
 ## New Infrastructure (2026-04-10)
 

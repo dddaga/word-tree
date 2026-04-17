@@ -1,0 +1,32 @@
+{
+  "config": {
+    "N": 2048,
+    "B": 128,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "triton": "3.6.0",
+    "cuda": "12.8"
+  },
+  "correctness": {
+    "v1_max_diff": 0.0,
+    "v2_max_diff": 2.384185791015625e-07,
+    "pass": true
+  },
+  "single_step_ms": {
+    "eager": 0.24525,
+    "compiled": 0.12248,
+    "triton_v1": 0.03077,
+    "triton_v2_fused": 0.02992
+  },
+  "full_routing_ms": {
+    "eager": 1.78049,
+    "compiled": 0.26491,
+    "triton_v1": 0.83202,
+    "triton_v2_fused": 0.22528
+  },
+  "verdict": {
+    "full_routing": "BEATS compiled \u2014 production candidate",
+    "triton_v2_vs_compiled": 1.176
+  }
+}

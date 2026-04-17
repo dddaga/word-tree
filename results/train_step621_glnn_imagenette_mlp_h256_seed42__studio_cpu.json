@@ -1,0 +1,20 @@
+{
+  "Ref_mlp": {
+    "label": "MLP h=256 scratch",
+    "h": 256,
+    "n_params": 6425354,
+    "best": 0.9752866242038216,
+    "best_ep": 65,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 84
+  },
+  "Distill_mlp": {
+    "label": "MLP h=256 + GLNN T=2.0 \u03bb=0.5",
+    "h": 256,
+    "n_params": 6425354,
+    "best": 0.9735031847133758,
+    "best_ep": 2,
+    "delta_vs_ref": -0.0018,
+    "elapsed_s": 88
+  }
+}

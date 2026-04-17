@@ -1,0 +1,14 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step855 — Sparse BFS routing T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  Hypothesis: beam-gated BFS within -0.5pp of Ref at M=16
+  FLOP target: 128× routing reduction at M=16 (vs dense N=2048)
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: dense routing (baseline)  params=34,976  beam=all-N
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8206

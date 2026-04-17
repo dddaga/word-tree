@@ -159,6 +159,11 @@ class SGNNET_Resonant_CUDA(nn.Module):
     # ------------------------------------------------------------------
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # PyTorch 2.11+: prevent Z_reflected buffer-overwrite between val/train steps.
+        # Only needed (and safe) when torch.compile is active.
+        if self._compiled and x.device.type == "cuda" and hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+            torch.compiler.cudagraph_mark_step_begin()
+
         Z = self.base._seed(x)   # [B, N, D]
 
         # Contiguous before first gather (subsequent steps stay contiguous)
@@ -281,17 +286,34 @@ class SGNNET_AntiHebbian_CUDA(nn.Module):
     # ------------------------------------------------------------------
 
     def _get_supp_w(self, device: torch.device) -> torch.Tensor:
-        """Compute (or return cached) AH suppression weights."""
-        if self._supp_w is None or self._supp_w.device != device:
+        """Compute AH suppression weights.
+
+        During inference (no_grad): result is cached across forward calls for speed.
+        During training: recomputed fresh each forward so the new grad graph is
+        clean — caching with grad_fn causes 'backward through freed graph' on batch 2+.
+        Gradient path W_pos → supp_w → Z_struct preserved during training.
+        """
+        if not torch.is_grad_enabled():
+            # Inference: safe to cache (no graph to free)
+            if self._supp_w is None or self._supp_w.device != device:
+                conn_hh = self.m.base.conn_hh
+                N_h     = self.m.base.N_hidden
+                W_n     = F.normalize(self.m.W_pos[:N_h].detach(), dim=-1)
+                pos_sim = (W_n.unsqueeze(1) * W_n[conn_hh]).sum(-1)
+                supp_w  = (
+                    1.0 - self.alpha_ahebb * pos_sim.clamp(min=0)
+                ).unsqueeze(0).unsqueeze(-1)
+                self._supp_w = supp_w.to(device)
+            return self._supp_w
+        else:
+            # Training: recompute fresh each call to avoid stale grad_fn
             conn_hh = self.m.base.conn_hh
             N_h     = self.m.base.N_hidden
-            W_n     = F.normalize(self.m.W_pos[:N_h], dim=-1)    # [N_h, D]
-            pos_sim = (W_n.unsqueeze(1) * W_n[conn_hh]).sum(-1)  # [N_h, K_hh]
-            supp_w  = (
+            W_n     = F.normalize(self.m.W_pos[:N_h], dim=-1)
+            pos_sim = (W_n.unsqueeze(1) * W_n[conn_hh]).sum(-1)
+            return (
                 1.0 - self.alpha_ahebb * pos_sim.clamp(min=0)
-            ).unsqueeze(0).unsqueeze(-1)                          # [1, N, K_hh, 1]
-            self._supp_w = supp_w.to(device)
-        return self._supp_w
+            ).unsqueeze(0).unsqueeze(-1).to(device)
 
     def _invalidate_supp_w(self):
         """Call this if W_pos changes (e.g., after an optimizer step)."""
@@ -320,7 +342,11 @@ class SGNNET_AntiHebbian_CUDA(nn.Module):
     # ------------------------------------------------------------------
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # Retrieve pre-computed suppression weights (cached, recomputed if W_pos device changed)
+        # PyTorch 2.11+: prevent Z_reflected buffer-overwrite between val/train steps.
+        # Only needed (and safe) when torch.compile is active.
+        if self._compiled and x.device.type == "cuda" and hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+            torch.compiler.cudagraph_mark_step_begin()
+
         supp_w = self._get_supp_w(x.device)
 
         Z = self.m.base._seed(x)   # [B, N, D]

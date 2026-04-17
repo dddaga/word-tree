@@ -25,6 +25,32 @@ remote_cmd() {
   fi
 }
 
+# check_crash <host> <log_dir> <slot>
+# Scans the most recent log for slot for Traceback/Error.
+# Prints "[CRASHED: <last-error-line>]" if found, else prints nothing.
+check_crash() {
+  local host="$1" log_dir="$2" slot="$3"
+  local last_log crash_line
+  last_log=$(remote_cmd "$host" \
+    "ls -t ${log_dir}/*__${slot}.log 2>/dev/null | head -1" \
+    2>/dev/null || true)
+  [[ -z "$last_log" ]] && return
+  crash_line=$(remote_cmd "$host" \
+    "grep -m1 'Traceback\|RuntimeError\|CUDA error\|AssertionError\|KeyboardInterrupt' '${last_log}' 2>/dev/null | tail -1" \
+    2>/dev/null || true)
+  [[ -n "$crash_line" ]] && printf "  *** CRASHED: %s ***\n" "$crash_line"
+}
+
+# log_dir_for_host <host> — returns the log directory path on that host
+log_dir_for_host() {
+  case "$1" in
+    local)      echo "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs" ;;
+    mac-studio) echo "/Users/admin/ml/dhiraj/qwen2_omni/testing/logs" ;;
+    5060ti)     echo "/home/indra/sgnnet_bench/logs" ;;
+    *)          echo "logs" ;;
+  esac
+}
+
 # check_slot <slot> <host> <tmux_cmd>
 check_slot() {
   local slot="$1" host="$2" tmux_cmd="$3"
@@ -36,8 +62,12 @@ check_slot() {
     "$tmux_cmd list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^sgn-[^-]+-${slot}-'" \
     2>/dev/null || true)
 
+  local log_dir
+  log_dir=$(log_dir_for_host "$host")
+
   if [[ -z "$sessions" ]]; then
     printf "[FREE]\n"
+    check_crash "$host" "$log_dir" "$slot"
     return
   fi
 
@@ -52,6 +82,7 @@ check_slot() {
     if [[ "$pane_dead" == "1" ]]; then
       # pane shell exited entirely — treat as FREE
       printf "[FREE]       (dead pane from session=%s)\n" "$s"
+      check_crash "$host" "$log_dir" "$slot"
       return
     fi
 
@@ -66,11 +97,13 @@ check_slot() {
       printf "[RUNNING]    session=%s\n" "$s"
     else
       printf "[DONE]       session=%s  (script finished, shell idle)\n" "$s"
+      check_crash "$host" "$log_dir" "$slot"
     fi
     return
   done <<< "$sessions"
 
   printf "[FREE]\n"
+  check_crash "$host" "$log_dir" "$slot"
 }
 
 # list_sessions <host> <tmux_cmd>

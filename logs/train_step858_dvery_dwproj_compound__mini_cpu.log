@@ -1,0 +1,87 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step858 — D_very + ΔW-proj compound T1 (75ep, 50% data)
+  device=cpu  epochs=75  seed=42
+  Refs: D_very T1=+0.36pp, ΔW-proj T1=+1.49pp. Compound expected ~+1.85pp
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: sparsity=0.90 + standard AH  params=34,976
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  e 10  loss=0.3917  task=0.3917  safety=0.0000  top1=0.9019  lr=2.36e-03
+  ep 15  val=0.8930
+  e 20  loss=0.2781  task=0.2781  safety=0.0000  top1=0.9187  lr=2.36e-03
+  ep 30  val=0.9223
+  e 30  loss=0.2291  task=0.2291  safety=0.0000  top1=0.9223  lr=2.36e-03
+  e 40  loss=0.2043  task=0.2043  safety=0.0000  top1=0.9126  lr=2.36e-03
+  ep 45  val=0.9241
+  e 50  loss=0.1873  task=0.1873  safety=0.0000  top1=0.9213  lr=2.36e-03
+  ep 60  val=0.9320
+  e 60  loss=0.1703  task=0.1703  safety=0.0000  top1=0.9320  lr=2.36e-03
+  e 70  loss=0.1593  task=0.1593  safety=0.0000  top1=0.9304  lr=2.36e-03
+  ep 75  val=0.9287
+  -> best=0.9373 @ep72  Δ_vs_Ref=+0.00pp  202s
+────────────────────────────────────────────────────────────
+A_dvery: sparsity=0.98 only  params=34,976
+  e  1  loss=5.2449  task=5.2449  safety=0.0000  top1=0.4387  lr=2.36e-03
+  e 10  loss=0.4443  task=0.4443  safety=0.0000  top1=0.8966  lr=2.36e-03
+  ep 15  val=0.9050
+  e 20  loss=0.3146  task=0.3146  safety=0.0000  top1=0.9182  lr=2.36e-03
+  ep 30  val=0.9225
+  e 30  loss=0.2571  task=0.2571  safety=0.0000  top1=0.9225  lr=2.36e-03
+  e 40  loss=0.2277  task=0.2277  safety=0.0000  top1=0.9399  lr=2.36e-03
+  ep 45  val=0.9345
+  e 50  loss=0.2063  task=0.2063  safety=0.0000  top1=0.9299  lr=2.36e-03
+  ep 60  val=0.9432
+  e 60  loss=0.1975  task=0.1975  safety=0.0000  top1=0.9432  lr=2.36e-03
+  e 70  loss=0.1871  task=0.1871  safety=0.0000  top1=0.9414  lr=2.36e-03
+  ep 75  val=0.9317
+  -> best=0.9432 @ep60  Δ_vs_Ref=+0.59pp  199s
+────────────────────────────────────────────────────────────
+B_dwproj: sparsity=0.90 + ΔW-proj  params=34,977
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7666  lr=2.36e-03
+  e 10  loss=0.0848  task=0.0848  safety=0.0000  top1=0.9304  lr=2.36e-03
+  ep 15  val=0.9335
+  e 20  loss=0.0358  task=0.0358  safety=0.0000  top1=0.9383  lr=2.36e-03
+  ep 30  val=0.9422
+  e 30  loss=0.0210  task=0.0210  safety=0.0000  top1=0.9422  lr=2.36e-03
+  e 40  loss=0.0158  task=0.0158  safety=0.0000  top1=0.9445  lr=2.36e-03
+  ep 45  val=0.9480
+  e 50  loss=0.0129  task=0.0129  safety=0.0000  top1=0.9485  lr=2.36e-03
+  ep 60  val=0.9462
+  e 60  loss=0.0112  task=0.0112  safety=0.0000  top1=0.9462  lr=2.36e-03
+  e 70  loss=0.0100  task=0.0100  safety=0.0000  top1=0.9501  lr=2.36e-03
+  ep 75  val=0.9457
+  -> best=0.9524 @ep73  Δ_vs_Ref=+1.50pp  248s
+────────────────────────────────────────────────────────────
+C_compound: sparsity=0.98 + ΔW-proj (full compound)  params=34,977
+  e  1  loss=2.1279  task=2.1279  safety=0.0000  top1=0.7883  lr=2.36e-03
+  e 10  loss=0.0929  task=0.0929  safety=0.0000  top1=0.9330  lr=2.36e-03
+  ep 15  val=0.9386
+  e 20  loss=0.0454  task=0.0454  safety=0.0000  top1=0.9455  lr=2.36e-03
+  ep 30  val=0.9445
+  e 30  loss=0.0243  task=0.0243  safety=0.0000  top1=0.9445  lr=2.36e-03
+  e 40  loss=0.0162  task=0.0162  safety=0.0000  top1=0.9498  lr=2.36e-03
+  ep 45  val=0.9506
+  e 50  loss=0.0120  task=0.0120  safety=0.0000  top1=0.9501  lr=2.36e-03
+  ep 60  val=0.9529
+  e 60  loss=0.0103  task=0.0103  safety=0.0000  top1=0.9529  lr=2.36e-03
+  e 70  loss=0.0098  task=0.0098  safety=0.0000  top1=0.9521  lr=2.36e-03
+  ep 75  val=0.9534
+  -> best=0.9541 @ep64  Δ_vs_Ref=+1.68pp  251s
+
+======================================================================
+STEP 858 SUMMARY — D_very + ΔW compound T1
+======================================================================
+  config          best   Δ_vs_Ref
+  Ref           0.9373     +0.00pp
+  A_dvery       0.9432     +0.59pp
+  B_dwproj      0.9524     +1.50pp
+  C_compound    0.9541     +1.68pp
+
+  Additive prediction: +2.09pp  Actual compound: +1.68pp
+  Interaction: -0.41pp (sub-additive)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step858_dvery_dwproj_compound_seed42__mini_cpu.json

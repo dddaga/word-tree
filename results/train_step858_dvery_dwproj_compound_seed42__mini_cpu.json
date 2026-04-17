@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "sparsity": 0.9,
+    "use_dwproj": false,
+    "label": "sparsity=0.90 + standard AH",
+    "n_params": 34976,
+    "best": 0.9373248219490051,
+    "best_ep": 72,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 202
+  },
+  "A_dvery": {
+    "sparsity": 0.98,
+    "use_dwproj": false,
+    "label": "sparsity=0.98 only",
+    "n_params": 34976,
+    "best": 0.9431847333908081,
+    "best_ep": 60,
+    "delta_vs_ref": 0.0059,
+    "elapsed_s": 199
+  },
+  "B_dwproj": {
+    "sparsity": 0.9,
+    "use_dwproj": true,
+    "label": "sparsity=0.90 + \u0394W-proj",
+    "n_params": 34977,
+    "best": 0.9523566961288452,
+    "best_ep": 73,
+    "delta_vs_ref": 0.015,
+    "elapsed_s": 248
+  },
+  "C_compound": {
+    "sparsity": 0.98,
+    "use_dwproj": true,
+    "label": "sparsity=0.98 + \u0394W-proj (full compound)",
+    "n_params": 34977,
+    "best": 0.9541401267051697,
+    "best_ep": 64,
+    "delta_vs_ref": 0.0168,
+    "elapsed_s": 251
+  }
+}

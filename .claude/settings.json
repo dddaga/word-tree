@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Volumes/T9/IndraAstra/dhiraj/neuro_graph/.claude/hooks/suppress-monitoring.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "model": "claude-haiku-4-5-20251001",
+            "prompt": "You are a research-session state distiller for an ML research project (SGNNET — sparse graph neural network for compute-efficient deep learning). Your job: extract ONLY what the main agent CANNOT recover from git or files, and write it to /Volumes/T9/IndraAstra/dhiraj/neuro_graph/.monitor/session_state.md.\n\nWrite a compact (≤80 lines) markdown file with these sections:\n## Timestamp\n(UTC now)\n## Running Experiments\nList each RUNNING slot: slot name, script/step, key config, expected finish.\n## Key Findings This Session\nBullet per confirmed result with delta-pp values and verdicts.\n## Decisions Made\nDesign choices or defaults changed this session (e.g. sparsity updated).\n## Next Actions\nWhat the agent was about to do when compaction fired.\n\nRead /Volumes/T9/IndraAstra/dhiraj/neuro_graph/learnings/EXPERIMENT_QUEUE.md for running experiments. Be terse. Omit anything derivable from code or git.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

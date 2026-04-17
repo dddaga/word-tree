@@ -1,0 +1,122 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step853 — C_ho sparsity ablation (T0: 20ep, 50% data, N=2048)
+  device=cpu  epochs=20  seed=42
+  K_in=25  D=16  K_hh=2  K_iter=5  (step199 reference)
+  Train=4734  Val=3925
+======================================================================
+
+------------------------------------------------------------
+Ref: sparsity=0.90 current default (~205/class)
+  params=34,976  k_ho=274.4±9.6 (min=259 max=295) coverage=100.0% jaccard=0.037
+/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/utils/data/dataloader.py:775: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+  ep  1  val=0.4000
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8214
+  ep 10  val=0.9011
+  e 10  loss=0.3912  task=0.3912  safety=0.0000  top1=0.9011  lr=2.36e-03
+  ep 15  val=0.8920
+  ep 20  val=0.9169
+  e 20  loss=0.2784  task=0.2784  safety=0.0000  top1=0.9169  lr=2.36e-03
+  -> best=0.9169 @ep20  Δ_vs_Ref=+0.00pp  52s
+------------------------------------------------------------
+A_dense: sparsity=0.00 fully dense (2048/class)
+  params=34,976  k_ho=2048.0±0.0 (min=2048 max=2048) coverage=100.0% jaccard=1.000
+  ep  1  val=0.1070
+  e  1  loss=32.4246  task=32.4246  safety=0.0000  top1=0.1070  lr=2.36e-03
+  ep  5  val=0.6298
+  ep 10  val=0.7781
+  e 10  loss=0.7891  task=0.7891  safety=0.0000  top1=0.7781  lr=2.36e-03
+  ep 15  val=0.8265
+  ep 20  val=0.8487
+  e 20  loss=0.4251  task=0.4251  safety=0.0000  top1=0.8487  lr=2.36e-03
+  -> best=0.8487 @ep20  Δ_vs_Ref=-6.82pp  51s
+------------------------------------------------------------
+B_mid: sparsity=0.50 half dense (~1024/class)
+  params=34,976  k_ho=1015.6±19.9 (min=992 max=1046) coverage=100.0% jaccard=0.329
+  ep  1  val=0.3315
+  e  1  loss=15.1219  task=15.1219  safety=0.0000  top1=0.3315  lr=2.36e-03
+  ep  5  val=0.7740
+  ep 10  val=0.8413
+  e 10  loss=0.4147  task=0.4147  safety=0.0000  top1=0.8413  lr=2.36e-03
+  ep 15  val=0.8660
+  ep 20  val=0.8925
+  e 20  loss=0.2410  task=0.2410  safety=0.0000  top1=0.8925  lr=2.36e-03
+  -> best=0.8932 @ep19  Δ_vs_Ref=-2.37pp  51s
+------------------------------------------------------------
+C_sparse: sparsity=0.95 2x sparser (~102/class)
+  params=34,976  k_ho=225.0±12.5 (min=211 max=245) coverage=100.0% jaccard=0.011
+  ep  1  val=0.3582
+  e  1  loss=5.9638  task=5.9638  safety=0.0000  top1=0.3582  lr=2.36e-03
+  ep  5  val=0.8250
+  ep 10  val=0.8889
+  e 10  loss=0.4268  task=0.4268  safety=0.0000  top1=0.8889  lr=2.36e-03
+  ep 15  val=0.8968
+  ep 20  val=0.9068
+  e 20  loss=0.3007  task=0.3007  safety=0.0000  top1=0.9068  lr=2.36e-03
+  -> best=0.9068 @ep20  Δ_vs_Ref=-1.01pp  51s
+------------------------------------------------------------
+D_very: sparsity=0.98 5x sparser (~41/class)
+  params=34,976  k_ho=208.1±17.0 (min=179 max=232) coverage=100.0% jaccard=0.002
+  ep  1  val=0.4387
+  e  1  loss=5.2449  task=5.2449  safety=0.0000  top1=0.4387  lr=2.36e-03
+  ep  5  val=0.8359
+  ep 10  val=0.8948
+  e 10  loss=0.4441  task=0.4441  safety=0.0000  top1=0.8948  lr=2.36e-03
+  ep 15  val=0.9045
+  ep 20  val=0.9185
+  e 20  loss=0.3152  task=0.3152  safety=0.0000  top1=0.9185  lr=2.36e-03
+  -> best=0.9185 @ep20  Δ_vs_Ref=+0.16pp  52s
+------------------------------------------------------------
+E_extreme: sparsity=0.99 10x sparser (~20/class)
+  params=34,976  k_ho=205.8±19.0 (min=176 max=231) coverage=100.0% jaccard=0.001
+  ep  1  val=0.4224
+  e  1  loss=4.4249  task=4.4249  safety=0.0000  top1=0.4224  lr=2.36e-03
+  ep  5  val=0.8397
+  ep 10  val=0.8754
+  e 10  loss=0.4373  task=0.4373  safety=0.0000  top1=0.8754  lr=2.36e-03
+  ep 15  val=0.8973
+  ep 20  val=0.9014
+  e 20  loss=0.3209  task=0.3209  safety=0.0000  top1=0.9014  lr=2.36e-03
+  -> best=0.9070 @ep19  Δ_vs_Ref=-0.99pp  52s
+------------------------------------------------------------
+F_tiny: random K_ho=10/class (min budget, random)
+  params=34,976  k_ho=10.0±0.0 (min=10 max=10) coverage=4.7% jaccard=0.005
+  ep  1  val=0.3529
+  e  1  loss=2.1968  task=2.1968  safety=0.0000  top1=0.3529  lr=2.36e-03
+  ep  5  val=0.6349
+  ep 10  val=0.6792
+  e 10  loss=1.4844  task=1.4844  safety=0.0000  top1=0.6792  lr=2.36e-03
+  ep 15  val=0.7131
+  ep 20  val=0.7422
+  e 20  loss=1.1920  task=1.1920  safety=0.0000  top1=0.7422  lr=2.36e-03
+  -> best=0.7462 @ep17  Δ_vs_Ref=-17.07pp  52s
+------------------------------------------------------------
+G_geometric: W_pos-nearest K_ho=10/class (data-driven)
+  params=34,976  k_ho=10.0±0.0 (min=10 max=10) coverage=4.7% jaccard=0.005
+  ep  1  val=0.3521
+  e  1  loss=2.1831  task=2.1831  safety=0.0000  top1=0.3521  lr=2.36e-03
+  ep  5  val=0.5814
+  ep 10  val=0.6104
+  e 10  loss=1.5245  task=1.5245  safety=0.0000  top1=0.6104  lr=2.36e-03
+  ep 15  val=0.6318
+  ep 20  val=0.6596
+  e 20  loss=1.2756  task=1.2756  safety=0.0000  top1=0.6596  lr=2.36e-03
+  -> best=0.6887 @ep17  Δ_vs_Ref=-22.82pp  51s
+
+======================================================================
+STEP 853 SUMMARY — C_ho sparsity ablation
+======================================================================
+  key              k_ho   cov%    best   Δ_vs_Ref
+  Ref             274.4 100.0  0.9169     +0.00pp
+  A_dense        2048.0 100.0  0.8487     -6.82pp
+  B_mid          1015.6 100.0  0.8932     -2.37pp
+  C_sparse        225.0 100.0  0.9068     -1.01pp
+  D_very          208.1 100.0  0.9185     +0.16pp
+  E_extreme       205.8 100.0  0.9070     -0.99pp
+  F_tiny           10.0   4.7  0.7462    -17.07pp
+  G_geometric      10.0   4.7  0.6887    -22.82pp
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step853_cho_sparsity_ablation_seed42__mini_cpu.json

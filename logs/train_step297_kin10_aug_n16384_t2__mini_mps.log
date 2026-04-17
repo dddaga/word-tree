@@ -5,3 +5,38 @@ Step 297 — K_in=10+aug T2 @ N=16384 (150ep, 100% data, device=mps)
   Train=18938  Val=3925
   N=16384 K_in=10 params=278,688
   e  1  loss=1.9063  task=1.9063  safety=0.0000  top1=0.8955  lr=2.36e-03
+  e 10  loss=0.1147  task=0.1147  safety=0.0000  top1=0.9529  lr=2.36e-03
+  ep 15  val=0.9480
+  e 20  loss=0.0822  task=0.0822  safety=0.0000  top1=0.9534  lr=2.36e-03
+  ep 30  val=0.9557
+  e 30  loss=0.0938  task=0.0938  safety=0.0000  top1=0.9557  lr=2.36e-03
+  e 40  loss=0.0275  task=0.0275  safety=0.0000  top1=0.9648  lr=1.18e-03
+  ep 45  val=0.9692
+  e 50  loss=0.0414  task=0.0414  safety=0.0000  top1=0.9692  lr=1.18e-03
+  ep 60  val=0.9605
+  e 60  loss=0.0187  task=0.0187  safety=0.0000  top1=0.9605  lr=5.91e-04
+  e 70  loss=0.0160  task=0.0160  safety=0.0000  top1=0.9676  lr=2.96e-04
+  ep 75  val=0.9699
+  e 80  loss=0.0097  task=0.0097  safety=0.0000  top1=0.9654  lr=2.96e-04
+  ep 90  val=0.9671
+  e 90  loss=0.0038  task=0.0038  safety=0.0000  top1=0.9671  lr=1.48e-04
+  e100  loss=0.0041  task=0.0041  safety=0.0000  top1=0.9661  lr=1.48e-04
+  ep105  val=0.9664
+  e110  loss=0.0033  task=0.0033  safety=0.0000  top1=0.9666  lr=1.48e-04
+  ep120  val=0.9669
+  e120  loss=0.0041  task=0.0041  safety=0.0000  top1=0.9669  lr=1.48e-04
+  e130  loss=0.0020  task=0.0020  safety=0.0000  top1=0.9682  lr=7.39e-05
+  ep135  val=0.9661
+  e140  loss=0.0021  task=0.0021  safety=0.0000  top1=0.9684  lr=7.39e-05
+  ep150  val=0.9666
+  e150  loss=0.0017  task=0.0017  safety=0.0000  top1=0.9666  lr=3.69e-05
+
+============================================================
+STEP 297 SUMMARY
+  A_k10_aug  best=0.9720 @ep39
+  Δ_Ref      = +3.77pp  (vs 93.43%)
+  Δ_aug_T2   = +0.33pp  (vs 96.87% K_in=25+aug T2)
+  Δ_k15_aug  = +0.31pp  (vs 96.89% K_in=15+aug T2)
+  Δ_T1       = +0.64pp  (T1→T2 gain)
+
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step297_kin10_aug_n16384_t2_seed42__mini_mps.json

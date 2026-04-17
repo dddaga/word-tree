@@ -41,6 +41,7 @@ def make_loaders(
     batch_size: int = 128,
     seed: int = 42,
     num_workers: int = 0,
+    pin_memory: bool = False,
 ) -> tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader]:
     """Return (train_loader, val_loader) with full dataset in RAM.
 
@@ -67,13 +68,13 @@ def make_loaders(
         shuffle=True,
         generator=g,
         num_workers=num_workers,
-        pin_memory=False,
+        pin_memory=pin_memory,
     )
     val_loader = torch.utils.data.DataLoader(
         val_ds,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
-        pin_memory=False,
+        pin_memory=pin_memory,
     )
     return train_loader, val_loader

@@ -1,0 +1,189 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step856 — C_ho sparsity multi-seed T1 (75ep, 50% data)
+  device=mps  epochs=75  seeds=[42, 43, 44, 45, 46]
+  Ref=0.9391  D_very=0.9427 (+0.36pp step853 T1 seed42)
+  Train=4734  Val=3925
+======================================================================
+
+
+============================================================
+Ref: sparsity=0.90 current default (~274/class)
+============================================================
+
+  SEED 42
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4013  lr=2.36e-03
+  e 10  loss=0.3905  task=0.3905  safety=0.0000  top1=0.9024  lr=2.36e-03
+    ep 15  val=0.8922
+  e 20  loss=0.2762  task=0.2762  safety=0.0000  top1=0.9197  lr=2.36e-03
+    ep 30  val=0.9246
+  e 30  loss=0.2256  task=0.2256  safety=0.0000  top1=0.9246  lr=2.36e-03
+  e 40  loss=0.2003  task=0.2003  safety=0.0000  top1=0.9157  lr=2.36e-03
+    ep 45  val=0.9218
+  e 50  loss=0.1857  task=0.1857  safety=0.0000  top1=0.9195  lr=2.36e-03
+    ep 60  val=0.9327
+  e 60  loss=0.1697  task=0.1697  safety=0.0000  top1=0.9327  lr=2.36e-03
+  e 70  loss=0.1586  task=0.1586  safety=0.0000  top1=0.9325  lr=2.36e-03
+    ep 75  val=0.9317
+  -> seed=42: best=0.9386 @ep72  214s
+
+  SEED 43
+  e  1  loss=3.7824  task=3.7824  safety=0.0000  top1=0.4561  lr=2.36e-03
+  e 10  loss=0.3940  task=0.3940  safety=0.0000  top1=0.8836  lr=2.36e-03
+    ep 15  val=0.9022
+  e 20  loss=0.2819  task=0.2819  safety=0.0000  top1=0.9014  lr=2.36e-03
+    ep 30  val=0.8874
+  e 30  loss=0.2481  task=0.2481  safety=0.0000  top1=0.8874  lr=2.36e-03
+  e 40  loss=0.2043  task=0.2043  safety=0.0000  top1=0.9200  lr=2.36e-03
+    ep 45  val=0.9264
+  e 50  loss=0.1956  task=0.1956  safety=0.0000  top1=0.9175  lr=2.36e-03
+    ep 60  val=0.9192
+  e 60  loss=0.1866  task=0.1866  safety=0.0000  top1=0.9192  lr=2.36e-03
+  e 70  loss=0.1565  task=0.1565  safety=0.0000  top1=0.9256  lr=2.36e-03
+    ep 75  val=0.9338
+  -> seed=43: best=0.9371 @ep73  213s
+
+  SEED 44
+  e  1  loss=2.3225  task=2.3225  safety=0.0000  top1=0.5929  lr=2.36e-03
+  e 10  loss=0.3350  task=0.3350  safety=0.0000  top1=0.9073  lr=2.36e-03
+    ep 15  val=0.9073
+  e 20  loss=0.2421  task=0.2421  safety=0.0000  top1=0.9256  lr=2.36e-03
+    ep 30  val=0.9312
+  e 30  loss=0.2056  task=0.2056  safety=0.0000  top1=0.9312  lr=2.36e-03
+  e 40  loss=0.1766  task=0.1766  safety=0.0000  top1=0.9276  lr=2.36e-03
+    ep 45  val=0.9361
+  e 50  loss=0.1613  task=0.1613  safety=0.0000  top1=0.9302  lr=2.36e-03
+    ep 60  val=0.9422
+  e 60  loss=0.1578  task=0.1578  safety=0.0000  top1=0.9422  lr=2.36e-03
+  e 70  loss=0.1462  task=0.1462  safety=0.0000  top1=0.9406  lr=2.36e-03
+    ep 75  val=0.9419
+  -> seed=44: best=0.9442 @ep74  213s
+
+  SEED 45
+  e  1  loss=3.3357  task=3.3357  safety=0.0000  top1=0.4925  lr=2.36e-03
+  e 10  loss=0.3999  task=0.3999  safety=0.0000  top1=0.8879  lr=2.36e-03
+    ep 15  val=0.8892
+  e 20  loss=0.2932  task=0.2932  safety=0.0000  top1=0.9146  lr=2.36e-03
+    ep 30  val=0.9248
+  e 30  loss=0.2431  task=0.2431  safety=0.0000  top1=0.9248  lr=2.36e-03
+  e 40  loss=0.2021  task=0.2021  safety=0.0000  top1=0.9182  lr=2.36e-03
+    ep 45  val=0.9177
+  e 50  loss=0.1815  task=0.1815  safety=0.0000  top1=0.9297  lr=2.36e-03
+    ep 60  val=0.9241
+  e 60  loss=0.1779  task=0.1779  safety=0.0000  top1=0.9241  lr=2.36e-03
+  e 70  loss=0.1623  task=0.1623  safety=0.0000  top1=0.9310  lr=2.36e-03
+    ep 75  val=0.9315
+  -> seed=45: best=0.9371 @ep61  213s
+
+  SEED 46
+  e  1  loss=5.2476  task=5.2476  safety=0.0000  top1=0.4604  lr=2.36e-03
+  e 10  loss=0.3831  task=0.3831  safety=0.0000  top1=0.8884  lr=2.36e-03
+    ep 15  val=0.9129
+  e 20  loss=0.2681  task=0.2681  safety=0.0000  top1=0.9144  lr=2.36e-03
+    ep 30  val=0.9238
+  e 30  loss=0.2186  task=0.2186  safety=0.0000  top1=0.9238  lr=2.36e-03
+  e 40  loss=0.1898  task=0.1898  safety=0.0000  top1=0.9246  lr=2.36e-03
+    ep 45  val=0.9317
+  e 50  loss=0.1743  task=0.1743  safety=0.0000  top1=0.9175  lr=2.36e-03
+    ep 60  val=0.9294
+  e 60  loss=0.1672  task=0.1672  safety=0.0000  top1=0.9294  lr=2.36e-03
+  e 70  loss=0.1528  task=0.1528  safety=0.0000  top1=0.9361  lr=2.36e-03
+    ep 75  val=0.9355
+  -> seed=46: best=0.9389 @ep71  213s
+
+============================================================
+D_very: sparsity=0.98 step853 T1 winner (~208/class)
+============================================================
+
+  SEED 42
+  e  1  loss=5.2450  task=5.2450  safety=0.0000  top1=0.4385  lr=2.36e-03
+  e 10  loss=0.4444  task=0.4444  safety=0.0000  top1=0.8930  lr=2.36e-03
+    ep 15  val=0.9045
+  e 20  loss=0.3151  task=0.3151  safety=0.0000  top1=0.9154  lr=2.36e-03
+    ep 30  val=0.9218
+  e 30  loss=0.2569  task=0.2569  safety=0.0000  top1=0.9218  lr=2.36e-03
+  e 40  loss=0.2283  task=0.2283  safety=0.0000  top1=0.9386  lr=2.36e-03
+    ep 45  val=0.9373
+  e 50  loss=0.2055  task=0.2055  safety=0.0000  top1=0.9282  lr=2.36e-03
+    ep 60  val=0.9414
+  e 60  loss=0.1971  task=0.1971  safety=0.0000  top1=0.9414  lr=2.36e-03
+  e 70  loss=0.1874  task=0.1874  safety=0.0000  top1=0.9406  lr=2.36e-03
+    ep 75  val=0.9289
+  -> seed=42: best=0.9414 @ep60  213s
+
+  SEED 43
+  e  1  loss=3.0863  task=3.0863  safety=0.0000  top1=0.5149  lr=2.36e-03
+  e 10  loss=0.4154  task=0.4154  safety=0.0000  top1=0.8907  lr=2.36e-03
+    ep 15  val=0.8945
+  e 20  loss=0.2943  task=0.2943  safety=0.0000  top1=0.9180  lr=2.36e-03
+    ep 30  val=0.9246
+  e 30  loss=0.2279  task=0.2279  safety=0.0000  top1=0.9246  lr=2.36e-03
+  e 40  loss=0.2009  task=0.2009  safety=0.0000  top1=0.9343  lr=2.36e-03
+    ep 45  val=0.9310
+  e 50  loss=0.1912  task=0.1912  safety=0.0000  top1=0.9266  lr=2.36e-03
+    ep 60  val=0.9396
+  e 60  loss=0.1652  task=0.1652  safety=0.0000  top1=0.9396  lr=2.36e-03
+  e 70  loss=0.1659  task=0.1659  safety=0.0000  top1=0.9282  lr=2.36e-03
+    ep 75  val=0.9228
+  -> seed=43: best=0.9411 @ep69  213s
+
+  SEED 44
+  e  1  loss=2.4953  task=2.4953  safety=0.0000  top1=0.5580  lr=2.36e-03
+  e 10  loss=0.3805  task=0.3805  safety=0.0000  top1=0.8792  lr=2.36e-03
+    ep 15  val=0.9055
+  e 20  loss=0.2761  task=0.2761  safety=0.0000  top1=0.9141  lr=2.36e-03
+    ep 30  val=0.9274
+  e 30  loss=0.2306  task=0.2306  safety=0.0000  top1=0.9274  lr=2.36e-03
+  e 40  loss=0.2007  task=0.2007  safety=0.0000  top1=0.9223  lr=2.36e-03
+    ep 45  val=0.9371
+  e 50  loss=0.1862  task=0.1862  safety=0.0000  top1=0.9371  lr=2.36e-03
+    ep 60  val=0.9391
+  e 60  loss=0.1752  task=0.1752  safety=0.0000  top1=0.9391  lr=2.36e-03
+  e 70  loss=0.1576  task=0.1576  safety=0.0000  top1=0.9312  lr=2.36e-03
+    ep 75  val=0.9404
+  -> seed=44: best=0.9404 @ep75  213s
+
+  SEED 45
+  e  1  loss=3.1851  task=3.1851  safety=0.0000  top1=0.4922  lr=2.36e-03
+  e 10  loss=0.4466  task=0.4466  safety=0.0000  top1=0.8887  lr=2.36e-03
+    ep 15  val=0.8950
+  e 20  loss=0.3165  task=0.3165  safety=0.0000  top1=0.9027  lr=2.36e-03
+    ep 30  val=0.9037
+  e 30  loss=0.2641  task=0.2641  safety=0.0000  top1=0.9037  lr=2.36e-03
+  e 40  loss=0.2183  task=0.2183  safety=0.0000  top1=0.9220  lr=2.36e-03
+    ep 45  val=0.9297
+  e 50  loss=0.2040  task=0.2040  safety=0.0000  top1=0.9164  lr=2.36e-03
+    ep 60  val=0.9378
+  e 60  loss=0.1800  task=0.1800  safety=0.0000  top1=0.9378  lr=2.36e-03
+  e 70  loss=0.1720  task=0.1720  safety=0.0000  top1=0.9348  lr=2.36e-03
+    ep 75  val=0.9315
+  -> seed=45: best=0.9378 @ep60  213s
+
+  SEED 46
+  e  1  loss=2.9112  task=2.9112  safety=0.0000  top1=0.6232  lr=2.36e-03
+  e 10  loss=0.3966  task=0.3966  safety=0.0000  top1=0.9042  lr=2.36e-03
+    ep 15  val=0.9060
+  e 20  loss=0.2900  task=0.2900  safety=0.0000  top1=0.9200  lr=2.36e-03
+    ep 30  val=0.9131
+  e 30  loss=0.2406  task=0.2406  safety=0.0000  top1=0.9131  lr=2.36e-03
+  e 40  loss=0.2159  task=0.2159  safety=0.0000  top1=0.9152  lr=2.36e-03
+    ep 45  val=0.9208
+  e 50  loss=0.1885  task=0.1885  safety=0.0000  top1=0.9322  lr=2.36e-03
+    ep 60  val=0.9327
+  e 60  loss=0.1803  task=0.1803  safety=0.0000  top1=0.9327  lr=2.36e-03
+  e 70  loss=0.1695  task=0.1695  safety=0.0000  top1=0.9368  lr=2.36e-03
+    ep 75  val=0.9284
+  -> seed=46: best=0.9378 @ep71  213s
+
+======================================================================
+STEP 856 SUMMARY — C_ho sparsity multi-seed T1
+======================================================================
+  config        mean     std     min     max    Δ_mean
+  Ref        93.918%  0.293pp 93.710% 94.420%   +0.000pp
+  D_very     93.970%  0.177pp 93.780% 94.140%   +0.052pp
+
+  Verdict: D_very BEATS Ref across 5 seeds.
+  -> UPDATE DEFAULT: change sparsity=0.90 to sparsity=0.98 in model_smallworld.py
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step856_cho_sparsity_multiseed_t1__mini_mps.json
