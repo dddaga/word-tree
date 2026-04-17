@@ -1,5 +1,8 @@
 """Step 861: Soft routing T1 — confirm step859 B_soft_anneal +1.22pp signal.
 
+# CUDA-5060ti-validated
+# pin_memory=True  non_blocking=True  (Trainer handles non_blocking internally)
+
 MOTIVATION
 ==========
 step859 T0 (20ep, 50% data):
@@ -83,6 +86,8 @@ class SGNNET_SoftRoute(nn.Module):
     def N_hidden(self): return self.base.N_hidden
     @property
     def C_ho_mask(self): return self.base.C_ho_mask
+    @property
+    def K_iter(self):    return self.base.K_iter
 
     def _normalise(self, Z): return self.base._normalise(Z)
     def _readout(self, Z):   return self.base._readout(Z)

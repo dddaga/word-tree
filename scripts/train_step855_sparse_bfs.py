@@ -92,9 +92,21 @@ class SGNNET_SparseBFS(nn.Module):
         self.sparse_readout = sparse_readout
 
     @property
-    def W_pos(self):   return self.base.W_pos
+    def W_pos(self):     return self.base.W_pos
     @property
-    def W_phase(self): return self.base.W_phase
+    def W_phase(self):   return self.base.W_phase
+    @property
+    def N_hidden(self):  return self.base.N_hidden
+    @property
+    def K_iter(self):    return self.base.K_iter
+    @property
+    def conn_hh(self):   return self.base.conn_hh
+    @property
+    def C_ho_mask(self): return self.base.C_ho_mask
+
+    def _normalise(self, Z): return self.base._normalise(Z)
+    def _readout(self, Z):   return self.base._readout(Z)
+    def _seed(self, x):      return self.base._seed(x)
 
     def _route_bfs(self, Z: torch.Tensor) -> torch.Tensor:
         """Beam-gated BFS routing. Z: [B, N, D]."""

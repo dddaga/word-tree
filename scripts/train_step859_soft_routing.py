@@ -101,6 +101,8 @@ class SGNNET_SoftRoute(nn.Module):
     def N_hidden(self):         return self.base.N_hidden
     @property
     def C_ho_mask(self):        return self.base.C_ho_mask
+    @property
+    def K_iter(self):           return self.base.K_iter
 
     def _normalise(self, Z):    return self.base._normalise(Z)
     def _readout(self, Z):      return self.base._readout(Z)
