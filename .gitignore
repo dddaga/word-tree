@@ -9,3 +9,6 @@ results/*.pt
 results/*.h5
 results/*.csv
 results/*.log
+
+# SSH keys — never commit
+keys/
