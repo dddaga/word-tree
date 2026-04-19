@@ -1,0 +1,34 @@
+{
+  "A_k15": {
+    "k_in": 15,
+    "n_params": 34976,
+    "best": 0.7603,
+    "best_ep": 18,
+    "delta_vs_ref": null,
+    "elapsed_s": 318
+  },
+  "Ref_k25": {
+    "k_in": 25,
+    "n_params": 34976,
+    "best": 0.7532,
+    "best_ep": 15,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 319
+  },
+  "B_k50": {
+    "k_in": 50,
+    "n_params": 34976,
+    "best": 0.7491,
+    "best_ep": 17,
+    "delta_vs_ref": -0.0041,
+    "elapsed_s": 323
+  },
+  "C_k100": {
+    "k_in": 100,
+    "n_params": 34976,
+    "best": 0.7481,
+    "best_ep": 15,
+    "delta_vs_ref": -0.0051,
+    "elapsed_s": 331
+  }
+}
