@@ -1,0 +1,47 @@
+{
+  "Ref_dw": {
+    "gamma": 0.0,
+    "label": "gamma=0.0 \u2014 standard \u0394W-proj (control)",
+    "n_params": 34976,
+    "best": 0.9391082525253296,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 70
+  },
+  "A_g070": {
+    "gamma": 0.7,
+    "label": "gamma=0.70 \u2014 faster decay",
+    "n_params": 34976,
+    "best": 0.9416560530662537,
+    "best_ep": 17,
+    "delta_vs_ref": 0.0025,
+    "elapsed_s": 70
+  },
+  "B_g075": {
+    "gamma": 0.75,
+    "label": "gamma=0.75 \u2014 below sweet spot",
+    "n_params": 34976,
+    "best": 0.9421656131744385,
+    "best_ep": 17,
+    "delta_vs_ref": 0.0031,
+    "elapsed_s": 70
+  },
+  "C_g080": {
+    "gamma": 0.8,
+    "label": "gamma=0.80 \u2014 confirmed sweet spot (step868 +0.33pp)",
+    "n_params": 34976,
+    "best": 0.9444586038589478,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0054,
+    "elapsed_s": 70
+  },
+  "D_g085": {
+    "gamma": 0.85,
+    "label": "gamma=0.85 \u2014 above sweet spot",
+    "n_params": 34976,
+    "best": 0.9424203634262085,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0033,
+    "elapsed_s": 71
+  }
+}

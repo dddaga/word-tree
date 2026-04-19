@@ -14,7 +14,7 @@ Full protocol (multi-user safety, lock files, orphan cleanup) in `.claude/skills
 | `5060ti_cuda` | RTX 5060 Ti (ssh `5060ti`) | CUDA | `/home/indra/sgnnet_bench`              | `venv/bin/python3` |
 
 RAM threshold before launch: Mac Studio ≥50 GB, Mac Mini ≥20 GB. `vm_stat | grep -E 'free|inactive'` → (Pages free + Pages inactive) × 16384 / 1073741824.
-**5060ti:** use `nvidia-smi` — if no process listed, slot is free. No RAM watermark needed.
+**5060ti:** CUDA only. Ryzen 5 7500F CPU is 5.5× slower than Mac Mini CPU (M4 AMX vs x86 AVX) — removed from rotation.
 
 **STRICT:** All launches through `scripts/launch_slot.sh <slot> <script> [args]`. The wrapper enforces lock files, cleans stale sessions, prevents collisions between teammates. No bare `tmux new-session`, no `nohup`, no `&`.
 
@@ -53,3 +53,5 @@ Loss/accuracy are lagging indicators. Diagnostics reveal why training works or f
 
 ## Training Monitor
 Cron every 20 min, recurring. Created at session start. The cron prompt MUST launch a **background Agent** (`run_in_background=true`) for all tmux/ssh checks — never run these inline in the main context (pollutes conversation). Agent returns `SILENT` when idle; main context sees only notable events.
+
+**Self-termination rule (MANDATORY):** The cron agent must check if all slots are FREE/DONE. If all slots idle AND no new result files in the last 30 min → call `CronDelete` with the cron's own ID and return `SILENT`. Pass the cron ID into the prompt when creating it so the agent can self-delete. Example prompt suffix: `"If all slots are FREE/DONE and no experiments are running, call CronDelete with id=<CRON_ID> to cancel this monitor, then return SILENT."`

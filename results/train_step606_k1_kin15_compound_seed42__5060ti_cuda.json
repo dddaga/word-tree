@@ -1,0 +1,38 @@
+{
+  "Ref_k25": {
+    "label": "K=1 K_in=25 pure-KD (replicates step605 Config_3)",
+    "K_in": 25,
+    "K_iter": 1,
+    "use_kd": true,
+    "n_params": 34976,
+    "top1_best": 0.9569426751592357,
+    "best_epoch": 56,
+    "delta_vs_teacher": -0.01,
+    "delta_vs_k1_k25": -0.0064,
+    "elapsed_s": 45
+  },
+  "A_k15": {
+    "label": "K=1 K_in=15 pure-KD (compound efficiency test)",
+    "K_in": 15,
+    "K_iter": 1,
+    "use_kd": true,
+    "n_params": 34976,
+    "top1_best": 0.9495541401273885,
+    "best_epoch": 65,
+    "delta_vs_teacher": -0.0173,
+    "delta_vs_k1_k25": -0.0137,
+    "elapsed_s": 43
+  },
+  "B_scratch": {
+    "label": "K=1 K_in=15 scratch (no distillation baseline)",
+    "K_in": 15,
+    "K_iter": 1,
+    "use_kd": false,
+    "n_params": 34976,
+    "top1_best": 0.9528662420382166,
+    "best_epoch": 57,
+    "delta_vs_teacher": -0.014,
+    "delta_vs_k1_k25": -0.0104,
+    "elapsed_s": 41
+  }
+}

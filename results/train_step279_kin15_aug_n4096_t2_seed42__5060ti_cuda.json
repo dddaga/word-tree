@@ -1,0 +1,20 @@
+{
+  "Ref_n4096": {
+    "label": "N=4096 K_in=25 no-aug (step205 ref)",
+    "K_in": 25,
+    "use_aug": false,
+    "top1_best": 0.9712101817131042,
+    "best_epoch": 134,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 570
+  },
+  "C_k15_aug_n4096": {
+    "label": "N=4096 K_in=15+aug (compound T2)",
+    "K_in": 15,
+    "use_aug": true,
+    "top1_best": 0.9729936122894287,
+    "best_epoch": 143,
+    "delta_vs_ref": 0.0018,
+    "elapsed_s": 1058
+  }
+}

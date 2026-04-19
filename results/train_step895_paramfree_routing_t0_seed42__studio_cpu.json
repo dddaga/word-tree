@@ -1,0 +1,42 @@
+{
+  "Ref_dw": {
+    "extra_params": 0,
+    "n_params": 67744,
+    "best": 0.9399,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 63
+  },
+  "A_norm_weighted": {
+    "extra_params": 0,
+    "n_params": 67744,
+    "best": 0.159,
+    "best_ep": 20,
+    "delta_vs_ref": -0.7809,
+    "elapsed_s": 66
+  },
+  "B_shared_query": {
+    "extra_params": 16,
+    "n_params": 67760,
+    "best": 0.1778,
+    "best_ep": 20,
+    "delta_vs_ref": -0.762,
+    "elapsed_s": 68
+  },
+  "C_factored_attn": {
+    "extra_params": 128,
+    "n_params": 67872,
+    "best": 0.1552,
+    "best_ep": 16,
+    "delta_vs_ref": -0.7847,
+    "elapsed_s": 128
+  },
+  "D_learned_temp": {
+    "extra_params": 32768,
+    "n_params": 100512,
+    "best": 0.6657,
+    "best_ep": 18,
+    "delta_vs_ref": -0.2741,
+    "elapsed_s": 78
+  }
+}

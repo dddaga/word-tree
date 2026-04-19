@@ -1,0 +1,24 @@
+{
+  "Ref_dw": {
+    "k_hh": 2,
+    "k_local": 1,
+    "k_random": 1,
+    "label": "K_hh=2 (K_local=1, K_random=1) \u2014 standard",
+    "n_params": 34976,
+    "best": 0.9373248219490051,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 106
+  },
+  "A_khh1": {
+    "k_hh": 1,
+    "k_local": 0,
+    "k_random": 1,
+    "label": "K_hh=1 (K_local=0, K_random=1) \u2014 50% fewer routing ops",
+    "n_params": 34976,
+    "best": 0.9324840903282166,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0048,
+    "elapsed_s": 83
+  }
+}

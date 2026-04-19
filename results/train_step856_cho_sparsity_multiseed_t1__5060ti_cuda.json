@@ -1,0 +1,92 @@
+{
+  "Ref": {
+    "sparsity": 0.9,
+    "label": "sparsity=0.90 current default (~274/class)",
+    "per_seed": [
+      {
+        "seed": 42,
+        "best": 0.9366,
+        "best_ep": 72,
+        "n_params": 34976,
+        "elapsed_s": 33.7
+      },
+      {
+        "seed": 43,
+        "best": 0.9353,
+        "best_ep": 71,
+        "n_params": 34976,
+        "elapsed_s": 31.9
+      },
+      {
+        "seed": 44,
+        "best": 0.9394,
+        "best_ep": 74,
+        "n_params": 34976,
+        "elapsed_s": 32.0
+      },
+      {
+        "seed": 45,
+        "best": 0.9394,
+        "best_ep": 56,
+        "n_params": 34976,
+        "elapsed_s": 32.2
+      },
+      {
+        "seed": 46,
+        "best": 0.9401,
+        "best_ep": 71,
+        "n_params": 34976,
+        "elapsed_s": 31.9
+      }
+    ],
+    "mean": 0.93816,
+    "std": 0.0020887795479657594,
+    "min": 0.9353,
+    "max": 0.9401
+  },
+  "D_very": {
+    "sparsity": 0.98,
+    "label": "sparsity=0.98 step853 T1 winner (~208/class)",
+    "per_seed": [
+      {
+        "seed": 42,
+        "best": 0.9437,
+        "best_ep": 70,
+        "n_params": 34976,
+        "elapsed_s": 31.9
+      },
+      {
+        "seed": 43,
+        "best": 0.9401,
+        "best_ep": 69,
+        "n_params": 34976,
+        "elapsed_s": 31.9
+      },
+      {
+        "seed": 44,
+        "best": 0.9406,
+        "best_ep": 60,
+        "n_params": 34976,
+        "elapsed_s": 32.1
+      },
+      {
+        "seed": 45,
+        "best": 0.9381,
+        "best_ep": 60,
+        "n_params": 34976,
+        "elapsed_s": 32.1
+      },
+      {
+        "seed": 46,
+        "best": 0.9378,
+        "best_ep": 70,
+        "n_params": 34976,
+        "elapsed_s": 32.1
+      }
+    ],
+    "mean": 0.94006,
+    "std": 0.00237128657061941,
+    "min": 0.9378,
+    "max": 0.9437
+  }
+}

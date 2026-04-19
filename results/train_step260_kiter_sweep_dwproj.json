@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "label": "AH K_iter=5 (step199 baseline)",
+    "K_iter": 5,
+    "dw_mode": null,
+    "n_params": 34976,
+    "top1_best": 0.9194904565811157,
+    "elapsed_s": 28.13442349433899
+  },
+  "A": {
+    "label": "\u0394W proj K_iter=3",
+    "K_iter": 3,
+    "dw_mode": "proj",
+    "n_params": 34976,
+    "top1_best": 0.9294267296791077,
+    "elapsed_s": 23.84253692626953
+  },
+  "B": {
+    "label": "\u0394W proj K_iter=4",
+    "K_iter": 4,
+    "dw_mode": "proj",
+    "n_params": 34976,
+    "top1_best": 0.9419108033180237,
+    "elapsed_s": 27.85179328918457
+  },
+  "C": {
+    "label": "\u0394W proj K_iter=5",
+    "K_iter": 5,
+    "dw_mode": "proj",
+    "n_params": 34976,
+    "top1_best": 0.9398726224899292,
+    "elapsed_s": 31.959871768951416
+  },
+  "D": {
+    "label": "\u0394W proj K_iter=6",
+    "K_iter": 6,
+    "dw_mode": "proj",
+    "n_params": 34976,
+    "top1_best": 0.9235668778419495,
+    "elapsed_s": 36.00786328315735
+  }
+}

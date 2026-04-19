@@ -1,0 +1,42 @@
+{
+  "Ref_dw": {
+    "alpha_hub": 0.0,
+    "gamma": 0.0,
+    "label": "\u0394W-proj only (control)",
+    "n_params": 67744,
+    "best": 0.9396178126335144,
+    "best_ep": 17,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 77
+  },
+  "A_hub005": {
+    "alpha_hub": 0.05,
+    "gamma": 0.0,
+    "label": "hub alpha=0.05 only",
+    "n_params": 67744,
+    "best": 0.9411464929580688,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0015,
+    "elapsed_s": 81
+  },
+  "B_zmem_g08": {
+    "alpha_hub": 0.0,
+    "gamma": 0.8,
+    "label": "Z-mem gamma=0.8 only",
+    "n_params": 67744,
+    "best": 0.944203794002533,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0046,
+    "elapsed_s": 76
+  },
+  "C_compound": {
+    "alpha_hub": 0.05,
+    "gamma": 0.8,
+    "label": "hub 0.05 + Z-mem 0.8 combined",
+    "n_params": 67744,
+    "best": 0.9375796318054199,
+    "best_ep": 20,
+    "delta_vs_ref": -0.002,
+    "elapsed_s": 81
+  }
+}

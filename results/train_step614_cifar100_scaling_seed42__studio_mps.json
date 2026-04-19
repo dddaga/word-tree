@@ -1,0 +1,29 @@
+{
+  "SGNNET_N2048": {
+    "config": "SGNNET_N2048",
+    "n_params": 69184,
+    "flops_routing_macs": 655360,
+    "top1_best": 0.39959999918937683,
+    "best_epoch": 114,
+    "elapsed_s": 1978.9,
+    "epochs": 150
+  },
+  "SGNNET_N4096": {
+    "config": "SGNNET_N4096",
+    "n_params": 136768,
+    "flops_routing_macs": 1310720,
+    "top1_best": 0.490200012922287,
+    "best_epoch": 140,
+    "elapsed_s": 3621.4,
+    "epochs": 150
+  },
+  "SGNNET_N8192": {
+    "config": "SGNNET_N8192",
+    "n_params": 271936,
+    "flops_routing_macs": 2621440,
+    "top1_best": 0.5188999772071838,
+    "best_epoch": 147,
+    "elapsed_s": 6913.1,
+    "epochs": 150
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "A_pure_kd": {
+    "label": "K=1 pure KD (\u03b2_KD=1.0, \u03b1_CE=0)",
+    "alpha_ce": 0.0,
+    "n_params": 34976,
+    "top1_best": 0.9592356687898089,
+    "best_epoch": 76,
+    "delta_vs_teacher": -0.0076,
+    "elapsed_s": 102
+  },
+  "B_balanced": {
+    "label": "K=1 balanced (\u03b2_KD=0.5, \u03b1_CE=0.5)",
+    "alpha_ce": 0.5,
+    "n_params": 34976,
+    "top1_best": 0.9594904458598726,
+    "best_epoch": 111,
+    "delta_vs_teacher": -0.0074,
+    "elapsed_s": 100
+  }
+}

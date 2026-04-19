@@ -1,0 +1,50 @@
+{
+  "Ref_dw": {
+    "k_hh": 2,
+    "k_in": 25,
+    "label": "K_hh=2, K_in=25 \u2014 standard \u0394W-proj (0.98M routing MACs)",
+    "n_params": 67744,
+    "seed_flops_M": 1.6384,
+    "route_flops_M": 0.6554,
+    "best": 0.9393630623817444,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 67
+  },
+  "A_khh1": {
+    "k_hh": 1,
+    "k_in": 25,
+    "label": "K_hh=1, K_in=25 \u2014 50% fewer routing MACs",
+    "n_params": 67744,
+    "seed_flops_M": 1.6384,
+    "route_flops_M": 0.3277,
+    "best": 0.9286624193191528,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0107,
+    "elapsed_s": 53
+  },
+  "B_kin15": {
+    "k_hh": 2,
+    "k_in": 15,
+    "label": "K_hh=2, K_in=15 \u2014 40% fewer seed MACs",
+    "n_params": 67744,
+    "seed_flops_M": 0.983,
+    "route_flops_M": 0.6554,
+    "best": 0.9291719794273376,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0102,
+    "elapsed_s": 66
+  },
+  "C_compound": {
+    "k_hh": 1,
+    "k_in": 15,
+    "label": "K_hh=1, K_in=15 \u2014 both: ~45% total FLOPs reduction",
+    "n_params": 67744,
+    "seed_flops_M": 0.983,
+    "route_flops_M": 0.3277,
+    "best": 0.9222930073738098,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0171,
+    "elapsed_s": 53
+  }
+}

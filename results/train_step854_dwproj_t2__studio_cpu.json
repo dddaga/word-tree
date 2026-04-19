@@ -1,0 +1,48 @@
+{
+  "config": "step706_proj_t2",
+  "epochs": 150,
+  "data_frac": 1.0,
+  "per_seed": [
+    {
+      "seed": 42,
+      "top1_best": 0.9679,
+      "best_epoch": 93,
+      "elapsed_s": 865.6,
+      "n_params": 67745
+    },
+    {
+      "seed": 43,
+      "top1_best": 0.9654,
+      "best_epoch": 104,
+      "elapsed_s": 824.7,
+      "n_params": 67745
+    },
+    {
+      "seed": 44,
+      "top1_best": 0.9659,
+      "best_epoch": 72,
+      "elapsed_s": 826.0,
+      "n_params": 67745
+    },
+    {
+      "seed": 45,
+      "top1_best": 0.9648,
+      "best_epoch": 132,
+      "elapsed_s": 837.1,
+      "n_params": 67745
+    },
+    {
+      "seed": 46,
+      "top1_best": 0.9669,
+      "best_epoch": 137,
+      "elapsed_s": 854.1,
+      "n_params": 67745
+    }
+  ],
+  "mean": 0.96618,
+  "std": 0.0012316655390161623,
+  "min": 0.9648,
+  "max": 0.9679,
+  "range_pp": 0.30999999999999917,
+  "n_seeds": 5
+}

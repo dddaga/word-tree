@@ -1,0 +1,18 @@
+{
+  "Ref": {
+    "label": "\u0394W proj K_iter=5 N=4096 (T2)",
+    "K_iter": 5,
+    "n_params": 69792,
+    "top1_best": 0.9650955200195312,
+    "best_epoch": 111,
+    "elapsed_s": 771.8509590625763
+  },
+  "A": {
+    "label": "\u0394W proj K_iter=4 N=4096 (T2 \u2014 candidate winner)",
+    "K_iter": 4,
+    "n_params": 69792,
+    "top1_best": 0.9712101817131042,
+    "best_epoch": 102,
+    "elapsed_s": 695.110068321228
+  }
+}

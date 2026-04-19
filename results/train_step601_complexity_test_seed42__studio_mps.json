@@ -1,0 +1,56 @@
+{
+  "MLP_37": {
+    "config": "MLP_37",
+    "n_params": 932093,
+    "flops": 1863912,
+    "top1_best": 0.5866,
+    "best_epoch": 66,
+    "elapsed_s": 111.1,
+    "epochs": 75
+  },
+  "MLP_64": {
+    "config": "MLP_64",
+    "n_params": 1612196,
+    "flops": 3224064,
+    "top1_best": 0.6416,
+    "best_epoch": 67,
+    "elapsed_s": 96.7,
+    "epochs": 75
+  },
+  "MLP_128": {
+    "config": "MLP_128",
+    "n_params": 3224292,
+    "flops": 6448128,
+    "top1_best": 0.6657,
+    "best_epoch": 75,
+    "elapsed_s": 114.9,
+    "epochs": 75
+  },
+  "MLP_256": {
+    "config": "MLP_256",
+    "n_params": 6448484,
+    "flops": 12896256,
+    "top1_best": 0.6749,
+    "best_epoch": 71,
+    "elapsed_s": 139.7,
+    "epochs": 75
+  },
+  "SGNNET_AH": {
+    "config": "SGNNET_AH",
+    "n_params": 69184,
+    "flops": 1392640,
+    "top1_best": 0.1671,
+    "best_epoch": 69,
+    "elapsed_s": 1132.7,
+    "epochs": 75
+  },
+  "SGNNET_DeltaProj": {
+    "config": "SGNNET_DeltaProj",
+    "n_params": 69184,
+    "flops": 1392640,
+    "top1_best": 0.3781,
+    "best_epoch": 72,
+    "elapsed_s": 1267.2,
+    "epochs": 75
+  }
+}

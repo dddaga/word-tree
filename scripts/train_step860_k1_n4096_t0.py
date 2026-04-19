@@ -106,9 +106,15 @@ def make_model_k1(N):
         N_hidden=N, N_out=N_OUT, D=D, N_in=N_IN,
         K_in=K_IN_N4, K_iter=1, K_local=K_l, K_random=K_r,
         n_groups=ng, norm_mode="l2", encoding_mode="fourier")
-    res = SGNNET_Resonant(base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=0.0,
-                           beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo", resonance_threshold=0.0)
-    return res
+    if DEVICE.type == "cuda":
+        res = SGNNET_Resonant_CUDA(base, K_phase=8, alpha_reflect=ALPHA_REFLECT,
+                                    alpha_turing=0.0, beam_size=16, geo_gamma=0.5,
+                                    mode="dynamic_z_geo", resonance_threshold=0.0, compile=False)
+        return SGNNET_AntiHebbian_CUDA(res, alpha_ahebb=ALPHA_AHEBB, variant="wpos", compile=False)
+    else:
+        res = SGNNET_Resonant(base, K_phase=8, alpha_reflect=ALPHA_REFLECT, alpha_turing=0.0,
+                               beam_size=16, geo_gamma=0.5, mode="dynamic_z_geo", resonance_threshold=0.0)
+        return SGNNET_AntiHebbian(res, alpha_ahebb=ALPHA_AHEBB, variant="wpos")
 
 
 def train_one(model, tr, va, logits_cache, use_kd, epochs):
@@ -120,10 +126,10 @@ def train_one(model, tr, va, logits_cache, use_kd, epochs):
         model.train()
         for batch in tr:
             x, _, y, idx = batch
-            x, y = x.to(DEVICE), y.to(DEVICE)
+            x, y = x.to(DEVICE, non_blocking=True), y.to(DEVICE, non_blocking=True)
             logits_s = model(x)
             if use_kd and logits_cache is not None:
-                logits_t = logits_cache[idx].to(DEVICE)
+                logits_t = logits_cache[idx].to(DEVICE, non_blocking=True)
                 L_kd = F.kl_div(F.log_softmax(logits_s / T_KD, dim=-1),
                                  F.softmax(logits_t / T_KD, dim=-1),
                                  reduction="batchmean") * (T_KD ** 2)
@@ -138,8 +144,8 @@ def train_one(model, tr, va, logits_cache, use_kd, epochs):
         correct = total = 0
         with torch.no_grad():
             for batch in va:
-                x = batch[0].to(DEVICE)
-                y = (batch[2] if len(batch) > 2 else batch[1]).to(DEVICE)
+                x = batch[0].to(DEVICE, non_blocking=True)
+                y = (batch[2] if len(batch) > 2 else batch[1]).to(DEVICE, non_blocking=True)
                 correct += (model(x).argmax(-1) == y).sum().item()
                 total += y.numel()
         val_top1 = correct / max(total, 1)
@@ -159,8 +165,8 @@ def main():
     sub_idx = torch.randperm(n_full, generator=torch.Generator().manual_seed(SEED))[:n_full // 2]
     tr = torch.utils.data.DataLoader(
         torch.utils.data.Subset(tr_full, sub_idx.tolist()),
-        batch_size=BATCH, shuffle=True, num_workers=0, pin_memory=(DEVICE.type == "cuda"))
-    va = torch.utils.data.DataLoader(va_ds, batch_size=BATCH, shuffle=False)
+        batch_size=BATCH, shuffle=True, num_workers=0, pin_memory=True)
+    va = torch.utils.data.DataLoader(va_ds, batch_size=BATCH, shuffle=False, pin_memory=True)
 
     logits_cache = None
     teacher_top1 = 0.0

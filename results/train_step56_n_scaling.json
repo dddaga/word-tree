@@ -1,0 +1,132 @@
+[
+  {
+    "N_hidden": 512,
+    "D": 64,
+    "K_iter": 8,
+    "antihebb_alpha": 1.0,
+    "top1_best": 0.6957961916923523,
+    "best_epoch": 134,
+    "final_train_loss": 1.0116474580120396,
+    "params": 66688,
+    "wall_time_minutes": 31.2,
+    "epochs_run": 150,
+    "stopped_early": false,
+    "nan_detected": false,
+    "_meta": {
+      "script": "train_step56_n_scaling.py",
+      "timestamp": "2026-04-05T11:47:36.878806Z",
+      "git_hash": "",
+      "config": {
+        "N": 512,
+        "D": 64,
+        "K_iter": 8,
+        "antihebb_alpha": 1.0,
+        "epochs": 150
+      }
+    }
+  },
+  {
+    "N_hidden": 1024,
+    "D": 64,
+    "K_iter": 8,
+    "antihebb_alpha": 1.0,
+    "top1_best": 0.8091719746589661,
+    "best_epoch": 147,
+    "final_train_loss": 0.6916477817135889,
+    "params": 132736,
+    "wall_time_minutes": 100.2,
+    "epochs_run": 150,
+    "stopped_early": false,
+    "nan_detected": false,
+    "_meta": {
+      "script": "train_step56_n_scaling.py",
+      "timestamp": "2026-04-05T13:27:46.334960Z",
+      "git_hash": "",
+      "config": {
+        "N": 1024,
+        "D": 64,
+        "K_iter": 8,
+        "antihebb_alpha": 1.0,
+        "epochs": 150
+      }
+    }
+  },
+  {
+    "N_hidden": 2048,
+    "D": 64,
+    "K_iter": 8,
+    "antihebb_alpha": 1.0,
+    "top1_best": 0.8109554052352905,
+    "best_epoch": 137,
+    "final_train_loss": 0.5870629641655329,
+    "params": 264832,
+    "wall_time_minutes": 222.6,
+    "epochs_run": 150,
+    "stopped_early": false,
+    "nan_detected": false,
+    "_meta": {
+      "script": "train_step56_n_scaling.py",
+      "timestamp": "2026-04-05T17:10:20.039936Z",
+      "git_hash": "",
+      "config": {
+        "N": 2048,
+        "D": 64,
+        "K_iter": 8,
+        "antihebb_alpha": 1.0,
+        "epochs": 150
+      }
+    }
+  },
+  {
+    "N_hidden": 4096,
+    "D": 64,
+    "K_iter": 8,
+    "antihebb_alpha": 1.0,
+    "top1_best": 0.84356689453125,
+    "best_epoch": 146,
+    "final_train_loss": 0.5934610717199944,
+    "params": 529024,
+    "wall_time_minutes": 238.1,
+    "epochs_run": 150,
+    "stopped_early": false,
+    "nan_detected": false,
+    "_meta": {
+      "script": "train_step56_n_scaling.py",
+      "timestamp": "2026-04-05T21:08:29.512319Z",
+      "git_hash": "",
+      "config": {
+        "N": 4096,
+        "D": 64,
+        "K_iter": 8,
+        "antihebb_alpha": 1.0,
+        "epochs": 150
+      }
+    }
+  },
+  {
+    "N_hidden": 10000,
+    "D": 64,
+    "K_iter": 8,
+    "antihebb_alpha": 1.0,
+    "top1_best": 0.8236942887306213,
+    "best_epoch": 145,
+    "final_train_loss": 0.5709302948938834,
+    "params": 1290640,
+    "wall_time_minutes": 622.3,
+    "epochs_run": 150,
+    "stopped_early": false,
+    "nan_detected": false,
+    "_meta": {
+      "script": "train_step56_n_scaling.py",
+      "timestamp": "2026-04-06T07:30:53.676257Z",
+      "git_hash": "",
+      "config": {
+        "N": 10000,
+        "D": 64,
+        "K_iter": 8,
+        "antihebb_alpha": 1.0,
+        "epochs": 150
+      }
+    }
+  }
+]

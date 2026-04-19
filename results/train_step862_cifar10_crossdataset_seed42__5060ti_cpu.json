@@ -1,0 +1,34 @@
+{
+  "Linear": {
+    "label": "Linear 512\u219210 baseline",
+    "n_params": 250890,
+    "best": 0.8652,
+    "best_ep": 16,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 19
+  },
+  "MLP_37": {
+    "label": "MLP h=37 (~matched param MLP)",
+    "n_params": 928673,
+    "best": 0.8673,
+    "best_ep": 12,
+    "delta_vs_linear": 0.0021,
+    "elapsed_s": 43
+  },
+  "MLP_256": {
+    "label": "MLP h=256 strong baseline",
+    "n_params": 6425354,
+    "best": 0.8693,
+    "best_ep": 18,
+    "delta_vs_linear": 0.0041,
+    "elapsed_s": 160
+  },
+  "Ref_SGNNET": {
+    "label": "SGNNET K=5 N=1024 D=8 K_in=16",
+    "n_params": 9296,
+    "best": 0.5681,
+    "best_ep": 18,
+    "delta_vs_linear": -0.2971,
+    "elapsed_s": 247
+  }
+}

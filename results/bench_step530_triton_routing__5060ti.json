@@ -1,0 +1,89 @@
+{
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "torch": "2.11.0+cu128",
+  "bs": 32,
+  "k_iter": 5,
+  "N": 2048,
+  "D": 16,
+  "K_HH": 2,
+  "baseline_ms": 0.28,
+  "has_triton": true,
+  "variants": {
+    "V_ref": {
+      "median_ms": 7.1400189990527,
+      "p95_ms": 7.191931502165971,
+      "p99_ms": 7.213359497691272,
+      "mean_ms": 6.895201194492984,
+      "throughput_sps": 4481.780791374027,
+      "peak_mib": 166.1982421875,
+      "desc": "DeltaProj eager fp32"
+    },
+    "V_ref_ma": {
+      "median_ms": 2.556269995693583,
+      "p95_ms": 2.5740355427842587,
+      "p99_ms": 2.5783719908213243,
+      "mean_ms": 2.2919903245201567,
+      "throughput_sps": 12518.239487185923,
+      "peak_mib": 62.08984375,
+      "desc": "DeltaProj max-autotune fp32"
+    },
+    "V_triton": {
+      "median_ms": 3.8432264991570264,
+      "p95_ms": 3.877899494546,
+      "p99_ms": 3.892312693351414,
+      "mean_ms": 3.6967188904236536,
+      "throughput_sps": 8326.337260377155,
+      "peak_mib": 277.34765625,
+      "desc": "DeltaProjTriton eager Triton"
+    },
+    "V_triton_cg": {
+      "median_ms": 3.8294250043691136,
+      "p95_ms": 3.8605994974204805,
+      "p99_ms": 3.873508097458398,
+      "mean_ms": 3.641330235041096,
+      "throughput_sps": 8356.345917073759,
+      "peak_mib": 277.34765625,
+      "desc": "DeltaProjTriton CUDA Graph"
+    },
+    "V_triton_c": {
+      "error": "SubprocException: An exception occurred in a subprocess:\n\nName=routing_step_proj_kernel\nTraceback (most recent call last):\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/compile_worker/subproc_pool.py\", line 457, in do_job\n    result = job()\n             ^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/compile_tasks.py\", line 68, in _worker_compile_triton\n    kernel.precompile(warm_cache_only=True)\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 491, in precompile\n    self._precompile_worker()\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 522, in _precompile_worker\n    compile_results.append(self._precompile_config(c))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 872, in _precompile_config\n    binary = triton.compile(*compile_args, **compile_kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/compiler/compiler.py\", line 324, in compile\n    next_module = compile_ir(module, metadata)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/backends/nvidia/compiler.py\", line 544, in <lambda>\n    stages[\"llir\"] = lambda src, metadata: self.make_llir(src, metadata, options, capability)\n                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/backends/nvidia/compiler.py\", line 404, in make_llir\n    llvm_mod = llvm.to_module(mod, context)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: failed to translate module to LLVM IR\n\n\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS=\"+dynamo\"\n"
+    },
+    "V_fused_parallel": {
+      "median_ms": 3.7691774996346794,
+      "p95_ms": 3.7979935557814315,
+      "p99_ms": 3.810088405298302,
+      "mean_ms": 3.618941614840878,
+      "throughput_sps": 8489.915904226198,
+      "peak_mib": 307.0615234375,
+      "desc": "fused_parallel K_iter single launch (approx semantics)"
+    },
+    "V_fused_parallel_cg": {
+      "median_ms": 3.771117000724189,
+      "p95_ms": 3.7988579519151244,
+      "p99_ms": 3.8146069139475003,
+      "mean_ms": 3.58609999937471,
+      "throughput_sps": 8485.54950532027,
+      "peak_mib": 307.0615234375,
+      "desc": "fused_parallel CUDA Graph"
+    },
+    "V_fused_seq": {
+      "median_ms": 3.8128480009618215,
+      "p95_ms": 3.8408229949709494,
+      "p99_ms": 3.8530875896685757,
+      "mean_ms": 3.662887450045673,
+      "throughput_sps": 8392.676548324964,
+      "peak_mib": 315.1865234375,
+      "desc": "fused_sequential K_iter single launch (approx semantics)"
+    },
+    "V_fused_seq_cg": {
+      "median_ms": 3.801086997555103,
+      "p95_ms": 3.8339290076692123,
+      "p99_ms": 3.8392825062328484,
+      "mean_ms": 3.640853880351642,
+      "throughput_sps": 8418.644461592885,
+      "peak_mib": 315.1865234375,
+      "desc": "fused_sequential CUDA Graph"
+    }
+  }
+}

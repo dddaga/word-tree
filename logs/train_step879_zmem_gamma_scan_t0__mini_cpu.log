@@ -1,0 +1,64 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step879 — Z-mem gamma fine-scan T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  step868 baseline: Ref=0.9396, g08=0.9429 (+0.33pp)
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: gamma=0.0 — standard ΔW-proj (control)  params=34,976
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7664  lr=2.36e-03
+  ep 10  val=0.9332
+  e 10  loss=0.0844  task=0.0844  safety=0.0000  top1=0.9332  lr=2.36e-03
+  ep 20  val=0.9391
+  e 20  loss=0.0354  task=0.0354  safety=0.0000  top1=0.9391  lr=2.36e-03
+  -> best=0.9391 @ep18  Δ_vs_Ref=+0.00pp  70s
+────────────────────────────────────────────────────────────
+A_g070: gamma=0.70 — faster decay  params=34,976
+  e  1  loss=2.2909  task=2.2909  safety=0.0000  top1=0.7941  lr=2.36e-03
+  ep 10  val=0.9276
+  e 10  loss=0.0687  task=0.0687  safety=0.0000  top1=0.9276  lr=2.36e-03
+  ep 20  val=0.9414
+  e 20  loss=0.0271  task=0.0271  safety=0.0000  top1=0.9414  lr=2.36e-03
+  -> best=0.9417 @ep17  Δ_vs_Ref=+0.25pp  70s
+────────────────────────────────────────────────────────────
+B_g075: gamma=0.75 — below sweet spot  params=34,976
+  e  1  loss=2.2508  task=2.2508  safety=0.0000  top1=0.7939  lr=2.36e-03
+  ep 10  val=0.9307
+  e 10  loss=0.0693  task=0.0693  safety=0.0000  top1=0.9307  lr=2.36e-03
+  ep 20  val=0.9411
+  e 20  loss=0.0273  task=0.0273  safety=0.0000  top1=0.9411  lr=2.36e-03
+  -> best=0.9422 @ep17  Δ_vs_Ref=+0.31pp  70s
+────────────────────────────────────────────────────────────
+C_g080: gamma=0.80 — confirmed sweet spot (step868 +0.33pp)  params=34,976
+  e  1  loss=2.2938  task=2.2938  safety=0.0000  top1=0.7811  lr=2.36e-03
+  ep 10  val=0.9299
+  e 10  loss=0.0697  task=0.0697  safety=0.0000  top1=0.9299  lr=2.36e-03
+  ep 20  val=0.9445
+  e 20  loss=0.0259  task=0.0259  safety=0.0000  top1=0.9445  lr=2.36e-03
+  -> best=0.9445 @ep20  Δ_vs_Ref=+0.54pp  70s
+────────────────────────────────────────────────────────────
+D_g085: gamma=0.85 — above sweet spot  params=34,976
+  e  1  loss=2.5293  task=2.5293  safety=0.0000  top1=0.7671  lr=2.36e-03
+  ep 10  val=0.9315
+  e 10  loss=0.0718  task=0.0718  safety=0.0000  top1=0.9315  lr=2.36e-03
+  ep 20  val=0.9424
+  e 20  loss=0.0298  task=0.0298  safety=0.0000  top1=0.9424  lr=2.36e-03
+  -> best=0.9424 @ep20  Δ_vs_Ref=+0.33pp  71s
+
+======================================================================
+STEP 879 SUMMARY — Z-mem gamma fine-scan
+======================================================================
+  config      gamma    best   Δ_vs_Ref
+  Ref_dw       0.00  0.9391     +0.00pp
+  A_g070       0.70  0.9417     +0.25pp
+  B_g075       0.75  0.9422     +0.31pp
+  C_g080       0.80  0.9445     +0.54pp
+  D_g085       0.85  0.9424     +0.33pp
+
+  Best gamma: 0.80 (C_g080) → 0.9445
+  → Use gamma=0.80 for Z-mem T2 planning
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step879_zmem_gamma_scan_t0_seed42__mini_cpu.json

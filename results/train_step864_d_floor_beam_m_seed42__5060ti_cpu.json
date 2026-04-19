@@ -1,0 +1,104 @@
+{
+  "Ref": {
+    "label": "D=16 K=5 Rbeam=16 (control)",
+    "n_params": 34976,
+    "best": 0.9179617762565613,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 289,
+    "mode": "res",
+    "D": 16,
+    "K_iter": 5,
+    "beam_size": 16
+  },
+  "A_D6": {
+    "label": "D=6  K=5 Rbeam=16  ~14K params",
+    "n_params": 14396,
+    "best": 0.8486624360084534,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0693,
+    "elapsed_s": 99,
+    "mode": "res",
+    "D": 6,
+    "K_iter": 5,
+    "beam_size": 16
+  },
+  "B_D4": {
+    "label": "D=4  K=5 Rbeam=16  ~10K params",
+    "n_params": 10280,
+    "best": 0.790318489074707,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1276,
+    "elapsed_s": 72,
+    "mode": "res",
+    "D": 4,
+    "K_iter": 5,
+    "beam_size": 16
+  },
+  "C_D4_K10": {
+    "label": "D=4  K=10 Rbeam=16 (more iters)",
+    "n_params": 10280,
+    "best": 0.22751592099666595,
+    "best_ep": 20,
+    "delta_vs_ref": -0.6904,
+    "elapsed_s": 110,
+    "mode": "res",
+    "D": 4,
+    "K_iter": 10,
+    "beam_size": 16
+  },
+  "D_Rbeam_M8": {
+    "label": "D=16 K=5 Rbeam=8   (half Resonant beam)",
+    "n_params": 34976,
+    "best": 0.9179617762565613,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 286,
+    "mode": "res",
+    "D": 16,
+    "K_iter": 5,
+    "beam_size": 8
+  },
+  "E_Rbeam_M32": {
+    "label": "D=16 K=5 Rbeam=32  (double Resonant beam)",
+    "n_params": 34976,
+    "best": 0.9184713363647461,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0005,
+    "elapsed_s": 281,
+    "mode": "res",
+    "D": 16,
+    "K_iter": 5,
+    "beam_size": 32
+  },
+  "H_bfs_M16": {
+    "label": "BFS top-16 broadcasters / 2048 nodes (0.8%) \u2014 step855 ref",
+    "n_params": 34976,
+    "best": 0.9177070260047913,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0003,
+    "elapsed_s": 281,
+    "mode": "bfs",
+    "bfs_m": 16
+  },
+  "F_bfs_M32": {
+    "label": "BFS top-32 broadcasters / 2048 nodes (1.6%)",
+    "n_params": 34976,
+    "best": 0.9194904565811157,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0015,
+    "elapsed_s": 281,
+    "mode": "bfs",
+    "bfs_m": 32
+  },
+  "G_bfs_M64": {
+    "label": "BFS top-64 broadcasters / 2048 nodes (3.1%)",
+    "n_params": 34976,
+    "best": 0.9182165861129761,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 281,
+    "mode": "bfs",
+    "bfs_m": 64
+  }
+}

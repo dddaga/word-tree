@@ -1,0 +1,58 @@
+{
+  "Ref_dw": {
+    "extra_params": 0,
+    "n_params": 34976,
+    "best": 0.9396,
+    "best_ep": 16,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 26
+  },
+  "A_bias_khh": {
+    "extra_params": 2,
+    "n_params": 34978,
+    "best": 0.7434,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1962,
+    "elapsed_s": 20
+  },
+  "B_bias_step": {
+    "extra_params": 5,
+    "n_params": 34981,
+    "best": 0.7434,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1962,
+    "elapsed_s": 21
+  },
+  "C_bias_full": {
+    "extra_params": 10,
+    "n_params": 34986,
+    "best": 0.7434,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1962,
+    "elapsed_s": 20
+  },
+  "D_temp_only": {
+    "extra_params": 1,
+    "n_params": 34977,
+    "best": 0.7434,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1962,
+    "elapsed_s": 20
+  },
+  "E_compound": {
+    "extra_params": 2,
+    "n_params": 34978,
+    "best": 0.92,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0196,
+    "elapsed_s": 30
+  },
+  "F_bias_per_node": {
+    "extra_params": 4096,
+    "n_params": 39072,
+    "best": 0.7434,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1962,
+    "elapsed_s": 20
+  }
+}

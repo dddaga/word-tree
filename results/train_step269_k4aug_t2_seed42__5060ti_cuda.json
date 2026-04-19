@@ -1,0 +1,35 @@
+{
+  "Ref": {
+    "label": "K=5 no-aug (step199 reference)",
+    "K_iter": 5,
+    "use_aug": false,
+    "n_params": 34976,
+    "routing_macs": 655360,
+    "best": 0.9546496868133545,
+    "best_ep": 128,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 253
+  },
+  "B_aug_k4": {
+    "label": "K=4 + aug (T1 STRONG winner, +1.02pp)",
+    "K_iter": 4,
+    "use_aug": true,
+    "n_params": 34976,
+    "routing_macs": 524288,
+    "best": 0.9538853764533997,
+    "best_ep": 150,
+    "delta_vs_ref": -0.0008,
+    "elapsed_s": 390
+  },
+  "C_aug_k5": {
+    "label": "K=5 + aug (aug-only isolation)",
+    "K_iter": 5,
+    "use_aug": true,
+    "n_params": 34976,
+    "routing_macs": 655360,
+    "best": 0.9612739086151123,
+    "best_ep": 148,
+    "delta_vs_ref": 0.0066,
+    "elapsed_s": 470
+  }
+}

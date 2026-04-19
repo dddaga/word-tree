@@ -1,0 +1,38 @@
+{
+  "Ref": {
+    "label": "\u0394W proj baseline (no teleport)",
+    "mode": "none",
+    "redraw_every": 0,
+    "n_params": 67744,
+    "top1_best": 0.9414013028144836,
+    "best_epoch": 20,
+    "elapsed_s": 37.12772083282471
+  },
+  "T2_5": {
+    "label": "T2: redraw teleport every 5 ep",
+    "mode": "epoch",
+    "redraw_every": 5,
+    "n_params": 67744,
+    "top1_best": 0.9340127110481262,
+    "best_epoch": 20,
+    "elapsed_s": 42.17160677909851
+  },
+  "T2_1": {
+    "label": "T2: redraw teleport every epoch",
+    "mode": "epoch",
+    "redraw_every": 1,
+    "n_params": 67744,
+    "top1_best": 0.9014012813568115,
+    "best_epoch": 19,
+    "elapsed_s": 42.14738893508911
+  },
+  "T3": {
+    "label": "T3: redraw per batch (train) / fixed (eval)",
+    "mode": "batch",
+    "redraw_every": 0,
+    "n_params": 67744,
+    "top1_best": 0.5375795960426331,
+    "best_epoch": 16,
+    "elapsed_s": 42.77950477600098
+  }
+}

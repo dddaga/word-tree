@@ -1,0 +1,18 @@
+{
+  "Ref": {
+    "label": "\u0394W proj K_iter=5 at N=1024",
+    "K_iter": 5,
+    "n_params": 33952,
+    "top1_best": 0.9327388405799866,
+    "best_epoch": 61,
+    "elapsed_s": 180.7227931022644
+  },
+  "A": {
+    "label": "\u0394W proj K_iter=4 at N=1024",
+    "K_iter": 4,
+    "n_params": 33952,
+    "top1_best": 0.9332484006881714,
+    "best_epoch": 63,
+    "elapsed_s": 160.8811330795288
+  }
+}

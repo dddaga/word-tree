@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": "step706_dw_proj",
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "flops": 983040,
+    "n_params": 34977,
+    "mechanism": "DeltaW-proj",
+    "device": "cuda"
+  },
+  "latency": {
+    "median_ms": 0.3545870022207964,
+    "p90_ms": 0.3596620008465834,
+    "min_ms": 0.3509620000841096,
+    "n_iter": 100,
+    "batch": 32,
+    "compile_mode": "compiled (reduce-overhead)"
+  },
+  "warmup_best_top1": 0.9124
+}

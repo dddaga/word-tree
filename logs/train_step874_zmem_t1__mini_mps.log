@@ -1,0 +1,53 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step874 — Z-memory T1 (75ep, 50% data)
+  device=mps  epochs=75  seed=42
+  T0 ref (step868): C_g08=0.9429 (+0.33pp)
+  T1 dw ref (step858): 0.9524
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: gamma=0.0 — standard ΔW-proj (T1 baseline)  params=34,976
+  e  1  loss=2.5203  task=2.5203  safety=0.0000  top1=0.7661  lr=2.36e-03
+  e 10  loss=0.0843  task=0.0843  safety=0.0000  top1=0.9310  lr=2.36e-03
+  ep 15  val=0.9340
+  e 20  loss=0.0357  task=0.0357  safety=0.0000  top1=0.9401  lr=2.36e-03
+  ep 30  val=0.9422
+  e 30  loss=0.0211  task=0.0211  safety=0.0000  top1=0.9422  lr=2.36e-03
+  e 40  loss=0.0160  task=0.0160  safety=0.0000  top1=0.9424  lr=2.36e-03
+  ep 45  val=0.9468
+  e 50  loss=0.0121  task=0.0121  safety=0.0000  top1=0.9478  lr=2.36e-03
+  ep 60  val=0.9480
+  e 60  loss=0.0114  task=0.0114  safety=0.0000  top1=0.9480  lr=2.36e-03
+  e 70  loss=0.0089  task=0.0089  safety=0.0000  top1=0.9513  lr=1.18e-03
+  ep 75  val=0.9501
+  -> best=0.9529 @ep71  Δ_vs_Ref=+0.00pp  637s
+────────────────────────────────────────────────────────────
+A_g08: gamma=0.8 — heavy temporal accumulation (T0 winner)  params=34,976
+  e  1  loss=2.2943  task=2.2943  safety=0.0000  top1=0.7804  lr=2.36e-03
+  e 10  loss=0.0700  task=0.0700  safety=0.0000  top1=0.9302  lr=2.36e-03
+  ep 15  val=0.9383
+  e 20  loss=0.0264  task=0.0264  safety=0.0000  top1=0.9429  lr=2.36e-03
+  ep 30  val=0.9460
+  e 30  loss=0.0158  task=0.0158  safety=0.0000  top1=0.9460  lr=2.36e-03
+  e 40  loss=0.0110  task=0.0110  safety=0.0000  top1=0.9450  lr=2.36e-03
+  ep 45  val=0.9468
+  e 50  loss=0.0191  task=0.0191  safety=0.0000  top1=0.9457  lr=2.36e-03
+  ep 60  val=0.9511
+  e 60  loss=0.0067  task=0.0067  safety=0.0000  top1=0.9511  lr=1.18e-03
+  e 70  loss=0.0048  task=0.0048  safety=0.0000  top1=0.9521  lr=1.18e-03
+  ep 75  val=0.9513
+  -> best=0.9529 @ep64  Δ_vs_Ref=+0.00pp  299s
+
+======================================================================
+STEP 874 SUMMARY — Z-memory T1
+======================================================================
+  config      gamma    best   Δ_vs_Ref
+  Ref_dw        0.0  0.9529     +0.00pp
+  A_g08         0.8  0.9529     +0.00pp
+
+  Z-mem gamma=0.8 T1: +0.00pp → VIABLE — Z-mem advances to T2
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step874_zmem_t1_seed42__mini_mps.json

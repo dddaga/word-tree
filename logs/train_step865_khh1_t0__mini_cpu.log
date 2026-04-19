@@ -1,0 +1,36 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step865 — K_hh=1 efficiency probe T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  T0 dw ref (step868): 0.9396
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: K_hh=2 (K_local=1, K_random=1) — standard  params=34,976
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7664  lr=2.36e-03
+  ep 10  val=0.9315
+  e 10  loss=0.0836  task=0.0836  safety=0.0000  top1=0.9315  lr=2.36e-03
+  ep 20  val=0.9371
+  e 20  loss=0.0355  task=0.0355  safety=0.0000  top1=0.9371  lr=2.36e-03
+  -> best=0.9373 @ep18  Δ_vs_Ref=+0.00pp  106s
+────────────────────────────────────────────────────────────
+A_khh1: K_hh=1 (K_local=0, K_random=1) — 50% fewer routing ops  params=34,976
+  e  1  loss=3.0038  task=3.0038  safety=0.0000  top1=0.7116  lr=2.36e-03
+  ep 10  val=0.9180
+  e 10  loss=0.1553  task=0.1553  safety=0.0000  top1=0.9180  lr=2.36e-03
+  ep 20  val=0.9266
+  e 20  loss=0.0874  task=0.0874  safety=0.0000  top1=0.9266  lr=2.36e-03
+  -> best=0.9325 @ep19  Δ_vs_Ref=-0.48pp  83s
+
+======================================================================
+STEP 865 SUMMARY — K_hh=1 probe T0
+======================================================================
+  config      K_hh  K_l  K_r    best   Δ_vs_Ref
+  Ref_dw         2    1    1  0.9373     +0.00pp
+  A_khh1         1    0    1  0.9325     -0.48pp
+
+  K_hh=1 T0: -0.48pp → VIABLE — K_hh=1 advances to T1 (50% routing reduction)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step865_khh1_t0_seed42__mini_cpu.json

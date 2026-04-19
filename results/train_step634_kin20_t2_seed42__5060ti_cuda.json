@@ -1,0 +1,41 @@
+{
+  "Ref_k25": {
+    "K_in": 25,
+    "label": "K_in=25 reference (step199 config)",
+    "n_params": 34976,
+    "seed_macs": 51200,
+    "routing_macs": 655360,
+    "best": 0.9549044370651245,
+    "best_ep": 136,
+    "delta_vs_ref": 0.0,
+    "delta_vs_step199": -0.0003,
+    "delta_vs_step632": 0.0036,
+    "elapsed_s": 115
+  },
+  "A_k20": {
+    "K_in": 20,
+    "label": "K_in=20 T1 knee \u2014 step633 cross-device winner",
+    "n_params": 34976,
+    "seed_macs": 40960,
+    "routing_macs": 655360,
+    "best": 0.9526114463806152,
+    "best_ep": 96,
+    "delta_vs_ref": -0.0023,
+    "delta_vs_step199": -0.0026,
+    "delta_vs_step632": 0.0013,
+    "elapsed_s": 113
+  },
+  "B_k15": {
+    "K_in": 15,
+    "label": "K_in=15 T2 ref \u2014 step632 confirmed",
+    "n_params": 34976,
+    "seed_macs": 30720,
+    "routing_macs": 655360,
+    "best": 0.9482802748680115,
+    "best_ep": 95,
+    "delta_vs_ref": -0.0066,
+    "delta_vs_step199": -0.0069,
+    "delta_vs_step632": -0.003,
+    "elapsed_s": 111
+  }
+}

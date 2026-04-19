@@ -1,0 +1,20 @@
+{
+  "step": "604",
+  "role": "teacher",
+  "K_iter": 5,
+  "N": 2048,
+  "D": 16,
+  "K_hh": 2,
+  "n_params": 34976,
+  "top1_best": 0.9668790102005005,
+  "top1_last": 0.9668790102005005,
+  "best_epoch": 75,
+  "elapsed_train_s": 204.11734294891357,
+  "seed": 42,
+  "cache_path": "/home/indra/sgnnet_bench/data/teacher_trajectory_step604.h5",
+  "cache_size_gb": 1.758,
+  "cache_dtype": "float32",
+  "n_train_samples": 9469,
+  "n_val_samples": 3925,
+  "elapsed_cache_s": 11.8
+}

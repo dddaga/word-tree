@@ -1,0 +1,34 @@
+{
+  "Ref_linear": {
+    "kind": "linear",
+    "n_params": 250890,
+    "best": 0.8614000082015991,
+    "best_ep": 128,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 143
+  },
+  "MLP_h1": {
+    "kind": "mlp",
+    "n_params": 25109,
+    "best": 0.14309999346733093,
+    "best_ep": 13,
+    "delta_vs_linear": -0.7183,
+    "elapsed_s": 153
+  },
+  "MLP_h2": {
+    "kind": "mlp",
+    "n_params": 50208,
+    "best": 0.1704999953508377,
+    "best_ep": 7,
+    "delta_vs_linear": -0.6909,
+    "elapsed_s": 155
+  },
+  "Ref_SGNNET": {
+    "kind": "sgnnet",
+    "n_params": 34976,
+    "best": 0.8041999936103821,
+    "best_ep": 136,
+    "delta_vs_linear": -0.0572,
+    "elapsed_s": 1613
+  }
+}

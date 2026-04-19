@@ -1,0 +1,46 @@
+{
+  "Ref": {
+    "K_in": 25,
+    "label": "K_in=25 reference (step199 config)",
+    "n_params": 67744,
+    "seed_macs_optimized": 51200,
+    "routing_macs": 655360,
+    "best": 0.9401273727416992,
+    "best_ep": 72,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 215
+  },
+  "A_k15": {
+    "K_in": 15,
+    "label": "K_in=15 \u2014 40% fewer seed FLOPs",
+    "n_params": 67744,
+    "seed_macs_optimized": 30720,
+    "routing_macs": 655360,
+    "best": 0.9365605115890503,
+    "best_ep": 59,
+    "delta_vs_ref": -0.0036,
+    "elapsed_s": 214
+  },
+  "B_k10": {
+    "K_in": 10,
+    "label": "K_in=10 \u2014 60% fewer seed FLOPs",
+    "n_params": 67744,
+    "seed_macs_optimized": 20480,
+    "routing_macs": 655360,
+    "best": 0.9284076690673828,
+    "best_ep": 71,
+    "delta_vs_ref": -0.0117,
+    "elapsed_s": 213
+  },
+  "C_k5": {
+    "K_in": 5,
+    "label": "K_in=5  \u2014 80% fewer seed FLOPs",
+    "n_params": 67744,
+    "seed_macs_optimized": 10240,
+    "routing_macs": 655360,
+    "best": 0.9126114845275879,
+    "best_ep": 75,
+    "delta_vs_ref": -0.0275,
+    "elapsed_s": 213
+  }
+}

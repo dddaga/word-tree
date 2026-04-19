@@ -1,0 +1,20 @@
+{
+  "Ref_dw": {
+    "alpha_hub": 0.0,
+    "label": "alpha_hub=0.0 \u2014 standard \u0394W-proj (T1 baseline)",
+    "n_params": 34976,
+    "best": 0.9536305665969849,
+    "best_ep": 66,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 125
+  },
+  "A_hub005": {
+    "alpha_hub": 0.05,
+    "label": "alpha_hub=0.05 \u2014 very light global mean (T0 winner)",
+    "n_params": 34976,
+    "best": 0.9554139971733093,
+    "best_ep": 64,
+    "delta_vs_ref": 0.0018,
+    "elapsed_s": 126
+  }
+}

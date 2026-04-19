@@ -1,0 +1,56 @@
+{
+  "Ref": {
+    "label": "\u0394W proj K_iter=5 (baseline)",
+    "K_iter": 5,
+    "runs": [
+      {
+        "seed": 42,
+        "top1_best": 0.9531210064888,
+        "best_epoch": 66,
+        "elapsed_s": 120.1167209148407,
+        "n_params": 34976
+      },
+      {
+        "seed": 43,
+        "top1_best": 0.9523566961288452,
+        "best_epoch": 69,
+        "elapsed_s": 119.0084285736084,
+        "n_params": 34976
+      },
+      {
+        "seed": 44,
+        "top1_best": 0.9546496868133545,
+        "best_epoch": 67,
+        "elapsed_s": 119.19574093818665,
+        "n_params": 34976
+      }
+    ]
+  },
+  "A": {
+    "label": "\u0394W proj K_iter=4 (candidate winner)",
+    "K_iter": 4,
+    "runs": [
+      {
+        "seed": 42,
+        "top1_best": 0.9559235572814941,
+        "best_epoch": 56,
+        "elapsed_s": 103.90572571754456,
+        "n_params": 34976
+      },
+      {
+        "seed": 43,
+        "top1_best": 0.9538853764533997,
+        "best_epoch": 73,
+        "elapsed_s": 103.99124383926392,
+        "n_params": 34976
+      },
+      {
+        "seed": 44,
+        "top1_best": 0.9536305665969849,
+        "best_epoch": 71,
+        "elapsed_s": 103.9973394870758,
+        "n_params": 34976
+      }
+    ]
+  }
+}

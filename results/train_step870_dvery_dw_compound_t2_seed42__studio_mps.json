@@ -1,0 +1,20 @@
+{
+  "Ref_dw": {
+    "sparsity": 0.9,
+    "label": "sparsity=0.90 + \u0394W-proj (T2 baseline)",
+    "n_params": 67744,
+    "best": 0.9691720008850098,
+    "best_ep": 148,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 411
+  },
+  "C_compound": {
+    "sparsity": 0.98,
+    "label": "sparsity=0.98 + \u0394W-proj (full compound)",
+    "n_params": 67744,
+    "best": 0.9643312096595764,
+    "best_ep": 101,
+    "delta_vs_ref": -0.0048,
+    "elapsed_s": 408
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "Ref_dw": {
+    "extra_params": 0,
+    "n_params": 34976,
+    "best": 0.775,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "A_global_b": {
+    "extra_params": 32769,
+    "n_params": 67745,
+    "best": 0.2316,
+    "best_ep": 1,
+    "delta_vs_ref": -0.5434,
+    "elapsed_s": 52
+  }
+}

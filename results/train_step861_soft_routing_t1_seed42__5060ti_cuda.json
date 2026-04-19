@@ -1,0 +1,32 @@
+{
+  "B_soft_anneal": {
+    "routing": "soft",
+    "wrap": "None",
+    "label": "soft \u03b2: 0.5\u21925.0 anneal, no AH/\u0394W \u2014 T0 winner",
+    "n_params": 34976,
+    "best": 0.9380891919136047,
+    "best_ep": 72,
+    "delta_vs_ref": -0.0019,
+    "elapsed_s": 76
+  },
+  "C_soft_ah": {
+    "routing": "soft",
+    "wrap": "ah",
+    "label": "soft anneal + AntiHebbian",
+    "n_params": 34976,
+    "best": 0.9380891919136047,
+    "best_ep": 72,
+    "delta_vs_ref": -0.0019,
+    "elapsed_s": 75
+  },
+  "D_soft_dwproj": {
+    "routing": "soft",
+    "wrap": "dw",
+    "label": "soft anneal + \u0394W-proj",
+    "n_params": 34977,
+    "best": 0.36585986614227295,
+    "best_ep": 72,
+    "delta_vs_ref": -0.5741,
+    "elapsed_s": 93
+  }
+}

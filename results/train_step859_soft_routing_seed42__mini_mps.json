@@ -1,0 +1,30 @@
+{
+  "C_soft_ah": {
+    "routing": "soft",
+    "beta_range": [
+      0.5,
+      3.0
+    ],
+    "wrap": "ah",
+    "label": "soft anneal + AntiHebbian",
+    "n_params": 34976,
+    "best": 0.9179617762565613,
+    "best_ep": 20,
+    "delta_vs_ref": -0.022,
+    "elapsed_s": 70
+  },
+  "D_soft_dwproj": {
+    "routing": "soft",
+    "beta_range": [
+      0.5,
+      3.0
+    ],
+    "wrap": "dw",
+    "label": "soft anneal + \u0394W-proj",
+    "n_params": 34977,
+    "best": 0.3136305809020996,
+    "best_ep": 18,
+    "delta_vs_ref": -0.6264,
+    "elapsed_s": 80
+  }
+}

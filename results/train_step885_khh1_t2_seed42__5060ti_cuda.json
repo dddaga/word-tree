@@ -1,0 +1,22 @@
+{
+  "Ref_dw": {
+    "k_hh": 2,
+    "label": "K_hh=2 (K_local=1, K_random=1) \u2014 standard \u0394W-proj",
+    "n_params": 34976,
+    "route_flops_M": 0.6554,
+    "best": 0.9663694500923157,
+    "best_ep": 120,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 492
+  },
+  "A_khh1": {
+    "k_hh": 1,
+    "label": "K_hh=1 (K_local=0, K_random=1) \u2014 50% fewer routing MACs",
+    "n_params": 34976,
+    "route_flops_M": 0.3277,
+    "best": 0.958980917930603,
+    "best_ep": 143,
+    "delta_vs_ref": -0.0074,
+    "elapsed_s": 423
+  }
+}

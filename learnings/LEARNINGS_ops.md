@@ -205,3 +205,10 @@ The "67K" figure in CLAUDE.md / EXPERIMENT_QUEUE was STALE — measured before t
 Post-refactoring: seed connections are structural (non-learnable indexing). Only W_pos and theta are trainable.
 Paper correction: params = 34,976 = 0.029% of VGG_FC (not 0.05%). Stronger claim.
 Step851 MLP crossover also stronger: h=6 (150K params) = 4.29× SGNNET (not 2.22× if 67K was used).
+
+
+## 2026-04-17 — model_resonant.py W_phase=None crash (step860)
+**Bug:** `SGNNET_Resonant` forward() calls `F.normalize(self.W_phase, dim=-1)` unconditionally at line ~185, but `W_phase=None` when `alpha_turing=0.0` (by design — phase inhibition disabled).
+**Root cause:** Guard exists at init (`if alpha_turing != 0.0`) but not at use site.
+**Fix:** `W_ph_norm = F.normalize(self.W_phase, dim=-1) if self.W_phase is not None else None`, then guard `_phase_inhibit` call.
+**Also:** `make_model_k1` in step860 used `SGNNET_Resonant` (non-CUDA) instead of `SGNNET_Resonant_CUDA` + `SGNNET_AntiHebbian_CUDA` for CUDA device. Any model factory must branch on `DEVICE.type == "cuda"`.

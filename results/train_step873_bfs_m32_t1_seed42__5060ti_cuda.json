@@ -1,0 +1,20 @@
+{
+  "Ref_dw": {
+    "bfs_m": 0,
+    "label": "K_hh=2 standard \u0394W-proj (T1 baseline)",
+    "n_params": 34976,
+    "best": 0.9536305665969849,
+    "best_ep": 66,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 93
+  },
+  "A_bfs_m32": {
+    "bfs_m": 32,
+    "label": "BFS top-32 broadcasters + \u0394W-proj (T0 winner)",
+    "n_params": 34976,
+    "best": 0.709554135799408,
+    "best_ep": 73,
+    "delta_vs_ref": -0.2441,
+    "elapsed_s": 1351
+  }
+}

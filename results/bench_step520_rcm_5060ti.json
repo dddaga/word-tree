@@ -1,0 +1,92 @@
+{
+  "system": {
+    "hostname": "5060ti",
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "torch_version": "2.11.0+cu128"
+  },
+  "config": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5
+  },
+  "hypothesis": "RCM reordering improves L2 cache hit rate for gather op",
+  "variants": {
+    "V1_baseline": {
+      "compile_mode": "reduce-overhead",
+      "rcm_applied": false,
+      "inference": {
+        "1": {
+          "median_ms": 0.08,
+          "p5_ms": 0.077,
+          "p95_ms": 0.083,
+          "throughput_sps": 12540.1
+        },
+        "32": {
+          "median_ms": 0.314,
+          "p5_ms": 0.311,
+          "p95_ms": 0.319,
+          "throughput_sps": 101765.6
+        },
+        "128": {
+          "median_ms": 1.334,
+          "p5_ms": 1.33,
+          "p95_ms": 1.34,
+          "throughput_sps": 95927.9
+        },
+        "512": {
+          "median_ms": 6.169,
+          "p5_ms": 6.165,
+          "p95_ms": 6.178,
+          "throughput_sps": 82993.1
+        }
+      },
+      "training": {
+        "median_ms": 5.294,
+        "p5_ms": 5.289,
+        "p95_ms": 5.306,
+        "throughput_sps": 24176.9
+      },
+      "gpu_util_avg": 99.0,
+      "gpu_power_avg_w": 71.1
+    },
+    "V_rcm": {
+      "compile_mode": "reduce-overhead",
+      "rcm_applied": true,
+      "inference": {
+        "1": {
+          "median_ms": 0.089,
+          "p5_ms": 0.086,
+          "p95_ms": 0.092,
+          "throughput_sps": 11241.0
+        },
+        "32": {
+          "median_ms": 0.333,
+          "p5_ms": 0.32,
+          "p95_ms": 0.34,
+          "throughput_sps": 96144.6
+        },
+        "128": {
+          "median_ms": 1.365,
+          "p5_ms": 1.361,
+          "p95_ms": 1.369,
+          "throughput_sps": 93772.3
+        },
+        "512": {
+          "median_ms": 6.218,
+          "p5_ms": 6.213,
+          "p95_ms": 6.225,
+          "throughput_sps": 82344.3
+        }
+      },
+      "training": {
+        "median_ms": 5.33,
+        "p5_ms": 5.325,
+        "p95_ms": 5.34,
+        "throughput_sps": 24013.3
+      },
+      "gpu_util_avg": 98.0,
+      "gpu_power_avg_w": 93.8
+    }
+  }
+}

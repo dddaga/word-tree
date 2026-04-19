@@ -1,0 +1,24 @@
+{
+  "Ref_n4096": {
+    "label": "N=4096 no-aug T2 (step205 ref)",
+    "N": 4096,
+    "use_aug": false,
+    "routing_macs": 1310720,
+    "n_params": 69792,
+    "top1_best": 0.9712101817131042,
+    "best_epoch": 134,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 569
+  },
+  "A_n4096_aug": {
+    "label": "N=4096 + aug T2 (new ceiling candidate)",
+    "N": 4096,
+    "use_aug": true,
+    "routing_macs": 1310720,
+    "n_params": 69792,
+    "top1_best": 0.9768152832984924,
+    "best_epoch": 106,
+    "delta_vs_ref": 0.0056,
+    "elapsed_s": 1063
+  }
+}

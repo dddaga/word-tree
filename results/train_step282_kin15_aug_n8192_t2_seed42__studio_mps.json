@@ -1,0 +1,26 @@
+{
+  "Ref_n8192": {
+    "label": "N=8192 K_in=25 no-aug (step209 ref ~97.17%)",
+    "N": 8192,
+    "K_in": 25,
+    "use_aug": false,
+    "seed_macs": 204800,
+    "n_params": 270496,
+    "top1_best": 0.9694267511367798,
+    "best_epoch": 124,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1158
+  },
+  "C_k15_aug_n8192": {
+    "label": "N=8192 K_in=15 + aug (COMPOUND T2)",
+    "N": 8192,
+    "K_in": 15,
+    "use_aug": true,
+    "seed_macs": 122880,
+    "n_params": 270496,
+    "top1_best": 0.9729936122894287,
+    "best_epoch": 139,
+    "delta_vs_ref": 0.0036,
+    "elapsed_s": 2092
+  }
+}

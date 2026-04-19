@@ -1,0 +1,70 @@
+{
+  "A_fixed_M16": {
+    "beam_schedule": [
+      16,
+      16,
+      16,
+      16,
+      16
+    ],
+    "quiet_zero": false,
+    "sparse_readout": false,
+    "label": "beam=[16,16,16,16,16]",
+    "n_params": 34976,
+    "best": 0.9189808964729309,
+    "best_ep": 20,
+    "delta_vs_ref": -0.021,
+    "elapsed_s": 79
+  },
+  "B_cascade": {
+    "beam_schedule": [
+      16,
+      16,
+      8,
+      4,
+      4
+    ],
+    "quiet_zero": false,
+    "sparse_readout": false,
+    "label": "beam=[16,16,8,4,4]",
+    "n_params": 34976,
+    "best": 0.9177070260047913,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0223,
+    "elapsed_s": 77
+  },
+  "C_quiet_zero": {
+    "beam_schedule": [
+      16,
+      16,
+      8,
+      4,
+      4
+    ],
+    "quiet_zero": true,
+    "sparse_readout": false,
+    "label": "cascade + zero quiet nodes",
+    "n_params": 34976,
+    "best": 0.9179617762565613,
+    "best_ep": 20,
+    "delta_vs_ref": -0.022,
+    "elapsed_s": 54
+  },
+  "D_readout_active": {
+    "beam_schedule": [
+      16,
+      16,
+      8,
+      4,
+      4
+    ],
+    "quiet_zero": false,
+    "sparse_readout": true,
+    "label": "cascade + sparse readout",
+    "n_params": 34976,
+    "best": 0.9194904565811157,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0205,
+    "elapsed_s": 53
+  }
+}

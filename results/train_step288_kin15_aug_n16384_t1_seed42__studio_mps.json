@@ -1,0 +1,28 @@
+{
+  "C_k15_naug": {
+    "label": "N=16384 K_in=15 no-aug (K_in isolation at new N)",
+    "N": 16384,
+    "K_in": 15,
+    "use_aug": false,
+    "routing_macs": 5242880,
+    "seed_macs": 245760,
+    "n_params": 540832,
+    "top1_best": 0.947006344795227,
+    "best_epoch": 53,
+    "delta_vs_ref": 0.0127,
+    "elapsed_s": 650
+  },
+  "D_k15_aug": {
+    "label": "N=16384 K_in=15 + aug (compound at new N)",
+    "N": 16384,
+    "K_in": 15,
+    "use_aug": true,
+    "routing_macs": 5242880,
+    "seed_macs": 245760,
+    "n_params": 540832,
+    "top1_best": 0.959235668182373,
+    "best_epoch": 30,
+    "delta_vs_ref": 0.025,
+    "elapsed_s": 1188
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "SGNNET_N4096": {
+    "config": "SGNNET_N4096",
+    "n_params": 71232,
+    "flops_routing_macs": 1310720,
+    "top1_best": 0.44620001316070557,
+    "best_epoch": 44,
+    "elapsed_s": 1343.9,
+    "epochs": 50
+  },
+  "SGNNET_N8192": {
+    "config": "SGNNET_N8192",
+    "n_params": 140864,
+    "flops_routing_macs": 2621440,
+    "top1_best": 0.48339998722076416,
+    "best_epoch": 46,
+    "elapsed_s": 2578.0,
+    "epochs": 50
+  }
+}

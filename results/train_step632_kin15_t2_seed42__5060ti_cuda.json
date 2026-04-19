@@ -1,0 +1,24 @@
+{
+  "Ref_k25": {
+    "K_in": 25,
+    "label": "K_in=25 reference (step199 config)",
+    "n_params": 34976,
+    "seed_macs": 51200,
+    "routing_macs": 655360,
+    "best": 0.9546496868133545,
+    "best_ep": 128,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 253
+  },
+  "A_k15": {
+    "K_in": 15,
+    "label": "K_in=15 T1 winner \u2014 26.7\u00d7 compound seed reduction",
+    "n_params": 34976,
+    "seed_macs": 30720,
+    "routing_macs": 655360,
+    "best": 0.9513375759124756,
+    "best_ep": 149,
+    "delta_vs_ref": -0.0033,
+    "elapsed_s": 251
+  }
+}

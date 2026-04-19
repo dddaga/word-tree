@@ -1,0 +1,46 @@
+{
+  "Ref_dw": {
+    "D": 16,
+    "sparsity": 0.9,
+    "use_dwproj": true,
+    "label": "D=16, sparsity=0.90, \u0394W-proj (T1 baseline)",
+    "n_params": 67744,
+    "best": 0.9533758163452148,
+    "best_ep": 67,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 248
+  },
+  "A_d12": {
+    "D": 12,
+    "sparsity": 0.9,
+    "use_dwproj": false,
+    "label": "D=12, sparsity=0.90, standard AH (D probe)",
+    "n_params": 51320,
+    "best": 0.9391082525253296,
+    "best_ep": 73,
+    "delta_vs_ref": -0.0143,
+    "elapsed_s": 180
+  },
+  "B_d12_dw": {
+    "D": 12,
+    "sparsity": 0.9,
+    "use_dwproj": true,
+    "label": "D=12, sparsity=0.90, \u0394W-proj (main hypothesis)",
+    "n_params": 51320,
+    "best": 0.9363057613372803,
+    "best_ep": 63,
+    "delta_vs_ref": -0.0171,
+    "elapsed_s": 215
+  },
+  "C_d12_comp": {
+    "D": 12,
+    "sparsity": 0.98,
+    "use_dwproj": true,
+    "label": "D=12, sparsity=0.98, \u0394W-proj (kitchen sink)",
+    "n_params": 51320,
+    "best": 0.9385987520217896,
+    "best_ep": 73,
+    "delta_vs_ref": -0.0148,
+    "elapsed_s": 213
+  }
+}

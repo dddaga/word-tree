@@ -1,0 +1,50 @@
+{
+  "Ref_n4096": {
+    "label": "N=4096 K_in=25 no-aug (step205 ref)",
+    "N": 4096,
+    "K_in": 25,
+    "use_aug": false,
+    "seed_macs": 102400,
+    "n_params": 135328,
+    "top1_best": 0.9622929692268372,
+    "best_epoch": 73,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 179
+  },
+  "A_k15_n4096": {
+    "label": "N=4096 K_in=15 no-aug (seed reduction check)",
+    "N": 4096,
+    "K_in": 15,
+    "use_aug": false,
+    "seed_macs": 61440,
+    "n_params": 135328,
+    "top1_best": 0.9561783671379089,
+    "best_epoch": 73,
+    "delta_vs_ref": -0.0061,
+    "elapsed_s": 178
+  },
+  "B_aug_n4096": {
+    "label": "N=4096 K_in=25 + aug (matches step272 T1)",
+    "N": 4096,
+    "K_in": 25,
+    "use_aug": true,
+    "seed_macs": 102400,
+    "n_params": 135328,
+    "top1_best": 0.9663694500923157,
+    "best_epoch": 61,
+    "delta_vs_ref": 0.0041,
+    "elapsed_s": 314
+  },
+  "C_k15_aug_n4096": {
+    "label": "N=4096 K_in=15 + aug (COMPOUND)",
+    "N": 4096,
+    "K_in": 15,
+    "use_aug": true,
+    "seed_macs": 61440,
+    "n_params": 135328,
+    "top1_best": 0.9656050801277161,
+    "best_epoch": 74,
+    "delta_vs_ref": 0.0033,
+    "elapsed_s": 312
+  }
+}

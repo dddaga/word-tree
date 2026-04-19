@@ -1,0 +1,16 @@
+{
+  "Linear": {
+    "n_params": 250890,
+    "best": 0.8647,
+    "best_ep": 19,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 25
+  },
+  "Ref_SGNNET": {
+    "n_params": 34976,
+    "best": 0.7577,
+    "best_ep": 20,
+    "delta_vs_linear": -0.107,
+    "elapsed_s": 1556
+  }
+}

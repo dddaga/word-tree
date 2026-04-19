@@ -1,0 +1,32 @@
+{
+  "Ref_d16": {
+    "D": 16,
+    "use_dw": false,
+    "n_params": 34976,
+    "routing_macs": 655360,
+    "best": 0.1417,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 3
+  },
+  "A_d24": {
+    "D": 24,
+    "use_dw": false,
+    "n_params": 51440,
+    "routing_macs": 983040,
+    "best": 0.0808,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0609,
+    "elapsed_s": 3
+  },
+  "B_d32": {
+    "D": 32,
+    "use_dw": false,
+    "n_params": 67904,
+    "routing_macs": 1310720,
+    "best": 0.1218,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0199,
+    "elapsed_s": 4
+  }
+}

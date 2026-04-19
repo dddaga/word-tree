@@ -1,0 +1,52 @@
+{
+  "Ref_dw": {
+    "mode": "ref",
+    "tau": 1.0,
+    "label": "\u0394W-proj baseline",
+    "n_params": 34976,
+    "best": 0.9404,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 26
+  },
+  "A_zdot_only": {
+    "mode": "A_zdot_only",
+    "tau": 1.0,
+    "label": "softmax(Z_h\u00b7Z_j/\u03c4=1.0) \u2014 no AH",
+    "n_params": 34976,
+    "best": 0.1409,
+    "best_ep": 20,
+    "delta_vs_ref": -0.7995,
+    "elapsed_s": 26
+  },
+  "B_ah_softmax": {
+    "mode": "B_ah_softmax",
+    "tau": 1.0,
+    "label": "softmax(\u2212AH_logit/\u03c4=1.0) \u2014 static AH only",
+    "n_params": 34976,
+    "best": 0.7575,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1829,
+    "elapsed_s": 20
+  },
+  "C_zdot_ah_t10": {
+    "mode": "C_zdot_ah_t10",
+    "tau": 1.0,
+    "label": "softmax(Z_h\u00b7Z_j/1.0 \u2212 AH_logit)",
+    "n_params": 34976,
+    "best": 0.758,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1824,
+    "elapsed_s": 26
+  },
+  "D_zdot_ah_t03": {
+    "mode": "D_zdot_ah_t03",
+    "tau": 0.3,
+    "label": "softmax(Z_h\u00b7Z_j/0.3 \u2212 AH_logit) \u2014 sharp \u03c4",
+    "n_params": 34976,
+    "best": 0.7595,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1809,
+    "elapsed_s": 26
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "Ref_linear": {
+    "kind": "linear",
+    "label": "nn.Linear(25088\u219210) \u2014 250,890 params (upper bound)",
+    "n_params": 250890,
+    "best": 0.8623999953269958,
+    "best_ep": 132,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 159
+  },
+  "A_sgnnet": {
+    "kind": "sgnnet",
+    "label": "SGNNET \u0394W-proj K_hh=2, N=2048, D=16 \u2014 34,976 params",
+    "n_params": 34976,
+    "best": 0.8069000244140625,
+    "best_ep": 121,
+    "delta_vs_linear": -0.0555,
+    "elapsed_s": 5084
+  }
+}

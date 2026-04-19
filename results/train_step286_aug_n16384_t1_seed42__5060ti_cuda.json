@@ -1,0 +1,24 @@
+{
+  "Ref_n16384": {
+    "label": "N=16384 no-aug T1 ref",
+    "N": 16384,
+    "use_aug": false,
+    "routing_macs": 5242880,
+    "n_params": 278688,
+    "top1_best": 0.934267520904541,
+    "best_epoch": 59,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 629
+  },
+  "A_n16384_aug": {
+    "label": "N=16384 + aug T1 (scaling curve extension)",
+    "N": 16384,
+    "use_aug": true,
+    "routing_macs": 5242880,
+    "n_params": 278688,
+    "top1_best": 0.9554139971733093,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0211,
+    "elapsed_s": 1115
+  }
+}

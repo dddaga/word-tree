@@ -1,0 +1,28 @@
+{
+  "Ref_dw": {
+    "k_hh": 2,
+    "k_in": 25,
+    "label": "K_hh=2, K_in=25 \u2014 standard \u0394W-proj",
+    "n_params": 34976,
+    "seed_flops_M": 1.6384,
+    "route_flops_M": 0.6554,
+    "total_flops_M": 2.2938,
+    "best": 0.9663694500923157,
+    "best_ep": 120,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 429
+  },
+  "C_compound": {
+    "k_hh": 1,
+    "k_in": 15,
+    "label": "K_hh=1, K_in=15 \u2014 both: ~43% total FLOPs reduction",
+    "n_params": 34976,
+    "seed_flops_M": 0.983,
+    "route_flops_M": 0.3277,
+    "total_flops_M": 1.3107,
+    "best": 0.9521018862724304,
+    "best_ep": 147,
+    "delta_vs_ref": -0.0143,
+    "elapsed_s": 291
+  }
+}

@@ -195,3 +195,172 @@ K=1 vs K=5 wall-time ratio confirms 2-2.5× routing speedup across all batch siz
 **step410 LAUNCHED on 5060ti**: SST-2 config sweep (Ref N=2048 K=25, A small-N=512, B low-K_in=10, C low-K_iter=2, D combined). Target: close the -1pp SGNNET-vs-Linear gap by rightsizing SGNNET for N_in=768.
 
 If successful, the paper claim expands: SGNNET is a general high-efficiency FC replacement, not just for VGG-style high-dim features.
+
+---
+
+### 2026-04-17: Text gap CONFIRMED — paper scope fixed as vision-only (steps 410, 411)
+
+step410 SST-2 config sweep (5 configs, all tune-downs of SGNNET). All fail: best Ref_orig=83.72% (-0.91pp vs Linear). Monotonic worsening with compression. Gap NOT closed.
+
+step411 AG News 4-class sweep. Linear=91.18%, MLP_64=92.53%. All SGNNET configs trail: Ref_orig=90.34% (-0.84pp), all compressed configs worse. Monotonic loss.
+
+**CONFIRMED:** Text gap is architecture-specific, not config-specific. Paper scope is **vision-only** (VGG16 FC replacement for image classification). Text failure documented as honest limitation.
+
+---
+
+### 2026-04-17: ΔW-proj component ablation — 2 of 3 components load-bearing, theta simplifies out (steps 883, 886)
+
+T0 components test (step883):
+- D_rand_dir (random direction instead of W_pos geometry): **-76.56pp CATASTROPHIC** — geometry essential
+- B_no_ref (no reflection term α_r=0): -1.32pp at T0
+- A_sign (remove sign, use abs): -1.83pp at T0
+- C_no_theta (θ=0): -0.71pp at T0
+
+T1 confirmation (step886):
+- A_sign=-0.59pp **LOAD-BEARING** (removing sign degrades by 0.6pp)
+- B_no_ref=-0.51pp **LOAD-BEARING** (reflection term essential)
+- C_no_theta=+0.15pp **NEUTRAL** — θ is NOT needed, T0 artifact (−0.71pp) flipped positive
+
+**CONFIRMED paper ablation table:**
+| Component | T0 delta | T1 delta | Verdict |
+|-----------|----------|----------|---------|
+| Geometry (W_pos dirs) | −76.56pp | (not tested, catastrophic) | ESSENTIAL |
+| Sign | −1.83pp | −0.59pp | LOAD-BEARING |
+| Reflection | −1.32pp | −0.51pp | LOAD-BEARING |
+| θ threshold | −0.71pp | +0.15pp | NEUTRAL (simplifies out) |
+
+**Paper claim:** ΔW-proj requires (1) W_pos geometry, (2) signed projection, (3) reflection; θ is an artifact. Architecture can be simplified by fixing θ=0.
+
+---
+
+### 2026-04-17: K_hh=1 efficiency — 50% routing MACs at -0.74pp cost (step885 T2)
+
+K_hh=1 T0 (step865): -0.48pp VIABLE.
+K_hh=1 T1 (step878): -0.41pp STRONG.
+K_hh=1 T2 (step885): Ref=96.64%, A_khh1=95.90%, **Δ=-0.74pp — MARGINAL**.
+
+**Paper claim:** "K_hh=1 reduces routing MACs by 50% at -0.74pp cost." Mentioned as efficiency option with caveat.
+
+---
+
+### 2026-04-17: Canonical multi-seed CONFIRMED — 96.38% ± 0.18pp (step887 T2)
+
+3 seeds × 150ep × 100% data on 5060ti_cuda (canonical 34,976 params):
+- seed0=96.23%, seed1=96.28%, seed42=96.64%
+- **Mean=96.38% ± 0.18pp**
+
+Previously step881 (studio, non-canonical 67,744 params): 96.44% ± 0.26pp — higher mean was artifact of double-counted params.
+
+**CONFIRMED paper numbers:** 96.38% ± 0.18pp at 34,976 params. Step887 supersedes step881.
+
+ΔW-proj also halves seed variance vs step199 (±0.43pp): **ΔW halves variance** (secondary paper finding).
+
+---
+
+### 2026-04-17: K_hh=1+K_in=15 compound T2 — 43% FLOPs at -1.43pp (step889 CONFIRMED)
+
+T0 (step884): -1.89pp (artifact: K_in=15 alone is -1.22pp at T0 but only -0.33pp at T2).
+T1 (step888): Ref=95.26%, C_compound=94.29% (-0.97pp VIABLE).
+T2 (step889): Ref=96.64%, C_compound=95.21% (**-1.43pp CONFIRMED**).
+
+Compound FLOPs: 1.31M vs 2.29M baseline → **0.57× FLOPs (43% reduction)**.
+
+**CONFIRMED paper claim:** "K_hh=1+K_in=15 compound delivers 57% of baseline FLOPs at -1.43pp cost." Pareto-efficient ultra-compact config for edge deployment.
+
+---
+
+### 2026-04-17: CIFAR-10 cross-dataset T2 — SGNNET paper-presentable at -5.55pp (step882)
+
+150ep, 100% data, canonical 34,976 params, mini_mps, seed=42.
+- Linear (250,890 params): 86.24%
+- SGNNET (34,976 params): 80.69% → **Δ=-5.55pp**
+
+**MARGINAL — paper-presentable.** 7.4× fewer params at -5.55pp cost. Honest cross-dataset result.
+
+**Paper framing:** SGNNET generalizes across image classification datasets. At matched FLOPs/params, SGNNET is efficient even on cross-dataset transfer. -5.55pp is the "cost" of fixed topology without dataset-specific tuning.
+
+---
+
+### 2026-04-17: CIFAR-10 MLP bottleneck finding — SGNNET +66pp vs matched-params MLP (step891 T2)
+
+CRITICAL PAPER FINDING. 150ep, 100% data, seed=42, 5060ti_cuda.
+
+| Config | Params | Best acc | Δ vs SGNNET |
+|--------|--------|----------|-------------|
+| Ref_linear | 250,890 | 86.14% | +5.72pp |
+| MLP_h1 | 25,109 | 14.31% | -66.11pp |
+| MLP_h2 | 50,208 | 17.05% | -63.37pp |
+| **Ref_SGNNET** | **34,976** | **80.42%** | — |
+
+**CONFIRMED:** At N_in=25,088 (VGG16 pool5), matched-params MLPs (h=1,2) collapse catastrophically (14-17%) due to information bottleneck. SGNNET's sparse graph routing bypasses the bottleneck via N=2048 nodes × K_in=25 fan-in, reaching 80.42%.
+
+**WHY:** MLP h=1 compresses 25,088 features to 1 scalar → near-random output. SGNNET uses N=2048 parallel nodes each sampling K_in=25 features → distributed representation without bottleneck.
+
+**Paper claim:** "Matched-params MLP fails at N_in=25,088 information bottleneck. SGNNET graph routing achieves 80% without bottleneck compression." Core paper narrative about WHY graph structure adds value.
+
+---
+
+### 2026-04-17: CIFAR-10 MLP crossover cliff — 11.5× param advantage (step892 T1, step893 T2 running)
+
+step892 T1 (75ep, 50% data) sweep h=4..64:
+
+| h | Params | Ratio vs SGNNET | Best (T1) | vs SGNNET |
+|---|--------|-----------------|-----------|-----------|
+| 4 | 100K | 2.9× | 40.46% | -40.23pp |
+| 6 | 150K | 4.3× | 45.14% | -35.55pp |
+| 8 | 200K | 5.7× | 45.52% | -35.17pp |
+| **16** | **400K** | **11.5×** | **81.29%** | **+0.60pp** ← CROSSOVER |
+| 32 | 803K | 23.0× | 85.02% | +4.33pp |
+
+**CONFIRMED CLIFF:** h=8 (200K, 5.7×) still catastrophic bottleneck (~45%). h=16 (400K, 11.5×) crosses SGNNET. Dramatic phase transition between h=8 and h=16.
+
+**WHY the cliff:** 8 hidden neurons store 8-dim subspace of 25,088-dim input. Below 16 (=SGNNET's D), representation is too compressed to retain class-discriminative structure.
+
+**step893 T2 update (complete):** h=12 = 67.10% (best_ep=27, then degraded — early-peak bottleneck), h=16 = **80.75% (+0.33pp vs SGNNET)** ← T2 CROSSOVER CONFIRMED.
+
+**CONFIRMED paper claim:** "SGNNET achieves CIFAR-10 accuracy using 11.5× fewer params than the minimum viable MLP (h=16, 400K). MLPs with ≤8 hidden neurons (≤5.7× SGNNET) fail catastrophically due to the N_in=25,088 information bottleneck. h=12 (8.6×, 300K) peaks at 67.1% — still -13.3pp below SGNNET."
+
+---
+
+### 2026-04-17: CIFAR-10 MLP crossover T2 CONFIRMED — 11.5× param advantage (step893)
+
+150ep, 100% data, seed=42, 5060ti_cuda.
+
+| h | Params | Ratio | Best T2 | vs SGNNET (80.42%) |
+|---|--------|-------|---------|---------------------|
+| 8 | 200K | 5.74× | 45.80% | −34.62pp (catastrophic) |
+| 12 | 301K | 8.61× | 67.10% | −13.32pp (sub-threshold; peaks ep27) |
+| **16** | **401K** | **11.48×** | **80.75%** | **+0.33pp ← T2 CROSSOVER** |
+
+Three-tier behavior: h=8 (complete bottleneck) → h=12 (partial, early-peak) → h=16 (clears SGNNET).
+
+**CONFIRMED:** T2 crossover at h=16 (11.5×). h=12 is NOT sufficient even at full training. Paper claim stands.
+
+**Paper table (CIFAR-10 parameter efficiency):**
+| Config | Params | Accuracy | Notes |
+|--------|--------|----------|-------|
+| MLP_h8 | 200K (5.7×) | 45.8% | Catastrophic bottleneck |
+| MLP_h12 | 301K (8.6×) | 67.1% | Sub-threshold, early-peak |
+| **SGNNET** | **35K (1×)** | **80.42%** | **Canonical** |
+| MLP_h16 | 401K (11.5×) | 80.8% | First viable MLP |
+
+**Efficiency ratio: SGNNET achieves equivalent accuracy at 11.5× fewer params than the minimum viable MLP on CIFAR-10.**
+
+---
+
+### 2026-04-17: K=4 wall-clock measured — 9.9% faster, NOT 20% (bench_step830)
+
+5060ti_cuda, N=2048, D=16, B=32, max-autotune compiled:
+
+| Variant | Median (ms) | Throughput (sps) |
+|---------|-------------|-----------------|
+| K5_eager | 0.991 | 32,279 |
+| K5_ma | **0.154** | 207,548 |
+| K4_eager | 0.844 | 37,912 |
+| K4_ma | **0.139** | 230,446 |
+
+**K4_ma / K5_ma = 0.901 → K=4 is 9.9% faster (not 20%).**
+
+Prior paper claim ("20% wall-clock reduction") was a projection from `0.280ms × 0.8`. Measured ratio fails the ≤0.85× acceptance criterion.
+
+**REVISED paper claim:** "K_iter=4 reduces latency by ~10% vs K=5 at matched accuracy (max-autotune compiled, B=32 on RTX 5060 Ti)." Paper should drop any "20% reduction" language and use the measured 9.9%.

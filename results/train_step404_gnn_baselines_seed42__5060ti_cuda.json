@@ -1,0 +1,23 @@
+{
+  "GCN": {
+    "variant": "GCN",
+    "n_params": 35232,
+    "top1_best": 0.48942676186561584,
+    "best_epoch": 121,
+    "elapsed_s": 261.6867604255676
+  },
+  "GAT": {
+    "variant": "GAT",
+    "n_params": 35264,
+    "top1_best": 0.48687899112701416,
+    "best_epoch": 142,
+    "elapsed_s": 431.8100769519806
+  },
+  "GIN": {
+    "variant": "GIN",
+    "n_params": 35521,
+    "top1_best": 0.1533757895231247,
+    "best_epoch": 105,
+    "elapsed_s": 306.0482792854309
+  }
+}

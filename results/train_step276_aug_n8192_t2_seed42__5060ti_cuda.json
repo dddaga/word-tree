@@ -1,0 +1,24 @@
+{
+  "Ref_n8192": {
+    "label": "N=8192 no-aug T2 (step209 ref ~97.17%)",
+    "N": 8192,
+    "use_aug": false,
+    "routing_macs": 2621440,
+    "n_params": 139424,
+    "top1_best": 0.9694267511367798,
+    "best_epoch": 126,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1124
+  },
+  "A_n8192_aug": {
+    "label": "N=8192 + aug T2 (ceiling completion)",
+    "N": 8192,
+    "use_aug": true,
+    "routing_macs": 2621440,
+    "n_params": 139424,
+    "top1_best": 0.9737579822540283,
+    "best_epoch": 143,
+    "delta_vs_ref": 0.0043,
+    "elapsed_s": 2104
+  }
+}

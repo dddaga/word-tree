@@ -1,0 +1,69 @@
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+
+======================================================================
+step882 — CIFAR-10 cross-dataset T2 (150ep, 100% data)
+  device=mps  epochs=150  seed=42
+  CIFAR-10: train=50000  val=10000
+  (vs Imagenette: train=9296 — 5.4× scale)
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_linear: nn.Linear(25088→10) — 250,890 params (upper bound)  params=250,890
+  e  1  loss=0.6858  task=0.6858  safety=0.0000  top1=0.8068  lr=2.36e-03
+  e 10  loss=0.1163  task=0.1163  safety=0.0000  top1=0.8414  lr=2.36e-03
+  e 20  loss=0.0800  task=0.0800  safety=0.0000  top1=0.8487  lr=2.36e-03
+  ep 25  val=0.8486
+  e 30  loss=0.0490  task=0.0490  safety=0.0000  top1=0.8489  lr=2.36e-03
+  e 40  loss=0.0473  task=0.0473  safety=0.0000  top1=0.8414  lr=2.36e-03
+  ep 50  val=0.8499
+  e 50  loss=0.0473  task=0.0473  safety=0.0000  top1=0.8499  lr=2.36e-03
+  e 60  loss=0.0279  task=0.0279  safety=0.0000  top1=0.8525  lr=2.36e-03
+  e 70  loss=0.0289  task=0.0289  safety=0.0000  top1=0.8505  lr=2.36e-03
+  ep 75  val=0.8497
+  e 80  loss=0.0361  task=0.0361  safety=0.0000  top1=0.8510  lr=2.36e-03
+  e 90  loss=0.0013  task=0.0013  safety=0.0000  top1=0.8620  lr=1.18e-03
+  ep100  val=0.8611
+  e100  loss=0.0000  task=0.0000  safety=0.0000  top1=0.8611  lr=1.18e-03
+  e110  loss=0.0000  task=0.0000  safety=0.0000  top1=0.8613  lr=1.18e-03
+  e120  loss=0.0000  task=0.0000  safety=0.0000  top1=0.8617  lr=1.18e-03
+  ep125  val=0.8615
+  e130  loss=0.0000  task=0.0000  safety=0.0000  top1=0.8616  lr=1.18e-03
+  e140  loss=0.0376  task=0.0376  safety=0.0000  top1=0.8575  lr=1.18e-03
+  Early stop at epoch 140 — best train_loss=0.0002
+  -> best=0.8624 @ep132  Δ_vs_linear=+0.00pp  159s
+────────────────────────────────────────────────────────────
+A_sgnnet: SGNNET ΔW-proj K_hh=2, N=2048, D=16 — 34,976 params  params=34,976
+  e  1  loss=1.3989  task=1.3989  safety=0.0000  top1=0.6461  lr=2.36e-03
+  e 10  loss=0.6475  task=0.6475  safety=0.0000  top1=0.7229  lr=2.36e-03
+  e 20  loss=0.5859  task=0.5859  safety=0.0000  top1=0.7776  lr=2.36e-03
+  ep 25  val=0.7811
+  e 30  loss=0.5633  task=0.5633  safety=0.0000  top1=0.7692  lr=2.36e-03
+  e 40  loss=0.5428  task=0.5428  safety=0.0000  top1=0.7719  lr=2.36e-03
+  ep 50  val=0.7595
+  e 50  loss=0.5175  task=0.5175  safety=0.0000  top1=0.7595  lr=2.36e-03
+  e 60  loss=0.5143  task=0.5143  safety=0.0000  top1=0.7840  lr=2.36e-03
+  e 70  loss=0.5036  task=0.5036  safety=0.0000  top1=0.7941  lr=2.36e-03
+  ep 75  val=0.7765
+  e 80  loss=0.4953  task=0.4953  safety=0.0000  top1=0.7832  lr=2.36e-03
+  e 90  loss=0.4856  task=0.4856  safety=0.0000  top1=0.7918  lr=2.36e-03
+  ep100  val=0.7946
+  e100  loss=0.4790  task=0.4790  safety=0.0000  top1=0.7946  lr=2.36e-03
+  e110  loss=0.4275  task=0.4275  safety=0.0000  top1=0.8017  lr=1.18e-03
+  e120  loss=0.4257  task=0.4257  safety=0.0000  top1=0.7936  lr=1.18e-03
+  ep125  val=0.7966
+  e130  loss=0.4162  task=0.4162  safety=0.0000  top1=0.8037  lr=1.18e-03
+  e140  loss=0.4131  task=0.4131  safety=0.0000  top1=0.8067  lr=1.18e-03
+  ep150  val=0.7987
+  e150  loss=0.4112  task=0.4112  safety=0.0000  top1=0.7987  lr=1.18e-03
+  -> best=0.8069 @ep121  Δ_vs_linear=-5.55pp  5084s
+
+======================================================================
+STEP 882 SUMMARY — CIFAR-10 cross-dataset T2
+======================================================================
+  config           params    best  Δ_vs_linear
+  Ref_linear      250,890  0.8624       +0.00pp
+  A_sgnnet         34,976  0.8069       -5.55pp
+
+  -5.55pp @ 7.2× param reduction → WEAK — gap -5.5pp — SGNNET may be over-fit to Imagenette structure
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step882_cifar10_cross_t2_seed42__mini_mps.json

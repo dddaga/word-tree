@@ -1,0 +1,42 @@
+{
+  "Ref_dw": {
+    "mode": "standard",
+    "label": "all components active",
+    "n_params": 34976,
+    "best": 0.95286625623703,
+    "best_ep": 54,
+    "delta_vs_ref": 0.0,
+    "t0_delta": null,
+    "elapsed_s": 353
+  },
+  "A_sign": {
+    "mode": "A_sign",
+    "label": "proj_coeff.clamp(0) \u2014 directional-only",
+    "n_params": 34976,
+    "best": 0.947006344795227,
+    "best_ep": 69,
+    "delta_vs_ref": -0.0059,
+    "t0_delta": -0.0183,
+    "elapsed_s": 350
+  },
+  "B_no_ref": {
+    "mode": "B_no_ref",
+    "label": "alpha_reflect=0 \u2014 no reflection",
+    "n_params": 34976,
+    "best": 0.9477707147598267,
+    "best_ep": 72,
+    "delta_vs_ref": -0.0051,
+    "t0_delta": -0.0132,
+    "elapsed_s": 347
+  },
+  "C_no_theta": {
+    "mode": "C_no_theta",
+    "label": "theta=0 \u2014 no per-neuron threshold",
+    "n_params": 34976,
+    "best": 0.9543948769569397,
+    "best_ep": 74,
+    "delta_vs_ref": 0.0015,
+    "t0_delta": -0.0071,
+    "elapsed_s": 326
+  }
+}

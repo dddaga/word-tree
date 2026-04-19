@@ -1,26 +1,199 @@
 {
-  "device": "cpu",
+  "device": "cuda",
   "bs_inf": 32,
   "bs_train": 128,
   "eager": {
+    "VGG_FC": {
+      "n_params": 119586826,
+      "inference": {
+        "median_ms": 2.1255424981063697,
+        "p95_ms": 2.1298065039445646,
+        "p99_ms": 2.1317161158367526,
+        "mean_ms": 2.1262431198192644,
+        "throughput_sps": 15054.980094968021
+      },
+      "training": {
+        "median_ms": 28.645944003073964,
+        "throughput_sps": 4468.346373443461
+      },
+      "memory": {
+        "peak_mib": 2310.4462890625,
+        "reserved_mib": 2338.0
+      },
+      "compile": false
+    },
+    "VGG_FC_small": {
+      "n_params": 12850698,
+      "inference": {
+        "median_ms": 0.26780000189319253,
+        "p95_ms": 0.2728425522946054,
+        "p99_ms": 0.273231098180986,
+        "mean_ms": 0.26807995989656774,
+        "throughput_sps": 119492.15748236871
+      },
+      "training": {
+        "median_ms": 3.2473165047122166,
+        "throughput_sps": 39417.1617747324
+      },
+      "memory": {
+        "peak_mib": 279.6162109375,
+        "reserved_mib": 306.0
+      },
+      "compile": false
+    },
     "Linear": {
       "n_params": 250890,
       "inference": {
-        "median_ms": 0.10054200538434088,
-        "p95_ms": 0.10156639327760786,
-        "p99_ms": 0.10167967237066478,
-        "mean_ms": 0.10069159616250545,
-        "throughput_sps": 318274.93272760906
+        "median_ms": 0.0642099985270761,
+        "p95_ms": 0.06924049885128625,
+        "p99_ms": 0.07035149727016687,
+        "mean_ms": 0.06455722505052108,
+        "throughput_sps": 498364.75212666806
       },
       "training": {
-        "median_ms": 1.013979002891574,
-        "throughput_sps": 126235.35559906183
+        "median_ms": 0.3052039974136278,
+        "throughput_sps": 419391.62358521787
       },
       "memory": {
-        "peak_mib": -1.0,
-        "reserved_mib": -1.0
+        "peak_mib": 34.2939453125,
+        "reserved_mib": 62.0
       },
       "compile": false
+    },
+    "MLP_64": {
+      "n_params": 1606346,
+      "inference": {
+        "median_ms": 0.09222999869962223,
+        "p95_ms": 0.09841799983405508,
+        "p99_ms": 0.10077109756821301,
+        "mean_ms": 0.0936201047807117,
+        "throughput_sps": 346958.6951228166
+      },
+      "training": {
+        "median_ms": 0.44562999391928315,
+        "throughput_sps": 287233.8077476549
+      },
+      "memory": {
+        "peak_mib": 60.1484375,
+        "reserved_mib": 76.0
+      },
+      "compile": false
+    },
+    "SGNNET_AH": {
+      "n_params": 34976,
+      "inference": {
+        "median_ms": 2.345307500945637,
+        "p95_ms": 2.3616084952664096,
+        "p99_ms": 2.3663541008136235,
+        "mean_ms": 2.3461800949735334,
+        "throughput_sps": 13644.26625809088
+      },
+      "training": {
+        "median_ms": 23.023346002446488,
+        "throughput_sps": 5559.574181198448
+      },
+      "memory": {
+        "peak_mib": 644.34912109375,
+        "reserved_mib": 680.0
+      },
+      "compile": false
+    }
+  },
+  "compiled": {
+    "VGG_FC": {
+      "n_params": 119586826,
+      "inference": {
+        "median_ms": 1.570058499055449,
+        "p95_ms": 1.5778420493006706,
+        "p99_ms": 1.5861155013408277,
+        "mean_ms": 1.5711437650679727,
+        "throughput_sps": 20381.406182795916
+      },
+      "training": {
+        "median_ms": 26.99778900205274,
+        "throughput_sps": 4741.128986165041
+      },
+      "memory": {
+        "peak_mib": 2293.1982421875,
+        "reserved_mib": 2394.0
+      },
+      "compile": true
+    },
+    "VGG_FC_small": {
+      "n_params": 12850698,
+      "inference": {
+        "median_ms": 0.23273949773283675,
+        "p95_ms": 0.23990100053197239,
+        "p99_ms": 0.24235160446551163,
+        "mean_ms": 0.23374293003143976,
+        "throughput_sps": 137492.77759778022
+      },
+      "training": {
+        "median_ms": 3.1213019974529743,
+        "throughput_sps": 41008.5278849819
+      },
+      "memory": {
+        "peak_mib": 623.7490234375,
+        "reserved_mib": 846.0
+      },
+      "compile": true
+    },
+    "Linear": {
+      "n_params": 250890,
+      "inference": {
+        "median_ms": 0.08910949691198766,
+        "p95_ms": 0.09535349854559172,
+        "p99_ms": 0.10060071523184888,
+        "mean_ms": 0.09021691494126571,
+        "throughput_sps": 359108.7494479517
+      },
+      "training": {
+        "median_ms": 0.3943095034628641,
+        "throughput_sps": 324618.095368972
+      },
+      "memory": {
+        "peak_mib": 527.541015625,
+        "reserved_mib": 714.0
+      },
+      "compile": true
+    },
+    "MLP_64": {
+      "n_params": 1606346,
+      "inference": {
+        "median_ms": 0.08662450272822753,
+        "p95_ms": 0.09268550529668573,
+        "p99_ms": 0.0975709978956729,
+        "mean_ms": 0.08753181518841302,
+        "throughput_sps": 369410.4900133811
+      },
+      "training": {
+        "median_ms": 0.4805649987247307,
+        "throughput_sps": 266353.14752358577
+      },
+      "memory": {
+        "peak_mib": 484.6435546875,
+        "reserved_mib": 654.0
+      },
+      "compile": true
+    },
+    "SGNNET_AH": {
+      "n_params": 34976,
+      "inference": {
+        "median_ms": 0.2993549969687592,
+        "p95_ms": 0.30598050288972445,
+        "p99_ms": 0.3090285002690507,
+        "mean_ms": 0.3002358950834605,
+        "throughput_sps": 106896.49521146803
+      },
+      "training": {
+        "median_ms": 5.250060501566622,
+        "throughput_sps": 24380.67141546363
+      },
+      "memory": {
+        "peak_mib": 476.76416015625,
+        "reserved_mib": 604.0
+      },
+      "compile": true
     }
   }
 }

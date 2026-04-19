@@ -1,0 +1,20 @@
+{
+  "Ref_dw": {
+    "gamma": 0.0,
+    "label": "gamma=0.0 \u2014 standard \u0394W-proj (T1 baseline)",
+    "n_params": 34976,
+    "best": 0.95286625623703,
+    "best_ep": 71,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 637
+  },
+  "A_g08": {
+    "gamma": 0.8,
+    "label": "gamma=0.8 \u2014 heavy temporal accumulation (T0 winner)",
+    "n_params": 34976,
+    "best": 0.95286625623703,
+    "best_ep": 64,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 299
+  }
+}

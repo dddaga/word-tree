@@ -1,0 +1,35 @@
+{
+  "Ref_dw": {
+    "k_local": 2,
+    "k_ep": 0,
+    "dw_local": true,
+    "dw_ep": false,
+    "n_params": 34976,
+    "best": 0.775,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "B_ep1_l1_nodw": {
+    "k_local": 1,
+    "k_ep": 1,
+    "dw_local": false,
+    "dw_ep": false,
+    "n_params": 34976,
+    "best": 0.1279,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6471,
+    "elapsed_s": 3
+  },
+  "F_ep1_l2_ldw": {
+    "k_local": 2,
+    "k_ep": 1,
+    "dw_local": true,
+    "dw_ep": false,
+    "n_params": 34976,
+    "best": 0.1419,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6331,
+    "elapsed_s": 4
+  }
+}

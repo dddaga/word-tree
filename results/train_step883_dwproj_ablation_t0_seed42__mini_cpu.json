@@ -1,0 +1,47 @@
+{
+  "Ref_dw": {
+    "mode": "standard",
+    "label": "standard \u0394W-proj \u2014 all components active",
+    "n_params": 34976,
+    "best": 0.9396178126335144,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 93
+  },
+  "A_sign": {
+    "mode": "A_sign",
+    "label": "proj_coeff.clamp(0) \u2014 directional-only routing",
+    "n_params": 34976,
+    "best": 0.9212738871574402,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0183,
+    "elapsed_s": 94
+  },
+  "B_no_ref": {
+    "mode": "B_no_ref",
+    "label": "alpha_reflect=0 \u2014 no reflection signal",
+    "n_params": 34976,
+    "best": 0.9263694286346436,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0132,
+    "elapsed_s": 94
+  },
+  "C_no_theta": {
+    "mode": "C_no_theta",
+    "label": "theta=0 \u2014 no per-neuron threshold",
+    "n_params": 34976,
+    "best": 0.9324840903282166,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0071,
+    "elapsed_s": 89
+  },
+  "D_rand_dir": {
+    "mode": "D_rand_dir",
+    "label": "random unit vectors \u2014 no W_pos geometry",
+    "n_params": 34976,
+    "best": 0.17401273548603058,
+    "best_ep": 18,
+    "delta_vs_ref": -0.7656,
+    "elapsed_s": 91
+  }
+}

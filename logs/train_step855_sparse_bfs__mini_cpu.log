@@ -9,6 +9,55 @@ step855 — Sparse BFS routing T0 (20ep, 50% data)
 ======================================================================
 
 ────────────────────────────────────────────────────────────
-Ref: dense routing (baseline)  params=34,976  beam=all-N
+A_fixed_M16: beam=[16,16,16,16,16]  params=34,976  beam=[16, 16, 16, 16, 16]
   e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
   ep  5  val=0.8206
+  ep 10  val=0.9017
+  e 10  loss=0.3909  task=0.3909  safety=0.0000  top1=0.9017  lr=2.36e-03
+  ep 15  val=0.8882
+  ep 20  val=0.9190
+  e 20  loss=0.2778  task=0.2778  safety=0.0000  top1=0.9190  lr=2.36e-03
+  -> best=0.9190 @ep20  Δ_vs_Ref=-2.10pp  79s
+────────────────────────────────────────────────────────────
+B_cascade: beam=[16,16,8,4,4]  params=34,976  beam=[16, 16, 8, 4, 4]
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8199
+  ep 10  val=0.9024
+  e 10  loss=0.3906  task=0.3906  safety=0.0000  top1=0.9024  lr=2.36e-03
+  ep 15  val=0.8912
+  ep 20  val=0.9177
+  e 20  loss=0.2773  task=0.2773  safety=0.0000  top1=0.9177  lr=2.36e-03
+  -> best=0.9177 @ep20  Δ_vs_Ref=-2.23pp  77s
+────────────────────────────────────────────────────────────
+C_quiet_zero: cascade + zero quiet nodes  params=34,976  beam=[16, 16, 8, 4, 4]
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8209
+  ep 10  val=0.9004
+  e 10  loss=0.3907  task=0.3907  safety=0.0000  top1=0.9004  lr=2.36e-03
+  ep 15  val=0.8907
+  ep 20  val=0.9180
+  e 20  loss=0.2786  task=0.2786  safety=0.0000  top1=0.9180  lr=2.36e-03
+  -> best=0.9180 @ep20  Δ_vs_Ref=-2.20pp  54s
+────────────────────────────────────────────────────────────
+D_readout_active: cascade + sparse readout  params=34,976  beam=[16, 16, 8, 4, 4]
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8211
+  ep 10  val=0.9014
+  e 10  loss=0.3911  task=0.3911  safety=0.0000  top1=0.9014  lr=2.36e-03
+  ep 15  val=0.8922
+  ep 20  val=0.9195
+  e 20  loss=0.2768  task=0.2768  safety=0.0000  top1=0.9195  lr=2.36e-03
+  -> best=0.9195 @ep20  Δ_vs_Ref=-2.05pp  53s
+
+======================================================================
+STEP 855 SUMMARY — Sparse BFS routing T0
+======================================================================
+  config                best   Δ_vs_Ref
+  A_fixed_M16         0.9190     -2.10pp
+  B_cascade           0.9177     -2.23pp
+  C_quiet_zero        0.9180     -2.20pp
+  D_readout_active    0.9195     -2.05pp
+
+  Beam-gating verdict: FAILS THRESHOLD (> -0.5pp) (-2.10pp at M=16)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step855_sparse_bfs_seed42__mini_cpu.json

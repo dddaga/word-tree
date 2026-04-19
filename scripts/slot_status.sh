@@ -155,6 +155,7 @@ check_slot "mini_cpu"    "local"      "tmux"
 check_slot "studio_mps"  "mac-studio" "/opt/homebrew/bin/tmux"
 check_slot "studio_cpu"  "mac-studio" "/opt/homebrew/bin/tmux"
 check_slot "5060ti_cuda" "5060ti"     "/usr/bin/tmux"
+check_slot "5060ti_cpu"  "5060ti"     "/usr/bin/tmux"
 
 echo
 echo "===== Tmux sessions by machine ====="

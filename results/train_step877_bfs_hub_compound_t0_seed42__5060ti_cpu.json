@@ -1,0 +1,12 @@
+{
+  "Ref_dw": {
+    "bfs_m": 0,
+    "alpha_hub": 0.0,
+    "label": "\u0394W-proj only (control)",
+    "n_params": 34976,
+    "best": 0.9396178126335144,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 357
+  }
+}

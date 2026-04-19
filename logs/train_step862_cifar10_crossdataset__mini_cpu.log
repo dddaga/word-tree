@@ -1,0 +1,48 @@
+CIFAR-10 features: N_in=25088  train=50000  val=10000
+
+======================================================================
+step862 — CIFAR-10 cross-dataset T0 (20ep, 50% data)
+  device=cpu  N_in=25088  SGNNET N=1024 D=8
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear 512→10 baseline  params=250,890
+  ep  5  val=0.8461
+  ep 10  val=0.8607
+  ep 15  val=0.8635
+  ep 20  val=0.8640
+  -> best=0.8640 @ep17  Δ_vs_Linear=+0.00pp  13s
+────────────────────────────────────────────────────────────
+MLP_37: MLP h=37 (~matched param MLP)  params=928,673
+  ep  5  val=0.8575
+  ep 10  val=0.8668
+  ep 15  val=0.8683
+  ep 20  val=0.8685
+  -> best=0.8687 @ep17  Δ_vs_Linear=+0.47pp  14s
+────────────────────────────────────────────────────────────
+MLP_256: MLP h=256 strong baseline  params=6,425,354
+  ep  5  val=0.8551
+  ep 10  val=0.8630
+  ep 15  val=0.8668
+  ep 20  val=0.8681
+  -> best=0.8687 @ep17  Δ_vs_Linear=+0.47pp  44s
+────────────────────────────────────────────────────────────
+Ref_SGNNET: SGNNET K=5 N=1024 D=8 K_in=16  params=9,296
+  ep  5  val=0.4973
+  ep 10  val=0.4959
+  ep 15  val=0.5508
+  ep 20  val=0.5701
+  -> best=0.5701 @ep20  Δ_vs_Linear=-29.39pp  119s
+
+======================================================================
+STEP 862 SUMMARY — CIFAR-10 cross-dataset T0
+======================================================================
+  config           params    best    Δ_vs_Linear
+  Linear          250,890  0.8640         +0.00pp
+  MLP_37          928,673  0.8687         +0.47pp
+  MLP_256        6,425,354  0.8687         +0.47pp
+  Ref_SGNNET        9,296  0.5701        -29.39pp
+
+  SGNNET vs MLP_256: -29.86pp  (negative = gap to close at T1)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step862_cifar10_crossdataset_seed42__local.json

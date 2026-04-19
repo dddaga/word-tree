@@ -1,0 +1,13 @@
+{
+  "Distill_k1": {
+    "label": "Distill K=1 T=2 \u03bb=0.5",
+    "K_iter": 1,
+    "n_params": 67744,
+    "routing_macs": 131072,
+    "best": 0.9212738853503185,
+    "best_ep": 120,
+    "inf_ms_B1": 0.8447,
+    "inf_ms_B32": 2.9599,
+    "elapsed_s": 202
+  }
+}

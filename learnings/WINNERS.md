@@ -10,15 +10,17 @@ Every winner listed here should be **seeded into Phase 2 (cross-dataset / cross-
 
 | Step | Config | Params | FLOPs | Wall-time B=32 | Accuracy | Mechanism |
 |------|--------|--------|-------|----------------|----------|-----------|
-| **step605** | **N=2048 D=16 K_iter=1 soft-KD student** | **35K** | **0.20M (0.16%)** | **12.7µs (5.3× vs VGG_FC)** | **95.95%** | **K=1 KD distillation from K=5 teacher** ⭐ NEW CHAMPION |
-| step199 | N=2048 D=16 K_hh=2 K_iter=5 | 67K (0.054%) | 0.98M (0.79%) | 31.2µs | 95.52% | Baseline AH (α=1.0) + K_iter=5 + D=16 |
-| step195 | N=2048 D=16 K_hh=2 K_iter=6 | 67K (0.054%) | 1.18M (0.95%) | 96.08% | Baseline AH + K_iter=6 |
-| step217b | N=2048 D=16 K_hh=2 K_iter=5 + polarizer α=1.5 | 67K | ~2M (est) | 95.92% | **Polarizer routing** (α=1.5) |
-| step235 A_100 | N=2048 D=16 K_hh=2 K_iter=5 + ΔW-rot, NO AH | 67K | 0.98M (0.79%) | 96.97% | **ΔW projection, AH removed** |
-| step235 A_aug | step235 A_100 + hflip augmentation | 67K | 0.98M (0.79%) | **97.30%** | **ΔW projection + augmentation** (current record at 0.98M) |
-| step204 | N=4096 D=16 K_hh=2 K_iter=6 | ~135K (0.11%) | 2.36M (1.91%) | 97.15% | Scale + K_iter=6 |
-| step205 | N=4096 D=16 K_hh=2 K_iter=5 | ~135K (0.11%) | 1.97M (1.59%) | 97.17% | Scale N=4096 |
-| step209 | N=8192 D=16 K_hh=2 K_iter=5 | ~267K (0.22%) | 3.93M (3.18%) | 97.17% | N-scaling ceiling (D=16) |
+| **step605** | **N=2048 D=16 K_iter=1 soft-KD student** | **34,976 (0.029%)** | **0.20M (0.16%)** | **12.7µs (5.3× vs VGG_FC)** | **96.33%** | **K=1 KD distillation from K=5 teacher** ⭐ EFFICIENCY CHAMPION |
+| step887 | N=2048 D=16 K_hh=2 K_iter=5 (canonical multi-seed) | 34,976 (0.029%) | 0.98M (0.79%) | 31.2µs | **96.38% ± 0.18pp** | Canonical baseline — 3-seed confirmed (step887) |
+| step199 | N=2048 D=16 K_hh=2 K_iter=5 | 34,976 (0.029%) | 0.98M (0.79%) | 31.2µs | 95.52% | Baseline AH (α=1.0) + K_iter=5 + D=16 |
+| step195 | N=2048 D=16 K_hh=2 K_iter=6 | 34,976 (0.029%) | 1.18M (0.95%) | — | 96.08% | Baseline AH + K_iter=6 |
+| step217b | N=2048 D=16 K_hh=2 K_iter=5 + polarizer α=1.5 | 34,976 (0.029%) | ~2M (est) | — | 95.92% | **Polarizer routing** (α=1.5) |
+| step235 A_100 | N=2048 D=16 K_hh=2 K_iter=5 + ΔW-rot, NO AH | 34,976 (0.029%) | 0.98M (0.79%) | — | 96.97% | **ΔW projection, AH removed** |
+| step235 A_aug | step235 A_100 + hflip augmentation | 34,976 (0.029%) | 0.98M (0.79%) | — | **97.30%** | **ΔW projection + augmentation** (N=2048 record) |
+| step204 | N=4096 D=16 K_hh=2 K_iter=6 | 69,792 (0.058%) | 2.36M (1.91%) | — | 97.15% | Scale + K_iter=6 |
+| step205 | N=4096 D=16 K_hh=2 K_iter=5 | 69,792 (0.058%) | 1.97M (1.59%) | — | 97.17% | Scale N=4096 |
+| **step273** | **N=4096 D=16 K_hh=2 K_iter=5 + aug** | **69,792 (0.058%)** | **1.97M (1.59%)** | **—** | **97.68%** | **Aug + N=4096; D=16 accuracy record** ⭐ ACCURACY CHAMPION |
+| step209 | N=8192 D=16 K_hh=2 K_iter=5 | 139,264 (0.115%) | 3.93M (3.18%) | — | 97.17% | N-scaling ceiling without aug (D=16) |
 
 ## Near-Winner (Accuracy Champion — outside FLOPs bar)
 
@@ -42,6 +44,7 @@ Each mechanism below produced at least one confirmed winner. In Phase 2 (new dat
 - **Evidence:** step235 A_100 (96.97%) and A_aug (97.30%) — current accuracy record at 0.98M FLOPs.
 - **Mechanism:** Each edge's activation is projected onto the delta vector `ΔW = W_pos[receiver] − W_pos[sender]` before aggregation. Replaces AH entirely.
 - **Why it works (CONFIRMED):** step234 Tier-0 ablation: ΔW proj alone 95.44% vs baseline AH 91.67% at Tier-0. Adding AH to ΔW proj hurts −1.2pp (step234). Step235 GA v2 independently converged to this config (alpha_ahebb=0.0, delta_proj, pa=1.5).
+- **Component ablation (step886 T1 CONFIRMED):** A_sign (sign-projection) = −0.59pp LOAD-BEARING; B_no_ref (remove reference point) = −0.51pp LOAD-BEARING; C_no_theta (remove theta) = +0.15pp NEUTRAL. Paper: 2 load-bearing components; theta simplifies out. D_rand_dir (random direction) = −76.56pp (step883 T0) — geometry is essential.
 - **Why superior to AH (HYPOTHESIS):** ΔW captures pairwise geometric relationships; AH only captures receiver-side diversity. Not yet tested on other datasets.
 - **When to seed:** primary candidate for any new dataset where AH might underfit.
 
@@ -105,7 +108,7 @@ Each mechanism below produced at least one confirmed winner. In Phase 2 (new dat
 - **When to seed:** default for N≥4096. At N=2048, recover -0.36pp cost via augmentation compound (Mechanism 13).
 
 ### Mechanism 13 — **Data augmentation (hflip) — scale-invariant +0.43 to +0.79pp**
-- **Evidence:** step269 (N=2048: +0.18pp T2), step273 (N=4096: +0.56pp T2), step276 (N=8192: +0.43pp T2), step280 (N=1024: +0.54pp T2), step287 (N=16384 T2 running). step235 Aug at N=2048 T2 = 97.30% (historical peak).
+- **Evidence:** step269 (N=2048: +0.18pp T2), step273 (N=4096: +0.56pp T2 → 97.68%, D=16 record), step276 (N=8192: +0.43pp T2), step280 (N=1024: +0.54pp T2), step287 (N=16384: +0.99pp T2 → 96.87%, strongest aug delta). step235 Aug at N=2048 T2 = 97.30%.
 - **Mechanism:** Apply horizontal flip to VGG16 features during training (via `store_aug.h5`).
 - **Why it works (CONFIRMED):** Imagenette has left-right symmetric classes. Augmentation doubles effective dataset size along the symmetry dimension without perturbing semantic content.
 - **Scale-invariance (CONFIRMED):** Consistent +0.4–0.8pp gain across N=1024 to N=8192. Delta does not compress at larger N.
@@ -142,9 +145,9 @@ Mechanisms that failed at N=2048 despite success at N=1024 — **do not transfer
 - **Claim 3** ("AH is load-bearing"): step321 pending — α=0 sweep at N=2048 D=16.
 - **Claim 4** ("F.normalize is load-bearing"): step320 pending — rerun step129's removal.
 - **Claim 5** ("gate-death is fundamental"): documented in 9 failed dynamic routing attempts; formal count in paper.
-- **Claim 6** ("cross-dataset generalization"): step400 (CIFAR-10), step401 (tabular) pending. Blocks submission.
+- **Claim 6** ("cross-dataset generalization"): step882 DONE — CIFAR-10 T2: SGNNET=80.69% vs Linear=86.24% (−5.55pp, 7.4× fewer params). MARGINAL — paper-presentable as honest cross-dataset result. step401 (tabular) still pending.
 - **Claim 7** ("baselines are weaker"): step402 (pruned VGG), step403 (random proj) pending. Blocks submission.
 
 ---
 
-*Last updated 2026-04-13. Regenerate after each phase exit.*
+*Last updated 2026-04-18. Regenerate after each phase exit.*

@@ -182,7 +182,7 @@ class SGNNET_Resonant(nn.Module):
         Z = self.base._seed(x)   # [B, N, D]
 
         theta_pos = self.theta.abs().unsqueeze(0).unsqueeze(-1)   # [1, N, 1]
-        W_ph_norm = F.normalize(self.W_phase, dim=-1)             # [N, D]
+        W_ph_norm = F.normalize(self.W_phase, dim=-1) if self.W_phase is not None else None
 
         Z_reflected = torch.zeros_like(Z)   # leaky self-inhibition accumulator
 
@@ -208,7 +208,10 @@ class SGNNET_Resonant(nn.Module):
             Z_reflected  = self.alpha_reflect * Z_reflected + Z_remainder
 
             # ── 4. Long-range phase inhibition ─────────────────────
-            Z_inhibitory = self._phase_inhibit(Z, W_ph_norm, theta_pos)
+            if W_ph_norm is not None:
+                Z_inhibitory = self._phase_inhibit(Z, W_ph_norm, theta_pos)
+            else:
+                Z_inhibitory = torch.zeros_like(Z)
 
             # ── 5. Combine & normalise ─────────────────────────────
             Z_new = Z_struct + Z_reflected + self.alpha_turing * Z_inhibitory

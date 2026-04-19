@@ -92,6 +92,8 @@ class SGNNET_SoftRoute(nn.Module):
     def W_phase(self): return self.base.W_phase
     @property
     def conn_hh(self): return self.base.conn_hh
+    @conn_hh.setter
+    def conn_hh(self, v): self.base.conn_hh = v
     @property
     def N_hidden(self): return self.base.N_hidden
     @property
@@ -152,10 +154,14 @@ class SGNNET_BeamAllPairs(nn.Module):
     def W_phase(self): return self.base.W_phase
     @property
     def conn_hh(self): return self.base.conn_hh
+    @conn_hh.setter
+    def conn_hh(self, v): self.base.conn_hh = v
     @property
     def N_hidden(self): return self.base.N_hidden
     @property
     def C_ho_mask(self): return self.base.C_ho_mask
+    @property
+    def K_iter(self): return self.base.K_iter
 
     def _normalise(self, Z): return self.base._normalise(Z)
     def _readout(self, Z):   return self.base._readout(Z)

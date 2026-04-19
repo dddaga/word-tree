@@ -1,0 +1,168 @@
+{
+  "system": {
+    "hostname": "5060ti",
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "torch_version": "2.11.0+cu128"
+  },
+  "config": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "alpha_ahebb": 1.0
+  },
+  "variants": {
+    "V1_reduce_overhead": {
+      "compile_mode": "reduce-overhead",
+      "bf16": false,
+      "inference": {
+        "1": {
+          "median_ms": 0.082,
+          "p5_ms": 0.081,
+          "p95_ms": 0.088,
+          "throughput_sps": 12152.4
+        },
+        "32": {
+          "median_ms": 0.316,
+          "p5_ms": 0.313,
+          "p95_ms": 0.32,
+          "throughput_sps": 101368.5
+        },
+        "128": {
+          "median_ms": 1.339,
+          "p5_ms": 1.335,
+          "p95_ms": 1.344,
+          "throughput_sps": 95626.3
+        },
+        "512": {
+          "median_ms": 6.175,
+          "p5_ms": 6.169,
+          "p95_ms": 6.181,
+          "throughput_sps": 82919.8
+        }
+      },
+      "training": {
+        "median_ms": 5.304,
+        "p5_ms": 5.293,
+        "p95_ms": 5.317,
+        "throughput_sps": 24133.2
+      },
+      "gpu_util_avg": 29.7,
+      "gpu_power_avg_w": 51.2
+    },
+    "V4_max_autotune": {
+      "compile_mode": "max-autotune",
+      "bf16": false,
+      "inference": {
+        "1": {
+          "median_ms": 0.083,
+          "p5_ms": 0.081,
+          "p95_ms": 0.087,
+          "throughput_sps": 12047.0
+        },
+        "32": {
+          "median_ms": 0.286,
+          "p5_ms": 0.284,
+          "p95_ms": 0.291,
+          "throughput_sps": 111706.9
+        },
+        "128": {
+          "median_ms": 1.243,
+          "p5_ms": 1.24,
+          "p95_ms": 1.248,
+          "throughput_sps": 102981.3
+        },
+        "512": {
+          "median_ms": 5.84,
+          "p5_ms": 5.835,
+          "p95_ms": 5.848,
+          "throughput_sps": 87671.5
+        }
+      },
+      "training": {
+        "median_ms": 5.126,
+        "p5_ms": 5.12,
+        "p95_ms": 5.134,
+        "throughput_sps": 24969.4
+      },
+      "gpu_util_avg": 29.0,
+      "gpu_power_avg_w": 45.2
+    },
+    "V5_bf16_reduce_overhead": {
+      "compile_mode": "reduce-overhead",
+      "bf16": true,
+      "inference": {
+        "1": {
+          "median_ms": 0.614,
+          "p5_ms": 0.607,
+          "p95_ms": 0.621,
+          "throughput_sps": 1627.5
+        },
+        "32": {
+          "median_ms": 0.311,
+          "p5_ms": 0.307,
+          "p95_ms": 0.316,
+          "throughput_sps": 103002.5
+        },
+        "128": {
+          "median_ms": 1.275,
+          "p5_ms": 1.272,
+          "p95_ms": 1.28,
+          "throughput_sps": 100362.6
+        },
+        "512": {
+          "median_ms": 5.911,
+          "p5_ms": 5.904,
+          "p95_ms": 5.916,
+          "throughput_sps": 86623.2
+        }
+      },
+      "training": {
+        "median_ms": 23.259,
+        "p5_ms": 23.205,
+        "p95_ms": 23.312,
+        "throughput_sps": 5503.1
+      },
+      "gpu_util_avg": 50.0,
+      "gpu_power_avg_w": 108.6
+    },
+    "V6_bf16_max_autotune": {
+      "compile_mode": "max-autotune",
+      "bf16": true,
+      "inference": {
+        "1": {
+          "median_ms": 0.599,
+          "p5_ms": 0.593,
+          "p95_ms": 0.607,
+          "throughput_sps": 1668.7
+        },
+        "32": {
+          "median_ms": 2.31,
+          "p5_ms": 2.298,
+          "p95_ms": 2.317,
+          "throughput_sps": 13850.5
+        },
+        "128": {
+          "median_ms": 11.595,
+          "p5_ms": 11.562,
+          "p95_ms": 11.638,
+          "throughput_sps": 11039.4
+        },
+        "512": {
+          "median_ms": 52.843,
+          "p5_ms": 52.805,
+          "p95_ms": 52.91,
+          "throughput_sps": 9689.0
+        }
+      },
+      "training": {
+        "median_ms": 23.211,
+        "p5_ms": 23.158,
+        "p95_ms": 23.304,
+        "throughput_sps": 5514.7
+      },
+      "gpu_util_avg": 100.0,
+      "gpu_power_avg_w": 109.5
+    }
+  }
+}

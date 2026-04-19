@@ -1,0 +1,62 @@
+{
+  "Ref_orig": {
+    "label": "baseline (replicates step407 SGNNET)",
+    "N": 2048,
+    "K_in": 25,
+    "K_iter": 5,
+    "n_params": 67648,
+    "top1_best": 0.9028947368421053,
+    "best_epoch": 99,
+    "delta_vs_linear": -0.0089,
+    "delta_vs_mlp64": -0.0224,
+    "elapsed_s": 2269
+  },
+  "A_small_n": {
+    "label": "scale N down 4x",
+    "N": 512,
+    "K_in": 25,
+    "K_iter": 5,
+    "n_params": 16960,
+    "top1_best": 0.891578947368421,
+    "best_epoch": 88,
+    "delta_vs_linear": -0.0202,
+    "delta_vs_mlp64": -0.0337,
+    "elapsed_s": 746
+  },
+  "B_low_kin": {
+    "label": "reduce fan-in to K_in=10",
+    "N": 2048,
+    "K_in": 10,
+    "K_iter": 5,
+    "n_params": 67648,
+    "top1_best": 0.9034210526315789,
+    "best_epoch": 92,
+    "delta_vs_linear": -0.0084,
+    "delta_vs_mlp64": -0.0219,
+    "elapsed_s": 2240
+  },
+  "C_low_kiter": {
+    "label": "fewer routing iterations",
+    "N": 2048,
+    "K_in": 25,
+    "K_iter": 2,
+    "n_params": 67648,
+    "top1_best": 0.9034210526315789,
+    "best_epoch": 87,
+    "delta_vs_linear": -0.0084,
+    "delta_vs_mlp64": -0.0219,
+    "elapsed_s": 1084
+  },
+  "D_combined": {
+    "label": "all compressions combined",
+    "N": 512,
+    "K_in": 10,
+    "K_iter": 3,
+    "n_params": 16960,
+    "top1_best": 0.8867105263157895,
+    "best_epoch": 72,
+    "delta_vs_linear": -0.0251,
+    "delta_vs_mlp64": -0.0386,
+    "elapsed_s": 766
+  }
+}

@@ -1,0 +1,60 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step883 — ΔW-proj component ablation T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: standard ΔW-proj — all components active  params=34,976
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7664  lr=2.36e-03
+  ep 10  val=0.9302
+  e 10  loss=0.0843  task=0.0843  safety=0.0000  top1=0.9302  lr=2.36e-03
+  ep 20  val=0.9396
+  e 20  loss=0.0359  task=0.0359  safety=0.0000  top1=0.9396  lr=2.36e-03
+  -> best=0.9396 @ep20  Δ_vs_Ref=+0.00pp  93s
+────────────────────────────────────────────────────────────
+A_sign: proj_coeff.clamp(0) — directional-only routing  params=34,976
+  e  1  loss=3.3988  task=3.3988  safety=0.0000  top1=0.6364  lr=2.36e-03
+  ep 10  val=0.9037
+  e 10  loss=0.1858  task=0.1858  safety=0.0000  top1=0.9037  lr=2.36e-03
+  ep 20  val=0.9190
+  e 20  loss=0.1005  task=0.1005  safety=0.0000  top1=0.9190  lr=2.36e-03
+  -> best=0.9213 @ep19  Δ_vs_Ref=-1.83pp  94s
+────────────────────────────────────────────────────────────
+B_no_ref: alpha_reflect=0 — no reflection signal  params=34,976
+  e  1  loss=3.7967  task=3.7967  safety=0.0000  top1=0.5203  lr=2.36e-03
+  ep 10  val=0.9042
+  e 10  loss=0.2229  task=0.2229  safety=0.0000  top1=0.9042  lr=2.36e-03
+  ep 20  val=0.9264
+  e 20  loss=0.1149  task=0.1149  safety=0.0000  top1=0.9264  lr=2.36e-03
+  -> best=0.9264 @ep20  Δ_vs_Ref=-1.32pp  94s
+────────────────────────────────────────────────────────────
+C_no_theta: theta=0 — no per-neuron threshold  params=34,976
+  e  1  loss=9.6459  task=9.6459  safety=0.0000  top1=0.1995  lr=2.36e-03
+  ep 10  val=0.9009
+  e 10  loss=0.4885  task=0.4885  safety=0.0000  top1=0.9009  lr=2.36e-03
+  ep 20  val=0.9302
+  e 20  loss=0.2887  task=0.2887  safety=0.0000  top1=0.9302  lr=2.36e-03
+  -> best=0.9325 @ep19  Δ_vs_Ref=-0.71pp  89s
+────────────────────────────────────────────────────────────
+D_rand_dir: random unit vectors — no W_pos geometry  params=34,976
+  e  1  loss=8.2197  task=8.2197  safety=0.0000  top1=0.1470  lr=2.36e-03
+  ep 10  val=0.1083
+  e 10  loss=5.6783  task=5.6783  safety=0.0000  top1=0.1083  lr=2.36e-03
+  ep 20  val=0.1322
+  e 20  loss=5.9024  task=5.9024  safety=0.0000  top1=0.1322  lr=1.18e-03
+  -> best=0.1740 @ep18  Δ_vs_Ref=-76.56pp  91s
+
+======================================================================
+STEP 883 SUMMARY — ΔW-proj ablation table
+======================================================================
+  config          best   Δ_vs_Ref  component removed
+  Ref_dw        0.9396     +0.00pp  standard ΔW-proj — all components active
+  A_sign        0.9213     -1.83pp  proj_coeff.clamp(0) — directional-only routing
+  B_no_ref      0.9264     -1.32pp  alpha_reflect=0 — no reflection signal
+  C_no_theta    0.9325     -0.71pp  theta=0 — no per-neuron threshold
+  D_rand_dir    0.1740    -76.56pp  random unit vectors — no W_pos geometry
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step883_dwproj_ablation_t0_seed42__mini_cpu.json

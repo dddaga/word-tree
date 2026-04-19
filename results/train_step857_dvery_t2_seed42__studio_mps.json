@@ -1,0 +1,22 @@
+{
+  "Ref": {
+    "sparsity": 0.9,
+    "label": "sparsity=0.90 current default",
+    "n_params": 67744,
+    "best": 0.9561783671379089,
+    "best_ep": 128,
+    "delta_vs_ref": 0.0,
+    "delta_vs_step199": 0.001,
+    "elapsed_s": 359
+  },
+  "D_very": {
+    "sparsity": 0.98,
+    "label": "sparsity=0.98 step853 T1 winner (+0.36pp)",
+    "n_params": 67744,
+    "best": 0.9546496868133545,
+    "best_ep": 122,
+    "delta_vs_ref": -0.0015,
+    "delta_vs_step199": -0.0006,
+    "elapsed_s": 357
+  }
+}

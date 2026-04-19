@@ -1,0 +1,38 @@
+{
+  "Ref_k5": {
+    "N": 4096,
+    "K_iter": 5,
+    "use_kd": false,
+    "label": "K=5 N=4096 scratch \u2014 T0 baseline",
+    "n_params": 69792,
+    "best": 0.8980891719745223,
+    "best_ep": 11,
+    "delta_vs_ref": 0.0,
+    "delta_vs_champion": -0.0614,
+    "elapsed_s": 47
+  },
+  "A_k1_scratch": {
+    "N": 4096,
+    "K_iter": 1,
+    "use_kd": false,
+    "label": "K=1 N=4096 CE only \u2014 no KD",
+    "n_params": 69792,
+    "best": 0.3436942675159236,
+    "best_ep": 12,
+    "delta_vs_ref": -0.5544,
+    "delta_vs_champion": -0.6158,
+    "elapsed_s": 13
+  },
+  "B_k1_kd": {
+    "N": 4096,
+    "K_iter": 1,
+    "use_kd": true,
+    "label": "K=1 N=4096 + KD from step604 teacher",
+    "n_params": 69792,
+    "best": 0.21095541401273885,
+    "best_ep": 6,
+    "delta_vs_ref": -0.6871,
+    "delta_vs_champion": -0.7485,
+    "elapsed_s": 13
+  }
+}

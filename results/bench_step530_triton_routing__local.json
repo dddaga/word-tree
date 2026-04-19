@@ -1,0 +1,53 @@
+{
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "torch": "2.11.0+cu128",
+  "bs": 32,
+  "k_iter": 5,
+  "N": 2048,
+  "D": 16,
+  "K_HH": 2,
+  "baseline_ms": 0.28,
+  "has_triton": true,
+  "variants": {
+    "V_ref": {
+      "median_ms": 7.114136496966239,
+      "p95_ms": 7.182236001972342,
+      "p99_ms": 7.228826696082251,
+      "mean_ms": 5.999874189219554,
+      "throughput_sps": 4498.086312182247,
+      "peak_mib": 166.1982421875,
+      "desc": "DeltaProj eager fp32"
+    },
+    "V_ref_ma": {
+      "median_ms": 0.33574550616322085,
+      "p95_ms": 2.5721679943671916,
+      "p99_ms": 2.5763807058683597,
+      "mean_ms": 0.977540009553195,
+      "throughput_sps": 95310.2853577536,
+      "peak_mib": 62.08984375,
+      "desc": "DeltaProj max-autotune fp32"
+    },
+    "V_triton": {
+      "median_ms": 3.8310145027935505,
+      "p95_ms": 3.8823679395136423,
+      "p99_ms": 3.891828411142342,
+      "mean_ms": 3.144180825111107,
+      "throughput_sps": 8352.878846234024,
+      "peak_mib": 277.34765625,
+      "desc": "DeltaProjTriton eager Triton"
+    },
+    "V_triton_cg": {
+      "median_ms": 3.8288045034278184,
+      "p95_ms": 3.863089495280292,
+      "p99_ms": 3.880660090217134,
+      "mean_ms": 3.6286079751880607,
+      "throughput_sps": 8357.700157151226,
+      "peak_mib": 277.34765625,
+      "desc": "DeltaProjTriton CUDA Graph"
+    },
+    "V_triton_c": {
+      "error": "SubprocException: An exception occurred in a subprocess:\n\nName=routing_step_proj_kernel\nTraceback (most recent call last):\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/compile_worker/subproc_pool.py\", line 457, in do_job\n    result = job()\n             ^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/compile_tasks.py\", line 68, in _worker_compile_triton\n    kernel.precompile(warm_cache_only=True)\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 491, in precompile\n    self._precompile_worker()\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 522, in _precompile_worker\n    compile_results.append(self._precompile_config(c))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/runtime/triton_heuristics.py\", line 872, in _precompile_config\n    binary = triton.compile(*compile_args, **compile_kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/compiler/compiler.py\", line 324, in compile\n    next_module = compile_ir(module, metadata)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/backends/nvidia/compiler.py\", line 544, in <lambda>\n    stages[\"llir\"] = lambda src, metadata: self.make_llir(src, metadata, options, capability)\n                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/triton/backends/nvidia/compiler.py\", line 404, in make_llir\n    llvm_mod = llvm.to_module(mod, context)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: failed to translate module to LLVM IR\n\n\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS=\"+dynamo\"\n"
+    }
+  }
+}

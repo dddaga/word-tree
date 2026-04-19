@@ -1,0 +1,24 @@
+{
+  "Ref_n4096": {
+    "label": "N=4096 no-aug (step205 ref ~97.17%)",
+    "N": 4096,
+    "use_aug": false,
+    "routing_macs": 1310720,
+    "n_params": 69792,
+    "top1_best": 0.9584713578224182,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 161
+  },
+  "A_n4096_aug": {
+    "label": "N=4096 + aug (scaling check)",
+    "N": 4096,
+    "use_aug": true,
+    "routing_macs": 1310720,
+    "n_params": 69792,
+    "top1_best": 0.9671337604522705,
+    "best_epoch": 48,
+    "delta_vs_ref": 0.0087,
+    "elapsed_s": 285
+  }
+}

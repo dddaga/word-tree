@@ -1,0 +1,26 @@
+{
+  "Ref_k5_naug": {
+    "label": "N=2048 K_hh=2(K=5) no-aug ref",
+    "N": 2048,
+    "K_hh": 2,
+    "use_aug": false,
+    "routing_macs": 655360,
+    "n_params": 34976,
+    "top1_best": 0.9546496868133545,
+    "best_epoch": 128,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 252
+  },
+  "B_k4_aug": {
+    "label": "N=2048 K_hh=1(K=4) + aug (20% routing MACs reduction)",
+    "N": 2048,
+    "K_hh": 1,
+    "use_aug": true,
+    "routing_macs": 327680,
+    "n_params": 34976,
+    "top1_best": 0.9416560530662537,
+    "best_epoch": 146,
+    "delta_vs_ref": -0.013,
+    "elapsed_s": 388
+  }
+}

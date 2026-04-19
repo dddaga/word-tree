@@ -1,0 +1,29 @@
+{
+  "MLP_h8": {
+    "h": 8,
+    "n_params": 200802,
+    "ratio_vs_sgnnet": 5.74,
+    "best": 0.4580000042915344,
+    "best_ep": 109,
+    "gap_vs_sgnnet": -0.3462,
+    "elapsed_s": 302
+  },
+  "MLP_h12": {
+    "h": 12,
+    "n_params": 301198,
+    "ratio_vs_sgnnet": 8.61,
+    "best": 0.6710000038146973,
+    "best_ep": 27,
+    "gap_vs_sgnnet": -0.1332,
+    "elapsed_s": 184
+  },
+  "MLP_h16": {
+    "h": 16,
+    "n_params": 401594,
+    "ratio_vs_sgnnet": 11.48,
+    "best": 0.8075000047683716,
+    "best_ep": 142,
+    "gap_vs_sgnnet": 0.0033,
+    "elapsed_s": 174
+  }
+}

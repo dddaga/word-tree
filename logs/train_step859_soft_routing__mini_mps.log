@@ -9,6 +9,33 @@ step859 — Soft routing + ΔW-proj/AH T0 (20ep, 50% data)
 ======================================================================
 
 ────────────────────────────────────────────────────────────
-Ref: hard gather + AH (standard baseline)  params=34,976
+C_soft_ah: soft anneal + AntiHebbian  params=34,976
   e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4008  lr=2.36e-03
-  ep  5  val=0.8224
+  ep  5  val=0.8214  β=1.03
+  ep 10  val=0.9017  β=1.68
+  e 10  loss=0.3900  task=0.3900  safety=0.0000  top1=0.9017  lr=2.36e-03
+  ep 15  val=0.8910  β=2.34
+  ep 20  val=0.9180  β=3.00
+  e 20  loss=0.2770  task=0.2770  safety=0.0000  top1=0.9180  lr=2.36e-03
+  -> best=0.9180 @ep20  Δ_vs_Ref=-2.20pp  70s
+────────────────────────────────────────────────────────────
+D_soft_dwproj: soft anneal + ΔW-proj  params=34,977
+  e  1  loss=13.7653  task=13.7653  safety=0.0000  top1=0.1177  lr=2.36e-03
+  ep  5  val=0.1511  β=1.03
+  ep 10  val=0.2454  β=1.68
+  e 10  loss=2.2274  task=2.2274  safety=0.0000  top1=0.2454  lr=2.36e-03
+  ep 15  val=0.2234  β=2.34
+  ep 20  val=0.3019  β=3.00
+  e 20  loss=2.0179  task=2.0179  safety=0.0000  top1=0.3019  lr=2.36e-03
+  -> best=0.3136 @ep18  Δ_vs_Ref=-62.64pp  80s
+
+======================================================================
+STEP 859 SUMMARY — Soft routing T0
+======================================================================
+  config                best   Δ_vs_Ref
+  C_soft_ah           0.9180     -2.20pp
+  D_soft_dwproj       0.3136    -62.64pp
+  AH on soft routing: -2.20pp vs Ref
+  ΔW-proj on soft routing: -62.64pp vs Ref
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step859_soft_routing_seed42__mini_mps.json

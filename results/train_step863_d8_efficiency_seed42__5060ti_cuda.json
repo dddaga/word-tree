@@ -1,0 +1,42 @@
+{
+  "Ref_D16": {
+    "D": 16,
+    "K_iter": 5,
+    "label": "D=16 K=5 standard \u2014 control",
+    "n_params": 34976,
+    "best": 0.9174522161483765,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 21
+  },
+  "A_D8": {
+    "D": 8,
+    "K_iter": 5,
+    "label": "D=8  K=5 \u2014 half position params",
+    "n_params": 18512,
+    "best": 0.8988534808158875,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0186,
+    "elapsed_s": 10
+  },
+  "B_D8_K10": {
+    "D": 8,
+    "K_iter": 10,
+    "label": "D=8  K=10 \u2014 more iters compensate D",
+    "n_params": 18512,
+    "best": 0.752866268157959,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1646,
+    "elapsed_s": 17
+  },
+  "C_D12": {
+    "D": 12,
+    "K_iter": 5,
+    "label": "D=12 K=5 \u2014 intermediate probe",
+    "n_params": 26744,
+    "best": 0.9146496653556824,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0028,
+    "elapsed_s": 15
+  }
+}

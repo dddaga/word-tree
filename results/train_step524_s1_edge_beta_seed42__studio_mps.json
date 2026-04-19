@@ -1,0 +1,44 @@
+{
+  "Ref": {
+    "label": "\u0394W proj baseline (no \u03b2)",
+    "use_beta": false,
+    "beta_init": 0.0,
+    "n_params": 67744,
+    "top1_best": 0.9393630623817444,
+    "best_epoch": 19,
+    "elapsed_s": 41.49635195732117,
+    "beta_stats": null
+  },
+  "S1_init0": {
+    "label": "\u0394W proj + \u03b2 init=0 (neutral)",
+    "use_beta": true,
+    "beta_init": 0.0,
+    "n_params": 71840,
+    "top1_best": 0.9391082525253296,
+    "best_epoch": 19,
+    "elapsed_s": 45.39520788192749,
+    "beta_stats": {
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "gate_mean": 1.0
+    }
+  },
+  "S1_init1": {
+    "label": "\u0394W proj + \u03b2 init=1 (non-neutral)",
+    "use_beta": true,
+    "beta_init": 1.0,
+    "n_params": 71840,
+    "top1_best": 0.9307006597518921,
+    "best_epoch": 18,
+    "elapsed_s": 45.37948799133301,
+    "beta_stats": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "gate_mean": 1.761594295501709
+    }
+  }
+}

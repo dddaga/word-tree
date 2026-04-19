@@ -1,0 +1,73 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step868 — Z-memory activation retention T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  Ref: ΔW-proj T1=0.9524 (step858 B_dwproj)
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: gamma=0.0 — standard ΔW-proj (control)  params=34,976
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7661  lr=2.36e-03
+  ep  5  val=0.9070
+  ep 10  val=0.9315
+  e 10  loss=0.0836  task=0.0836  safety=0.0000  top1=0.9315  lr=2.36e-03
+  ep 15  val=0.9355
+  ep 20  val=0.9383
+  e 20  loss=0.0350  task=0.0350  safety=0.0000  top1=0.9383  lr=2.36e-03
+  -> best=0.9396 @ep17  Δ_vs_Ref=+0.00pp  119s
+────────────────────────────────────────────────────────────
+A_g03: gamma=0.3 — light temporal accumulation  params=34,976
+  e  1  loss=2.3610  task=2.3610  safety=0.0000  top1=0.7975  lr=2.36e-03
+  ep  5  val=0.9139
+  ep 10  val=0.9292
+  e 10  loss=0.0715  task=0.0715  safety=0.0000  top1=0.9292  lr=2.36e-03
+  ep 15  val=0.9353
+  ep 20  val=0.9404
+  e 20  loss=0.0271  task=0.0271  safety=0.0000  top1=0.9404  lr=2.36e-03
+  -> best=0.9404 @ep20  Δ_vs_Ref=+0.08pp  118s
+────────────────────────────────────────────────────────────
+B_g05: gamma=0.5 — medium accumulation  params=34,976
+  e  1  loss=2.2949  task=2.2949  safety=0.0000  top1=0.7890  lr=2.36e-03
+  ep  5  val=0.9090
+  ep 10  val=0.9279
+  e 10  loss=0.0725  task=0.0725  safety=0.0000  top1=0.9279  lr=2.36e-03
+  ep 15  val=0.9327
+  ep 20  val=0.9404
+  e 20  loss=0.0279  task=0.0279  safety=0.0000  top1=0.9404  lr=2.36e-03
+  -> best=0.9404 @ep20  Δ_vs_Ref=+0.08pp  120s
+────────────────────────────────────────────────────────────
+C_g08: gamma=0.8 — heavy accumulation  params=34,976
+  e  1  loss=2.2938  task=2.2938  safety=0.0000  top1=0.7811  lr=2.36e-03
+  ep  5  val=0.9065
+  ep 10  val=0.9310
+  e 10  loss=0.0697  task=0.0697  safety=0.0000  top1=0.9310  lr=2.36e-03
+  ep 15  val=0.9361
+  ep 20  val=0.9429
+  e 20  loss=0.0268  task=0.0268  safety=0.0000  top1=0.9429  lr=2.36e-03
+  -> best=0.9429 @ep20  Δ_vs_Ref=+0.33pp  123s
+────────────────────────────────────────────────────────────
+D_g09: gamma=0.9 — very heavy accumulation  params=34,976
+  e  1  loss=2.6672  task=2.6672  safety=0.0000  top1=0.7654  lr=2.36e-03
+  ep  5  val=0.9108
+  ep 10  val=0.9292
+  e 10  loss=0.0796  task=0.0796  safety=0.0000  top1=0.9292  lr=2.36e-03
+  ep 15  val=0.9297
+  ep 20  val=0.9363
+  e 20  loss=0.0327  task=0.0327  safety=0.0000  top1=0.9363  lr=2.36e-03
+  -> best=0.9363 @ep20  Δ_vs_Ref=-0.33pp  122s
+
+======================================================================
+STEP 868 SUMMARY — Z-memory retention T0
+======================================================================
+  config      gamma    best   Δ_vs_Ref
+  Ref_dw       0.00  0.9396     +0.00pp
+  A_g03        0.30  0.9404     +0.08pp
+  B_g05        0.50  0.9404     +0.08pp
+  C_g08        0.80  0.9429     +0.33pp
+  D_g09        0.90  0.9363     -0.33pp
+
+  Best: C_g08 (+0.33pp) → ADVANCES to T1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step868_zmem_retention_t0_seed42__mini_cpu.json

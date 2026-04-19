@@ -1,0 +1,76 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step886 — ΔW-proj ablation T1 (75ep, 50% data)
+  device=cpu  epochs=75  seed=42
+  T0 context: sign=0.9213(-1.83pp), no_ref=0.9264(-1.32pp), no_theta=0.9325(-0.71pp)
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: all components active  params=34,976
+  e  1  loss=2.5202  task=2.5202  safety=0.0000  top1=0.7666  lr=2.36e-03
+  e 10  loss=0.0841  task=0.0841  safety=0.0000  top1=0.9310  lr=2.36e-03
+  e 20  loss=0.0357  task=0.0357  safety=0.0000  top1=0.9381  lr=2.36e-03
+  ep 25  val=0.9406
+  e 30  loss=0.0212  task=0.0212  safety=0.0000  top1=0.9406  lr=2.36e-03
+  e 40  loss=0.0160  task=0.0160  safety=0.0000  top1=0.9432  lr=2.36e-03
+  ep 50  val=0.9490
+  e 50  loss=0.0116  task=0.0116  safety=0.0000  top1=0.9490  lr=2.36e-03
+  e 60  loss=0.0124  task=0.0124  safety=0.0000  top1=0.9437  lr=2.36e-03
+  e 70  loss=0.0093  task=0.0093  safety=0.0000  top1=0.9521  lr=2.36e-03
+  ep 75  val=0.9406
+  -> best=0.9529 @ep54  Δ_vs_Ref=+0.00pp  353s
+────────────────────────────────────────────────────────────
+A_sign: proj_coeff.clamp(0) — directional-only  params=34,976
+  e  1  loss=3.3988  task=3.3988  safety=0.0000  top1=0.6364  lr=2.36e-03
+  e 10  loss=0.1857  task=0.1857  safety=0.0000  top1=0.9045  lr=2.36e-03
+  e 20  loss=0.1003  task=0.1003  safety=0.0000  top1=0.9195  lr=2.36e-03
+  ep 25  val=0.9266
+  e 30  loss=0.0633  task=0.0633  safety=0.0000  top1=0.9353  lr=2.36e-03
+  e 40  loss=0.0470  task=0.0470  safety=0.0000  top1=0.9371  lr=2.36e-03
+  ep 50  val=0.9401
+  e 50  loss=0.0359  task=0.0359  safety=0.0000  top1=0.9401  lr=2.36e-03
+  e 60  loss=0.0306  task=0.0306  safety=0.0000  top1=0.9442  lr=2.36e-03
+  e 70  loss=0.0229  task=0.0229  safety=0.0000  top1=0.9427  lr=2.36e-03
+  ep 75  val=0.9457
+  -> best=0.9470 @ep69  Δ_vs_Ref=-0.59pp  350s
+────────────────────────────────────────────────────────────
+B_no_ref: alpha_reflect=0 — no reflection  params=34,976
+  e  1  loss=3.7967  task=3.7967  safety=0.0000  top1=0.5203  lr=2.36e-03
+  e 10  loss=0.2227  task=0.2227  safety=0.0000  top1=0.9057  lr=2.36e-03
+  e 20  loss=0.1145  task=0.1145  safety=0.0000  top1=0.9261  lr=2.36e-03
+  ep 25  val=0.9317
+  e 30  loss=0.0792  task=0.0792  safety=0.0000  top1=0.9320  lr=2.36e-03
+  e 40  loss=0.0560  task=0.0560  safety=0.0000  top1=0.9386  lr=2.36e-03
+  ep 50  val=0.9332
+  e 50  loss=0.0491  task=0.0491  safety=0.0000  top1=0.9332  lr=2.36e-03
+  e 60  loss=0.0349  task=0.0349  safety=0.0000  top1=0.9429  lr=2.36e-03
+  e 70  loss=0.0223  task=0.0223  safety=0.0000  top1=0.9460  lr=2.36e-03
+  ep 75  val=0.9452
+  -> best=0.9478 @ep72  Δ_vs_Ref=-0.51pp  347s
+────────────────────────────────────────────────────────────
+C_no_theta: theta=0 — no per-neuron threshold  params=34,976
+  e  1  loss=9.6452  task=9.6452  safety=0.0000  top1=0.1954  lr=2.36e-03
+  e 10  loss=0.4969  task=0.4969  safety=0.0000  top1=0.9062  lr=2.36e-03
+  e 20  loss=0.2853  task=0.2853  safety=0.0000  top1=0.9310  lr=2.36e-03
+  ep 25  val=0.9302
+  e 30  loss=0.2230  task=0.2230  safety=0.0000  top1=0.9373  lr=2.36e-03
+  e 40  loss=0.1860  task=0.1860  safety=0.0000  top1=0.9353  lr=2.36e-03
+  ep 50  val=0.9439
+  e 50  loss=0.1593  task=0.1593  safety=0.0000  top1=0.9439  lr=2.36e-03
+  e 60  loss=0.1366  task=0.1366  safety=0.0000  top1=0.9465  lr=2.36e-03
+  e 70  loss=0.1261  task=0.1261  safety=0.0000  top1=0.9483  lr=2.36e-03
+  ep 75  val=0.9445
+  -> best=0.9544 @ep74  Δ_vs_Ref=+0.15pp  326s
+
+======================================================================
+STEP 886 SUMMARY — ΔW-proj ablation T1
+======================================================================
+  config           T0_Δ     T1_Δ  verdict
+  Ref_dw          (ref)  +0.00pp  NEUTRAL
+  A_sign        -1.83pp  -0.59pp  LOAD-BEARING
+  B_no_ref      -1.32pp  -0.51pp  LOAD-BEARING
+  C_no_theta    -0.71pp  +0.15pp  NEUTRAL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step886_dwproj_ablation_t1_seed42__mini_cpu.json

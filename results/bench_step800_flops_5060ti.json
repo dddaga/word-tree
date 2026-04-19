@@ -1,0 +1,82 @@
+{
+  "system": {
+    "hostname": "5060ti",
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "torch_version": "2.11.0+cu128"
+  },
+  "config": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "K_in": 25,
+    "alpha_ahebb": 1.0,
+    "alpha_reflect": 0.5
+  },
+  "analytical_flops": {
+    "seed_gather_flops": 819200,
+    "seed_normalize_flops": 98304,
+    "routing_flops_true": 2129920,
+    "routing_flops_old_formula": 655360,
+    "readout_flops": 655680,
+    "total_true_flops": 3703104,
+    "total_true_macs": 1851552,
+    "per_iter_breakdown": {
+      "relu_theta": 65536,
+      "ah_multiply": 65536,
+      "ah_sum": 65536,
+      "reflect": 98304,
+      "combine": 32768,
+      "normalize": 98304,
+      "total_per_iter": 425984
+    },
+    "undercounting_ratio": 5.65
+  },
+  "vgg16_fc_flops": {
+    "l1": 205520896,
+    "l2": 33554432,
+    "l3": 8192000,
+    "total": 247267328,
+    "total_m": 247.27
+  },
+  "cuda_event_latency": {
+    "1": {
+      "median_ms": 0.53,
+      "p5_ms": 0.523,
+      "p95_ms": 0.538,
+      "throughput_sps": 1885.5,
+      "batch_size": 1,
+      "n_timed": 50
+    },
+    "32": {
+      "median_ms": 2.304,
+      "p5_ms": 2.297,
+      "p95_ms": 2.317,
+      "throughput_sps": 13886.5,
+      "batch_size": 32,
+      "n_timed": 50
+    },
+    "128": {
+      "median_ms": 11.535,
+      "p5_ms": 11.504,
+      "p95_ms": 11.566,
+      "throughput_sps": 11096.9,
+      "batch_size": 128,
+      "n_timed": 50
+    },
+    "train": {
+      "median_ms": 23.012,
+      "p5_ms": 22.966,
+      "p95_ms": 23.048,
+      "throughput_sps": 5562.2,
+      "batch_size": 128,
+      "n_timed": 50
+    }
+  },
+  "efficiency_vs_peak": {
+    "peak_tflops_fp32": 22.1,
+    "achieved_tflops": 0.020598,
+    "utilization_pct": 0.09
+  },
+  "profiler_top30": []
+}

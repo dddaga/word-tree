@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "label": "hard gather + AH \u2014 control",
+    "n_params": 34976,
+    "best": 0.9171974658966064,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 159
+  },
+  "A_soft_static": {
+    "label": "step859 soft over K_hh=2, \u03b2 0.5\u21923.0",
+    "n_params": 34976,
+    "best": 0.9192356467247009,
+    "best_ep": 20,
+    "delta_vs_ref": 0.002,
+    "elapsed_s": 156
+  },
+  "B_beam_topk": {
+    "label": "beam M=32 all-pairs train, top-K=8 eval",
+    "n_params": 34976,
+    "best": 0.9187260866165161,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0015,
+    "elapsed_s": 146
+  },
+  "C_beam_wider": {
+    "label": "beam M=32 all-pairs train, top-K=16 eval",
+    "n_params": 34976,
+    "best": 0.9189808964729309,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0018,
+    "elapsed_s": 117
+  },
+  "D_beam_train": {
+    "label": "beam M=32 all-pairs train, dense eval",
+    "n_params": 34976,
+    "best": 0.9179617762565613,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0008,
+    "elapsed_s": 116
+  }
+}

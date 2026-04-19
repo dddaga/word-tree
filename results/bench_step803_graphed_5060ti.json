@@ -1,0 +1,76 @@
+{
+  "system": {
+    "hostname": "5060ti",
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "torch_version": "2.11.0+cu128",
+    "cuda_version": "12.8"
+  },
+  "config": {
+    "N": 2048,
+    "D": 16,
+    "K_hh": 2,
+    "K_iter": 5,
+    "alpha_ahebb": 1.0,
+    "alpha_reflect": 0.5,
+    "alpha_turing": 0.0
+  },
+  "bench_config": {
+    "n_warmup": 3,
+    "n_timed": 50,
+    "bench_sizes": [
+      1,
+      32,
+      128,
+      512
+    ],
+    "train_bs": 128
+  },
+  "hypothesis": "make_graphed_callables on routing_step eliminates CPU kernel-launch overhead across K_iter=5 serial iterations, measurable at small BS.",
+  "design_note": "reflection accumulator computed outside graph (stateful across iterations). graphed callable: relu \u2192 gather conn_hh \u2192 AH-suppress (supp_w) \u2192 sum \u2192 normalize. captured_bs=TRAIN_BS; inference at other batch sizes falls back to eager.",
+  "variants": {
+    "V1_reduce_overhead_fp32": {
+      "inference": {
+        "1": {
+          "median_ms": 0.078,
+          "p5_ms": 0.077,
+          "p95_ms": 0.084,
+          "throughput_sps": 12799.5
+        },
+        "32": {
+          "median_ms": 0.312,
+          "p5_ms": 0.309,
+          "p95_ms": 0.319,
+          "throughput_sps": 102564.1
+        },
+        "128": {
+          "median_ms": 1.332,
+          "p5_ms": 1.329,
+          "p95_ms": 1.337,
+          "throughput_sps": 96082.3
+        },
+        "512": {
+          "median_ms": 6.169,
+          "p5_ms": 6.164,
+          "p95_ms": 6.174,
+          "throughput_sps": 82995.1
+        }
+      },
+      "training": {
+        "median_ms": 5.295,
+        "p5_ms": 5.29,
+        "p95_ms": 5.301,
+        "throughput_sps": 24173.7
+      },
+      "gpu_util_avg": 99.0,
+      "gpu_power_avg_w": 70.7,
+      "compile_mode": "reduce-overhead",
+      "graphed_routing": false
+    },
+    "V9_graphed_routing": {
+      "skipped": true,
+      "reason": "make_graphed_callables FAILED: AcceleratorError: CUDA error: operation failed due to a previous error during capture\nSearch for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n",
+      "graphed_routing": false,
+      "compile_mode": "reduce-overhead"
+    }
+  }
+}

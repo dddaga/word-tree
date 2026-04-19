@@ -1,0 +1,52 @@
+{
+  "Ref_dw": {
+    "alpha_hub": 0.0,
+    "hub_m": 0,
+    "label": "alpha_hub=0 \u2014 standard \u0394W-proj (control)",
+    "n_params": 34976,
+    "best": 0.9391082525253296,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 26
+  },
+  "A_hub005": {
+    "alpha_hub": 0.05,
+    "hub_m": 0,
+    "label": "alpha_hub=0.05 \u2014 very light global signal",
+    "n_params": 34976,
+    "best": 0.9424203634262085,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0033,
+    "elapsed_s": 26
+  },
+  "B_hub03": {
+    "alpha_hub": 0.3,
+    "hub_m": 0,
+    "label": "alpha_hub=0.3 \u2014 medium hub (global mean)",
+    "n_params": 34976,
+    "best": 0.9327388405799866,
+    "best_ep": 16,
+    "delta_vs_ref": -0.0064,
+    "elapsed_s": 26
+  },
+  "C_hub10": {
+    "alpha_hub": 1.0,
+    "hub_m": 0,
+    "label": "alpha_hub=1.0 \u2014 full hub balance",
+    "n_params": 34976,
+    "best": 0.8799999952316284,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0591,
+    "elapsed_s": 26
+  },
+  "D_hub_beam": {
+    "alpha_hub": 0.3,
+    "hub_m": 16,
+    "label": "alpha_hub=0.3, top-16 beam hub (1.6% of nodes)",
+    "n_params": 34976,
+    "best": 0.9261146783828735,
+    "best_ep": 19,
+    "delta_vs_ref": -0.013,
+    "elapsed_s": 27
+  }
+}

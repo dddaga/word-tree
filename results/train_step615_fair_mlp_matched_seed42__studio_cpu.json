@@ -1,0 +1,34 @@
+{
+  "A_fair_h3": {
+    "label": "h=3 LeakyReLU He-init dropout=0.3 label-smooth",
+    "n_params": 75307,
+    "best": 0.7880254777070064,
+    "best_ep": 28,
+    "delta_vs_sgnnet": -0.1672,
+    "elapsed_s": 38
+  },
+  "B_fair_h2": {
+    "label": "h=2 LeakyReLU He-init dropout=0.3 label-smooth",
+    "n_params": 50208,
+    "best": 0.6692993630573248,
+    "best_ep": 49,
+    "delta_vs_sgnnet": -0.2859,
+    "elapsed_s": 37
+  },
+  "C_deeper_h2": {
+    "label": "h=2\u00d72 deeper LeakyReLU He-init dropout=0.3",
+    "n_params": 50214,
+    "best": 0.6196178343949045,
+    "best_ep": 33,
+    "delta_vs_sgnnet": -0.3356,
+    "elapsed_s": 38
+  },
+  "E_linear": {
+    "label": "linear probe 25088\u219210 (250K, upper-bound)",
+    "n_params": 250890,
+    "best": 0.8868789808917198,
+    "best_ep": 1,
+    "delta_vs_sgnnet": -0.0683,
+    "elapsed_s": 38
+  }
+}

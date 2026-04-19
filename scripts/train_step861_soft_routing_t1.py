@@ -82,6 +82,8 @@ class SGNNET_SoftRoute(nn.Module):
     def W_phase(self): return self.base.W_phase
     @property
     def conn_hh(self): return self.base.conn_hh
+    @conn_hh.setter
+    def conn_hh(self, v): self.base.conn_hh = v
     @property
     def N_hidden(self): return self.base.N_hidden
     @property

@@ -1,0 +1,24 @@
+{
+  "Ref_n16384": {
+    "label": "N=16384 no-aug T2 ref",
+    "N": 16384,
+    "use_aug": false,
+    "routing_macs": 5242880,
+    "n_params": 278688,
+    "top1_best": 0.9587261080741882,
+    "best_epoch": 73,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 2231
+  },
+  "A_n16384_aug": {
+    "label": "N=16384 + aug T2 (validates +2.11pp T1)",
+    "N": 16384,
+    "use_aug": true,
+    "routing_macs": 5242880,
+    "n_params": 278688,
+    "top1_best": 0.968662440776825,
+    "best_epoch": 72,
+    "delta_vs_ref": 0.0099,
+    "elapsed_s": 4176
+  }
+}

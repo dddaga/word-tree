@@ -1,0 +1,50 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step888 — K_hh=1+K_in=15 compound T1 (75ep, 50% data)
+  device=mps  epochs=75  seed=42
+  T0 context: C_compound=-1.89pp (expected artifact; B_kin15 T0-unstable)
+  Expected T2 compound ≈ K_hh1_T2(-0.74pp) + K_in15_T2(-0.33pp) = -1.07pp
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: K_hh=2, K_in=25 — standard ΔW-proj  params=34,976
+  FLOPs: seed=1.638M  routing=0.655M
+  e  1  loss=2.5203  task=2.5203  safety=0.0000  top1=0.7661  lr=2.36e-03
+  e 10  loss=0.0836  task=0.0836  safety=0.0000  top1=0.9335  lr=2.36e-03
+  e 20  loss=0.0357  task=0.0357  safety=0.0000  top1=0.9376  lr=2.36e-03
+  ep 25  val=0.9422
+  e 30  loss=0.0211  task=0.0211  safety=0.0000  top1=0.9417  lr=2.36e-03
+  e 40  loss=0.0165  task=0.0165  safety=0.0000  top1=0.9442  lr=2.36e-03
+  ep 50  val=0.9465
+  e 50  loss=0.0122  task=0.0122  safety=0.0000  top1=0.9465  lr=2.36e-03
+  e 60  loss=0.0102  task=0.0102  safety=0.0000  top1=0.9460  lr=2.36e-03
+  e 70  loss=0.0098  task=0.0098  safety=0.0000  top1=0.9480  lr=2.36e-03
+  ep 75  val=0.9455
+  -> best=0.9526 @ep59  Δ_vs_Ref=+0.00pp  438s
+────────────────────────────────────────────────────────────
+C_compound: K_hh=1, K_in=15 — both: ~45% total FLOPs reduction  params=34,976
+  FLOPs: seed=0.983M  routing=0.328M
+  e  1  loss=2.3845  task=2.3845  safety=0.0000  top1=0.6996  lr=2.36e-03
+  e 10  loss=0.1722  task=0.1722  safety=0.0000  top1=0.9011  lr=2.36e-03
+  e 20  loss=0.0918  task=0.0918  safety=0.0000  top1=0.9182  lr=2.36e-03
+  ep 25  val=0.9264
+  e 30  loss=0.0610  task=0.0610  safety=0.0000  top1=0.9271  lr=2.36e-03
+  e 40  loss=0.0446  task=0.0446  safety=0.0000  top1=0.9320  lr=2.36e-03
+  ep 50  val=0.9284
+  e 50  loss=0.0326  task=0.0326  safety=0.0000  top1=0.9284  lr=2.36e-03
+  e 60  loss=0.0272  task=0.0272  safety=0.0000  top1=0.9332  lr=2.36e-03
+  e 70  loss=0.0222  task=0.0222  safety=0.0000  top1=0.9401  lr=2.36e-03
+  ep 75  val=0.9404
+  -> best=0.9429 @ep72  Δ_vs_Ref=-0.97pp  321s
+
+======================================================================
+STEP 888 SUMMARY — K_hh=1+K_in=15 compound T1
+======================================================================
+  Ref_dw        0.9526    +0.00pp
+  C_compound    0.9429    -0.97pp
+
+  compound: -0.97pp @ 0.57× FLOPs → VIABLE — 0.57× FLOPs at -0.97pp: advance to T2
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step888_compound_t1_seed42__mini_mps.json

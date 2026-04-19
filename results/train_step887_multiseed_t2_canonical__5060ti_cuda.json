@@ -1,0 +1,26 @@
+{
+  "seed0": {
+    "seed": 0,
+    "n_params": 34976,
+    "canonical": true,
+    "best": 0.9622929692268372,
+    "best_ep": 150,
+    "elapsed_s": 425
+  },
+  "seed1": {
+    "seed": 1,
+    "n_params": 34976,
+    "canonical": true,
+    "best": 0.962802529335022,
+    "best_ep": 71,
+    "elapsed_s": 451
+  },
+  "seed42": {
+    "seed": 42,
+    "n_params": 34976,
+    "canonical": true,
+    "best": 0.9663694500923157,
+    "best_ep": 120,
+    "elapsed_s": 449
+  }
+}

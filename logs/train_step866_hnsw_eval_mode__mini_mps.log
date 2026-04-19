@@ -1,0 +1,75 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step866 — Soft routing → HNSW eval mode T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  Beam M=32 all-pairs: [B=128, M=32, N=2048] dist matrix = 33.6MB per forward
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: hard gather + AH — control  params=34,976
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.4003  lr=2.36e-03
+  ep  5  val=0.8219
+  ep 10  val=0.9017
+  e 10  loss=0.3900  task=0.3900  safety=0.0000  top1=0.9017  lr=2.36e-03
+  ep 15  val=0.8904
+  ep 20  val=0.9172
+  e 20  loss=0.2772  task=0.2772  safety=0.0000  top1=0.9172  lr=2.36e-03
+  -> best=0.9172 @ep20  Δ_vs_Ref=+0.00pp  159s
+────────────────────────────────────────────────────────────
+A_soft_static: step859 soft over K_hh=2, β 0.5→3.0  params=34,976
+  e  1  loss=6.0757  task=6.0757  safety=0.0000  top1=0.3997  lr=2.36e-03
+  ep  5  val=0.8227  β=1.03
+  ep 10  val=0.9009  β=1.68
+  e 10  loss=0.3899  task=0.3899  safety=0.0000  top1=0.9009  lr=2.36e-03
+  ep 15  val=0.8912  β=2.34
+  ep 20  val=0.9192  β=3.00
+  e 20  loss=0.2768  task=0.2768  safety=0.0000  top1=0.9192  lr=2.36e-03
+  -> best=0.9192 @ep20  Δ_vs_Ref=+0.20pp  156s
+────────────────────────────────────────────────────────────
+B_beam_topk: beam M=32 all-pairs train, top-K=8 eval  params=34,976
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4005  lr=2.36e-03
+  ep  5  val=0.8209  β=1.45
+  ep 10  val=0.9009  β=2.63
+  e 10  loss=0.3906  task=0.3906  safety=0.0000  top1=0.9009  lr=2.36e-03
+  ep 15  val=0.8927  β=3.82
+  ep 20  val=0.9187  β=5.00
+  e 20  loss=0.2770  task=0.2770  safety=0.0000  top1=0.9187  lr=2.36e-03
+  -> best=0.9187 @ep20  Δ_vs_Ref=+0.15pp  146s
+────────────────────────────────────────────────────────────
+C_beam_wider: beam M=32 all-pairs train, top-K=16 eval  params=34,976
+  e  1  loss=6.0760  task=6.0760  safety=0.0000  top1=0.4000  lr=2.36e-03
+  ep  5  val=0.8224  β=1.45
+  ep 10  val=0.9019  β=2.63
+  e 10  loss=0.3910  task=0.3910  safety=0.0000  top1=0.9019  lr=2.36e-03
+  ep 15  val=0.8917  β=3.82
+  ep 20  val=0.9190  β=5.00
+  e 20  loss=0.2770  task=0.2770  safety=0.0000  top1=0.9190  lr=2.36e-03
+  -> best=0.9190 @ep20  Δ_vs_Ref=+0.18pp  117s
+────────────────────────────────────────────────────────────
+D_beam_train: beam M=32 all-pairs train, dense eval  params=34,976
+  e  1  loss=6.0759  task=6.0759  safety=0.0000  top1=0.4008  lr=2.36e-03
+  ep  5  val=0.8209  β=1.45
+  ep 10  val=0.9009  β=2.63
+  e 10  loss=0.3899  task=0.3899  safety=0.0000  top1=0.9009  lr=2.36e-03
+  ep 15  val=0.8927  β=3.82
+  ep 20  val=0.9180  β=5.00
+  e 20  loss=0.2769  task=0.2769  safety=0.0000  top1=0.9180  lr=2.36e-03
+  -> best=0.9180 @ep20  Δ_vs_Ref=+0.08pp  116s
+
+======================================================================
+STEP 866 SUMMARY — Soft routing → HNSW eval mode T0
+======================================================================
+  config               params    best   Δ_vs_Ref
+  Ref                  34,976  0.9172     +0.00pp
+  A_soft_static        34,976  0.9192     +0.20pp
+  B_beam_topk          34,976  0.9187     +0.15pp
+  C_beam_wider         34,976  0.9190     +0.18pp
+  D_beam_train         34,976  0.9180     +0.08pp
+
+  Soft→hard transition cost (B vs D): +0.08pp
+  (≈0pp = HNSW approximation is lossless at this β)
+  All-pairs gain over K_hh=2 soft (B vs A): -0.05pp
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step866_hnsw_eval_mode_seed42__mini_mps.json
