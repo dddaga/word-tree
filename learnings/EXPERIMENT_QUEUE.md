@@ -64,15 +64,39 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (5 slots, updated 2026-04-16 session 12)
+## Currently Running (6 slots, updated 2026-04-17 session 19)
+
+**Slot policy:** GPU slots (5060ti_cuda, studio_mps, mini_mps) → T1/T2 only. CPU slots → T0 scouts only.
 
 | Machine:Device | Session | Step | Status | Note |
 |---------|---------|------|--------|------|
-| mini:mps | — | — | FREE | step297 DONE: K_in=10+aug T2 @ N=16384 — best=97.197% @ ep39, final ep150=96.66%. **+0.31pp N=16384 record** over step291. |
-| mini:cpu | — | — | FREE | step411 DEAD: store_agnews_distilbert.h5 missing on mini. Text gap confirmed negative (step405/407), skip unless data recovered. |
-| studio:mps | — | — | FREE | step532 cleared. |
-| studio:cpu | — | — | FREE | step760 DONE (3 configs): step199 std=0.43pp, step706 ΔW proj std=0.24pp, step750 N=4096 K_hh=4 std=0.37pp. ΔW proj halves variance. |
-| 5060ti:cuda | — | — | FREE | step634 DONE: K25=95.49% > K20=95.26% > K15=94.83%. K_in=25 confirmed best at N=2048. K_in=20 does NOT beat K_in=25 (T1 result was noise). |
+| mini:mps | FREE | — | FREE | — |
+| mini:cpu | FREE | — | FREE | — |
+| studio:mps | FREE | — | FREE | — |
+| studio:cpu | FREE | — | FREE | — |
+| 5060ti:cuda | FREE | — | FREE | step896 DONE |
+| 5060ti:cpu | FREE | — | FREE | step892 DONE |
+
+**Recently completed (session 17→18):**
+- **step877** (5060ti_cpu): BFS+Hub T0 — KILLED. BFS diverged ep1 (loss=14.17). Direction CLOSED.
+- **step878** (5060ti_cuda): K_hh=1 T1: Ref=0.9536, K_hh=1=0.9496 **Δ=-0.41pp STRONG**. Advancing to T2 (step885).
+- **step881** (studio_mps): Multi-seed T2 non-canonical (67K params). seed0=96.20%, seed1=96.31%, seed42=96.82%. **Mean=96.44%, std=±0.26pp** — variance estimate for paper.
+- **step883** (mini_cpu): ΔW-proj ablation T0. **D_rand_dir=-76.56pp (geometry ESSENTIAL)**. B_no_ref=-1.32pp, A_sign=-1.83pp, C_no_theta=-0.71pp. All components load-bearing at T0. T1 confirmation running (step886).
+- **step886** (mini_cpu): ΔW-proj ablation T1. A_sign=-0.59pp **LOAD-BEARING**. B_no_ref=-0.51pp **LOAD-BEARING**. C_no_theta=+0.15pp **NEUTRAL** — theta NOT needed, flipped from T0 as predicted. **Paper: 2 load-bearing components; theta simplifies out.**
+- **step884 (studio)** (studio_cpu): NON-CANONICAL. Canonical re-run on 5060ti_cpu.
+- **step885** (5060ti_cuda): K_hh=1 T2. Ref=0.9664, A_khh1=0.9590. **Δ=-0.74pp MARGINAL** (between -0.5 and -1.0pp). Paper: "50% routing MACs at -0.74pp, mention with caveat." Advancing canonical multi-seed (step887).
+- **step884_canonical** (5060ti_cpu): K_hh=1+K_in=15 compound T0 canonical. C_compound=-1.89pp → **KILL by T0 criterion**. NOTE: B_kin15 T0=-1.22pp is a T0 artifact (step632 T2=-0.33pp). Expected compound T2≈-1.07pp (viable). C_compound T1 queued for later. Components reported separately in paper.
+- **step887** (5060ti_cuda): Canonical multi-seed T2 (34,976 params). seed0=96.23% @ep150, seed1=96.28% @ep71, seed42=96.64% @ep120. **Mean=96.38% ± 0.18pp. CONFIRMED for paper.** Replaces non-canonical step881. Paper claim: "96.38% ± 0.18pp (canonical 34,976 params)".
+- **step888** (mini_mps): K_hh=1+K_in=15 compound T1. Ref=95.26%, C_compound=94.29% (-0.97pp). **VIABLE (within -1.5pp).** 43% total FLOPs reduction (1.31M vs 2.29M). Advancing to T2 (step889 on 5060ti_cuda). T0=-1.89pp was confirmed artifact.
+- **step855** (mini_cpu): Sparse BFS T0. A_fixed_M16=-2.10pp, B_cascade=-2.23pp, C_quiet_zero=-2.20pp, D_readout_active=-2.05pp. **ALL KILLED. Direction CLOSED.**
+- **step859** (5060ti_cpu): Soft routing T0. B_soft_anneal=+0.99pp T0 artifact (step861 T1=0.0pp confirmed). D_soft_dwproj=-60.51pp CATASTROPHIC. C_soft_ah=-0.10pp. **Soft routing CLOSED.** AH cancels soft gain; ΔW+soft collapses.
+- **step862** (mini_cpu): CIFAR-10 cross-dataset T0 — **CONFIG BUG** (N=1024/D=8, 9K params). Ref_SGNNET=-29.39pp (invalid). Re-run with canonical config as step890 on 5060ti_cpu.
+- **step889** (5060ti_cuda): K_hh=1+K_in=15 compound T2. Ref=96.64%, C_compound=95.21% (-1.43pp). **CONFIRMED — 0.57× FLOPs at -1.43pp. PAPER CLAIM VALID.**
+- **step890** (5060ti_cpu): CIFAR-10 cross-dataset T0 canonical. SGNNET=75.77% vs Linear=86.47%, **Δ=-10.70pp → KILLED by T0 criterion** (just barely over -10pp threshold). T0 underfit confirmed by step882 T2 below.
+- **step882** (mini_mps): CIFAR-10 cross-dataset T2 (150ep, 100% data, canonical 34,976 params). **Linear=86.24%, SGNNET=80.69%, Δ=-5.55pp — MARGINAL (paper-presentable).** 7.4× fewer params at -5.55pp cost. Queue was stale — result already existed from session ~Apr 13.
+- **step891** (5060ti_cuda): CIFAR-10 MLP matched-params T2. Ref_linear=86.14%, MLP_h1(25K)=14.31%(-71.83pp!), MLP_h2(50K)=17.05%(-69.09pp!), Ref_SGNNET(35K)=**80.42%**. **+66.11pp SGNNET vs matched-params MLP — bottleneck confirmed.** Paper claim: "N_in=25088 information bottleneck collapses MLP h=1,2; SGNNET sparse graph achieves 80.42%."
+- **step892** (5060ti_cpu): CIFAR-10 MLP h-sweep T1 (75ep, 50% data). h=4(40.5%), h=6(45.1%), h=8(45.5%), **h=16(81.3%)** ← CROSSOVER (+0.60pp vs SGNNET), h=32(85.0%), h=64(84.2%). Cliff confirmed at h=8→h=16 (35pp jump). T2 confirmed as step893.
+- **step893** (5060ti_cuda): CIFAR-10 MLP crossover T2 (150ep, 100% data). h=8=45.8%(-34.6pp), h=12=67.1%(-13.3pp), **h=16=80.75%(+0.33pp)** ← T2 CROSSOVER CONFIRMED at 11.5× SGNNET. Paper claim validated.
 
 ---
 
@@ -88,9 +112,9 @@ Eval: `scripts/eval_efficiency_config.py`
 | **bench_step832** | PyG scatter vs fancy-index compiled: V_ref_c=0.151ms (6.55× over eager). scatter_add compiled=0.217ms — fancy-index wins. torch.compile max-autotune is the kernel speedup path. | **DONE** |
 | **step852** | **conn_hh rebuild cadence ablation** (8 configs, T0 @ N=2048). Ref=91.92%, A_wpos_static=88.18% (-3.74pp), B_wpos_batch=65.12%, E_wpos_ep10=90.01% (-1.91pp) best dynamic. **ALL dynamic rebuilds trail static. Static random Watts-Strogatz WINS. Data-driven topology kills learning mid-run. Also: W_pos-based static KNN worse than random (-3.74pp).** | **DONE — KILLED** |
 | **step853** | **C_ho sparsity ablation** (8 configs T0 mini_cpu + T1 5060ti). T0: Ref=91.69%, D_very(0.98)=91.85% (+0.16pp), dense=84.87% (-6.82pp). T1: Ref=93.91%, **D_very=94.27% (+0.36pp CONFIRMED)**. Sweet spot at sparsity~0.98 (208/class). K_ho=10/class collapses regardless of selection (F_tiny=-17pp, G_geometric=-23pp). Dense readout catastrophic (-6.82pp). New default: sparsity=0.98. | **DONE — D_very T1 WIN** |
-| **step856** | **C_ho sparsity=0.98 multi-seed T1** (5 seeds, 75ep, 50% data). Confirms step853 D_very +0.36pp is not noise. Same protocol as step760 seed variance. | QUEUED |
-| **step855** | **Sparse BFS routing T0** (5 configs, 20ep, 50% data). Tests beam-gated broadcaster selection: only top-M active nodes broadcast per K_iter step. Configs: Ref/A_fixed_M16/B_cascade/C_quiet_zero/D_readout_active. HYPOTHESIS: 128× routing FLOP reduction at M=16 with <0.5pp accuracy loss. Script: `scripts/train_step855_sparse_bfs.py`. | QUEUED (mini_cpu) |
-| **step859** | **Soft distance-weighted routing T0** (5 configs, 20ep, 50% data). Tests softmax over static K_hh neighbor positions (W_pos distance). β annealing 0.5→3.0. Configs: Ref/A_soft_β1/B_soft_anneal/C_soft_ah/D_soft_dwproj — tests both AH and ΔW-proj on soft routing. HYPOTHESIS: W_pos gradient through distance term improves topology. Script: `scripts/train_step859_soft_routing.py`. | QUEUED (mini_cpu) |
+| **step856** | **C_ho sparsity=0.98 multi-seed T1** (5 seeds, 75ep, 50% data). Ref mean=93.92%, D_very mean=93.97% (+0.05pp). Paired per-seed deltas: +0.28, +0.40, -0.38, +0.07, -0.11pp. **D_very is NEUTRAL — single-seed T1 +0.36pp was lucky seed42. Sparsity default stays at 0.90.** | **DONE — D_very NEUTRAL (not confirmed at multi-seed)** |
+| **step855** | **Sparse BFS routing T0** (5 configs, 20ep, 50% data). ALL KILLED: A=-2.10pp, B=-2.23pp, C=-2.20pp, D=-2.05pp. Direction CLOSED. | **DONE — KILLED** |
+| **step859** | **Soft distance-weighted routing T0** (5 configs, 20ep, 50% data). Tests softmax over static K_hh neighbor positions (W_pos distance). β annealing 0.5→3.0. Configs: Ref/A_soft_β1/B_soft_anneal/C_soft_ah/D_soft_dwproj — tests both AH and ΔW-proj on soft routing. HYPOTHESIS: W_pos gradient through distance term improves topology. Script: `scripts/train_step859_soft_routing.py`. | RUNNING (5060ti_cpu) |
 
 ### P-PAPER-2026-04-15 — Scripts added from V3 gap-analysis + design log (2026-04-15)
 
@@ -105,7 +129,7 @@ All scripts smoke-tested with `--help`. Launch via `scripts/queue_submit.sh` (on
 | **step405** | SST-2 cross-modal SGNNET (V3 Gap 2.8 paper-blocker) — DistilBERT CLS [768-d] → Linear / MLP_64 / SGNNET comparison. 2-phase: `--phase extract` (one-time) then `--phase train`. Requires `pip install transformers datasets h5py`. | N=2048 D=16 | `scripts/train_step405_sgnnet_sst2.py` | **DONE — Linear=84.63%, MLP_64=84.52%, SGNNET=83.60% (−1.03pp). Text gap confirmed.** |
 | **step524-S1** | Edge-β scalar on frozen topology. Ref=93.94%, S1_init0=93.91% (−0.03pp), S1_init1=93.07% (−0.87pp). | N=2048 | `scripts/train_step524_s1_edge_beta.py` | **DONE — KILLED. Edge-β adds no value. Dynamic direction CLOSED.** |
 | **step526/527** | INT8 QAT sweep. Part A weight-only: −0.20pp (lossless). W+Z: −1.27pp. Part B QAT accum=1: −0.97pp viable; cliff at accum=4 (−16.31pp). fp32 ref=87.90%. | N=2048 | `scripts/train_step526_int8_qat.py` | **DONE (mini_mps)**. Result: `results/train_step527_int8_qat_k4_seed42__mini_mps.json` |
-| **bench_step830** | K=4 direct wall-clock measurement (V3 Blocker-7) — currently paper says "20% reduction projected"; this measures it. 6 variants: K5/K4 × eager/reduce-overhead/max-autotune fp32. Prints pass/fail vs the ≤0.85× criterion. | N=2048 bs=32 | `scripts/bench_step830_k4_wallclock.py` | QUEUED (5060ti only) |
+| **bench_step830** | K=4 vs K=5 wall-clock (5060ti_cuda, B=32). K5_ma=0.154ms, K4_ma=0.139ms. **K4/K5=0.901 → 9.9% faster, NOT 20%.** Paper claim "20% wall-clock reduction" REVISED to ~10%. | N=2048 bs=32 | `scripts/bench_step830_k4_wallclock.py` | **DONE — paper claim revised** |
 
 ### P-SPEED — Seed Gather Optimization (2026-04-15)
 
@@ -180,7 +204,9 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 | Step | Description | Status |
 |------|-------------|--------|
 | **step410** | SST-2 config sweep. All 5 configs trail Linear=84.63%. Best: Ref_orig=83.72% (−0.91pp). Compression worsens monotonically — D_combined worst at −2.06pp. **Gap NOT closed. Architecture investigation needed.** | **DONE** |
-| **step411** | AG News config sweep — same 5 configs vs Linear=91.18%, MLP_64=92.53%. Launched studio_mps 2026-04-16. h5 on mac-studio. | **RUNNING (studio_mps)** |
+| **step411** | AG News config sweep. Linear=91.18%, MLP_64=92.53%. All SGNNET configs trail Linear: Ref_orig=90.34%(-0.84pp), B_low_kin=90.34%(-0.84pp), C_low_kiter=90.34%(-0.84pp), A_small=89.16%(-2.02pp), D_combined=88.67%(-2.51pp). Text gap CONFIRMED — SGNNET loses monotonically on text. Paper scope = vision only. | **DONE — text gap CONFIRMED** |
+| **step892** | CIFAR-10 MLP h-sweep crossover (T1: 75ep, 50%, seed=42). h=4(2.9×)=40.5%, h=6(4.3×)=45.1%, h=8(5.7×)=45.5%, **h=16(11.5×)=81.3% ← CROSSOVER**, h=32(23.0×)=85.0%, h=64(45.9×)=84.2%. Cliff at h=8→h=16 (35pp jump). T2 confirmed by step893. | **DONE** |
+| **step893** | CIFAR-10 MLP crossover T2 (150ep, 100% data, seed=42). h=8=45.8%(-34.6pp), h=12=67.1%(-13.3pp), **h=16=80.75%(+0.33pp) ← T2 CROSSOVER**. Paper claim CONFIRMED: SGNNET needs 11.5× fewer params than min-viable MLP on CIFAR-10. | **DONE** |
 | **step412** | If step410 winner ≥ Linear: validate scaling on SST-5 (5-class text) and RTE (low-data). | QUEUED (depends on 410) |
 
 **Exit criterion:** SGNNET config X on text tasks Pareto-dominates (accuracy, params, FLOPs, wall-time) vs Linear/MLP_64. If yes → paper claim expands from "VGG-FC-replacement" to "general high-efficiency FC replacement." If no → scope refinement stands with honest low-dim failure mode documented.
@@ -232,21 +258,41 @@ Correctness verified (max_diff=1.19e-07 CPU/MPS/CUDA). T0 training: 91.77% — S
 
 ## Meditation P0 — 2026-04-17 (step860–863)
 
-From meditation 001 (step267→step859). Scripts written and smoke-tested. All slots currently RUNNING.
+From meditation 001 (step267→step859). Scripts written and smoke-tested.
 
 | Step | Description | Script | Slot | Status |
 |------|-------------|--------|------|--------|
-| **step860** | K=1 KD student @ N=4096 T0. Configs: Ref_k5, A_k1_scratch, B_k1_kd (uses step604 teacher cache). Cross-N KD valid: same 25088-dim input. | `scripts/train_step860_k1_n4096_t0.py` | 5060ti_cuda | QUEUED |
-| **step861** | Soft routing T1 — confirm step859 B_soft_anneal +1.22pp. β annealing 0.5→5.0, 75ep/50% data. Configs: Ref, B_soft_anneal, C_soft_ah, D_soft_dwproj. | `scripts/train_step861_soft_routing_t1.py` | 5060ti_cuda | QUEUED |
-| **step862** | CIFAR-10 cross-dataset T0. Paper requirement (≥2 datasets). VGG pool5 512-dim features. Configs: Linear, MLP_37, MLP_256, Ref_SGNNET. N=512, D=8. | `scripts/train_step862_cifar10_crossdataset.py` | mini_mps | QUEUED |
-| **step863** | D=8 efficiency probe T0. W_pos shrinks from 32,928→16,464 params (~18K total vs 35K). Configs: Ref_D16, A_D8, B_D8_K10, C_D12. | `scripts/train_step863_d8_efficiency.py` | mini_cpu | QUEUED |
+| **step860** | K=1 KD student @ N=4096 T0. Ref_k5=89.81%, A_k1_scratch=34.37% (−55.44pp!), B_k1_kd=21.10% (−68.71pp!). Routing degenerates completely at large N+K=1. **KILLED.** | `scripts/train_step860_k1_n4096_t0.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step861** | Soft routing T1 — NEGATIVE. B_soft_anneal=0.9381=Ref (0.0pp). T0 +1.22pp was early-epoch artifact. D_soft_dwproj=0.3659 (catastrophic). Soft routing KILLED. | `scripts/train_step861_soft_routing_t1.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step862** | CIFAR-10 cross-dataset T0. Paper requirement (≥2 datasets). VGG pool5 512-dim features. Configs: Linear, MLP_37, MLP_256, Ref_SGNNET. N=512, D=8. | `scripts/train_step862_cifar10_crossdataset.py` | 5060ti_cpu | QUEUED (fringe slot) |
+| **step863** | D probe T0: Ref_D16=91.75%, A_D8=89.89% (−1.86pp marginal), B_D8_K10=75.29% (KILLED), C_D12=91.46% (−0.28pp ADVANCES). D=12 advances to T1 (step871). D floor = D=12. | `scripts/train_step863_d8_efficiency.py` | 5060ti_cuda | **DONE** |
+| **step864** | D floor+beam ablation T0: D=6 KILLED (−6.93pp), D=4 KILLED (−12.76pp), D=4+K=10 catastrophic. Rbeam_M8=Ref (insensitive), Rbeam_M32=+0.05pp (insensitive). BFS_M32=+0.15pp ADVANCES. BFS_M16/M64 neutral. D=12 confirmed floor. | `scripts/train_step864_d_floor_beam_m.py` | 5060ti_cpu | **DONE** |
 
 **Parking lot (wait for above results):**
-- step864: Three-way compound (soft+AH+ΔW) — wait for step859 C/D T0 results
-- step865: K_hh=1 probe — low priority
-- step867: K=1 + soft routing — wait for step860 + step861
+- step865: K_hh=1 probe — low priority (5060ti_cpu candidate)
+- step867: K=1 + soft routing — DEAD (step861 killed soft routing)
 
-| **step866** | Soft routing → HNSW eval mode T0. Beam M=32 all-pairs soft training → exact top-K eval. 5 configs: Ref, A_soft_static (step859 K_hh=2), B_beam_topk (K=8 eval), C_beam_wider (K=16 eval), D_beam_train (dense eval). Measures soft→hard transition cost. | `scripts/train_step866_hnsw_eval_mode.py` | mini_cpu | QUEUED |
+| **step866** | HNSW eval-mode T0. 4 configs: Ref_dw(AH)=91.72%, A_soft_static=91.92%(+0.20pp), B_beam_topk=91.87%(+0.15pp), C_beam_wider=91.90%(+0.18pp), D_beam_train=91.80%(+0.08pp). All advance vs AH but ALL below ΔW baseline (~93.96%). Beam/soft routing is not competitive with ΔW-proj. | `scripts/train_step866_hnsw_eval_mode.py` | mini_mps | **DONE — KILLED vs ΔW** |
+| **step868** | Z-memory retention T0. Ref_dw=93.96%, A_g03=94.04%(+0.08pp neutral), B_g05=94.04%(+0.08pp neutral), **C_g08=94.29% (+0.33pp ADVANCES)**, D_g09=93.63%(-0.33pp KILLED). gamma=0.8 is the sweet spot. | `scripts/train_step868_zmem_retention_t0.py` | mini_cpu | **DONE — C_g08 ADVANCES** |
+| **step869** | Hub aggregation T0: Ref=93.91%, A_hub005=94.24% (+0.33pp ADVANCES), B_hub03=93.27% (-0.64pp), C_hub10=88.00% (catastrophic), D_hub_beam=92.61% (-1.30pp). alpha=0.05 only sweet spot — larger values homogenize representations. | `scripts/train_step869_hub_aggregation_t0.py` | 5060ti_cuda | **DONE** |
+| **step872** | Hub aggregation T1 (75ep, 50% data). Ref_dw=95.36%, **A_hub005=95.54% (+0.18pp VIABLE)**. Light global context consistently helps but below the +0.2pp STRONG threshold. Advances to T2. | `scripts/train_step872_hub_t1.py` | 5060ti_cuda | **DONE — VIABLE** |
+| **step870** | D_very+ΔW compound T2 (150ep, 100% data). Ref_dw=96.92%, C_compound=96.43% (**-0.48pp KILL**). T1 synergy (+0.18pp) did NOT hold at T2. ΔW alone is the base. D_very+ΔW compound direction closed. | `scripts/train_step870_dvery_dw_compound_t2.py` | studio_mps | **DONE — KILLED** |
+| **step871** | D=12+ΔW T1. Ref_dw=95.34%, A_d12=93.91%(-1.43pp), **B_d12_dw=93.63%(-1.71pp KILLED)**, C_d12_comp=93.86%(-1.48pp). ΔW-proj WORSENS D=12 (projection direction has insufficient info). D=16 is hard floor for ΔW-proj family. | `scripts/train_step871_d12_dw_t1.py` | studio_cpu | **DONE — KILLED** |
+| **step873** | BFS M=32 T1. Ref=95.36%, A_bfs_m32=70.96% (**-24.41pp CATASTROPHIC KILL**). Completely collapses at T1 — dynamic top-M selection creates unstable routing gradients. BFS direction CLOSED. | `scripts/train_step873_bfs_m32_t1.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step874** | Z-memory T1. Ref=95.29%, A_g08=95.29% (**0.00pp NEUTRAL**). T0 +0.33pp was early-epoch artifact. Z-mem does NOT advance to T2. Direction CLOSED. | `scripts/train_step874_zmem_t1.py` | mini_mps | **DONE — NEUTRAL** |
+| **step875** | Hub T2. Ref=96.59%, A_hub005=96.61% (**+0.03pp NEUTRAL**, non-canonical params 67744). T1 +0.18pp did not hold at full training. Hub direction CLOSED. NOTE: MPS path double-counts W_pos (67744 vs 34976); inflated baseline explains ref>95.52%. | `scripts/train_step875_hub_t2.py` | studio_mps | **DONE — NEUTRAL** |
+| **step865** | K_hh=1 efficiency probe T0. Ref=93.73%, A_khh1=93.25% (**-0.48pp VIABLE**). 50% routing MACs reduction advances to T1 (step878). | `scripts/train_step865_khh1_t0.py` | mini_cpu | **DONE — VIABLE** |
+| **step876** | Hub+Z-mem compound T0. Ref=93.96%, A_hub005=94.11%(+0.15pp), B_zmem_g08=94.42%(+0.46pp), C_compound=93.76%(**-0.20pp CANCEL**). Hub+Z-mem interact negatively — DO NOT compound. Run each independently. | `scripts/train_step876_hub_zmem_compound_t0.py` | studio_cpu | **DONE — CANCEL** |
+| **step877** | BFS+Hub compound T0 (20ep, 50% data). 4 configs: Ref, bfs32, hub005, compound. Tests same-path cancellation. | `scripts/train_step877_bfs_hub_compound_t0.py` | 5060ti_cpu | **DONE — KILLED (BFS diverged ep1)** |
+| **step878** | K_hh=1 T1 (75ep, 50% data). Ref=95.36%, A_khh1=95.36% (−0.41pp STRONG). Advancing to T2 (step885). | `scripts/train_step878_khh1_t1.py` | 5060ti_cuda | **DONE** |
+| **step889** | K_hh=1+K_in=15 compound T2 (150ep, 100% data). Ref=96.64%, C_compound=95.21% (-1.43pp @ 0.57× FLOPs). **CONFIRMED — PAPER CLAIM VALID.** | `scripts/train_step889_compound_t2.py` | 5060ti_cuda | **DONE** |
+| **step862** | CIFAR-10 cross-dataset T0 (20ep, 50% data). Paper requirement ≥2 datasets. VGG16 pool5 features N_in=25088. Configs: Linear, MLP_37, MLP_256, Ref_SGNNET (N=1024, D=8). | `scripts/train_step862_cifar10_crossdataset.py` | mini_cpu | RUNNING |
+| **step879** | Z-mem gamma fine-scan T0. γ=0.80 confirmed peak (+0.54pp T0). Curve: g070=+0.25, g075=+0.31, **g080=+0.54**, g085=+0.33. Peak at 0.80 but T1 is 0.00pp — Z-mem direction CLOSED. | `scripts/train_step879_zmem_gamma_scan_t0.py` | mini_cpu | **DONE — g080 T0 peak but T1 NEUTRAL → Z-mem CLOSED** |
+| **step880** | K_hh=3 probe T0. Ref=93.91%, A_khh3=93.78% (**-0.13pp WORSE**). More local edges hurt. K_hh=2 confirmed Pareto optimal. K_hh curve: K_hh=1(-0.48pp) < K_hh=2(ref) > K_hh=3(-0.13pp). | `scripts/train_step880_khh3_t0.py` | studio_cpu | **DONE — K_hh=2 confirmed optimal** |
+| **step881** | ΔW-proj T2 multi-seed seeds=[0,1,42] for paper error bars. Non-canonical (studio, 67744 params). Use for variance estimation; paper numbers need CUDA re-run. | `scripts/train_step881_multiseed_t2.py` | studio_mps | **RUNNING** |
+| **step882** | CIFAR-10 cross-dataset T2 (150ep, 100% data). Linear=86.24%, SGNNET=80.69% (Δ=−5.55pp). 7.4× fewer params at -5.55pp cost. MARGINAL — paper-presentable as honest cross-dataset. | `scripts/train_step882_cifar10_cross_t2.py` | mini_mps | **DONE — MARGINAL** |
+| **step883** | ΔW-proj component ablation T0 (20ep, 50% data). 5 configs: Ref_dw/A_sign(clamp0)/B_no_ref(α_r=0)/C_no_theta(θ=0)/D_rand_dir. Paper ablation table: which components are essential? | `scripts/train_step883_dwproj_ablation_t0.py` | mini_cpu | **RUNNING** |
+| **step884** | K_hh=1 + K_in=15 compound efficiency probe T0 (20ep, 50% data). Configs: Ref_dw/A_khh1/B_kin15/C_compound. Tests ~45% total FLOPs reduction. SUCCESS: C_compound within -1.5pp → ultra-efficient config for paper. | `scripts/train_step884_khh1_kin15_compound_t0.py` | studio_cpu | **RUNNING** |
 
 ---
 
@@ -269,3 +315,17 @@ Original simple framing (max batch size before OOM → max concurrent users) was
 2. Workflow manager: routes batch[i] to stage[i % K_iter], maintains ring buffer of in-flight requests
 3. Benchmark: max sustained throughput (requests/sec) vs VGG16-FC and MLP_37 at 16GB budget
 4. Script: `bench_step840_pipeline_concurrent.py` — TODO (write after arch experiments done)
+
+---
+
+## Dynamic Routing Revival — 2026-04-18
+
+**Context:** User confirmed stubborn interest in parameter-efficient dynamic routing. Analysis in `learnings/concepts/dynamic_routing_analysis.md`.
+
+| Step | Description | Script | Slot | Status |
+|------|-------------|--------|------|--------|
+| **step894** | Z-dot + AH softmax routing T0. Ref_dw=94.04%, A_zdot_only=14.09%(−79.95pp COLLAPSE — D=16 noise FM3 confirmed), B_ah_softmax=75.75%(−18.29pp), C_zdot_ah_t10=75.80%(−18.24pp), D_zdot_ah_t03=75.95%(−18.09pp). **ALL KILLED. AH-softmax routing loses −18pp regardless of Z-dot.** Softmax-weight selection is fundamentally weaker than ΔW-proj magnitude gating at K_hh=2. | `scripts/train_step894_zdot_soft_routing_t0.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step895** | Parameter-free routing T0. Ref_dw=93.99%, A_norm_weighted=15.90%(−78.09pp), B_shared_query=17.78%(−76.20pp), C_factored_attn=15.52%(−78.47pp), D_learned_temp=66.57%(−27.41pp). **ALL KILLED.** A/B/C collapse to near-random — softmax over K_hh neighbors is catastrophically unstable without structural anchor. D partial recovery (learned temp) still −27pp. Parameter-free routing dead end. | `scripts/train_step895_paramfree_routing_t0.py` | studio_cpu | **DONE — KILLED** |
+| **step896** | Biased softmax routing T0. Ref_dw=93.96%, A_bias_khh=74.34%(−19.62pp), B_bias_step=74.34%(−19.62pp), C_bias_full=74.34%(−19.62pp), D_temp_only=74.34%(−19.62pp), E_compound=92.00%(−1.96pp), F_bias_per_node=74.34%(−19.62pp). **ALL KILLED.** A-D-F all converge to identical 74.34% — bias terms converge to zero (initialized 0, no gradient to break symmetry at that fixed point). E_compound partially recovers via ΔW-proj but adds net −1.96pp. LeakyReLU did not help. **Softmax routing direction DEFINITIVELY CLOSED across step894/895/896.** | `scripts/train_step896_biased_soft_routing_t0.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step897** | Dense cosine gate T0. v1 (W_pos key): Ref=77.45%, A_global_b=16.28%(−61.17pp), D_topk_eval=9.91%(−67.54pp). **KILLED — FM5+FM8.** v1 hijacks W_pos geometry (FM5); v2 fixed W_pos via separate W_key but still collapsed by FM8 (O(N) gradient dominance on shared recurrent Z). C/B configs not run — killed after A_global_b collapse. | `scripts/train_step897_dyn_cosine_gate_t0.py` | 5060ti_cuda | **DONE — KILLED** |
+| **step898** | K_hh cosine gate + ΔW-proj additive T0. Division-bug fix required (LeakyReLU negative + clamp explosion). Ref=93.96%, A_khh_gate=93.58%(−0.38pp), B_per_neuron_b=93.66%(−0.31pp), **C_gate_only=15.36%(−78.60pp KILL)**, D_per_edge_b=93.91%(−0.05pp). C_gate_only KILL proves gate has no structural prior without ΔW-proj — fully parasitic. A/B/D neutral with 32–37K extra params = FM5 co-adaptation (same signal path). **Dynamic routing direction CLOSED (all mechanisms 2026-04-19).** | `scripts/train_step898_khh_cosine_gate_t0.py` | local | **DONE — KILLED** |

@@ -1,0 +1,42 @@
+{
+  "Ref_dw": {
+    "extra_params": 0,
+    "n_params": 34976,
+    "best": 0.9396,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 67
+  },
+  "A_khh_gate": {
+    "extra_params": 32769,
+    "n_params": 67745,
+    "best": 0.9358,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0038,
+    "elapsed_s": 108
+  },
+  "B_per_neuron_b": {
+    "extra_params": 34816,
+    "n_params": 69792,
+    "best": 0.9366,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0031,
+    "elapsed_s": 108
+  },
+  "C_gate_only": {
+    "extra_params": 32769,
+    "n_params": 67745,
+    "best": 0.1536,
+    "best_ep": 20,
+    "delta_vs_ref": -0.786,
+    "elapsed_s": 71
+  },
+  "D_per_edge_b": {
+    "extra_params": 36864,
+    "n_params": 71840,
+    "best": 0.9391,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0005,
+    "elapsed_s": 108
+  }
+}
