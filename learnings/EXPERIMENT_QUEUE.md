@@ -71,10 +71,10 @@ Eval: `scripts/eval_efficiency_config.py`
 | Machine:Device | Status | Note |
 |---------|--------|------|
 | mini:mps | RUNNING | diag_step967 — path sparsity diagnostic |
-| mini:cpu | FREE | |
+| mini:cpu | RUNNING | step969 — gradient threshold firing T0 (selective vs full reset) |
 | studio:mps | FREE | |
 | studio:cpu | FREE | |
-| 5060ti:cuda | FREE | No ESC-50 data |
+| 5060ti:cuda | RUNNING | step968 — adiabatic FP4 long-horizon (~2.5 days) |
 
 **Completed this session (session 32):**
 - **step960 T0** (mini_mps): DONE. ESC-50 low-K_in sweep. Structural failure confirmed.
@@ -87,6 +87,13 @@ Eval: `scripts/eval_efficiency_config.py`
 - **diag_step967** (mini_mps): RUNNING — class-specific pathway diagnostic on canonical SGNNET.
 
 **Scripted and READY to launch:**
+- step969: Gradient threshold firing T0 — `scripts/train_step969_threshold_grad_t0.py` ✓ RUNNING mini_cpu
+  Configs: Ref, GTF_sel_lo, GTF_sel_hi, GTF_full_lo, GTF_full_hi, GTF_sel_adaptive.
+  Two policies: SELECTIVE (LIF-style, each param fires independently) vs FULL (sync reset all after any fire).
+  Threshold auto-calibrated from first 10 batches (p50=τ_lo, p90=τ_hi). T0=20ep.
+- step968: Adiabatic FP4 long-horizon — `scripts/train_step968_adiabatic_fp4_t0.py` ✓ RUNNING 5060ti
+  Configs: Ref(500ep), FP4(3000ep), Adiab_k5(50Kep), FP4+Adiab_k5(50Kep), Adiab_k1(30Kep). ~62h total.
+  Advance: any config within 0.5pp of Ref (95.52%) → mechanism viable.
 - step966: Backward reward scoring T0 — `scripts/train_step966_backward_reward_t0.py` ✓ SCRIPTED
   Configs: Ref, A_d05, B_d07, C_d085, D_d07_noAH, E_d07_lam001.
   Launch on 5060ti_cuda after step967 completes (or mini_cpu in parallel).
