@@ -64,18 +64,109 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (6 slots, updated 2026-04-19 session 20)
+## Currently Running (updated 2026-04-21 session 32)
 
-**Slot policy:** GPU slots (5060ti_cuda, studio_mps, mini_mps) → T1/T2 only. CPU slots → T0 scouts only.
+**Slot policy:** Studio excluded (user opt-out). Active slots: mini_mps, mini_cpu, 5060ti_cuda only.
 
-| Machine:Device | Session | Step | Status | Note |
-|---------|---------|------|--------|------|
-| mini:mps | sgn-indra-mini_mps-train_cnn_step004_t2 | cnn_step004 | RUNNING | CNN T2 Ref+D_small_s (150ep, ~4.2h on MPS) |
-| mini:cpu | sgn-indra-mini_cpu-train_cnn_step003_t1 | cnn_step003 | RUNNING | CNN T1 B_tiny_k7+C_small (~ep55/75) |
-| studio:mps | sgn-indra-studio_mps-train_step921_cifar10_n4096_200ep | step921 | RUNNING | CIFAR-10 N=4096 200ep underfitting probe (ref=82.53% @ep124) |
-| studio:cpu | sgn-indra-studio_cpu-train_step923_cifar10_kin15_t1 | step923 | RUNNING | CIFAR-10 K_in=15 T1 (75ep, 50% data; step920 T0 +0.71pp advance) |
-| 5060ti:cuda | sgn-indra-5060ti_cuda-train_step922_cifar10_n8192_multiseed | step922 | RUNNING | CIFAR-10 N=8192 multi-seed T2 (seeds 0,1 — paper mean±std) |
-| 5060ti:cpu | sgn-indra-5060ti_cpu-train_step909_cifar10_n_scaling | step909 | RUNNING | CIFAR-10 A_N2048_T3 200ep still running |
+| Machine:Device | Status | Note |
+|---------|--------|------|
+| mini:mps | RUNNING | diag_step967 — path sparsity diagnostic |
+| mini:cpu | FREE | |
+| studio:mps | FREE | |
+| studio:cpu | FREE | |
+| 5060ti:cuda | FREE | No ESC-50 data |
+
+**Completed this session (session 32):**
+- **step960 T0** (mini_mps): DONE. ESC-50 low-K_in sweep. Structural failure confirmed.
+- **step961 T0** (mini_cpu): DONE. ESC-50 N-sweep at K_in=1. N2048=0.335, −14pp vs Linear. No crossover.
+- **step961b T0** (mini_mps): DONE. Large-N extension N∈{2048→16384}. Peak N4096=0.3475, then collapse. Non-monotonic.
+- **step962 T0** (mini_mps): DONE. Dense seed projection. C_N256_dp=0.5650 (+14.75pp vs Linear). **CROSSOVER.** D_N512_dp=0.5725.
+- **step963 T0** (mini_cpu): DONE. Subspace routing B-sweep. E_b96_s4=0.3125 (−10.5pp vs Linear). Trend: more blocks = better.
+- **step964 T0** (mini_mps): DONE. Routing ablation. SGNNET_K0=0.6075 (+19pp). K5 routing HURTS by −4.75pp. **Routing degrades unstructured dense embeddings.** MLP_matched=0.5450 (routing beats MLP by +4.25pp from K0).
+- **step965 T0** (mini_cpu): DONE. Finer subspace routing. D_b192_d32=0.4350 (+1.75pp vs Linear = EXCEEDS_LINEAR). Richer D_node + more blocks key.
+- **diag_step967** (mini_mps): RUNNING — class-specific pathway diagnostic on canonical SGNNET.
+
+**Scripted and READY to launch:**
+- step966: Backward reward scoring T0 — `scripts/train_step966_backward_reward_t0.py` ✓ SCRIPTED
+  Configs: Ref, A_d05, B_d07, C_d085, D_d07_noAH, E_d07_lam001.
+  Launch on 5060ti_cuda after step967 completes (or mini_cpu in parallel).
+  Dual-axis advance: accuracy ≥−0.5pp AND separation improvement >+0.05.
+
+**Completed this session (session 31):**
+- **step952 T0** (mini_mps): Grouped input projection. C2_grouped16=+0.13pp, C_grouped64=+0.10pp NEUTRAL. E_multiout KILL (−1.76pp). No config clearly advances; grouped proj adds params for marginal gain.
+- **step940 T0** (mini_cpu): Input-conditioned edge gate (tau=1,3,lr). All NEUTRAL (±0.03pp). No signal.
+- **step965 T0** (mini_mps): Adiabatic update — launched.
+- **step957 T0** (mini_cpu): Matryoshka D-nesting — launched.
+
+**Next launches (all slots free — launch now):**
+- 5060ti_cuda → **step954 T1** (K_in=60, 75ep) — was queued, never launched, highest priority
+- mini_mps → **step965 T0** (adiabatic update, 20ep, mini_cpu ok too — no GPU needed)
+- mini_cpu → **step964** (curl diagnostic — minutes, any CPU, needs step887 checkpoint)
+- studio_mps or studio_cpu → step957 T0 (Matryoshka, 20ep) or step958 T0 (LayerNorm, 20ep) — these have only ep=1 smoke results
+
+**Scripted and queued (smoke-tested):**
+- step953: piecewise N_in→D seed T0 — `scripts/train_step953_piecewise_seed_t0.py` ⚠️ expect KILL (K_in/D ratio)
+- step955: W_edge + ΔW-proj T0 — `scripts/train_step955_wedge_dwproj_t0.py`
+- step956: refractory B+C T1 — `scripts/train_step956_refractory_t1.py`
+- step934: p-RoPE dim split T0 — `scripts/train_step934_prope_dim_split_t0.py` (p∈{0.25,0.50,0.75})
+- step935: MoE topology T0 — `scripts/train_step935_moe_topology_t0.py` ⚠️ ep1 collapse, needs 20ep to assess
+- step936: per-iter W_pos T0 — `scripts/train_step936_per_iter_wpos_t0.py` (proj/scale/residual; clean init)
+- step957: Matryoshka D-nesting T0 — `scripts/train_step957_matryoshka_d_t0.py` ✓ PR already rising ep1 (1.84→2.22)
+- step958: LayerNorm routing T0 — `scripts/train_step958_layernorm_routing_t0.py` ⚠️ ep1 −10pp, needs 20ep
+- step933: local/global K_iter T0 — `scripts/train_step933_local_global_kiter_t0.py` ⚠️ ep1 −65pp (random dw noise); consider fix: global rounds skip ΔW-proj, use uniform weights instead
+
+**Physics of Deep Learning diagnostics (decided 2026-04-21):**
+- step965: Adiabatic update T0 — `scripts/train_step965_adiabatic_update_t0.py` ✓ SCRIPTED
+  Selective W_pos gradient masking: top-1%/5%/20% by |grad| + quantum-step + accum4.
+  Fundamental: fp32 is discrete → adiabatic = one discrete jump at a time → let network digest.
+  Advance: ≥+0.5pp OR faster convergence (ep98 < 14) → T1.
+  Gradient staleness is the main risk. Run on mini_cpu (no CUDA needed).
+- step964: Routing field irrotationality — `scripts/diag_step964_routing_curl.py` ✓ SCRIPTED
+  Measures discrete curl of ΔW-proj routing field at each K_iter step.
+  If curl_ratio < 0.05 → routing is conservative → K_iter has analytic fixed point → step965.
+  Run on: trained checkpoint (step887 seed42) AND random init. Compare.
+  Device: any (CPU fine, diagnostic only). No training.
+- HAKI v2 — `src/sgnnet/haki.py` ✓ DONE (2026-04-21)
+  Standalone module. New metrics: pr_seed, pr_gain, routing_entropy, effective_k,
+  routing_invariance (CKA), convergence_deltas per step, node_utilization.
+  Import: `from src.sgnnet.haki import HAKI`. Run standalone on any checkpoint.
+  Paper 1 tooling contribution.
+
+**Paper 1 expansion — audio gap CLOSED (2026-04-21 session 32):**
+- step960/961/961b DONE: ΔW-proj structural failure on compressed Whisper embeddings confirmed.
+- step962 DONE: Dense seed (SGNNET_K0=0.6075, +19pp vs Linear). Root cause: seeding, not routing.
+- step963 DONE: Subspace routing best = 0.3125 (−10.5pp vs Linear). Structure matters.
+- step964 DONE: Routing HURTS for unstructured embeddings (−4.75pp). K0 > K5. L2 norm is the key bias.
+- step965 DONE: Subspace routing D_b192_d32=0.435, EXCEEDS Linear. Two mechanisms beat Linear.
+- **step966 T0**: Backward reward scoring — `scripts/train_step966_backward_reward_t0.py` ✓ SCRIPTED
+- **step967 diagnostic**: Path sparsity — `scripts/diag_step967_path_sparsity.py` ✓ RUNNING (mini_mps).
+- step963 (vision): Scaling ceiling — N∈{2048,4096,8192}, D∈{16,32}, K_in∈{25,60}, T2 on Imagenette.
+- ts_step030-032: SGNNET-TS time series (financial forecasting, see learnings/ts/QUEUE.md). All PENDING.
+
+**Recently completed (session 30):**
+- **step939** (studio_cpu T0 → synced): abs() in ΔW-proj is LOAD-BEARING. A_signed=−0.64pp, B_signed_clamp=−0.64pp. BOTH KILLED. abs() confirmed essential.
+- **step950** (studio_mps T0 → synced): Per-edge W_edge[N,K_hh,D,D] rotation. ALL KILLED. Root cause: gather-sum without ΔW-proj causes Z collapse (loss=13.19 at ep1). 1M-param W_edge cannot rescue structural smoothing failure. Direction reformulated as step955 (W_edge ON TOP of ΔW-proj).
+- **step951** (mini_cpu T0): K_in sweep with Haki diagnostics. Signal purity hypothesis DISPROVED. Coverage dominates: K_in=60 (+1.15pp), K_in=40 (+0.56pp) → both ADVANCE. K_in=5,10,15 KILLED. **New insight: routing_gain is ALWAYS NEGATIVE (routing = spatial smoothing, not amplifier). seed_Fisher is the dominant factor.**
+- **step922** (5060ti_cuda T2): N=8192 CIFAR-10 multi-seed. mean=83.55% ±0.014pp. Gap vs Linear=−2.69pp (tight). N-scaling: 80.69→82.53→83.55%.
+
+**Recently completed (session 29):**
+- **step938** (mini_cpu T0): Refractory neurons. Ref=93.89%. A_β07_αr2=−1.94pp KILL. B_β05_αr1=−0.03pp NEUTRAL. C_β09_αr1=−0.28pp NEUTRAL. T1 queued for B+C.
+- **step952 smoke test** (local 2ep): Init correct — Ref/A_shared/D_node all start at ~0.86, PR=2.29 stable. Script ready.
+
+**Recently completed (session 24→25):**
+- **step928** (studio_mps T0): ESC-50 architecture tuning. **A_D8 (D=8,K_in=25)=36.25% best** (−11.5pp vs Linear 47.75%). D=4 KILL (−16pp), K_in=50 KILL (−18pp). D=8 narrows gap 3pp vs D=16 but gap remains huge. Audio negative confirmed; vision scope stands.
+- **step925** (studio_mps T0, re-run to get A_k15): **K_in=15 WINS at N=8192: A_k15=78.84% vs Ref_k25=77.97% (+0.87pp).** step914 N=8192 table CONFIRMED VALID (used K_in=15). CIFAR-10 K_in crossover: K_in=25 best at N=2048, NEUTRAL at N=4096, K_in=15 best at N=8192. Same pattern as Imagenette but shifted higher.
+
+**Recently completed (session 22→23):**
+- **step924/926** (studio_cpu T0): CIFAR-10 K_in=25 vs K_in=15 @ N=4096. **NEUTRAL: Ref_k25=77.82%, A_k15=77.75% (−0.07pp)**. Crossover confirmed between N=2048 and N=4096. step909's 82.53% VALID.
+- **step926** (studio_cpu T0): ESC-50 audio robustness, canonical ΔW-proj. **AUDIO GAP CONFIRMED: N2048=32.0% vs Linear=47.75% (−15.75pp)**. ΔW-proj does NOT help audio. Vision scope only confirmed.
+- **step923** (studio_cpu T1): CIFAR-10 K_in=15 vs K_in=25 @ N=2048. **REVERT: K_in=25=78.59%, K_in=15=77.71% (−0.88pp)**. K_in=25 is CIFAR-10 default at N=2048.
+- **step921** (studio_mps 200ep): CIFAR-10 N=4096 extended. **PLATEAU: best=83.08% @ep186 (+0.55pp vs 150ep)**. 150ep is the correct budget.
+- **cnn_step003 T1** (mini_mps): EfficientVGG T1 Imagenette. **Ref=73.17% (183M MACs, 419K), F_wide=74.42% (+1.25pp, 560M MACs, 825K), D_small_s=70.96% (−2.22pp, 57.5M MACs, 150K)**. B_tiny_k7 KILLED (63.44%). All 3 advance to T2.
+
+**Recently completed (session 21→22):**
+- **step921** (studio_mps): CIFAR-10 N=4096 200ep — **best=83.08% @ep186, Δ=+0.55pp vs step909 (150ep)**. PLATEAU confirmed: 150ep already converged; gap is architectural. 200ep gives marginal improvement but within seed variance.
+- **step923** (studio_cpu): CIFAR-10 K_in=15 T1 @ N=2048 — **REVERT. Ref_k25=78.59%, A_k15=77.71%, delta=−0.88pp**. step920 T0 advance was run-order artifact. K_in=25 confirmed CIFAR-10 default at N=2048.
 
 **Recently completed (session 17→18):**
 - **step877** (5060ti_cpu): BFS+Hub T0 — KILLED. BFS diverged ep1 (loss=14.17). Direction CLOSED.
@@ -308,8 +399,9 @@ From meditation 001 (step267→step859). Scripts written and smoke-tested.
 |------|-------------|--------|--------|
 | **cnn_step001** | T0 scout (20ep, 50% data). Results: Ref=70.34%, A_no_side=65.89%(-4.46pp side branch huge!), B_vanilla=in-progress. Side branch confirmed critical at 419K scale. | `scripts/cnn_distiller/train_cnn_step001_t0.py` | **DONE** |
 | **cnn_step002** | Pareto sweep T0 (20ep, 50% data). 8 configs. F_wide=72.7%, Ref=70.3%, D_small_s=61.0%, B_tiny_k7=41.0%. Kill: E_expand4, A_tiny, G_ultra. | `scripts/cnn_distiller/train_cnn_step002_pareto_t0.py` | **DONE** |
-| **cnn_step003** | T1 calibration (75ep, 50% data). mini_mps DONE: **Ref=73.17%, F_wide=74.42%(+1.25pp), D_small_s=70.96%(−2.22pp)**. H2 CONFIRMED: F_wide maintains advantage. H3 CONFIRMED: D_small_s gap 9.4pp→2.22pp. H1/H4 pending mini_cpu (B_tiny_k7+C_small, ~ep35/75). | `scripts/cnn_distiller/train_cnn_step003_t1.py` | **PARTIAL** (mini_cpu RUNNING) |
-| **cnn_step004** | T2 validation (150ep, 100% data). Configs: Ref (baseline), F_wide (accuracy advance +1.25pp), D_small_s (efficiency-Pareto advance, 3.2× fewer MACs at −2.22pp). Recommended split: mini_mps=Ref,D_small_s (~4.2h); mini_cpu=F_wide (~3.6h, when free). CONDITIONAL: launch after B_tiny_k7/C_small T1 results. | `scripts/cnn_distiller/train_cnn_step004_t2.py` | **QUEUED** |
+| **cnn_step003** | T1 calibration (75ep, 50% data). **DONE**: Ref=73.17%@ep30, F_wide=74.42%@ep20(+1.25pp), D_small_s=70.96%@ep69(−2.22pp), B_tiny_k7=63.44%@ep71(KILL). C_small: ~63% @ep20 (CPU, running until ~midnight, results TBD). | `scripts/cnn_distiller/train_cnn_step003_t1.py` | **PARTIAL** (mini_cpu: C_small RUNNING ~4h total) |
+| **cnn_step004** | T2 validation (150ep, 100% data). Ref crashed @ep111 (permission bug, fixed). **Re-launched mini_mps (Ref+D_small_s)**. F_wide: queue to mini_cpu after C_small + F_wide T2 script written. Previous partial: Ref best=77.35% @ep30 (flat through ep110 — probably converged). | `scripts/cnn_distiller/train_cnn_step004_t2.py` | **RUNNING** (mini_mps: Ref+D_small_s; MPS Metal JIT ~20min startup) |
+| **cnn_step005** | F_wide T2 (150ep, 100% data, mini_cpu after C_small). Expected ~3.6h. If F_wide T2 ≥ 77.5%: beats Ref T2 (paper accuracy claim; 825K params at 3× MACs). | TBD (write script or use step004 with `--configs F_wide`) | **TODO** (when mini_cpu free ~midnight) |
 
 **Tier plan:** T0 on mini → Pareto winners (≥85% at best MACs/acc) → T1 (75ep, mini_mps) → T2 (150ep, mini_mps/cpu — CNN is mini-only).
 
@@ -361,12 +453,37 @@ Original simple framing (max batch size before OOM → max concurrent users) was
 | **step917** | **CIFAR-10 α_reflect Sweep T0** (20ep, 50% data). **FINAL: Ref_a05=75.77%, A_a00=−0.49pp(NEUTRAL), B_a025=−0.51pp(KILL), C_a075=+0.52pp(ADVANCE→T1), D_a10=−2.01pp(KILL). α=0.75 beats canonical α=0.5 on CIFAR-10 by +0.52pp. α=0.5 not cross-dataset optimal.** → step918 T1. | `scripts/train_step917_cifar10_alpha_reflect_t0.py` | studio_mps | **DONE — C_a075 ADVANCE** |
 | **step918** | **CIFAR-10 α_reflect T1** (75ep, 50% data). **FINAL: Ref_a05=78.69%, C_a075=77.88% (−0.81pp). T0 artifact confirmed. α=0.5 canonical cross-dataset. Direction CLOSED.** | `scripts/train_step918_cifar10_alpha_reflect_t1.py` | studio_mps | **DONE — T0 artifact, α=0.5 CANONICAL** |
 | **step919** | **Imagenette K_iter Sweep T0** (20ep, 50% data). **FINAL: Ref_k5=94.09%, A_k3=−0.66pp, B_k8=−4.13pp, C_k10=−9.35pp, D_k15=−74.78pp(COLLAPSE). Universal over-smoothing CONFIRMED. Same collapse profile as CIFAR-10 (step916). PAPER CLAIM: K_iter=5 sweet-spot on both datasets; over-smoothing is dataset-independent.** | `scripts/train_step919_imagenette_kiter_sweep_t0.py` | studio_cpu | **DONE — UNIVERSAL OVER-SMOOTHING CONFIRMED** |
-| **step920** | **CIFAR-10 K_in Sweep T0** (20ep, 50% data). **FINAL: A_k15=76.03% vs Ref_k25=75.32% (+0.71pp, run-order artifact delta_vs_ref=null), B_k50=74.91%(−0.41pp), C_k100=74.81%(−0.51pp). K_in=15 wins on CIFAR-10 — denser input sampling HURTS. Cross-dataset: K_in=15 optimal on CIFAR-10, K_in=20 knee on Imagenette → K_in=15 cross-dataset sweet-spot.** → step923 T1 on studio_cpu. | `scripts/train_step920_cifar10_kin_sweep_t0.py` | studio_cpu | **DONE — K_in=15 ADVANCE to T1** |
-| **step918** | **CIFAR-10 N=4096 underfitting probe** (200ep, 100% data). Controls for underfitting at N=4096. CIFAR-10 has 50K train samples (5× Imagenette) → relative epoch exposure is lower at 150ep. Tests whether the −3.71pp gap vs Linear is epoch-limited or architectural. CONDITIONAL: launch after step914 (N=8192) completes. If step914 gap ≤1.9pp → capacity still helps; 200ep is supporting data. If step914 plateau ≈3.71pp → underfitting probe is the primary diagnostic. Paper analysis: gap reduction rate ~1.84pp per 2× N suggests diminishing returns; this tests the orthogonal underfitting axis. | `scripts/train_step918_cifar10_n4096_200ep.py` | 5060ti_cpu (after step909) | **QUEUED (conditional on step914)** |
+| **step920** | **CIFAR-10 K_in Sweep T0** (20ep, 50% data). **FINAL: A_k15=76.03%, Ref_k25=75.32% — run-order artifact (A_k15 ran before Ref, delta_vs_ref=null). B_k50=74.91%(−0.41pp), C_k100=74.81%(−0.51pp). Apparent advance was noise — step923 T1 REVERTED (K_in=15=−0.88pp).** | `scripts/train_step920_cifar10_kin_sweep_t0.py` | studio_cpu | **DONE — T0 artifact, K_in=25 stays CIFAR-10 default** |
+| **step923** | **CIFAR-10 K_in=15 T1** (75ep, 50% data, N=2048, seed=42). **FINAL: Ref_k25=78.59% @ep60, A_k15=77.71% @ep74, Δ=−0.88pp. REVERT. step920 T0 advance was run-order artifact. K_in=25 is CIFAR-10 default at N=2048. K_in cost: CIFAR-10 −0.88pp vs Imagenette −0.33pp — harder task penalizes sparse seeding more.** → step924: probe K_in at N=4096 CIFAR-10. | `scripts/train_step923_cifar10_kin15_t1.py` | studio_cpu | **DONE — REVERT, K_in=25 stays** |
+| **step918** | **CIFAR-10 N=4096 underfitting probe** (200ep, 100% data). Controls for underfitting at N=4096. Tests whether the −3.71pp gap vs Linear is epoch-limited or architectural. | `scripts/train_step918_cifar10_n4096_200ep.py` | studio_cpu RUNNING | **RUNNING** |
+| **step924** | **CIFAR-10 K_in=25 vs K_in=15 @ N=4096 T0** (20ep, 50% data). **NEUTRAL: Ref_k25=77.82%, A_k15=77.75% (−0.07pp)**. Crossover between N=2048 (K_in=25 wins) and N=8192 (K_in=15 wins) confirmed. step909 82.53% VALID. | `scripts/train_step924_cifar10_kin_n4096_t0.py` | studio_cpu | **DONE — NEUTRAL** |
+| **step925** | **CIFAR-10 K_in=25 vs K_in=15 @ N=8192 T0** (20ep, 50% data). **K_in=15 WINS: A_k15=78.84% vs Ref_k25=77.97% (+0.87pp)**. step914's 83.58% (K_in=15) CONFIRMED VALID. K_in crossover between N=2048 and N=8192, mirrors Imagenette exactly. | `scripts/train_step925_cifar10_kin_n8192_t0.py` | studio_mps | **DONE — K_in=15 wins at N=8192** |
+| **step926** | **ESC-50 Audio Robustness T0** (20ep, 50% data). Canonical ΔW-proj. **AUDIO GAP CONFIRMED: Linear=47.75%, N512=18.5%, N1024=27.5%, N2048=32.0% (−15.75pp)**. ΔW-proj does NOT close audio gap. Whisper features lack spatial geometry. Paper scope = vision only. | `scripts/train_step926_esc50_robustness_t0.py` | studio_cpu | **DONE — AUDIO GAP CONFIRMED** |
+| **step927** | **CIFAR-100 N=8192 T0** (20ep, 50% data). Extends step905 N-scaling (N2048=35.40%, N4096=40.57%). Tests if N=8192 closes the −24pp gap. Advance: gap ≤20pp → T1 (step930). Stagnate → architectural failure confirmed. | `scripts/train_step927_cifar100_n8192_t0.py` | studio_mps | **RUNNING** |
+| **step929** | **CIFAR-10 hflip-aug T1** (75ep, 50% aug data). Follows step924 T0 winners. Tests if aug consistently closes gap at calibration level. Advance rule: ≥+0.5pp → T2 (step930). PREREQUISITE: store_cifar10_aug.h5 + step924 T0 result. Script: train_step925_cifar10_hflip_aug_t1.py (naming quirk). Target slot: 5060ti_cuda. | `scripts/train_step925_cifar10_hflip_aug_t1.py` | 5060ti_cuda | **QUEUED — after step924 T0 AND store_cifar10_aug.h5** |
+| **step930** | **CIFAR-10 hflip-aug T2** (150ep, 100% aug data, best T1 config). Paper claim: N=8192+aug vs gap −2.66pp. Target: gap ≤−1.5pp. OR: CIFAR-100 N=8192 T1 if step927 shows gap ≤20pp. Script TBD. | TBD | 5060ti_cuda | **QUEUED — after step929 T1 OR step927 T0** |
+| **step928** | **ESC-50 Architecture Tuning T0** (20ep, 50% data). D×K_in sweep: {D=4,8,16}×{K_in=25,50}. **FINAL: A_D8=36.25%(−11.5pp best), D=4 KILL(−16pp), K_in=50 KILL(−18pp). Audio gap confirmed not closeable by arch. Paper scope = vision only.** | `scripts/train_step928_esc50_arch_tuning_t0.py` | studio_mps | **DONE — AUDIO GAP CONFIRMED, all fail >10pp** |
 | **step906** | **Top-K Activation Sparsity T0** (20ep, 50% data). Ref_dw=94.11%, A_top75=79.06%(−15.06pp), B_top50=78.19%(−15.92pp), C_top25=80.46%(−13.66pp), D_top10=78.80%(−15.31pp). Hard top-K ALL CATASTROPHIC. E_soft_tau1=92.31%(−1.81pp), F_soft_tau3=88.25%(−5.86pp). Soft marginal/significant hurt. Gate entropy=0.62 (near-max, non-discriminative). Same failure mode as step904 — gating Z before K_iter destroys collective computation. **ALL KILLED. FGSEGNet-style gating before MP definitively closes.** | `scripts/train_step906_topk_activation_t0.py` | studio_mps | **DONE — KILLED** |
 | **step907** | **Readout-Gate Input-Conditioned T0** (20ep, 50% data). Ref_dw=94.04%, A_ro_tau1=+0.36pp(NEUTRAL), B_ro_tau3=−1.04pp, C_ro_tau_lrn=**+0.54pp ADVANCE**, D_ro_topk25=−3.49pp(KILL), **E_ro_geo=+1.12pp ADVANCE**, F_ro_norm=−0.74pp. KEY FINDING: readout-level gating WORKS (+1.12pp) while pre-K_iter gating fails (FM10). Geometric gate (W_pos cosine vs Z_mean) is strongest. → T1 (step910). | `scripts/train_step907_readout_gate_t0.py` | studio_mps | **DONE — E_ro_geo +1.12pp, C_ro_tau_lrn +0.54pp → step910 T1** |
 | **step910** | **Readout Gate T1** (75ep, 50% data). Ref_dw=95.41%, A_ro_tau1=+0.66pp, C_ro_tau_lrn=+0.69pp, E_ro_geo=+0.61pp. **ALL THREE ADVANCE.** All within 0.08pp of each other. → T2 (step911). | `scripts/train_step910_readout_gate_t1.py` | studio_mps | **DONE — all three advance to T2** |
 | **step911** | **Readout Gate T2** (150ep, 100% data). **FINAL: Ref=96.74%, A_ro_tau1=+0.15pp, C_ro_tau_lrn=+0.25pp, E_ro_geo=+0.18pp. ALL below ≥+0.5pp threshold. T1 artifact confirmed — gain compresses from +0.61–0.69pp (T1) to +0.15–0.25pp (T2). Paper claim NOT supported.** Direction CLOSED. | `scripts/train_step911_readout_gate_t2.py` | studio_mps | **DONE — T1 artifact, direction CLOSED** |
 | **step912** | **CIFAR-10 Readout Gate T0** (20ep, 50% data). Ref=76.03%, A_ro_tau1=+0.40pp(NEUTRAL), **E_ro_geo=−0.60pp(KILL)**. Readout gate does NOT generalize to CIFAR-10. Gain is Imagenette-specific. | `scripts/train_step912_cifar10_readout_gate_t0.py` | studio_cpu | **DONE — gate Imagenette-specific, no CIFAR-10 generalization** |
 | **step899** | Ephemeral teleportation T0. Ref_dw=93.96%, A_local1_dw=92.10%(−1.86pp). All K_ep=1 configs: 18–56% (−38 to −76pp KILL). Random per-step reconnection introduces gradient noise identical to FM9 — complete training collapse. **ALL KILLED. Topology diameter direction CLOSED.** step901 (T1) not triggered. | `scripts/train_step899_ephemeral_teleport_t0.py` | 5060ti_cuda | **DONE — KILLED** |
+
+### AH Era Revival — Mechanisms Not Tested on ΔW-proj (2026-04-20)
+
+These gained significant ground in the AH era (D=64/N=1024/K_iter=12) but were never ported to the current efficiency config (N=2048/D=16/K_iter=5/ΔW-proj). Full analysis: `learnings/concepts/ah_era_untested_on_dw.md`.
+**Caveat:** AH arch had D=64 — expect gains to be smaller at D=16. Treat as directional signal only.
+
+| Step | Description | AH Era Gain | Script | Slot | Status |
+|------|-------------|------------|--------|------|--------|
+| **step937** | **Z-bias per K_iter T0** (20ep, 50% data). Port of step106 to ΔW-proj. `Z_t += emb[t]` at each of K_iter=5 steps. 80 extra params. Configs: Ref / A_zbias_init0 / B_zbias_initrand. | +7.42pp (D=64/N=1024) | Ref=94.19%, A_z0=94.19% (+0.00pp), B_zrnd=94.32% (+0.13pp) | mini_cpu | **DONE — NEUTRAL** (best +0.13pp < 0.50pp threshold; regime mismatch: AH era D=64/K_iter=12 vs current D=16/K_iter=5) |
+| **step938** | **Refractory neurons T0** (20ep, 50% data). Port of step16E. `Z_t = Z_t − α_r × max(0, β × |Z_{t-1}|)`. Configs: Ref / A_β07_αr2 / B_β05_αr1 / C_β09_αr1 (sweep β×α_r). Ref=93.89%. A_β07_αr2=−1.94pp KILL. B_β05_αr1=−0.03pp NEUTRAL. C_β09_αr1=−0.28pp NEUTRAL. B+C advance to T1. | +4.31pp (D=16/N=512 wave arch) | Ref=93.89% | mini_cpu | **DONE — B/C NEUTRAL, advance to T1** |
+| **step939** | **Signed ΔW routing T0** (20ep, 50% data). Remove abs() from proj_coeff. Ref=94.09%. A_signed=−0.64pp KILL. B_signed_clamp=−0.64pp KILL. **abs() is load-bearing — anti-aligned negative signals cancel gradient coherence.** Direction CLOSED. | +3.97pp (D=64, ConcatReLU — different regime) | Ref=94.09%, A/B=−0.64pp | studio_cpu | **DONE — KILLED** |
+| **step940** | **Input-conditioned edge reweighting T0** (20ep, 50% data). Port of step36. `w_ij = sigmoid(x_in_i · x_in_j / tau)` for each conn_hh edge; scale Z_agg by w_ij. Uses fixed input features x (not Z state — safe from gate-death). Configs: Ref / A_tau1 / B_tau3 / C_tau_learnable. | +2.34pp (D=64 without AH) | TBD | any | **QUEUED** |
+| **step941** | **Sparse beam active set T0** (20ep, 50% data). Port of step25. At each K_iter step, only top-K active nodes by ‖Z‖ route; others hold Z_prev. Efficiency mechanism. Configs: Ref / A_top_half / B_top_quarter / C_top_eighth. step25 found top-1/8 best. | +2.88pp + 53× speedup (D=16/N=512) | TBD | any | **QUEUED** |
+| **step942** | **Max-pool readout T0** (20ep, 50% data). Replace mean-pool over N nodes with max-pool. Minimal change. Note: step907/911 readout gate T1 artifact suggests readout changes are noisy; max-pool is different (permutation-invariant aggregation, not gating). Configs: Ref / A_maxpool / B_topk_mean (top-32 mean). | Not run in AH era | TBD | any | **QUEUED** |
+| **step950** | **Per-edge channel rotation T0** (20ep, 50% data). NO ΔW-proj. Ref=gather-sum. Ref=19.52%, A_shared=+0.03pp, B_peredge(1M params)=+0.03pp, C_small_D8=−5.99pp. **STRUCTURAL FAILURE: gather-sum without ΔW-proj collapses Z (all nodes average to correlated direction → extreme wrong predictions at init). W_edge identity init can't escape. 1M params = zero gain.** Q answered: W_edge CANNOT substitute for ΔW-proj. Reformulation: test W_edge ON TOP of ΔW-proj (step955). | New mechanism | `scripts/train_step950_per_edge_rotation_t0.py` | studio_mps | **DONE — KILLED. ΔW-proj is load-bearing.** |
+| **step951** | **K_in Signal Purity Sweep T0 + Observational Haki** (20ep, 50% data). Tests whether K_in affects signal quality in seed scalar Z[i,0]=sum(x[conn_in[i]]). Configs: Ref(K_in=25) / A_kin5 / B_kin10 / C_kin15 / D_kin40 / E_kin60. All 34,976 params. Haki metrics: seed_Fisher, final_Fisher, routing_gain, PR, dead_frac logged at ep 1/5/10/20. | — | `scripts/train_step951_kin_purity_t0.py` | mini_cpu | **RUNNING** (launched 2026-04-20) |
+| **step952** | **Grouped Input Projection T0 + Haki** (20ep, 50% data). Replace parameter-free scatter sum with learned per-group weighted projection. Configs: Ref/A_shared/C2_grouped16/C_grouped64/B_grouped256/D_node/E_multiout. Raw linear weights init=1 (= sum baseline at ep0). Smoke test passed: Ref=0.8601, A_shared/D_node=0.8614, PR=2.29 stable. | — | `scripts/train_step952_grouped_input_proj_t0.py` | mini_cpu (after step951) | **QUEUED** |
 | **step900** | D-scaling T0. Script bug: SGNNET_DRef (no ΔW-proj) collapses — Ref_d16=19.57%, A_d24=18.96%, B_d32=16.64% (all meaningless). ΔW variants vs D=16+dw ref (93.96%): C_d24_dw=93.61%(−0.35pp), D_d32_dw=93.81%(−0.15pp). ΔW-proj saturates D-dimensional geometry at D=16; larger D adds no benefit. **D-scaling direction CLOSED. step902 not triggered.** | `scripts/train_step900_d_scaling_t0.py` | studio_cpu | **DONE — KILLED** |
