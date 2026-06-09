@@ -110,11 +110,11 @@ if [[ "$SLOT" == "5060ti_cuda" ]]; then
 fi
 
 case "$SLOT" in
-  mini_mps)    DEVICE=mps;  HOST=local;      REMOTE_DIR="$REPO_LOCAL";                            TMUX="tmux";                    PY="d_env/bin/python3" ;;
-  mini_cpu)    DEVICE=cpu;  HOST=local;      REMOTE_DIR="$REPO_LOCAL";                            TMUX="tmux";                    PY="d_env/bin/python3" ;;
-  studio_mps)  DEVICE=mps;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
-  studio_cpu)  DEVICE=cpu;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
-  5060ti_cuda) DEVICE=cuda; HOST=5060ti;     REMOTE_DIR="/home/indra/sgnnet_bench";               TMUX="/usr/bin/tmux";           PY="venv/bin/python3" ;;
+  mini_mps)    DEVICE=mps;  HOST=local;      REMOTE_DIR="$REPO_LOCAL";                            TMUX_BIN="tmux";                    PY="d_env/bin/python3" ;;
+  mini_cpu)    DEVICE=cpu;  HOST=local;      REMOTE_DIR="$REPO_LOCAL";                            TMUX_BIN="tmux";                    PY="d_env/bin/python3" ;;
+  studio_mps)  DEVICE=mps;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX_BIN="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
+  studio_cpu)  DEVICE=cpu;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX_BIN="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
+  5060ti_cuda) DEVICE=cuda; HOST=5060ti;     REMOTE_DIR="/home/indra/sgnnet_bench";               TMUX_BIN="/usr/bin/tmux";           PY="venv/bin/python3" ;;
   *) echo "ERROR: unknown slot '$SLOT'"; exit 1 ;;
 esac
 
@@ -137,28 +137,28 @@ count_children() {
 
 # ----- check if slot is occupied by any user ----------------------------------
 # Find any sgn-*-<slot>-* session on target machine
-EXISTING=$(run "$TMUX list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^sgn-[^-]+-${SLOT}-'" 2>/dev/null || true)
+EXISTING=$(run "$TMUX_BIN list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^sgn-[^-]+-${SLOT}-'" 2>/dev/null || true)
 
 if [[ -n "$EXISTING" ]]; then
   while IFS= read -r s; do
-    pane_info=$(run "$TMUX list-panes -t '$s' -F '#{pane_dead} #{pane_pid}' 2>/dev/null | head -1" 2>/dev/null || echo "1 0")
+    pane_info=$(run "$TMUX_BIN list-panes -t '$s' -F '#{pane_dead} #{pane_pid}' 2>/dev/null | head -1" 2>/dev/null || echo "1 0")
     pane_dead=$(awk '{print $1}' <<< "$pane_info")
     pane_pid=$(awk  '{print $2}' <<< "$pane_info")
 
     if [[ "$pane_dead" == "1" ]]; then
       echo "Cleaning up dead pane session '$s'"
-      run "$TMUX kill-session -t '$s' 2>/dev/null" || true
+      run "$TMUX_BIN kill-session -t '$s' 2>/dev/null" || true
       continue
     fi
 
     n_children=$(count_children "$pane_pid")
     if [[ "${n_children:-0}" -gt 0 ]]; then
       echo "SLOT OCCUPIED: $SLOT has running session '$s' (script still running)"
-      echo "Wait for it to finish or kill: $TMUX kill-session -t $s (on $HOST)"
+      echo "Wait for it to finish or kill: $TMUX_BIN kill-session -t $s (on $HOST)"
       exit 2
     else
       echo "Cleaning up finished session '$s' (script done, shell idle)"
-      run "$TMUX kill-session -t '$s' 2>/dev/null" || true
+      run "$TMUX_BIN kill-session -t '$s' 2>/dev/null" || true
     fi
   done <<< "$EXISTING"
 fi
@@ -185,17 +185,17 @@ CMD="cd $REMOTE_DIR && SGN_SLOT=$SLOT $PY -u $SCRIPT --device $DEVICE $EXTRA 2>&
 LAUNCH_SCRIPT="/tmp/sgnnet_launch_${SESSION}.sh"
 if [[ "$HOST" == "local" ]]; then
   echo "$CMD" > "$LAUNCH_SCRIPT" && chmod +x "$LAUNCH_SCRIPT"
-  $TMUX new-session -d -s "$SESSION" bash "$LAUNCH_SCRIPT"
+  $TMUX_BIN new-session -d -s "$SESSION" bash "$LAUNCH_SCRIPT"
 else
   ssh -o ConnectTimeout=5 "$HOST" "cat > $LAUNCH_SCRIPT && chmod +x $LAUNCH_SCRIPT" <<< "$CMD"
-  ssh -o ConnectTimeout=5 "$HOST" "$TMUX new-session -d -s $SESSION bash $LAUNCH_SCRIPT"
+  ssh -o ConnectTimeout=5 "$HOST" "$TMUX_BIN new-session -d -s $SESSION bash $LAUNCH_SCRIPT"
 fi
 
 # Give tmux a moment to spawn the shell
 sleep 1
 
 # Verify session is alive and script started (pane has children)
-PANE_INFO=$(run "$TMUX list-panes -t $SESSION -F '#{pane_dead} #{pane_pid}' 2>/dev/null | head -1" 2>/dev/null || echo "1 0")
+PANE_INFO=$(run "$TMUX_BIN list-panes -t $SESSION -F '#{pane_dead} #{pane_pid}' 2>/dev/null | head -1" 2>/dev/null || echo "1 0")
 PANE_DEAD=$(awk '{print $1}' <<< "$PANE_INFO")
 PANE_PID=$(awk  '{print $2}' <<< "$PANE_INFO")
 
