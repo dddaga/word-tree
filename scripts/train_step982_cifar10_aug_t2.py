@@ -127,10 +127,11 @@ class H5Dataset(Dataset):
 
 
 def load_val(h5_path: str):
-    # Val is 10K × 25088 × float32 = ~1 GB — load eagerly, keep on GPU
+    # Val is 10K × 25088 × float32 = ~1 GB — keep on CPU (shared GPU is tight),
+    # transfer per eval batch in train_config.
     with h5py.File(h5_path, "r") as f:
-        va_x = torch.tensor(f["val/features"][:], dtype=torch.float32).to(DEVICE)
-        va_y = torch.tensor(f["val/labels"][:], dtype=torch.long).to(DEVICE)
+        va_x = torch.tensor(f["val/features"][:], dtype=torch.float32)
+        va_y = torch.tensor(f["val/labels"][:], dtype=torch.long)
     return va_x, va_y
 
 
@@ -168,8 +169,9 @@ def train_config(key: str, h5_path: str) -> dict:
         with torch.no_grad():
             correct = total = 0
             for i in range(0, va_x.shape[0], BATCH):
-                s = model(va_x[i:i+BATCH])
-                correct += (s.argmax(1) == va_y[i:i+BATCH]).sum().item()
+                vb = va_x[i:i+BATCH].to(DEVICE, non_blocking=True)
+                s  = model(vb)
+                correct += (s.argmax(1).cpu() == va_y[i:i+BATCH]).sum().item()
                 total   += s.shape[0]
         acc = correct / total
         if acc > best:
@@ -199,7 +201,13 @@ def main():
     print(f"{'='*70}\n")
 
     results = {}
+    if OUT_PATH.exists():
+        results = json.loads(OUT_PATH.read_text())
+        print(f"Resuming: {list(results)} already in {OUT_PATH.name}")
     for key, h5_path in CONFIGS.items():
+        if key in results:
+            print(f"Skip {key}: done, best={results[key]['best']:.4f}")
+            continue
         results[key] = train_config(key, h5_path)
         OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         OUT_PATH.write_text(json.dumps(results, indent=2))
