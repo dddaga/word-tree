@@ -24,7 +24,7 @@ set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
   echo "Usage: $0 <slot> <script_path> [extra_args...]"
-  echo "Slots: mini_mps mini_cpu studio_mps studio_cpu 5060ti_cuda 5060ti_cpu"
+  echo "Slots: mini_mps mini_cpu studio_mps studio_cpu 5060ti_cuda"
   exit 1
 fi
 
@@ -115,7 +115,6 @@ case "$SLOT" in
   studio_mps)  DEVICE=mps;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
   studio_cpu)  DEVICE=cpu;  HOST=mac-studio; REMOTE_DIR="/Users/admin/ml/dhiraj/qwen2_omni/testing"; TMUX="/opt/homebrew/bin/tmux"; PY="d_env/bin/python3" ;;
   5060ti_cuda) DEVICE=cuda; HOST=5060ti;     REMOTE_DIR="/home/indra/sgnnet_bench";               TMUX="/usr/bin/tmux";           PY="venv/bin/python3" ;;
-  5060ti_cpu)  DEVICE=cpu;  HOST=5060ti;     REMOTE_DIR="/home/indra/sgnnet_bench";               TMUX="/usr/bin/tmux";           PY="venv/bin/python3" ;;
   *) echo "ERROR: unknown slot '$SLOT'"; exit 1 ;;
 esac
 

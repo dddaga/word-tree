@@ -220,7 +220,7 @@ def main():
     sub_idx = torch.randperm(n_full, generator=torch.Generator().manual_seed(SEED))[:n_full // 2]
     tr = torch.utils.data.DataLoader(
         torch.utils.data.Subset(tr_full.dataset, sub_idx.tolist()),
-        batch_size=BATCH, shuffle=True, num_workers=0,
+        batch_size=BATCH, shuffle=True, num_workers=10,
         pin_memory=(DEVICE.type == "cuda"),
     )
 

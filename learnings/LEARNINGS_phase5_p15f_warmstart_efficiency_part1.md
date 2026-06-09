@@ -18,23 +18,23 @@
 
 ## step149: Input De-squashification (ALL KILLED)
 
-**CONFIRMED:** Scatter-sum Fourier encoding is load-bearing — cannot be modified.
+**CONFIRMED:** Scatter-sum Fourier encoding load-bearing — cannot modify.
 
-Configs tested at N=1024 D=16, 75ep:
+Configs tested N=1024 D=16, 75ep:
 - Ref: 82.42%
 - A (multi_feat): 43.24% (−39pp) — `nn.Linear(1, K_feat)` random init → large values dominate Fourier spatial dims → Z collapse, never recovered
 - B (attn_scatter): 53.04% (−29pp)
 - C (both): 30.02% (−52pp)
 
-**Root cause (HYPOTHESIS):** The scatter-sum encodes each feature dimension separately into the hidden geometry. Any projection that mixes the K_in features before scatter-sum breaks the geometric prior that SGNNET learned to exploit.
+**Root cause (HYPOTHESIS):** Scatter-sum encodes each feature dimension separately into hidden geometry. Any projection mixing K_in features before scatter-sum breaks geometric prior SGNNET learned to exploit.
 
-**Decision:** Input encoding direction KILLED. Do not revisit without a fundamentally different encoding architecture.
+**Decision:** Input encoding direction KILLED. Do not revisit without fundamentally different encoding architecture.
 
 ---
 
 ## step162: Flip Robustness (Hypothesis REJECTED)
 
-**CONFIRMED:** VGG16 pool5 features are already nearly flip-invariant. SGNNET K_iter propagation does NOT improve flip robustness.
+**CONFIRMED:** VGG16 pool5 features already nearly flip-invariant. SGNNET K_iter propagation does NOT improve flip robustness.
 
 Results (flip_acc / original_acc ratio):
 - VGG16_direct: 0.994
@@ -42,15 +42,15 @@ Results (flip_acc / original_acc ratio):
 - FC_mlp: 0.998
 - SGNNET: 0.995
 
-SGNNET is slightly more brittle than FC_linear. K_iter message passing does not help robustness — it propagates the feature representation but doesn't add invariance.
+SGNNET slightly more brittle than FC_linear. K_iter message passing propagates feature representation but doesn't add invariance.
 
-**Implication:** If robustness is a goal, it must come from data augmentation or architecture changes upstream of SGNNET (i.e., in the VGG feature extractor).
+**Implication:** If robustness needed, must come from data augmentation or architecture changes upstream of SGNNET (in VGG feature extractor).
 
 ---
 
 ## step163: Progressive K_iter Distillation
 
-**CONFIRMED:** Warm-start is the mechanism, not distillation.
+**CONFIRMED:** Warm-start is mechanism, not distillation.
 
 Key results (N=1024 D=16, 75ep):
 | Config | top1_best | vs Ref(K=12) |
@@ -62,10 +62,10 @@ Key results (N=1024 D=16, 75ep):
 | D (warm K=6, distil α=0.5) | 84.76% | +5.32pp |
 | **E (warm K=8, no distil)** | **87.26%** | **+7.82pp** |
 
-**Key insight:** B ≥ C ≥ D → distillation HURTS marginally. More distillation α → more hurt.
+**Key insight:** B ≥ C ≥ D → distillation HURTS marginally. More α → more hurt.
 **Warm-start alone worth +6.47pp** (A vs B: −0.56 → +5.91). Warm-start = load good W_pos init + topology.
 
-**Why warm-start works:** K=12 teacher develops well-separated W_pos geometry over 150ep. Loading this into K=8 student skips the slow topology-learning phase entirely. K=8 then fine-tunes under less over-smoothing.
+**Why warm-start works:** K=12 teacher develops well-separated W_pos geometry over 150ep. Loading into K=8 student skips slow topology-learning phase. K=8 fine-tunes under less over-smoothing.
 
 **K=12 over-smooths at N=1024 D=16:** fewer K_iter steps + good W_pos init wins.
 
@@ -90,11 +90,11 @@ Key results (N=1024 D=16, 75ep):
 - Phase exit criterion: accuracy ≥95% NOT YET (90.96%), FLOPs ≤5% APPROACHING (3.1M = 2.5% ✓)
 
 **Key findings (CONFIRMED):**
-1. W_proj + warm-start is SYNERGISTIC (+10.32pp > +4.91pp+5.48pp individually) — the warm-started W_pos geometry amplifies W_proj effectiveness
+1. W_proj + warm-start SYNERGISTIC (+10.32pp > +4.91pp+5.48pp individually) — warm-started W_pos geometry amplifies W_proj effectiveness
 2. RigL kills W_proj at D=16 (contradicts step144 D=32 where RigL+W_proj = +5.55pp). Scale matters.
 3. twopop_weight alone +8.12pp without W_proj → still strong, but W_proj wins by +2.2pp
 
-**W_proj near-zero init is critical:** `nn.init.normal_(std=0.01)` prevents disrupting warm-started Z on first pass. If std=0.1+, the proj weight dominates and collapses the teacher's geometry.
+**W_proj near-zero init critical:** `nn.init.normal_(std=0.01)` prevents disrupting warm-started Z on first pass. If std=0.1+, proj weight dominates and collapses teacher geometry.
 
 **Next steps:**
 - step166: stack warm+W_proj+twopop_weight (B+D compound). RigL excluded.
@@ -107,7 +107,7 @@ Key results (N=1024 D=16, 75ep):
 Config A (K_iter=16+Z-bias): 95.13% (−1.45pp vs Ref=96.51%) — CONFIRMED K_iter=16 HURTS.
 Configs B (K=20), C (K=24), D (K=16+ckpt) still running.
 
-**Preliminary verdict:** Higher K_iter at N=4096 does NOT improve accuracy. K_iter=12 is the sweet spot. Z-bias adds parameters without benefit. Expect B/C/D to confirm this pattern.
+**Preliminary verdict:** Higher K_iter at N=4096 does NOT improve accuracy. K_iter=12 sweet spot. Z-bias adds params without benefit. Expect B/C/D confirm pattern.
 
 ---
 
@@ -120,13 +120,13 @@ Configs B (K=20), C (K=24), D (K=16+ckpt) still running.
 | step163-E | 1024 | 16 | 2.3M | 87.26% | acc 7.7pp short |
 | **step165-B** | **1024** | **16** | **~3.1M** | **90.96%** | **acc 4pp short** |
 
-**Gap remaining:** 90.96% → 95% requires +4.04pp more. Candidates: twopop_weight compound, curriculum K_iter, soft_spec reg, full data training.
+**Gap remaining:** 90.96% → 95% needs +4.04pp. Candidates: twopop_weight compound, curriculum K_iter, soft_spec reg, full data training.
 
 ---
 
 ## step166: Further Stacking on warm+W_proj — ALL KILLED
 
-**CONFIRMED:** warm+W_proj is a local maximum. Every compound mechanism hurts.
+**CONFIRMED:** warm+W_proj is local maximum. Every compound mechanism hurts.
 
 | Config | top1_best | vs Ref=91.59% |
 |--------|-----------|---------------|
@@ -135,9 +135,9 @@ Configs B (K=20), C (K=24), D (K=16+ckpt) still running.
 | G (soft_spec λ=0.01) | 89.86% | −1.73pp |
 | H (E+F compound) | 86.47% | −5.12pp |
 
-**Root cause (HYPOTHESIS):** The warm-started W_pos geometry is already well-optimized. Any additional mechanism perturbs the learned structure → net negative. Same pattern as AH alone at N=4096.
+**Root cause (HYPOTHESIS):** Warm-started W_pos geometry already well-optimized. Any additional mechanism perturbs learned structure → net negative. Same pattern as AH alone at N=4096.
 
-**Decision:** No further stacking on warm+W_proj. Explore scale (larger N/D) or cleaner hyperparameter changes (K_hh, alpha) that don't add competing objectives.
+**Decision:** No further stacking on warm+W_proj. Explore scale (larger N/D) or cleaner hyperparameter changes (K_hh, alpha) without competing objectives.
 
 ---
 
@@ -163,7 +163,7 @@ N=1024 D=32, K_hh=8, 50% data 75ep:
 | **B (warm+W_proj)** | **93.20%** | **+11.24pp** |
 
 FLOPs ~6.1M ≤ 6.18M ✓. Teacher K=12 D=32 K_hh=8 trained fresh, cached.
-B=93.20% approaches step144-C (W_proj+RigL = 93.50%) from a different path.
+B=93.20% approaches step144-C (W_proj+RigL = 93.50%) from different path.
 
 ---
 
@@ -174,10 +174,10 @@ Full data 150ep at N=1024 D=32:
 |--------|-----------|---------|
 | B (warm+W_proj) | **94.01%** | 134 |
 
-**D=32 ceiling at N=1024: ~94.0%** (+0.81pp over Tier-1). 
+**D=32 ceiling at N=1024: ~94.0%** (+0.81pp over Tier-1).
 Phase exit NOT achieved: 94.01% vs target ≥95% — gap = **0.99pp**.
 
-History shows slow climb from ep1=66.37% (warm init working), peaked ep134, oscillating thereafter. No breakthrough in final 16ep.
+History: slow climb from ep1=66.37% (warm init working), peaked ep134, oscillating after. No breakthrough in final 16ep.
 
 ---
 

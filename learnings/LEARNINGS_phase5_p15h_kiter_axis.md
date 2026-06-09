@@ -8,7 +8,7 @@ Continues from p15g (FLOPs floor / D-reduction + K_hh axis).
 
 **step195 INTERIM: 95.44%@ep90 @ 1.18M FLOPs — ≤1% FLOPs + ≥95% accuracy CONFIRMED**
 
-This is the project's core near-term milestone: SGNNET matches VGG16 FC accuracy at ≤1% of its parameters AND ≤1% of its FLOPs. Config: N=2048 D=16 K_hh=2 K_iter=6, full data 150ep Tier-2. Still running to completion for true best_ep.
+Core near-term milestone: SGNNET matches VGG16 FC accuracy at ≤1% params AND ≤1% FLOPs. Config: N=2048 D=16 K_hh=2 K_iter=6, full data 150ep Tier-2. Still running for true best_ep.
 
 ---
 
@@ -18,25 +18,25 @@ FLOPs formula: 3 × 2048 × 2 × 16 × K_iter
 
 ### step194 — K_iter=6 Tier-1 (DONE 2026-04-10)
 - Config: 50%/75ep, FLOPs=1,179,648 (~1.18M)
-- Result: **94.88%@ep71** — EXTRAORDINARY. Beats K_iter=8 Tier-1 (93.86%) by +1.02pp despite 25% fewer FLOPs.
-- Finding: K_iter=6 is NOT worse than K_iter=8 at Tier-1 scale. Possibly better LR schedule fit.
+- Result: **94.88%@ep71** — EXTRAORDINARY. Beats K_iter=8 T1 (93.86%) by +1.02pp despite 25% fewer FLOPs.
+- Finding: K_iter=6 NOT worse than K_iter=8 at T1. Possibly better LR schedule fit.
 - Decision: advance to Tier-2 (step195)
 
 ### step195 — K_iter=6 Tier-2 (DONE 2026-04-11)
 - Config: 100%/150ep, FLOPs=1,179,648 (~1.18M), params=67K
 - Result: **96.08% best_ep=106** — PHASE EXIT, full efficiency criterion MET
 - ≤1% FLOPs (1.18M = 0.96% of VGG16 FC 123.6M) + ≥95% accuracy (96.08%, +1.06pp margin)
-- Strongest result in the K_iter axis — K_iter=6 actually outperforms K_iter=8 Tier-2 (95.67%) by +0.41pp at 25% fewer FLOPs
+- Strongest K_iter axis result — K_iter=6 outperforms K_iter=8 T2 (95.67%) by +0.41pp at 25% fewer FLOPs
 
 ### step196 — K_iter=4 Tier-1 (DONE 2026-04-11)
 - Config: 50%/75ep, FLOPs=786,432 (~0.79M) — 34% below ≤1% target
 - Result: **92.74%@ep72** — KILLED. −2.14pp vs K_iter=6 ref (94.88%).
-- Finding: K_iter=4 too few routing steps. Insufficient convergence at this scale.
+- Finding: K_iter=4 too few routing steps. Insufficient convergence.
 - Decision: probe K_iter=5 as gap candidate (step197)
 
 ### step197 — K_iter=5 Tier-1 (DONE 2026-04-11)
 - Config: 50%/75ep, FLOPs=983,040 (~0.98M)
-- Result: **93.96%@ep72** — ≥93% threshold met. Advanced to Tier-2 → step199.
+- Result: **93.96%@ep72** — ≥93% met. Advanced to Tier-2 → step199.
 
 ### step199 — K_iter=5 Tier-2 (DONE 2026-04-11)
 - Config: 100%/150ep, FLOPs=983,040 (~0.98M), params=67K
@@ -47,20 +47,20 @@ FLOPs formula: 3 × 2048 × 2 × 16 × K_iter
 ### step200 — K_hh=1 K_iter=8 Tier-1 (DONE 2026-04-11)
 - Config: 50%/75ep, FLOPs=786,432 (~0.79M), K_hh=1 (minimum connectivity)
 - Result: **90.52%@ep72** — KILLED. −5pp vs K_hh=2 baseline.
-- Finding: K_hh=1 breaks connectivity. K_hh=2 is minimum viable for D=16 config.
+- Finding: K_hh=1 breaks connectivity. K_hh=2 minimum viable for D=16.
 
 ### N-scaling experiments (2026-04-11)
-- step201: N=4096 D=16 K_hh=2 K_iter=6 Tier-1 @ 2.36M → **95.64%@ep66** ✓ PHASE EXIT T1
-- step202: N=2048 D=16 K_hh=2 K_iter=3 Tier-1 @ 0.59M → **89.25%@ep74** KILLED
-- step203: N=4096 D=16 K_hh=2 K_iter=5 Tier-1 @ 1.97M → **96.08%@ep69** — highest T1 ever at D=16
-- step204: N=4096 D=16 K_hh=2 K_iter=6 Tier-2 @ 2.36M → **97.15%@ep71** ✓ PHASE EXIT. vs D=64 record: −0.71pp
-- step205: N=4096 D=16 K_hh=2 K_iter=5 Tier-2 @ 1.97M → **97.17%@ep118** ✓ PHASE EXIT. NEW D=16 RECORD. vs D=64 record: −0.69pp
-- step206: N=8192 D=16 K_hh=2 K_iter=6 Tier-1 @ 4.72M → **95.11%@ep72** — regression vs N=4096 T1 (−0.53pp). N-scaling law breaks at T1 for N=8192. T2 needed.
-- step208: N=8192 D=16 K_hh=2 K_iter=5 Tier-1 @ 3.93M → **95.77%@ep51** — K_iter=5 BEATS K_iter=6 at N=8192 T1 (+0.66pp). Same T1 regression vs N=4096 (−0.31pp). T2 → step209.
-- step207: N=8192 D=16 K_hh=2 K_iter=6 Tier-2 @ 4.72M → **96.20%@ep54** — N-SCALING BREAKS. −0.95pp vs N=4096 T2 (97.15%). D=16 bottleneck for K_iter=6 at N=8192.
-- step209: N=8192 D=16 K_hh=2 K_iter=5 Tier-2 @ 3.93M → ep120=97.02% — **N-SCALING HOLDS**. Tracking N=4096 K_iter=5 T2 (97.17%@ep118). Running.
-- step210: N=8192 D=16 K_hh=2 K_iter=4 Tier-1 @ 3.15M → **95.49%@ep65** — K_iter=4 VIABLE at N=8192 (KILLED at N=2048 at 92.74%!). K_iter axis T1: K6=95.11% < K4=95.49% < K5=95.77%.
-- step211: N=8192 D=16 K_hh=2 K_iter=3 Tier-1 @ 2.36M → launched (testing if K_iter floor shifts at N=8192)
+- step201: N=4096 D=16 K_hh=2 K_iter=6 T1 @ 2.36M → **95.64%@ep66** ✓ PHASE EXIT T1
+- step202: N=2048 D=16 K_hh=2 K_iter=3 T1 @ 0.59M → **89.25%@ep74** KILLED
+- step203: N=4096 D=16 K_hh=2 K_iter=5 T1 @ 1.97M → **96.08%@ep69** — highest T1 ever at D=16
+- step204: N=4096 D=16 K_hh=2 K_iter=6 T2 @ 2.36M → **97.15%@ep71** ✓ PHASE EXIT. vs D=64 record: −0.71pp
+- step205: N=4096 D=16 K_hh=2 K_iter=5 T2 @ 1.97M → **97.17%@ep118** ✓ PHASE EXIT. NEW D=16 RECORD. vs D=64 record: −0.69pp
+- step206: N=8192 D=16 K_hh=2 K_iter=6 T1 @ 4.72M → **95.11%@ep72** — regression vs N=4096 T1 (−0.53pp). N-scaling breaks at T1 for N=8192. T2 needed.
+- step208: N=8192 D=16 K_hh=2 K_iter=5 T1 @ 3.93M → **95.77%@ep51** — K_iter=5 BEATS K_iter=6 at N=8192 T1 (+0.66pp). Same T1 regression vs N=4096 (−0.31pp). T2 → step209.
+- step207: N=8192 D=16 K_hh=2 K_iter=6 T2 @ 4.72M → **96.20%@ep54** — N-SCALING BREAKS. −0.95pp vs N=4096 T2 (97.15%). D=16 bottleneck for K_iter=6 at N=8192.
+- step209: N=8192 D=16 K_hh=2 K_iter=5 T2 @ 3.93M → ep120=97.02% — **N-SCALING HOLDS**. Tracking N=4096 K_iter=5 T2 (97.17%@ep118). Running.
+- step210: N=8192 D=16 K_hh=2 K_iter=4 T1 @ 3.15M → **95.49%@ep65** — K_iter=4 VIABLE at N=8192 (KILLED at N=2048 at 92.74%!). K_iter axis T1: K6=95.11% < K4=95.49% < K5=95.77%.
+- step211: N=8192 D=16 K_hh=2 K_iter=3 T1 @ 2.36M → launched (testing if K_iter floor shifts at N=8192)
 
 ---
 
@@ -116,25 +116,25 @@ FLOPs formula: 3 × 2048 × 2 × 16 × K_iter
 
 ### step184 — D=24 K_hh=4 Tier-2 (Mac Mini MPS)
 - ep70: 95.03% PHASE EXIT. ep110: 94.01% (post-peak oscillation normal).
-- Confirms: D=24 also exits at ~4.72M FLOPs (above current floor).
+- Confirms: D=24 exits at ~4.72M FLOPs (above current floor).
 
 ### step183 — D=28 K_hh=4 Tier-2 (Mac Mini CPU)
 - ep130: 94.39%, best 94.57%@ep90.
-- Likely NO phase exit at D=28 (~5.51M FLOPs). D=28 sits below D=32 floor.
+- Likely NO phase exit at D=28 (~5.51M FLOPs). D=28 below D=32 floor.
 
 ---
 
 ## Critical Findings Summary
 
-1. **D=16 is the binding constraint** (CONFIRMED): at fixed FLOPs, higher D + lower K_hh always dominates lower D + higher K_hh. Floor via D-reduction = D=16.
+1. **D=16 binding constraint** (CONFIRMED): at fixed FLOPs, higher D + lower K_hh always dominates lower D + higher K_hh. Floor via D-reduction = D=16.
 
-2. **K_iter reduction opens a new axis below D-floor**: at D=16 K_hh=2, reducing K_iter from 8→6 cuts FLOPs 25% with NO accuracy loss at Tier-1 (actually +1.02pp). This is the unexpected result that enabled hitting ≤1% FLOPs.
+2. **K_iter reduction opens new axis below D-floor**: at D=16 K_hh=2, reducing K_iter 8→6 cuts FLOPs 25% with NO accuracy loss at T1 (actually +1.02pp). Unexpected result that enabled ≤1% FLOPs.
 
 3. **Full efficiency criterion met at step195**: ≤1% FLOPs (1.18M) + ≥95% accuracy (96.08%). Core near-term milestone achieved.
 
-4. **K_iter=4 killed**: too few routing steps, −2.14pp regression. Minimum routing depth appears to be K_iter=5-6.
+4. **K_iter=4 killed**: too few routing steps, −2.14pp regression. Minimum routing depth ~K_iter=5-6.
 
-5. **N-scaling law at D=16 (CONFIRMED, 2026-04-11)**: Doubling N from 2048→4096 adds +1.07pp at T2 (K_iter=6) and gives the D=16 record at 97.17% (K_iter=5). D=16 can approach D=64 accuracy (97.86%) purely via N-scaling. Gap is now −0.69pp.
+5. **N-scaling law at D=16 (CONFIRMED, 2026-04-11)**: Doubling N 2048→4096 adds +1.07pp at T2 (K_iter=6), gives D=16 record at 97.17% (K_iter=5). D=16 can approach D=64 accuracy (97.86%) via N-scaling. Gap now −0.69pp.
 
 6. **N=8192 T1 regression (HYPOTHESIS)**: step206 N=8192 T1=95.11% is −0.53pp below N=4096 T1. Possible causes: BATCH=64 with 50% data, LR mismatch, or D=16 representation bottleneck at large N. T2 (step207) will clarify — if T2 shows +1.5pp lift, law holds at full training.
 

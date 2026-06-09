@@ -3,7 +3,7 @@
 **Date range:** 2026-04-06 to 2026-04-09
 **Status:** COMPLETE (split into sub-files)
 
-This file is a table of contents. All content has been split into the following files:
+Table of contents. All content split into sub-files:
 
 ---
 

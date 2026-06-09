@@ -1,10 +1,10 @@
 # Normalization
 
-**Mechanism:** Per-step output normalization after iterative routing in SGNNET. Controls what information is preserved at each K_iter step.
+**Mechanism:** Per-step output normalization after iterative routing in SGNNET. Controls what info preserved at each K_iter step.
 
 ## Context
 
-SGNNET's base architecture uses `F.normalize(Z, dim=-1)` (L2 sphere norm) at the end of each routing step, projecting activations onto S^{D-1}. This was the original design for maintaining unit-sphere geometry throughout K_iter iterations.
+SGNNET base architecture uses `F.normalize(Z, dim=-1)` (L2 sphere norm) end of each routing step, projecting activations onto S^{D-1}. Original design for maintaining unit-sphere geometry throughout K_iter iterations.
 
 ## Results
 
@@ -21,22 +21,22 @@ SGNNET's base architecture uses `F.normalize(Z, dim=-1)` (L2 sphere norm) at the
 
 ## Why LayerNorm Wins
 
-Hard L2 sphere norm discards magnitude information at every step — only direction is preserved. LayerNorm with learned affine (scale γ, shift β per dimension) lets the network:
+Hard L2 sphere norm discards magnitude info every step — only direction preserved. LayerNorm with learned affine (scale γ, shift β per dimension) lets network:
 - Modulate per-dimension scale (routing can emphasize certain Fourier components)
 - Preserve magnitude signal across steps
-- Break symmetry through learned bias (RMSNorm lacks this, contributing to its −11pp loss)
+- Break symmetry through learned bias (RMSNorm lacks this, contributing to −11pp loss)
 
 ## Why RMSNorm Fails Most
 
-No learned bias → can't break dimensional symmetry. RMSNorm is strictly a rescaling; without shift, it cannot differentiate dimensions that should carry different signal. The −11.49pp loss is the largest of all normalization variants tested.
+No learned bias → can't break dimensional symmetry. RMSNorm strictly rescaling; without shift, cannot differentiate dimensions that should carry different signal. −11.49pp loss largest of all normalization variants tested.
 
 ## Interaction with AH
 
-The base L2 sphere norm was a key ingredient in AH's signal conservation property: F.normalize() at end of each step restores magnitude, preventing multiplicative decay that kills gating mechanisms ([[gate_death]]). If LayerNorm replaces F.normalize(), the AH signal conservation argument needs re-validation at N=4096. This is why N=4096 validation is required before adopting LayerNorm as default.
+Base L2 sphere norm key ingredient in AH signal conservation: `F.normalize()` end of each step restores magnitude, preventing multiplicative decay that kills gating mechanisms ([[gate_death]]). If LayerNorm replaces `F.normalize()`, AH signal conservation argument needs re-validation at N=4096. Why N=4096 validation required before adopting LayerNorm as default.
 
 ## Architectural Constraint: C_ho Readout
 
-A related normalization finding from step149: when activations are on the unit sphere, global mean-pool readout fails catastrophically (12% accuracy). See [[readout]] for the C_ho requirement.
+Related normalization finding from step149: when activations on unit sphere, global mean-pool readout fails catastrophically (12% accuracy). See [[readout]] for C_ho requirement.
 
 ## Open
 
@@ -45,5 +45,5 @@ A related normalization finding from step149: when activations are on the unit s
 
 ## See Also
 
-- [[antihebbian]] — signal conservation depends on F.normalize(); LayerNorm changes this
+- [[antihebbian]] — signal conservation depends on `F.normalize()`; LayerNorm changes this
 - [[readout]] — unit-sphere activations require C_ho readout, not global mean-pool

@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-SGNNET achieves **97.38% top-1 accuracy** on Imagenette with **529,024 learnable parameters** -- **0.44% of VGG16's FC layer count** (119M params). At the best configuration (N=4096, D=64, K_iter=8, AntiHebbian alpha=1.0, turing=0.0), SGNNET exceeds VGG16's own FC accuracy (~93-94%) by +3-4pp while using **225x fewer parameters**. FLOPs per sample are 61.9M (0.52x VGG16 FC) when turing=0.0 eliminates the phase inhibition path. This validates the core hypothesis: a sparse O(N*K) graph neural network can replace dense FC layers at a fraction of the parameter and compute cost.
+SGNNET achieves **97.38% top-1 accuracy** on Imagenette with **529,024 learnable parameters** -- **0.44% of VGG16 FC layer count** (119M params). Best config (N=4096, D=64, K_iter=8, AntiHebbian alpha=1.0, turing=0.0) exceeds VGG16 FC accuracy (~93-94%) by +3-4pp using **225x fewer parameters**. FLOPs/sample 61.9M (0.52x VGG16 FC) when turing=0.0 eliminates phase inhibition path. Validates core hypothesis: sparse O(N*K) graph neural network replaces dense FC layers at fraction of parameter and compute cost.
 
 ---
 
@@ -23,7 +23,7 @@ SGNNET achieves **97.38% top-1 accuracy** on Imagenette with **529,024 learnable
 | **Total FC FLOPs/sample** | **119,578,624** (~119.6M) |
 | **Imagenette accuracy** | ~93-94% (reference) |
 
-FLOPs here count multiply-accumulate operations in the FC layers only (input_dim x output_dim per layer). Bias terms omitted for simplicity (~14K additional).
+FLOPs count multiply-accumulate ops in FC layers only (input_dim x output_dim per layer). Bias terms omitted (~14K additional).
 
 ---
 
@@ -31,7 +31,7 @@ FLOPs here count multiply-accumulate operations in the FC layers only (input_dim
 
 ### Model Stack
 
-The production model is a three-layer wrapper:
+Production model = three-layer wrapper:
 
 ```
 SGNNET_AntiHebbian
@@ -88,7 +88,7 @@ Total routing: K_iter x per_step
 | step71 D | 16 | 0.3 | 13.1M | 200.8M | 2.6M | **216.5M** | **1.81x** |
 | N=1024 standard | 8 | 0.3 | 3.3M | 25.1M | 0.7M | **29.1M** | **0.24x** |
 
-Note: FLOPs are dominated by K_iter routing steps. The turing=0.0 path skips the beam-based phase inhibition entirely, halving compute. This is significant: **the project best config also uses the least compute per sample among N=4096 runs**.
+FLOPs dominated by K_iter routing steps. turing=0.0 skips beam-based phase inhibition, halving compute. **Project best config = least compute among N=4096 runs**.
 
 ---
 
@@ -133,29 +133,29 @@ Note: FLOPs are dominated by K_iter routing steps. The turing=0.0 path skips the
 
 **Config:** N=4096, D=64, K_iter=8, AH=1.0(wpos), turing=0.0, reflect=0.5, 100%/150ep.
 
-AntiHebbian routing with complete suppression (alpha=1.0) in learned position space, plus reflection accumulation (alpha=0.5). Turing phase inhibition disabled entirely. This works because at N=4096, the small-world graph is rich enough (4096 neurons x 6 neighbors = 24,576 edges) that local structural routing alone carries sufficient information. The turing mechanism (long-range phase inhibition) adds noise at this scale -- confirmed by the +0.18pp gain from disabling it. The reflection accumulator preserves sub-threshold activations across routing steps, preventing information loss at the excitatory gate.
+AntiHebbian routing with complete suppression (alpha=1.0) in learned position space, plus reflection accumulation (alpha=0.5). Turing phase inhibition disabled. Works because at N=4096, small-world graph rich enough (4096 neurons x 6 neighbors = 24,576 edges) that local structural routing alone carries sufficient information. Turing mechanism (long-range phase inhibition) adds noise at this scale -- confirmed by +0.18pp gain from disabling it. Reflection accumulator preserves sub-threshold activations across routing steps, preventing information loss at excitatory gate.
 
 ### Rank 2: step70 Ref -- 97.20%
 
-Same as Rank 1 but with turing=0.3 enabled. The slight turing contribution at N=1024 (+1.68pp in step69) becomes slightly harmful at N=4096 (-0.18pp). This demonstrates the confirmed law: **turing contribution is N-dependent**.
+Same as Rank 1 but turing=0.3 enabled. Slight turing contribution at N=1024 (+1.68pp in step69) becomes slightly harmful at N=4096 (-0.18pp). Demonstrates confirmed law: **turing contribution is N-dependent**.
 
 ### Rank 3: step71 C -- 96.66% (K_iter=12, 50%/75ep)
 
-At N=4096, the optimal routing depth is K_iter=12, not 8 or 16. The non-monotone curve (8:95.87 < 12:96.66 > 16:96.31) shows that 12 iterations is the sweet spot where information has propagated sufficiently across the small-world graph (~log(4096) = 12 hops for diameter) without over-smoothing. This validates K_iter ~ graph_diameter as the optimal routing depth.
+At N=4096, optimal routing depth K_iter=12, not 8 or 16. Non-monotone curve (8:95.87 < 12:96.66 > 16:96.31) shows 12 iterations = sweet spot where information propagated sufficiently across small-world graph (~log(4096) = 12 hops for diameter) without over-smoothing. Validates K_iter ~ graph_diameter as optimal routing depth.
 
 ### Ranks 4-9: N=4096 variants at 50%/75ep
 
-All achieve 95.1-96.3% on half data. The aux loss experiments (step79) show marginal gains (+0.21pp max for sparsity/diversity), confirming that the base architecture is already well-calibrated. Phase coherence aux loss slightly hurts (-0.25pp), consistent with the wave-1 finding that phase-based mechanisms degrade performance.
+All achieve 95.1-96.3% on half data. Aux loss experiments (step79) show marginal gains (+0.21pp max for sparsity/diversity), confirming base architecture already well-calibrated. Phase coherence aux loss slightly hurts (-0.25pp), consistent with wave-1 finding that phase-based mechanisms degrade performance.
 
 ### Rank 10: step71 B -- 95.11% (K_iter=6)
 
-Even at K_iter=6 (75% of default), N=4096 achieves 95%+ on half data. This suggests the architecture is robust to routing depth at large N -- the dense graph compensates for fewer iterations.
+Even at K_iter=6 (75% of default), N=4096 achieves 95%+ on half data. Architecture robust to routing depth at large N -- dense graph compensates for fewer iterations.
 
 ### Notable N=1024 results
 
-**step75 D (87.24%)** -- the first successful dynamic routing mechanism. Input-modulated temperature routing learns a per-neuron temperature parameter that scales softmax attention over neighbors. Unlike multiplicative gates (which die at K_iter=8), this modulates the *distribution* of attention weights without attenuating total signal. Matches the redistribution principle from the softmax routing concept page.
+**step75 D (87.24%)** -- first successful dynamic routing mechanism. Input-modulated temperature routing learns per-neuron temperature parameter scaling softmax attention over neighbors. Unlike multiplicative gates (which die at K_iter=8), modulates *distribution* of attention weights without attenuating total signal. Matches redistribution principle from softmax routing concept page.
 
-**step82 A (85.63%)** -- random-group topology with n_groups=8 beats the default spatial topology (n_groups=128) by +3pp. Larger groups (fewer groups) create denser intra-group wiring, improving information flow. This is the simplest topology-only change that yields a significant gain.
+**step82 A (85.63%)** -- random-group topology with n_groups=8 beats default spatial topology (n_groups=128) by +3pp. Larger groups (fewer groups) create denser intra-group wiring, improving information flow. Simplest topology-only change yielding significant gain.
 
 ---
 
@@ -167,7 +167,7 @@ Even at K_iter=6 (75% of default), N=4096 achieves 95%+ on half data. This sugge
 | **SGNNET (step70 B)** | **529,024** | **97.38%** | **5,432** |
 | SGNNET N=1024 (step75 D) | 132,736 | 87.24% | 1,522 |
 
-**Key claim validated:** SGNNET matches VGG16 FC accuracy at **0.44%** of its parameters -- well under the 1% target. At 97.38% vs ~93.5%, SGNNET actually *exceeds* VGG16 FC by +3.88pp while using 225x fewer parameters.
+**Key claim validated:** SGNNET matches VGG16 FC accuracy at **0.44%** of parameters -- well under 1% target. At 97.38% vs ~93.5%, SGNNET *exceeds* VGG16 FC by +3.88pp using 225x fewer parameters.
 
 ### Parameter scaling (patched arch, 50%/75ep)
 
@@ -178,7 +178,7 @@ Even at K_iter=6 (75% of default), N=4096 achieves 95%+ on half data. This sugge
 | 2048 | 264,832 | 92.74% | 2,856 |
 | 4096 | 529,024 | 95.87% | 5,519 |
 
-Accuracy scales sub-linearly with parameters: doubling N (and params) adds ~7-10pp at low N but diminishing returns above N=2048. The architecture is most parameter-efficient at small N.
+Accuracy scales sub-linearly with parameters: doubling N (and params) adds ~7-10pp at low N but diminishing returns above N=2048. Architecture most parameter-efficient at small N.
 
 ---
 
@@ -191,23 +191,23 @@ Accuracy scales sub-linearly with parameters: doubling N (and params) adds ~7-10
 | SGNNET step70 Ref | 116.1M | 97.20% | 1.19M |
 | SGNNET step71 C | 166.3M | 96.66% | 1.72M |
 
-The project best (step70 B) is **2.4x more compute-efficient** than VGG16 FC per percentage point of accuracy, and achieves higher absolute accuracy.
+Project best (step70 B) **2.4x more compute-efficient** than VGG16 FC per percentage point, and higher absolute accuracy.
 
-Critical insight: **turing=0.0 is both the most accurate AND the cheapest** at N=4096. Disabling phase inhibition removes the beam-based O(M*N*D) computation per routing step, cutting FLOPs nearly in half (49.2M vs 116.1M). This is a free lunch -- better accuracy at lower cost.
+Critical insight: **turing=0.0 = most accurate AND cheapest** at N=4096. Disabling phase inhibition removes beam-based O(M*N*D) computation per routing step, cutting FLOPs nearly in half (49.2M vs 116.1M). Free lunch -- better accuracy at lower cost.
 
-SGNNET's routing steps are sequential (K_iter=8 steps that cannot be parallelized), which adds latency compared to VGG16's 3 parallelizable FC layers. However, each step is O(N*K_hh*D) = O(N*6*64) -- linear in N with a small constant. The total wall time on MPS for a single forward pass at N=4096 is dominated by the 8 gather-sum-normalize iterations.
+SGNNET routing steps sequential (K_iter=8 steps, not parallelizable), adding latency vs VGG16's 3 parallelizable FC layers. But each step O(N*K_hh*D) = O(N*6*64) -- linear in N with small constant. Total wall time on MPS for single forward pass at N=4096 dominated by 8 gather-sum-normalize iterations.
 
 ---
 
 ## Confirmed Laws and Patterns
 
-Six laws have been established across 80+ experiments:
+Six laws established across 80+ experiments:
 
 ### 1. Gate-Death Theorem
-Any multiplicative gate g in [0,1] applied per routing step compounds to g^K_iter signal attenuation. At K_iter=8, g=0.7 produces 0.06x signal -- effectively zero gradient. **8+ experiments confirm** (steps 58-66). All wave-1 dynamic routing mechanisms died from this.
+Multiplicative gate g in [0,1] applied per routing step compounds to g^K_iter signal attenuation. At K_iter=8, g=0.7 produces 0.06x signal -- effectively zero gradient. **8+ experiments confirm** (steps 58-66). All wave-1 dynamic routing mechanisms died from this.
 
 ### 2. AntiHebbian Compound Failure
-Adding any mechanism to AH alpha=1.0 reduces accuracy. Steps 29c, 32, 58-63 all show the same pattern: AH alone = 80.08% (pre-patch) or 97.38% (post-patch), while AH + anything else = lower. The only exception is reflection (alpha_reflect=0.5), which is part of the base model.
+Adding any mechanism to AH alpha=1.0 reduces accuracy. Steps 29c, 32, 58-63 show same pattern: AH alone = 80.08% (pre-patch) or 97.38% (post-patch), AH + anything else = lower. Only exception: reflection (alpha_reflect=0.5), part of base model.
 
 ### 3. K_iter Optimal is N-Dependent
 - N=1024: K_iter=16 optimal (step68, +0.51pp over K_iter=8)
@@ -215,15 +215,15 @@ Adding any mechanism to AH alpha=1.0 reduces accuracy. Steps 29c, 32, 58-63 all 
 - Non-monotone at both scales: performance dips at intermediate values before recovering
 
 ### 4. N-Scaling is Non-Monotonic Above N=4096
-step56 (buggy arch): N=10000 regresses -2pp vs N=4096. step80 (patched arch): N=512(72.79%) < N=2048(92.74%) < N=4096(95.87%). The full patched-arch curve above N=4096 is still pending.
+step56 (buggy arch): N=10000 regresses -2pp vs N=4096. step80 (patched arch): N=512(72.79%) < N=2048(92.74%) < N=4096(95.87%). Full patched-arch curve above N=4096 still pending.
 
 ### 5. Turing Contribution is N-Dependent
 - N=1024: turing=0.3 gives +1.68pp (step69)
 - N=4096: turing=0.0 beats turing=0.3 by +0.18pp (step70)
-- Hypothesis: at large N, the graph is rich enough that long-range phase inhibition adds noise rather than signal.
+- Hypothesis: at large N, graph rich enough that long-range phase inhibition adds noise not signal.
 
 ### 6. Redistribution Routing Preserves Gradient
-Softmax-weighted aggregation (sum of weights = 1) avoids gate-death by construction. Step73 (softmax routing) and step75 (temperature routing) are the first dynamic routing mechanisms to beat the static AH baseline, precisely because they redistribute signal rather than attenuating it.
+Softmax-weighted aggregation (sum of weights = 1) avoids gate-death by construction. Step73 (softmax routing) and step75 (temperature routing) = first dynamic routing mechanisms beating static AH baseline, precisely because they redistribute signal rather than attenuating it.
 
 ---
 

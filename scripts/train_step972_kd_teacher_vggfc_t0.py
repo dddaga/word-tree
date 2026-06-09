@@ -271,9 +271,11 @@ def make_loaders_frac(path: str, frac: float, batch: int, seed: int):
 
     g2 = torch.Generator().manual_seed(seed)
     tr_loader = td.DataLoader(sub_train, batch_size=batch, shuffle=True,
-                               generator=g2, num_workers=0)
+                               generator=g2, num_workers=10,
+                               pin_memory=(torch.cuda.is_available()))
     va_loader = td.DataLoader(val_ds, batch_size=batch, shuffle=False,
-                               num_workers=0)
+                               num_workers=10,
+                               pin_memory=(torch.cuda.is_available()))
     return tr_loader, va_loader
 
 

@@ -248,7 +248,8 @@ def count_macs(model: nn.Module, img_size: int = 224) -> int:
     hooks = [m.register_forward_hook(_hook)
              for m in model.modules() if isinstance(m, (nn.Conv2d, nn.Linear))]
     with torch.no_grad():
-        model(torch.zeros(1, 3, img_size, img_size))
+        dev = next(model.parameters()).device
+        model(torch.zeros(1, 3, img_size, img_size, device=dev))
     for h in hooks:
         h.remove()
     return macs[0]

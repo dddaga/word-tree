@@ -27,7 +27,7 @@
 | A_prime | (gate-dead) | 10.80% | −63pp |
 | B_prime | (gate-dead) | 10.68% | −63pp |
 
-Even configs WITH AH (C, B_anchor) still gate-die at 14-19%. All 12 variants killed.
+Even configs WITH AH (C, B_anchor) gate-die at 14-19%. All 12 killed.
 
 ---
 
@@ -64,7 +64,7 @@ AH partially compensates but −18pp vs static AH. All killed.
 | E | γ=1.0 softmax | 48.43% | −25pp |
 | F | γ=2.0 softmax | 48.43% | −25pp |
 
-Distance-phase geometry adds no routing signal that AH doesn't already provide.
+Distance-phase geometry adds no routing signal AH doesn't already provide.
 
 ---
 
@@ -77,7 +77,7 @@ Distance-phase geometry adds no routing signal that AH doesn't already provide.
 | B | CosineWarmRestart T_0=25 | 68.05% |
 | C | CosineWarmRestart T_0=50 | 67.21% |
 
-Plateau scheduler is optimal. CLOSED.
+Plateau scheduler optimal. CLOSED.
 
 ---
 
@@ -94,7 +94,7 @@ Plateau scheduler is optimal. CLOSED.
 | **F** | **2-parallel concat-project** | 273K | **74.90%** | **+1.52pp WINNER** |
 
 Config F (2-parallel concat-project) = +1.52pp vs Ref. best_ep=75/75 — still converging.
-Series stacking closed. Parallel concat-project is the only variant that adds value.
+Series stacking closed. Parallel concat-project only variant that adds value.
 Follow-up: re-test Config F on patched arch (→ step85).
 
 ---
@@ -108,7 +108,7 @@ Follow-up: re-test Config F on patched arch (→ step85).
 | B | 0.05 (minimal) | 71.21% | −2.47pp |
 | C | 0.1 (light) | 72.59% | −1.09pp |
 
-Non-linear recovery accelerates at λ=0.1. ⚠️ Pre-patch architecture — re-validation needed.
+Non-linear recovery accelerates at λ=0.1. ⚠️ Pre-patch arch — re-validation needed.
 
 ---
 
@@ -124,8 +124,8 @@ Non-linear recovery accelerates at λ=0.1. ⚠️ Pre-patch architecture — re-
 | **C** | **16** | **74.14%** | **+0.51pp WINNER** |
 | D | 24 | 70.06% | −3.57pp |
 
-**K_iter=16 is new Gen4 optimal at N=1024.** Non-monotone: peak at 16, cliff at 24.
-Note: K_iter optimal is N-dependent — at N=4096 (step71), K_iter=12 wins.
+**K_iter=16 new Gen4 optimal at N=1024.** Non-monotone: peak at 16, cliff at 24.
+Note: K_iter optimal N-dependent — at N=4096 (step71), K_iter=12 wins.
 
 ---
 
@@ -151,11 +151,11 @@ K_iter=12 WITHOUT AH hurts (−3pp). B-G (AH configs) never ran → superseded b
 | 4096 | 529K | **84.36%** | PROJECT BEST (at time); best_ep=146/150 |
 | 10000 | 1.29M | 82.37% | REGRESSION −1.99pp |
 
-N-scaling law NOT monotonic above N=4096. Regression at N=10000 likely due to:
-- W_pos position space becomes too sparse for K_local at N=10000
+N-scaling NOT monotonic above N=4096. Regression at N=10000 likely:
+- W_pos position space too sparse for K_local at N=10000
 - AH suppression too aggressive when N>>K_local
 
-**⚠️ These results are on buggy arch — patched arch scaling curve unknown.**
+**⚠️ Results on buggy arch — patched arch scaling curve unknown.**
 
 ---
 
@@ -172,8 +172,8 @@ N-scaling law NOT monotonic above N=4096. Regression at N=10000 likely due to:
 | step66 | Phase-target plasticity | 40-68% | Gating + AH = double sparsity |
 | step51 | W_phase spatial gating | 15-20% | Complete gate-death |
 
-**The theorem:** Every multiplicative gate g∈[0,1] over K routing iterations → g^K signal decay.
-At g=0.8, K=8: `0.8^8 ≈ 0.17×`. Static AH survives because it applies suppression **before** the
+**Theorem:** Every multiplicative gate g∈[0,1] over K routing iterations → g^K signal decay.
+At g=0.8, K=8: `0.8^8 ≈ 0.17×`. Static AH survives because suppression applies **before**
 gather step and `F.normalize()` restores magnitude after each step.
 
 ---

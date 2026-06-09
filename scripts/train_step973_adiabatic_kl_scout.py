@@ -115,20 +115,26 @@ def threshold_fire(model: nn.Module, tau: float, lr: float, reset: str) -> int:
 
 
 def calibrate_tau(model: nn.Module, tr, n_batches: int = 10) -> tuple[float, float]:
-    model.train(); model.zero_grad()
+    """Calibrate tau from per-batch single-step gradients (NOT accumulated).
+    Each batch is computed independently so tau reflects realistic single-batch
+    gradient magnitudes — not the inflated accumulated sum which causes sign
+    cancellation and prevents GTF from ever firing during training."""
+    model.train()
+    all_vals = []
     it = iter(tr)
     for _ in range(n_batches):
         try: bx, by, sf = next(it)
         except StopIteration: break
-        bx, sf = bx.to(DEVICE), sf.to(DEVICE)
+        model.zero_grad()
         kl_loss(model(bx), sf).backward()
-    vals = [p.grad.abs().max().item() for p in model.parameters() if p.grad is not None]
+        vals = [p.grad.abs().max().item() for p in model.parameters() if p.grad is not None]
+        all_vals.extend(vals)
     model.zero_grad()
-    if not vals: return 1e-3, 1e-2
-    arr = np.array(vals)
+    if not all_vals: return 1e-3, 1e-2
+    arr = np.array(all_vals)
     tau_lo = float(np.percentile(arr, 50))
     tau_hi = float(np.percentile(arr, 75))
-    print(f"  τ_lo(p50)={tau_lo:.3e}  τ_hi(p75)={tau_hi:.3e}", flush=True)
+    print(f"  τ_lo(p50-single-batch)={tau_lo:.3e}  τ_hi(p75-single-batch)={tau_hi:.3e}", flush=True)
     return tau_lo, tau_hi
 
 
@@ -147,16 +153,18 @@ def load_data():
     path = ROOT / args.data
     if not path.exists(): print(f"ERROR: {path}"); sys.exit(1)
     with h5py.File(path, "r") as f:
-        tr_x  = torch.tensor(f["train/features"][:],    dtype=torch.float32)
-        tr_y  = torch.tensor(f["train/labels"][:],      dtype=torch.long)
-        tr_sf = torch.tensor(f["train/soft_labels"][:], dtype=torch.float32)
-        va_x  = torch.tensor(f["val/features"][:],      dtype=torch.float32)
-        va_y  = torch.tensor(f["val/labels"][:],        dtype=torch.long)
+        tr_x  = torch.tensor(f["train/features"][:],    dtype=torch.float32).to(DEVICE)
+        tr_y  = torch.tensor(f["train/labels"][:],      dtype=torch.long).to(DEVICE)
+        tr_sf = torch.tensor(f["train/soft_labels"][:], dtype=torch.float32).to(DEVICE)
+        va_x  = torch.tensor(f["val/features"][:],      dtype=torch.float32).to(DEVICE)
+        va_y  = torch.tensor(f["val/labels"][:],        dtype=torch.long).to(DEVICE)
+    vram_gb = (tr_x.numel() + tr_sf.numel() + va_x.numel()) * 4 / 1e9
+    # num_workers=0: data already on GPU, forked workers can't access CUDA tensors
     tr = DataLoader(TensorDataset(tr_x, tr_y, tr_sf), batch_size=args.batch,
-                    shuffle=True, num_workers=4,
-                    pin_memory=(DEVICE.type == "cuda"))
-    va = DataLoader(TensorDataset(va_x, va_y), batch_size=512, shuffle=False, num_workers=2)
-    print(f"  Data: {len(tr_x)} train / {len(va_x)} val  B={args.batch}  {len(tr)} batches/ep")
+                    shuffle=True, num_workers=0)
+    va = DataLoader(TensorDataset(va_x, va_y), batch_size=512, shuffle=False, num_workers=0)
+    print(f"  Data pinned to {DEVICE}: {len(tr_x)} train / {len(va_x)} val  "
+          f"VRAM={vram_gb:.2f}GB  B={args.batch}  {len(tr)} batches/ep")
     return tr, va
 
 
@@ -165,7 +173,6 @@ def evaluate(model, va) -> float:
     model.eval()
     correct = total = 0
     for x, y in va:
-        x, y = x.to(DEVICE), y.to(DEVICE)
         correct += (model(x).argmax(1) == y).sum().item()
         total   += y.size(0)
     return correct / total
@@ -185,7 +192,11 @@ def train_config(tag: str, cfg: dict, tr, va, tau_lo: float, tau_hi: float,
     model.zero_grad()
 
     if mech == "adamw":
-        opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-3)
+        opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.0)
+        n_steps = args.epochs * (18938 // args.batch + 1)
+        sched = torch.optim.lr_scheduler.OneCycleLR(
+            opt, max_lr=lr, total_steps=n_steps, pct_start=0.1, anneal_strategy="cos"
+        )
 
     hist_acc, best_acc = [], 0.0
     t0 = time.time()
@@ -193,13 +204,13 @@ def train_config(tag: str, cfg: dict, tr, va, tau_lo: float, tau_hi: float,
     for ep in range(1, args.epochs + 1):
         model.train()
         for bx, by, sf in tr:
-            bx, sf = bx.to(DEVICE), sf.to(DEVICE)
             loss = kl_loss(model(bx), sf)
 
             if mech == "adamw":
                 opt.zero_grad()
                 loss.backward()
                 opt.step()
+                sched.step()
 
             elif mech == "adiabatic":
                 # Accumulate grads, mask top-K, SGD step

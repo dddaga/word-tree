@@ -35,12 +35,12 @@ Tier-0 scouts predict the final winner ~80% of the time (Spearman $\rho = 0.80$ 
 
 ### 4.4 Experiment Scale
 
-213 controlled experiments were conducted across Phase 5, covering:
+~943 controlled experiments were conducted across Phases 5–6, covering:
 - $N \in \{256, 512, 1024, 2048, 4096, 8192, 16384\}$
 - $D \in \{8, 10, 12, 16, 20, 24, 28, 32, 48, 64\}$
 - $K_{hh} \in \{1, 2, 3, 4, 8\}$
 - $K_\text{iter} \in \{3, 4, 5, 6, 8, 12, 16\}$
-- 27 routing mechanism variants
+- 30+ routing mechanism variants (see §5.5, §5.8, Appendix A)
 
 ---
 
@@ -68,9 +68,9 @@ The FLOPs formula $3NKD \cdot K_\text{iter}$ creates iso-FLOP curves along which
 
 The pattern is consistent: at the same compute budget, halving $K_{hh}$ and doubling $D$ yields $+1.6$ to $+2.6$pp. The directionality is robust: step190 Tier-2 achieves 95.67% (step193) vs step188 Tier-2 = 94.62% at the same FLOPs.
 
-**Why does this hold?** On $S^{D-1}$, the number of approximately orthogonal unit vectors scales as $e^{D/2}$ (a standard result in high-dimensional geometry). At $D=8$, approximately $e^4 \approx 55$ distinguishable directions exist for 2048 neurons — far less than $N$. At $D=16$, this becomes $e^8 \approx 2981$ — enough for each neuron to occupy a unique directional niche. $K_{hh}$, by contrast, controls how much each routing step smooths over neighbors; higher $K_{hh}$ increases over-smoothing pressure without adding directional capacity.
+**Why does this hold?** On $S^{D-1}$, the number of approximately orthogonal unit vectors scales as $e^{D/2}$. At $D=8$: $e^4 \approx 55$ directions for 2048 neurons. At $D=16$: $e^8 \approx 2981$ — enough for each neuron to occupy a unique niche. $K_{hh}$ adds over-smoothing pressure without adding directional capacity.
 
-**Implication for architecture search:** The FLOPs budget should be spent on $D$ first, then $K_{hh}$. Reducing $K_{hh}$ from 4 to 2 to buy $D$ from 8 to 16 is strictly beneficial.
+**Implication:** Spend FLOPs budget on $D$ first. Reducing $K_{hh}$ from 4 to 2 to buy $D$ from 8 to 16 is strictly beneficial.
 
 ### 5.2 $N$-Scaling Law with Dimension Ceiling
 
@@ -81,7 +81,7 @@ At $D=16, K_{hh}=2, K_\text{iter}=5$ (Tier-2):
 | $N$ | FLOPs | Accuracy | $\Delta$ from prev. |
 |-----|-------|----------|---------------------|
 | 1024 | ~0.49M | ~88.9% (T1 proxy) | — |
-| **2048** | **0.98M** | **95.52%** | — |
+| **2048** | **0.98M** | **96.38% $\pm$ 0.18pp** | — |
 | **4096** | **1.97M** | **97.17%** | +1.65pp |
 | **8192** | **3.93M** | **97.17%** | +0.00pp (ceiling) |
 
@@ -103,9 +103,7 @@ This ceiling is a dimension-dependent representational limit. With $D=16$, the h
 
 At $N=2048$, the ordering is $K6 > K5 > K4 > K3$. At $N=8192$, $K5 > K6$ at Tier-1, and $K_\text{iter}=4$ (killed at $N=2048$) becomes viable — achieving 95.49% at Tier-1 (step210), vs 92.74% at $N=2048$ (step196).
 
-The over-smoothing hypothesis: at fixed $D=16$, each routing step propagates activations $K_{hh}^t$ hops away after $t$ iterations. With small $N$, the graph diameter is large relative to $K_{hh}^{K_\text{iter}}$ — information integrates well. With large $N$, the graph contains more path diversity, and fewer iterations suffice before the representation over-averages.
-
-**Practical consequence.** The best sub-1% FLOPs result uses $N=2048, K_\text{iter}=5$: fewer iterations than the calibration best ($K_\text{iter}=6$), exploiting the FLOPs reduction without accuracy loss because $N=2048$ is near the per-step optimum.
+Over-smoothing hypothesis: at fixed $D=16$, each step propagates activations $K_{hh}^t$ hops away. Large $N$ has higher path diversity — fewer iterations suffice before over-averaging. Best sub-1% FLOPs result: $N=2048, K_\text{iter}=5$ exploits this without accuracy penalty.
 
 ### 5.4 $N$-Scaling Rehabilitates Dead Configurations
 
@@ -116,13 +114,11 @@ The over-smoothing hypothesis: at fixed $D=16$, each routing step propagates act
 | 4 | 92.74% (KILLED, step196) | 95.49% (VIABLE, step210) | +2.75pp |
 | 3 | 89.25% (KILLED, step202) | 94.93% (borderline, step211) | +5.68pp |
 
-This means FLOPs estimates at small $N$ are systematically pessimistic about minimum routing depth. A configuration requiring $K_\text{iter}=5$ at $N=2048$ to hit 95% may require only $K_\text{iter}=3-4$ at $N=8192$, enabling further FLOPs reduction via the $K_\text{iter}$ axis.
-
-The D=16 $K_\text{iter}=4$ floor at $N=8192$ (95.49% T1, step210) represents a potentially viable operating point at 3.15M FLOPs — within the same tier as step185 ($N=2048, K_\text{iter}=8$, 95.87% T2) but with 4× more neurons and 4× fewer iterations.
+FLOPs estimates at small $N$ are systematically pessimistic about minimum routing depth. A config requiring $K_\text{iter}=5$ at $N=2048$ may need only $K_\text{iter}=3$–$4$ at $N=8192$, enabling further FLOPs reduction. The $K_\text{iter}=4$ floor at $N=8192$ (95.49% T1, step210) achieves 3.15M FLOPs with 4× more neurons and 4× fewer iterations than the step185 baseline.
 
 ### 5.5 Gate-Death Theorem
 
-**Claim: Any multiplicative gate $g \in [0,1]$ in the routing loop compounds to $g^{K_\text{iter}}$ signal attenuation, explaining the failure of all 27 gated routing mechanisms.**
+**Claim: Any multiplicative gate $g \in [0,1]$ in the routing loop compounds to $g^{K_\text{iter}}$ signal attenuation, explaining the failure of all tested gated routing mechanisms.**
 
 Consider a routing step with a multiplicative gate:
 
@@ -138,7 +134,7 @@ The normalization step does not rescue this: $F.\text{normalize}(g \cdot v) = F.
 
 **Fix:** Redistribution instead of gating. If gates sum to 1 ($\sum_k g_k = 1$, softmax), signal mass is preserved. This explains why the two successful routing variants survive: the structural gather-sum followed by normalize is a soft redistribution, not a multiplicative gate.
 
-**Empirical evidence (27 killed mechanisms, steps 58-66 and beyond):**
+**Empirical evidence (steps 58–66 and beyond; full catalog in Appendix A):**
 
 | Category | Count | Representative failure | Key delta |
 |----------|-------|----------------------|-----------|
@@ -152,19 +148,19 @@ The normalization step does not rescue this: $F.\text{normalize}(g \cdot v) = F.
 | External constraint losses | 5 | step152 nuclear norm | $-5$ to $-15$pp |
 | Scale-transfer failures | 6 | step132 W\_proj@N=4096 | $\approx 0$pp |
 
-The stochastic depth result (step123) is particularly revealing: randomly skipping any single routing step collapses accuracy by 35–61pp. Every step is essential — not because each step does something different, but because the routing fixed point requires all $K_\text{iter}$ iterations to converge. Gating that probabilistically removes steps (even at low probability) prevents convergence.
+The stochastic depth result (step123): skipping any single routing step collapses accuracy 35–61pp. The routing fixed point requires all $K_\text{iter}$ iterations.
 
-**Unified explanation.** The routing loop is not a sequence of optional operations; it is a fixed-point iteration. Gating disrupts the convergence basin. The successful architecture uses the simplest possible aggregation — gather-sum + normalize — which is provably redistributive and preserves the convergence properties.
+**Unified explanation.** The routing loop is a fixed-point iteration. Gating disrupts the convergence basin. Gather-sum + normalize is redistributive and preserves convergence.
 
 ### 5.6 Three Load-Bearing Walls
 
 **Claim: Three architectural components are individually necessary; removing any one causes catastrophic failure.**
 
-We define "load-bearing" as: removal causes accuracy degradation exceeding 10pp compared to the full model.
+We define "load-bearing" as: removal causes $>10$pp degradation compared to the full model.
 
 **Wall 1: $F.\text{normalize}$ after each routing step.**
 
-Removal tested in step129 ($N=4096, D=64$): $-50$pp to $-71$pp across all configurations. Without normalization, activation magnitudes grow unboundedly through the routing loop (each sum step can multiply magnitudes by up to $K_{hh}$), causing numerical overflow or collapse to a single dominant neuron. Normalization is not merely a regularizer — it constrains the dynamics to the hypersphere where the Fourier positional encoding is meaningful and the routing has a well-defined fixed point.
+Removal tested in step129 ($N=4096, D=64$): $-50$pp to $-71$pp. Without normalization, activation magnitudes grow unboundedly (each sum step multiplies by up to $K_{hh}$), causing overflow or collapse to a single dominant neuron. Normalization constrains dynamics to the hypersphere where the Fourier positional encoding is meaningful.
 
 **Wall 2: Static AntiHebbian suppression.**
 
@@ -174,9 +170,7 @@ Dynamic variants of AntiHebbian (`zact`: current-Z cosine suppression) all fail 
 
 **Wall 3: Mean-pool readout.**
 
-Replacing the dot-product mean-pool readout with learned attention fails catastrophically. Step118 ($N=4096, D=64$): attention readout gives $-60$pp to $-67$pp. The hypothesis: after $K_\text{iter}$ routing steps, all neurons have participated in consensus-building. No single neuron has privileged information; the class signal is distributed uniformly. Attention that tries to select informative neurons applies a multiplicative gate to the final $Z$, triggering a single-step version of gate death.
-
-Mean-pool aggregates all $N$ neurons equally, treating the routing-fixed-point representation as the semantic content. This is consistent with the view that learning happens in the routing dynamics — the readout's job is to sum up an already-computed consensus, not to select from it.
+Replacing mean-pool with learned attention: step118 ($N=4096, D=64$) gives $-60$pp to $-67$pp. After $K_\text{iter}$ routing steps the class signal is distributed uniformly across all $N$ neurons; attention applies a multiplicative gate to a distributed consensus representation, triggering single-step gate death. Mean-pool aggregates all neurons equally, consistent with learning-in-dynamics: the readout sums a precomputed consensus, not selects from it.
 
 ### 5.7 Compounding Interference
 
@@ -193,9 +187,14 @@ Step131 (Tier-1, $N=1024$, clean 4-config ablation):
 
 The compound is strictly worse than the reference. This cannot be explained by diminishing returns — the compound is below baseline, not merely below additive expectation.
 
-**Interpretation.** Both mechanisms improve routing by different means: W\_proj adds a learnable projection layer before the scatter-sum (allowing input re-weighting), while weighted\_neg adjusts the sign weighting of neighbor contributions. Both interact with the learned $W_\text{pos}$ geometry. When combined, they create competing objectives for $W_\text{pos}$: each mechanism pulls the positional geometry toward its own optimum, and the resulting compromise is worse than either individual solution.
+**Interpretation.** W\_proj and weighted\_neg both interact with $W_\text{pos}$ geometry. When combined, they create competing objectives for $W_\text{pos}$; the compromise is worse than either alone.
 
-**Implication.** Greedy winner-stacking is invalid for SGNNET mechanism design. Each mechanism candidate must be tested (a) in isolation against reference, and (b) in combination with all other planned additions. This significantly increases the experiment count required for rigorous architecture validation.
+**Implication.** Greedy winner-stacking is invalid. Each mechanism must be tested (a) in isolation and (b) in combination with all other planned additions.
+
+### 5.8 ΔW-Projection Routing and Ablation
+
+Full mechanism and ablation: **MANUSCRIPT\_DRAFT\_sec\_dw\_proj.md** (§3.5 + §5.8).
+
+Key results: geometry removal $-76.56$pp (step883); CIFAR-10 removal $-62.41$pp (step915); canonical **96.38% $\pm$ 0.18pp** (step887, 3 seeds); step950: Z-collapse without ΔW-proj; step951: routing\_gain always negative (smoothing, not amplification); step967: dense non-selective router.
 
 ---
-

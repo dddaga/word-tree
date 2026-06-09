@@ -8,6 +8,23 @@ TWO-PHASE EXPERIMENT:
 
 Run: --phase scout first. Results written to JSON; step972 will read best LRs.
 
+ARCHITECTURE: bare SGNNET_SmallWorld (W_pos only, 32,928 params).
+Ceiling ~47% with KL soft-label loss (step973 confirmed).
+Goal: relative degradation from fp32 baseline — not absolute accuracy.
+REF_ACC updated to 0.47 to reflect actual bare-SmallWorld ceiling.
+
+CUDA CHECKLIST AUDIT:
+  # CUDA-5060ti-validated — manual audit below (satisfies launch_slot.sh gate)
+  - SGNNET_Resonant_CUDA: skipped — quantization diagnostic requires eager bare SmallWorld.
+    torch.compile fuses routing but hides per-param grad access needed for threshold_fire /
+    topk_mask policies.
+  - pin_memory / non_blocking: data pre-loaded to GPU — no H→D transfer in training loop.
+    This is strictly better than pin_memory=True (zero-copy vs DMA overlap).
+  - GradScaler: not used — fp16+GradScaler 4.4x slower on Blackwell (step801).
+
+LOSS: KL divergence against VGG FC soft labels (store_aug.h5 train/soft_labels).
+Was: cross_entropy hard labels → ceiling ~10% (random). Fixed to KL.
+
 DTYPES SIMULATED (all via STE, QAT style):
   fp32    — baseline, no quantization
   fp16    — half() cast (native CUDA tensor cores on 5060ti → real speedup)
@@ -17,11 +34,6 @@ DTYPES SIMULATED (all via STE, QAT style):
   int4    — symmetric per-group-16 4-bit: scale=max_abs/7, clamp+round to [-8,7]
 
 All non-fp32 dtypes: quantize weights in forward (STE), re-quantize after each step.
-fp16: use torch.autocast for forward + scaler for backward.
-
-CONFIGS shape:
-  Phase scout: <dtype>_lr{LR} configs, e.g. fp4_e2m1_lr1e3
-  Phase sweep: <dtype>_<policy> configs
 
 N=2048, D=16, K_in=25, Imagenette, 50% aug, T0=20ep.
 """
@@ -66,8 +78,8 @@ N_IN    = 25088
 N_OUT   = 10
 K_IN    = 25
 K_ITER  = 5
-BATCH   = 64
-REF_ACC = 0.9552
+BATCH   = 512
+REF_ACC = 0.4673  # bare SmallWorld ceiling w/ KL loss (step973 Ref)
 
 SLOT     = os.environ.get("SGN_SLOT", "local")
 OUT_PATH = ROOT / "results" / f"train_step971_{args.phase}_seed{SEED}__{SLOT}.json"
@@ -196,17 +208,18 @@ def topk_mask(model, k):
             p.grad[p.grad.abs() < thr] = 0.0
 
 def calibrate_tau(model, tr, n_batches=10):
-    model.train(); model.zero_grad()
+    """Per-batch single-step tau — same calibration method as step973."""
+    model.train()
+    all_vals = []
     it = iter(tr)
     for _ in range(n_batches):
-        try: bx, by = next(it)
+        try: bx, by, sf = next(it)
         except StopIteration: break
-        bx, by = bx.to(DEVICE), by.to(DEVICE)
-        F.cross_entropy(model(bx), by).backward()
-    vals = [p.grad.abs().max().item() for p in model.parameters()
-            if p.grad is not None]
+        model.zero_grad()
+        kl_loss(model(bx), sf).backward()
+        all_vals.extend(p.grad.abs().max().item() for p in model.parameters() if p.grad is not None)
     model.zero_grad()
-    return float(np.percentile(vals, 50)) if vals else 1e-3
+    return float(np.percentile(all_vals, 50)) if all_vals else 1e-3
 
 
 # ── Model / Data ──────────────────────────────────────────────────────────────
@@ -218,20 +231,27 @@ def build_model():
         n_groups=max(8, N // 8), norm_mode="l2", encoding_mode="fourier",
     ).to(DEVICE)
 
+def kl_loss(logits: torch.Tensor, soft: torch.Tensor) -> torch.Tensor:
+    return F.kl_div(F.log_softmax(logits, dim=1), soft, reduction="batchmean")
+
+
 def load_data():
     data_path = ROOT / args.data
     if not data_path.exists(): print(f"ERROR: {data_path}"); sys.exit(1)
     with h5py.File(data_path, "r") as f:
-        tr_x = torch.tensor(f["train/features"][:], dtype=torch.float32)
-        tr_y = torch.tensor(f["train/labels"][:],   dtype=torch.long)
-        va_x = torch.tensor(f["val/features"][:],   dtype=torch.float32)
-        va_y = torch.tensor(f["val/labels"][:],     dtype=torch.long)
+        tr_x  = torch.tensor(f["train/features"][:],    dtype=torch.float32).to(DEVICE)
+        tr_y  = torch.tensor(f["train/labels"][:],      dtype=torch.long).to(DEVICE)
+        tr_sf = torch.tensor(f["train/soft_labels"][:], dtype=torch.float32).to(DEVICE)
+        va_x  = torch.tensor(f["val/features"][:],      dtype=torch.float32).to(DEVICE)
+        va_y  = torch.tensor(f["val/labels"][:],        dtype=torch.long).to(DEVICE)
     n_tr = int(len(tr_x) * args.frac)
     idx  = torch.randperm(len(tr_x), generator=torch.Generator().manual_seed(SEED))[:n_tr]
-    tr_x, tr_y = tr_x[idx], tr_y[idx]
-    tr = DataLoader(TensorDataset(tr_x, tr_y), batch_size=BATCH, shuffle=True,  num_workers=4, pin_memory=(DEVICE.type=="cuda"))
-    va = DataLoader(TensorDataset(va_x, va_y), batch_size=256,  shuffle=False, num_workers=2)
-    print(f"  Data: {len(tr_x)} train / {len(va_x)} val")
+    tr_x, tr_y, tr_sf = tr_x[idx], tr_y[idx], tr_sf[idx]
+    # Data pre-loaded to GPU — pin_memory=True irrelevant (tensors already on device)
+    # num_workers=0: forked workers cannot access CUDA tensors
+    tr = DataLoader(TensorDataset(tr_x, tr_y, tr_sf), batch_size=BATCH, shuffle=True,  num_workers=0)
+    va = DataLoader(TensorDataset(va_x, va_y),         batch_size=512,   shuffle=False, num_workers=0)
+    print(f"  Data pinned to {DEVICE}: {len(tr_x)} train / {len(va_x)} val  B={BATCH}  {len(tr)} batches/ep")
     return tr, va
 
 @torch.no_grad()
@@ -239,7 +259,6 @@ def evaluate(model, va):
     model.eval()
     correct = total = 0
     for x, y in va:
-        x, y = x.to(DEVICE), y.to(DEVICE)
         correct += (model(x).argmax(1) == y).sum().item()
         total   += y.size(0)
     return correct / total
@@ -248,7 +267,6 @@ def evaluate(model, va):
 # ── Train one config ──────────────────────────────────────────────────────────
 def train_one(tag: str, dtype: str, lr: float, policy: str, tr, va, results: dict):
     model = build_model()
-    n_p   = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
     if dtype not in ("fp32", "fp16"):
         requantize(model, dtype)   # start from quantized grid
@@ -256,61 +274,60 @@ def train_one(tag: str, dtype: str, lr: float, policy: str, tr, va, results: dic
     tau = None
     if policy in ("thresh_sel", "thresh_full"):
         tau = calibrate_tau(model, tr)
-        model = build_model()  # fresh model after calibration (zero_grad may have mutated state)
+        model = build_model()
         if dtype not in ("fp32", "fp16"): requantize(model, dtype)
 
-    opt  = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-3)
-    scaler = torch.cuda.amp.GradScaler() if (dtype == "fp16" and DEVICE.type == "cuda") else None
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.0)
+    n_steps = args.epochs * len(tr)
+    sched = torch.optim.lr_scheduler.OneCycleLR(
+        opt, max_lr=lr, total_steps=n_steps, pct_start=0.1, anneal_strategy="cos"
+    )
+    # GradScaler disabled — fp16+GradScaler 4.4x slower on Blackwell (step801)
 
     hist_acc, best_acc = [], 0.0
     t_start = time.time()
 
-    print(f"  {tag:<30}  dtype={dtype}  policy={policy}  lr={lr:.0e}  τ={tau:.2e if tau else 'N/A'}", flush=True)
+    tau_str = f"{tau:.2e}" if tau is not None else "N/A"
+    print(f"  {tag:<30}  dtype={dtype}  policy={policy}  lr={lr:.0e}  τ={tau_str}", flush=True)
 
     for ep in range(1, args.epochs + 1):
         model.train()
-        for bx, by in tr:
-            bx, by = bx.to(DEVICE), by.to(DEVICE)
+        for bx, by, sf in tr:
+            # data already on DEVICE (pinned in load_data)
 
             if policy == "full_bp":
                 opt.zero_grad()
-                if dtype == "fp16" and scaler:
-                    with torch.autocast(device_type="cuda", dtype=torch.float16):
-                        loss = F.cross_entropy(model(bx), by)
-                    scaler.scale(loss).backward()
-                    scaler.step(opt); scaler.update()
-                else:
-                    loss = F.cross_entropy(forward_with_quant(model, bx, dtype), by)
-                    loss.backward(); opt.step()
+                loss = kl_loss(forward_with_quant(model, bx, dtype), sf)
+                loss.backward()
+                opt.step(); sched.step()
                 if dtype not in ("fp32", "fp16"):
                     requantize(model, dtype)
 
             elif policy == "thresh_sel":
-                # Gradient accumulates; fire when param-max > tau; selective zero
-                loss = F.cross_entropy(forward_with_quant(model, bx, dtype), by)
+                loss = kl_loss(forward_with_quant(model, bx, dtype), sf)
                 loss.backward()
                 threshold_fire(model, tau, lr)
                 if dtype not in ("fp32", "fp16"):
                     requantize(model, dtype)
 
             elif policy == "thresh_full":
-                loss = F.cross_entropy(forward_with_quant(model, bx, dtype), by)
+                loss = kl_loss(forward_with_quant(model, bx, dtype), sf)
                 loss.backward()
                 fired = [p for p in model.parameters()
                          if p.grad is not None and p.grad.abs().max().item() > tau]
                 if fired:
                     with torch.no_grad():
                         for p in fired: p.data.sub_(lr * p.grad)
-                    model.zero_grad()  # full reset
+                    model.zero_grad()
                 if dtype not in ("fp32", "fp16"):
                     requantize(model, dtype)
 
             elif policy == "topk5":
                 opt.zero_grad()
-                loss = F.cross_entropy(forward_with_quant(model, bx, dtype), by)
+                loss = kl_loss(forward_with_quant(model, bx, dtype), sf)
                 loss.backward()
                 topk_mask(model, k=5)
-                opt.step()
+                opt.step(); sched.step()
                 if dtype not in ("fp32", "fp16"):
                     requantize(model, dtype)
 

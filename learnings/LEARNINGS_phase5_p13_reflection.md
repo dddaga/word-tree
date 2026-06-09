@@ -2,22 +2,17 @@
 
 **Date:** 2026-04-03
 **Step:** exp4_reflection
-**Status:** Script implemented and synced; dispatch queued (Mac Studio over concurrency cap)
+**Status:** Script implemented, synced; dispatch queued (Mac Studio over concurrency cap)
 
 ## Hypothesis
 
-Signal reflection routing — where strongly negative activations "bounce back" as
-self-inhibitory signal — creates useful input-dependent routing that could improve
-classification accuracy over the AntiHebb baseline.
+Signal reflection routing — strongly negative activations "bounce back" as self-inhibitory signal — creates input-dependent routing that could improve classification accuracy over AntiHebb baseline.
 
-Motivation: standard relu gating discards below-threshold activations entirely.
-Reflection reclaims that signal. The negative activation tells us which neurons
-are actively *suppressing* a feature; routing that suppression back to the source
-creates a contrast-enhancement effect (winner-take-all at the neuron level).
+Motivation: standard relu gating discards below-threshold activations entirely. Reflection reclaims that signal. Negative activation tells which neurons actively *suppress* feature; routing suppression back to source creates contrast-enhancement effect (winner-take-all at neuron level).
 
 ## Architecture Design
 
-SGNNET_Reflection wraps SGNNET_SmallWorld and overrides the routing loop:
+SGNNET_Reflection wraps SGNNET_SmallWorld, overrides routing loop:
 
 ```python
 Z_prop    = relu(Z)                           # positive propagates
@@ -41,25 +36,23 @@ Key design choices:
 | C | Hard reflect | 1.0 | 0.5 | High-risk: strong bounce-back, only strongly negative |
 | D | Medium reflect | 0.3 | 0.0 | Intermediate: moderate bounce-back |
 
-Note: Configs B, C, D use SmallWorld directly (no Resonant wrapper or AntiHebb).
-Config A uses the full SmallWorld + Resonant + AntiHebb stack.
-This is an ablation of reflection as an alternative to AntiHebb, not additive.
+Note: Configs B, C, D use SmallWorld directly (no Resonant wrapper or AntiHebb). Config A uses full SmallWorld + Resonant + AntiHebb stack. Ablation of reflection as alternative to AntiHebb, not additive.
 
 ## Dead Neuron Risk Analysis
 
 Leaky reflect (alpha=0.1, theta=0.0):
-- Every negative activation contributes a small self-inhibitory signal
+- Every negative activation contributes small self-inhibitory signal
 - Expected: dead_frac < 1% (gentle, global effect)
-- Low risk of cascade
+- Low cascade risk
 
 Hard reflect (alpha=1.0, theta=0.5):
 - Only activations < -0.5 trigger full-strength bounce-back
 - Can create strong localized suppression
-- Risk: if many neurons end up < -0.5, the self-inhibition cascade kills them
+- Risk: if many neurons end up < -0.5, self-inhibition cascade kills them
 - Monitor dead_frac carefully
 
 Medium reflect (alpha=0.3, theta=0.0):
-- Intermediate; should be safer than hard-reflect
+- Intermediate; safer than hard-reflect
 - Expected dead_frac: 1-3%
 
 ## Results (pending — queued for dispatch)
@@ -99,36 +92,35 @@ From existing experiments (complete data):
 
 Pending (to fill arch_comparison.md):
 - step56: N-scaling [512, 2048, 4096, 10000] — queued, script synced
-- exp3_proxwave: ProximityWave N=1024/4096 — currently running on Mac Studio
+- exp3_proxwave: ProximityWave N=1024/4096 — running on Mac Studio
 - exp4_reflection: all 4 configs — queued (this experiment)
 
 ## Interpretation Guide (for when results arrive)
 
 **If B > A (leaky-reflect beats AntiHebb):**
-- Reflection is a viable alternative to lateral inhibition
+- Reflection viable alternative to lateral inhibition
 - Mechanism: self-correction via negative activation feedback
 - Next: combine reflection + AntiHebb; test at multiple N
 
 **If B ≈ A:**
-- Reflection provides a different path to the same top-1
-- Could be useful as a regularizer at larger N
+- Reflection provides different path to same top-1
+- Could be useful as regularizer at larger N
 - Next: test at N=2048/4096 (may scale differently)
 
 **If B < A:**
-- Reflection routing insufficient without AntiHebb's lateral suppression
-- Next: add AntiHebb on top of reflection and test combined
+- Reflection routing insufficient without AntiHebb lateral suppression
+- Next: add AntiHebb on top of reflection, test combined
 
 **If dead_frac > 5% for C (hard-reflect):**
-- Strong reflection threshold at 0.5 is too aggressive
-- The self-inhibitory cascade kills neurons that are marginally negative
+- Strong reflection threshold at 0.5 too aggressive
+- Self-inhibitory cascade kills marginally negative neurons
 - Fix: reduce theta or alpha_reflect; use leaky variant instead
 
 ## Recommendation for arch_comparison.md (preliminary, before results)
 
 Based on mechanism analysis:
 1. **SmallWorld + AntiHebb(0.7)** remains most likely winner at N=1024
-2. Reflection is a cheaper alternative (no complex phasor math, no wrapper overhead)
-3. ProximityWave phasor routing adds 2x compute overhead vs SmallWorld — accuracy
-   improvement would need to be substantial to justify
+2. Reflection cheaper alternative (no complex phasor math, no wrapper overhead)
+3. ProximityWave phasor routing adds 2x compute overhead vs SmallWorld — accuracy improvement would need to be substantial to justify
 
-Final recommendation will be updated when all three Track A experiments complete.
+Final recommendation updated when all three Track A experiments complete.

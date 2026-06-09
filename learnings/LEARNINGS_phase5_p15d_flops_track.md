@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-08 to 2026-04-09
 **Parent:** LEARNINGS_phase5_p15_post_wave1.md (TOC)
-**Context:** After establishing N=4096 accuracy ceiling, this track focuses on compute efficiency.
+**Context:** After establishing N=4096 accuracy ceiling, track focuses on compute efficiency.
 
 ---
 
@@ -15,12 +15,12 @@ Extended goal: achieve ≤1% params AND ≤1% FLOPs vs VGG16 FC.
 | Params | 529K | 119.6M | **0.44%** | ≤1% | ✓ Already achieved |
 | FLOPs | 38.8M | 119.6M | **32.4%** | ≤1% (~1.2M) | 32× reduction needed |
 
-**Constraint:** At N=4096, fundamental routing loop ≈ 30M FLOPs minimum — cannot hit 1.2M FLOPs at this scale.
+**Constraint:** At N=4096, fundamental routing loop ≈ 30M FLOPs minimum — cannot hit 1.2M at this scale.
 
-**Path to 1% FLOPs:** Reduce N (e.g., N=512 or N=256) + D=32 + K_hh=2 + K_in reduction.
-This is a separate optimization axis from the current accuracy-maximization track.
+**Path to 1% FLOPs:** Reduce N (N=512 or N=256) + D=32 + K_hh=2 + K_in reduction.
+Separate optimization axis from accuracy-maximization track.
 
-**Current priority order:**
+**Priority order:**
 1. Maximize accuracy at N=4096 (G1: K_iter=12 + K_hh=4 + turing=0.0, 150ep)
 2. Group topology at N=4096 with K_hh=4 base (G2)
 3. Pure dynamic connectivity experiment (step87)
@@ -32,7 +32,7 @@ This is a separate optimization axis from the current accuracy-maximization trac
 
 **Script:** train_step86_pareto_flops.py
 **Scale:** N=4096, 50%/75ep, turing=0.0, AH=1.0
-**Key note:** n_groups=512 (N//8) is critical — n_groups=128 (N//32) caused −4.28pp regression.
+**Key note:** n_groups=512 (N//8) critical — n_groups=128 (N//32) caused −4.28pp regression.
 
 ### Mac Studio Results (Ref/A/B/C/D) — DONE
 
@@ -52,15 +52,15 @@ Use: `d_env/bin/python3 -u scripts/train_step86_pareto_flops.py --device mps --o
 ### Key Findings
 
 **1. K_hh lever: all reductions beat baseline**
-- Reducing K_hh from 6→4→3→2 *improves* accuracy while reducing FLOPs
-- Root cause: AH suppression was already nullifying local K_local edges — they were dead weight
+- Reducing K_hh 6→4→3→2 *improves* accuracy while reducing FLOPs
+- Root cause: AH suppression already nullifying local K_local edges — dead weight
 - Even K_hh=2 (pure random, K_local=0): +0.41pp over Ref at −36% FLOPs
 - **Pareto winner: A (K_hh=4, 96.59%, 38.8M) — best accuracy + −18% FLOPs**
 - **Efficiency pick: B (K_hh=3, 96.43%, 34.6M) — only −0.16pp behind A, −27% FLOPs**
 
-**2. K_iter lever: devastating (-2.20pp at matched FLOPs)**
+**2. K_iter lever: devastating (−2.20pp at matched FLOPs)**
 - D (K_iter=6, K_hh=6): 93.83% — same FLOPs as A but 2.76pp worse
-- Rule confirmed: never reduce K_iter. All 8 steps are necessary.
+- Rule confirmed: never reduce K_iter. All 8 steps necessary.
 
 **3. K_iter >> K_hh (different mechanisms, different costs)**
 - K_hh controls graph connectivity sparsity (structural)
@@ -109,7 +109,7 @@ Combines 3 confirmed wins:
 - turing=0.0 → already in base (step70 confirmed)
 
 Expected at 100%/150ep: likely >97.38% (current project best).
-Script: tweak step71 script to set K_hh=4.
+Script: tweak step71 script, set K_hh=4.
 Machine: Mac Studio MPS when slot frees.
 
 ---

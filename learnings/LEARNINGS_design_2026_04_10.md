@@ -8,7 +8,7 @@
 
 **Date:** 2026-04-10
 
-Physical reality is constrained. Data from physical processes has compact sufficient representations that exploit those constraints. SGNNET's random graph + iterative routing is a search process for that representation.
+Physical reality constrained. Data from physical processes has compact sufficient representations exploiting those constraints. SGNNET random graph + iterative routing = search process for that representation.
 
 **Question:** Can we give SGNNET architectural tools to actively find low-rank, objective-relevant representations?
 
@@ -48,7 +48,7 @@ Script: `train_step153_progressive_capacity.py` — 6 configs, multi-N/D.
 **Date:** 2026-04-10
 
 **step154 result:** Ref(lambda=0.49)=64.08%, A(lambda=0)=73.83%(+9.75pp), B(lambda=0.98)=74.65%(+10.57pp).
-VERDICT: Safety valve loss is NOT helping — actively hurting. AH handles positional diversity.
+VERDICT: Safety valve loss NOT helping — actively hurting. AH handles positional diversity.
 
 **Actions taken:**
 - `experiment_config.py`: lambda_safety=0.0, lambda_lb=0.0
@@ -60,7 +60,7 @@ VERDICT: Safety valve loss is NOT helping — actively hurting. AH handles posit
 ## Training Diagnostics System
 
 **Date:** 2026-04-10
-**Motivation:** "Just looking at the loss might be very limiting" — need to measure WHY training works or fails.
+**Motivation:** "Just looking at loss might be very limiting" — need to measure WHY training works or fails.
 
 Implemented `src/training/diagnostics.py`:
 - **Effective rank of Z** — SVD-free via eigenvalues of gram matrix Z^T Z → Shannon entropy → exp(entropy)
@@ -91,7 +91,7 @@ Implemented `src/training/checkpoint.py`:
 
 **Date:** 2026-04-10
 **Result:** N dominates. More K (connectivity) HURTS accuracy (-8 to -44pp).
-K_hh=4 confirmed optimal. Paper finding: N and K_iter are primary capacity knobs, not connectivity density.
+K_hh=4 confirmed optimal. Paper finding: N and K_iter primary capacity knobs, not connectivity density.
 
 ---
 
@@ -121,4 +121,4 @@ Created `learnings/paper/` with:
 - `baselines_needed.md` — gaps: MLP baseline, CIFAR-10, FLOPs demo
 - `figures_planned.md` — 7 figures, 3 tables
 
-Key paper-worthy finding: random additive aggregation over sparse O(N*K) graph crosses 90%+ on Imagenette — questions whether dense connectivity is necessary for representation learning.
+Key paper-worthy finding: random additive aggregation over sparse O(N*K) graph crosses 90%+ on Imagenette — questions whether dense connectivity necessary for representation learning.

@@ -57,7 +57,7 @@
 | 2048 | 92.74% | 92.74% (step80 Mac Studio) | YES |
 | 4096 | 95.87% | 95.87% (step71 Ref local) | YES |
 
-**All individual accuracy numbers are correct.**
+**All individual accuracy numbers correct.**
 
 ---
 
@@ -84,7 +84,7 @@
 - FC3: 4,096 x 10 = 40,960. Report: 40,960. Match.
 - Total: 119,578,624. Report: 119,578,624. Match.
 
-Note: bias terms (4096+4096+10 = 8,202) are omitted. Report acknowledges this (~14K stated, actual 8,202 for weights-only biases or ~12,298 if counting bias vectors -- minor).
+Note: bias terms (4096+4096+10 = 8,202) omitted. Report acknowledges (~14K stated, actual 8,202 for weights-only biases or ~12,298 counting bias vectors -- minor).
 
 ### Param Ratio
 529,024 / 119,578,624 = 0.4425% -- report says 0.44%. Match.
@@ -120,7 +120,7 @@ Note: bias terms (4096+4096+10 = 8,202) are omitted. Report acknowledges this (~
 | step71 D (K_iter=16, turing=0.3) | 216.5M | 13.1 + 16x12.55 + 2.6 = 216.5M | YES |
 
 ### VGG16 FC FLOPs
-Report: 119,578,624 (= total FC params, since each param = 1 MAC). Correct for dense layers.
+Report: 119,578,624 (= total FC params, each param = 1 MAC). Correct for dense layers.
 
 **All FLOP estimates verified.**
 
@@ -148,7 +148,7 @@ Report: 119,578,624 (= total FC params, since each param = 1 MAC). Correct for d
 
 ### Report's Top 10
 
-Report ranks step71 B (95.11%) at position 10. However, step79 configs A (95.85%), B (95.80%), and C (95.54%) all rank higher than step71 B. **The report's top 10 is missing 3 results** (step79 A/B/C) and includes step71 B which is actually rank 13.
+Report ranks step71 B (95.11%) at position 10. But step79 configs A (95.85%), B (95.80%), C (95.54%) all rank higher. **Report top 10 missing 3 results** (step79 A/B/C), includes step71 B which actually rank 13.
 
 ### Best N=1024 Ranking
 
@@ -159,38 +159,38 @@ Actual top 5 at N=1024 (50%/75ep):
 4. **step75 C: 85.76%** (MISSING from report)
 5. step82 A: 85.63%
 
-Report lists step82 A at rank 4 and step81 A (85.55%) at rank 5, but step75 C (85.76%) should be at rank 4, pushing step82 A to rank 5 and step81 A to rank 6.
+Report lists step82 A at rank 4, step81 A (85.55%) at rank 5, but step75 C (85.76%) should be rank 4, pushing step82 A to 5 and step81 A to 6.
 
 ---
 
 ## Completeness Check
 
-- [x] Mechanisms explained for top configs -- yes, detailed explanations for ranks 1-10 and notable N=1024 results
-- [x] Dead ends documented -- yes, comprehensive table with 12 entries
-- [x] Confirmed laws -- yes, 6 laws with supporting evidence
-- [x] VGG16 baseline defined -- yes, with correct FC param/FLOP counts
-- [x] Currently running experiments noted -- yes, step82 complete, step83 in progress
-- [x] Takeaways grounded in data -- yes, all recommendations reference specific step numbers and measured results
-- [x] Parameter efficiency claim verified -- yes, 529K / 119.6M = 0.44% < 1%
+- [x] Mechanisms explained for top configs -- detailed explanations ranks 1-10 and notable N=1024 results
+- [x] Dead ends documented -- comprehensive table, 12 entries
+- [x] Confirmed laws -- 6 laws with supporting evidence
+- [x] VGG16 baseline defined -- correct FC param/FLOP counts
+- [x] Currently running experiments noted -- step82 complete, step83 in progress
+- [x] Takeaways grounded in data -- all recommendations reference specific steps and measured results
+- [x] Parameter efficiency claim verified -- 529K / 119.6M = 0.44% < 1%
 
 ---
 
 ## Issues Found
 
 ### Issue 1: Top 10 Ranking Incomplete (MEDIUM)
-The report omits step79 configs A (95.85%), B (95.80%), and C (95.54%) from the Tier 2 top 10. These 3 configs rank 10th, 11th, and 12th globally but above step71 B (95.11%) which the report places at rank 10. The actual top 10 should include step79 A at rank 10 instead of step71 B.
+Report omits step79 configs A (95.85%), B (95.80%), C (95.54%) from Tier 2 top 10. These 3 rank 10th-12th globally, above step71 B (95.11%) placed at rank 10. Actual top 10 should include step79 A at rank 10 instead of step71 B.
 
 ### Issue 2: N=1024 Ranking Missing step75 C (MINOR)
-step75 C (85.76%) is missing from the "Best N=1024 results" table. It ranks 4th among N=1024 results, between step73 D (86.34%) and step82 A (85.63%).
+step75 C (85.76%) missing from "Best N=1024 results" table. Ranks 4th among N=1024 results, between step73 D (86.34%) and step82 A (85.63%).
 
 ### Issue 3: step82 Data Divergence Between Machines (NOTE)
-step82 results differ between Mac Mini (A=85.63%) and Mac Studio (A=85.25%). The report uses the Mac Mini (local) values. This may indicate different runs or data versions. Not an error per se, but worth noting for reproducibility.
+step82 results differ: Mac Mini (A=85.63%) vs Mac Studio (A=85.25%). Report uses Mac Mini (local) values. May indicate different runs or data versions. Not error, but worth noting for reproducibility.
 
 ### Issue 4: CLAUDE.md Project Best Stale (NOTE, not report issue)
-CLAUDE.md says project best is 97.32% (best_ep=90), but the JSON shows 97.38% (best_ep=142). The report correctly uses the JSON value. CLAUDE.md should be updated.
+CLAUDE.md says project best 97.32% (best_ep=90), but JSON shows 97.38% (best_ep=142). Report correctly uses JSON value. CLAUDE.md needs update.
 
 ### Issue 5: VGG16 Bias Count (TRIVIAL)
-Report says "Bias terms omitted for simplicity (~14K additional)". Actual bias count: 4096 + 4096 + 10 = 8,202. The ~14K figure is incorrect but this is explicitly noted as omitted and does not affect any comparison.
+Report says "Bias terms omitted (~14K additional)". Actual bias count: 4096 + 4096 + 10 = 8,202. ~14K figure incorrect but explicitly noted as omitted, doesn't affect comparisons.
 
 ---
 
@@ -198,6 +198,6 @@ Report says "Bias terms omitted for simplicity (~14K additional)". Actual bias c
 
 **PASS with minor issues.**
 
-All 30+ accuracy numbers in the report match their source JSONs exactly. Parameter counts and FLOP estimates are mathematically verified and correct. The VGG16 baseline is accurate. The core claim (SGNNET at 0.44% of VGG16 FC params, exceeding its accuracy) is validated.
+All 30+ accuracy numbers match source JSONs exactly. Parameter counts and FLOP estimates mathematically verified. VGG16 baseline accurate. Core claim (SGNNET at 0.44% of VGG16 FC params, exceeding its accuracy) validated.
 
-Two ranking errors exist: (1) the Tier 2 top 10 omits 3 step79 configs that rank higher than the listed step71 B, and (2) the N=1024 table omits step75 C. Neither error affects the report's conclusions or the identity of the top 3 results. The project best of 97.38% is confirmed.
+Two ranking errors: (1) Tier 2 top 10 omits 3 step79 configs ranking higher than listed step71 B, (2) N=1024 table omits step75 C. Neither affects conclusions or identity of top 3 results. Project best 97.38% confirmed.

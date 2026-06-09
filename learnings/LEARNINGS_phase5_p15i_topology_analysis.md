@@ -4,7 +4,7 @@
 
 ## Finding: Graph Topology at Extreme Sparsity (K_hh=2, N=2048)
 
-**Status: CONFIRMED** (direct computation on step199 connectivity graph)
+**Status: CONFIRMED** (direct computation, step199 connectivity graph)
 
 ### Graph Properties
 
@@ -20,7 +20,7 @@
 
 ### Out-Degree Distribution (Who Reads From Me?)
 
-Every neuron gathers from exactly 2 neighbors (K_hh=2). But how many neurons READ from a given neuron varies:
+Every neuron gathers from exactly 2 neighbors (K_hh=2). How many neurons READ from given neuron varies:
 
 | Out-degree | Count | % | Role |
 |-----------|-------|---|------|
@@ -38,18 +38,18 @@ Every neuron gathers from exactly 2 neighbors (K_hh=2). But how many neurons REA
 | Neuron 1024 | 27 | 1.3% |
 | Neuron 512 | 1 | 0.05% (isolated!) |
 
-After K_iter=5 routing steps, a signal from one neuron reaches only 1-5% of the network. Some neurons are completely isolated (zero out-degree → their signal never propagates, though they still contribute at readout).
+After K_iter=5 steps, signal from one neuron reaches only 1-5% of network. Some neurons completely isolated (zero out-degree → signal never propagates, still contribute at readout).
 
 ### Implications
 
-1. **Routing is extremely local** — no global mixing. Information stays in small neighborhoods.
-2. **12.5% of neurons are dead-ends** — they process but don't propagate. They contribute only at readout.
-3. **Hub neurons (32%, out-degree ≥3) are disproportionately important** — they amplify and broadcast.
-4. **The network succeeds despite this** — 95.52% accuracy with 5% signal reach. This suggests the readout (which reads ALL neurons) does most of the heavy lifting.
+1. **Routing extremely local** — no global mixing. Info stays in small neighborhoods.
+2. **12.5% neurons dead-ends** — process but don't propagate. Contribute only at readout.
+3. **Hub neurons (32%, out-degree ≥3) disproportionately important** — amplify and broadcast.
+4. **Network succeeds despite this** — 95.52% accuracy with 5% signal reach. Suggests readout (reads ALL neurons) does most heavy lifting.
 
 ### Design Implication for Heterogeneous K_hh
 
-The natural topology already creates heterogeneous roles: hubs vs terminals. A designed heterogeneous K_hh experiment should ENHANCE this, not fight it: give hubs MORE connections, terminals FEWER. The natural distribution is approximately Poisson(λ=2).
+Natural topology already creates heterogeneous roles: hubs vs terminals. Designed heterogeneous K_hh should ENHANCE this, not fight it: give hubs MORE connections, terminals FEWER. Natural distribution approximately Poisson(λ=2).
 
 ## Experiment: step216 — Compound Winners on step199
 
@@ -64,14 +64,14 @@ Testing 5 mechanisms on step199 config (Tier-0, 20ep, 50% data):
 
 ## Experiment: step217 — Polarizer Routing
 
-Each neuron's W_pos acts as a polarization axis. Incoming signals are filtered by alignment with the receiving neuron's polarizer:
+Each neuron's W_pos acts as polarization axis. Incoming signals filtered by alignment with receiving neuron's polarizer:
 
 ```
 Z_filtered[j→i] = project(Z[j], W_pos[i])   # what passes through
 Z_new[i] = normalize(Σ Z_filtered[j→i])       # aggregate + recover magnitude
 ```
 
-F.normalize after aggregation prevents gate-death — magnitude is always recovered. The polarizer only changes DIRECTION, not intensity.
+F.normalize after aggregation prevents gate-death — magnitude always recovered. Polarizer only changes DIRECTION, not intensity.
 
 Testing 5 variants (Tier-0, 20ep, 50% data):
 - Ref: standard gather-sum

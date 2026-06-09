@@ -2,11 +2,11 @@
 
 ## Concept
 
-SGNNET uses Fourier encoding on S^{D-1} (the unit hypersphere in D dimensions). Phase routing extends this by splitting the activation vector Z into a magnitude channel and phase channels, then applying frequency-dependent phase shifts based on spatial distance between neurons. The goal: input-dependent signal propagation where routing decisions emerge from phase coherence rather than fixed topology.
+SGNNET uses Fourier encoding on S^{D-1} (unit hypersphere in D dimensions). Phase routing splits activation vector Z into magnitude channel and phase channels, applies frequency-dependent phase shifts based on spatial distance between neurons. Goal: input-dependent signal propagation where routing decisions emerge from phase coherence, not fixed topology.
 
-Core idea: `Z[0]` = activation magnitude (scalar energy), `Z[1:D-1]` = cyclic phase channels. When activation travels from neuron A to neuron B, each phase channel k receives a shift `delta_phi_k = freq_k * ||W_pos[A] - W_pos[B]||`. Multi-frequency interference means the same distance produces D-1 different phase shifts across channels. Neurons that are phase-coherent after shifting constructively interfere; incoherent neurons destructively interfere.
+Core idea: `Z[0]` = activation magnitude (scalar energy), `Z[1:D-1]` = cyclic phase channels. Activation traveling neuron A to B, each phase channel k gets shift `delta_phi_k = freq_k * ||W_pos[A] - W_pos[B]||`. Multi-frequency interference means same distance produces D-1 different phase shifts across channels. Phase-coherent neurons constructively interfere; incoherent ones destructively interfere.
 
-Biological analog: gamma oscillations (high-frequency, local) vs theta oscillations (low-frequency, long-range).
+Biological analog: gamma oscillations (high-freq, local) vs theta oscillations (low-freq, long-range).
 
 ---
 
@@ -28,7 +28,7 @@ Gradient of `torch.remainder` is 1 everywhere. Differentiable by construction.
 
 ### Phase Range: [-pi, pi]
 
-Chosen over [0, 2*pi]. Rationale: [0, 2*pi] creates a positive bias (~622 baseline for 63 channels). [-pi, pi] gives zero mean baseline: uncorrelated neurons score ~0, aligned score positive, anti-aligned score negative. Single operation: `torch.remainder(Z_phase + delta_phi, 2*pi) - pi`.
+Chosen over [0, 2*pi]. Rationale: [0, 2*pi] creates positive bias (~622 baseline for 63 channels). [-pi, pi] gives zero mean baseline: uncorrelated neurons score ~0, aligned score positive, anti-aligned score negative. Single operation: `torch.remainder(Z_phase + delta_phi, 2*pi) - pi`.
 
 ### Resonance Metric
 
@@ -36,7 +36,7 @@ Chosen over [0, 2*pi]. Rationale: [0, 2*pi] creates a positive bias (~622 baseli
 resonance(A, B) = Z_A[0] * Z_B[0] * sum_k(Z_A[k] * Z_B[k])
 ```
 
-For fixed source A ranking targets {B_i}: Z_A terms are constant. Ranking is monotonic regardless of phase scale. No normalization needed.
+For fixed source A ranking targets {B_i}: Z_A terms constant. Ranking monotonic regardless of phase scale. No normalization needed.
 
 ### Magnitude Modes (step60 variants)
 
@@ -62,7 +62,7 @@ For fixed source A ranking targets {B_i}: Z_A terms are constant. Ranking is mon
 decay_k(j->h) = exp(-lambda * freq_k * dist(j,h) / (2*pi))
 ```
 
-High-frequency channels attenuate over short distances (local information). Low-frequency channels persist over long distances (global information). Precomputed from existing `delta_phi` tensor; no extra cost.
+High-freq channels attenuate over short distances (local info). Low-freq channels persist over long distances (global info). Precomputed from existing `delta_phi` tensor; no extra cost.
 
 ---
 
@@ -127,7 +127,7 @@ Three compounding failure modes destroyed all wave-1 phase routing experiments:
 
 ### 1. Gate Death
 
-Every approach added a multiplicative gate g in [0,1] applied per routing step. With K_iter=8:
+Every approach added multiplicative gate g in [0,1] per routing step. With K_iter=8:
 
 ```
 signal ~ product(g_k) for k=1..K_iter
@@ -135,17 +135,17 @@ g=0.5 per step -> 0.5^8 = 0.004x original signal
 gradient: dL/dZ_0 = product(g_k) * dL/dZ_K ~ 0.004 * dL/dZ_K
 ```
 
-250x gradient attenuation. The network learns to null the gate (g->0) and route through the residual path only.
+250x gradient attenuation. Network learns to null gate (g->0), routes through residual path only.
 
 ### 2. Float32 Overflow
 
-`freq_k = 2^(k//2)` reaches 2^31 at k=62. At D=64, approximately 17 of 63 phase channels are pure numerical noise in float32. Fix: cap at 2^10=1024 via `freq_mode="capped_exp"`. But even with the fix, step60 configs C and D (capped_exp + AH) still died at 13-19%.
+`freq_k = 2^(k//2)` reaches 2^31 at k=62. At D=64, ~17 of 63 phase channels pure numerical noise in float32. Fix: cap at 2^10=1024 via `freq_mode="capped_exp"`. Even with fix, step60 configs C and D (capped_exp + AH) still died at 13-19%.
 
 ### 3. Double Sparsity
 
-AntiHebb removes redundant paths. The phase gate removes coherence-mismatched paths. What survives is near-zero signal. AH already solves diversity/sparsity optimally. Adding a second sparsity mechanism on top creates a compounding signal loss that no hyperparameter tuning can recover from.
+AntiHebb removes redundant paths. Phase gate removes coherence-mismatched paths. What survives = near-zero signal. AH already solves diversity/sparsity optimally. Second sparsity mechanism on top creates compounding signal loss no hyperparameter tuning can recover from.
 
-step66 Config D (phase-target + AH) = 40.33% demonstrated the worst case: AH suppresses exactly the phase activity that phase-target routing depends on. The two mechanisms are antagonistic.
+step66 Config D (phase-target + AH) = 40.33% — worst case: AH suppresses exactly phase activity that phase-target routing depends on. Two mechanisms antagonistic.
 
 ---
 

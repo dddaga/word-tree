@@ -1,8 +1,8 @@
 # CLAUDE.md Review — 2026-04-14
 
-Comparing Karpathy's approach against our 3-layer CLAUDE.md stack.
-Review scope: identify gaps, stale content, style drift, and open questions.
-No files modified here — this is a decision document for the user.
+Comparing Karpathy approach against our 3-layer CLAUDE.md stack.
+Scope: gaps, stale content, style drift, open questions.
+No files modified — decision document for user.
 
 ---
 
@@ -13,4 +13,4 @@ No files modified here — this is a decision document for the user.
 
 ---
 
-*Split 2026-04-15. Original was 256 lines. All content preserved verbatim across 2 parts.*
+*Split 2026-04-15. Original 256 lines. All content preserved verbatim across 2 parts.*

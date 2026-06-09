@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-06 to 2026-04-07
 **Parent:** LEARNINGS_phase5_p15_post_wave1.md (TOC)
-**Context:** Discovery of two silent bugs in pre-Gen4 codebase. +9.83pp total gain from fixes.
+**Context:** Two silent bugs found in pre-Gen4 codebase. +9.83pp total from fixes.
 
 ---
 
@@ -12,19 +12,19 @@ Before 2026-04-06, ALL phase 5 experiments (steps 57-68) ran on code with two si
 
 **Bug 1 — Input coverage gap (+6.29pp fix):**
 `_build_fanin_conn` used random per-neuron sampling. At N=1024 with K_in=50 and N_in=25088,
-~13% of VGG16 features NEVER reached any hidden neuron. The round-robin coverage guarantee
-ensures every input feature reaches at least one neuron in its group. This is the larger
-contributor (64% of total gain). The coverage gap grows with N — at N=4096 the gap was
+~13% VGG16 features NEVER reached any hidden neuron. Round-robin coverage guarantee
+ensures every input feature reaches at least one neuron in its group. Larger
+contributor (64% of total gain). Coverage gap grows with N — at N=4096 gap was
 proportionally larger. All N-scaling results from step56 are underestimates.
 
 **Bug 2 — alpha_reflect silenced (+3.54pp fix):**
-`SGNNET_AntiHebbian.forward()` reimplemented the routing loop but omitted the `Z_reflected`
-accumulator. `alpha_reflect=0.5` was stored in `self.m` but never applied across K_iter.
-Reflection is a form of residual connection through time — each routing step remembers what
-it suppressed, giving the network a way to "reconsider" activations below threshold.
+`SGNNET_AntiHebbian.forward()` reimplemented routing loop but omitted `Z_reflected`
+accumulator. `alpha_reflect=0.5` stored in `self.m` but never applied across K_iter.
+Reflection = residual connection through time — each routing step remembers what
+it suppressed, gives network way to "reconsider" activations below threshold.
 
-**The two fixes are complementary:** Input coverage ensures the signal is complete at entry;
-alpha_reflect ensures suppressed signal has a second chance across iterations.
+**Two fixes complementary:** Input coverage ensures signal complete at entry;
+alpha_reflect ensures suppressed signal gets second chance across iterations.
 - input_coverage fix alone: +6.29pp (64% of gain)
 - alpha_reflect fix alone: +3.54pp (36% of gain)
 - Both combined: +9.83pp total
@@ -44,15 +44,15 @@ alpha_reflect ensures suppressed signal has a second chance across iterations.
 | C | PhaseTarget + plasticity + diversity (β=0.1) | **61.48%** | −21.70pp |
 | D | PhaseTarget + plasticity + AH (ah_alpha=1.0) | **40.33%** | −42.85pp |
 
-**Note on Ref = 83.18%:** Anomalously high vs expected ~73.5%. This is the patched architecture
-(input_coverage + alpha_reflect fix). The +9-10pp gap confirms these scripts use the patched base.
+**Note on Ref = 83.18%:** Anomalously high vs expected ~73.5%. This = patched architecture
+(input_coverage + alpha_reflect fix). +9-10pp gap confirms these scripts use patched base.
 
-**STEP66 VERDICT: ALL phase-target routing variants KILLED.** Static AH is the optimal fixed point.
-- A: AH is load-bearing — removing it costs −15pp even without plasticity
-- B: Plasticity makes it worse (57.61% vs 67.87%) — gate-death pattern
+**STEP66 VERDICT: ALL phase-target routing variants KILLED.** Static AH = optimal fixed point.
+- A: AH load-bearing — removing costs −15pp even without plasticity
+- B: Plasticity makes worse (57.61% vs 67.87%) — gate-death pattern
 - C: Diversity penalty partially recovers but −21pp vs Ref — insufficient
-- D: AH + phase-target = worst combination (−42pp). They are antagonistic:
-  AH suppresses exactly the phase activity that phase-target depends on.
+- D: AH + phase-target = worst combination (−42pp). Antagonistic:
+  AH suppresses exactly phase activity that phase-target depends on.
 
 Local plasticity hypothesis falsified. CLOSED.
 
@@ -73,7 +73,7 @@ Local plasticity hypothesis falsified. CLOSED.
 **NEW GEN4+ CANDIDATE = 85.04%** (patched arch, turing=0.3).
 
 **alpha_turing finding:** A (turing=0.3) = 85.04% → +1.68pp vs Ref.
-Gen4 should adopt turing=0.3 at N=1024. The Turing fraction gain was masked by buggy code.
+Gen4 should adopt turing=0.3 at N=1024. Turing fraction gain was masked by buggy code.
 
 ---
 
@@ -103,22 +103,22 @@ Interneurons don't compound with AH at D=64. Degradation accelerates with fracti
 | D | + group 8×8×8 mixing α=0.1 | 70.62% | +0.45pp |
 | E | + freq-pair + AH α=1.0 | 69.78% | −0.39pp |
 
-All below OLD_REF 73.53%. Low-rank mixing disrupts the Fourier layout. KILLED.
+All below OLD_REF 73.53%. Low-rank mixing disrupts Fourier layout. KILLED.
 
 ---
 
 ## Buggy-Arch Backlog: What Results Tell Us
 
 **Stacking (step64):** Harmful on buggy arch → likely also harmful on patched arch.
-The geometric reason (same W_pos space, over-smoothing) is architecture-independent.
+Geometric reason (same W_pos space, over-smoothing) is architecture-independent.
 CLOSED permanently — EXCEPT Config F (parallel concat-project, +1.52pp) → test on patched arch (step85).
 
-**Low-rank mixing (step53):** Neutral/harmful → likely the same on patched arch. CLOSED.
+**Low-rank mixing (step53):** Neutral/harmful → likely same on patched arch. CLOSED.
 
 **Interneurons (step47):** Harmful at D=64 (vs helpful at D=16). CLOSED for naive implementation.
 
-**W_phase reconnect (step46):** On patched arch, W_phase may interact differently with the
-restored reflection accumulator. The step46 result is informative but not conclusive.
+**W_phase reconnect (step46):** On patched arch, W_phase may interact differently with
+restored reflection accumulator. step46 result informative but not conclusive.
 **Consider re-testing on patched arch.**
 
 ---
@@ -160,10 +160,10 @@ restored reflection accumulator. The step46 result is informative but not conclu
 | **Ref** (turing=0.3 reflect=0.5 AH=1.0) | **97.20%** | 126/150 | **+12.84pp** |
 | **B** (turing=0.0 reflect=0.5 AH=1.0) | **97.32%** | **90**/150 | **+13.08pp** (WAS PROJECT BEST) |
 
-**Note:** Current project best is 97.38% (step70-B on corrected run — see LEARNINGS_phase5_p15d).
+**Note:** Current project best = 97.38% (step70-B on corrected run — see LEARNINGS_phase5_p15d).
 
-**Key finding: turing=0.0 > turing=0.3 at N=4096.** Turing mechanism is slightly harmful at
-full scale. Contrast with N=1024 (step69): turing=0.3 gave +1.68pp. Turing contribution is N-dependent.
+**Key finding: turing=0.0 > turing=0.3 at N=4096.** Turing mechanism slightly harmful at
+full scale. Contrast with N=1024 (step69): turing=0.3 gave +1.68pp. Turing contribution N-dependent.
 
 New Gen4+ optimum at N=4096: turing=0.0, reflect=0.5, AH=1.0.
 
@@ -199,4 +199,4 @@ Adding any mechanism to AH reduces accuracy. Consistent with step29c. NOTE: bugg
 | D | W_phase → inhibition mask | 58.29% | 148 |
 
 **BORDERLINE.** Best = C (learned routing score, +3.19pp). Below 60% Gen4 re-test threshold.
-W_phase adds marginal value when disconnected routing is already working. CLOSED at pre-Gen4 base.
+W_phase adds marginal value when disconnected routing already working. CLOSED at pre-Gen4 base.

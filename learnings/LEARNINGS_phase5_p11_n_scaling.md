@@ -6,16 +6,12 @@
 
 ## Hypothesis
 
-At D=64 with AntiHebb alpha=0.7 wpos, increasing N beyond 1024 will improve accuracy
-because:
+At D=64 with AntiHebb alpha=0.7 wpos, increasing N beyond 1024 should improve accuracy because:
 1. More neurons = more diverse W_pos directions on S^63 (not crowded at D=64)
 2. Denser small-world graph = richer routing paths
-3. K_in=50 fixed means each neuron samples 50/25088 = 0.2% of inputs; more neurons
-   means better coverage of the 25088-dim input space
+3. K_in=50 fixed means each neuron samples 50/25088 = 0.2% of inputs; more neurons = better coverage of 25088-dim input space
 
-Counter-hypothesis: N=1024 is sufficient because S^63 is vast, and the bottleneck
-is the routing mechanism (K_local=4, K_random=2 = 6 neighbours per neuron), not
-the number of neurons.
+Counter-hypothesis: N=1024 sufficient — S^63 vast, bottleneck is routing (K_local=4, K_random=2 = 6 neighbours/neuron), not neuron count.
 
 ## Config
 
@@ -49,7 +45,7 @@ the number of neurons.
 ## Dispatch Status
 
 - **2026-04-03:** Script synced to Mac Studio via rsync
-- Currently blocked: 3 experiments running (step29c, step48, step54)
+- Blocked: 3 experiments running (step29c, step48, step54)
 - Concurrency rule: launch when running count <= 1 AND RAM >= 50 GB
 - Launch command:
   ```
@@ -60,7 +56,7 @@ the number of neurons.
 
 ## Results
 
-**PENDING** -- will be filled after experiment completes.
+**PENDING** -- filled after experiment completes.
 
 | N | top-1 | params | wall_time (min) | best_epoch | vs N=1024 |
 |---|-------|--------|-----------------|------------|-----------|
@@ -72,18 +68,18 @@ the number of neurons.
 
 ## Analysis
 
-**PENDING** -- analysis will cover:
+**PENDING** -- will cover:
 1. Accuracy vs N curve shape (linear, sublinear, plateau?)
 2. Where diminishing returns begin
 3. Compute efficiency: accuracy / wall_time ratio
-4. Whether N=10000 successfully completes without OOM
+4. Whether N=10000 completes without OOM
 5. Recommendation for optimal N going forward
 
 ## Key Questions This Resolves
 
-- Is N=1024 already at the ceiling for this architecture at D=64?
-- Does the O(N*K) cost scaling remain practical at N=10000?
-- Should future experiments use a larger N, or invest in mechanism improvements instead?
+- N=1024 already at ceiling for this architecture at D=64?
+- O(N*K) cost scaling still practical at N=10000?
+- Future: larger N or invest in mechanism improvements?
 
 ---
 
@@ -96,8 +92,6 @@ N-scaling sweep result (Gen4 params: AH=1.0, alpha_reflect=0.5, beam_size=16, ge
 - N=4096:  **84.36%** (params=529K, best_ep=146/150, 238min) ← PROJECT BEST
 - N=10000: running... (e60=72.92%, safety disabled, healthy trajectory)
 
-Power-law confirmed: each 2x N gives +3-11pp. Very late convergence across all N suggests
-the architecture has not plateaued. N=10000 expected ~86-87% if trend holds.
+Power-law confirmed: each 2x N gives +3-11pp. Very late convergence across all N — architecture not plateaued. N=10000 expected ~86-87% if trend holds.
 
-Key finding: N-scaling is the primary improvement lever. Wave-1 mechanism experiments
-(steps 58-63) all killed — static AH routing is the stable fixed point.
+Key finding: N-scaling is primary improvement lever. Wave-1 mechanism experiments (steps 58-63) all killed — static AH routing is stable fixed point.

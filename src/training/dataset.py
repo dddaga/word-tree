@@ -78,3 +78,29 @@ def make_loaders(
         pin_memory=pin_memory,
     )
     return train_loader, val_loader
+
+
+def make_subset_loader(
+    path: str,
+    fraction: float = 0.5,
+    batch_size: int = 128,
+    seed: int = 42,
+    num_workers: int = 0,
+    pin_memory: bool = False,
+) -> torch.utils.data.DataLoader:
+    """Return a DataLoader over a random fraction of the training split."""
+    ds = H5Dataset(path, split="train")
+    n  = len(ds)
+    n_sub = max(1, int(n * fraction))
+    g = torch.Generator().manual_seed(seed)
+    idx = torch.randperm(n, generator=g)[:n_sub]
+    subset = torch.utils.data.Subset(ds, idx.tolist())
+    g2 = torch.Generator().manual_seed(seed)
+    return torch.utils.data.DataLoader(
+        subset,
+        batch_size=batch_size,
+        shuffle=True,
+        generator=g2,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+    )

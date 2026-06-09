@@ -16,14 +16,14 @@
 | LR_relu_r32 | 803K | 1.6M | 96.99% | +0.25pp |
 | MLP_37_ref | 929K | 1.9M | 96.74% | — |
 
-**Verdict: MEDIUM.** LR_relu_r16 = 96.03% — below STRONG threshold (≥97.71%). Feature space is NOT rank≤16; approximately rank ≤32 in linear sense.
+**Verdict: MEDIUM.** LR_relu_r16 = 96.03% — below STRONG threshold (≥97.71%). Feature space NOT rank≤16; approximately rank ≤32 in linear sense.
 
 **Key observations:**
-1. **LR_pure_r16 (96.36%) > LR_relu_r16 (96.03%)** — at low rank, nonlinearity hurts. VGG post-pool features are near-linearly separable; adding ReLU at rank 16 discards information.
-2. **LR_pure_r32 (96.76%) ≈ MLP_37_ref (96.74%)** — rank-32 linear projection is sufficient, ReLU provides minimal benefit once rank is adequate.
-3. **Feature rank ≈ 32** for this 10-class task on VGG16 features.
+1. **LR_pure_r16 (96.36%) > LR_relu_r16 (96.03%)** — at low rank, nonlinearity hurts. VGG post-pool features near-linearly separable; ReLU at rank 16 discards information.
+2. **LR_pure_r32 (96.76%) ≈ MLP_37_ref (96.74%)** — rank-32 linear projection sufficient, ReLU minimal benefit once rank adequate.
+3. **Feature rank ≈ 32** for 10-class task on VGG16 features.
 
-**Paper implication:** SGNNET operates in D=16 dimensional space on S^{D-1}. The feature space has rank ≈32. SGNNET achieves ~97.71% at D=16 while LR_relu_r16 (43% of MLP_37 params) hits only 96.03%. This confirms SGNNET's iterative routing + hypersphere geometry extracts MORE from the same 16-dim projection than a static low-rank layer — by iterating K=5 times with dynamic ΔW-guided message passing. **HYPOTHESIS** (needs controlled comparison with matched param budget).
+**Paper implication:** SGNNET operates in D=16 dimensional space on S^{D-1}. Feature space has rank ≈32. SGNNET achieves ~97.71% at D=16 while LR_relu_r16 (43% of MLP_37 params) hits only 96.03%. Confirms SGNNET iterative routing + hypersphere geometry extracts MORE from same 16-dim projection than static low-rank layer — iterating K=5 times with dynamic ΔW-guided message passing. **HYPOTHESIS** (needs controlled comparison with matched param budget).
 
 **Next steps:**
 - step612 (routing granularity probe): queue when slot frees — decisive for mechanism claim
@@ -43,7 +43,7 @@
 
 **Status:** MLP_37=84.63%, MLP_64=84.63% saved from old session. SGNNET relaunched on studio_cpu. ep1=0.7844 (healthy). 150ep to complete.
 
-**Expected range:** MLP on binary SST-2 achieves ~84%. SGNNET with D=16 / K_iter=5 on NLP — no prior result. Watch: does routing on 768-dim NLP flat features converge? ep1 at 78.44% is promising.
+**Expected range:** MLP on binary SST-2 ~84%. SGNNET with D=16 / K_iter=5 on NLP — no prior result. Watch: does routing on 768-dim NLP flat features converge? ep1 at 78.44% promising.
 
 ---
 
@@ -70,16 +70,16 @@
 | Ref (per-neuron ΔW) | **93.91%** | 34,976 | — |
 | GroupDW (per-group) | 21.73% | 39,072 | **−72.18pp** |
 
-**Verdict: ABANDON.** GroupDW near-random (21.73% vs 10% random for 10 classes). Per-neuron routing is CONFIRMED essential. The direction `W_pos[i] − W_pos[j]` encodes specific pair geometry on S^{D-1} that cannot be shared across 8 neurons.
+**Verdict: ABANDON.** GroupDW near-random (21.73% vs 10% random for 10 classes). Per-neuron routing CONFIRMED essential. Direction `W_pos[i] − W_pos[j]` encodes specific pair geometry on S^{D-1} that cannot share across 8 neurons.
 
-**Paper implication (CONFIRMED):** "Per-neuron routing at geometric granularity is essential — group-level coarsening (K_g=8) collapses accuracy by 72pp." Cleanly differentiates SGNNET from sparse MoE. Defensible controlled ablation: one variable changed, −72pp. Deprioritize step613 (coarse-to-fine) — if group routing fails at K_g=8, hierarchy won't rescue it.
+**Paper implication (CONFIRMED):** "Per-neuron routing at geometric granularity essential — group-level coarsening (K_g=8) collapses accuracy by 72pp." Cleanly differentiates SGNNET from sparse MoE. Defensible controlled ablation: one variable changed, −72pp. Deprioritize step613 (coarse-to-fine) — if group routing fails at K_g=8, hierarchy won't rescue.
 
 ---
 
 ## Meditations completed this session
 
-1. **FC-fission meditation** (`.planning/fc_fission_meditation_2026-04-15.md`) — FC-fission = block-diagonal linear / low-rank factorization. LowRank > BlockDiag per NeurIPS 2024. step610 result: MEDIUM (rank ≈32 not ≤16). Defers FC-fission appeal slightly — high-rank features mean parallel dense chunks would each need substantial rank.
+1. **FC-fission meditation** (`.planning/fc_fission_meditation_2026-04-15.md`) — FC-fission = block-diagonal linear / low-rank factorization. LowRank > BlockDiag per NeurIPS 2024. step610 result: MEDIUM (rank ≈32 not ≤16). Defers FC-fission appeal slightly — high-rank features mean parallel dense chunks each need substantial rank.
 
-2. **MoE↔SGNNET hybrid meditation** (`.planning/moe_hybrid_meditation_2026-04-15.md`) — Three experiments: step611 (hierarchical), step612 (group-ΔW, decisive), step613 (coarse-to-fine). step612 is the cleanest test: no new gate, no softmax, no auxiliary loss. Either outcome is paper-worthy.
+2. **MoE↔SGNNET hybrid meditation** (`.planning/moe_hybrid_meditation_2026-04-15.md`) — Three experiments: step611 (hierarchical), step612 (group-ΔW, decisive), step613 (coarse-to-fine). step612 cleanest test: no new gate, no softmax, no auxiliary loss. Either outcome paper-worthy.
 
 ---

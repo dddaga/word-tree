@@ -1,16 +1,16 @@
 # Sparse BFS Routing (HYPOTHESIS)
 
-**Status:** HYPOTHESIS — not implemented, not validated. Design captured from 2026-04-16 research session.
+**Status:** HYPOTHESIS — not implemented, not validated. Design from 2026-04-16 research session.
 
 ## Motivation
 
-Current SGNNET routing in `SGNNET_SmallWorld._route()` is dense — every iteration touches ALL N=2048 hidden nodes (`Z = Z[:, conn_hh, :].sum(dim=2)` at `model_smallworld.py:273`). Cost: O(B·N·K_hh·D) per iter × K_iter iters. At N=2048, K_hh=2, D=16, K_iter=5: **327K routing MACs**. The `beam_size` parameter in phase inhibition only gates the inhibition path, not the main routing.
+Current SGNNET routing in `SGNNET_SmallWorld._route()` dense — every iteration touches ALL N=2048 hidden nodes (`Z = Z[:, conn_hh, :].sum(dim=2)` at `model_smallworld.py:273`). Cost: O(B·N·K_hh·D) per iter × K_iter iters. At N=2048, K_hh=2, D=16, K_iter=5: **327K routing MACs**. `beam_size` param in phase inhibition only gates inhibition path, not main routing.
 
-The observation: many hidden nodes are near-quiescent per input. Broadcasting from every node wastes compute on nodes that carry no meaningful activation. Beam-gated BFS restricts broadcasters to the top-M most active per iteration, tracking the reachable frontier.
+Observation: many hidden nodes near-quiescent per input. Broadcasting from every node wastes compute on nodes carrying no meaningful activation. Beam-gated BFS restricts broadcasters to top-M most active per iteration, tracking reachable frontier.
 
 ## Proposed Design
 
-**Beam-gated BFS with frontier tracking.** Only the top-M active nodes broadcast messages per iteration; the frontier (reachable set) is bounded by M · K_hh^(K_iter-1). At M=16, K_hh=2, K_iter=5: frontier ≤ 176 nodes ≪ N=2048.
+**Beam-gated BFS with frontier tracking.** Only top-M active nodes broadcast messages per iteration; frontier (reachable set) bounded by M · K_hh^(K_iter-1). At M=16, K_hh=2, K_iter=5: frontier ≤ 176 nodes ≪ N=2048.
 
 ### Key math
 
@@ -55,35 +55,35 @@ def _route_bfs(self, Z_seed, conn_hh, beam_schedule):
 
 ## Readout Compatibility
 
-Z stays dense [B, N, D] throughout — quiet (non-frontier) nodes keep their seed values. Readout `Z @ W_out.T` unchanged. No readout refactor required for the baseline variant. Config D variant below tests a sparse readout as an aggressive efficiency extension.
+Z stays dense [B, N, D] throughout — quiet (non-frontier) nodes keep seed values. Readout `Z @ W_out.T` unchanged. No readout refactor needed for baseline variant. Config D variant below tests sparse readout as aggressive efficiency extension.
 
 ## Static Topology Preserved
 
-**Critical constraint (step852 evidence):** hot-rebuilding `conn_hh` mid-training KILLS learning (−1.91pp at best, −79pp at worst). Sparse BFS **does not rebuild edges**. It uses the same static Watts-Strogatz `conn_hh` as Ref — only the **selection of active broadcasters** changes per step.
+**Critical constraint (step852 evidence):** hot-rebuilding `conn_hh` mid-training KILLS learning (−1.91pp at best, −79pp at worst). Sparse BFS **does not rebuild edges**. Uses same static Watts-Strogatz `conn_hh` as Ref — only **selection of active broadcasters** changes per step.
 
-This is the key distinction from [[soft_routing_hnsw]]: sparse BFS keeps edges static and gates broadcasters; soft routing replaces edges entirely with distance-based weights.
+Key distinction from [[soft_routing_hnsw]]: sparse BFS keeps edges static, gates broadcasters; soft routing replaces edges entirely with distance-based weights.
 
 ## Composition
 
-- **With W_pos-nearest edges:** combines if edges are static post-init (step852 forbids hot rebuild). Init-time W_pos-nearest works.
-- **With cascading beam schedule:** natural fit; beam size is the degree of freedom.
-- **With [[delta_w]] projection:** orthogonal — ΔW proj modulates signal magnitude along the relational axis; sparse BFS selects which senders contribute. Different gradient paths.
-- **With [[activation_retention]]:** the retained state Z_{t-1} naturally provides the initial frontier at step t, no cold start needed.
-- **With [[soft_routing_hnsw]]:** sparse BFS can use HNSW-retrieved neighbors instead of `conn_hh`; beam nodes do the HNSW queries.
+- **With W_pos-nearest edges:** combines if edges static post-init (step852 forbids hot rebuild). Init-time W_pos-nearest works.
+- **With cascading beam schedule:** natural fit; beam size = degree of freedom.
+- **With [[delta_w]] projection:** orthogonal — ΔW proj modulates signal magnitude along relational axis; sparse BFS selects which senders contribute. Different gradient paths.
+- **With [[activation_retention]]:** retained state Z_{t-1} naturally provides initial frontier at step t, no cold start needed.
+- **With [[soft_routing_hnsw]]:** sparse BFS can use HNSW-retrieved neighbors instead of `conn_hh`; beam nodes do HNSW queries.
 
 ## Risks
 
 - **Quiet-node capacity loss:** non-frontier nodes never update beyond seed → may lose representational capacity. Test via Config C (quiet nodes zeroed).
 - **Batch variability:** different inputs produce different frontiers → deduplication cost across batch, irregular memory access.
 - **CUDAGraph compatibility:** dynamic sizes break torch.compile graphs; need pre-registered shape budgets (pad frontier to max size, mask).
-- **Gradient flow:** top-k is non-differentiable in the selection; gradients flow through selected values only (straight-through on selection). May harm learning of which nodes should be active.
+- **Gradient flow:** top-k non-differentiable in selection; gradients flow through selected values only (straight-through on selection). May harm learning of which nodes should be active.
 - **M-schedule sensitivity:** untested — may need N-dependent tuning like K_iter.
 
 ## Expected Paper Value
 
 - **Inference FLOPs:** ~60× routing reduction at fixed M=16; ~218× with cascading schedule.
 - **Accuracy:** HYPOTHESIS — frontier nodes carry sufficient signal. Must test.
-- **Wall-time:** dependent on Triton gather/scatter implementation. Dense routing is already compiled on CUDA (step500); sparse must beat a compiled dense baseline to be worth the complexity.
+- **Wall-time:** dependent on Triton gather/scatter implementation. Dense routing already compiled on CUDA (step500); sparse must beat compiled dense baseline to justify complexity.
 
 ## Proposed Experiment — step855_sparse_bfs
 
@@ -105,8 +105,8 @@ This is the key distinction from [[soft_routing_hnsw]]: sparse BFS keeps edges s
 
 ## Open Questions
 
-1. Should beam selection use norm, logit of final readout, or a learned scorer?
-2. Does the frontier grow uniformly across a batch, or do outlier inputs dominate frontier size?
+1. Should beam selection use norm, logit of final readout, or learned scorer?
+2. Does frontier grow uniformly across batch, or do outlier inputs dominate frontier size?
 3. Does static vs learned beam schedule matter? (Gate-death risk if learned via multiplicative gate — see [[gate_death]].)
 4. Interaction with [[delta_w]]: does ΔW proj selectivity already do what beam gating attempts?
 

@@ -74,7 +74,7 @@ Strong gains at small $N$ (1024) compress to zero at large $N$ (4096).
 
 ## Appendix B: Architecture Hyperparameter Reference
 
-| Parameter | Symbol | Final Config (step199) | Description |
+| Parameter | Symbol | Canonical Config (step887/step605) | Description |
 |-----------|--------|----------------------|-------------|
 | Hidden neurons | $N$ | 2048 | Number of neurons on $S^{D-1}$ |
 | Sphere dimension | $D$ | 16 | Dimensionality of hypersphere |
@@ -92,7 +92,7 @@ Strong gains at small $N$ (1024) compress to zero at large $N$ (4096).
 | Geo penalty | $\gamma$ | 0.5 | Position distance penalty in score |
 | Resonance threshold | $\tau$ | 0.0 | Minimum score for pseudo-connection |
 | Phase graph size | $K_\text{phase}$ | 8 | Phase neighborhood size (unused at $\alpha_\text{turing}=0$) |
-| Total params | — | 67,744 | $W_\text{pos}$: 32,768 + $\theta$: 2,048 + $W_\text{out}$: 160 + bias/other |
+| Total params | — | 34,976 | $W_\text{pos}$: 32,768 ($N \times D$) + $\theta$: 2,048 ($N$) + $W_\text{out}$: 160 ($10 \times D$) = 34,976 |
 | FLOPs | — | 0.98M | $3 \times 2048 \times 2 \times 16 \times 5$ |
 
 ---

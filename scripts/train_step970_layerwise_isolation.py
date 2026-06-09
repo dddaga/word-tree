@@ -126,8 +126,8 @@ def load_data():
     n_tr = int(len(tr_x) * args.frac)
     idx  = torch.randperm(len(tr_x), generator=torch.Generator().manual_seed(SEED))[:n_tr]
     tr_x, tr_y = tr_x[idx], tr_y[idx]
-    tr = DataLoader(TensorDataset(tr_x, tr_y), batch_size=BATCH, shuffle=True,  num_workers=2)
-    va = DataLoader(TensorDataset(va_x, va_y), batch_size=256, shuffle=False, num_workers=2)
+    tr = DataLoader(TensorDataset(tr_x, tr_y), batch_size=BATCH, shuffle=True,  num_workers=10)
+    va = DataLoader(TensorDataset(va_x, va_y), batch_size=256, shuffle=False, num_workers=10)
     print(f"  Data: {len(tr_x)} train ({args.frac:.0%}) / {len(va_x)} val")
     return tr, va
 

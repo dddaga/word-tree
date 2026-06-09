@@ -180,9 +180,9 @@ def load_data():
         va_x = torch.tensor(f["val/features"][:],   dtype=torch.float32)
         va_y = torch.tensor(f["val/labels"][:],     dtype=torch.long)
     tr = DataLoader(TensorDataset(tr_x, tr_y), batch_size=BATCH, shuffle=True,
-                    num_workers=4, pin_memory=True)
+                    num_workers=10, pin_memory=True)
     va = DataLoader(TensorDataset(va_x, va_y), batch_size=256, shuffle=False,
-                    num_workers=2)
+                    num_workers=10)
     print(f"  Data: {len(tr_x)} train / {len(va_x)} val / {len(tr)} batches/ep")
     return tr, va
 

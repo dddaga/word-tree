@@ -10,7 +10,7 @@
 | **step142** | **Curriculum K_iter** — ramp 4→8→12 during training | N=1024 | ~3-4M | ✅ |
 | **step143** | **Heterogeneous neurons** — subpopulations with different θ, edge weights | N=1024 | ~3.1M | ✅ |
 | **step127** | **K_iter distillation** — train K=12 teacher, distill to K=6 (50% FLOPs cut) | N=1024 | ~3M | ✅ |
-| **step163** | **Progressive K_iter distillation** — teacher init (load_state_dict) + intermediate state matching Z_student[k]↔Z_teacher[t_k]. Configs: Ref(K=12), A(scratch K=6), B(warm-init K=6 no distil), C/D(warm-init+distil α=0.3/0.5), E(K=8 warm-init+distil). Key fixes over step127: shared conn_hh/conn_in via state_dict, warm-start isolates init vs distil effects | N=1024 | ~3M | ✅ |
+| **step163** | **Progressive K_iter distillation** — teacher init (`load_state_dict`) + intermediate state matching Z_student[k]↔Z_teacher[t_k]. Configs: Ref(K=12), A(scratch K=6), B(warm-init K=6 no distil), C/D(warm-init+distil α=0.3/0.5), E(K=8 warm-init+distil). Key fixes over step127: shared conn_hh/conn_in via state_dict, warm-start isolates init vs distil effects | N=1024 | ~3M | ✅ |
 | step133 | **α calibration Tier-1 at N=4096** | N=4096 | 38.8M | DONE — B=97.27% WINNER (α=1.05), A=97.20% (α=1.10), Ref=96.48% |
 | step132 | **Low-rank W_proj Tier-1 at N=4096** | N=4096 | 38.8M | DONE — +0.06pp NULL |
 
@@ -51,20 +51,20 @@
 ## Launch Order (when slots free)
 
 1. ~~step140~~ DONE — N×K tradeoff KILLED
-2. **step141** → RUNNING on Mac Studio MPS — Split-D + residual
-3. **step155** → RUNNING on Mac Mini CPU — Diagnostics baseline (B,D,E)
-4. **step116** → next slot — RMSNorm ablation
-5. **step152** → next slot — Constraint discovery (core hypothesis test)
-6. **step153** → next slot — Progressive capacity reduction
-7. **step149** → next slot — Input de-squashification
-8. **step150** → next slot — Positional max-pool readout
-9. **step144** → next slot — Efficiency stack (N=1024 winners)
-10. **step142** → next slot — Curriculum K_iter
-11. **step143** → next slot — Heterogeneous neurons
-12. **step127** → next slot — K_iter distillation
-13. **step156** → next slot — LayerNorm N=4096 validation (20ep scout, high priority)
-14. **step158** → next slot — DropMessage regularization (N=1024 75ep Tier-0)
-15. **step121** → next slot — Spectral regularization
+2. **step141** → RUNNING Mac Studio MPS — Split-D + residual
+3. **step155** → RUNNING Mac Mini CPU — Diagnostics baseline (B,D,E)
+4. **step116** → next — RMSNorm ablation
+5. **step152** → next — Constraint discovery (core hypothesis test)
+6. **step153** → next — Progressive capacity reduction
+7. **step149** → next — Input de-squashification
+8. **step150** → next — Positional max-pool readout
+9. **step144** → next — Efficiency stack (N=1024 winners)
+10. **step142** → next — Curriculum K_iter
+11. **step143** → next — Heterogeneous neurons
+12. **step127** → next — K_iter distillation
+13. **step156** → next — LayerNorm N=4096 validation (20ep scout, high priority)
+14. **step158** → next — DropMessage regularization (N=1024 75ep Tier-0)
+15. **step121** → next — Spectral regularization
 
 ---
 
@@ -73,7 +73,7 @@
 ### Winners
 | Step | Result | Finding |
 |------|--------|---------|
-| step116-C ✓ | +2.24pp (N=1024 Tier-1) | LayerNorm with learned affine beats L2 sphere norm. Pending N=4096 validation |
+| step116-C ✓ | +2.24pp (N=1024 Tier-1) | LayerNorm w/ learned affine beats L2 sphere norm. Pending N=4096 validation |
 | step128-A ✓ | +8.07pp (N=1024) | weighted_neg β=0.3. Zero params |
 | step117-A ✓ | +8.66pp (N=1024) | W_proj [D,D]. 4K params |
 | step131-B ✓ | +5.48pp (Tier-1 N=1024) | W_proj confirmed. Compound kills gain |
@@ -90,7 +90,7 @@
 |------|--------|-------------|
 | step69-89 | See LEARNINGS files | Established current defaults: AH=1.0, K_hh=4, K_iter=12, turing=0.0, reflect=0.5 |
 | step89 ✓ | **97.86%** | **PROJECT BEST** (N=4096, 150ep, full data) |
-| step90 ✓ | null at N=4096 | Group topology doesn't scale |
+| step90 ✓ | null at N=4096 | Group topology no scale |
 | step105 ✓ | +4.21pp | Phase+AH synergistic confirmed |
 | step106 ✓ | +7.42pp | Z-bias N=1024 record |
 | step107 ✗ | KILLED | Group MoE routing killed |
@@ -105,12 +105,12 @@ Per user decision: queue below current high-priority work. Pick up after:
 
 | Step | Description | Priority tag |
 |------|-------------|--------------|
-| step117 | N=2048 efficiency-config retest of an N=1024 winner | RUNNING (studio_cpu) |
+| step117 | N=2048 efficiency-config retest of N=1024 winner | RUNNING (studio_cpu) |
 | step124 | RigL-topology variant at efficiency config | SKIP — step709 confirmed RigL dead |
 | step125 | α=1.10 at efficiency config | SKIP — step321 confirms α=1.0 optimal; α=1.25/1.50 both −1.6pp |
 | step128 | ConcatReLU mechanism at efficiency config (N=1024 winner retest) | RUNNING (studio_mps) |
 | step229 | RigL with fix (previous killed) | SKIP — RigL confirmed dead in step709 |
-| step230 ✗ | Gumbel-Softmax differentiable topology — ALL KILLED. Best 48.74% vs ref 91.8% (Δ≈−43pp at 20ep T0). Topology entropy stays near-uniform; ST-GS doesn't learn edge structure. Added to architecture_dead_ends.md. | DONE — KILLED |
+| step230 ✗ | Gumbel-Softmax differentiable topology — ALL KILLED. Best 48.74% vs ref 91.8% (Δ≈−43pp at 20ep T0). Topology entropy stays near-uniform; ST-GS no learn edge structure. Added to architecture_dead_ends.md. | DONE — KILLED |
 | step231 ✓ | Mechanism diagnostics — ALL 5 HYPOTHESES CONFIRMED. H1 class-specificity=0.24, H2 AH diversifies, H3 routing refines 0.09→0.92, H4 input-dependent code (0.30 overlap), H5 W_pos learning essential (+74.8pp). Paper-grade ablation evidence. | DONE — CONFIRMED |
 | step401_full ✓ | MLP/Lin paper baselines at 150ep (CUDA) — Lin_direct=97.12% (250K), MLP_2=68.23% (50K), MLP_3=52.41% (75K), MLP_64=97.25% (1.6M). At matched params (75K), SGNNET beats MLP by 44pp. At matched accuracy, MLP needs 24× more params. Paper table ready. | DONE |
 | bench_step810 ✓ | Full resource profile across 5 variants (CUDA, compile). SGNNET_AH wins GPU memory (477 MiB, lowest) & inference vs VGG_FC (5.24× faster @ 3419× fewer params). Loses inference vs MLPs (3.4× slower, bandwidth-bound). | DONE |
@@ -140,6 +140,6 @@ Per user decision: queue below current high-priority work. Pick up after:
 | step755 | K_iter=3 N=4096 K_hh=2 — 94.42% @ep71. K_hh=4 beats K_hh=2 by +0.64pp | DONE |
 | step760 step199 ✓ | Seed var AH-only (N=2048 D=16 K_hh=2 K_iter=5) — mean=93.82%, σ=0.562pp, range=1.41pp | DONE |
 | step760 step706 ✓ | Seed var ΔW proj (same config) — mean=95.402%, σ=0.154pp, range=0.36pp | DONE |
-| **step525** | **Teleportation class KILLED (2026-04-15 T0 seed=42 studio_mps):** Ref=94.09%, T2_5 (5ep redraw)=93.63% (−0.46pp), T2_1 (1ep redraw)=89.91% (−4.18pp), T3 (per-batch)=53.99% (−40.10pp). Monotone in redraw frequency — ANY topology perturbation hurts. Confirms W_pos co-adapted to specific fixed topology. Paper claim strengthened: topology stability is load-bearing. | DONE — KILLED |
+| **step525** | **Teleportation class KILLED (2026-04-15 T0 seed=42 studio_mps):** Ref=94.09%, T2_5 (5ep redraw)=93.63% (−0.46pp), T2_1 (1ep redraw)=89.91% (−4.18pp), T3 (per-batch)=53.99% (−40.10pp). Monotone in redraw frequency — ANY topology perturbation hurts. Confirms W_pos co-adapted to specific fixed topology. Paper claim strengthened: topology stability load-bearing. | DONE — KILLED |
 
-**Surface-up from D=64 audit:** step65's `exp(−γ·d)` distance weighting was NOT killed; it was silently adopted as the `geo_gamma=0.5` default in beam routing. Paper should note this (not a dead end — absorbed into arch).
+**Surface-up from D=64 audit:** step65 `exp(−γ·d)` distance weighting NOT killed; silently adopted as `geo_gamma=0.5` default in beam routing. Paper should note this (not dead end — absorbed into arch).

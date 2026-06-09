@@ -11,4 +11,4 @@
 
 ---
 
-*Split 2026-04-15. Original was 289 lines. All content preserved verbatim across 2 parts.*
+*Split 2026-04-15. Original 289 lines. All content preserved verbatim across 2 parts.*

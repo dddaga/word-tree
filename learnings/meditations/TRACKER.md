@@ -1,8 +1,8 @@
 # Meditation Tracker
 
-**Last meditation:** 2026-04-17 (Session 10, step267→step859 — full 7-stage)
-**Last step at meditation:** step859
-**Next meditation due at:** step884 (25 DONE experiments after step859)
+**Last meditation:** 2026-04-23 (step944→step980 — full 7-stage)
+**Last step at meditation:** step984
+**Next meditation due at:** step1009 (25 DONE experiments after step984)
 **Core value anchor:** be stubborn with the goal, flexible with the approach. Goal = improve memory footprint + energy efficiency of deep learning in general. SGNNET is one approach.
 
 ## How to use
@@ -18,3 +18,5 @@
 |---|---|---|---|---|---|
 | 0 | 2026-04-15 | pre-step266 | crisis (MLP_37 falsified claim) | `learnings/LEARNINGS_strategy_2026_04_15.md` | consistency-DEQ K=1 distillation → step604/605/606 + bench_step608 (5.26× wall-time win) |
 | 1 | 2026-04-17 | step267→step859 | on-demand (Opus) | `learnings/meditations/2026-04-17_001.md` | step860 K=1@N=4096, step861 soft T1, step862 CIFAR-10, step863 D=8. Primary drift: paper writing = zero. Soft routing +1.22pp T0 = new P0. |
+| 2 | 2026-04-20 | step860→step943 | on-demand (user) + overdue (84 exp) | `learnings/meditations/2026-04-20_002.md` | Drift = paper not started; all claims confirmed. Routing mechanism = PR expansion 1.0→3.7. P0 = paper manuscript. step943 trained checkpoint needed. Failure Refinement Protocol added to CLAUDE.md. |
+| 3 | 2026-04-23 | step944→step980 | on-demand (user: "deep meditation, course for next 2 days") | `learnings/meditations/2026-04-23_003.md` | SEVERE drift: 3rd consecutive paper-writing=0. 0/13 mechanism experiments positive → arch characterized, STOP mechanism search. TS all random (MSE→mean predictor). P0 = 2-day writing sprint + step981 scaling fig + step982 CIFAR-10 aug + step984 N=16384. |

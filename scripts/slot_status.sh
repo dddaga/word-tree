@@ -72,6 +72,7 @@ check_slot() {
   fi
 
   local s pane_info pane_dead pane_pid n_children
+  local any_running=0 any_done="" any_dead=""
   while IFS= read -r s; do
     pane_info=$(remote_cmd "$host" \
       "$tmux_cmd list-panes -t '$s' -F '#{pane_dead} #{pane_pid}' 2>/dev/null | head -1" \
@@ -80,10 +81,8 @@ check_slot() {
     pane_pid=$(awk  '{print $2}' <<< "$pane_info")
 
     if [[ "$pane_dead" == "1" ]]; then
-      # pane shell exited entirely — treat as FREE
-      printf "[FREE]       (dead pane from session=%s)\n" "$s"
-      check_crash "$host" "$log_dir" "$slot"
-      return
+      any_dead="$s"
+      continue
     fi
 
     # Count active child processes of the pane shell.
@@ -94,16 +93,26 @@ check_slot() {
       2>/dev/null || echo "0")
 
     if [[ "${n_children:-0}" -gt 0 ]]; then
+      # RUNNING takes priority — report immediately and stop scanning
       printf "[RUNNING]    session=%s\n" "$s"
+      any_running=1
+      return
     else
-      printf "[DONE]       session=%s  (script finished, shell idle)\n" "$s"
-      check_crash "$host" "$log_dir" "$slot"
+      any_done="$s"
     fi
-    return
   done <<< "$sessions"
 
-  printf "[FREE]\n"
-  check_crash "$host" "$log_dir" "$slot"
+  # No RUNNING session found — report the best non-running state
+  if [[ -n "$any_done" ]]; then
+    printf "[DONE]       session=%s  (script finished, shell idle)\n" "$any_done"
+    check_crash "$host" "$log_dir" "$slot"
+  elif [[ -n "$any_dead" ]]; then
+    printf "[FREE]       (dead pane from session=%s)\n" "$any_dead"
+    check_crash "$host" "$log_dir" "$slot"
+  else
+    printf "[FREE]\n"
+    check_crash "$host" "$log_dir" "$slot"
+  fi
 }
 
 # list_sessions <host> <tmux_cmd>
@@ -155,7 +164,6 @@ check_slot "mini_cpu"    "local"      "tmux"
 check_slot "studio_mps"  "mac-studio" "/opt/homebrew/bin/tmux"
 check_slot "studio_cpu"  "mac-studio" "/opt/homebrew/bin/tmux"
 check_slot "5060ti_cuda" "5060ti"     "/usr/bin/tmux"
-check_slot "5060ti_cpu"  "5060ti"     "/usr/bin/tmux"
 
 echo
 echo "===== Tmux sessions by machine ====="

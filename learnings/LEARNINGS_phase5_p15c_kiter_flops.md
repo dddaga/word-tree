@@ -18,8 +18,8 @@
 | **C** | **12** | **96.66%** | **+0.79pp WINNER** |
 | D | 16 | 96.31% | +0.44pp |
 
-**K_iter=12 is optimal at N=4096.** Non-monotone: 4<6<8<16<12.
-Peak at 12, not 16 (step68 at N=1024 found 16). K_iter optimal is N-dependent.
+**K_iter=12 optimal at N=4096.** Non-monotone: 4<6<8<16<12.
+Peak 12, not 16 (step68 at N=1024 found 16). K_iter optimal N-dependent.
 Ref at 50%/75ep = 95.87% vs step70 full = 97.32% (−1.45pp from data reduction).
 
 ---
@@ -36,8 +36,8 @@ Ref at 50%/75ep = 95.87% vs step70 full = 97.32% (−1.45pp from data reduction)
 | C | softmax routing variant C | 85.58% |
 | **D** | **softmax routing variant D** | **86.34%** |
 
-**Config D is winner (+1.78pp over Ref 84.56%).** Config A collapsed (gate-death pattern).
-First dynamic routing mechanism to beat static AH baseline.
+**Config D winner (+1.78pp over Ref 84.56%).** Config A collapsed (gate-death pattern).
+First dynamic routing mechanism beating static AH baseline.
 
 ---
 
@@ -54,7 +54,7 @@ First dynamic routing mechanism to beat static AH baseline.
 | **D** | **learned τ_0=0.3** | **87.24%** |
 
 **step75 D = 87.24% — best N=1024 result to date.** +3.98pp over static baseline.
-Per-neuron temperature parameter scales softmax attention without attenuating signal.
+Per-neuron temperature scales softmax attention without attenuating signal.
 **Never tested at N=4096.**
 
 ---
@@ -71,14 +71,14 @@ Per-neuron temperature parameter scales softmax attention without attenuating si
 | C | 0.5, W_phase trained | 83.13% | −0.54pp |
 | D | 1.0, W_phase trained | 78.37% | −5.30pp |
 
-Config A is winner (+2.88pp). Higher turing values (C=0.5, D=1.0) hurt badly.
-turing=0.0 with trained W_phase wins. Higher turing inhibition is harmful.
+Config A winner (+2.88pp). Higher turing values (C=0.5, D=1.0) hurt badly.
+turing=0.0 with trained W_phase wins. Higher turing inhibition harmful.
 
 ---
 
 ## Step 77 — Learnable Theta — COMPLETE
 
-**Scale:** N=1024, 50%/75ep. theta is an nn.Parameter but was never added to optimizer.
+**Scale:** N=1024, 50%/75ep. theta is nn.Parameter but never added to optimizer.
 
 | Config | Description | top1_best | vs Ref |
 |--------|-------------|-----------|--------|
@@ -87,7 +87,7 @@ turing=0.0 with trained W_phase wins. Higher turing inhibition is harmful.
 | B | learnable theta, 0.1× lr | 84.92% | −0.18pp |
 | C | fixed theta, mean-pool aggr | 62.70% | −22.40pp |
 
-**KILLED. Fixed theta=0.1 is optimal.** Learnable theta either hurts (A,B) or collapses (C).
+**KILLED. Fixed theta=0.1 optimal.** Learnable theta either hurts (A,B) or collapses (C).
 B nearly matches Ref at −0.18pp — learnable theta at lower lr converges to same ~0.099 mean.
 
 ---
@@ -106,7 +106,7 @@ B nearly matches Ref at −0.18pp — learnable theta at lower lr converges to s
 | E | sparsity reward λ=0.001 | 96.18% |
 | F | routing diversity λ=0.01 | 96.31% |
 
-Phase coherence at all λ scales below Ref (KILLED). Sparsity reward D=96.31% ties F (+0.21pp).
+Phase coherence at all λ below Ref (KILLED). Sparsity reward D=96.31% ties F (+0.21pp).
 Marginal at 50%/75ep — insufficient to promote. **Aux losses not adopted.**
 
 ---
@@ -119,8 +119,7 @@ Marginal at 50%/75ep — insufficient to promote. **Aux losses not adopted.**
 | 2048 | ~265K | **92.74%** | 81.10% | **+11.64pp** |
 | 4096 | 529K | 95.87% (step71 Ref) | 84.36% (step56) | — |
 
-Patch gain grows with N: +3.21pp at N=512 vs +11.64pp at N=2048. The input coverage bug is
-more damaging at larger N. N-scaling curve is steeper on patched arch.
+Patch gain grows with N: +3.21pp at N=512 vs +11.64pp at N=2048. Input coverage bug more damaging at larger N. N-scaling curve steeper on patched arch.
 
 ---
 
@@ -136,8 +135,7 @@ more damaging at larger N. N-scaling curve is steeper on patched arch.
 | C | 5%/neuron every 10ep | — |
 | D | 5%/neuron every 5ep + group init | — |
 
-**step81 A = 85.55% (+1.12pp over Ref).** Hebbian rewiring helps — dynamic connectivity
-without signal destruction (topology change, not per-step gate). Uses Hebb: fire together → wire together.
+**step81 A = 85.55% (+1.12pp over Ref).** Hebbian rewiring helps — dynamic connectivity without signal destruction (topology change, not per-step gate). Hebb: fire together → wire together.
 
 ---
 
@@ -159,8 +157,7 @@ without signal destruction (topology change, not per-step gate). Uses Hebb: fire
 - Ref=83.11%, A(n_g=8)=85.25% (+2.14pp), B(n_g=16)=83.62%, C(n_g=32)=84.05%
 - D(input-group align)=70.04% KILLED
 
-**n_groups=8 wins on both machines (+2-3pp vs Ref).** Input-group alignment catastrophically
-kills performance. Static group topology change, no new params.
+**n_groups=8 wins both machines (+2-3pp vs Ref).** Input-group alignment catastrophically kills performance. Static group topology change, no new params.
 **Never tested at N=4096. Likely compounds with N-scaling.**
 
 ---
@@ -176,13 +173,12 @@ kills performance. Static group topology change, no new params.
 | B | β=0.5, final step only | 81.96% | −2.65pp |
 | C | β=0.1, every step | 84.00% | −0.61pp |
 
-Dynamic routing on top of static group topology is harmful. Root causes:
+Dynamic routing on top of static group topology harmful. Root causes:
 1. S_g = mean(Z) too coarse — softmax collapses to uniform early in training
 2. Temporal mismatch: AH (epoch timescale) vs router (batch timescale) → adversarial
 3. Co-adaptation: W_pos and router converge to degenerate fixed point
 
-**Key contrast:** step82A (static group topology alone) = +3.01pp. The topology is valuable;
-dynamic routing on top of it is harmful.
+**Key contrast:** step82A (static group topology alone) = +3.01pp. Topology valuable; dynamic routing on top harmful.
 
 ---
 

@@ -7,7 +7,7 @@
 ## Hypothesis
 
 Geometry-based k-NN topology (no fixed index-based groups) + dynamic phasor routing
-+ periodic reconnection outperforms SmallWorld's fixed-group approach at the same N.
++ periodic reconnection outperforms SmallWorld fixed-group approach at same N.
 
 Key differences from SmallWorld+Resonant+AntiHebb:
 1. **conn_hh from W_pos k-NN** (not index-based Watts-Strogatz groups)
@@ -27,7 +27,7 @@ SGNNET_ProximityWave(
 ```
 
 Forward pass: `_seed -> _route (8x sparse_phasor_route) -> _readout`
-- All operations O(N*K*B*D) -- no O(N^2) in forward
+- All ops O(N*K*B*D) — no O(N^2) in forward
 - k-NN rebuild O(N^2) at epoch level only (every 10 epochs)
 
 ## Configs
@@ -37,16 +37,14 @@ Forward pass: `_seed -> _route (8x sparse_phasor_route) -> _readout`
 | N1024 | 1024 | 64 | 8 | 4 | 2 | 66,176 | Running |
 | N4096 | 4096 | 64 | 8 | 4 | 2 | 262,720 | Pending (after N1024) |
 
-Both trained for 150 epochs, batch=128, plateau LR scheduler.
+Both trained 150 epochs, batch=128, plateau LR scheduler.
 
 ## Initial Observations
 
 - **N=1024 forward pass: 595 ms/batch** (128 samples)
-  - This is above the 500ms target for N=4096
-  - Phasor routing at D=64 with 8 iterations is more expensive than SmallWorld's
-    real-valued gather-sum routing
-  - The cost comes from per-edge distance computation, phase rotation, and
-    complex-number operations in sparse_phasor_route
+  - Above 500ms target for N=4096
+  - Phasor routing at D=64 with 8 iterations more expensive than SmallWorld real-valued gather-sum routing
+  - Cost from per-edge distance computation, phase rotation, complex-number ops in `sparse_phasor_route`
 
 ## Comparison Baselines (at N=1024)
 
@@ -58,21 +56,14 @@ Both trained for 150 epochs, batch=128, plateau LR scheduler.
 
 ## Expected Outcomes
 
-1. **Optimistic:** k-NN topology + phasor routing captures richer geometric
-   structure than SmallWorld, potentially matching or exceeding 75.24%.
-2. **Likely:** Some gain over plain SmallWorld (56.41%) from topology adaptation,
-   but may not match the full Resonant+AntiHebb stack because ProximityWave's
-   phasor routing lacks the beam-based phase inhibition of SGNNET_Resonant.
-3. **Pessimistic:** Phasor routing at D=64 may show the same issues as signed
-   coupling (cos-sim noise on S^63), resulting in near-random phase rotations.
+1. **Optimistic:** k-NN topology + phasor routing captures richer geometric structure than SmallWorld, potentially matching or exceeding 75.24%.
+2. **Likely:** Some gain over plain SmallWorld (56.41%) from topology adaptation, but may not match full Resonant+AntiHebb stack — ProximityWave phasor routing lacks beam-based phase inhibition of SGNNET_Resonant.
+3. **Pessimistic:** Phasor routing at D=64 may show same issues as signed coupling (cos-sim noise on S^63), resulting in near-random phase rotations.
 
 ## Known Limitations
 
-- **No phase inhibition:** ProximityWave uses phasor routing (excitatory+phase)
-  but lacks the Turing two-scale inhibitory signal that SGNNET_Resonant provides.
-  The anti-Hebbian suppression partially compensates but through a different mechanism.
-- **Forward pass speed:** 595ms at N=1024 is slower than SmallWorld (~300ms).
-  At N=4096 this will be even more expensive due to the per-edge distance computation.
+- **No phase inhibition:** ProximityWave uses phasor routing (excitatory+phase) but lacks Turing two-scale inhibitory signal from SGNNET_Resonant. Anti-Hebbian suppression partially compensates but through different mechanism.
+- **Forward pass speed:** 595ms at N=1024 slower than SmallWorld (~300ms). N=4096 even more expensive due to per-edge distance computation.
 
 ## Sync Commands (for when results are ready)
 
@@ -83,4 +74,4 @@ ssh mac-studio "tail -50 /Users/admin/ml/dhiraj/qwen2_omni/testing/logs/train_ex
 
 ---
 
-*Updated: 2026-04-03 -- experiment dispatched, awaiting results*
+*Updated: 2026-04-03 — experiment dispatched, awaiting results*

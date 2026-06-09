@@ -2,19 +2,18 @@
 
 Referenced from CLAUDE.md. Load on demand (launching, scripting, recording results, session-start cron setup).
 
-## Training Infrastructure (5 slots, 3 machines)
+## Training Infrastructure (3 slots, 2 machines)
 Full protocol (multi-user safety, lock files, orphan cleanup) in `.claude/skills/sgnnet-research/SKILL.md`.
 
 | Slot | Machine | Device | Working dir | Python |
 |---|---|---|---|---|
 | `mini_mps`    | Mac Mini (local)    | MPS  | `/Volumes/T9/IndraAstra/dhiraj/neuro_graph`    | `d_env/bin/python3` |
 | `mini_cpu`    | Mac Mini (local)    | CPU  | same                                           | same |
-| `studio_mps`  | Mac Studio (ssh `mac-studio`) | MPS | `/Users/admin/ml/dhiraj/qwen2_omni/testing` | same |
-| `studio_cpu`  | Mac Studio          | CPU  | same                                           | same |
 | `5060ti_cuda` | RTX 5060 Ti (ssh `5060ti`) | CUDA | `/home/indra/sgnnet_bench`              | `venv/bin/python3` |
 
-RAM threshold before launch: Mac Studio ≥50 GB, Mac Mini ≥20 GB. `vm_stat | grep -E 'free|inactive'` → (Pages free + Pages inactive) × 16384 / 1073741824.
+RAM threshold before launch: Mac Mini ≥20 GB. `vm_stat | grep -E 'free|inactive'` → (Pages free + Pages inactive) × 16384 / 1073741824.
 **5060ti:** CUDA only. Ryzen 5 7500F CPU is 5.5× slower than Mac Mini CPU (M4 AMX vs x86 AVX) — removed from rotation.
+**Studio:** removed from active slots.
 
 **STRICT:** All launches through `scripts/launch_slot.sh <slot> <script> [args]`. The wrapper enforces lock files, cleans stale sessions, prevents collisions between teammates. No bare `tmux new-session`, no `nohup`, no `&`.
 

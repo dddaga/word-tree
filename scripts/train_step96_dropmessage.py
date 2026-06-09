@@ -141,7 +141,7 @@ def get_loaders():
         n = len(tr_full.dataset)
         idx = torch.randperm(n, generator=torch.Generator().manual_seed(SEED))[:n // 2]
         subset = torch.utils.data.Subset(tr_full.dataset, idx.tolist())
-        tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=0)
+        tr = torch.utils.data.DataLoader(subset, batch_size=BATCH, shuffle=True, num_workers=10)
         _loaders = (tr, va)
     return _loaders
 

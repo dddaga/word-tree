@@ -8,8 +8,7 @@
 
 ## Wave-1 Summary
 
-All 6 wave-1 mechanisms failed. Static AntiHebb routing is not improvable via
-any additive or input-dependent excitatory modification at this scale.
+All 6 wave-1 mechanisms failed. Static AntiHebb routing not improvable via any additive or input-dependent excitatory modification at this scale.
 
 | Step | Mechanism | Best Config | top1_best | vs Ref | Verdict |
 |------|-----------|-------------|-----------|--------|---------|
@@ -24,9 +23,7 @@ any additive or input-dependent excitatory modification at this scale.
 
 ## Step 63: AGR — Complete Results
 
-**Hypothesis:** Soft-attention over expanded candidate set redistributes excitation
-multiplicatively (softmax weights sum to 1) rather than adding new signal.
-This prevents gate death because total excitation magnitude is bounded.
+**Hypothesis:** Soft-attention over expanded candidate set redistributes excitation multiplicatively (softmax weights sum to 1) rather than adding new signal. Prevents gate death because total excitation magnitude bounded.
 
 **Result:** Hypothesis WRONG. All configs still killed.
 
@@ -40,46 +37,38 @@ This prevents gate death because total excitation magnitude is bounded.
 | E | soft-attn phase-only candidates, AH=1.0 | 55.13% | 73/75 | −18pp | KILLED |
 
 **Key question answers:**
-- A vs Ref → input-dependent routing is WORSE than static (−42pp without AH)
+- A vs Ref → input-dependent routing WORSE than static (−42pp without AH)
 - B vs A → AH partially compensates (+24pp) but still −18pp vs static AH
 - C vs B → hard top-K worse than soft (−17pp) — sparsity hurts, not helps
 - D vs B → hop_decay marginal (−0.12pp) — attenuation doesn't help
 - E vs B → phase-only vs mixed — negligible (−0.28pp)
 
-**Root cause:** The problem is not which candidates are selected. The problem is that
-ANY modification to the routing loop that doesn't exactly match the AH static update
-rule destabilizes training. The AH static routing is not "improvable" by attention —
-it's a fragile equilibrium that soft-attention disrupts.
+**Root cause:** Problem not which candidates selected. ANY routing loop modification not exactly matching AH static update rule destabilizes training. AH static routing not "improvable" by attention — fragile equilibrium that soft-attention disrupts.
 
 ---
 
 ## Wave-1 Root Cause Analysis
 
-Every wave-1 failure shares the same pattern:
+Every wave-1 failure shares same pattern:
 1. Modified routing introduces additional or redistributed excitatory signal
 2. Threshold gate (ReLU - theta) regime shifts
 3. Safety valve loss collapses to near-zero (gate death: safety ≈ 0.002-0.005)
 4. Routing diversity collapses — most neurons fire similarly
 5. Accuracy stuck at ~10-55% depending on whether AH can partially compensate
 
-**The mechanism:** Static AntiHebb with fixed small-world topology is a stable
-fixed point. Any perturbation (more connections via attention, different candidate
-selection, beam routing, interneurons) destroys this stability. The architecture
-is not "locked in" to a suboptimal fixed point that attention can unlock — it IS
-at an optimal fixed point for the current routing regime.
+**Mechanism:** Static AntiHebb with fixed small-world topology = stable fixed point. Any perturbation (more connections via attention, different candidate selection, beam routing, interneurons) destroys stability. Architecture not "locked in" to suboptimal fixed point that attention can unlock — IS at optimal fixed point for current routing regime.
 
 **Implication for Wave-2 design:**
 - Do NOT try to improve routing dynamics (attention, gating, mixing)
-- N-scaling (step56) is the confirmed path to improvement: +11pp per 2x N
+- N-scaling (step56) confirmed path to improvement: +11pp per 2x N
 - Architecture improvements should come from input representation or N-scaling
-- The FFN-replacement hypothesis requires stability at the routing layer
+- FFN-replacement hypothesis requires stability at routing layer
 
 ---
 
 ## Step 61: Hub Interneurons — Complete Results (2026-04-05)
 
-**Hypothesis:** High fan-in mixing layer (N_mix=256, fan_in=512) can aggregate
-distributed signals better than per-neuron static routing.
+**Hypothesis:** High fan-in mixing layer (N_mix=256, fan_in=512) can aggregate distributed signals better than per-neuron static routing.
 
 **Result:**
 
@@ -90,15 +79,13 @@ distributed signals better than per-neuron static routing.
 | B | Hub mixing + AH=0.5 | 38.68% | 73/75 | −34.6pp | KILLED |
 | C | Hub mixing + AH=1.0 | 64.05% | 73/75 | −9.3pp | KILLED |
 
-**Note:** Config D was not completed (3-config script). Best with AH=1.0 still −9pp.
-High fan-in routing disrupts the stable AH fixed point — same gate-death pattern.
+**Note:** Config D not completed (3-config script). Best with AH=1.0 still −9pp. High fan-in routing disrupts stable AH fixed point — same gate-death pattern.
 
 ---
 
 ## Step 51: Spatial Phase Gating — Complete (2026-04-05)
 
-Gate death confirmed. top1_best ≈ 34.93% (agent-read from pane, no JSON file).
-All configs: routing modifications caused safety collapse. Pattern identical to steps 58-63.
+Gate death confirmed. top1_best ≈ 34.93% (agent-read from pane, no JSON file). All configs: routing modifications caused safety collapse. Pattern identical to steps 58-63.
 
 ---
 
@@ -109,15 +96,12 @@ Running but gate-dead. Z-subspace routing:
 - Config B (Z-subspace split=32 + AH): 14.80% (e150) — gate death
 - Config C (W_pos-subspace split=16 + AH): ~12% at e40 — gate death in progress
 
-W_pos-subspace routing cannot avoid gate death either. The geometry of activation
-space (S^{D-1}) is incompatible with split-subspace attention.
+W_pos-subspace routing cannot avoid gate death either. Geometry of activation space (S^{D-1}) incompatible with split-subspace attention.
 
 ---
 
 ## N-Scaling Continues (step56)
 
-N=10000 at e60=72.92% — healthy trajectory (no safety valve, N>5000).
-Power-law scaling confirmed: 512→69.58%, 1024→80.92%, 2048→81.10%, 4096→84.36%.
-If N=10000 follows the curve, expect ~86-87% final accuracy.
+N=10000 at e60=72.92% — healthy trajectory (no safety valve, N>5000). Power-law scaling confirmed: 512→69.58%, 1024→80.92%, 2048→81.10%, 4096→84.36%. If N=10000 follows curve, expect ~86-87% final accuracy.
 
-**N-scaling is the primary lever for accuracy improvement.**
+**N-scaling = primary lever for accuracy improvement.**

@@ -57,13 +57,14 @@ import torch.nn.functional as F
 
 from src.sgnnet.model_smallworld import SGNNET_SmallWorld
 from src.sgnnet.model_resonant   import SGNNET_Resonant
+from src.training.dataset        import make_loaders, make_subset_loader
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser()
 parser.add_argument("--device",  default="auto")
 parser.add_argument("--epochs",  type=int, default=20)
 parser.add_argument("--seed",    type=int, default=42)
-parser.add_argument("--data",    default="data/imagenette2-160")
+parser.add_argument("--data",    default="data/store.h5")
 parser.add_argument("--configs", default="Ref,A_d05,B_d07,C_d085,D_d07_noAH,E_d07_lam001")
 args = parser.parse_args()
 
@@ -78,7 +79,7 @@ BATCH  = 64
 SEED   = args.seed
 N      = 2048
 D      = 16
-N_IN   = 512   # VGG16 FC1 output
+N_IN   = 25088  # pre-extracted VGG16 pool features
 N_OUT  = 10
 K_HH   = 2
 K_ITER = 5
@@ -196,50 +197,14 @@ def build_model(alpha_ahebb: float, decay: float | None, reward_matrix: torch.Te
     return RewardModel()
 
 
-# ── Data + VGG extractor ──────────────────────────────────────────────────────
+# ── Data loading (pre-extracted h5 features) ─────────────────────────────────
 def load_data():
-    import torchvision.transforms as T
-    from torchvision.datasets import ImageFolder
-
-    # Support both imagenette2-160 and imagenette2-320
-    data_path = ROOT / args.data
-    if not data_path.exists():
-        alt = ROOT / "data" / "imagenette2-320"
-        if alt.exists():
-            data_path = alt
-        else:
-            print(f"ERROR: {data_path} not found"); sys.exit(1)
-
-    tfm_tr = T.Compose([
-        T.RandomResizedCrop(128), T.RandomHorizontalFlip(),
-        T.ToTensor(), T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    ])
-    tfm_va = T.Compose([
-        T.Resize(160), T.CenterCrop(128),
-        T.ToTensor(), T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    ])
-    tr_full = ImageFolder(data_path / "train", transform=tfm_tr)
-    va_ds   = ImageFolder(data_path / "val",   transform=tfm_va)
-
-    n_full  = len(tr_full)
-    gen     = torch.Generator(); gen.manual_seed(SEED)
-    sub_idx = torch.randperm(n_full, generator=gen)[: n_full // 2].tolist()
-    tr_sub  = torch.utils.data.Subset(tr_full, sub_idx)
-
-    tr = torch.utils.data.DataLoader(tr_sub, batch_size=BATCH, shuffle=True,  num_workers=2)
-    va = torch.utils.data.DataLoader(va_ds,  batch_size=BATCH, shuffle=False, num_workers=2)
+    h5_path = ROOT / args.data
+    if not h5_path.exists():
+        print(f"ERROR: {h5_path} not found"); sys.exit(1)
+    _, va = make_loaders(str(h5_path), batch_size=BATCH, seed=SEED, pin_memory=False)
+    tr    = make_subset_loader(str(h5_path), fraction=0.5, batch_size=BATCH, seed=SEED)
     return tr, va
-
-
-def get_vgg_extractor():
-    import torchvision.models as models
-    vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
-    vgg.eval()
-    extractor = nn.Sequential(vgg.features, vgg.avgpool, nn.Flatten(), vgg.classifier[:1])
-    for p in extractor.parameters(): p.requires_grad_(False)
-    # MPS adaptive_avg_pool2d fails for non-divisible inputs — run extractor on CPU
-    _dev = torch.device("cpu") if DEVICE.type == "mps" else DEVICE
-    return extractor.to(_dev)
 
 
 # ── Jaccard helpers (copied from step967 for separation metric) ───────────────
@@ -258,13 +223,11 @@ def pairwise_jaccard(masks: list) -> float:
 
 
 @torch.no_grad()
-def compute_separation(model, va, extractor) -> float:
-    ext_dev = next(extractor.parameters()).device
+def compute_separation(model, va) -> float:
     model.eval()
     masks_by_class = {c: [] for c in range(N_OUT)}
-    for x, y in va:
-        y = y.to(DEVICE)
-        x = extractor(x.to(ext_dev)).to(DEVICE)
+    for x, _sl, y in va:
+        x, y = x.to(DEVICE), y.to(DEVICE)
         _, Z = model.forward_with_Z(x)
         theta = model.m.theta.abs().mean().item()
         active = (Z.norm(dim=-1) > theta)
@@ -292,30 +255,25 @@ def compute_separation(model, va, extractor) -> float:
 
 
 @torch.no_grad()
-def evaluate(model, va, extractor):
-    ext_dev = next(extractor.parameters()).device
+def evaluate(model, va):
     model.eval()
     correct = total = 0
-    for x, y in va:
-        y = y.to(DEVICE)
-        x = extractor(x.to(ext_dev)).to(DEVICE)
+    for x, _sl, y in va:
+        x, y = x.to(DEVICE), y.to(DEVICE)
         correct += (model(x).argmax(1) == y).sum().item()
         total   += y.size(0)
     return correct / total
 
 
-def train_model(model, tr, va, extractor, lam0: float):
-    ext_dev = next(extractor.parameters()).device
+def train_model(model, tr, va, lam0: float):
     opt   = torch.optim.AdamW(model.parameters(), lr=3e-3, weight_decay=1e-3)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS, eta_min=1e-5)
     hist  = []
     for ep in range(EPOCHS):
         model.train()
         lam = lam0 * (1.0 - ep / EPOCHS)  # anneal to 0
-        for x, y in tr:
-            y = y.to(DEVICE)
-            with torch.no_grad():
-                x = extractor(x.to(ext_dev)).to(DEVICE)
+        for x, _sl, y in tr:
+            x, y = x.to(DEVICE), y.to(DEVICE)
             _, Z  = model.forward_with_Z(x)
             logits = model.m.base._readout(Z)
             loss_ce  = F.cross_entropy(logits, y)
@@ -325,7 +283,7 @@ def train_model(model, tr, va, extractor, lam0: float):
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
         sched.step()
-        val = evaluate(model, va, extractor)
+        val = evaluate(model, va)
         hist.append(val)
         print(f"  e{ep+1:3d}  top1={val:.4f}  lam={lam:.4f}  lr={opt.param_groups[0]['lr']:.2e}",
               flush=True)
@@ -334,7 +292,6 @@ def train_model(model, tr, va, extractor, lam0: float):
 
 def main():
     tr, va = load_data()
-    extractor = get_vgg_extractor()
 
     print(f"\n{'='*70}")
     print(f"step966 — backward reward scoring T0 (20ep, 50% data)")
@@ -397,14 +354,14 @@ def main():
         print(f"  params={n_p:,}")
 
         t0   = time.time()
-        hist = train_model(model, tr, va, extractor, lam0)
+        hist = train_model(model, tr, va, lam0)
         elapsed = time.time() - t0
 
         best    = max(hist)
         best_ep = int(np.argmax(hist)) + 1
 
         # Compute separation (quick pass)
-        sep = compute_separation(model, va, extractor)
+        sep = compute_separation(model, va)
 
         if key == "Ref":
             ref_acc = best
