@@ -18,8 +18,8 @@ Updated: 2026-06-10 ~04:00
 | # | Task | Status | Notes |
 |---|---|---|---|
 | 1 | step982 T2 A_aug on 5060ti | RUNNING | session sgn-indra-5060ti_cuda-train_step982_cifar10_aug_t2. Ref=80.58% banked in JSON (resume logic). Paper claim if A_aug ≥81.08%. Check log via ssh. |
-| 2 | cnnc_step001 design sub-agent | RUNNING | bg agent designing multi-branch CNN T0, will submit via scheduler. Notification on completion. |
-| 3 | ffn T1 (75ep) in scheduler queue | QUEUED | job 20260610_034743, slots mini_mps/mini_cpu. Scheduler daemon tmux sgn-scheduler. Verify pickup. |
+| 2 | cnnc_step001 T0 | QUEUED | designed by sub-agent, smoke-passed. 4 configs ~0.5M params (Ref/A_global/B_multibranch/C_crelu). Job 20260610_035409, slot mini_mps (raw imagenette local-only). |
+| 3 | ffn T1 (75ep) in scheduler queue | QUEUED | job 20260610_034743, slots mini_mps/mini_cpu. Scheduler daemon RESTARTED 03:53 after utf-8 decode fix (errors="replace" in sh()). Verify pickup. |
 | 4 | step989 GPT-2 extraction | BLOCKED | teammate PID 1098714 holds 3.8 GB on 5060ti; need ~5+ GB free. Then extraction → train_step989_ffn_distil_t0.py --unsafe-cuda-launch. |
 | 5 | Graphiti episodes backlog | BLOCKED | MCP unavailable all session. Episodes: step985/987/988 kill, step992 kill, step986, step991 kill, step990/993 kill, step982 result, ffn_step001 T0 result. |
 | 6 | ffn_baseline/QUEUE.md T0 results row | TODO | b1_A=92.79, b1_C=92.84, b5_A=92.94, b5_C=92.92, B variants 92.46; sparsity≈0.50/layer. |

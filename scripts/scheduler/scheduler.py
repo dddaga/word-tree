@@ -27,7 +27,7 @@ for d in ("pending", "running", "done", "failed"):
 def sh(cmd: str, timeout: int = 30) -> tuple[int, str]:
     try:
         p = subprocess.run(cmd, shell=True, capture_output=True, text=True,
-                           timeout=timeout)
+                           errors="replace", timeout=timeout)
         return p.returncode, (p.stdout + p.stderr).strip()
     except subprocess.TimeoutExpired:
         return 124, "timeout"
