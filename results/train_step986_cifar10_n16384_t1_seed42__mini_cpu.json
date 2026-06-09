@@ -1,0 +1,18 @@
+{
+  "step": "step986",
+  "tier": "T1",
+  "config": "N=16384 D=16 K_in=15 K_hh=2 K_iter=5",
+  "epochs": 75,
+  "n_params": 278688,
+  "train_samples": 25000,
+  "best": 0.8285,
+  "best_ep": 69,
+  "elapsed_s": 10671.8,
+  "t0_ref": 0.8023,
+  "scaling_context": {
+    "N2048_T2": 80.57,
+    "N4096_T2": 82.53,
+    "N8192_T2": 83.55,
+    "linear_ceiling": 86.24
+  }
+}

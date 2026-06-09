@@ -124,7 +124,7 @@ SESSION="sgn-${USER_PREFIX}-${SLOT}-${STEP_NAME}"
 
 # ----- helpers ---------------------------------------------------------------
 run() {
-  if [[ "$HOST" == "local" ]]; then TERM=xterm-256color bash -c "$1"
+  if [[ "$HOST" == "local" ]]; then bash -c "$1"
   else ssh -o ConnectTimeout=5 "$HOST" "$1"
   fi
 }
@@ -185,7 +185,11 @@ CMD="cd $REMOTE_DIR && SGN_SLOT=$SLOT $PY -u $SCRIPT --device $DEVICE $EXTRA 2>&
 LAUNCH_SCRIPT="/tmp/sgnnet_launch_${SESSION}.sh"
 if [[ "$HOST" == "local" ]]; then
   echo "$CMD" > "$LAUNCH_SCRIPT" && chmod +x "$LAUNCH_SCRIPT"
-  TERM=xterm-256color $TMUX new-session -d -s "$SESSION" bash "$LAUNCH_SCRIPT"
+  # setsid: detach from current process group so tmux gets a clean session.
+  # Needed when launch_slot.sh itself runs in a non-TTY shell (e.g., Claude Code Bash tool)
+  # where TERM/session inheritance breaks tmux new-session -d.
+  setsid $TMUX new-session -d -s "$SESSION" bash "$LAUNCH_SCRIPT" 2>/dev/null \
+    || $TMUX new-session -d -s "$SESSION" bash "$LAUNCH_SCRIPT"
 else
   ssh -o ConnectTimeout=5 "$HOST" "cat > $LAUNCH_SCRIPT && chmod +x $LAUNCH_SCRIPT" <<< "$CMD"
   ssh -o ConnectTimeout=5 "$HOST" "$TMUX new-session -d -s $SESSION bash $LAUNCH_SCRIPT"
