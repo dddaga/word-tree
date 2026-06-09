@@ -3,7 +3,26 @@
 | Step | What | Tier | Slot | Status |
 |---|---|---|---|---|
 | ffn_step001 | Per-channel FFN, 2 budgets × 3 activation variants (6 configs), Imagenette | T0 | mini_mps | DONE 2026-06-10 |
-| ffn_step001-T1 | Same 6 configs, 75ep | T1 | scheduler (mini_mps/mini_cpu) | QUEUED (job 20260610_034743) |
+| ffn_step001-T1 | Same 6 configs, 75ep | T1 | mini_cpu (scheduler) | DONE 2026-06-10 |
+
+## LINE VERDICT (2026-06-10, T1 evidence)
+Per-channel FFN plateaus at **93.0%** regardless of budget (1% = 5%, CONFIRMED
+both tiers). SGNNET step605: 95.95% at 32× fewer params (35K vs 1.1M).
+→ "small+sparse FFN" does NOT explain SGNNET win; architecture matters ≈+2.9pp.
+RReLU-at-train hypothesis REJECTED (B worst at T0 and T1, −0.5pp vs plain ReLU).
+norm→ReLU ≥50% sparsity CONFIRMED (≈0.50/layer all configs).
+Line CONCLUDED. Optional T2 only if paper wants this baseline row.
+
+### ffn_step001 T1 (75ep, 50% data, mini_cpu)
+`results/ffn_baseline/ffn_step001_perchannel_t1_seed42__mini_cpu.json`
+| Config | Best |
+|---|---|
+| b1_A | 0.9294 |
+| b1_B | 0.9254 |
+| b1_C | 0.9304 |
+| b5_A | 0.9304 |
+| b5_B | 0.9228 |
+| b5_C | 0.9297 |
 
 ## Results
 

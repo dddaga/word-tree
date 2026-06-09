@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "desc": "single-branch plain downsampling stack",
+    "n_params": 483050,
+    "macs_M": 224.0,
+    "best": 0.7557,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "epoch_time_s": 5.4,
+    "acc_per_Mmac": 0.0034
+  },
+  "A_global": {
+    "desc": "Ref + 16x-down global-context branch (channel-wise FC)",
+    "n_params": 509850,
+    "macs_M": 210.4,
+    "best": 0.7269,
+    "best_ep": 18,
+    "delta_vs_ref": -0.0288,
+    "epoch_time_s": 5.3,
+    "acc_per_Mmac": 0.0035
+  },
+  "B_multibranch": {
+    "desc": "3 branches: full-res / 4x-down / 16x-down global",
+    "n_params": 476122,
+    "macs_M": 110.9,
+    "best": 0.7363,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0194,
+    "epoch_time_s": 4.4,
+    "acc_per_Mmac": 0.0066
+  },
+  "C_crelu": {
+    "desc": "B + CReLU in first 2 convs of every branch",
+    "n_params": 463930,
+    "macs_M": 94.1,
+    "best": 0.7353,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0204,
+    "epoch_time_s": 4.1,
+    "acc_per_Mmac": 0.0078
+  }
+}
