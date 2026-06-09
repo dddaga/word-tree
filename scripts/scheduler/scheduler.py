@@ -57,9 +57,11 @@ def slot_resources_ok(slot: str) -> bool:
 def pending_jobs() -> list[dict]:
     jobs = []
     for f in sorted((SCHED / "pending").glob("*.json")):
+        if f.name.startswith("."):  # AppleDouble ._* files on exFAT
+            continue
         try:
             j = json.loads(f.read_text()); j["_file"] = f; jobs.append(j)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):
             f.rename(SCHED / "failed" / f.name)
     return jobs
 
@@ -105,6 +107,8 @@ def launch(job: dict, slot: str) -> bool:
 def reap_running():
     """Move finished jobs (sgn session gone) running/ → done/."""
     for f in (SCHED / "running").glob("*.json"):
+        if f.name.startswith("."):
+            continue
         job = json.loads(f.read_text())
         if not slot_busy_sgn(job["slot"]):
             job["finished_at"] = time.strftime("%F %T")
