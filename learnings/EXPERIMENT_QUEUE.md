@@ -70,12 +70,13 @@ Eval: `scripts/eval_efficiency_config.py`
 
 | Machine:Device | Status | Note |
 |---------|--------|------|
-| mini:mps | RUNNING | step993 T1 — additive dynamic connectivity 75ep |
+| mini:mps | FREE | step993 T1 DONE (KILLED) |
 | mini:cpu | FREE | — |
-| 5060ti:cuda | RUNNING | step982 T2 — CIFAR-10 aug paper claim (expandable_segments fix) |
+| 5060ti:cuda | RUNNING | step982 T2 — CIFAR-10 aug paper claim (lazy h5 fix) |
 
 **Completed this session (session 38):**
-- **step990 T0 v2** (mini_mps): DONE. **Additive dynamic connectivity ALL ADVANCE TO T1.** Ref=61.27% (N=512). A_additive_10=61.94% (+0.67pp), **B_additive_05=62.78% (+1.51pp, best)**, C_learned_alpha=62.42% (+1.15pp). All 3 configs advance. First positive vision-debt result. T1 scripted: `scripts/train_step990_additive_t1.py`. **Vision debt: additive dynamic connectivity (brief §3.5) ADVANCES.**
+- **step993 T1** (mini_mps): DONE. **Additive dynamic KILLED at T1 — T0 signal noise.** Ref=73.50% (75ep), A=−1.47pp, B=−1.73pp, C=−1.47pp. Sign reversal from T0 (+0.67→+1.51pp). T0 at N=512 20ep had insufficient signal; 75ep reveals the additive term hurts. **Vision debt: additive dynamic connectivity (brief §3.5) KILLED-CONFIRMED.**
+- **step990 T0 v2** (mini_mps): DONE. ALL ADVANCE T0 (noise). Ref=61.27% (N=512). A=+0.67pp, B=+1.51pp, C=+1.15pp. T1 step993 KILLED — direction CLOSED.
 - **step991 T0 v2** (mini_cpu): DONE. **Hebbian prune-grow KILLED-CONFIRMED.** Ref=85.40%. A_hebbian_random=47.21% (−38.19pp), B_hebbian_wpos=71.11% (−14.29pp), C_hebbian_fast=35.59% (−49.81pp). All massively below Ref. Hebbian prune-grow epoch-boundary rewiring catastrophically disrupts learned ΔW-proj routing. **Vision debt: Hebbian prune-grow (brief §9) RETIRED.**
 - **step992 T0** (5060ti_cuda): DONE. **K-means init KILLED-CONFIRMED.** Ref=85.58%. A_kmeans=83.75% (−1.83pp), B_kmeans_classaware=82.47% (−3.11pp). Random init superior to both K-means variants. **Vision debt: K-means init (brief §6.1) RETIRED.**
 - **step990 T0 v1** (mini_mps): INVALID. Ref=11.6% (bare SmallWorld, AH chain broken in v1 script). v2 relaunched (see RUNNING above).

@@ -8,7 +8,7 @@ or explicit user-approved WONTFIX. Full audit: [VISION_REVIEW_2026-06-10.md](VIS
 | Sparsity O(N·K) | KEPT/EXCEEDED | 34,976 params, 0.029% VGG FC | — |
 | Recursive K-iteration loop | KEPT | K_iter=5 load-bearing; K=1 via KD (step605) | — |
 | Dynamic connectivity (multiplicative/gated forms) | KILLED-CONFIRMED | gate-death (58–66), step852 8/8, PhaseGate 985/987/988 | no re-attack without new variable |
-| Dynamic connectivity (additive r*-threshold, brief §3.5 form) | ADVANCES→T1 | step990 T0 v2: Ref=61.27%, A=+0.67pp, B=+1.51pp, C=+1.15pp. All advance. T1 pending (75ep, 50%, N=2048). | **step990 T1** |
+| Dynamic connectivity (additive r*-threshold, brief §3.5 form) | KILLED-CONFIRMED | step990 T0 v2: Ref=61.27%, A=+0.67pp, B=+1.51pp, C=+1.15pp (all advance). step993 T1 (75ep): Ref=73.50%, A=−1.47pp, B=−1.73pp, C=−1.47pp. T0 signal noise at N=512/20ep. | — |
 | Self-projection readout | KEPT | step118 alternatives killed | — |
 | Per-step normalization | KEPT | step958 alternatives killed | — |
 | Dead-zone Coulomb safety valve | KILLED-CONFIRMED | step154: removal +9.75pp | — |
