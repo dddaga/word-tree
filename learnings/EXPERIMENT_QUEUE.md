@@ -64,15 +64,24 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (updated 2026-05-13 session 37)
+## Currently Running (updated 2026-06-10 session 38)
 
 **Slot policy:** 5060ti first, then Mini. Studio excluded.
 
 | Machine:Device | Status | Note |
 |---------|--------|------|
-| mini:mps | FREE | — |
+| mini:mps | RUNNING | step993 T1 — additive dynamic connectivity 75ep |
 | mini:cpu | FREE | — |
-| 5060ti:cuda | FREE | — |
+| 5060ti:cuda | RUNNING | step982 T2 — CIFAR-10 aug paper claim (expandable_segments fix) |
+
+**Completed this session (session 38):**
+- **step990 T0 v2** (mini_mps): DONE. **Additive dynamic connectivity ALL ADVANCE TO T1.** Ref=61.27% (N=512). A_additive_10=61.94% (+0.67pp), **B_additive_05=62.78% (+1.51pp, best)**, C_learned_alpha=62.42% (+1.15pp). All 3 configs advance. First positive vision-debt result. T1 scripted: `scripts/train_step990_additive_t1.py`. **Vision debt: additive dynamic connectivity (brief §3.5) ADVANCES.**
+- **step991 T0 v2** (mini_cpu): DONE. **Hebbian prune-grow KILLED-CONFIRMED.** Ref=85.40%. A_hebbian_random=47.21% (−38.19pp), B_hebbian_wpos=71.11% (−14.29pp), C_hebbian_fast=35.59% (−49.81pp). All massively below Ref. Hebbian prune-grow epoch-boundary rewiring catastrophically disrupts learned ΔW-proj routing. **Vision debt: Hebbian prune-grow (brief §9) RETIRED.**
+- **step992 T0** (5060ti_cuda): DONE. **K-means init KILLED-CONFIRMED.** Ref=85.58%. A_kmeans=83.75% (−1.83pp), B_kmeans_classaware=82.47% (−3.11pp). Random init superior to both K-means variants. **Vision debt: K-means init (brief §6.1) RETIRED.**
+- **step990 T0 v1** (mini_mps): INVALID. Ref=11.6% (bare SmallWorld, AH chain broken in v1 script). v2 relaunched (see RUNNING above).
+- **step991 T0 v1** (mini_cpu): INVALID. Ref=14% (bare SmallWorld, AH chain broken in v1 script). v2 superseded above.
+- **step986 T1** (5060ti_cuda or mini): DONE. N=16384 CIFAR-10 T1 — 82.85% @ep69 (75ep, 50%). Scaling curve continues. **Consider T2 (150ep) for paper scaling section.** N-scaling: 80.57→82.53→83.55% (N=2048→4096→8192 T2) + 82.85% T1 at N=16384 (T2 pending).
+- **step982 T2** (5060ti_cuda): PARTIAL. Ref=80.79% @ep140 (471s). A_aug crashed silently (OOM, loading 2.3GB `store_cifar10_aug.h5`). **Relaunch needed after 5060ti free + extraction done.**
 
 **Completed this session (session 36):**
 - **step985 T0** (5060ti_cuda): DONE (v1 KILLED — BUG). **v1 PhaseGate was symmetric: gate=[s_i,−s_i]+softmax → always 50/50 regardless of s. Zero routing signal.** Ref=91.57%. A/B/C all 11-12% (random). Root cause: softmax of antisymmetric inputs always produces uniform weights. **v2 relaunched (2026-05-13) with correct asymmetric [relu(s), alpha*relu(-s)] + sum-divide normalization.** See v2 RUNNING entry below.
@@ -138,11 +147,12 @@ Eval: `scripts/eval_efficiency_config.py`
 - When step982 T2 finishes: paper claim if A_aug >= Ref+0.5pp at T2.
 - When step986 T1 finishes: if N=16384 >= 83.55% → extend CIFAR-10 scaling curve; else ceiling confirmed.
 
-**QUEUED — Vision-debt T0 batch (activate after Paper 1 claims locked; see learnings/VISION_DEBT.md + VISION_REVIEW_2026-06-10.md):**
-- **step989 T0**: Transformer FFN distillation — GPT-2-small layer-6 FFN, x_ffn→y_ffn MSE, brief §5 verbatim. N_out=768 self-projection, MSE readout path from TS work. Original problem statement, never attempted. Outcome decides Paper 2 spine. Script: pending.
-- **step990 T0**: Additive r*-threshold dynamic connectivity at modern base (N=2048/D=16/ΔW-proj). One STALE retest of brief §3.5 *additive* form — gate-death theorem covers multiplicative only. Kill → permanent CONFIRMED close of core idea 2. Script: pending.
-- **step991 T0**: Hebbian prune-grow on conn_hh via |c_ij| (ΔW-proj alignment) stats, epoch-boundary outer loop (AH precedent: outer-loop mutation safe where in-forward gating dies). Brief §9 exact mechanism. Script: pending.
-- **step992 T0**: K-means init of W_pos (hidden from X sample, output from class means). Cheapest debt item; repairs try-and-test violation. Script: pending.
+**Vision-debt T0 batch (see learnings/VISION_DEBT.md + VISION_REVIEW_2026-06-10.md):**
+- **step989 T0**: Transformer FFN distillation — GPT-2-small layer-6 FFN, x_ffn→y_ffn MSE. Extraction OOM'd on 5060ti (GPU full, teammates). Launch `train_step989_ffn_distil_t0.py` when GPU frees. Advance: val_mse ≤ 2× Ref_mlp AND cos_sim ≥ 0.5. Decides Paper 2 spine.
+- **step990 T0**: **DONE-ADVANCE** — additive dynamic connectivity. Ref=61.27%, A=+0.67pp, B=+1.51pp, C=+1.15pp. ALL ADVANCE. **step993 T1 RUNNING (mini_mps).**
+- **step991 T0**: **KILLED-CONFIRMED** — Hebbian prune-grow. Ref=85.40%, A=−38.19pp, B=−14.29pp, C=−49.81pp. Epoch-boundary rewiring destroys routing. Brief §9 retired.
+- **step992 T0**: **KILLED-CONFIRMED** — K-means init. Ref=85.58%, A=−1.83pp, B=−3.11pp. Random init wins. Brief §6.1 retired.
+- **step993 T1**: **RUNNING (mini_mps)** — additive dynamic connectivity, 75ep, 50% data, N=512. Advance: ≥ Ref + 0.5pp → defaults update.
 - Rule: each gets ONE T0. Kill → CONFIRMED close in architecture_dead_ends.md. No re-attack without named new variable.
 
 **step929 status (CIFAR-10 hflip-aug T1):** aug file extraction DONE (2.14GB, 100K train). Crashed OOM. Superseded by step982 which uses sequential loading (fixed). step929 CLOSED.
