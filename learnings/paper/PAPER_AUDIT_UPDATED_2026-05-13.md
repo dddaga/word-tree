@@ -58,14 +58,14 @@ Original audit: PAPER_AUDIT_2026-04-20.md (12 gaps, 7 HIGH priority)
 
 | Item | Status |
 |------|--------|
-| step982 T2 A_aug result | PENDING — converter running 2026-06-11; launch when done |
+| step982 T2 A_aug result | PENDING — converter relaunched 2026-06-11; launch when done |
 | Multi-seed step887 (Imagenette canonical) | DONE — 96.38% ±0.18pp (3 seeds) |
 | CIFAR-10 paper claim | DONE — 80.57% ±0.12pp (3 seeds, step980) |
-| Abstract/intro update | TODO — sec1 needs step989 KILLED note + sec5/6/7/8 citations |
+| Abstract/intro update | **DONE** — 2026-06-11: step989 KILLED added; audio nuance (routing hurts); TS negative; §8-10 cited in abstract; sec1 split into sec1 (89L) + sec1b_architecture (119L) |
 
 ## Verification
 
 - All updated numbers sourced from claims.md or findings_log_part3.md (CONFIRMED results only)
 - No numbers invented; speculative framings tagged (HYPOTHESIS)
 - All edited files are at or under 200 lines
-- sec1 (abstract/intro) NOT touched — already updated, higher risk of double-apply
+- sec1 split 2026-06-11: sec1_abstract_intro_related (89L) + sec1b_architecture (119L)

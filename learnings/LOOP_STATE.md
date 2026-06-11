@@ -2,12 +2,11 @@
 *Maintained by main agent. Reload THIS file (not transcript) on every wakeup.
 Keep ≤120 lines. Prune DONE rows to bottom section weekly.*
 
-Updated: 2026-06-11 ~18:00
+Updated: 2026-06-11 ~19:30
 
 ## Active loop
 `/goal to do all the action items to have a rigourous 1st paper are done` — Stop hook active.
-Paper action items being worked: manuscript sections (audio/scaling/TS/CIFAR100/multimodal),
-step982 T2 (pending converter), ts_step030 T0 (DONE-NEGATIVE), step989 (DONE-KILLED).
+REMAINING: step982 T2 A_aug result (converter relaunched on 5060ti; GPU still busy with manik).
 
 ## Context-management protocol (Dhiraj directive 2026-06-10)
 1. All findings/state → .md files immediately; context holds pointers only.
@@ -19,15 +18,16 @@ step982 T2 (pending converter), ts_step030 T0 (DONE-NEGATIVE), step989 (DONE-KIL
 ## TODO
 | # | Task | Status | Notes |
 |---|---|---|---|
-| 1 | step982 T2 A_aug on 5060ti | PENDING-LAUNCH | converter (h5→npy) running on 5060ti. Manik GPU at 99%/4GB. Launch step982 when converter done + GPU free. Ref resume JSON exists. |
-| 2 | step989 T0 | DONE-KILLED | cos_sim=0.187 (d16), 0.213 (d32). Both below 0.5 threshold. Founding vision retired. VISION_DEBT complete. |
-| 3 | ts_step030 T0 | DONE-NEGATIVE | All models dir_acc≈50%, sharpe<−100. Task near-random. Paper = honest negative. |
-| 4 | §8 multimodal section | DONE | MANUSCRIPT_DRAFT_sec5_multimodal.md written. CIFAR-10/100, audio ESC-50, text. |
-| 5 | §9 scaling law section | DONE | MANUSCRIPT_DRAFT_sec6_scaling.md written. Imagenette + CIFAR-10 N-scaling. |
-| 6 | §10 time series section | DONE | MANUSCRIPT_DRAFT_sec7_timeseries.md written. Negative result. |
-| 7 | Graphiti episodes backlog | TODO | Record: step989 KILLED, ts_step030 NEGATIVE, step982 pending. |
-| 8 | Commit new files | TODO | sec5_multimodal, sec6_scaling, sec7_timeseries, ts_common, ts_model_sgnnet, ts_step030 (rewrite), QUEUE edits. |
-| 9 | Paper audit gaps remaining | TODO | GAP10 (GLNN cross-dataset), GAP11 (theory). Also: step982 T2 result when done. |
+| 1 | step982 T2 A_aug on 5060ti | PENDING-LAUNCH | Converter relaunched (sgn-indra-convert-cifar10-aug). GPU 86%/4GB (manik). Launch step982 when npy files exist + GPU free. Ref resume JSON exists. |
+| 2 | step989 T0 | DONE-KILLED | cos_sim=0.187 (d16), 0.213 (d32). Both below 0.5 threshold. Founding vision retired. |
+| 3 | ts_step030 T0 | DONE-NEGATIVE | All models dir_acc≈50%, sharpe<−100. Task near-random. |
+| 4 | §8 multimodal section | DONE | MANUSCRIPT_DRAFT_sec5_multimodal.md (101L). |
+| 5 | §9 scaling law section | DONE | MANUSCRIPT_DRAFT_sec6_scaling.md (84L). |
+| 6 | §10 time series section | DONE | MANUSCRIPT_DRAFT_sec7_timeseries.md. |
+| 7 | §7 GLNN + §3 theory sections | DONE | sec_glnn (22L), sec_theory (68L). |
+| 8 | Abstract/intro update | DONE | sec1 updated (step989 KILLED, audio nuance, TS neg, §8-10 cited). Split: sec1 (89L) + sec1b_architecture (119L). |
+| 9 | Graphiti episodes backlog | DONE | step989/ts_step030/paper-audit queued 2026-06-11. |
+| 10 | Commit all new files | TODO | sec1 update, sec1b_architecture, sec_glnn, sec_theory, sec5-7, ts pipeline, model_dw_proj, convert script, QUEUE+AUDIT edits. |
 
 ## Key facts (so transcript not needed)
 - ffn_step001 T0: per-channel FFN @0.93% FC budget = 92.8% Imagenette T0. Budget
