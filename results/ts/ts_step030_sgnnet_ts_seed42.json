@@ -1,0 +1,35 @@
+{
+  "step": "ts_step030",
+  "epochs": 20,
+  "loss": "directional+log_wealth",
+  "results": {
+    "Linear": {
+      "label": "Linear",
+      "n_params": 3010616,
+      "best_sharpe": -152.0821,
+      "best_dir_acc": 0.5022,
+      "elapsed_s": 1.6
+    },
+    "MLP_256": {
+      "label": "MLP_256",
+      "n_params": 13777208,
+      "best_sharpe": -97.6144,
+      "best_dir_acc": 0.4983,
+      "elapsed_s": 2.8
+    },
+    "SGNNET_K3": {
+      "label": "SGNNET_K3",
+      "n_params": 51050,
+      "best_sharpe": -164.1304,
+      "best_dir_acc": 0.5009,
+      "elapsed_s": 38.7
+    },
+    "SGNNET_K0": {
+      "label": "SGNNET_K0",
+      "n_params": 51050,
+      "best_sharpe": -190.879,
+      "best_dir_acc": 0.4981,
+      "elapsed_s": 3.5
+    }
+  }
+}

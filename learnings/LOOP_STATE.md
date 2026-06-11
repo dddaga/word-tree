@@ -2,13 +2,12 @@
 *Maintained by main agent. Reload THIS file (not transcript) on every wakeup.
 Keep ≤120 lines. Prune DONE rows to bottom section weekly.*
 
-Updated: 2026-06-10 ~04:00
+Updated: 2026-06-11 ~18:00
 
 ## Active loop
-`/loop till all 3 research branches have conclueded` — dynamic mode, ScheduleWakeup ~1500s.
-Branches: (1) main SGNNET (NEXT_STEPS.md: step982 T2, step989), (2) ffn_baseline
-(T1 head-to-head), (3) cnn_compress (cnnc_step001 T0 + follow-up). Conclude =
-tier results recorded + verdict in line QUEUE.md.
+`/goal to do all the action items to have a rigourous 1st paper are done` — Stop hook active.
+Paper action items being worked: manuscript sections (audio/scaling/TS/CIFAR100/multimodal),
+step982 T2 (pending converter), ts_step030 T0 (DONE-NEGATIVE), step989 (DONE-KILLED).
 
 ## Context-management protocol (Dhiraj directive 2026-06-10)
 1. All findings/state → .md files immediately; context holds pointers only.
@@ -20,16 +19,15 @@ tier results recorded + verdict in line QUEUE.md.
 ## TODO
 | # | Task | Status | Notes |
 |---|---|---|---|
-| 1 | step982 T2 A_aug on 5060ti | RUNNING | PID 2370754, 100% CPU 31min, no e1 yet — lazy h5 load of 100K×25088 A_aug store (slow by design, OOM workaround). Ref=80.58% banked. Claim if A_aug ≥81.08%. If no e1 by ~05:00, investigate epoch speed. |
-| 2 | cnnc_step001 T0 | DONE | Ref 75.57%; B_multibranch −1.94pp @ 0.5× MACs; C_crelu −2.04pp @ 0.42× MACs; A_global rejected. Results in cnn_compress/QUEUE.md. |
-| 2b | cnnc_step002 iso-MAC T0 | DESIGNING | sub-agent writing scaled B/C @224M MACs, will submit to scheduler (mini_mps). |
-| 3 | ffn_step001 T1 | DONE — LINE CONCLUDED | 93.0% plateau both budgets; SGNNET +2.9pp at 32× fewer params; RReLU rejected. Verdict in ffn_baseline/QUEUE.md. |
-| 4 | step989 GPT-2 extraction | BLOCKED | teammate PID 1098714 holds 3.8 GB on 5060ti; need ~5+ GB free. Then extraction → train_step989_ffn_distil_t0.py --unsafe-cuda-launch. |
-| 5 | Graphiti episodes backlog | BLOCKED→session restart | Root cause FOUND (Dhiraj tip): podman machine down. Started machine + graphiti-neo4j container 04:0x. MCP connects at session start only → episodes flush NEXT session. Backlog: step985/987/988 kill, step992 kill, step986, step991 kill, step990/993 kill, step982 result, ffn_step001 T0 result. |
-| 6 | ffn_baseline/QUEUE.md T0 results row | TODO | b1_A=92.79, b1_C=92.84, b5_A=92.94, b5_C=92.92, B variants 92.46; sparsity≈0.50/layer. |
-| 7 | Commit all new files | TODO | research reports, scheduler, ffn line, cnn_compress line, step982 fixes, this file. |
-| 8 | NEXT_STEPS §6 decision tree | WAIT | after step982 + step989 resolve. |
-| 9 | step960 quaternion T0 + expert-choice routing T0 | PROPOSED | from paper2 research report — Mac slots via scheduler. Not yet user-approved as queue item; loop scope = NEXT_STEPS.md. |
+| 1 | step982 T2 A_aug on 5060ti | PENDING-LAUNCH | converter (h5→npy) running on 5060ti. Manik GPU at 99%/4GB. Launch step982 when converter done + GPU free. Ref resume JSON exists. |
+| 2 | step989 T0 | DONE-KILLED | cos_sim=0.187 (d16), 0.213 (d32). Both below 0.5 threshold. Founding vision retired. VISION_DEBT complete. |
+| 3 | ts_step030 T0 | DONE-NEGATIVE | All models dir_acc≈50%, sharpe<−100. Task near-random. Paper = honest negative. |
+| 4 | §8 multimodal section | DONE | MANUSCRIPT_DRAFT_sec5_multimodal.md written. CIFAR-10/100, audio ESC-50, text. |
+| 5 | §9 scaling law section | DONE | MANUSCRIPT_DRAFT_sec6_scaling.md written. Imagenette + CIFAR-10 N-scaling. |
+| 6 | §10 time series section | DONE | MANUSCRIPT_DRAFT_sec7_timeseries.md written. Negative result. |
+| 7 | Graphiti episodes backlog | TODO | Record: step989 KILLED, ts_step030 NEGATIVE, step982 pending. |
+| 8 | Commit new files | TODO | sec5_multimodal, sec6_scaling, sec7_timeseries, ts_common, ts_model_sgnnet, ts_step030 (rewrite), QUEUE edits. |
+| 9 | Paper audit gaps remaining | TODO | GAP10 (GLNN cross-dataset), GAP11 (theory). Also: step982 T2 result when done. |
 
 ## Key facts (so transcript not needed)
 - ffn_step001 T0: per-channel FFN @0.93% FC budget = 92.8% Imagenette T0. Budget

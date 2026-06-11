@@ -1,0 +1,10 @@
+{
+  "step": "ts_step040_eval_diagnostic",
+  "n_tickers": 63,
+  "return_mean": 0.0009852761158436055,
+  "return_std": 0.023197615537897658,
+  "pct_positive": 0.506494152774322,
+  "pct_near_zero": 0.05827320228912665,
+  "mse_zero_predictor": 0.0005391001356685627,
+  "diagnosis": "MSE loss \u2192 mean predictor \u2192 50% dir_acc. Fix: directional loss."
+}

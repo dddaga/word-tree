@@ -72,7 +72,7 @@ Eval: `scripts/eval_efficiency_config.py`
 |---------|--------|------|
 | mini:mps | FREE | step993 T1 DONE (KILLED) |
 | mini:cpu | FREE | — |
-| 5060ti:cuda | RUNNING | step982 T2 — CIFAR-10 aug paper claim (lazy h5 fix) |
+| 5060ti:cuda | PENDING | step982 T2 — CIFAR-10 aug paper claim (converter running: h5→npy, manik using GPU at 99%) |
 
 **Completed this session (session 38):**
 - **step993 T1** (mini_mps): DONE. **Additive dynamic KILLED at T1 — T0 signal noise.** Ref=73.50% (75ep), A=−1.47pp, B=−1.73pp, C=−1.47pp. Sign reversal from T0 (+0.67→+1.51pp). T0 at N=512 20ep had insufficient signal; 75ep reveals the additive term hurts. **Vision debt: additive dynamic connectivity (brief §3.5) KILLED-CONFIRMED.**
@@ -149,7 +149,7 @@ Eval: `scripts/eval_efficiency_config.py`
 - When step986 T1 finishes: if N=16384 >= 83.55% → extend CIFAR-10 scaling curve; else ceiling confirmed.
 
 **Vision-debt T0 batch (see learnings/VISION_DEBT.md + VISION_REVIEW_2026-06-10.md):**
-- **step989 T0**: Transformer FFN distillation — GPT-2-small layer-6 FFN, x_ffn→y_ffn MSE. Extraction OOM'd on 5060ti (GPU full, teammates). Launch `train_step989_ffn_distil_t0.py` when GPU frees. Advance: val_mse ≤ 2× Ref_mlp AND cos_sim ≥ 0.5. Decides Paper 2 spine.
+- **step989 T0**: **DONE-KILLED-CONFIRMED (2026-06-11)**. Transformer FFN distillation. Ref_mlp: cos_sim=0.581. A_sgnnet_d16: cos_sim=0.187 (KILL). B_sgnnet_d32: cos_sim=0.213 (KILL). Threshold: cos_sim≥0.5. Both massively below. **SGNNET cannot replicate GPT-2 FFN. Founding vision retired. Paper scope = VGG FC replacement only.** VISION_DEBT fully DONE.
 - **step990 T0**: **DONE-ADVANCE** — additive dynamic connectivity. Ref=61.27%, A=+0.67pp, B=+1.51pp, C=+1.15pp. ALL ADVANCE. **step993 T1 RUNNING (mini_mps).**
 - **step991 T0**: **KILLED-CONFIRMED** — Hebbian prune-grow. Ref=85.40%, A=−38.19pp, B=−14.29pp, C=−49.81pp. Epoch-boundary rewiring destroys routing. Brief §9 retired.
 - **step992 T0**: **KILLED-CONFIRMED** — K-means init. Ref=85.58%, A=−1.83pp, B=−3.11pp. Random init wins. Brief §6.1 retired.
@@ -187,7 +187,7 @@ Eval: `scripts/eval_efficiency_config.py`
 - **step966 T0**: Backward reward scoring — `scripts/train_step966_backward_reward_t0.py` ✓ SCRIPTED
 - **step967 diagnostic**: Path sparsity — `scripts/diag_step967_path_sparsity.py` ✓ RUNNING (mini_mps).
 - step963 (vision): Scaling ceiling — N∈{2048,4096,8192}, D∈{16,32}, K_in∈{25,60}, T2 on Imagenette.
-- ts_step030-032: SGNNET-TS time series (financial forecasting, see learnings/ts/QUEUE.md). All PENDING.
+- **ts_step030 T0**: **DONE-NEGATIVE (2026-06-11)**. All models dir_acc≈50%, sharpe<−97. Linear=50.2%/−152, MLP_256=49.8%/−98, SGNNET_K3=50.1%/−164, SGNNET_K0=49.8%/−191. **Honest negative: NIFTY50 next-day return prediction near-random. Directional loss fix confirmed not the issue — task itself is efficient-market limited.** SGNNET provides no advantage. Paper = honest negative result.
 
 **Recently completed (session 30):**
 - **step939** (studio_cpu T0 → synced): abs() in ΔW-proj LOAD-BEARING. A_signed=−0.64pp, B_signed_clamp=−0.64pp. BOTH KILLED. abs() confirmed essential.

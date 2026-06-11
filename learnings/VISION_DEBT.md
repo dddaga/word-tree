@@ -16,6 +16,6 @@ or explicit user-approved WONTFIX. Full audit: [VISION_REVIEW_2026-06-10.md](VIS
 | Hebbian prune-and-grow topology (brief §9) | KILLED-CONFIRMED | step991 T0: Ref=85.40%, A_random=−38.19pp, B_wpos=−14.29pp, C_fast=−49.81pp. Epoch-boundary rewiring destroys ΔW-proj routing. | — |
 | K-means init (brief §6.1) | KILLED-CONFIRMED | step992 T0: Ref=85.58%, A_kmeans=−1.83pp, B_kmeans_classaware=−3.11pp. Random init wins. | — |
 | Adaptive K stopping (brief §3.4 future) | PARTIALLY TESTED | MoD killed (34, 119); inference-time convergence early-exit untested | low priority; optional T0 |
-| Transformer FFN replacement (brief §1 problem statement) | NEVER-TESTED | pivot to VGG FC undocumented, zero experiments | **step989 T0** — decides Paper 2 spine |
+| Transformer FFN replacement (brief §1 problem statement) | KILLED-CONFIRMED | step989 T0 (2026-06-11): Ref_mlp val_mse=0.341/cos_sim=0.581; A_sgnnet_d16 cos_sim=0.187; B_sgnnet_d32 cos_sim=0.213. Both NEUTRAL/KILL (threshold: cos_sim≥0.5). SGNNET cannot replicate GPT-2 FFN. Founding vision retired. | Paper scope = VGG FC replacement only |
 | Distillation training method | KEPT (target mutated) | VGG soft-label KD production path | — |
 | Hypercube confinement | EVOLVED → S^{D-1} | Fourier breakthrough 2026-03-26 | — |

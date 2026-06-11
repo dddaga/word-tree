@@ -1,0 +1,66 @@
+{
+  "step": "ts_step020",
+  "model": "MAE_ContextEncoder",
+  "n_params": 52500,
+  "n_stocks": 56,
+  "T_lookback": 60,
+  "T_pred_masked": 5,
+  "mask_ratio_past": 0.25,
+  "pretrain_epochs": 100,
+  "finetune_epochs": 50,
+  "best_val_recon_loss": 0.004133614711463451,
+  "val_directional_acc": 0.495,
+  "val_sharpe": -62.2706,
+  "history": [
+    {
+      "epoch": 10,
+      "train_loss": 0.007488800212740898,
+      "val_loss": 0.006006239913403988
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.006089007016271353,
+      "val_loss": 0.004193842876702547
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.005828516092151403,
+      "val_loss": 0.005726258736103773
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.005102253518998623,
+      "val_loss": 0.005365978926420212
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.0047286502085626125,
+      "val_loss": 0.005367029458284378
+    },
+    {
+      "epoch": 60,
+      "train_loss": 0.0043882648460567,
+      "val_loss": 0.004133614711463451
+    },
+    {
+      "epoch": 70,
+      "train_loss": 0.0038788560777902603,
+      "val_loss": 0.004466465674340725
+    },
+    {
+      "epoch": 80,
+      "train_loss": 0.003736288519576192,
+      "val_loss": 0.00480186240747571
+    },
+    {
+      "epoch": 90,
+      "train_loss": 0.0037268062587827444,
+      "val_loss": 0.004779140930622816
+    },
+    {
+      "epoch": 100,
+      "train_loss": 0.00411984184756875,
+      "val_loss": 0.004505387507379055
+    }
+  ]
+}
