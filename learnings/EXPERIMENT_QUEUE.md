@@ -72,7 +72,7 @@ Eval: `scripts/eval_efficiency_config.py`
 |---------|--------|------|
 | mini:mps | FREE | step993 T1 DONE (KILLED) |
 | mini:cpu | FREE | — |
-| 5060ti:cuda | PENDING | step982 T2 — CIFAR-10 aug paper claim (converter running: h5→npy, manik using GPU at 99%) |
+| 5060ti:cuda | FREE | — |
 
 **Completed this session (session 38):**
 - **step993 T1** (mini_mps): DONE. **Additive dynamic KILLED at T1 — T0 signal noise.** Ref=73.50% (75ep), A=−1.47pp, B=−1.73pp, C=−1.47pp. Sign reversal from T0 (+0.67→+1.51pp). T0 at N=512 20ep had insufficient signal; 75ep reveals the additive term hurts. **Vision debt: additive dynamic connectivity (brief §3.5) KILLED-CONFIRMED.**
@@ -82,7 +82,7 @@ Eval: `scripts/eval_efficiency_config.py`
 - **step990 T0 v1** (mini_mps): INVALID. Ref=11.6% (bare SmallWorld, AH chain broken in v1 script). v2 relaunched (see RUNNING above).
 - **step991 T0 v1** (mini_cpu): INVALID. Ref=14% (bare SmallWorld, AH chain broken in v1 script). v2 superseded above.
 - **step986 T1** (5060ti_cuda or mini): DONE. N=16384 CIFAR-10 T1 — 82.85% @ep69 (75ep, 50%). Scaling curve continues. **Consider T2 (150ep) for paper scaling section.** N-scaling: 80.57→82.53→83.55% (N=2048→4096→8192 T2) + 82.85% T1 at N=16384 (T2 pending).
-- **step982 T2** (5060ti_cuda): PARTIAL. Ref=80.79% @ep140 (471s). A_aug crashed silently (OOM, loading 2.3GB `store_cifar10_aug.h5`). **Relaunch needed after 5060ti free + extraction done.**
+- **step982 T2** (5060ti_cuda): **DONE-NEGATIVE.** Ref=80.58%, A_aug=55.96%, Δ=−24.62pp [KILL]. Best ep88 then degraded (ep120: 52.86%, ep150: 53.09%). 100k augmented VGG16 features catastrophically worse than 50k standard. HYPOTHESIS: augmented features higher within-class variance; 150ep insufficient for 2× dataset. Paper CIFAR-10 claim unaffected (step980: 80.57% ±0.12pp, standard training). Augmentation at training time DOES NOT help SGNNET on CIFAR-10 at T2.
 
 **Completed this session (session 36):**
 - **step985 T0** (5060ti_cuda): DONE (v1 KILLED — BUG). **v1 PhaseGate was symmetric: gate=[s_i,−s_i]+softmax → always 50/50 regardless of s. Zero routing signal.** Ref=91.57%. A/B/C all 11-12% (random). Root cause: softmax of antisymmetric inputs always produces uniform weights. **v2 relaunched (2026-05-13) with correct asymmetric [relu(s), alpha*relu(-s)] + sum-divide normalization.** See v2 RUNNING entry below.

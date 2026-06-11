@@ -2,11 +2,10 @@
 *Maintained by main agent. Reload THIS file (not transcript) on every wakeup.
 Keep ≤120 lines. Prune DONE rows to bottom section weekly.*
 
-Updated: 2026-06-11 ~19:30
+Updated: 2026-06-12 ~00:40
 
 ## Active loop
-`/goal to do all the action items to have a rigourous 1st paper are done` — Stop hook active.
-REMAINING: step982 T2 A_aug result (converter relaunched on 5060ti; GPU still busy with manik).
+`/goal to do all the action items to have a rigourous 1st paper are done` — **ALL DONE.**
 
 ## Context-management protocol (Dhiraj directive 2026-06-10)
 1. All findings/state → .md files immediately; context holds pointers only.
@@ -18,7 +17,7 @@ REMAINING: step982 T2 A_aug result (converter relaunched on 5060ti; GPU still bu
 ## TODO
 | # | Task | Status | Notes |
 |---|---|---|---|
-| 1 | step982 T2 A_aug on 5060ti | PENDING-LAUNCH | Converter relaunched (sgn-indra-convert-cifar10-aug). GPU 86%/4GB (manik). Launch step982 when npy files exist + GPU free. Ref resume JSON exists. |
+| 1 | step982 T2 A_aug on 5060ti | DONE-NEGATIVE | A_aug=55.96%, Δ=−24.62pp. KILL. Recorded QUEUE+Graphiti. Paper CIFAR-10 claim (step980: 80.57%) unaffected. |
 | 2 | step989 T0 | DONE-KILLED | cos_sim=0.187 (d16), 0.213 (d32). Both below 0.5 threshold. Founding vision retired. |
 | 3 | ts_step030 T0 | DONE-NEGATIVE | All models dir_acc≈50%, sharpe<−100. Task near-random. |
 | 4 | §8 multimodal section | DONE | MANUSCRIPT_DRAFT_sec5_multimodal.md (101L). |
@@ -27,7 +26,7 @@ REMAINING: step982 T2 A_aug result (converter relaunched on 5060ti; GPU still bu
 | 7 | §7 GLNN + §3 theory sections | DONE | sec_glnn (22L), sec_theory (68L). |
 | 8 | Abstract/intro update | DONE | sec1 updated (step989 KILLED, audio nuance, TS neg, §8-10 cited). Split: sec1 (89L) + sec1b_architecture (119L). |
 | 9 | Graphiti episodes backlog | DONE | step989/ts_step030/paper-audit queued 2026-06-11. |
-| 10 | Commit all new files | TODO | sec1 update, sec1b_architecture, sec_glnn, sec_theory, sec5-7, ts pipeline, model_dw_proj, convert script, QUEUE+AUDIT edits. |
+| 10 | Commit all new files | DONE | ca35f93 + 1ac2230 + final commit with step982 result. |
 
 ## Key facts (so transcript not needed)
 - ffn_step001 T0: per-channel FFN @0.93% FC budget = 92.8% Imagenette T0. Budget

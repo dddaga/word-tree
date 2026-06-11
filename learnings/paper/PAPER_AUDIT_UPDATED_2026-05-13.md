@@ -58,10 +58,14 @@ Original audit: PAPER_AUDIT_2026-04-20.md (12 gaps, 7 HIGH priority)
 
 | Item | Status |
 |------|--------|
-| step982 T2 A_aug result | PENDING — converter relaunched 2026-06-11; launch when done |
+| step982 T2 A_aug result | **DONE-NEGATIVE** — 2026-06-12: A_aug=55.96%, Δ=−24.62pp [KILL]. Augmented 100k features worse than standard 50k. Paper CIFAR-10 claim (step980: 80.57% ±0.12pp) unaffected. Honest negative documented. |
 | Multi-seed step887 (Imagenette canonical) | DONE — 96.38% ±0.18pp (3 seeds) |
 | CIFAR-10 paper claim | DONE — 80.57% ±0.12pp (3 seeds, step980) |
 | Abstract/intro update | **DONE** — 2026-06-11: step989 KILLED added; audio nuance (routing hurts); TS negative; §8-10 cited in abstract; sec1 split into sec1 (89L) + sec1b_architecture (119L) |
+
+## Final status — 2026-06-12
+
+**ALL PAPER ACTION ITEMS COMPLETE.** All audit gaps closed. All manuscript sections written. All empirical claims confirmed or documented as honest negatives.
 
 ## Verification
 
