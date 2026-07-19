@@ -1,0 +1,10 @@
+{
+  "params": 34976,
+  "fp32_kb": 136.625,
+  "int8_kb": 34.15625,
+  "compression": 4.0,
+  "quant_mse": 7.834619512715038e-06,
+  "wrap_rate": 0.0,
+  "scale": 100.0,
+  "ckpt": null
+}

@@ -1,0 +1,26 @@
+{
+  "config": {
+    "device": "mps",
+    "repeats": 200,
+    "warmup": 30,
+    "batch": 32,
+    "slot": "mini_mps"
+  },
+  "results": [
+    {
+      "name": "GA5 (dw, low-MAC)",
+      "macs": 141275648,
+      "params": 523482,
+      "ms_per_inf": 13.855383539994364
+    },
+    {
+      "name": "Dense-ctrl (hi-MAC)",
+      "macs": 200779776,
+      "params": 562506,
+      "ms_per_inf": 20.8978602100251
+    }
+  ],
+  "mac_ratio": 1.4211916833678229,
+  "wall_ratio": 1.50828449820261,
+  "verdict": "MACs PREDICT latency"
+}

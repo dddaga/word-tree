@@ -80,10 +80,10 @@ Eval: `scripts/eval_efficiency_config.py`
 
 | Step | Script | Slot | Tier | Status | Motivation |
 |---|---|---|---|---|---|
-| step997 | `scripts/bench_step997_energy_joules.py` | 5060ti_cuda | bench | QUEUED | Energy in JOULES (nvidia-smi P·dt) — SGNNET champion vs VGG_FC. Title claims "energy"; only FLOPs proxy exists. Reconcile champion config on 5060ti before paper row. |
-| cnn_step037 | `scripts/cnn_distiller/bench_cnn_step037_walltime.py` | mini_mps | bench | QUEUED | Wall-time vs MACs reality check. POC-C: depthwise 8.2× fewer MACs but 2.7× SLOWER. Tests whether GA5 (MAC-optimum) is also latency-optimum. If not → CNN Pareto story reframes. |
-| step998 | `scripts/train_step998_int8_champion.py` | mini_cpu | bench | QUEUED | INT8 weight-only quant of K=1 champion (step526 recipe). Deterministic memory + quant-MSE + wrap-rate now; accuracy delta needs champion .pt. 140KB→35KB (4×) if lossless. Directly on memory goal. |
-| step999 | `scripts/train_step999_pruned_vgg_fc_baseline.py` | mini_cpu | T-base | QUEUED | Pruned VGG16 FC at 34,976 params (99.97% sparsity) — the missing iso-param baseline reviewers ask for first. Queue behind step998 on mini_cpu. |
+| step997 | `scripts/bench_step997_energy_joules.py` | 5060ti_cuda | bench | DONE | **champion 34.81 mJ/inf vs VGG_FC 131.58 mJ/inf → 3.78× fewer Joules** (P=88.7W vs 62.4W but 5.4× faster wall). First measured energy result. Eager PyTorch — compiled would widen. |
+| cnn_step037 | `scripts/cnn_distiller/bench_cnn_step037_walltime.py` | mini_mps | bench | DONE | **GA5 13.86ms vs Dense 20.90ms; MAC 1.42× → wall 1.51× → MACs PREDICT latency at GA5 point.** POC-C's 2.7× was at extreme 8.2× depthwise (memory-bound); GA5's modest cut tracks. Pareto survives on wall-time. |
+| step998 | `scripts/train_step998_int8_champion.py` | mini_cpu | bench | DONE | **136.6KB fp32 → 34.2KB int8, 4.0× compression, wrap_rate=0, MSE 7.8e-6.** step526 recipe lossless on champion. Accuracy delta still needs champion .pt (3-seed retrain-with-save). |
+| step999 | `scripts/train_step999_pruned_vgg_fc_baseline.py` | mini_cpu | T-base | DONE | **pruned VGG_FC @ 34,980 params = 10.17% = CHANCE.** Iso-param baseline collapses (99.97% sparsity). Champion beats it by ~86pp. Answers "isn't it just a small FC?" — strongest new paper asset. |
 
 **cnn_step036 DONE-KILLED (mini_mps, 2026-06-22):** GA5+side=True T0. **66.47% @ep20 — KILLED (prediction-based).** T0 score ≈ k=5 T0 (66.39%). Empirical calibration: k=5 T0~66.4% → T1=73.22% → −1.51pp NO-GAIN. side=True predicted T1 ~73.3% → also NO-GAIN. No T1 warranted. 540K params, 142.3M MACs. **Conclusion: GA5 side=False IS optimal.** Reference configs (Ref/D_small_s/F_wide) use side=True with k=7 + different channel ratios — side branch benefit is architecture-specific, not portable to GA5's (48,96,384) k=3 layout. **CNN GA architecture search COMPLETE.** Result: `results/cnn_step036_ga5side_t0__mini_mps.json`.
 

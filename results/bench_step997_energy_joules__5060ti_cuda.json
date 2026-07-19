@@ -1,0 +1,25 @@
+{
+  "config": {
+    "device": "cuda",
+    "repeats": 300,
+    "warmup": 50,
+    "batch": 32,
+    "slot": "5060ti_cuda"
+  },
+  "results": [
+    {
+      "name": "VGG_FC",
+      "ms_per_inf": 2.110176752321422,
+      "mean_power_w": 62.35454545454545,
+      "mj_per_inf": 131.5791122197512,
+      "energy_ratio_vs_vgg": 1.0
+    },
+    {
+      "name": "SGNNET_K1_champion",
+      "ms_per_inf": 0.39257516618818045,
+      "mean_power_w": 88.6725,
+      "mj_per_inf": 34.81062142382143,
+      "energy_ratio_vs_vgg": 3.779855309612762
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "config": {
+    "epochs": 40,
+    "target": 34976,
+    "device": "cpu",
+    "seed": 42,
+    "slot": "studio_mps"
+  },
+  "kept_params": 34980,
+  "best_acc": 0.10165604948997498
+}
