@@ -1,0 +1,34 @@
+{
+  "step": "ffn_step003",
+  "seed": 42,
+  "anneal_frac": 0.3,
+  "configs": {
+    "b1": {
+      "squish_dim": 8,
+      "mix_hidden": [
+        240
+      ],
+      "anneal_frac": 0.3,
+      "n_params": 1190490,
+      "pct_fc": 0.9955,
+      "best": 0.9231,
+      "best_ep": 14,
+      "dense_flops": 2380980,
+      "elapsed_s": 3.6
+    },
+    "b5": {
+      "squish_dim": 8,
+      "mix_hidden": [
+        1152,
+        128
+      ],
+      "anneal_frac": 0.3,
+      "n_params": 5073418,
+      "pct_fc": 4.2425,
+      "best": 0.921,
+      "best_ep": 5,
+      "dense_flops": 10146836,
+      "elapsed_s": 3.5
+    }
+  }
+}
