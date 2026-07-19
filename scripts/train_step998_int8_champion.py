@@ -17,7 +17,7 @@ Usage:
     d_env/bin/python3 scripts/train_step998_int8_champion.py --ckpt results/champion_seed42.pt
 """
 from __future__ import annotations
-import argparse, json
+import argparse, json, sys
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description="Step 998 INT8 weight-only quant of K=1 champion")
@@ -29,6 +29,7 @@ args = parser.parse_args()
 
 N, N_IN, N_OUT, D = 2048, 25088, 10, 16
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 
 def saturating_int8(torch, w, scale):

@@ -14,7 +14,7 @@ Usage:
     venv/bin/python3 scripts/bench_step997_energy_joules.py --device cuda --repeats 300
 """
 from __future__ import annotations
-import argparse, json, subprocess, threading, time
+import argparse, json, subprocess, sys, threading, time
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description="Step 997 energy (Joules) bench — SGNNET vs VGG_FC")
@@ -27,6 +27,7 @@ args = parser.parse_args()
 
 N, N_IN, N_OUT, D = 2048, 25088, 10, 16
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 
 class PowerSampler(threading.Thread):
