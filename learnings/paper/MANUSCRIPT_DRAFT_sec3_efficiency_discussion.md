@@ -114,6 +114,17 @@ Standard GNN baselines (step404, T2, same fixed random graph):
 
 **No theoretical grounding for the ceiling.** The $D=16$ ceiling of 97.17% is empirical. We hypothesize it reflects the capacity of $S^{15}$ for 10-class classification on this feature space (HYPOTHESIS).
 
+**FFN-head baselines (CONFIRMED, Imagenette).** A natural objection is that a conventional feed-forward classifier head, given the same pool5 features, should match SGNNET at comparable cost. We tested three progressively richer FFN heads at the 1% parameter budget (Imagenette, VGG16 FC = 119.5M params reference). All plateau at $\approx$93% — roughly 3pp below the SGNNET K=1 champion (95.95%) despite using $\approx$33× more parameters than the champion's 34,976:
+
+| FFN head | Cross-channel mixing | Activation | Params | % VGG FC | Accuracy | vs champion |
+|----------|---------------------|-----------|--------|----------|----------|-------------|
+| Per-channel FFN (step001, T1) | linear readout only | ReLU | 1.14M | 0.95% | 93.04% | $-2.91$pp |
+| Squish→mix FFN (step002, T1) | nonlinear, post-concat | ReLU | 1.19M | 1.00% | 92.79% | $-3.16$pp |
+| Squish→mix, anneal (step003, T0) | nonlinear, post-concat | RReLU→ReLU | 1.19M | 1.00% | 92.31% | $-3.64$pp |
+| **SGNNET K=1 champion (step605)** | sparse routing | — | **0.035M** | **0.029%** | **95.95%** | — |
+
+The head that squishes each channel then mixes the concatenation through a nonlinear FFN (step002) does *not* beat the head with only a linear cross-channel readout (step001) — the $\approx$93% ceiling is **mixing-independent**. Nor does a randomized-leaky-ReLU curriculum that anneals to hard ReLU (step003) exceed plain ReLU — the ceiling is **activation-independent**; step003's best epoch was its last RReLU epoch, and switching to hard ReLU gave no gain. Tripling training epochs (step002 T0→T1) also left the plateau unmoved, so it reflects a capacity/mechanism ceiling, not undertraining. SGNNET's advantage over an FFN head is therefore mechanistic (sparse routing on $S^{15}$), not attributable to richer mixing or activation — and it is realized at $\approx$33× fewer parameters.
+
 **Pruned VGG16 FC baseline.** Head-to-head against pruned VGG16 FC at 34,976 params not yet collected.
 
 ---
@@ -126,6 +137,7 @@ Standard GNN baselines (step404, T2, same fixed random graph):
 | Standard GNN (GCN/GAT/GIN, fixed random graph) | **DONE** (step404 T2) | GCN=48.9%, GAT=48.7%, GIN=15.5% — all far below SGNNET |
 | Random projection + linear classifier | **DONE** (step978) | RandProj\_concat 95.75% (40K params); SGNNET routing recovers $+1.55$pp at comparable param count with mean-pool readout |
 | Second dataset (CIFAR-10) | **DONE** (step980 T2) | 80.57% $\pm$ 0.12pp (3 seeds) |
+| FFN classifier heads (Imagenette, 1% budget) | **DONE** (ffn\_step001–003) | All plateau $\approx$93% (per-channel / squish-mix / RReLU-anneal); ceiling mixing- & activation-independent, $-2.9$ to $-3.6$pp vs champion at 33× its params |
 | Pruned VGG16 FC at 34,976 params | NOT YET | Blocks FLOPs-efficient head comparison |
 | MLP at 0.98M FLOPs | NOT YET | FLOPs-matched comparison to step887 |
 
