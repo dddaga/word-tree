@@ -10,7 +10,7 @@ SGNNET: sparse O(N·K) GNN, Fourier encoding on S^{D-1}, Imagenette testbed.
 - **CIFAR-10 paper claim (CONFIRMED):** 80.57% ±0.12pp (step980 T2, 3 seeds), gap −5.67pp vs Linear 86.24%. T2 tighter than T1 (±0.12 vs ±0.31pp).
 - **Paper scope:** vision + audio (negative result) + TS + scaling law — multimodal, Paper 1 decided 2026-04-21.
 
-Active focus: (1) CIFAR-10 aug pipeline — hflip feature extraction running, step929 T1 queued on 5060ti; (2) CIFAR-100 N=8192 T0 running (step927, studio_mps); (3) Audio gap confirmed structural (step926/928) — ΔW-proj NOT close audio gap, paper = honest negative result; step962 isolation (VGG mean-pool) pending; (4) TS experiments: step010–030 series; (5) CNN distiller: step003/004 running; (6) Dynamic routing: gate-death theorem confirmed, all multiplicative-gating variants killed (steps 873–916).
+Active focus: (1) CNN distiller EfficientVGG GA line — cnn_step018 T1 RUNNING (mini_mps), cnn_step019 T2 QUEUED (wait for step018 to confirm all winners); (2) CNN distiller dilation ablation — cnn_step008 T0 RUNNING (mini_cpu); (3) CIFAR-10 scaling — step986 T2 DONE (84.66%±0.06pp, 3 seeds, N=16384, monotonic CONFIRMED); (4) CNN distiller Pareto table — cnn_step004 T2 DONE (F_wide=79.03%±0.41pp, Ref=77.61%±0.45pp, D_small_s=75.82%±1.02pp, table complete); (5) Dynamic routing: gate-death theorem confirmed, all multiplicative-gating variants killed (steps 873–916).
 
 ## Primary Goal
 **Long-term goal (stubborn):** improve memory footprint + energy efficiency of deep learning.

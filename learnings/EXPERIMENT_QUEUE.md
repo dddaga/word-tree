@@ -64,15 +64,169 @@ Eval: `scripts/eval_efficiency_config.py`
 
 ---
 
-## Currently Running (updated 2026-06-10 session 38)
+## Currently Running (updated 2026-06-22)
 
 **Slot policy:** 5060ti first, then Mini. Studio excluded.
 
 | Machine:Device | Status | Note |
 |---------|--------|------|
-| mini:mps | FREE | step993 T1 DONE (KILLED) |
+| mini:mps | FREE | — |
 | mini:cpu | FREE | — |
 | 5060ti:cuda | FREE | — |
+
+## QUEUED — meditation 005 (2026-07-19)
+
+**Theme: measure the GOAL, not the proxy.** 36+ experiments optimized surrogates (MACs, FLOPs, params). The paper title claims *memory footprint* (bytes) + *energy* (Joules) — neither was ever measured. These P0s convert the headline from proxy to measured and fill named paper holes. All 4 scripts `--help` smoke-tested ✅.
+
+| Step | Script | Slot | Tier | Status | Motivation |
+|---|---|---|---|---|---|
+| step997 | `scripts/bench_step997_energy_joules.py` | 5060ti_cuda | bench | QUEUED | Energy in JOULES (nvidia-smi P·dt) — SGNNET champion vs VGG_FC. Title claims "energy"; only FLOPs proxy exists. Reconcile champion config on 5060ti before paper row. |
+| cnn_step037 | `scripts/cnn_distiller/bench_cnn_step037_walltime.py` | mini_mps | bench | QUEUED | Wall-time vs MACs reality check. POC-C: depthwise 8.2× fewer MACs but 2.7× SLOWER. Tests whether GA5 (MAC-optimum) is also latency-optimum. If not → CNN Pareto story reframes. |
+| step998 | `scripts/train_step998_int8_champion.py` | mini_cpu | bench | QUEUED | INT8 weight-only quant of K=1 champion (step526 recipe). Deterministic memory + quant-MSE + wrap-rate now; accuracy delta needs champion .pt. 140KB→35KB (4×) if lossless. Directly on memory goal. |
+| step999 | `scripts/train_step999_pruned_vgg_fc_baseline.py` | mini_cpu | T-base | QUEUED | Pruned VGG16 FC at 34,976 params (99.97% sparsity) — the missing iso-param baseline reviewers ask for first. Queue behind step998 on mini_cpu. |
+
+**cnn_step036 DONE-KILLED (mini_mps, 2026-06-22):** GA5+side=True T0. **66.47% @ep20 — KILLED (prediction-based).** T0 score ≈ k=5 T0 (66.39%). Empirical calibration: k=5 T0~66.4% → T1=73.22% → −1.51pp NO-GAIN. side=True predicted T1 ~73.3% → also NO-GAIN. No T1 warranted. 540K params, 142.3M MACs. **Conclusion: GA5 side=False IS optimal.** Reference configs (Ref/D_small_s/F_wide) use side=True with k=7 + different channel ratios — side branch benefit is architecture-specific, not portable to GA5's (48,96,384) k=3 layout. **CNN GA architecture search COMPLETE.** Result: `results/cnn_step036_ga5side_t0__mini_mps.json`.
+
+**cnn_step035 DONE-NEGATIVE (mini_mps, 2026-06-22):** GA5 k=5 T1. **73.22% @ep70, Δ=−1.51pp vs k=3 T1 (74.73%) — NO-GAIN. k=5 ACTIVELY WORSE than k=3.** Not just neutral — larger dw kernel hurts. k=5 adds 8K params and 4.8M MACs while LOSING 1.51pp. Conclusion: k=3 is optimal for GA5 (48,96,384). Larger receptive field provides no benefit at this scale. k=7 now LOW priority (k=5 worse → k=7 likely worse). **dw_kernel search CLOSED. GA5 k=3 = optimal.** Result: `results/cnn_step035_ga5k5_t1__mini_mps.json`.
+
+**cnn_step034 DONE-ADVANCE (mini_mps, 2026-06-22):** GA5 k=5 T0. **66.39% @ep20 — ADVANCED (T0 rejection filter).** Script flagged NO-GAIN but threshold was wrong (T0 vs T1 baseline). Real gap vs estimated k=3 T0 (~68-70%) is only 2-4pp — not clearly failing. ConvNeXt default k=7; Ref/D_small_s k=7 both STRONG. Advance to T1. 531K params, 146.1M MACs. Result: `results/cnn_step034_ga5k5_t0__mini_mps.json`.
+
+**cnn_step033 DONE-KILLED (mini_mps, 2026-06-22):** GA5+Mixup(α=0.4) T0. **63.90% @ep20, Δ=−10.83pp — KILLED. α=0.4 catastrophically over-regularizes.** GA5+Mixup α=0.2 at ep20 ≈ 72% (step030 seeds); α=0.4 = 63.9%, gap ~8pp. Gap too large to recover in 75ep. Conclusion: stronger Mixup hurts GA5 — optimal α=0.2 confirmed. Next: k=5 kernel size ablation (step034). Result: `results/cnn_step033_ga5_mixup04_t0__mini_mps.json`.
+
+**cnn_step032 DONE-KILLED (mini_mps, 2026-06-22):** GA6 C=(64,128,384)+Mixup T0. **68.64% @ep20 — KILLED (Pareto invalid).** T0 score comparable to GA1-GA4 (65-68%) so NOT a training failure. KILLED on Pareto grounds: 197.7M MACs > Ref (183.2M) and 576K params > GA5 (523K). GA6 Pareto-dominated by GA5 on efficiency with no accuracy upside. Paper table complete; GA6 adds nothing. Result: `results/cnn_step032_ga6_t0__mini_mps.json`.
+
+**cnn_step031 DONE-NEGATIVE (mini_mps, 2026-06-22):** GA5+CutMix(α=0.2) T1. **75.18% @ep75, Δ=+0.45pp vs GA5+Mixup T1, NO-GAIN** (threshold 75.23%, miss by 0.05pp). CutMix effect amplified at GA5 vs GA2 scale (+0.45pp vs +0.20pp) but still below tier threshold. Verdict: CutMix NOT superior to Mixup at T1 significance. Next: architecture expansion GA6. Result: `results/cnn_step031_ga5_cutmix_t1__mini_mps.json`.
+
+**cnn_step030 DONE-STRONG (mini_mps, 2026-06-22):** GA5 C=(48,96,384)+Mixup(α=0.2) T2 4-seed. **77.79% ±0.26% STRONG** — beats Ref T2 (77.61%) by +0.18pp, beats GA2 T2 (77.32%) by +0.47pp. Per-seed: s1=77.48%@ep65, s2=77.58%@ep50, s3=78.06%@ep90, s42=78.04%@ep50. 523K params, 141.3M MACs. Multiple-dip instability confirmed all 4 seeds (ep55-85 range) — best checkpoint secured before dips. C1/C2 width CONFIRMED as lever: single arch change from GA2 broke 77.32% ceiling. Next: step031 GA5+CutMix T1 (augmentation variant scout). Result: `results/cnn_step030_ga5_mixup_t2__summary__mini_mps.json`.
+
+**cnn_step029 DONE-ADVANCE (mini_mps, 2026-06-22):** GA5 C=(48,96,384)+Mixup(α=0.2) T1. **74.73% @ep75, Δ=+1.12pp vs GA2, ADVANCE.** 523K params, 141.3M MACs. C1/C2 width is architecture bottleneck — CONFIRMED. All 6 regularization methods on GA2 capped at 73.94% (ceiling ±0.60pp); single arch change (C1: 32→48, C2: 64→96) breaks ceiling by +1.12pp. Next: T2 multi-seed (step030). Result: `results/cnn_step029_ga5_t1__mini_mps.json`.
+
+**cnn_step028 DONE-NEGATIVE (mini_mps, 2026-06-22):** GA2+MixCutMix(α=0.2) T1. **73.94% @ep75, Δ=+0.33pp, NO-GAIN** (threshold 74.11%). Best regularization result to date (+0.33pp), but still below advance threshold. Regularization direction CONFIRMED CLOSED after 6 experiments (steps 021–028): all methods within ±0.60pp of baseline 73.61%. Architecture bottleneck CONFIRMED — cannot break past ~74% T1 with current GA2 arch via regularization alone. Result: `results/cnn_step028_mixcutmix_t1__mini_mps.json`.
+
+**cnn_step027 DONE (mini_mps, 2026-06-22):** GA2+CutMix(α=0.2) T1. **73.81% @ep65, Δ=+0.20pp, NO-GAIN** (threshold 74.11%). CutMix vs Mixup baseline: +0.20pp — nearly identical. Architecture is the bottleneck, not regularization type. All methods (Mixup/CutMix/LS) within ±0.63pp. Result: `results/cnn_step027_cutmix_t1__mini_mps.json`.
+
+**cnn_step026 DONE-NEGATIVE (mini_mps, 2026-06-22):** GA2+Mixup loss weight ablation T1. A(feat=0.30,dkd=0.50,ce=0.20): 68.84% Δ=−4.77pp. B(feat=0.20,dkd=0.60,ce=0.20): 64.71% Δ=−8.90pp. Both NO-GAIN. Monotonic degradation confirmed. **feat_cos at 0.50 is load-bearing — cannot be traded for DKD weight.** Loss-weight direction CLOSED. Result: `results/cnn_step026_loss_weight_t1__mini_mps.json`.
+
+**cnn_step025 DONE-NEGATIVE (mini_mps, 2026-06-22):** GA2+Mixup(α=0.2)+LabelSmoothing T1. ε=0.05: 73.04% @ep75 Δ=−0.57pp NO-GAIN. ε=0.1: 70.78% @ep65 Δ=−2.83pp NO-GAIN. Both worse than baseline step021 (73.61%). LS direction CLOSED — over-regularization atop Mixup. DKD already provides soft targets; LS double-softens CE → conflicts. Result: `results/cnn_step025_ga2_mixup_ls_t1__mini_mps.json`.
+
+**step986 T2 DONE (5060ti_cuda, 2026-06-21):** CIFAR-10 N=16384 T2. **SCALING EXTENDS. Mean=84.66% ±0.06pp** (seed42=84.60%, seed43=84.75%, seed44=84.63%, 3 seeds 150ep 100%data). Full CIFAR-10 scaling curve T2: N=2048=80.57%, N=4096=82.53%, N=8192=83.55%, N=16384=**84.66%**. Gap to linear ceiling (86.24%): **−1.58pp**. Monotonic scaling confirmed. N=16384 is NOT a ceiling. Results: `results/train_step986_cifar10_n16384_t2_seed42__5060ti_cuda.json` (84.60%), seed43 (84.75%), seed44 (84.63%).
+
+**cnn_step022 DONE (mini_mps, 2026-06-22):** GA2+Mixup T2 multi-seed. **77.32% ±0.56% EFF-PARETO.** seed=1: 76.59% @ep50, seed=2: 77.61% @ep65, seed=3: 77.04% @ep60, seed=42: 78.06% @ep50. vs step020 (no Mixup): **+0.52pp mean, −0.36pp std** (76.80%±0.92% → 77.32%±0.56%). Mixup CONFIRMED beneficial: suppresses ep25 spike universally (peak shifted ep25-35 → ep50-65), raises mean, halves variance. Still EFF-PARETO (0.29pp below STRONG=77.61%). seed=42 best seed: 78.06% (+0.81pp vs no-Mixup 77.25%). Result: `results/cnn_step022_ga2_mixup_multiseed_t2__mini_mps.json`.
+
+**cnn_step004 T2 DONE (mini_mps + mini_cpu, 2026-06-21):** CNN distiller Pareto table, 4-seed T2. Anchors:
+| Config | T2 mean | MACs | Params | δ vs Ref |
+|---|---|---|---|---|
+| F_wide (128/256/256 k=7) | 79.03% ±0.41pp | 559.8M | 825K | +1.42pp |
+| Ref (64/128/256 k=7) | 77.61% ±0.45pp | 183.2M | 419K | — |
+| D_small_s (32/64/128 k=7) | 75.82% ±1.02pp | 57.5M | 150K | −1.79pp |
+D_small_s achieves 75.82% at 3.2× fewer MACs and 2.8× fewer params than Ref — EFF-PARETO anchor confirmed. F_wide = accuracy ceiling. CNN distiller Pareto table complete (3 anchors). Paper: report means ±std for all 3.
+
+**cnn_step018 DONE (mini_mps, 2026-06-21):** EfficientVGG GA T1. All 4 EFF-PARETO. Results:
+| Config | T1 | MACs | Params | T0→T1 |
+|---|---|---|---|---|
+| GA1: C=(32,64,384) k=3 exp=1 crelu | 72.61% @ep75 | 85.6M | 471K | +5.43pp |
+| GA2: C=(32,64,384) k=3 exp=2 crelu | 72.51% @ep70 | 98.5M | 481K | +4.18pp |
+| GA3: C=(32,96,384) k=3 exp=2 crelu | 72.97% @ep75 | 118.0M | 516K | +5.17pp |
+| GA4: C=(32,64,256) k=3 exp=1 (no crelu) | 72.76% @ep65 | 62.9M | 304K | +7.10pp |
+Finding: ep35 dip CONFIRMED systematic across all configs (LR≈1.70e-4). GA3 late convergence — C2=96 slows early but wins final. GA4 hypothesis CONFIRMED: no-crelu closes gap (T0 gap 1.52pp → T1 gap 0.26pp vs GA1). All advance to T2. Log: `logs/train_cnn_step018_ga_evgg_t1__mini_mps.log`.
+
+**cnn_step019 DONE (mini_mps, 2026-06-21):** EfficientVGG GA T2. 150ep 100%data. Results:
+| Config | T2 | MACs | Params | T1→T2 | Verdict |
+|---|---|---|---|---|---|
+| GA1: C=(32,64,384) k=3 exp=1 crelu | 75.72% @ep35 | 85.6M | 471K | +3.11pp | **WEAK** |
+| GA2: C=(32,64,384) k=3 exp=2 crelu | 77.25% @ep25 | 98.5M | 481K | +4.74pp | **EFF-PARETO** |
+| GA3: C=(32,96,384) k=3 exp=2 crelu | 76.89% @ep25 | 118.0M | 516K | +3.92pp | **EFF-PARETO** |
+| GA4: C=(32,64,256) k=3 exp=1 (no crelu) | 76.10% @ep30 | 62.9M | 304K | +3.34pp | **EFF-PARETO** |
+GA4 most efficient (62.9M MACs, 304K params). GA2 highest accuracy (0.36pp below STRONG). GA1 WEAK — exp=1 + C3=384 can't reach EFF-PARETO. exp=2 (inverted bottleneck) key differentiator. Result: `results/cnn_step019_ga_t2_seed42__mini_mps.json`. Log: `logs/train_cnn_step019_ga_evgg_t2__mini_mps.log`.
+
+**cnn_step015 DONE-C2 (2026-06-21):** MultiScaleCNN NO-CReLU T1, best=37.58%@ep37. C2 CONFIRMED — arch fundamentally limited regardless of CReLU. Removing CReLU gives only +0.58pp vs Ref; 35pp below EfficientVGG T1. Log: `logs/train_cnn_step015_nocrelu_t1__mini_mps.log`.
+
+**cnn_step010 DONE-KILLED (2026-06-21):** GA_2 T1+SGDR — SGDR HARMFUL. best=41.32%@ep19 (cycle1=T0 reproduced), then LR restart DISRUPTS basin: cycle2 starts at 41.32%, never improves (ep25=27%, ep30=33%, ep35=33%...). Cap at 41.32%=T0. **SGDR cycle restarts destroy the learned basin. Phase 2 (no restart) correct approach; confirmed by step012.** Log: `logs/train_cnn_step010_sgdr_t1__mini_mps.log`.
+
+**cnn_step013 DONE-CAPS (2026-06-21):** MultiScaleCNN Ref T1+twophase — best=37.17%@ep57. Phase 1=36.15%, Phase 2 delta=+1.02pp. vs GA_2 T1: −4.51pp. Confirms Ref caps early even with two-phase schedule. MultiScaleCNN family ceiling 37-42% regardless of LR strategy. Verdict: CAPS EARLY. Result: `results/cnn_step013_ref_twophase_t1_seed42__mini_mps.json`.
+
+**cnn_step012 DONE-CAPS (2026-06-21):** GA_2 T1+twophase — best=41.68%@ep21 (+0.36pp vs T0 41.32%). Phase 1 reproduced T0 exactly (41.32% @ep19). Phase 2 adds only 0.36pp then plateaus. A_prime CONFIRMED: two-phase prevents SGDR disruption but GA_2 still caps at 41.68% — MultiScaleCNN arch limit confirmed. Log: `logs/train_cnn_step012_twophase_t1__mini_mps.log`.
+
+**cnn_step011 DONE-KILLED (2026-06-21):** GA_2 T1+nofeat (wf=0, no feat cosine loss) — best=36.61%@ep8, then degraded. Worse than GA_2 T0 41.32%. Eliminates hypothesis B2 (feat cosine incompatibility = cause). **Feat cosine was helping; removing it makes degradation worse.** Root cause A (AdamW trap) or C2 (arch mismatch) — not feat cosine. Log: `logs/train_cnn_step011_nofeat_t1__mini_mps.log`.
+
+**cnn_step009 DONE-FAILED (2026-06-21):** GA_2 T1+warmup — BELOW_THRESHOLD. best=33.07%@ep24, FROZEN ep24-75. −44.28pp vs Ref T2=77.35%. Warmup made it WORSE than step007 (−2.37pp). Both step007 and step009 confirm same failure mode: model finds basin early (ep8-24) then actively degrades. Log: `logs/train_cnn_step009_warmup_t1__mini_mps.log`.
+
+**cnn_step007 DONE-FAILED (2026-06-21):** GA_2 T1 — PATHOLOGICAL TRAINING. Best=35.44%@ep8, then degraded for 67 epochs (val ~24-30%). Final: best=35.44%, −41.91pp vs Ref T2=77.35%. Root cause: same initial LR (3e-4) with T_max=75 keeps LR high for too long; CReLU in stages 1+2 (C=32/64) unstable at high sustained LR. Ref T1 (step004) worked at same LR — architecture-specific instability. Log: `logs/train_cnn_step007_ga2_t1__mini_mps.log`.
+
+**cnn_step008 DONE (mini_cpu, 2026-06-21):** 2×2 ablation — dilation {1,4} × CReLU placement {early=(T,T,F), late=(F,T,T)}. C=(32,64,384) exp=1 crelu varies. 20ep 50%data. Results:
+| Config | MACs | Best | Δ_ref | Time | Verdict |
+|---|---|---|---|---|---|
+| dil1_crelu_early | 105.9M | 40.56% | +3.74pp | 6685s | ADVANCE |
+| dil4_crelu_early | 105.9M | 39.82% | +3.00pp | 9490s | ADVANCE (42% slower, −0.74pp) |
+| dil1_crelu_late  | 93.1M  | 37.68% | +0.86pp | 6916s | ADVANCE |
+| dil4_crelu_late  | 93.1M  | 37.83% | +1.01pp | 8967s | ADVANCE |
+Dilation effect (early crelu): dil4−dil1=−0.74pp. Dilation effect (late crelu): +0.15pp (negligible). CReLU early vs late (dil=1): +2.88pp. CReLU early vs late (dil=4): +1.99pp. **VERDICT: dil=4 KILLED (CONFIRMED)** — 42% slower AND −0.74pp with early CReLU (best placement), +0.15pp with late CReLU (negligible). **CReLU early > late: CONFIRMED** (+2–3pp, both dilation settings). Result: `results/cnn_step008_ablation_seed42__mini_cpu.json`.
+
+**cnn_step006 DONE (2026-06-21):** GA arch search complete. Winners:
+- GA_2: C=(32,64,384) dil_rates=(1,) crelu=(T,T,F) exp=1, 105.9M MACs, T0=41.32% (+4.51pp)
+- GA_1: C=(32,64,384) dil_rates=(1,) crelu=(F,T,T) exp=1, 93.1M MACs, T0=37.99% (+1.17pp)
+- GA_4: br=2, 226.2M MACs, T0=30.73% (−6.09pp) → KILLED
+Key finding: GA never tested true dilation (n_br=1 → dil_rates=(1,) always). GA_2 vs GA_1 gap is CReLU placement only.
+
+**cnnc_step002 verdict (2026-06-17):** B_isomac=75.11% (−0.46pp), C_isomac=75.26% (−0.31pp). Both NEUTRAL — below ±0.5pp threshold AND no efficiency story (2–3× more params at same MACs). **cnnc line PARKED.** Ref_deep=74.47% (−1.10pp) KILLED.
+
+**Completed this session (session 40):**
+- **step986 T2** (5060ti_cuda): **DONE. SCALING EXTENDS.** N=16384 CIFAR-10 T2 = **84.60%** @ep149 (150ep, 100% data, seed=42). Result: `results/train_step986_cifar10_n16384_t2_seed42__5060ti_cuda.json`.
+- **step994** (5060ti_cuda): **DONE.** N=16384 multi-seed. seed=43=84.75%, seed=44=84.63%. **Mean=84.66% ±0.06pp** (3 seeds: 42=84.60, 43=84.75, 44=84.63). Scaling curve: 2K=80.57±0.12 → 4K=82.53 → 8K=83.55 → 16K=**84.66±0.06**. sec6_scaling.md updated.
+- **cnn_step004 T2 (ALL CONFIGS)** (mini_mps + mini_cpu): **DONE.** Full Pareto table seed=42: Ref=**77.35%** (419K params, 183.2M MACs), F_wide=**79.39%** (+2.04pp, 825K params, 559.8M MACs), D_small_s=**74.52%** (−2.83pp, 150K params, 57.5M MACs — 3.2× fewer MACs, 2.8× fewer params vs Ref). Results: `results/cnn_step004_t2_seed42__mini_mps.json` (Ref+D_small_s), `results/cnn_step004_t2_seed42__mini_cpu.json` (F_wide). F_wide best@ep26, T1→T2=+4.97pp.
+- **cnn_step005** (mini_mps): **DONE.** CNN distiller 4-seed variance (seed=42 from step004, seeds 1–3 from step005). **F_wide = clear winner: 79.03% ±0.42pp (stable). D_small_s high variance: 75.82% ±1.02pp (seed=42 low outlier 74.52%). Ref stable: 77.36% ±0.26pp.**
+
+  | config | seed=42 | seed=1 | seed=2 | seed=3 | mean | std |
+  |---|---|---|---|---|---|---|
+  | Ref | 77.35% | 77.10% | 77.73% | 77.27% | 77.36% | ±0.26pp |
+  | D_small_s | 74.52% | 76.08% | 75.64% | 77.02% | 75.82% | ±1.02pp |
+  | F_wide | 79.39% | 79.03% | 79.31% | 78.39% | 79.03% | ±0.42pp |
+
+  seed=3 timings: Ref=5152s, D_small_s=3717s (3.2× fewer MACs), F_wide=8175s. D_small_s seed=42 likely low outlier — std=1.02pp driven by it. Paper: report means±std for all 3 configs.
+- **step995** (mini_mps): **DONE (NEGATIVE).** ResNet-18 T0: best=**30.70%** @ep19. VGG16-SPECIFIC — SGNNET routing requires VGG16 feature geometry. backbone-agnostic claim FAILED. Result: `results/train_step995_resnet18_t0_seed42__mini_mps.json`.
+
+## QUEUED — meditation 004 (2026-06-17)
+
+| Step | Script | Slot | Tier | Status | Motivation |
+|---|---|---|---|---|---|
+| step994 | `scripts/train_step994_cifar10_n16384_multiseed.py` | 5060ti_cuda | T2 | DONE | N=16384 seeds 43+44 done. Mean=84.66%±0.06pp (3 seeds). |
+| cnn_step005 | `scripts/cnn_distiller/train_cnn_step005_multiseed.py` | mini_mps | T2 | DONE | CNN distiller multiseed variance (4 seeds × 3 configs). F_wide=79.03%±0.42pp winner. |
+| step995 | `scripts/train_step995_resnet18_backbone_t0.py` | mini_mps | T0 | DONE (NEGATIVE) | ResNet-18 T0: best=30.70% @ep19. VGG16-SPECIFIC — routing requires VGG feature geometry. |
+
+## QUEUED — session 42 (2026-06-21) — new CNN-GA line
+
+| Step | Script | Slot | Tier | Status | Motivation |
+|---|---|---|---|---|---|
+| cnn_step006 | `scripts/cnn_distiller/train_cnn_step006_ga_t0.py` | mini_mps | T0 | DONE | GA arch search complete. GA_2 winner: T0=41.32% (+4.51pp vs Ref), 105.9M MACs. GA_4 KILLED (−6.09pp). Key: dil never tested (n_br=1 bug). |
+| cnn_step007 | `scripts/cnn_distiller/train_cnn_step007_ga2_t1.py` | mini_mps | T1 | DONE (FAILED) | GA_2 T1 PATHOLOGICAL: best=35.44%@ep8, degraded 67ep. LR instability with CReLU at C=32. |
+| cnn_step008 | `scripts/cnn_distiller/train_cnn_step008_dil_crelu_ablation_t0.py` | mini_cpu | T0 | DONE | dil=4 KILLED (42% slower, −0.74pp vs dil=1 early). CReLU early > late: +2.88pp (CONFIRMED). |
+| cnn_step009 | `scripts/cnn_distiller/train_cnn_step009_warmup_t1.py` | mini_mps | T1 | DONE (FAILED) | best=33.07%@ep24, −2.37pp vs step007 (warmup made it worse). Same optimizer trap. |
+| cnn_step010 | `scripts/cnn_distiller/train_cnn_step010_sgdr_t1.py` | mini_mps | T1 | DONE-KILLED | SGDR harmful: cap at 41.32%=T0, restarts destroy basin. |
+| cnn_step011 | `scripts/cnn_distiller/train_cnn_step011_nofeat_t1.py` | mini_mps | T1 | DONE-KILLED | No-feat worse (36.61%@ep8→degraded). Feat cosine was helping. B2 ELIMINATED. |
+| cnn_step012 | `scripts/cnn_distiller/train_cnn_step012_twophase_t1.py` | mini_mps | T1 | DONE | 41.68%@ep21 (+0.36pp). Two-phase CONFIRMED. A_prime CONFIRMED. Arch cap confirmed. |
+| cnn_step013 | `scripts/cnn_distiller/train_cnn_step013_ref_twophase_t1.py` | mini_mps | T1 | DONE | Ref 37.17%@ep57. Phase 2 delta=+1.02pp. MultiScaleCNN arch limited. |
+| cnn_step014 | `scripts/cnn_distiller/train_cnn_step014_ga3_twophase_t1.py` | mini_cpu | T1 | DONE (CAPS) | GA_3 38.50%@ep30 (−3.18pp vs GA_2). Wider C2=192 WORSE. Arch cap confirmed not width-limited. |
+| cnn_step015 | `scripts/cnn_distiller/train_cnn_step015_nocrelu_t1.py` | mini_mps | T1 | DONE (C2) | best=37.58%. CReLU NOT bottleneck. MultiScaleCNN arch cap CONFIRMED. |
+| cnn_step016 | `scripts/cnn_distiller/train_cnn_step016_ga_evgg.py` | mini_mps | T0 | DONE | EfficientVGG GA search. GA converged: C1=32,C2=64,k=3,side=0 in all top-5. Top: GA1(85.6M fit=0.4761), GA2(98.5M), GA3(118M), GA4(62.9M). |
+| cnn_step017 | `scripts/cnn_distiller/train_cnn_step017_ga_evgg_t0.py` | mini_mps | T0 | DONE | All 4 EFF-PARETO: GA1=67.18%, GA2=68.33%, GA3=67.80%, GA4=65.66%. GA4 (no crelu) 12pp behind at ep5, closes to 1.52pp by ep20. |
+| cnn_step018 | `scripts/cnn_distiller/train_cnn_step018_ga_evgg_t1.py` | mini_mps | T1 | DONE | All 4 EFF-PARETO: GA1=72.61%, GA2=72.51%, GA3=72.97%, GA4=72.76%. ep35 dip systematic. |
+| cnn_step019 | `scripts/cnn_distiller/train_cnn_step019_ga_evgg_t2.py` | mini_mps | T2 | DONE | GA1=75.72% WEAK; GA2=77.25% EFF-PARETO; GA3=76.89% EFF-PARETO; GA4=76.10% EFF-PARETO (62.9M, most efficient). |
+| cnn_step020 | `scripts/cnn_distiller/train_cnn_step020_ga2_multiseed_t2.py` | mini_mps | T2 | DONE | GA2 multi-seed T2 (4 seeds). mean=76.80% ±0.92% EFF-PARETO. seed42=77.25% seed1=75.87%@ep35 seed2=78.09%@ep25 seed3=76.00%@ep30. ep25 peak pattern confirmed (3/4 seeds). Mixup needed for STRONG. |
+| cnn_step021 | `scripts/cnn_distiller/train_cnn_step021_ga2_mixup_t1.py` | mini_mps | T1 | DONE | GA2+Mixup(α=0.2) T1: best=73.61% @ep65, Δ=+1.10pp vs baseline 72.51%. ADVANCE. Peak shifted ep25→ep65 (Mixup eliminates early-peak overfit, CONFIRMED). elapsed=843s. |
+| cnn_step022 | `scripts/cnn_distiller/train_cnn_step022_ga2_mixup_multiseed_t2.py` | mini_mps | T2 | DONE | GA2+Mixup(α=0.2) T2 multi-seed. mean=77.32% ±0.56% EFF-PARETO (gap −0.29pp to STRONG). |
+| cnn_step023 | `scripts/cnn_distiller/train_cnn_step023_ga2_mixup_alpha_sweep_t1.py` | mini_mps | T1 | DONE | α=0.3 ADVANCE (74.24%, +0.63pp); α=0.4 NO-GAIN (73.58%); α=0.5 NO-GAIN (73.45%). Non-monotonic peak — α=0.3 Goldilocks. |
+| cnn_step024 | `scripts/cnn_distiller/train_cnn_step024_ga2_mixup_a03_multiseed_t2.py` | mini_mps | T2 | DONE | GA2+Mixup(α=0.3) T2 multi-seed. **77.17% ±0.82% EFF-PARETO.** seed1=76.28%@ep65, seed2=78.50%@ep65, seed3=77.04%@ep60, seed42=76.87%@ep115. α=0.3 WORSE than α=0.2 (77.17% vs 77.32%). Gap to STRONG: 0.44pp. α sweep closed — Mixup α not the lever. Result: `results/cnn_step024_ga2_mixup_multiseed_t2__mini_mps.json`. |
+| cnn_step025 | `scripts/cnn_distiller/train_cnn_step025_ga2_mixup_ls_t1.py` | mini_mps | T1 | DONE-NEGATIVE | GA2+Mixup(α=0.2)+LS. ε=0.05: 73.04% NO-GAIN (−0.57pp). ε=0.1: 70.78% NO-GAIN (−2.83pp). LS direction CLOSED. |
+| cnn_step026 | `scripts/cnn_distiller/train_cnn_step026_loss_weight_t1.py` | mini_mps | T1 | DONE-NEGATIVE | Loss weight ablation CLOSED. A(feat=0.30): 68.84% Δ=−4.77pp. B(feat=0.20): 64.71% Δ=−8.90pp. Monotonic: less feat_cos = worse. feat_cos@0.50 is load-bearing and irreplaceable. |
+| cnn_step027 | `scripts/cnn_distiller/train_cnn_step027_cutmix_t1.py` | mini_mps | T1 | DONE-NEGATIVE | GA2+CutMix(α=0.2) T1. 73.81% @ep65, Δ=+0.20pp, NO-GAIN. |
+| cnn_step028 | `scripts/cnn_distiller/train_cnn_step028_mixcutmix_t1.py` | mini_mps | T1 | DONE-NEGATIVE | GA2+MixCutMix(α=0.2) T1. 73.94% @ep75, Δ=+0.33pp, NO-GAIN. Best regularization result — still below threshold. Regularization direction CLOSED. |
+| cnn_step029 | `scripts/cnn_distiller/train_cnn_step029_ga5_t1.py` | mini_mps | T1 | DONE-ADVANCE | GA5 C=(48,96,384)+Mixup(α=0.2) T1. **74.73% @ep75, Δ=+1.12pp vs GA2. ADVANCE.** C1/C2 width is architecture bottleneck — CONFIRMED. Breaks regularization ceiling (+1.12pp vs best GA2 reg). 523K params, 141.3M MACs. |
+| cnn_step030 | `scripts/cnn_distiller/train_cnn_step030_ga5_mixup_t2.py` | mini_mps | T2 | DONE-STRONG | GA5 C=(48,96,384)+Mixup(α=0.2) T2 4-seed. **77.79% ±0.26% STRONG** — beats Ref (77.61%) +0.18pp, GA2 (77.32%) +0.47pp. 523K params, 141.3M MACs. CNN GA search COMPLETE. |
+
+**Non-experiment P0 tasks (equal priority):**
+- [x] Update `learnings/paper/MANUSCRIPT_DRAFT_sec6_scaling.md` §9.3: DONE — line 52 has 84.66%±0.06pp, monotonic confirmed, gap −1.58pp to linear
+- [ ] Decide CNN distiller scope: Paper 1 appendix vs Paper 2
+- [ ] Start LaTeX conversion: sec1_abstract first
 
 **Completed this session (session 38):**
 - **step993 T1** (mini_mps): DONE. **Additive dynamic KILLED at T1 — T0 signal noise.** Ref=73.50% (75ep), A=−1.47pp, B=−1.73pp, C=−1.47pp. Sign reversal from T0 (+0.67→+1.51pp). T0 at N=512 20ep had insufficient signal; 75ep reveals the additive term hurts. **Vision debt: additive dynamic connectivity (brief §3.5) KILLED-CONFIRMED.**

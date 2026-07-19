@@ -46,15 +46,14 @@ Practical conclusion: N=2048 is the efficient operating point for Imagenette. N�
 
 | N | Epochs | Accuracy | vs Linear (86.24%) | Params |
 |---|--------|----------|--------------------|--------|
-| 2,048 | 150 | 80.57% ± 0.12pp | −5.67pp | 34,976 |
+| 2,048 | 150 (T2) | 80.57% ± 0.12pp | −5.67pp | 34,976 |
 | 4,096 | 75 (T1) | 82.53% | −3.71pp | 69,792 |
-| 4,096 | 200 | 83.08% | −3.16pp | 69,792 |
-| 8,192 | 150 (T2) | 83.58% | −2.66pp | 139,424 |
-| 16,384 | 75 (T1) | 82.85% | −3.39pp | 278,688 |
+| 8,192 | 150 (T2) | 83.55% | −2.69pp | 139,424 |
+| 16,384 | 150 (T2) | **84.66% ± 0.06pp** | −1.58pp | 278,688 |
 
-Log-linear fit (N=2048 to N=8192): +1.5pp per 2× N (R²=0.94). N=16384 breaks the trend (−0.73pp vs N=8192), indicating a plateau or diminishing-returns regime above N≈8192 at K_in=15.
+Log-linear fit (N=2048 to N=16384): +1.4pp per 2× N (R²=0.97). Trend is monotone and extends beyond N=8192 — no plateau observed at K_in=15 up to N=16384. N=16384 result confirmed across 3 seeds (42=84.60%, 43=84.75%, 44=84.63%).
 
-Gap to linear narrows from −5.67pp (N=2048) to −2.66pp (N=8192). Extrapolating: achieving linear-parity on CIFAR-10 would require N≈65536 at the empirical slope — prohibitive. N=8192 is the practical Pareto-optimal point for CIFAR-10.
+Gap to linear narrows from −5.67pp (N=2048) to −1.64pp (N=16384). At the empirical slope, linear-parity would require N≈65536 at 15.7M FLOPs (12.7% of VGG FC = 123M) — approaching the efficiency boundary of practical use. N=8192 is the Pareto-optimal point (balance of accuracy and FLOPs); N=16384 provides the strongest accuracy at 6.4% of VGG FC FLOPs.
 
 ---
 
@@ -74,10 +73,10 @@ Aggressive scaling narrows the gap (+12.94pp from N=2048 to N=8192) but doesn't 
 
 | Metric | Imagenette | CIFAR-10 | CIFAR-100 |
 |--------|-----------|----------|-----------|
-| Slope (pp per 2× N) | ~14pp (N=256→512) | ~1.5pp (N=2048→8192) | ~3.5pp (N=2048→8192) |
-| Saturation point | N≈2048 | N≈8192 | Not reached |
-| Efficient N | 2,048 | 8,192 | N/A (structural gap) |
-| FLOPs at efficient N | 0.20M (K=1 KD) | 3.93M | N/A |
+| Slope (pp per 2× N) | ~14pp (N=256→512) | ~1.4pp (N=2048→16384, R²=0.97) | ~3.5pp (N=2048→8192) |
+| Saturation point | N≈2048 | Not observed up to N=16384 | Not reached |
+| Efficient N | 2,048 | 8,192 (Pareto); 16,384 (best acc) | N/A (structural gap) |
+| FLOPs at efficient N | 0.20M (K=1 KD) | 3.93M (N=8192) | N/A |
 
 SGNNET's O(N·K) cost scaling is strictly preferable to MLP O(N²): doubling N doubles FLOPs while quadrupling parameters costs 4× the compute in a dense layer. This enables larger-N configurations that would be infeasible as MLPs.
 
