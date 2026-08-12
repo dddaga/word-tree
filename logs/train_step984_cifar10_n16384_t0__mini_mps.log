@@ -1,0 +1,40 @@
+
+======================================================================
+step984 — CIFAR-10 N=16384 T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  N=16384 D=16 K_in=15 K_hh=2 K_iter=5
+  Scaling: N=2048→80.57%, N=4096→82.53%, N=8192→83.55%
+  Expected: ~84-85% (power-law). Linear ceiling=86.24%
+======================================================================
+
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+params=278,688  train_samples=25000
+  e  1  loss=3.8822  top1=0.6318  lr=2.36e-03
+  e  1  loss=3.8822  task=3.8822  safety=0.0000  top1=0.6318  lr=2.36e-03
+  e  2  loss=1.7904  top1=0.6911  lr=2.36e-03
+  e  3  loss=1.4973  top1=0.7251  lr=2.36e-03
+  e  4  loss=1.3015  top1=0.6684  lr=2.36e-03
+  e  5  loss=1.1770  top1=0.7080  lr=2.36e-03
+  e  6  loss=1.1229  top1=0.7366  lr=2.36e-03
+  e  7  loss=0.9014  top1=0.7698  lr=2.36e-03
+  e  8  loss=0.9679  top1=0.7059  lr=2.36e-03
+  e  9  loss=0.9297  top1=0.7483  lr=2.36e-03
+  e 10  loss=0.7983  top1=0.7768  lr=2.36e-03
+  e 10  loss=0.7983  task=0.7983  safety=0.0000  top1=0.7768  lr=2.36e-03
+  e 11  loss=0.7952  top1=0.7689  lr=2.36e-03
+  e 12  loss=0.8169  top1=0.7504  lr=2.36e-03
+  e 13  loss=0.7502  top1=0.6992  lr=2.36e-03
+  e 14  loss=0.7386  top1=0.7411  lr=2.36e-03
+  e 15  loss=0.7284  top1=0.7251  lr=2.36e-03
+  e 16  loss=0.7412  top1=0.7843  lr=2.36e-03
+  e 17  loss=0.7477  top1=0.8023  lr=2.36e-03
+  e 18  loss=0.7346  top1=0.7647  lr=2.36e-03
+  e 19  loss=0.6925  top1=0.6861  lr=2.36e-03
+  e 20  loss=0.6949  top1=0.7799  lr=2.36e-03
+  e 20  loss=0.6949  task=0.6949  safety=0.0000  top1=0.7799  lr=2.36e-03
+
+======================================================================
+RESULT: best=0.8023 @ep17  elapsed=2964s
+Scaling: 2K=80.57  4K=82.53  8K=83.55  16K=0.80
+  → WARNING: no gain vs N=8192 (-82.75pp)
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step984_cifar10_n16384_t0_seed42__mini_mps.json

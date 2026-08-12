@@ -1,0 +1,25 @@
+cnn_step035 GA5 k=5 T1 | 75ep 50%data | alpha=0.2
+  mps  slot=mini_mps  params=531,930  MACs=146.1M
+  Baseline=0.7473 (GA5 k=3 T1). Advance>=0.7523
+  ep  5  val=0.4367  best=0.4367  lr=2.97e-04
+  ep 10  val=0.5592  best=0.5592  lr=2.87e-04
+  ep 15  val=0.6698  best=0.6698  lr=2.72e-04
+  ep 20  val=0.6961  best=0.6961  lr=2.52e-04
+  ep 25  val=0.6831  best=0.6961  lr=2.28e-04
+  ep 30  val=0.7029  best=0.7029  lr=2.00e-04
+  ep 35  val=0.6922  best=0.7029  lr=1.70e-04
+  ep 40  val=0.7065  best=0.7065  lr=1.40e-04
+  ep 45  val=0.7088  best=0.7088  lr=1.10e-04
+  ep 50  val=0.7269  best=0.7269  lr=8.25e-05
+  ep 55  val=0.7236  best=0.7269  lr=5.80e-05
+  ep 60  val=0.7294  best=0.7294  lr=3.77e-05
+  ep 65  val=0.7259  best=0.7294  lr=2.25e-05
+  ep 70  val=0.7322  best=0.7322  lr=1.32e-05
+  ep 75  val=0.7310  best=0.7322  lr=1.00e-05
+
+============================================================
+cnn_step035 RESULT — GA5 k=5 T1
+============================================================
+  best=0.7322 @ep70  Δ_GA5k3=-0.0151  NO-GAIN  (1042s)
+  -> NO-GAIN → k=3 optimal; larger kernel no benefit at GA5 scale
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step035_ga5k5_t1__mini_mps.json

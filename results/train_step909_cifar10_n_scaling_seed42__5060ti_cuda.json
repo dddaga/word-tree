@@ -1,0 +1,12 @@
+{
+  "B_N4096": {
+    "kind": "sgnnet",
+    "desc": "N=4096, K_in=15 \u2014 capacity scaling (5.4\u00d7 CIFAR vs Imagenette)",
+    "n_params": 69792,
+    "best": 0.8253,
+    "best_ep": 124,
+    "delta_vs_linear_s882": -0.0371,
+    "delta_vs_sgnnet_s882": 0.0184,
+    "elapsed_s": 4347
+  }
+}

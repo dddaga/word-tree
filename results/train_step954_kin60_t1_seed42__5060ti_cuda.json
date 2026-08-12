@@ -1,0 +1,119 @@
+{
+  "Ref": {
+    "K_in": 25,
+    "coverage_pct": 204.1,
+    "n_params": 34976,
+    "best": 0.9546,
+    "best_ep": 73,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 114,
+    "haki": {
+      "15": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5615,
+        "routing_gain": -0.0864,
+        "pr": 2.259,
+        "dead_frac": 0.0
+      },
+      "30": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5386,
+        "routing_gain": -0.1094,
+        "pr": 2.244,
+        "dead_frac": 0.0
+      },
+      "50": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5149,
+        "routing_gain": -0.1331,
+        "pr": 2.255,
+        "dead_frac": 0.0
+      },
+      "75": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.4861,
+        "routing_gain": -0.1618,
+        "pr": 2.213,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "D_kin40": {
+    "K_in": 40,
+    "coverage_pct": 326.5,
+    "n_params": 34976,
+    "best": 0.9575,
+    "best_ep": 57,
+    "delta_vs_ref": 0.0028,
+    "elapsed_s": 114,
+    "haki": {
+      "15": {
+        "seed_fisher": 0.6599,
+        "final_fisher": 0.4085,
+        "routing_gain": -0.2514,
+        "pr": 2.122,
+        "dead_frac": 0.0
+      },
+      "30": {
+        "seed_fisher": 0.6599,
+        "final_fisher": 0.4146,
+        "routing_gain": -0.2452,
+        "pr": 2.169,
+        "dead_frac": 0.0
+      },
+      "50": {
+        "seed_fisher": 0.6599,
+        "final_fisher": 0.4187,
+        "routing_gain": -0.2412,
+        "pr": 2.212,
+        "dead_frac": 0.0
+      },
+      "75": {
+        "seed_fisher": 0.6599,
+        "final_fisher": 0.373,
+        "routing_gain": -0.2869,
+        "pr": 2.181,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "E_kin60": {
+    "K_in": 60,
+    "coverage_pct": 489.8,
+    "n_params": 34976,
+    "best": 0.9595,
+    "best_ep": 73,
+    "delta_vs_ref": 0.0048,
+    "elapsed_s": 114,
+    "haki": {
+      "15": {
+        "seed_fisher": 0.6614,
+        "final_fisher": 0.4743,
+        "routing_gain": -0.1871,
+        "pr": 2.34,
+        "dead_frac": 0.0
+      },
+      "30": {
+        "seed_fisher": 0.6614,
+        "final_fisher": 0.4763,
+        "routing_gain": -0.1851,
+        "pr": 2.396,
+        "dead_frac": 0.0
+      },
+      "50": {
+        "seed_fisher": 0.6614,
+        "final_fisher": 0.4799,
+        "routing_gain": -0.1816,
+        "pr": 2.444,
+        "dead_frac": 0.0
+      },
+      "75": {
+        "seed_fisher": 0.6614,
+        "final_fisher": 0.4936,
+        "routing_gain": -0.1679,
+        "pr": 2.496,
+        "dead_frac": 0.0
+      }
+    }
+  }
+}

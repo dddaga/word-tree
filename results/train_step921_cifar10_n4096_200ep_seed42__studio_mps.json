@@ -1,0 +1,8 @@
+{
+  "n_params": 69792,
+  "best": 0.8308,
+  "best_ep": 186,
+  "step909_ref_150ep": 0.8253,
+  "delta_vs_step909": 0.0055,
+  "elapsed_s": 4787
+}

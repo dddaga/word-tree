@@ -1,0 +1,52 @@
+{
+  "step1": {
+    "v_norm": 0.45574,
+    "curl_ratio": 0.22096,
+    "mean_curl": 0.1007,
+    "median_curl": 0.07405,
+    "max_curl": 0.6042,
+    "p95_curl": 0.28568
+  },
+  "step2": {
+    "v_norm": 0.56968,
+    "curl_ratio": 0.26868,
+    "mean_curl": 0.15306,
+    "median_curl": 0.11732,
+    "max_curl": 1.0035,
+    "p95_curl": 0.41364
+  },
+  "step3": {
+    "v_norm": 0.58012,
+    "curl_ratio": 0.26456,
+    "mean_curl": 0.15348,
+    "median_curl": 0.12642,
+    "max_curl": 0.87369,
+    "p95_curl": 0.39513
+  },
+  "step4": {
+    "v_norm": 0.52607,
+    "curl_ratio": 0.37321,
+    "mean_curl": 0.19633,
+    "median_curl": 0.16581,
+    "max_curl": 1.0795,
+    "p95_curl": 0.48287
+  },
+  "step5": {
+    "v_norm": 0.5565,
+    "curl_ratio": 0.35255,
+    "mean_curl": 0.19619,
+    "median_curl": 0.16401,
+    "max_curl": 1.19917,
+    "p95_curl": 0.49092
+  },
+  "convergence_deltas": [
+    1.85585,
+    1.12745,
+    1.35878,
+    1.79673,
+    1.53386
+  ],
+  "convergence_ratio": 0.8265,
+  "wpos_mean_dist": 1.6148,
+  "wpos_min_dist": 0.0007
+}

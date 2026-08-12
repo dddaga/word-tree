@@ -1,0 +1,49 @@
+ts_step002 | top_n=40 | min_history=500
+Loaded 63 tickers, 4020 dates (2010-01-05 → 2026-04-17)
+
+Top-40 by annualised volatility:
+  TANLA                 0.537
+  PAYTM                 0.525
+  ADANIENT              0.508
+  POLICYBZR             0.465
+  KPITTECH              0.440
+  VEDL                  0.423
+  LATENTVIEW            0.421
+  ROUTE                 0.417
+  TATAELXSI             0.393
+  MAPMYINDIA            0.391
+  HINDALCO              0.390
+  INDUSINDBK            0.389
+  NYKAA                 0.384
+  DELHIVERY             0.382
+  ADANIPORTS            0.380
+  IRCTC                 0.373
+  JSWSTEEL              0.361
+  HAPPSTMNDS            0.360
+  TATASTEEL             0.358
+  UPL                   0.352
+  BAJFINANCE            0.349
+  BPCL                  0.336
+  BAJAJFINSV            0.335
+  AXISBANK              0.334
+  PERSISTENT            0.331
+  CLEAN                 0.329
+  LTIM                  0.324
+  SBIN                  0.323
+  EICHERMOT             0.322
+  ONGC                  0.321
+  APOLLOHOSP            0.319
+  TITAN                 0.316
+  ICICIBANK             0.310
+  TATACONSUM            0.307
+  M&M                   0.301
+  BHARTIARTL            0.300
+  TECHM                 0.298
+  NESTLEIND             0.297
+  DIVISLAB              0.292
+  HDFCLIFE              0.292
+
+stock_order.json saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/ts/processed/stock_order.json
+Final universe (40 tickers, correlation-ordered):
+  BHARTIARTL, UPL, HDFCLIFE, TATACONSUM, TITAN, EICHERMOT, M&M, BAJFINANCE, BAJAJFINSV, INDUSINDBK, AXISBANK, ICICIBANK, SBIN, JSWSTEEL, TATASTEEL, HINDALCO, VEDL, ONGC, BPCL, ADANIENT, ADANIPORTS, NYKAA, LATENTVIEW, IRCTC, CLEAN, MAPMYINDIA, HAPPSTMNDS, ROUTE, TANLA, TECHM, LTIM, PERSISTENT, KPITTECH, DELHIVERY, TATAELXSI, DIVISLAB, APOLLOHOSP, POLICYBZR, PAYTM, NESTLEIND
+DONE

@@ -1,0 +1,29 @@
+{
+  "Ref": {
+    "desc": "baseline \u0394W-proj K_hh=2",
+    "n_params": 34976,
+    "extra_params": 0,
+    "best": 0.7753,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 6
+  },
+  "A_2exp": {
+    "desc": "2 experts: local+random, gate[N,2]",
+    "n_params": 39072,
+    "extra_params": 4096,
+    "best": 0.122,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6532,
+    "elapsed_s": 5
+  },
+  "B_3exp": {
+    "desc": "3 experts: local+random+hub, gate[N,3]",
+    "n_params": 41120,
+    "extra_params": 6144,
+    "best": 0.1106,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6647,
+    "elapsed_s": 43
+  }
+}

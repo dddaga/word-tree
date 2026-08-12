@@ -1,0 +1,79 @@
+{
+  "Ref_dw": {
+    "gate_type": "none",
+    "param": 0.0,
+    "n_params": 34976,
+    "best": 0.9411,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "mean_sparsity": 0.0,
+    "gate_entropy_mean": null,
+    "elapsed_s": 32
+  },
+  "A_top75": {
+    "gate_type": "topk",
+    "param": 0.75,
+    "n_params": 34976,
+    "best": 0.7906,
+    "best_ep": 19,
+    "delta_vs_ref": -0.1506,
+    "mean_sparsity": 0.2264,
+    "gate_entropy_mean": 0.0,
+    "elapsed_s": 34
+  },
+  "B_top50": {
+    "gate_type": "topk",
+    "param": 0.5,
+    "n_params": 34976,
+    "best": 0.7819,
+    "best_ep": 19,
+    "delta_vs_ref": -0.1592,
+    "mean_sparsity": 0.4941,
+    "gate_entropy_mean": 0.0,
+    "elapsed_s": 33
+  },
+  "C_top25": {
+    "gate_type": "topk",
+    "param": 0.25,
+    "n_params": 34976,
+    "best": 0.8046,
+    "best_ep": 19,
+    "delta_vs_ref": -0.1366,
+    "mean_sparsity": 0.75,
+    "gate_entropy_mean": 0.0,
+    "elapsed_s": 33
+  },
+  "D_top10": {
+    "gate_type": "topk",
+    "param": 0.1,
+    "n_params": 34976,
+    "best": 0.788,
+    "best_ep": 20,
+    "delta_vs_ref": -0.1531,
+    "mean_sparsity": 0.9004,
+    "gate_entropy_mean": 0.0,
+    "elapsed_s": 33
+  },
+  "E_soft_tau1": {
+    "gate_type": "soft",
+    "param": 1.0,
+    "n_params": 34976,
+    "best": 0.9231,
+    "best_ep": 17,
+    "delta_vs_ref": -0.0181,
+    "mean_sparsity": 0.6624,
+    "gate_entropy_mean": 0.6226,
+    "elapsed_s": 33
+  },
+  "F_soft_tau3": {
+    "gate_type": "soft",
+    "param": 3.0,
+    "n_params": 34976,
+    "best": 0.8825,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0586,
+    "mean_sparsity": 0.6624,
+    "gate_entropy_mean": 0.4188,
+    "elapsed_s": 33
+  }
+}

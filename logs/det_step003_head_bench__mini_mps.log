@@ -1,0 +1,25 @@
+==================================================================
+det_step003 head bench  device=mps  batches=[64, 256, 1000]
+  dense
+    B=  64 med=  0.8048ms  per_roi= 12.575us
+    B= 256 med=  1.8955ms  per_roi=  7.404us
+    B=1000 med=  5.2553ms  per_roi=  5.255us
+  lowrank_r256
+    B=  64 med=  0.3939ms  per_roi=  6.155us
+    B= 256 med=  0.8076ms  per_roi=  3.155us
+    B=1000 med=  1.7858ms  per_roi=  1.786us
+  sgn_r128k32
+    B=  64 med=  0.4667ms  per_roi=  7.292us
+    B= 256 med=  0.8150ms  per_roi=  3.184us
+    B=1000 med=  1.9429ms  per_roi=  1.943us
+  sgn_r64k16
+    B=  64 med=  0.4399ms  per_roi=  6.874us
+    B= 256 med=  0.6543ms  per_roi=  2.556us
+    B=1000 med=  1.6133ms  per_roi=  1.613us
+
+  config             params      macs/roi  B1000 us/roi   wall×  param×    mac×
+  dense          14,362,055    14,359,552         5.255   1.00x   1.00x   1.00x
+  lowrank_r256    3,394,247     3,393,280         1.786   2.94x   4.23x   4.23x
+  sgn_r128k32     1,680,967     1,680,256         1.943   2.70x   8.54x   8.55x
+  sgn_r64k16        836,615       836,032         1.613   3.26x  17.17x  17.18x
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/det_step003_head_bench__mini_mps.json

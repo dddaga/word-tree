@@ -1,0 +1,82 @@
+{
+  "G_ultra": {
+    "desc": "ultra-tiny: 8/16/32 k=3",
+    "channels": [
+      8,
+      16,
+      32
+    ],
+    "dw_kernel": 3,
+    "expansion": 2,
+    "side_branch": false,
+    "crelu_block3": false,
+    "n_params": 28994,
+    "n_macs": 6620512,
+    "params_pct": 0.197,
+    "macs_pct": 0.045,
+    "best": 0.3103,
+    "best_ep": 14,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1084
+  },
+  "A_tiny": {
+    "desc": "tiny: 16/32/64 k=3",
+    "channels": [
+      16,
+      32,
+      64
+    ],
+    "dw_kernel": 3,
+    "expansion": 2,
+    "side_branch": false,
+    "crelu_block3": true,
+    "n_params": 54650,
+    "n_macs": 16447168,
+    "params_pct": 0.372,
+    "macs_pct": 0.1119,
+    "best": 0.3534,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1619
+  },
+  "B_tiny_k7": {
+    "desc": "tiny: 16/32/64 k=7 (larger RF)",
+    "channels": [
+      16,
+      32,
+      64
+    ],
+    "dw_kernel": 7,
+    "expansion": 2,
+    "side_branch": false,
+    "crelu_block3": true,
+    "n_params": 59130,
+    "n_macs": 19959488,
+    "params_pct": 0.402,
+    "macs_pct": 0.1358,
+    "best": 0.4099,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1985
+  },
+  "C_small": {
+    "desc": "small: 32/64/128 k=7",
+    "channels": [
+      32,
+      64,
+      128
+    ],
+    "dw_kernel": 7,
+    "expansion": 2,
+    "side_branch": false,
+    "crelu_block3": true,
+    "n_params": 140778,
+    "n_macs": 56772992,
+    "params_pct": 0.958,
+    "macs_pct": 0.3862,
+    "best": 0.5926,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 3931
+  }
+}

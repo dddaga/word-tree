@@ -1,0 +1,20 @@
+{
+  "Ref": {
+    "h5_file": "store_cifar10.h5",
+    "train_samples": 25000,
+    "n_params": 34976,
+    "best": 0.786,
+    "best_ep": 74,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 1602.8
+  },
+  "A_aug": {
+    "h5_file": "store_cifar10_aug.h5",
+    "train_samples": 50000,
+    "n_params": 34976,
+    "best": 0.7963,
+    "best_ep": 52,
+    "delta_vs_ref": 0.0103,
+    "elapsed_s": 2427.0
+  }
+}

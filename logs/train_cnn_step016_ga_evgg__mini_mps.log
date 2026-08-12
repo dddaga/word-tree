@@ -1,0 +1,100 @@
+cnn_step016 EfficientVGG GA search
+pop=12 gen=6 top_k=5
+eval: 5ep × 10% data
+Device: mps | Slot: mini_mps
+Anchors: D_small_s=70.95%(57.5M), Ref=73.17%(183M), F_wide=74.42%(560M)
+
+  gen00  fit=0.4664  acc=0.4191  MACs=62.9M  C=(32,64,256)  k=3  exp=1  side=0  crelu=0
+  gen00  fit=0.3634  acc=0.3411  MACs=97.4M  C=(32,192,128)  k=3  exp=1  side=0  crelu=0
+  gen00  fit=0.4189  acc=0.4206  MACs=190.8M  C=(32,96,384)  k=3  exp=2  side=1  crelu=0
+  gen00  fit=0.4086  acc=0.3980  MACs=140.6M  C=(48,192,256)  k=5  exp=1  side=0  crelu=1
+  gen00  fit=0.4379  acc=0.4117  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen00  fit=0.4214  acc=0.3969  MACs=100.8M  C=(32,192,128)  k=5  exp=1  side=1  crelu=1
+  gen00  fit=0.3854  acc=0.3468  MACs=63.7M  C=(48,64,128)  k=7  exp=1  side=1  crelu=0
+  gen00  fit=0.4308  acc=0.4344  MACs=199.1M  C=(48,64,384)  k=5  exp=2  side=1  crelu=0
+  gen00  fit=0.4061  acc=0.4069  MACs=186.8M  C=(64,128,192)  k=7  exp=2  side=0  crelu=0
+  gen00  fit=0.3938  acc=0.3850  MACs=146.1M  C=(48,96,384)  k=5  exp=2  side=0  crelu=1
+  gen00  fit=0.3706  acc=0.3409  MACs=79.5M  C=(32,96,128)  k=5  exp=2  side=1  crelu=0
+  gen00  fit=0.4228  acc=0.4110  MACs=138.0M  C=(48,128,192)  k=7  exp=2  side=1  crelu=1
+Gen 00 BEST  fit=0.4664  acc=0.4191  MACs=62.9M  C=(32,64,256)  k=3  crelu=0
+  gen01  fit=0.4103  acc=0.3687  MACs=62.9M  C=(32,64,256)  k=3  exp=1  side=0  crelu=0
+  gen01  fit=0.4254  acc=0.4000  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen01  fit=0.3891  acc=0.3924  MACs=199.1M  C=(48,64,384)  k=5  exp=2  side=1  crelu=0
+  gen01  fit=0.3989  acc=0.3878  MACs=138.0M  C=(48,128,192)  k=7  exp=2  side=1  crelu=1
+  gen01  fit=0.3816  acc=0.3595  MACs=100.8M  C=(32,192,128)  k=5  exp=1  side=1  crelu=1
+  gen01  fit=0.4138  acc=0.3975  MACs=122.3M  C=(48,64,384)  k=3  exp=2  side=1  crelu=1
+  gen01  fit=0.4498  acc=0.4229  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen01  fit=0.3626  acc=0.3801  MACs=293.5M  C=(32,192,128)  k=5  exp=4  side=1  crelu=1
+  gen01  fit=0.4075  acc=0.4553  MACs=555.6M  C=(96,64,384)  k=5  exp=4  side=1  crelu=0
+  gen01  fit=0.4121  acc=0.3659  MACs=55.8M  C=(32,96,192)  k=3  exp=1  side=0  crelu=1
+  gen01  fit=0.3958  acc=0.4120  MACs=273.7M  C=(64,128,192)  k=7  exp=4  side=1  crelu=1
+  gen01  fit=0.4372  acc=0.4611  MACs=312.0M  C=(32,64,384)  k=3  exp=4  side=0  crelu=0
+Gen 01 BEST  fit=0.4498  acc=0.4229  MACs=98.9M  C=(32,64,384)  k=3  crelu=1
+  gen02  fit=0.4238  acc=0.3985  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen02  fit=0.4430  acc=0.4673  MACs=312.0M  C=(32,64,384)  k=3  exp=4  side=0  crelu=0
+  gen02  fit=0.4430  acc=0.4166  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen02  fit=0.4435  acc=0.4260  MACs=122.3M  C=(48,64,384)  k=3  exp=2  side=1  crelu=1
+  gen02  fit=0.3839  acc=0.3409  MACs=55.8M  C=(32,96,192)  k=3  exp=1  side=0  crelu=1
+  gen02  fit=0.4172  acc=0.4400  MACs=312.0M  C=(32,64,384)  k=3  exp=4  side=0  crelu=0
+  gen02  fit=0.4490  acc=0.3936  MACs=49.1M  C=(32,64,192)  k=3  exp=1  side=0  crelu=0
+  gen02  fit=0.3809  acc=0.3834  MACs=195.7M  C=(48,192,192)  k=3  exp=2  side=1  crelu=1
+  gen02  fit=0.4459  acc=0.4191  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen02  fit=0.4285  acc=0.4031  MACs=99.2M  C=(48,64,192)  k=3  exp=2  side=0  crelu=0
+  gen02  fit=0.4196  acc=0.4168  MACs=171.2M  C=(32,64,384)  k=3  exp=2  side=1  crelu=0
+  gen02  fit=0.3890  acc=0.4117  MACs=323.0M  C=(96,192,256)  k=3  exp=2  side=1  crelu=1
+Gen 02 BEST  fit=0.4490  acc=0.3936  MACs=49.1M  C=(32,64,192)  k=3  crelu=0
+  gen03  fit=0.3868  acc=0.3391  MACs=49.1M  C=(32,64,192)  k=3  exp=1  side=0  crelu=0
+  gen03  fit=0.4614  acc=0.4336  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen03  fit=0.3892  acc=0.3738  MACs=122.3M  C=(48,64,384)  k=3  exp=2  side=1  crelu=1
+  gen03  fit=0.4189  acc=0.4418  MACs=312.0M  C=(32,64,384)  k=3  exp=4  side=0  crelu=0
+  gen03  fit=0.4086  acc=0.3842  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen03  fit=0.4223  acc=0.4120  MACs=143.2M  C=(96,64,192)  k=7  exp=1  side=0  crelu=0
+  gen03  fit=0.4283  acc=0.3969  MACs=85.6M  C=(32,64,384)  k=3  exp=1  side=0  crelu=1
+  gen03  fit=0.4454  acc=0.4382  MACs=155.8M  C=(32,128,384)  k=7  exp=2  side=1  crelu=1
+  gen03  fit=0.4062  acc=0.3564  MACs=49.5M  C=(32,64,192)  k=3  exp=1  side=1  crelu=0
+  gen03  fit=0.3846  acc=0.3755  MACs=144.5M  C=(32,128,384)  k=3  exp=2  side=1  crelu=1
+  gen03  fit=0.3726  acc=0.3414  MACs=76.4M  C=(32,64,192)  k=3  exp=2  side=0  crelu=0
+  gen03  fit=0.4657  acc=0.4377  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+Gen 03 BEST  fit=0.4657  acc=0.4377  MACs=98.5M  C=(32,64,384)  k=3  crelu=1
+  gen04  fit=0.4178  acc=0.3926  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen04  fit=0.4291  acc=0.4033  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen04  fit=0.4464  acc=0.4392  MACs=155.8M  C=(32,128,384)  k=7  exp=2  side=1  crelu=1
+  gen04  fit=0.4473  acc=0.4145  MACs=85.6M  C=(32,64,384)  k=3  exp=1  side=0  crelu=1
+  gen04  fit=0.3938  acc=0.3842  MACs=143.2M  C=(96,64,192)  k=7  exp=1  side=0  crelu=0
+  gen04  fit=0.4037  acc=0.3959  MACs=151.0M  C=(32,192,384)  k=3  exp=1  side=0  crelu=1
+  gen04  fit=0.4684  acc=0.4403  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen04  fit=0.4670  acc=0.4469  MACs=118.0M  C=(32,96,384)  k=3  exp=2  side=0  crelu=1
+  gen04  fit=0.4572  acc=0.4377  MACs=118.5M  C=(32,96,384)  k=3  exp=2  side=1  crelu=1
+  gen04  fit=0.4306  acc=0.4031  MACs=94.7M  C=(32,64,384)  k=7  exp=1  side=0  crelu=1
+  gen04  fit=0.3704  acc=0.3490  MACs=101.1M  C=(32,128,128)  k=7  exp=2  side=0  crelu=1
+  gen04  fit=0.3705  acc=0.3646  MACs=155.8M  C=(32,128,384)  k=7  exp=2  side=1  crelu=1
+Gen 04 BEST  fit=0.4684  acc=0.4403  MACs=98.5M  C=(32,64,384)  k=3  crelu=1
+  gen05  fit=0.4286  acc=0.4028  MACs=98.5M  C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  gen05  fit=0.4427  acc=0.4237  MACs=118.0M  C=(32,96,384)  k=3  exp=2  side=0  crelu=1
+  gen05  fit=0.4492  acc=0.4301  MACs=118.5M  C=(32,96,384)  k=3  exp=2  side=1  crelu=1
+  gen05  fit=0.4761  acc=0.4413  MACs=85.6M  C=(32,64,384)  k=3  exp=1  side=0  crelu=1
+  gen05  fit=0.4210  acc=0.4143  MACs=155.8M  C=(32,128,384)  k=7  exp=2  side=1  crelu=1
+  gen05  fit=0.3998  acc=0.4087  MACs=228.4M  C=(96,64,384)  k=3  exp=2  side=0  crelu=1
+  gen05  fit=0.4661  acc=0.4382  MACs=98.9M  C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+  gen05  fit=0.4190  acc=0.4122  MACs=155.8M  C=(32,128,384)  k=7  exp=2  side=1  crelu=1
+  gen05  fit=0.4221  acc=0.4290  MACs=215.7M  C=(32,192,384)  k=3  exp=2  side=1  crelu=1
+  gen05  fit=0.3808  acc=0.3717  MACs=144.0M  C=(32,128,384)  k=3  exp=2  side=0  crelu=1
+  gen05  fit=0.4251  acc=0.3857  MACs=69.3M  C=(32,128,192)  k=3  exp=1  side=0  crelu=1
+  gen05  fit=0.4592  acc=0.4696  MACs=229.0M  C=(32,192,384)  k=7  exp=2  side=1  crelu=1
+Gen 05 BEST  fit=0.4761  acc=0.4413  MACs=85.6M  C=(32,64,384)  k=3  crelu=1
+
+============================================================
+EfficientVGG GA TOP 5 CONFIGS
+============================================================
+  [1] fit=0.4761  acc=0.4413  MACs=85.6M  params=471,274
+       C=(32,64,384)  k=3  exp=1  side=0  crelu=1
+  [2] fit=0.4684  acc=0.4403  MACs=98.5M  params=481,514
+       C=(32,64,384)  k=3  exp=2  side=0  crelu=1
+  [3] fit=0.4670  acc=0.4469  MACs=118.0M  params=516,010
+       C=(32,96,384)  k=3  exp=2  side=0  crelu=1
+  [4] fit=0.4664  acc=0.4191  MACs=62.9M  params=304,618
+       C=(32,64,256)  k=3  exp=1  side=0  crelu=0
+  [5] fit=0.4661  acc=0.4382  MACs=98.9M  params=489,130
+       C=(32,64,384)  k=3  exp=2  side=1  crelu=1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step016_ga_evgg_results__mini_mps.json

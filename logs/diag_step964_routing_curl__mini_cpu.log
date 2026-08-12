@@ -1,0 +1,36 @@
+
+====================================================================
+step964 — Routing field irrotationality diagnostic
+  device=cpu  seed=42
+  N=2048/D=16/K_hh=2/K_iter=5
+  n_triangles=10000
+====================================================================
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  No checkpoint — using random init (diagnostic of untrained model)
+Computing routing velocity field and discrete curl per step...
+  step 1: v_norm=0.4557  mean_curl=0.1007  curl_ratio=0.2210  p95=0.2857
+  step 2: v_norm=0.5697  mean_curl=0.1531  curl_ratio=0.2687  p95=0.4136
+  step 3: v_norm=0.5801  mean_curl=0.1535  curl_ratio=0.2646  p95=0.3951
+  step 4: v_norm=0.5261  mean_curl=0.1963  curl_ratio=0.3732  p95=0.4829
+  step 5: v_norm=0.5565  mean_curl=0.1962  curl_ratio=0.3525  p95=0.4909
+
+Fixed-point convergence (delta per routing step):
+  step 1: Δ=1.85585
+  step 2: Δ=1.12745
+  step 3: Δ=1.35878
+  step 4: Δ=1.79673
+  step 5: Δ=1.53386
+
+W_pos pairwise distance: mean=1.6148  min=0.0007
+
+====================================================================
+INTERPRETATION
+====================================================================
+  curl_ratios per step: [0.221, 0.2687, 0.2646, 0.3732, 0.3525]
+  convergence_deltas:   [1.85585, 1.12745, 1.35878, 1.79673, 1.53386]
+  verdict: ROTATIONAL — significant circulation. Iteration is necessary.
+           Routing has genuine cycles; K_iter cannot be shortcut.
+  convergence: SLOW (ratio=0.827)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/diag_step964_routing_curl_seed42__local.json

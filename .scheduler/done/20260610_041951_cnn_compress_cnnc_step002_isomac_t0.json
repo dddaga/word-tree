@@ -1,0 +1,15 @@
+{
+  "line": "cnn_compress",
+  "script": "scripts/cnn_compress/cnnc_step002_isomac_t0.py",
+  "slots": [
+    "mini_mps"
+  ],
+  "args": [
+    "--tag",
+    "t0"
+  ],
+  "submitted_at": "2026-06-10 04:19:51",
+  "slot": "mini_mps",
+  "launched_at": "2026-06-10 04:20:20",
+  "finished_at": "2026-06-10 04:29:20"
+}

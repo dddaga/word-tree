@@ -1,0 +1,188 @@
+
+======================================================================
+step991 — Hebbian prune-and-grow topology T0 (20ep, 50% Imagenette)
+  Mechanism: epoch-boundary prune+grow on ΔW-proj edge scores
+  Safe pattern: epoch-boundary (AH precedent); NOT in-forward gating
+  device=cpu  epochs=20  seed=42  batch=512
+  Configs: Ref, A_hebbian_random, B_hebbian_wpos, C_hebbian_fast
+  Advance: any config >= Ref + 0.5pp
+======================================================================
+
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Config: Ref  params=34,976  device=cpu
+  e  1  loss=14.1187  top1=0.0927  lr=2.36e-03
+  e  1  loss=14.1187  task=14.1187  safety=0.0000  top1=0.0927  lr=2.36e-03
+  e  2  loss=4.0988  top1=0.2054  lr=2.36e-03
+  e  3  loss=2.5193  top1=0.2866  lr=2.36e-03
+  e  4  loss=1.8958  top1=0.4711  lr=2.36e-03
+  e  5  loss=1.5073  top1=0.5564  lr=2.36e-03
+  e  6  loss=1.2926  top1=0.6227  lr=2.36e-03
+  e  7  loss=1.1238  top1=0.6632  lr=2.36e-03
+  e  8  loss=1.0113  top1=0.7001  lr=2.36e-03
+  e  9  loss=0.9251  top1=0.7386  lr=2.36e-03
+  e 10  loss=0.8482  top1=0.7554  lr=2.36e-03
+  e 10  loss=0.8482  task=0.8482  safety=0.0000  top1=0.7554  lr=2.36e-03
+  e 11  loss=0.7826  top1=0.7763  lr=2.36e-03
+  e 12  loss=0.7325  top1=0.7834  lr=2.36e-03
+  e 13  loss=0.7010  top1=0.8008  lr=2.36e-03
+  e 14  loss=0.6638  top1=0.8082  lr=2.36e-03
+  e 15  loss=0.6324  top1=0.8173  lr=2.36e-03
+  e 16  loss=0.6044  top1=0.8346  lr=2.36e-03
+  e 17  loss=0.5810  top1=0.8390  lr=2.36e-03
+  e 18  loss=0.5600  top1=0.8349  lr=2.36e-03
+  e 19  loss=0.5443  top1=0.8492  lr=2.36e-03
+  e 20  loss=0.5272  top1=0.8540  lr=2.36e-03
+  e 20  loss=0.5272  task=0.5272  safety=0.0000  top1=0.8540  lr=2.36e-03
+  DONE: best=0.8540 @ep20  88s
+
+────────────────────────────────────────────────────────────
+Config: A_hebbian_random  params=34,976  device=cpu
+    [hebbian] rewired 409 edges (total 409)
+  e  1  loss=14.2600  top1=0.0902  lr=2.36e-03
+  e  1  loss=14.2600  task=14.2600  safety=0.0000  top1=0.0902  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 818)
+  e  2  loss=6.0539  top1=0.1809  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 1227)
+  e  3  loss=3.2083  top1=0.1587  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 1636)
+  e  4  loss=2.9410  top1=0.2780  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2045)
+  e  5  loss=2.4566  top1=0.2973  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2454)
+  e  6  loss=2.4090  top1=0.2775  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2863)
+  e  7  loss=2.3622  top1=0.3274  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 3272)
+  e  8  loss=2.2744  top1=0.3424  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 3681)
+  e  9  loss=2.3572  top1=0.3478  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4090)
+  e 10  loss=2.3593  top1=0.3294  lr=2.36e-03
+  e 10  loss=2.3593  task=2.3593  safety=0.0000  top1=0.3294  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4499)
+  e 11  loss=2.1433  top1=0.4153  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4908)
+  e 12  loss=2.1428  top1=0.3819  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 5317)
+  e 13  loss=1.9565  top1=0.4186  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 5726)
+  e 14  loss=1.7850  top1=0.4257  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6135)
+  e 15  loss=1.8138  top1=0.4206  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6544)
+  e 16  loss=1.6742  top1=0.4642  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6953)
+  e 17  loss=1.7660  top1=0.4425  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 7362)
+  e 18  loss=1.9916  top1=0.4262  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 7771)
+  e 19  loss=1.7752  top1=0.4446  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 8180)
+  e 20  loss=1.7356  top1=0.4721  lr=2.36e-03
+  e 20  loss=1.7356  task=1.7356  safety=0.0000  top1=0.4721  lr=2.36e-03
+  DONE: best=0.4721 @ep20  93s
+
+────────────────────────────────────────────────────────────
+Config: B_hebbian_wpos  params=34,976  device=cpu
+    [hebbian] rewired 409 edges (total 409)
+  e  1  loss=14.1466  top1=0.0894  lr=2.36e-03
+  e  1  loss=14.1466  task=14.1466  safety=0.0000  top1=0.0894  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 818)
+  e  2  loss=4.6838  top1=0.2326  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 1227)
+  e  3  loss=2.9350  top1=0.2003  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 1636)
+  e  4  loss=2.9744  top1=0.2894  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2045)
+  e  5  loss=2.2928  top1=0.3618  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2454)
+  e  6  loss=2.0640  top1=0.3564  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 2863)
+  e  7  loss=2.0412  top1=0.3924  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 3272)
+  e  8  loss=2.1894  top1=0.3567  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 3681)
+  e  9  loss=1.8223  top1=0.4713  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4090)
+  e 10  loss=1.7147  top1=0.4856  lr=2.36e-03
+  e 10  loss=1.7147  task=1.7147  safety=0.0000  top1=0.4856  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4499)
+  e 11  loss=1.6716  top1=0.5075  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 4908)
+  e 12  loss=1.6012  top1=0.5345  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 5317)
+  e 13  loss=1.4428  top1=0.5964  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 5726)
+  e 14  loss=1.4274  top1=0.5824  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6135)
+  e 15  loss=1.4780  top1=0.5526  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6544)
+  e 16  loss=1.5887  top1=0.5659  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 6953)
+  e 17  loss=1.4538  top1=0.5544  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 7362)
+  e 18  loss=1.4259  top1=0.6341  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 7771)
+  e 19  loss=1.2369  top1=0.6283  lr=2.36e-03
+    [hebbian] rewired 409 edges (total 8180)
+  e 20  loss=1.0717  top1=0.7111  lr=2.36e-03
+  e 20  loss=1.0717  task=1.0717  safety=0.0000  top1=0.7111  lr=2.36e-03
+  DONE: best=0.7111 @ep20  89s
+
+────────────────────────────────────────────────────────────
+Config: C_hebbian_fast  params=34,976  device=cpu
+    [hebbian] rewired 819 edges (total 819)
+  e  1  loss=14.0895  top1=0.0892  lr=2.36e-03
+  e  1  loss=14.0895  task=14.0895  safety=0.0000  top1=0.0892  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 1638)
+  e  2  loss=6.8072  top1=0.1289  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 2457)
+  e  3  loss=4.3451  top1=0.1195  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 3276)
+  e  4  loss=3.9152  top1=0.1223  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 4095)
+  e  5  loss=3.1106  top1=0.2087  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 4914)
+  e  6  loss=3.1908  top1=0.1786  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 5733)
+  e  7  loss=3.8023  top1=0.2464  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 6552)
+  e  8  loss=2.7502  top1=0.2466  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 7371)
+  e  9  loss=2.5690  top1=0.2369  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 8190)
+  e 10  loss=2.5565  top1=0.2364  lr=2.36e-03
+  e 10  loss=2.5565  task=2.5565  safety=0.0000  top1=0.2364  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 9009)
+  e 11  loss=2.8873  top1=0.2082  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 9828)
+  e 12  loss=2.7399  top1=0.2408  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 10647)
+  e 13  loss=2.7404  top1=0.2958  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 11466)
+  e 14  loss=2.4233  top1=0.3182  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 12285)
+  e 15  loss=2.7642  top1=0.2619  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 13104)
+  e 16  loss=2.3782  top1=0.3506  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 13923)
+  e 17  loss=2.7364  top1=0.3559  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 14742)
+  e 18  loss=2.6388  top1=0.3167  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 15561)
+  e 19  loss=2.5518  top1=0.2617  lr=2.36e-03
+    [hebbian] rewired 819 edges (total 16380)
+  e 20  loss=3.2224  top1=0.2910  lr=2.36e-03
+  e 20  loss=3.2224  task=3.2224  safety=0.0000  top1=0.2910  lr=2.36e-03
+  DONE: best=0.3559 @ep17  88s
+
+======================================================================
+step991 SUMMARY  (Ref=0.8540)
+  Ref                             0.8540  (+0.0000)  Ref
+  A_hebbian_random                0.4721  (-0.3819)  NEUTRAL/KILL
+  B_hebbian_wpos                  0.7111  (-0.1429)  NEUTRAL/KILL
+  C_hebbian_fast                  0.3559  (-0.4981)  NEUTRAL/KILL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step991_hebbian_t0_seed42__mini_cpu.json

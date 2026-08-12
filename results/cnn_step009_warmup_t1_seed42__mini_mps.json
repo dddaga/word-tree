@@ -1,0 +1,27 @@
+{
+  "config": {
+    "channels": [
+      32,
+      64,
+      384
+    ],
+    "dil_rates": [
+      1
+    ],
+    "expansion": 1,
+    "crelu_mask": [
+      true,
+      true,
+      false
+    ]
+  },
+  "best": 0.33070063694267515,
+  "best_ep": 24,
+  "macs_M": 105.90784,
+  "params": 561642,
+  "elapsed_s": 1374,
+  "warmup_eps": 10,
+  "tier": "T1",
+  "advance": "BELOW_THRESHOLD",
+  "vs_step007_delta_pp": -2.37
+}

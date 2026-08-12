@@ -1,0 +1,15 @@
+{
+  "step": "step984",
+  "config": "N=16384 D=16 K_in=15 K_hh=2 K_iter=5",
+  "n_params": 278688,
+  "train_samples": 25000,
+  "best": 0.8023,
+  "best_ep": 17,
+  "elapsed_s": 2963.5,
+  "scaling_context": {
+    "N2048": 80.57,
+    "N4096": 82.53,
+    "N8192": 83.55,
+    "linear_ceiling": 86.24
+  }
+}

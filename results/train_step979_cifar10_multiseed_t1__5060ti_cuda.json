@@ -1,0 +1,37 @@
+[
+  {
+    "seed": 0,
+    "top1_best": 0.7704,
+    "best_epoch": 75,
+    "n_params": 34976,
+    "elapsed_s": 145
+  },
+  {
+    "seed": 1,
+    "top1_best": 0.7756,
+    "best_epoch": 71,
+    "n_params": 34976,
+    "elapsed_s": 115
+  },
+  {
+    "seed": 42,
+    "top1_best": 0.7793,
+    "best_epoch": 72,
+    "n_params": 34976,
+    "elapsed_s": 121
+  },
+  {
+    "seed": 123,
+    "top1_best": 0.7719,
+    "best_epoch": 68,
+    "n_params": 34976,
+    "elapsed_s": 122
+  },
+  {
+    "seed": 2024,
+    "top1_best": 0.7745,
+    "best_epoch": 69,
+    "n_params": 34976,
+    "elapsed_s": 123
+  }
+]

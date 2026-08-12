@@ -1,0 +1,81 @@
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: TATAMOTORS.NS"}}}
+$TATAMOTORS.NS: possibly delisted; no timezone found
+
+1 Failed download:
+['TATAMOTORS.NS']: possibly delisted; no timezone found
+$ZOMATO.NS: possibly delisted; no timezone found
+
+1 Failed download:
+['ZOMATO.NS']: possibly delisted; no timezone found
+ts_step001 | tickers=65 | start=2010-01-01 | end=2026-04-19 | update=False
+Output dir: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/ts/raw
+
+  RELIANCE.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  TCS.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  HDFCBANK.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  INFY.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ICICIBANK.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  HINDUNILVR.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  BAJFINANCE.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  SBIN.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  BHARTIARTL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  KOTAKBANK.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  LT.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  AXISBANK.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ASIANPAINT.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  MARUTI.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  TITAN.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  SUNPHARMA.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ULTRACEMCO.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  WIPRO.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ADANIENT.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ONGC.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  POWERGRID.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  NTPC.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  JSWSTEEL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  TECHM.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  HCLTECH.NS: 4021 rows  [2010-01-04 → 2026-04-17]
+  BAJAJFINSV.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  M&M.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  TATAMOTORS.NS: NO DATA
+  TATASTEEL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  INDUSINDBK.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  NESTLEIND.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  BRITANNIA.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  CIPLA.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  DRREDDY.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  DIVISLAB.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  BPCL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  COALINDIA.NS: 3809 rows  [2010-11-04 → 2026-04-17]
+  HINDALCO.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  GRASIM.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  APOLLOHOSP.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  EICHERMOT.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  BAJAJ-AUTO.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  HEROMOTOCO.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ADANIPORTS.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  TATACONSUM.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  LTIM.NS: 2405 rows  [2016-07-21 → 2026-04-17]
+  SBILIFE.NS: 2109 rows  [2017-10-03 → 2026-04-17]
+  HDFCLIFE.NS: 2077 rows  [2017-11-17 → 2026-04-17]
+  UPL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  VEDL.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  ZOMATO.NS: NO DATA
+  PAYTM.NS: 1090 rows  [2021-11-18 → 2026-04-17]
+  NYKAA.NS: 1096 rows  [2021-11-10 → 2026-04-17]
+  POLICYBZR.NS: 1092 rows  [2021-11-15 → 2026-04-17]
+  DELHIVERY.NS: 964 rows  [2022-05-24 → 2026-04-17]
+  IRCTC.NS: 1612 rows  [2019-10-14 → 2026-04-17]
+  HAPPSTMNDS.NS: 1380 rows  [2020-09-17 → 2026-04-17]
+  TANLA.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  LATENTVIEW.NS: 1088 rows  [2021-11-23 → 2026-04-17]
+  MAPMYINDIA.NS: 1068 rows  [2021-12-21 → 2026-04-17]
+  ROUTE.NS: 1378 rows  [2020-09-21 → 2026-04-17]
+  CLEAN.NS: 1173 rows  [2021-07-19 → 2026-04-17]
+  KPITTECH.NS: 1728 rows  [2019-04-22 → 2026-04-17]
+  TATAELXSI.NS: 4020 rows  [2010-01-04 → 2026-04-17]
+  PERSISTENT.NS: 3959 rows  [2010-04-06 → 2026-04-17]
+
+Done: 63 ok / 2 failed
+Files: 126 parquet files in /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/ts/raw
+DONE

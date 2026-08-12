@@ -1,0 +1,38 @@
+{
+  "step": "data_step002",
+  "device": "cpu",
+  "epochs": 20,
+  "train_frac": 0.5,
+  "modes": {
+    "baseline": {
+      "mode": "baseline",
+      "best_acc": 0.6584,
+      "final_acc": 0.6584,
+      "px": 1024
+    },
+    "resize24": {
+      "mode": "resize24",
+      "best_acc": 0.6427,
+      "final_acc": 0.6237,
+      "px": 576
+    },
+    "seam24": {
+      "mode": "seam24",
+      "best_acc": 0.6348,
+      "final_acc": 0.6087,
+      "px": 576,
+      "carve_ms_per_img": 0.233,
+      "reclaim_record_bytes": 10752,
+      "reclaim_map_exact": true
+    },
+    "seam_hi": {
+      "mode": "seam_hi",
+      "best_acc": 0.6544,
+      "final_acc": 0.5296,
+      "px": 784,
+      "carve_ms_per_img": 0.17,
+      "reclaim_record_bytes": 13440,
+      "reclaim_map_exact": true
+    }
+  }
+}

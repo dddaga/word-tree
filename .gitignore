@@ -12,3 +12,6 @@ results/*.log
 
 # SSH keys — never commit
 keys/
+
+# Large VLM checkpoint artifacts (>100MB, exceed GitHub limit)
+results/frontier/*.pt

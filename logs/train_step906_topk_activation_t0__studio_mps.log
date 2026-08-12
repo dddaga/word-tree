@@ -1,0 +1,212 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step906 — Top-K Activation Sparsity T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  N=2048/D=16/K_hh=2/K_iter=5
+  Ref context (step898 Ref_dw T0): 0.9396
+  Gate signal: |x_sum[b,i]| = |sum(x[b, conn_in[i]])|
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: gate=none  param=0.0  params=34,976
+  e  1  loss=2.4823  top1=0.7740  lr=2.36e-03
+  e  1  loss=2.4823  task=2.4823  safety=0.0000  top1=0.7740  lr=2.36e-03
+  e  2  loss=0.4542  top1=0.8647  lr=2.36e-03
+  e  3  loss=0.2913  top1=0.8820  lr=2.36e-03
+  e  4  loss=0.2207  top1=0.8953  lr=2.36e-03
+  e  5  loss=0.1849  top1=0.9121  lr=2.36e-03
+  e  6  loss=0.1450  top1=0.9113  lr=2.36e-03
+  e  7  loss=0.1287  top1=0.9162  lr=2.36e-03
+  e  8  loss=0.1080  top1=0.9210  lr=2.36e-03
+  e  9  loss=0.0919  top1=0.9261  lr=2.36e-03
+  e 10  loss=0.0819  top1=0.9338  lr=2.36e-03
+  e 10  loss=0.0819  task=0.0819  safety=0.0000  top1=0.9338  lr=2.36e-03
+  e 11  loss=0.0751  top1=0.9294  lr=2.36e-03
+  e 12  loss=0.0689  top1=0.9315  lr=2.36e-03
+  e 13  loss=0.0602  top1=0.9279  lr=2.36e-03
+  e 14  loss=0.0592  top1=0.9363  lr=2.36e-03
+  e 15  loss=0.0506  top1=0.9327  lr=2.36e-03
+  e 16  loss=0.0452  top1=0.9406  lr=2.36e-03
+  e 17  loss=0.0442  top1=0.9361  lr=2.36e-03
+  e 18  loss=0.0419  top1=0.9399  lr=2.36e-03
+  e 19  loss=0.0366  top1=0.9381  lr=2.36e-03
+  e 20  loss=0.0345  top1=0.9411  lr=2.36e-03
+  e 20  loss=0.0345  task=0.0345  safety=0.0000  top1=0.9411  lr=2.36e-03
+  -> best=0.9411 @ep20  Δ=+0.00pp  sparsity=0.00  gate_H=n/a  32s
+────────────────────────────────────────────────────────────
+A_top75: gate=topk  param=0.75  params=34,976
+  e  1  loss=5.1821  top1=0.4464  lr=2.36e-03  spar=0.23  gH=0.000
+  e  1  loss=5.1821  task=5.1821  safety=0.0000  top1=0.4464  lr=2.36e-03
+  e  2  loss=2.2044  top1=0.5903  lr=2.36e-03  spar=0.23  gH=0.000
+  e  3  loss=1.4194  top1=0.6589  lr=2.36e-03  spar=0.23  gH=0.000
+  e  4  loss=1.0440  top1=0.6851  lr=2.36e-03  spar=0.23  gH=0.000
+  e  5  loss=0.7968  top1=0.7075  lr=2.36e-03  spar=0.23  gH=0.000
+  e  6  loss=0.6575  top1=0.7190  lr=2.36e-03  spar=0.23  gH=0.000
+  e  7  loss=0.5530  top1=0.7307  lr=2.36e-03  spar=0.23  gH=0.000
+  e  8  loss=0.4576  top1=0.7406  lr=2.36e-03  spar=0.23  gH=0.000
+  e  9  loss=0.3860  top1=0.7506  lr=2.36e-03  spar=0.23  gH=0.000
+  e 10  loss=0.3260  top1=0.7615  lr=2.36e-03  spar=0.23  gH=0.000
+  e 10  loss=0.3260  task=0.3260  safety=0.0000  top1=0.7615  lr=2.36e-03
+  e 11  loss=0.2859  top1=0.7664  lr=2.36e-03  spar=0.23  gH=0.000
+  e 12  loss=0.2443  top1=0.7664  lr=2.36e-03  spar=0.23  gH=0.000
+  e 13  loss=0.2106  top1=0.7715  lr=2.36e-03  spar=0.23  gH=0.000
+  e 14  loss=0.1830  top1=0.7725  lr=2.36e-03  spar=0.23  gH=0.000
+  e 15  loss=0.1628  top1=0.7786  lr=2.36e-03  spar=0.23  gH=0.000
+  e 16  loss=0.1401  top1=0.7811  lr=2.36e-03  spar=0.23  gH=0.000
+  e 17  loss=0.1207  top1=0.7819  lr=2.36e-03  spar=0.23  gH=0.000
+  e 18  loss=0.1058  top1=0.7896  lr=2.36e-03  spar=0.23  gH=0.000
+  e 19  loss=0.0903  top1=0.7906  lr=2.36e-03  spar=0.23  gH=0.000
+  e 20  loss=0.0796  top1=0.7888  lr=2.36e-03  spar=0.23  gH=0.000
+  e 20  loss=0.0796  task=0.0796  safety=0.0000  top1=0.7888  lr=2.36e-03
+  -> best=0.7906 @ep19  Δ=-15.06pp  sparsity=0.23  gate_H=0.000  34s
+────────────────────────────────────────────────────────────
+B_top50: gate=topk  param=0.5  params=34,976
+  e  1  loss=7.3976  top1=0.3997  lr=2.36e-03  spar=0.49  gH=0.000
+  e  1  loss=7.3976  task=7.3976  safety=0.0000  top1=0.3997  lr=2.36e-03
+  e  2  loss=3.4517  top1=0.5332  lr=2.36e-03  spar=0.49  gH=0.000
+  e  3  loss=2.2911  top1=0.5985  lr=2.36e-03  spar=0.49  gH=0.000
+  e  4  loss=1.6628  top1=0.6497  lr=2.36e-03  spar=0.49  gH=0.000
+  e  5  loss=1.2990  top1=0.6739  lr=2.36e-03  spar=0.49  gH=0.000
+  e  6  loss=1.0447  top1=0.6999  lr=2.36e-03  spar=0.49  gH=0.000
+  e  7  loss=0.8689  top1=0.7146  lr=2.36e-03  spar=0.49  gH=0.000
+  e  8  loss=0.7157  top1=0.7315  lr=2.36e-03  spar=0.49  gH=0.000
+  e  9  loss=0.6161  top1=0.7409  lr=2.36e-03  spar=0.49  gH=0.000
+  e 10  loss=0.5313  top1=0.7432  lr=2.36e-03  spar=0.49  gH=0.000
+  e 10  loss=0.5313  task=0.5313  safety=0.0000  top1=0.7432  lr=2.36e-03
+  e 11  loss=0.4537  top1=0.7511  lr=2.36e-03  spar=0.49  gH=0.000
+  e 12  loss=0.3819  top1=0.7605  lr=2.36e-03  spar=0.49  gH=0.000
+  e 13  loss=0.3274  top1=0.7600  lr=2.36e-03  spar=0.49  gH=0.000
+  e 14  loss=0.2797  top1=0.7656  lr=2.36e-03  spar=0.49  gH=0.000
+  e 15  loss=0.2367  top1=0.7692  lr=2.36e-03  spar=0.49  gH=0.000
+  e 16  loss=0.2022  top1=0.7730  lr=2.36e-03  spar=0.49  gH=0.000
+  e 17  loss=0.1818  top1=0.7801  lr=2.36e-03  spar=0.49  gH=0.000
+  e 18  loss=0.1610  top1=0.7814  lr=2.36e-03  spar=0.49  gH=0.000
+  e 19  loss=0.1444  top1=0.7819  lr=2.36e-03  spar=0.49  gH=0.000
+  e 20  loss=0.1277  top1=0.7794  lr=2.36e-03  spar=0.49  gH=0.000
+  e 20  loss=0.1277  task=0.1277  safety=0.0000  top1=0.7794  lr=2.36e-03
+  -> best=0.7819 @ep19  Δ=-15.92pp  sparsity=0.49  gate_H=0.000  33s
+────────────────────────────────────────────────────────────
+C_top25: gate=topk  param=0.25  params=34,976
+  e  1  loss=10.5204  top1=0.3338  lr=2.36e-03  spar=0.75  gH=0.000
+  e  1  loss=10.5204  task=10.5204  safety=0.0000  top1=0.3338  lr=2.36e-03
+  e  2  loss=4.7125  top1=0.5139  lr=2.36e-03  spar=0.75  gH=0.000
+  e  3  loss=2.9627  top1=0.6025  lr=2.36e-03  spar=0.75  gH=0.000
+  e  4  loss=2.1371  top1=0.6624  lr=2.36e-03  spar=0.75  gH=0.000
+  e  5  loss=1.6544  top1=0.6902  lr=2.36e-03  spar=0.75  gH=0.000
+  e  6  loss=1.3312  top1=0.7106  lr=2.36e-03  spar=0.75  gH=0.000
+  e  7  loss=1.0930  top1=0.7289  lr=2.36e-03  spar=0.75  gH=0.000
+  e  8  loss=0.9275  top1=0.7447  lr=2.36e-03  spar=0.75  gH=0.000
+  e  9  loss=0.8062  top1=0.7513  lr=2.36e-03  spar=0.75  gH=0.000
+  e 10  loss=0.7110  top1=0.7654  lr=2.36e-03  spar=0.75  gH=0.000
+  e 10  loss=0.7110  task=0.7110  safety=0.0000  top1=0.7654  lr=2.36e-03
+  e 11  loss=0.6266  top1=0.7676  lr=2.36e-03  spar=0.75  gH=0.000
+  e 12  loss=0.5506  top1=0.7766  lr=2.36e-03  spar=0.75  gH=0.000
+  e 13  loss=0.4910  top1=0.7814  lr=2.36e-03  spar=0.75  gH=0.000
+  e 14  loss=0.4244  top1=0.7880  lr=2.36e-03  spar=0.75  gH=0.000
+  e 15  loss=0.3810  top1=0.7916  lr=2.36e-03  spar=0.75  gH=0.000
+  e 16  loss=0.3456  top1=0.7959  lr=2.36e-03  spar=0.75  gH=0.000
+  e 17  loss=0.3170  top1=0.8005  lr=2.36e-03  spar=0.75  gH=0.000
+  e 18  loss=0.2671  top1=0.8031  lr=2.36e-03  spar=0.75  gH=0.000
+  e 19  loss=0.2299  top1=0.8046  lr=2.36e-03  spar=0.75  gH=0.000
+  e 20  loss=0.2128  top1=0.8003  lr=2.36e-03  spar=0.75  gH=0.000
+  e 20  loss=0.2128  task=0.2128  safety=0.0000  top1=0.8003  lr=2.36e-03
+  -> best=0.8046 @ep19  Δ=-13.66pp  sparsity=0.75  gate_H=0.000  33s
+────────────────────────────────────────────────────────────
+D_top10: gate=topk  param=0.1  params=34,976
+  e  1  loss=10.7917  top1=0.2517  lr=2.36e-03  spar=0.90  gH=0.000
+  e  1  loss=10.7917  task=10.7917  safety=0.0000  top1=0.2517  lr=2.36e-03
+  e  2  loss=5.0209  top1=0.4441  lr=2.36e-03  spar=0.90  gH=0.000
+  e  3  loss=3.2337  top1=0.5546  lr=2.36e-03  spar=0.90  gH=0.000
+  e  4  loss=2.4236  top1=0.6219  lr=2.36e-03  spar=0.90  gH=0.000
+  e  5  loss=1.9681  top1=0.6563  lr=2.36e-03  spar=0.90  gH=0.000
+  e  6  loss=1.6287  top1=0.6966  lr=2.36e-03  spar=0.90  gH=0.000
+  e  7  loss=1.4295  top1=0.7203  lr=2.36e-03  spar=0.90  gH=0.000
+  e  8  loss=1.2316  top1=0.7302  lr=2.36e-03  spar=0.90  gH=0.000
+  e  9  loss=1.0837  top1=0.7473  lr=2.36e-03  spar=0.90  gH=0.000
+  e 10  loss=0.9834  top1=0.7531  lr=2.36e-03  spar=0.90  gH=0.000
+  e 10  loss=0.9834  task=0.9834  safety=0.0000  top1=0.7531  lr=2.36e-03
+  e 11  loss=0.9152  top1=0.7552  lr=2.36e-03  spar=0.90  gH=0.000
+  e 12  loss=0.8411  top1=0.7628  lr=2.36e-03  spar=0.90  gH=0.000
+  e 13  loss=0.8047  top1=0.7692  lr=2.36e-03  spar=0.90  gH=0.000
+  e 14  loss=0.7474  top1=0.7684  lr=2.36e-03  spar=0.90  gH=0.000
+  e 15  loss=0.6958  top1=0.7791  lr=2.36e-03  spar=0.90  gH=0.000
+  e 16  loss=0.6435  top1=0.7766  lr=2.36e-03  spar=0.90  gH=0.000
+  e 17  loss=0.6095  top1=0.7824  lr=2.36e-03  spar=0.90  gH=0.000
+  e 18  loss=0.5758  top1=0.7789  lr=2.36e-03  spar=0.90  gH=0.000
+  e 19  loss=0.5337  top1=0.7868  lr=2.36e-03  spar=0.90  gH=0.000
+  e 20  loss=0.5062  top1=0.7880  lr=2.36e-03  spar=0.90  gH=0.000
+  e 20  loss=0.5062  task=0.5062  safety=0.0000  top1=0.7880  lr=2.36e-03
+  -> best=0.7880 @ep20  Δ=-15.31pp  sparsity=0.90  gate_H=0.000  33s
+────────────────────────────────────────────────────────────
+E_soft_tau1: gate=soft  param=1.0  params=34,976
+  e  1  loss=2.7860  top1=0.7455  lr=2.36e-03  spar=0.66  gH=0.623
+  e  1  loss=2.7860  task=2.7860  safety=0.0000  top1=0.7455  lr=2.36e-03
+  e  2  loss=0.5387  top1=0.8441  lr=2.36e-03  spar=0.66  gH=0.623
+  e  3  loss=0.3230  top1=0.8642  lr=2.36e-03  spar=0.66  gH=0.623
+  e  4  loss=0.2264  top1=0.8818  lr=2.36e-03  spar=0.66  gH=0.623
+  e  5  loss=0.1657  top1=0.8950  lr=2.36e-03  spar=0.66  gH=0.623
+  e  6  loss=0.1298  top1=0.9009  lr=2.36e-03  spar=0.66  gH=0.623
+  e  7  loss=0.1017  top1=0.9032  lr=2.36e-03  spar=0.66  gH=0.623
+  e  8  loss=0.0795  top1=0.9065  lr=2.36e-03  spar=0.66  gH=0.623
+  e  9  loss=0.0666  top1=0.9093  lr=2.36e-03  spar=0.66  gH=0.623
+  e 10  loss=0.0559  top1=0.9144  lr=2.36e-03  spar=0.66  gH=0.623
+  e 10  loss=0.0559  task=0.0559  safety=0.0000  top1=0.9144  lr=2.36e-03
+  e 11  loss=0.0479  top1=0.9098  lr=2.36e-03  spar=0.66  gH=0.623
+  e 12  loss=0.0403  top1=0.9144  lr=2.36e-03  spar=0.66  gH=0.623
+  e 13  loss=0.0354  top1=0.9154  lr=2.36e-03  spar=0.66  gH=0.623
+  e 14  loss=0.0324  top1=0.9169  lr=2.36e-03  spar=0.66  gH=0.623
+  e 15  loss=0.0291  top1=0.9205  lr=2.36e-03  spar=0.66  gH=0.623
+  e 16  loss=0.0262  top1=0.9167  lr=2.36e-03  spar=0.66  gH=0.623
+  e 17  loss=0.0238  top1=0.9231  lr=2.36e-03  spar=0.66  gH=0.623
+  e 18  loss=0.0218  top1=0.9208  lr=2.36e-03  spar=0.66  gH=0.623
+  e 19  loss=0.0202  top1=0.9213  lr=2.36e-03  spar=0.66  gH=0.623
+  e 20  loss=0.0191  top1=0.9220  lr=2.36e-03  spar=0.66  gH=0.623
+  e 20  loss=0.0191  task=0.0191  safety=0.0000  top1=0.9220  lr=2.36e-03
+  -> best=0.9231 @ep17  Δ=-1.81pp  sparsity=0.66  gate_H=0.623  33s
+────────────────────────────────────────────────────────────
+F_soft_tau3: gate=soft  param=3.0  params=34,976
+  e  1  loss=2.9302  top1=0.7055  lr=2.36e-03  spar=0.66  gH=0.419
+  e  1  loss=2.9302  task=2.9302  safety=0.0000  top1=0.7055  lr=2.36e-03
+  e  2  loss=0.7296  top1=0.7954  lr=2.36e-03  spar=0.66  gH=0.419
+  e  3  loss=0.4175  top1=0.8247  lr=2.36e-03  spar=0.66  gH=0.419
+  e  4  loss=0.2755  top1=0.8372  lr=2.36e-03  spar=0.66  gH=0.419
+  e  5  loss=0.1876  top1=0.8459  lr=2.36e-03  spar=0.66  gH=0.419
+  e  6  loss=0.1407  top1=0.8522  lr=2.36e-03  spar=0.66  gH=0.419
+  e  7  loss=0.0987  top1=0.8561  lr=2.36e-03  spar=0.66  gH=0.419
+  e  8  loss=0.0760  top1=0.8622  lr=2.36e-03  spar=0.66  gH=0.419
+  e  9  loss=0.0590  top1=0.8670  lr=2.36e-03  spar=0.66  gH=0.419
+  e 10  loss=0.0469  top1=0.8721  lr=2.36e-03  spar=0.66  gH=0.419
+  e 10  loss=0.0469  task=0.0469  safety=0.0000  top1=0.8721  lr=2.36e-03
+  e 11  loss=0.0387  top1=0.8690  lr=2.36e-03  spar=0.66  gH=0.419
+  e 12  loss=0.0336  top1=0.8721  lr=2.36e-03  spar=0.66  gH=0.419
+  e 13  loss=0.0292  top1=0.8746  lr=2.36e-03  spar=0.66  gH=0.419
+  e 14  loss=0.0264  top1=0.8759  lr=2.36e-03  spar=0.66  gH=0.419
+  e 15  loss=0.0241  top1=0.8775  lr=2.36e-03  spar=0.66  gH=0.419
+  e 16  loss=0.0223  top1=0.8775  lr=2.36e-03  spar=0.66  gH=0.419
+  e 17  loss=0.0204  top1=0.8818  lr=2.36e-03  spar=0.66  gH=0.419
+  e 18  loss=0.0192  top1=0.8815  lr=2.36e-03  spar=0.66  gH=0.419
+  e 19  loss=0.0180  top1=0.8825  lr=2.36e-03  spar=0.66  gH=0.419
+  e 20  loss=0.0169  top1=0.8813  lr=2.36e-03  spar=0.66  gH=0.419
+  e 20  loss=0.0169  task=0.0169  safety=0.0000  top1=0.8813  lr=2.36e-03
+  -> best=0.8825 @ep19  Δ=-5.86pp  sparsity=0.66  gate_H=0.419  33s
+
+======================================================================
+STEP 906 SUMMARY — Top-K Activation Sparsity T0
+======================================================================
+  config           gate param   params    best   Δ_vs_Ref  spar     gH  verdict
+  Ref_dw           none  0.00   34,976  0.9411    +0.00pp  0.00    n/a  (baseline)
+  A_top75          topk  0.75   34,976  0.7906   -15.06pp  0.23  0.000  KILL
+  B_top50          topk  0.50   34,976  0.7819   -15.92pp  0.49  0.000  KILL
+  C_top25          topk  0.25   34,976  0.8046   -13.66pp  0.75  0.000  KILL
+  D_top10          topk  0.10   34,976  0.7880   -15.31pp  0.90  0.000  KILL
+  E_soft_tau1      soft  1.00   34,976  0.9231    -1.81pp  0.66  0.623  MARGINAL
+  F_soft_tau3      soft  3.00   34,976  0.8825    -5.86pp  0.66  0.419  KILL
+
+  Ref T0 context (step898/Ref_dw): 0.9396
+  ADVANCE→T1: Δ≥0pp + sparsity≥20% → step909 (75ep/50%).
+  HOLD_EFF:   Δ≥−0.5pp + sparsity≥20% → efficiency win even at slight acc loss.
+  KEY READS: B_top50 cliff? C_top25 cliff? E/F soft vs hard?
+
+-> /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step906_topk_activation_t0_seed42__studio_mps.json

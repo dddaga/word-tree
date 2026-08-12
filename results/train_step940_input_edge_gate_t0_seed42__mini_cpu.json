@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "spec": "ref",
+    "tau": 1.0,
+    "learn_tau": false,
+    "n_params": 34976,
+    "best": 0.9399,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 71
+  },
+  "A_tau1": {
+    "spec": "gate",
+    "tau": 1.0,
+    "learn_tau": false,
+    "n_params": 34976,
+    "best": 0.9401,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 77
+  },
+  "B_tau3": {
+    "spec": "gate",
+    "tau": 3.0,
+    "learn_tau": false,
+    "n_params": 34976,
+    "best": 0.9386,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0013,
+    "elapsed_s": 77
+  },
+  "C_tau_lr": {
+    "spec": "gate",
+    "tau": 1.0,
+    "learn_tau": true,
+    "n_params": 34977,
+    "best": 0.9401,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 85
+  }
+}

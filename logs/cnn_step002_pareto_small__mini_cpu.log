@@ -1,0 +1,65 @@
+
+========================================================================
+CNN step002 Pareto T0  device=cpu  epochs=20  seed=42
+  train=4734  val=3925  batch=32
+========================================================================
+
+  config           params   MACs(M)  %VGG16conv desc
+  ----------------------------------------------------------------------
+  G_ultra          28,994       6.6      0.045%  ultra-tiny: 8/16/32 k=3
+  A_tiny           54,650      16.4      0.112%  tiny: 16/32/64 k=3
+  B_tiny_k7        59,130      20.0      0.136%  tiny: 16/32/64 k=7 (larger RF)
+  C_small         140,778      56.8      0.386%  small: 32/64/128 k=7
+  ----------------------------------------------------------------------
+  VGG16-conv     14,700,000   14700.0    100.000%  (teacher reference)
+
+────────────────────────────────────────────────────────────
+G_ultra: ultra-tiny: 8/16/32 k=3
+  params=28,994  MACs=6.6M (0.20% params, 0.045% FLOPs)
+  ep  5  val=0.2206  best=0.2451
+  ep 10  val=0.2772  best=0.2772
+  ep 15  val=0.2820  best=0.3103
+  ep 20  val=0.3093  best=0.3103
+  -> best=0.3103 @ep14  Δ_vs_Ref=+0.00pp  1084s
+────────────────────────────────────────────────────────────
+A_tiny: tiny: 16/32/64 k=3
+  params=54,650  MACs=16.4M (0.37% params, 0.112% FLOPs)
+  ep  5  val=0.2308  best=0.2308
+  ep 10  val=0.3292  best=0.3292
+  ep 15  val=0.3261  best=0.3292
+  ep 20  val=0.3534  best=0.3534
+  -> best=0.3534 @ep20  Δ_vs_Ref=+0.00pp  1619s
+────────────────────────────────────────────────────────────
+B_tiny_k7: tiny: 16/32/64 k=7 (larger RF)
+  params=59,130  MACs=20.0M (0.40% params, 0.136% FLOPs)
+  ep  5  val=0.2255  best=0.2257
+  ep 10  val=0.3457  best=0.3478
+  ep 15  val=0.3911  best=0.3992
+  ep 20  val=0.4079  best=0.4099
+  -> best=0.4099 @ep19  Δ_vs_Ref=+0.00pp  1985s
+────────────────────────────────────────────────────────────
+C_small: small: 32/64/128 k=7
+  params=140,778  MACs=56.8M (0.96% params, 0.386% FLOPs)
+  ep  5  val=0.3692  best=0.3692
+  ep 10  val=0.5139  best=0.5139
+  ep 15  val=0.5648  best=0.5648
+  ep 20  val=0.5926  best=0.5926
+  -> best=0.5926 @ep20  Δ_vs_Ref=+0.00pp  3931s
+
+========================================================================
+CNN STEP002 PARETO SUMMARY — T0 (20ep, 50% data)
+========================================================================
+  config           params   MACs(M)     acc    Δ_Ref  efficiency
+  ----------------------------------------------------------------------
+  G_ultra          28,994       6.6  0.3103   +0.00pp  acc/MACs=4.687 %/M
+  A_tiny           54,650      16.4  0.3534   +0.00pp  acc/MACs=2.149 %/M
+  B_tiny_k7        59,130      20.0  0.4099   +0.00pp  acc/MACs=2.054 %/M
+  C_small         140,778      56.8  0.5926   +0.00pp  acc/MACs=1.044 %/M
+
+  Pareto front (non-dominated):
+    ★ G_ultra        acc=0.3103  MACs=6.6M  params=28,994
+    ★ A_tiny         acc=0.3534  MACs=16.4M  params=54,650
+    ★ B_tiny_k7      acc=0.4099  MACs=20.0M  params=59,130
+    ★ C_small        acc=0.5926  MACs=56.8M  params=140,778
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step002_pareto_t0_seed42__mini_cpu.json

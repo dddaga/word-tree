@@ -1,0 +1,103 @@
+{
+  "step": "vlm_step004",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "mps",
+  "depth": 6,
+  "n_train": 2000,
+  "n_eval": 50,
+  "epochs": 10,
+  "batch": 8,
+  "lr": 0.0002,
+  "total_params": 256484928,
+  "vision_layer_params": 7087872,
+  "train_history": [
+    {
+      "epoch": 1,
+      "rel_mse": 0.6092256985902786,
+      "cosine": 0.7597632762715221
+    },
+    {
+      "epoch": 2,
+      "rel_mse": 0.3625331975221634,
+      "cosine": 0.8010881090164185
+    },
+    {
+      "epoch": 3,
+      "rel_mse": 0.3432403646707535,
+      "cosine": 0.8130145153999329
+    },
+    {
+      "epoch": 4,
+      "rel_mse": 0.32955859673023224,
+      "cosine": 0.8209815125465393
+    },
+    {
+      "epoch": 5,
+      "rel_mse": 0.31543115627765655,
+      "cosine": 0.8295716238021851
+    },
+    {
+      "epoch": 6,
+      "rel_mse": 0.3008834459781647,
+      "cosine": 0.8380551936626435
+    },
+    {
+      "epoch": 7,
+      "rel_mse": 0.29004253387451173,
+      "cosine": 0.844402442932129
+    },
+    {
+      "epoch": 8,
+      "rel_mse": 0.27839785957336427,
+      "cosine": 0.8511749813556672
+    },
+    {
+      "epoch": 9,
+      "rel_mse": 0.26689942717552184,
+      "cosine": 0.8578909516334534
+    },
+    {
+      "epoch": 10,
+      "rel_mse": 0.25732106721401216,
+      "cosine": 0.8633582074642181
+    }
+  ],
+  "arms": {
+    "teacher_d12": {
+      "params": 256484928,
+      "params_saved_pct": 0.0,
+      "top1": 0.74,
+      "same_class_as_teacher": 1.0,
+      "agree_with_teacher": 1.0,
+      "kl_vs_teacher": 0.0,
+      "vision_ms": 66.08,
+      "prefill_ms": 14.63,
+      "total_ms": 80.71,
+      "speedup": 1.0
+    },
+    "naive_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.12,
+      "same_class_as_teacher": 0.14,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 10.669323358535767,
+      "vision_ms": 35.36,
+      "prefill_ms": 14.29,
+      "total_ms": 49.65,
+      "speedup": 1.626
+    },
+    "distil_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.56,
+      "same_class_as_teacher": 0.66,
+      "agree_with_teacher": 0.42,
+      "kl_vs_teacher": 2.5115383995138107,
+      "vision_ms": 35.42,
+      "prefill_ms": 14.31,
+      "total_ms": 49.72,
+      "speedup": 1.623
+    }
+  }
+}

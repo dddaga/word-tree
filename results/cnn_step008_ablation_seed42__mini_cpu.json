@@ -1,0 +1,54 @@
+{
+  "dil1_crelu_early": {
+    "best": 0.4056050955414013,
+    "delta": 0.037405095541401256,
+    "macs_M": 105.90784,
+    "params": 561642,
+    "config": {
+      "channels": "(32, 64, 384)",
+      "dil_rates": "(1,)",
+      "expansion": "1",
+      "crelu_mask": "(True, True, False)"
+    },
+    "verdict": "ADVANCE"
+  },
+  "dil4_crelu_early": {
+    "best": 0.3982165605095541,
+    "delta": 0.03001656050955409,
+    "macs_M": 105.90784,
+    "params": 561642,
+    "config": {
+      "channels": "(32, 64, 384)",
+      "dil_rates": "(4,)",
+      "expansion": "1",
+      "crelu_mask": "(True, True, False)"
+    },
+    "verdict": "ADVANCE"
+  },
+  "dil1_crelu_late": {
+    "best": 0.3768152866242038,
+    "delta": 0.0086152866242038,
+    "macs_M": 93.062784,
+    "params": 488426,
+    "config": {
+      "channels": "(32, 64, 384)",
+      "dil_rates": "(1,)",
+      "expansion": "1",
+      "crelu_mask": "(False, True, True)"
+    },
+    "verdict": "ADVANCE"
+  },
+  "dil4_crelu_late": {
+    "best": 0.378343949044586,
+    "delta": 0.010143949044585987,
+    "macs_M": 93.062784,
+    "params": 488426,
+    "config": {
+      "channels": "(32, 64, 384)",
+      "dil_rates": "(4,)",
+      "expansion": "1",
+      "crelu_mask": "(False, True, True)"
+    },
+    "verdict": "ADVANCE"
+  }
+}

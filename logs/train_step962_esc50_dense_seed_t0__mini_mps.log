@@ -1,0 +1,160 @@
+
+======================================================================
+step962 — ESC-50 dense projection seed T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  Fix: W_seed ∈ ℝ^{N×384} replaces sparse K_in seeding.
+  Ablation E_N256_sparse isolates dense vs sparse contribution.
+  Linear: 0.4175  |  Sparse ref (step961 N256): 0.1425
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear(384, 50)  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_sparse=+27.50pp  Δ_linear=+0.00pp  (linear control)
+────────────────────────────────────────────────────────────
+A_N64_dp: N=64 dense_proj  W_seed=393,216  total_params=395,104
+  e  1  top1=0.0275  lr=2.98e-03
+  e  2  top1=0.0775  lr=2.93e-03
+  e  3  top1=0.1075  lr=2.84e-03
+  e  4  top1=0.1350  lr=2.71e-03
+  e  5  top1=0.1650  lr=2.56e-03
+  e  6  top1=0.1825  lr=2.38e-03
+  e  7  top1=0.2075  lr=2.18e-03
+  e  8  top1=0.2400  lr=1.97e-03
+  e  9  top1=0.2975  lr=1.74e-03
+  e 10  top1=0.3175  lr=1.51e-03
+  e 11  top1=0.2800  lr=1.27e-03
+  e 12  top1=0.3425  lr=1.04e-03
+  e 13  top1=0.3550  lr=8.26e-04
+  e 14  top1=0.3775  lr=6.26e-04
+  e 15  top1=0.3625  lr=4.48e-04
+  e 16  top1=0.3875  lr=2.96e-04
+  e 17  top1=0.3750  lr=1.73e-04
+  e 18  top1=0.3850  lr=8.32e-05
+  e 19  top1=0.3925  lr=2.84e-05
+  e 20  top1=0.3900  lr=1.00e-05
+  -> best=0.3925 @ep19  Δ_sparse=+25.00pp  Δ_linear=-2.50pp  APPROACHING
+────────────────────────────────────────────────────────────
+B_N128_dp: N=128 dense_proj  W_seed=786,432  total_params=789,408
+  e  1  top1=0.0700  lr=2.98e-03
+  e  2  top1=0.1100  lr=2.93e-03
+  e  3  top1=0.1475  lr=2.84e-03
+  e  4  top1=0.1925  lr=2.71e-03
+  e  5  top1=0.2400  lr=2.56e-03
+  e  6  top1=0.3050  lr=2.38e-03
+  e  7  top1=0.2925  lr=2.18e-03
+  e  8  top1=0.3425  lr=1.97e-03
+  e  9  top1=0.3500  lr=1.74e-03
+  e 10  top1=0.4150  lr=1.51e-03
+  e 11  top1=0.4125  lr=1.27e-03
+  e 12  top1=0.4775  lr=1.04e-03
+  e 13  top1=0.4500  lr=8.26e-04
+  e 14  top1=0.4875  lr=6.26e-04
+  e 15  top1=0.4900  lr=4.48e-04
+  e 16  top1=0.5225  lr=2.96e-04
+  e 17  top1=0.5275  lr=1.73e-04
+  e 18  top1=0.5250  lr=8.32e-05
+  e 19  top1=0.5275  lr=2.84e-05
+  e 20  top1=0.5150  lr=1.00e-05
+  -> best=0.5275 @ep17  Δ_sparse=+38.50pp  Δ_linear=+11.00pp  CROSSOVER
+────────────────────────────────────────────────────────────
+C_N256_dp: N=256 dense_proj  W_seed=1,572,864  total_params=1,578,016
+  e  1  top1=0.0875  lr=2.98e-03
+  e  2  top1=0.1375  lr=2.93e-03
+  e  3  top1=0.2175  lr=2.84e-03
+  e  4  top1=0.2475  lr=2.71e-03
+  e  5  top1=0.2550  lr=2.56e-03
+  e  6  top1=0.2575  lr=2.38e-03
+  e  7  top1=0.3550  lr=2.18e-03
+  e  8  top1=0.3875  lr=1.97e-03
+  e  9  top1=0.4050  lr=1.74e-03
+  e 10  top1=0.4325  lr=1.51e-03
+  e 11  top1=0.4375  lr=1.27e-03
+  e 12  top1=0.4900  lr=1.04e-03
+  e 13  top1=0.5050  lr=8.26e-04
+  e 14  top1=0.5100  lr=6.26e-04
+  e 15  top1=0.5475  lr=4.48e-04
+  e 16  top1=0.5275  lr=2.96e-04
+  e 17  top1=0.5650  lr=1.73e-04
+  e 18  top1=0.5500  lr=8.32e-05
+  e 19  top1=0.5525  lr=2.84e-05
+  e 20  top1=0.5600  lr=1.00e-05
+  -> best=0.5650 @ep17  Δ_sparse=+42.25pp  Δ_linear=+14.75pp  CROSSOVER
+────────────────────────────────────────────────────────────
+D_N512_dp: N=512 dense_proj  W_seed=3,145,728  total_params=3,155,232
+  e  1  top1=0.0950  lr=2.98e-03
+  e  2  top1=0.1125  lr=2.93e-03
+  e  3  top1=0.2150  lr=2.84e-03
+  e  4  top1=0.2225  lr=2.71e-03
+  e  5  top1=0.3400  lr=2.56e-03
+  e  6  top1=0.3150  lr=2.38e-03
+  e  7  top1=0.3875  lr=2.18e-03
+  e  8  top1=0.3725  lr=1.97e-03
+  e  9  top1=0.4000  lr=1.74e-03
+  e 10  top1=0.4450  lr=1.51e-03
+  e 11  top1=0.4100  lr=1.27e-03
+  e 12  top1=0.4725  lr=1.04e-03
+  e 13  top1=0.4750  lr=8.26e-04
+  e 14  top1=0.4975  lr=6.26e-04
+  e 15  top1=0.5200  lr=4.48e-04
+  e 16  top1=0.5500  lr=2.96e-04
+  e 17  top1=0.5575  lr=1.73e-04
+  e 18  top1=0.5725  lr=8.32e-05
+  e 19  top1=0.5675  lr=2.84e-05
+  e 20  top1=0.5675  lr=1.00e-05
+  -> best=0.5725 @ep18  Δ_sparse=+43.00pp  Δ_linear=+15.50pp  CROSSOVER
+────────────────────────────────────────────────────────────
+E_N256_sparse: N=256 sparse K_in=1  params=5,152
+  e  1  top1=0.0425  lr=2.98e-03
+  e  2  top1=0.0475  lr=2.93e-03
+  e  3  top1=0.0300  lr=2.84e-03
+  e  4  top1=0.0475  lr=2.71e-03
+  e  5  top1=0.0600  lr=2.56e-03
+  e  6  top1=0.0850  lr=2.38e-03
+  e  7  top1=0.0825  lr=2.18e-03
+  e  8  top1=0.1100  lr=1.97e-03
+  e  9  top1=0.1150  lr=1.74e-03
+  e 10  top1=0.1050  lr=1.51e-03
+  e 11  top1=0.1175  lr=1.27e-03
+  e 12  top1=0.1250  lr=1.04e-03
+  e 13  top1=0.1225  lr=8.26e-04
+  e 14  top1=0.1475  lr=6.26e-04
+  e 15  top1=0.1500  lr=4.48e-04
+  e 16  top1=0.1400  lr=2.96e-04
+  e 17  top1=0.1425  lr=1.73e-04
+  e 18  top1=0.1525  lr=8.32e-05
+  e 19  top1=0.1475  lr=2.84e-05
+  e 20  top1=0.1475  lr=1.00e-05
+  -> best=0.1525 @ep18  Δ_sparse=+0.00pp  Δ_linear=-26.50pp  (sparse ablation)
+
+======================================================================
+STEP 962 SUMMARY — ESC-50 dense projection seed T0
+  Linear: 0.4175  |  Sparse ref: 0.1425
+======================================================================
+  Linear           N=None   K_in=None  best=0.4175  Δ_sparse=+27.50pp  Δ_lin=+0.00pp  (linear control)
+  A_N64_dp         N=64     dense     best=0.3925  Δ_sparse=+25.00pp  Δ_lin=-2.50pp  APPROACHING
+  B_N128_dp        N=128    dense     best=0.5275  Δ_sparse=+38.50pp  Δ_lin=+11.00pp  CROSSOVER
+  C_N256_dp        N=256    dense     best=0.5650  Δ_sparse=+42.25pp  Δ_lin=+14.75pp  CROSSOVER
+  D_N512_dp        N=512    dense     best=0.5725  Δ_sparse=+43.00pp  Δ_lin=+15.50pp  CROSSOVER
+  E_N256_sparse    N=256    K_in=1    best=0.1525  Δ_sparse=+0.00pp  Δ_lin=-26.50pp  (sparse ablation)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step962_esc50_dense_seed_t0_seed42__mini_mps.json

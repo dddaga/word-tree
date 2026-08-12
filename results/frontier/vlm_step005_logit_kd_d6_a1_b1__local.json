@@ -1,0 +1,96 @@
+{
+  "step": "vlm_step005",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cpu",
+  "depth": 6,
+  "alpha": 1.0,
+  "beta": 1.0,
+  "n_train": 40,
+  "n_eval": 10,
+  "epochs": 6,
+  "lr": 0.0002,
+  "total_params": 256484928,
+  "vision_layer_params": 7087872,
+  "train_history": [
+    {
+      "epoch": 1,
+      "mse": 11.044186186790466,
+      "kl": 8.114081263542175,
+      "cos": 0.1308242186671123,
+      "top1": 0.025
+    },
+    {
+      "epoch": 2,
+      "mse": 4.708064445853234,
+      "kl": 5.1755711257457735,
+      "cos": 0.16856913575902582,
+      "top1": 0.1
+    },
+    {
+      "epoch": 3,
+      "mse": 1.530800488591194,
+      "kl": 4.296716058254242,
+      "cos": 0.3550657071173191,
+      "top1": 0.15
+    },
+    {
+      "epoch": 4,
+      "mse": 1.3611504226922988,
+      "kl": 4.072803157567978,
+      "cos": 0.32467673551291226,
+      "top1": 0.15
+    },
+    {
+      "epoch": 5,
+      "mse": 1.0644538179039955,
+      "kl": 4.150332716107369,
+      "cos": 0.4685916416347027,
+      "top1": 0.1
+    },
+    {
+      "epoch": 6,
+      "mse": 1.0753335684537888,
+      "kl": 4.046504519879818,
+      "cos": 0.4955632142722607,
+      "top1": 0.125
+    }
+  ],
+  "arms": {
+    "teacher_d12": {
+      "params": 256484928,
+      "params_saved_pct": 0.0,
+      "top1": 0.7,
+      "same_class_as_teacher": 1.0,
+      "agree_with_teacher": 1.0,
+      "kl_vs_teacher": 0.0,
+      "vision_ms": 125.62,
+      "prefill_ms": 43.47,
+      "total_ms": 169.09,
+      "speedup": 1.0
+    },
+    "naive_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.1,
+      "same_class_as_teacher": 0.3,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 11.651109313964843,
+      "vision_ms": 65.7,
+      "prefill_ms": 43.14,
+      "total_ms": 108.84,
+      "speedup": 1.554
+    },
+    "kd_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.3,
+      "same_class_as_teacher": 0.2,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 4.377252817153931,
+      "vision_ms": 65.53,
+      "prefill_ms": 43.48,
+      "total_ms": 109.01,
+      "speedup": 1.551
+    }
+  }
+}

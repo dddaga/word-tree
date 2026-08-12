@@ -1,0 +1,82 @@
+{
+  "D_small_s": {
+    "desc": "small + side branch: 32/64/128",
+    "channels": [
+      32,
+      64,
+      128
+    ],
+    "dw_kernel": 7,
+    "expansion": 2,
+    "side_branch": true,
+    "crelu_block3": true,
+    "n_params": 149674,
+    "n_macs": 57486848,
+    "params_pct": 1.018,
+    "macs_pct": 0.3911,
+    "best": 0.6099,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 345
+  },
+  "Ref": {
+    "desc": "ref: 64/128/256 k=7 (step001 Ref)",
+    "channels": [
+      64,
+      128,
+      256
+    ],
+    "dw_kernel": 7,
+    "expansion": 2,
+    "side_branch": true,
+    "crelu_block3": true,
+    "n_params": 419146,
+    "n_macs": 183218176,
+    "params_pct": 2.851,
+    "macs_pct": 1.2464,
+    "best": 0.7034,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 442
+  },
+  "E_expand4": {
+    "desc": "ref channels + expansion=4",
+    "channels": [
+      64,
+      128,
+      256
+    ],
+    "dw_kernel": 7,
+    "expansion": 4,
+    "side_branch": true,
+    "crelu_block3": true,
+    "n_params": 501066,
+    "n_macs": 285978624,
+    "params_pct": 3.409,
+    "macs_pct": 1.9454,
+    "best": 0.7022,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0013,
+    "elapsed_s": 462
+  },
+  "F_wide": {
+    "desc": "wide early: 128/256/256 k=7",
+    "channels": [
+      128,
+      256,
+      256
+    ],
+    "dw_kernel": 7,
+    "expansion": 2,
+    "side_branch": true,
+    "crelu_block3": true,
+    "n_params": 825482,
+    "n_macs": 559787776,
+    "params_pct": 5.616,
+    "macs_pct": 3.8081,
+    "best": 0.7274,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0239,
+    "elapsed_s": 671
+  }
+}

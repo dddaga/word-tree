@@ -1,0 +1,29 @@
+{
+  "Ref": {
+    "spec": "ref",
+    "agg_clamp": null,
+    "n_params": 34976,
+    "best": 0.9409,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 66
+  },
+  "A_signed": {
+    "spec": "signed",
+    "agg_clamp": null,
+    "n_params": 34976,
+    "best": 0.9345,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0064,
+    "elapsed_s": 63
+  },
+  "B_signed_c": {
+    "spec": "signed",
+    "agg_clamp": 5.0,
+    "n_params": 34976,
+    "best": 0.9345,
+    "best_ep": 17,
+    "delta_vs_ref": -0.0064,
+    "elapsed_s": 65
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "Ref_k25": {
+    "k_in": 25,
+    "n_params": 139424,
+    "best": 0.7797,
+    "best_ep": 15,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 497
+  },
+  "A_k15": {
+    "k_in": 15,
+    "n_params": 139424,
+    "best": 0.7884,
+    "best_ep": 15,
+    "delta_vs_ref": 0.0087,
+    "elapsed_s": 476
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "Ref": {
+    "mode": "sum",
+    "n_proj_groups": null,
+    "extra_proj_params": 0,
+    "n_params": 34976,
+    "best": 0.9391,
+    "best_ep": 15,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 71,
+    "verdict": "(baseline)",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5478,
+        "routing_gain": -0.1001,
+        "pr": 2.291,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5659,
+        "routing_gain": -0.0821,
+        "pr": 2.281,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5432,
+        "routing_gain": -0.1047,
+        "pr": 2.258,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5198,
+        "routing_gain": -0.1282,
+        "pr": 2.241,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "A_shared": {
+    "mode": "shared",
+    "n_proj_groups": null,
+    "extra_proj_params": 25,
+    "n_params": 35001,
+    "best": 0.9386,
+    "best_ep": 17,
+    "delta_vs_ref": -0.0005,
+    "elapsed_s": 71,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5476,
+        "routing_gain": -0.1003,
+        "pr": 2.292,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5768,
+        "routing_gain": -0.0712,
+        "pr": 2.289,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5489,
+        "routing_gain": -0.0991,
+        "pr": 2.27,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5421,
+        "routing_gain": -0.1059,
+        "pr": 2.253,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "C2_grouped16": {
+    "mode": "grouped",
+    "n_proj_groups": 16,
+    "extra_proj_params": 400,
+    "n_params": 35376,
+    "best": 0.9404,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 70,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5481,
+        "routing_gain": -0.0999,
+        "pr": 2.291,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5579,
+        "routing_gain": -0.0901,
+        "pr": 2.273,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.54,
+        "routing_gain": -0.108,
+        "pr": 2.257,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5202,
+        "routing_gain": -0.1278,
+        "pr": 2.218,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "C_grouped64": {
+    "mode": "grouped",
+    "n_proj_groups": 64,
+    "extra_proj_params": 1600,
+    "n_params": 36576,
+    "best": 0.9401,
+    "best_ep": 19,
+    "delta_vs_ref": 0.001,
+    "elapsed_s": 70,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5467,
+        "routing_gain": -0.1012,
+        "pr": 2.29,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5738,
+        "routing_gain": -0.0742,
+        "pr": 2.287,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5548,
+        "routing_gain": -0.0932,
+        "pr": 2.274,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5362,
+        "routing_gain": -0.1118,
+        "pr": 2.236,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "B_grouped256": {
+    "mode": "grouped",
+    "n_proj_groups": 256,
+    "extra_proj_params": 6400,
+    "n_params": 41376,
+    "best": 0.9394,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 70,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5475,
+        "routing_gain": -0.1005,
+        "pr": 2.291,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5692,
+        "routing_gain": -0.0788,
+        "pr": 2.284,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5414,
+        "routing_gain": -0.1066,
+        "pr": 2.261,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5217,
+        "routing_gain": -0.1263,
+        "pr": 2.23,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "D_node": {
+    "mode": "node",
+    "n_proj_groups": null,
+    "extra_proj_params": 51200,
+    "n_params": 86176,
+    "best": 0.9396,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0005,
+    "elapsed_s": 70,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5478,
+        "routing_gain": -0.1002,
+        "pr": 2.292,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5636,
+        "routing_gain": -0.0844,
+        "pr": 2.288,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5376,
+        "routing_gain": -0.1104,
+        "pr": 2.259,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5172,
+        "routing_gain": -0.1308,
+        "pr": 2.231,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "E_multiout": {
+    "mode": "multiout",
+    "n_proj_groups": null,
+    "extra_proj_params": 409600,
+    "n_params": 444576,
+    "best": 0.9215,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0176,
+    "elapsed_s": 71,
+    "verdict": "KILL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.6076,
+        "final_fisher": 0.3773,
+        "routing_gain": -0.2304,
+        "pr": 2.764,
+        "dead_frac": 0.0
+      },
+      "5": {
+        "seed_fisher": 0.6076,
+        "final_fisher": 0.3766,
+        "routing_gain": -0.2311,
+        "pr": 2.707,
+        "dead_frac": 0.0
+      },
+      "10": {
+        "seed_fisher": 0.6076,
+        "final_fisher": 0.3648,
+        "routing_gain": -0.2429,
+        "pr": 2.702,
+        "dead_frac": 0.0
+      },
+      "20": {
+        "seed_fisher": 0.6076,
+        "final_fisher": 0.3779,
+        "routing_gain": -0.2298,
+        "pr": 2.704,
+        "dead_frac": 0.0
+      }
+    }
+  }
+}

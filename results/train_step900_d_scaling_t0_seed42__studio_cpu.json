@@ -1,0 +1,52 @@
+{
+  "Ref_d16": {
+    "D": 16,
+    "use_dw": false,
+    "n_params": 34976,
+    "routing_macs": 655360,
+    "best": 0.1957,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 46
+  },
+  "A_d24": {
+    "D": 24,
+    "use_dw": false,
+    "n_params": 51440,
+    "routing_macs": 983040,
+    "best": 0.1896,
+    "best_ep": 13,
+    "delta_vs_ref": -0.0061,
+    "elapsed_s": 61
+  },
+  "B_d32": {
+    "D": 32,
+    "use_dw": false,
+    "n_params": 67904,
+    "routing_macs": 1310720,
+    "best": 0.1664,
+    "best_ep": 12,
+    "delta_vs_ref": -0.0293,
+    "elapsed_s": 75
+  },
+  "C_d24_dw": {
+    "D": 24,
+    "use_dw": true,
+    "n_params": 51440,
+    "routing_macs": 983040,
+    "best": 0.9361,
+    "best_ep": 16,
+    "delta_vs_ref": 0.7404,
+    "elapsed_s": 82
+  },
+  "D_d32_dw": {
+    "D": 32,
+    "use_dw": true,
+    "n_params": 67904,
+    "routing_macs": 1310720,
+    "best": 0.9381,
+    "best_ep": 19,
+    "delta_vs_ref": 0.7424,
+    "elapsed_s": 102
+  }
+}

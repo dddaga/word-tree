@@ -1,0 +1,16 @@
+{
+  "best": 0.6647133757961784,
+  "best_ep": 20,
+  "ga5_noside_t1": 0.7473,
+  "delta": -0.08258662420382157,
+  "verdict": "NO-GAIN",
+  "elapsed": 252.9059898853302,
+  "use_side_branch": true,
+  "channels": [
+    48,
+    96,
+    384
+  ],
+  "params": 540282,
+  "macs_M": 142.275008
+}

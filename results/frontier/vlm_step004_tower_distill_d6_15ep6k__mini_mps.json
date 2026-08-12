@@ -1,0 +1,128 @@
+{
+  "step": "vlm_step004",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "mps",
+  "depth": 6,
+  "n_train": 6000,
+  "n_eval": 50,
+  "epochs": 15,
+  "batch": 8,
+  "lr": 0.0002,
+  "total_params": 256484928,
+  "vision_layer_params": 7087872,
+  "train_history": [
+    {
+      "epoch": 1,
+      "rel_mse": 0.4498436998128891,
+      "cosine": 0.7895663336416086
+    },
+    {
+      "epoch": 2,
+      "rel_mse": 0.33162352204322815,
+      "cosine": 0.8198676563103994
+    },
+    {
+      "epoch": 3,
+      "rel_mse": 0.31197664280732473,
+      "cosine": 0.8316492844422658
+    },
+    {
+      "epoch": 4,
+      "rel_mse": 0.2964918774962425,
+      "cosine": 0.8407983342806499
+    },
+    {
+      "epoch": 5,
+      "rel_mse": 0.28351257427533466,
+      "cosine": 0.8483414534727732
+    },
+    {
+      "epoch": 6,
+      "rel_mse": 0.27147236400842667,
+      "cosine": 0.8553104627132416
+    },
+    {
+      "epoch": 7,
+      "rel_mse": 0.26036454625924427,
+      "cosine": 0.8617107791105906
+    },
+    {
+      "epoch": 8,
+      "rel_mse": 0.2508091092308362,
+      "cosine": 0.8671794010003407
+    },
+    {
+      "epoch": 9,
+      "rel_mse": 0.2418047644694646,
+      "cosine": 0.8722860706647237
+    },
+    {
+      "epoch": 10,
+      "rel_mse": 0.233010645031929,
+      "cosine": 0.8772826356887817
+    },
+    {
+      "epoch": 11,
+      "rel_mse": 0.22593001957734427,
+      "cosine": 0.881331200838089
+    },
+    {
+      "epoch": 12,
+      "rel_mse": 0.21934021008014679,
+      "cosine": 0.8851132771968842
+    },
+    {
+      "epoch": 13,
+      "rel_mse": 0.21241540759801864,
+      "cosine": 0.8889316425323487
+    },
+    {
+      "epoch": 14,
+      "rel_mse": 0.20629187657435735,
+      "cosine": 0.8922518890698751
+    },
+    {
+      "epoch": 15,
+      "rel_mse": 0.20114064912001292,
+      "cosine": 0.8950958486398061
+    }
+  ],
+  "arms": {
+    "teacher_d12": {
+      "params": 256484928,
+      "params_saved_pct": 0.0,
+      "top1": 0.74,
+      "same_class_as_teacher": 1.0,
+      "agree_with_teacher": 1.0,
+      "kl_vs_teacher": 0.0,
+      "vision_ms": 66.53,
+      "prefill_ms": 14.65,
+      "total_ms": 81.18,
+      "speedup": 1.0
+    },
+    "naive_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.12,
+      "same_class_as_teacher": 0.14,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 10.669323358535767,
+      "vision_ms": 35.31,
+      "prefill_ms": 14.3,
+      "total_ms": 49.61,
+      "speedup": 1.636
+    },
+    "distil_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.68,
+      "same_class_as_teacher": 0.76,
+      "agree_with_teacher": 0.5,
+      "kl_vs_teacher": 1.9883267507888376,
+      "vision_ms": 35.44,
+      "prefill_ms": 14.3,
+      "total_ms": 49.74,
+      "speedup": 1.632
+    }
+  }
+}

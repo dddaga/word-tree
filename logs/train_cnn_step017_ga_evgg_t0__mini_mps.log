@@ -1,0 +1,44 @@
+cnn_step017 EfficientVGG GA T0 | 20ep 50%data | device=mps slot=mini_mps
+Ref T0=70.3%  D_small_s T0=61.0%  | configs: ['GA1', 'GA2', 'GA3', 'GA4']
+
+────────────────────────────────────────────────────────────
+GA1: GA#1: C=(32,64,384) k=3 exp=1 crelu
+  params=471,274  MACs=85.6M
+  ep  5  val=0.5073  best=0.5073  lr=2.58e-04
+  ep 10  val=0.6000  best=0.6000  lr=1.55e-04
+  ep 15  val=0.6532  best=0.6532  lr=5.25e-05
+  ep 20  val=0.6718  best=0.6718  lr=1.00e-05
+  -> best=0.6718  EFF-PARETO  (251s)
+────────────────────────────────────────────────────────────
+GA2: GA#2: C=(32,64,384) k=3 exp=2 crelu
+  params=481,514  MACs=98.5M
+  ep  5  val=0.5195  best=0.5195  lr=2.58e-04
+  ep 10  val=0.6222  best=0.6222  lr=1.55e-04
+  ep 15  val=0.6601  best=0.6601  lr=5.25e-05
+  ep 20  val=0.6833  best=0.6833  lr=1.00e-05
+  -> best=0.6833  EFF-PARETO  (251s)
+────────────────────────────────────────────────────────────
+GA3: GA#3: C=(32,96,384) k=3 exp=2 crelu
+  params=516,010  MACs=118.0M
+  ep  5  val=0.5045  best=0.5045  lr=2.58e-04
+  ep 10  val=0.5954  best=0.5954  lr=1.55e-04
+  ep 15  val=0.6583  best=0.6583  lr=5.25e-05
+  ep 20  val=0.6780  best=0.6780  lr=1.00e-05
+  -> best=0.6780  EFF-PARETO  (250s)
+────────────────────────────────────────────────────────────
+GA4: GA#4: C=(32,64,256) k=3 exp=1
+  params=304,618  MACs=62.9M
+  ep  5  val=0.3865  best=0.3865  lr=2.58e-04
+  ep 10  val=0.5819  best=0.5819  lr=1.55e-04
+  ep 15  val=0.6466  best=0.6466  lr=5.25e-05
+  ep 20  val=0.6566  best=0.6566  lr=1.00e-05
+  -> best=0.6566  EFF-PARETO  (244s)
+
+============================================================
+cnn_step017 SUMMARY
+============================================================
+  GA1: 0.6718  85.6M  471,274p  EFF-PARETO
+  GA2: 0.6833  98.5M  481,514p  EFF-PARETO
+  GA3: 0.6780  118.0M  516,010p  EFF-PARETO
+  GA4: 0.6566  62.9M  304,618p  EFF-PARETO
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step017_ga_t0_seed42__mini_mps.json

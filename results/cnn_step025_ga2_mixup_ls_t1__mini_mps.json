@@ -1,0 +1,22 @@
+{
+  "epsilons": {
+    "0.05": {
+      "best": 0.7304458598726115,
+      "best_ep": 75,
+      "delta": -0.005654140127388518,
+      "verdict": "NO-GAIN",
+      "elapsed": 852.9332029819489
+    },
+    "0.1": {
+      "best": 0.7077707006369427,
+      "best_ep": 65,
+      "delta": -0.02832929936305728,
+      "verdict": "NO-GAIN",
+      "elapsed": 795.777526140213
+    }
+  },
+  "best_epsilon": 0.05,
+  "mixup_alpha": 0.2,
+  "baseline_step021": 0.7361,
+  "advance_threshold": 0.7411
+}

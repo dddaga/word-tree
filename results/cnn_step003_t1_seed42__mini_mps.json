@@ -1,0 +1,32 @@
+{
+  "Ref": {
+    "desc": "ref: 64/128/256 k=7",
+    "n_params": 419146,
+    "macs_M": 183.2,
+    "best": 0.7317,
+    "best_ep": 30,
+    "delta_vs_ref": 0.0,
+    "t0_acc": 0.7034,
+    "elapsed_s": 2015
+  },
+  "F_wide": {
+    "desc": "wide: 128/256/256 k=7",
+    "n_params": 825482,
+    "macs_M": 559.8,
+    "best": 0.7442,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0125,
+    "t0_acc": 0.7274,
+    "elapsed_s": 3226
+  },
+  "D_small_s": {
+    "desc": "small+side: 32/64/128 k=7",
+    "n_params": 149674,
+    "macs_M": 57.5,
+    "best": 0.7096,
+    "best_ep": 69,
+    "delta_vs_ref": -0.0222,
+    "t0_acc": 0.6099,
+    "elapsed_s": 1806
+  }
+}

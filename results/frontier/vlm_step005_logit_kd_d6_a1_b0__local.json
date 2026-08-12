@@ -1,0 +1,61 @@
+{
+  "step": "vlm_step005",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cpu",
+  "depth": 6,
+  "alpha": 1.0,
+  "beta": 0.0,
+  "n_train": 20,
+  "n_eval": 10,
+  "epochs": 1,
+  "lr": 0.0002,
+  "total_params": 256484928,
+  "vision_layer_params": 7087872,
+  "train_history": [
+    {
+      "epoch": 1,
+      "mse": 15.537921619415282,
+      "kl": 9.61870619058609,
+      "cos": 0.2218553970567882,
+      "top1": 0.1
+    }
+  ],
+  "arms": {
+    "teacher_d12": {
+      "params": 256484928,
+      "params_saved_pct": 0.0,
+      "top1": 0.7,
+      "same_class_as_teacher": 1.0,
+      "agree_with_teacher": 1.0,
+      "kl_vs_teacher": 0.0,
+      "vision_ms": 127.82,
+      "prefill_ms": 44.15,
+      "total_ms": 171.98,
+      "speedup": 1.0
+    },
+    "naive_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.1,
+      "same_class_as_teacher": 0.3,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 11.651109313964843,
+      "vision_ms": 70.47,
+      "prefill_ms": 43.81,
+      "total_ms": 114.29,
+      "speedup": 1.505
+    },
+    "kd_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.1,
+      "same_class_as_teacher": 0.2,
+      "agree_with_teacher": 0.0,
+      "kl_vs_teacher": 4.884687447547913,
+      "vision_ms": 66.26,
+      "prefill_ms": 43.84,
+      "total_ms": 110.09,
+      "speedup": 1.562
+    }
+  }
+}

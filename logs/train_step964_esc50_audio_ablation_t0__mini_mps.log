@@ -1,0 +1,134 @@
+
+======================================================================
+step964 — ESC-50 audio routing ablation T0 (20ep, 50% data)
+  Isolates: does ΔW-proj routing add value over projection alone?
+  Linear: 0.4175  |  Dense seed ref (step962): 0.5650
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: linear  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_linear=+0.00pp  Δ_dense=-14.75pp    (linear ctrl)
+────────────────────────────────────────────────────────────
+MLP_small: mlp  params=1,781,810
+  e  1  top1=0.0825  lr=2.98e-03
+  e  2  top1=0.1350  lr=2.93e-03
+  e  3  top1=0.1975  lr=2.84e-03
+  e  4  top1=0.2925  lr=2.71e-03
+  e  5  top1=0.3275  lr=2.56e-03
+  e  6  top1=0.3850  lr=2.38e-03
+  e  7  top1=0.4175  lr=2.18e-03
+  e  8  top1=0.4125  lr=1.97e-03
+  e  9  top1=0.4475  lr=1.74e-03
+  e 10  top1=0.4625  lr=1.51e-03
+  e 11  top1=0.4950  lr=1.27e-03
+  e 12  top1=0.4850  lr=1.04e-03
+  e 13  top1=0.5125  lr=8.26e-04
+  e 14  top1=0.5350  lr=6.26e-04
+  e 15  top1=0.5125  lr=4.48e-04
+  e 16  top1=0.5425  lr=2.96e-04
+  e 17  top1=0.5400  lr=1.73e-04
+  e 18  top1=0.5350  lr=8.32e-05
+  e 19  top1=0.5325  lr=2.84e-05
+  e 20  top1=0.5350  lr=1.00e-05
+  -> best=0.5425 @ep16  Δ_linear=+12.50pp  Δ_dense=-2.25pp    BELOW_SGNNET
+────────────────────────────────────────────────────────────
+MLP_matched: mlp_matched  params=1,576,490
+  e  1  top1=0.0725  lr=2.98e-03
+  e  2  top1=0.1500  lr=2.93e-03
+  e  3  top1=0.2125  lr=2.84e-03
+  e  4  top1=0.2875  lr=2.71e-03
+  e  5  top1=0.3350  lr=2.56e-03
+  e  6  top1=0.3725  lr=2.38e-03
+  e  7  top1=0.3875  lr=2.18e-03
+  e  8  top1=0.4200  lr=1.97e-03
+  e  9  top1=0.4275  lr=1.74e-03
+  e 10  top1=0.4000  lr=1.51e-03
+  e 11  top1=0.4775  lr=1.27e-03
+  e 12  top1=0.4850  lr=1.04e-03
+  e 13  top1=0.5150  lr=8.26e-04
+  e 14  top1=0.5200  lr=6.26e-04
+  e 15  top1=0.5300  lr=4.48e-04
+  e 16  top1=0.5300  lr=2.96e-04
+  e 17  top1=0.5225  lr=1.73e-04
+  e 18  top1=0.5350  lr=8.32e-05
+  e 19  top1=0.5450  lr=2.84e-05
+  e 20  top1=0.5450  lr=1.00e-05
+  -> best=0.5450 @ep19  Δ_linear=+12.75pp  Δ_dense=-2.00pp    BELOW_SGNNET
+────────────────────────────────────────────────────────────
+SGNNET_K0: sgnnet_dense  params=1,578,016
+  e  1  top1=0.1050  lr=2.98e-03
+  e  2  top1=0.1875  lr=2.93e-03
+  e  3  top1=0.2775  lr=2.84e-03
+  e  4  top1=0.3525  lr=2.71e-03
+  e  5  top1=0.3200  lr=2.56e-03
+  e  6  top1=0.3925  lr=2.38e-03
+  e  7  top1=0.4850  lr=2.18e-03
+  e  8  top1=0.4900  lr=1.97e-03
+  e  9  top1=0.5000  lr=1.74e-03
+  e 10  top1=0.5125  lr=1.51e-03
+  e 11  top1=0.5275  lr=1.27e-03
+  e 12  top1=0.5550  lr=1.04e-03
+  e 13  top1=0.5450  lr=8.26e-04
+  e 14  top1=0.5750  lr=6.26e-04
+  e 15  top1=0.5875  lr=4.48e-04
+  e 16  top1=0.5975  lr=2.96e-04
+  e 17  top1=0.6050  lr=1.73e-04
+  e 18  top1=0.6025  lr=8.32e-05
+  e 19  top1=0.6075  lr=2.84e-05
+  e 20  top1=0.6050  lr=1.00e-05
+  -> best=0.6075 @ep19  Δ_linear=+19.00pp  Δ_dense=+4.25pp  routing_gain=+0.00pp  (K0 no-routing)
+────────────────────────────────────────────────────────────
+SGNNET_K5: sgnnet_dense  params=1,578,016
+  e  1  top1=0.0850  lr=2.98e-03
+  e  2  top1=0.1100  lr=2.93e-03
+  e  3  top1=0.1875  lr=2.84e-03
+  e  4  top1=0.2475  lr=2.71e-03
+  e  5  top1=0.3025  lr=2.56e-03
+  e  6  top1=0.3250  lr=2.38e-03
+  e  7  top1=0.3550  lr=2.18e-03
+  e  8  top1=0.4350  lr=1.97e-03
+  e  9  top1=0.4000  lr=1.74e-03
+  e 10  top1=0.4425  lr=1.51e-03
+  e 11  top1=0.4600  lr=1.27e-03
+  e 12  top1=0.4875  lr=1.04e-03
+  e 13  top1=0.4875  lr=8.26e-04
+  e 14  top1=0.5400  lr=6.26e-04
+  e 15  top1=0.5300  lr=4.48e-04
+  e 16  top1=0.5500  lr=2.96e-04
+  e 17  top1=0.5600  lr=1.73e-04
+  e 18  top1=0.5425  lr=8.32e-05
+  e 19  top1=0.5525  lr=2.84e-05
+  e 20  top1=0.5575  lr=1.00e-05
+  -> best=0.5600 @ep17  Δ_linear=+14.25pp  Δ_dense=-0.50pp  routing_gain=-4.75pp  (step962 ref)
+
+======================================================================
+STEP 964 SUMMARY — ESC-50 routing ablation
+  Linear: 0.4175  |  Dense seed ref: 0.5650
+======================================================================
+  Linear           params=19,250    best=0.4175  Δ_lin=+0.00pp              (linear ctrl)
+  MLP_small        params=1,781,810  best=0.5425  Δ_lin=+12.50pp              BELOW_SGNNET
+  MLP_matched      params=1,576,490  best=0.5450  Δ_lin=+12.75pp              BELOW_SGNNET
+  SGNNET_K0        params=1,578,016  best=0.6075  Δ_lin=+19.00pp  rg=+0.00pp  (K0 no-routing)
+  SGNNET_K5        params=1,578,016  best=0.5600  Δ_lin=+14.25pp  rg=-4.75pp  (step962 ref)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step964_esc50_audio_ablation_t0_seed42__mini_mps.json

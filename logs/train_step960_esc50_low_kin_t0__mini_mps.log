@@ -1,0 +1,163 @@
+
+======================================================================
+step960 — ESC-50 low-K_in sweep T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  N=256  D=16  K_hh=2  K_iter=5
+  Hypothesis: K_in=25 is too aggressive for 384-d compressed embedding.
+  Low K_in (1-8) ≈ VGG coverage ratio (0.1%), may preserve structure.
+  Known: K_in=25→−14.5pp, K_in=50→−18.0pp (more agg = worse).
+  Linear baseline (step926): 0.4775
+  SGNNET Ref (K_in=25, step928): 0.3325
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear(384, 50)  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_ref=+8.50pp  Δ_linear=-6.00pp  (linear control)
+────────────────────────────────────────────────────────────
+Ref: K_in=25  coverage=6.51%  params=5,152
+  e  1  top1=0.0175  lr=2.98e-03
+  e  2  top1=0.0150  lr=2.93e-03
+  e  3  top1=0.0350  lr=2.84e-03
+  e  4  top1=0.0425  lr=2.71e-03
+  e  5  top1=0.0300  lr=2.56e-03
+  e  6  top1=0.0375  lr=2.38e-03
+  e  7  top1=0.0325  lr=2.18e-03
+  e  8  top1=0.0500  lr=1.97e-03
+  e  9  top1=0.0525  lr=1.74e-03
+  e 10  top1=0.0725  lr=1.51e-03
+  e 11  top1=0.0800  lr=1.27e-03
+  e 12  top1=0.0700  lr=1.04e-03
+  e 13  top1=0.0675  lr=8.26e-04
+  e 14  top1=0.0875  lr=6.26e-04
+  e 15  top1=0.0825  lr=4.48e-04
+  e 16  top1=0.0925  lr=2.96e-04
+  e 17  top1=0.1000  lr=1.73e-04
+  e 18  top1=0.0950  lr=8.32e-05
+  e 19  top1=0.0975  lr=2.84e-05
+  e 20  top1=0.0950  lr=1.00e-05
+  -> best=0.1000 @ep17  Δ_ref=+0.00pp  Δ_linear=-37.75pp  (baseline)
+────────────────────────────────────────────────────────────
+A_kin8: K_in=8  coverage=2.08%  params=5,152
+  e  1  top1=0.0225  lr=2.98e-03
+  e  2  top1=0.0300  lr=2.93e-03
+  e  3  top1=0.0250  lr=2.84e-03
+  e  4  top1=0.0575  lr=2.71e-03
+  e  5  top1=0.0475  lr=2.56e-03
+  e  6  top1=0.0575  lr=2.38e-03
+  e  7  top1=0.0600  lr=2.18e-03
+  e  8  top1=0.0800  lr=1.97e-03
+  e  9  top1=0.0775  lr=1.74e-03
+  e 10  top1=0.0825  lr=1.51e-03
+  e 11  top1=0.0750  lr=1.27e-03
+  e 12  top1=0.0625  lr=1.04e-03
+  e 13  top1=0.0925  lr=8.26e-04
+  e 14  top1=0.0975  lr=6.26e-04
+  e 15  top1=0.1025  lr=4.48e-04
+  e 16  top1=0.1100  lr=2.96e-04
+  e 17  top1=0.1025  lr=1.73e-04
+  e 18  top1=0.1050  lr=8.32e-05
+  e 19  top1=0.1100  lr=2.84e-05
+  e 20  top1=0.1100  lr=1.00e-05
+  -> best=0.1100 @ep16  Δ_ref=+1.00pp  Δ_linear=-36.75pp  INTERESTING
+────────────────────────────────────────────────────────────
+B_kin4: K_in=4  coverage=1.04%  params=5,152
+  e  1  top1=0.0250  lr=2.98e-03
+  e  2  top1=0.0300  lr=2.93e-03
+  e  3  top1=0.0450  lr=2.84e-03
+  e  4  top1=0.0725  lr=2.71e-03
+  e  5  top1=0.0575  lr=2.56e-03
+  e  6  top1=0.0925  lr=2.38e-03
+  e  7  top1=0.0750  lr=2.18e-03
+  e  8  top1=0.1175  lr=1.97e-03
+  e  9  top1=0.0875  lr=1.74e-03
+  e 10  top1=0.1325  lr=1.51e-03
+  e 11  top1=0.1200  lr=1.27e-03
+  e 12  top1=0.1100  lr=1.04e-03
+  e 13  top1=0.1200  lr=8.26e-04
+  e 14  top1=0.1275  lr=6.26e-04
+  e 15  top1=0.1575  lr=4.48e-04
+  e 16  top1=0.1425  lr=2.96e-04
+  e 17  top1=0.1450  lr=1.73e-04
+  e 18  top1=0.1475  lr=8.32e-05
+  e 19  top1=0.1450  lr=2.84e-05
+  e 20  top1=0.1425  lr=1.00e-05
+  -> best=0.1575 @ep15  Δ_ref=+5.75pp  Δ_linear=-32.00pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+C_kin2: K_in=2  coverage=0.52%  params=5,152
+  e  1  top1=0.0325  lr=2.98e-03
+  e  2  top1=0.0550  lr=2.93e-03
+  e  3  top1=0.0325  lr=2.84e-03
+  e  4  top1=0.0700  lr=2.71e-03
+  e  5  top1=0.0850  lr=2.56e-03
+  e  6  top1=0.1050  lr=2.38e-03
+  e  7  top1=0.1250  lr=2.18e-03
+  e  8  top1=0.1125  lr=1.97e-03
+  e  9  top1=0.1300  lr=1.74e-03
+  e 10  top1=0.1400  lr=1.51e-03
+  e 11  top1=0.1375  lr=1.27e-03
+  e 12  top1=0.1225  lr=1.04e-03
+  e 13  top1=0.1475  lr=8.26e-04
+  e 14  top1=0.1475  lr=6.26e-04
+  e 15  top1=0.1500  lr=4.48e-04
+  e 16  top1=0.1525  lr=2.96e-04
+  e 17  top1=0.1550  lr=1.73e-04
+  e 18  top1=0.1500  lr=8.32e-05
+  e 19  top1=0.1525  lr=2.84e-05
+  e 20  top1=0.1525  lr=1.00e-05
+  -> best=0.1550 @ep17  Δ_ref=+5.50pp  Δ_linear=-32.25pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+D_kin1: K_in=1  coverage=0.26%  params=5,152
+  e  1  top1=0.0425  lr=2.98e-03
+  e  2  top1=0.0475  lr=2.93e-03
+  e  3  top1=0.0300  lr=2.84e-03
+  e  4  top1=0.0475  lr=2.71e-03
+  e  5  top1=0.0600  lr=2.56e-03
+  e  6  top1=0.0725  lr=2.38e-03
+  e  7  top1=0.0825  lr=2.18e-03
+  e  8  top1=0.1125  lr=1.97e-03
+  e  9  top1=0.1025  lr=1.74e-03
+  e 10  top1=0.0975  lr=1.51e-03
+  e 11  top1=0.1150  lr=1.27e-03
+  e 12  top1=0.1200  lr=1.04e-03
+  e 13  top1=0.1250  lr=8.26e-04
+  e 14  top1=0.1350  lr=6.26e-04
+  e 15  top1=0.1525  lr=4.48e-04
+  e 16  top1=0.1325  lr=2.96e-04
+  e 17  top1=0.1375  lr=1.73e-04
+  e 18  top1=0.1525  lr=8.32e-05
+  e 19  top1=0.1500  lr=2.84e-05
+  e 20  top1=0.1525  lr=1.00e-05
+  -> best=0.1525 @ep15  Δ_ref=+5.25pp  Δ_linear=-32.50pp  ADVANCE→T1
+
+======================================================================
+STEP 960 SUMMARY — ESC-50 low-K_in sweep T0
+  Linear baseline: 0.4775  |  SGNNET Ref (K_in=25): 0.3325
+======================================================================
+  Linear       K_in=None  cov=100.00%  best=0.4175  Δ_ref=+8.50pp  Δ_lin=-6.00pp  (linear control)
+  Ref          K_in=25    cov= 6.51%  best=0.1000  Δ_ref=+0.00pp  Δ_lin=-37.75pp  (baseline)
+  A_kin8       K_in=8     cov= 2.08%  best=0.1100  Δ_ref=+1.00pp  Δ_lin=-36.75pp  INTERESTING
+  B_kin4       K_in=4     cov= 1.04%  best=0.1575  Δ_ref=+5.75pp  Δ_lin=-32.00pp  ADVANCE→T1
+  C_kin2       K_in=2     cov= 0.52%  best=0.1550  Δ_ref=+5.50pp  Δ_lin=-32.25pp  ADVANCE→T1
+  D_kin1       K_in=1     cov= 0.26%  best=0.1525  Δ_ref=+5.25pp  Δ_lin=-32.50pp  ADVANCE→T1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step960_esc50_low_kin_t0_seed42__mini_mps.json

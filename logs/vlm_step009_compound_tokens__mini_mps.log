@@ -1,0 +1,59 @@
+==============================================================================
+vlm_step009 depth x tokens  device=mps  depth=6  budgets=[64, 32, 16, 8]  n_eval=3900
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 9903.28it/s]
+  distilled tower <- /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt
+  3859 eval images; 8 cells
+  eval [100/3859] 153s eta 5753s
+  eval [200/3859] 306s eta 5600s
+  eval [300/3859] 459s eta 5448s
+  eval [400/3859] 612s eta 5292s
+  eval [500/3859] 766s eta 5143s
+  eval [600/3859] 918s eta 4987s
+  eval [700/3859] 1071s eta 4834s
+  eval [800/3859] 1225s eta 4682s
+  eval [900/3859] 1378s eta 4530s
+  eval [1000/3859] 1531s eta 4377s
+  eval [1100/3859] 1684s eta 4225s
+  eval [1200/3859] 1838s eta 4072s
+  eval [1300/3859] 1992s eta 3921s
+  eval [1400/3859] 2145s eta 3767s
+  eval [1500/3859] 2298s eta 3614s
+  eval [1600/3859] 2451s eta 3460s
+  eval [1700/3859] 2604s eta 3307s
+  eval [1800/3859] 2758s eta 3155s
+  eval [1900/3859] 2912s eta 3003s
+  eval [2000/3859] 3066s eta 2850s
+  eval [2100/3859] 3220s eta 2697s
+  eval [2200/3859] 3373s eta 2544s
+  eval [2300/3859] 3526s eta 2390s
+  eval [2400/3859] 3678s eta 2236s
+  eval [2500/3859] 3832s eta 2083s
+  eval [2600/3859] 3985s eta 1930s
+  eval [2700/3859] 4138s eta 1776s
+  eval [2800/3859] 4292s eta 1623s
+  eval [2900/3859] 4444s eta 1470s
+  eval [3000/3859] 4597s eta 1316s
+  eval [3100/3859] 4749s eta 1163s
+  eval [3200/3859] 4902s eta 1010s
+  eval [3300/3859] 5056s eta 856s
+  eval [3400/3859] 5209s eta 703s
+  eval [3500/3859] 5362s eta 550s
+  eval [3600/3859] 5515s eta 397s
+  eval [3700/3859] 5667s eta 244s
+  eval [3800/3859] 5821s eta 90s
+
+  cell         top1   same  agree      KL   vis_ms   pre_ms    total
+  d12_k64     0.711  1.000  1.000   0.000     65.0     14.3     79.3
+  d12_k32     0.659  0.872  0.791   0.186     64.9     13.1     78.0
+  d12_k16     0.577  0.724  0.625   0.748     64.9     11.0     76.0
+  d12_k8      0.422  0.551  0.424   1.834     64.9     11.2     76.1
+  d6_k64      0.713  0.699  0.499   1.973     35.1     14.3     49.4
+  d6_k32      0.662  0.682  0.490   1.894     35.1     11.8     46.9
+  d6_k16      0.585  0.625  0.449   2.028     35.1     10.3     45.4
+  d6_k8       0.421  0.494  0.353   2.561     35.1     10.5     45.6
+
+  double difference I(k) = [d6 loss from pruning] - [d12 loss from pruning]
+  k=8    I -0.0034  boot95 [-0.0223, +0.0155]  (d6 vs d12 at k: b=493 c=498 p=0.89890)  -> INCONCLUSIVE at this n
+  k=16   I +0.0057  boot95 [-0.0111, +0.0225]  (d6 vs d12 at k: b=504 c=474 p=0.35377)  -> INCONCLUSIVE at this n
+  k=32   I +0.0013  boot95 [-0.0109, +0.0132]  (d6 vs d12 at k: b=442 c=429 p=0.68432)  -> ORTHOGONAL -- levers compound
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step009_compound_tokens_d6_k64-32-16-8__mini_mps.json

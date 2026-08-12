@@ -1,0 +1,105 @@
+
+======================================================================
+train_step992_kmeans_init_t0  — K-means W_pos init vs random, T0 (20ep, 50% data)
+  device=mps  epochs=20  batch=512  seed=42
+  configs=['Ref', 'A_kmeans_hidden', 'B_kmeans_both']
+======================================================================
+Running K-means (n_clusters=2048, n_samples=4096)…
+  done in 2.4s
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+────────────────────────────────────────────────────────────
+Ref  variant=random
+────────────────────────────────────────────────────────────
+  params=34,976
+  e  1  loss=14.0857  top1=0.0884  lr=2.36e-03
+  e  1  loss=14.0857  task=14.0857  safety=0.0000  top1=0.0884  lr=2.36e-03
+  e  2  loss=4.1401  top1=0.2038  lr=2.36e-03
+  e  3  loss=2.5927  top1=0.2899  lr=2.36e-03
+  e  4  loss=1.9149  top1=0.4558  lr=2.36e-03
+  e  5  loss=1.5057  top1=0.5569  lr=2.36e-03
+  e  6  loss=1.2775  top1=0.6125  lr=2.36e-03
+  e  7  loss=1.1426  top1=0.6718  lr=2.36e-03
+  e  8  loss=1.0303  top1=0.7057  lr=2.36e-03
+  e  9  loss=0.9299  top1=0.7368  lr=2.36e-03
+  e 10  loss=0.8505  top1=0.7590  lr=2.36e-03
+  e 10  loss=0.8505  task=0.8505  safety=0.0000  top1=0.7590  lr=2.36e-03
+  e 11  loss=0.7942  top1=0.7755  lr=2.36e-03
+  e 12  loss=0.7485  top1=0.7847  lr=2.36e-03
+  e 13  loss=0.7108  top1=0.8023  lr=2.36e-03
+  e 14  loss=0.6616  top1=0.8155  lr=2.36e-03
+  e 15  loss=0.6545  top1=0.8102  lr=2.36e-03
+  e 16  loss=0.6197  top1=0.8204  lr=2.36e-03
+  e 17  loss=0.5887  top1=0.8239  lr=2.36e-03
+  e 18  loss=0.5643  top1=0.8438  lr=2.36e-03
+  e 19  loss=0.5378  top1=0.8459  lr=2.36e-03
+  e 20  loss=0.5325  top1=0.8558  lr=2.36e-03
+  e 20  loss=0.5325  task=0.5325  safety=0.0000  top1=0.8558  lr=2.36e-03
+  DONE: best=0.8558 @ep20  115s
+
+────────────────────────────────────────────────────────────
+A_kmeans_hidden  variant=kmeans_hidden
+────────────────────────────────────────────────────────────
+  params=34,976
+  e  1  loss=12.4621  top1=0.1294  lr=2.36e-03
+  e  1  loss=12.4621  task=12.4621  safety=0.0000  top1=0.1294  lr=2.36e-03
+  e  2  loss=4.3469  top1=0.1941  lr=2.36e-03
+  e  3  loss=2.5301  top1=0.2650  lr=2.36e-03
+  e  4  loss=2.0508  top1=0.4112  lr=2.36e-03
+  e  5  loss=1.7035  top1=0.4808  lr=2.36e-03
+  e  6  loss=1.4992  top1=0.5358  lr=2.36e-03
+  e  7  loss=1.3514  top1=0.5987  lr=2.36e-03
+  e  8  loss=1.2247  top1=0.6599  lr=2.36e-03
+  e  9  loss=1.1202  top1=0.6833  lr=2.36e-03
+  e 10  loss=1.0386  top1=0.7146  lr=2.36e-03
+  e 10  loss=1.0386  task=1.0386  safety=0.0000  top1=0.7146  lr=2.36e-03
+  e 11  loss=0.9910  top1=0.7437  lr=2.36e-03
+  e 12  loss=0.9185  top1=0.7450  lr=2.36e-03
+  e 13  loss=0.8865  top1=0.7205  lr=2.36e-03
+  e 14  loss=0.8535  top1=0.7771  lr=2.36e-03
+  e 15  loss=0.7844  top1=0.7982  lr=2.36e-03
+  e 16  loss=0.7623  top1=0.7896  lr=2.36e-03
+  e 17  loss=0.7349  top1=0.8015  lr=2.36e-03
+  e 18  loss=0.7087  top1=0.8140  lr=2.36e-03
+  e 19  loss=0.6894  top1=0.8324  lr=2.36e-03
+  e 20  loss=0.6604  top1=0.8375  lr=2.36e-03
+  e 20  loss=0.6604  task=0.6604  safety=0.0000  top1=0.8375  lr=2.36e-03
+  DONE: best=0.8375 @ep20  99s
+
+────────────────────────────────────────────────────────────
+B_kmeans_both  variant=kmeans_both
+────────────────────────────────────────────────────────────
+  params=34,976
+  e  1  loss=12.3949  top1=0.1702  lr=2.36e-03
+  e  1  loss=12.3949  task=12.3949  safety=0.0000  top1=0.1702  lr=2.36e-03
+  e  2  loss=3.6427  top1=0.2668  lr=2.36e-03
+  e  3  loss=2.4754  top1=0.3080  lr=2.36e-03
+  e  4  loss=1.8764  top1=0.4451  lr=2.36e-03
+  e  5  loss=1.6129  top1=0.5231  lr=2.36e-03
+  e  6  loss=1.4218  top1=0.5878  lr=2.36e-03
+  e  7  loss=1.3284  top1=0.6614  lr=2.36e-03
+  e  8  loss=1.2476  top1=0.6831  lr=2.36e-03
+  e  9  loss=1.1785  top1=0.7111  lr=2.36e-03
+  e 10  loss=1.1255  top1=0.7261  lr=2.36e-03
+  e 10  loss=1.1255  task=1.1255  safety=0.0000  top1=0.7261  lr=2.36e-03
+  e 11  loss=1.0676  top1=0.7590  lr=2.36e-03
+  e 12  loss=1.0381  top1=0.7501  lr=2.36e-03
+  e 13  loss=0.9886  top1=0.7585  lr=2.36e-03
+  e 14  loss=0.9572  top1=0.7710  lr=2.36e-03
+  e 15  loss=0.9208  top1=0.7957  lr=2.36e-03
+  e 16  loss=0.8887  top1=0.7717  lr=2.36e-03
+  e 17  loss=0.8692  top1=0.8122  lr=2.36e-03
+  e 18  loss=0.8463  top1=0.8168  lr=2.36e-03
+  e 19  loss=0.8207  top1=0.7962  lr=2.36e-03
+  e 20  loss=0.7948  top1=0.8247  lr=2.36e-03
+  e 20  loss=0.7948  task=0.7948  safety=0.0000  top1=0.8247  lr=2.36e-03
+  DONE: best=0.8247 @ep20  99s
+
+======================================================================
+train_step992_kmeans_init_t0 SUMMARY  (Ref=0.8558)
+======================================================================
+  Ref                     0.8558  (+0.0000)  Ref
+  A_kmeans_hidden         0.8375  (-0.0183)  NEUTRAL/KILL
+  B_kmeans_both           0.8247  (-0.0311)  NEUTRAL/KILL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step992_kmeans_init_t0__mini_mps.json

@@ -1,0 +1,13 @@
+{
+  "F_wide": {
+    "desc": "wide: 128/256/256 k=7",
+    "n_params": 825482,
+    "macs_M": 559.8,
+    "best": 0.7939,
+    "best_ep": 26,
+    "delta_vs_ref": 0.0,
+    "t1_acc": 0.7442,
+    "t1_to_t2_delta": 0.0497,
+    "elapsed_s": 193761
+  }
+}

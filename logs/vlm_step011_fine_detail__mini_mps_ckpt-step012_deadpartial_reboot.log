@@ -1,0 +1,21 @@
+==============================================================================
+vlm_step011 fine detail  device=mps  depth=6  scales=[1.0, 0.5, 0.25]  n_eval=3900
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 10404.85it/s]
+  distilled tower <- /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step012_scale_augment_d6_25ep_aug20-90__mini_mps.pt
+  3859 eval images; 6 cells
+  --- d12_f100 ---
+    [200/3859] 42s eta 775s
+    [400/3859] 85s eta 733s
+    [600/3859] 127s eta 693s
+    [800/3859] 170s eta 651s
+    [1000/3859] 213s eta 608s
+    [1200/3859] 255s eta 566s
+    [1400/3859] 298s eta 523s
+    [1600/3859] 340s eta 480s
+    [1800/3859] 383s eta 438s
+    [2000/3859] 425s eta 395s
+    [2200/3859] 467s eta 352s
+    [2400/3859] 509s eta 310s
+    [2600/3859] 552s eta 267s
+    [2800/3859] 594s eta 225s
+    [3000/3859] 636s eta 182s

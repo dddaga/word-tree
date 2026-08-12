@@ -1,0 +1,14 @@
+{
+  "Lin_VGG": {
+    "best": 0.9643312101910828,
+    "best_ep": 3,
+    "n_params": 250890,
+    "elapsed_s": 5
+  },
+  "RandProj_N2048_D16": {
+    "best": 0.10063694267515924,
+    "best_ep": 1,
+    "n_params": 170,
+    "elapsed_s": 4
+  }
+}

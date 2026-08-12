@@ -1,0 +1,18 @@
+cnn_step012 GA_2 T1+twophase | 561,642 params | 105.9M MACs
+Phase 1: 20ep cosine 3e-4→1e-5 (T0 schedule)
+Phase 2: 55ep fixed LR=1e-05 (no restart)
+Device: mps | Slot: mini_mps
+T0 baseline: 41.32%. If best improves in Phase 2 → A_prime confirmed.
+
+  ep  5 [P1@ep5]  val=0.1564  best=0.2145@ep4  lr=2.58e-04
+  ep 10 [P1@ep10]  val=0.2645  best=0.3669@ep8  lr=1.55e-04
+  ep 15 [P1@ep15]  val=0.3763  best=0.3819@ep14  lr=5.25e-05
+  ep 20 [P1@ep20]  val=0.4099  best=0.4132@ep19  lr=1.00e-05
+  → Phase 1 done: best=0.4132 vs T0 baseline=0.4132 (MATCH)
+  ── Phase 2 start: LR set to 1e-05 ──
+  ep 25 [P2@ep5]  val=0.4135  best=0.4168@ep21  lr=1.00e-05
+  ep 30 [P2@ep10]  val=0.4158  best=0.4168@ep21  lr=1.00e-05
+  ep 35 [P2@ep15]  val=0.4112  best=0.4168@ep21  lr=1.00e-05
+  ep 40 [P2@ep20]  val=0.4110  best=0.4168@ep21  lr=1.00e-05
+  ep 45 [P2@ep25]  val=0.4079  best=0.4168@ep21  lr=1.00e-05
+  ep 50 [P2@ep30]  val=0.4127  best=0.4168@ep21  lr=1.00e-05

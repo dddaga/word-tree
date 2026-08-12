@@ -1,0 +1,74 @@
+ts_step003 | tickers=63 | MA windows=[2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 200]
+
+  ADANIENT: lr_dir=0.515  mlp_dir=0.552  | top_MA: 21d, 144d, 5d
+  ADANIPORTS: lr_dir=0.511  mlp_dir=0.473  | top_MA: 21d, 55d, 13d
+  APOLLOHOSP: lr_dir=0.519  mlp_dir=0.497  | top_MA: 89d, 21d, 55d
+  ASIANPAINT: lr_dir=0.531  mlp_dir=0.473  | top_MA: 21d, 5d, 55d
+  AXISBANK: lr_dir=0.489  mlp_dir=0.537  | top_MA: 89d, 21d, 55d
+  BAJAJ-AUTO: lr_dir=0.537  mlp_dir=0.505  | top_MA: 21d, 55d, 89d
+  BAJAJFINSV: lr_dir=0.487  mlp_dir=0.475  | top_MA: 55d, 89d, 13d
+  BAJFINANCE: lr_dir=0.501  mlp_dir=0.499  | top_MA: 89d, 21d, 8d
+  BHARTIARTL: lr_dir=0.509  mlp_dir=0.509  | top_MA: 55d, 13d, 89d
+  BPCL: lr_dir=0.483  mlp_dir=0.481  | top_MA: 21d, 55d, 5d
+  BRITANNIA: lr_dir=0.493  mlp_dir=0.535  | top_MA: 21d, 5d, 144d
+  CIPLA: lr_dir=0.493  mlp_dir=0.458  | top_MA: 55d, 21d, 13d
+  CLEAN: skipped
+  COALINDIA: lr_dir=0.489  mlp_dir=0.521  | top_MA: 89d, 21d, 55d
+  DELHIVERY: skipped
+  DIVISLAB: lr_dir=0.481  mlp_dir=0.497  | top_MA: 55d, 89d, 200d
+  DRREDDY: lr_dir=0.542  mlp_dir=0.560  | top_MA: 21d, 55d, 13d
+  EICHERMOT: lr_dir=0.491  mlp_dir=0.463  | top_MA: 89d, 144d, 200d
+  GRASIM: lr_dir=0.517  mlp_dir=0.525  | top_MA: 89d, 55d, 144d
+  HAPPSTMNDS: lr_dir=0.454  mlp_dir=0.485  | top_MA: 200d, 34d, 8d
+  HCLTECH: lr_dir=0.529  mlp_dir=0.487  | top_MA: 21d, 89d, 55d
+  HDFCBANK: lr_dir=0.525  mlp_dir=0.546  | top_MA: 21d, 89d, 5d
+  HDFCLIFE: lr_dir=0.493  mlp_dir=0.515  | top_MA: 21d, 89d, 5d
+  HEROMOTOCO: lr_dir=0.527  mlp_dir=0.515  | top_MA: 21d, 144d, 89d
+  HINDALCO: lr_dir=0.465  mlp_dir=0.471  | top_MA: 21d, 55d, 5d
+  HINDUNILVR: lr_dir=0.489  mlp_dir=0.501  | top_MA: 21d, 5d, 89d
+  ICICIBANK: lr_dir=0.517  mlp_dir=0.491  | top_MA: 89d, 21d, 55d
+  INDUSINDBK: lr_dir=0.493  mlp_dir=0.523  | top_MA: 89d, 13d, 55d
+  INFY: lr_dir=0.529  mlp_dir=0.497  | top_MA: 21d, 55d, 13d
+  IRCTC: lr_dir=0.515  mlp_dir=0.513  | top_MA: 34d, 21d, 55d
+  JSWSTEEL: lr_dir=0.527  mlp_dir=0.523  | top_MA: 89d, 21d, 5d
+  KOTAKBANK: lr_dir=0.505  mlp_dir=0.497  | top_MA: 55d, 21d, 5d
+  KPITTECH: lr_dir=0.485  mlp_dir=0.487  | top_MA: 21d, 5d, 34d
+  LATENTVIEW: skipped
+  LT: lr_dir=0.501  mlp_dir=0.509  | top_MA: 55d, 13d, 21d
+  LTIM: lr_dir=0.509  mlp_dir=0.499  | top_MA: 21d, 5d, 55d
+  M&M: lr_dir=0.507  mlp_dir=0.513  | top_MA: 21d, 5d, 89d
+  MAPMYINDIA: skipped
+  MARUTI: lr_dir=0.505  mlp_dir=0.507  | top_MA: 89d, 34d, 13d
+  NESTLEIND: lr_dir=0.517  mlp_dir=0.477  | top_MA: 55d, 13d, 34d
+  NTPC: lr_dir=0.501  mlp_dir=0.483  | top_MA: 89d, 55d, 144d
+  NYKAA: skipped
+  ONGC: lr_dir=0.473  mlp_dir=0.501  | top_MA: 21d, 5d, 55d
+  PAYTM: skipped
+  PERSISTENT: lr_dir=0.499  mlp_dir=0.495  | top_MA: 144d, 21d, 5d
+  POLICYBZR: skipped
+  POWERGRID: lr_dir=0.540  mlp_dir=0.505  | top_MA: 89d, 8d, 3d
+  RELIANCE: lr_dir=0.507  mlp_dir=0.513  | top_MA: 21d, 5d, 144d
+  ROUTE: lr_dir=0.523  mlp_dir=0.519  | top_MA: 200d, 13d, 55d
+  SBILIFE: lr_dir=0.495  mlp_dir=0.511  | top_MA: 21d, 8d, 89d
+  SBIN: lr_dir=0.493  mlp_dir=0.454  | top_MA: 21d, 89d, 5d
+  SUNPHARMA: lr_dir=0.523  mlp_dir=0.477  | top_MA: 144d, 200d, 55d
+  TANLA: lr_dir=0.434  mlp_dir=0.481  | top_MA: 89d, 55d, 34d
+  TATACONSUM: lr_dir=0.463  mlp_dir=0.489  | top_MA: 89d, 144d, 21d
+  TATAELXSI: lr_dir=0.477  mlp_dir=0.495  | top_MA: 21d, 5d, 89d
+  TATASTEEL: lr_dir=0.471  mlp_dir=0.505  | top_MA: 55d, 144d, 13d
+  TCS: lr_dir=0.548  mlp_dir=0.463  | top_MA: 89d, 13d, 55d
+  TECHM: lr_dir=0.515  mlp_dir=0.507  | top_MA: 21d, 5d, 55d
+  TITAN: lr_dir=0.507  mlp_dir=0.509  | top_MA: 55d, 89d, 5d
+  ULTRACEMCO: lr_dir=0.574  mlp_dir=0.471  | top_MA: 21d, 89d, 13d
+  UPL: lr_dir=0.515  mlp_dir=0.489  | top_MA: 89d, 21d, 5d
+  VEDL: lr_dir=0.483  mlp_dir=0.507  | top_MA: 21d, 5d, 55d
+  WIPRO: lr_dir=0.495  mlp_dir=0.489  | top_MA: 21d, 5d, 55d
+
+Features saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/ts/processed/ma_features.parquet
+Results saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/ts/ts_step003_ma_baseline.json
+
+=== Summary ===
+Mean directional accuracy — LinearReg: 0.504  MLP: 0.500
+Most informative MA windows (across all tickers): [('21', 46), ('55', 42), ('89', 42), ('5', 36), ('144', 29)]
+Baseline: 0.500 (random). Target: >0.52 to be useful.
+DONE

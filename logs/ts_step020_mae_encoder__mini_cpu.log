@@ -1,0 +1,26 @@
+ts_step020 — MAE Context Encoder
+  device=cpu  epochs=100  batch=32
+
+  Loaded: train=torch.Size([319, 56, 10])  val=torch.Size([493, 56, 10])  N_stocks=56  F=10
+  Windows: train=260  val=434
+  Model params: 52,500
+  Epoch   10 | train_loss=0.00749 | val_loss=0.00601
+  Epoch   20 | train_loss=0.00609 | val_loss=0.00419
+  Epoch   30 | train_loss=0.00583 | val_loss=0.00573
+  Epoch   40 | train_loss=0.00510 | val_loss=0.00537
+  Epoch   50 | train_loss=0.00473 | val_loss=0.00537
+  Epoch   60 | train_loss=0.00439 | val_loss=0.00413
+  Epoch   70 | train_loss=0.00388 | val_loss=0.00447
+  Epoch   80 | train_loss=0.00374 | val_loss=0.00480
+  Epoch   90 | train_loss=0.00373 | val_loss=0.00478
+  Epoch  100 | train_loss=0.00412 | val_loss=0.00451
+
+Downstream fine-tuning (frozen encoder + return head)...
+
+=== ts_step020 Results ===
+  Params:            52,500
+  Val recon loss:    0.00413
+  Val dir accuracy:  0.495  (baseline: 0.500)
+  Val Sharpe:        -62.271
+  Checkpoint:        /Volumes/T9/IndraAstra/dhiraj/neuro_graph/data/ts/checkpoints/ts_step020_mae_best.pt
+  Results:           /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/ts/ts_step020_mae_encoder.json

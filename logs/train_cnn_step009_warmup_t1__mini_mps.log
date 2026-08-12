@@ -1,0 +1,29 @@
+cnn_step009 GA_2 T1+warmup | 561,642 params | 105.9M MACs
+Schedule: 10ep warmup (1e-5→3e-4) + 65ep cosine (→1e-5)
+Device: mps | Slot: mini_mps
+Advance threshold (vs Ref T2=77.35%): >= 76.85%
+
+  ep  5  val=0.1541  best=0.1852@ep4  lr=1.55e-04
+  ep 10  val=0.1850  best=0.3090@ep8  lr=3.00e-04
+  ep 15  val=0.2601  best=0.3090@ep8  lr=2.96e-04
+  ep 20  val=0.2189  best=0.3284@ep17  lr=2.83e-04
+  ep 25  val=0.2688  best=0.3307@ep24  lr=2.64e-04
+  ep 30  val=0.2899  best=0.3307@ep24  lr=2.37e-04
+  ep 35  val=0.2838  best=0.3307@ep24  lr=2.06e-04
+  ep 40  val=0.2438  best=0.3307@ep24  lr=1.72e-04
+  ep 45  val=0.2403  best=0.3307@ep24  lr=1.38e-04
+  ep 50  val=0.2288  best=0.3307@ep24  lr=1.04e-04
+  ep 55  val=0.2321  best=0.3307@ep24  lr=7.26e-05
+  ep 60  val=0.2331  best=0.3307@ep24  lr=4.65e-05
+  ep 65  val=0.2313  best=0.3307@ep24  lr=2.66e-05
+  ep 70  val=0.2301  best=0.3307@ep24  lr=1.42e-05
+  ep 75  val=0.2395  best=0.3307@ep24  lr=1.00e-05
+
+============================================================
+cnn_step009 GA_2 T1+warmup RESULT
+  best=0.3307 @ep24  elapsed=1374s
+  MACs=105.9M  params=561,642
+  vs step007 (no warmup): best=35.44% — delta=-2.37pp
+  vs Ref T2=77.35%: -44.28pp  → BELOW_THRESHOLD
+============================================================
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step009_warmup_t1_seed42__mini_mps.json

@@ -1,0 +1,34 @@
+{
+  "Ref": {
+    "mode": "ref",
+    "n_params": 34976,
+    "best": 0.7743,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "A_proj": {
+    "mode": "proj",
+    "n_params": 36256,
+    "best": 0.774,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0003,
+    "elapsed_s": 4
+  },
+  "B_scale": {
+    "mode": "scale",
+    "n_params": 35056,
+    "best": 0.7755,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 3
+  },
+  "C_residual": {
+    "mode": "residual",
+    "n_params": 36256,
+    "best": 0.7745,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 3
+  }
+}

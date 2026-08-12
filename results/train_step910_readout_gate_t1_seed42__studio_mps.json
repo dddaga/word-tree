@@ -1,0 +1,38 @@
+{
+  "Ref_dw": {
+    "spec": "ref",
+    "n_params": 34976,
+    "best": 0.9541,
+    "best_ep": 74,
+    "delta_vs_ref": 0.0,
+    "gate_entropy_mean": null,
+    "elapsed_s": 121
+  },
+  "A_ro_tau1": {
+    "spec": "ro_zscore_1.0",
+    "n_params": 34976,
+    "best": 0.9608,
+    "best_ep": 75,
+    "delta_vs_ref": 0.0066,
+    "gate_entropy_mean": 0.6226,
+    "elapsed_s": 126
+  },
+  "C_ro_tau_lrn": {
+    "spec": "ro_zscore_lrn",
+    "n_params": 34977,
+    "best": 0.961,
+    "best_ep": 68,
+    "delta_vs_ref": 0.0069,
+    "gate_entropy_mean": 0.6226,
+    "elapsed_s": 123
+  },
+  "E_ro_geo": {
+    "spec": "ro_geo",
+    "n_params": 34976,
+    "best": 0.9603,
+    "best_ep": 64,
+    "delta_vs_ref": 0.0061,
+    "gate_entropy_mean": 0.608,
+    "elapsed_s": 114
+  }
+}

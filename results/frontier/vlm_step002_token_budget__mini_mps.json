@@ -1,0 +1,81 @@
+{
+  "step": "vlm_step002",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "mps",
+  "n_images": 50,
+  "question": "Which one is in this image: tench, springer, cassette, chainsaw, church, horn, truck, pump, golf, parachute? Answer with one word.",
+  "arms": {
+    "split17_full": {
+      "image_tokens": 832,
+      "seq_len": 906,
+      "top1": 0.66,
+      "same_class_as_full": 1.0,
+      "agree_with_full": 1.0,
+      "kl_vs_full": 0.0,
+      "vision_ms": 978.19,
+      "prefill_ms": 147.21,
+      "total_ms": 1125.4,
+      "speedup": 1.0
+    },
+    "topk_512": {
+      "image_tokens": 512,
+      "seq_len": 586,
+      "top1": 0.68,
+      "same_class_as_full": 0.94,
+      "agree_with_full": 0.86,
+      "kl_vs_full": 0.20220352697913768,
+      "vision_ms": 978.19,
+      "prefill_ms": 63.72,
+      "total_ms": 1041.92,
+      "speedup": 1.08
+    },
+    "topk_256": {
+      "image_tokens": 256,
+      "seq_len": 330,
+      "top1": 0.68,
+      "same_class_as_full": 0.76,
+      "agree_with_full": 0.7,
+      "kl_vs_full": 0.5883909995516297,
+      "vision_ms": 978.19,
+      "prefill_ms": 38.56,
+      "total_ms": 1016.75,
+      "speedup": 1.107
+    },
+    "topk_64": {
+      "image_tokens": 64,
+      "seq_len": 138,
+      "top1": 0.44,
+      "same_class_as_full": 0.4,
+      "agree_with_full": 0.52,
+      "kl_vs_full": 1.9573729586601258,
+      "vision_ms": 978.19,
+      "prefill_ms": 21.0,
+      "total_ms": 999.19,
+      "speedup": 1.126
+    },
+    "stride_64": {
+      "image_tokens": 64,
+      "seq_len": 138,
+      "top1": 0.26,
+      "same_class_as_full": 0.24,
+      "agree_with_full": 0.36,
+      "kl_vs_full": 3.1112721826136114,
+      "vision_ms": 978.19,
+      "prefill_ms": 16.66,
+      "total_ms": 994.85,
+      "speedup": 1.131
+    },
+    "nosplit_64": {
+      "image_tokens": 64,
+      "seq_len": 111,
+      "top1": 0.74,
+      "same_class_as_full": 0.74,
+      "agree_with_full": 0.66,
+      "kl_vs_full": 0.603946923436597,
+      "vision_ms": 78.47,
+      "prefill_ms": 17.61,
+      "total_ms": 96.08,
+      "speedup": 11.714
+    }
+  }
+}

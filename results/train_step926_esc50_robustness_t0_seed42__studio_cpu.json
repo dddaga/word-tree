@@ -1,0 +1,34 @@
+{
+  "Linear": {
+    "n": null,
+    "n_params": 19250,
+    "best": 0.4775,
+    "best_ep": 17,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 0
+  },
+  "N512": {
+    "n": 512,
+    "n_params": 9504,
+    "best": 0.185,
+    "best_ep": 20,
+    "delta_vs_linear": -0.2925,
+    "elapsed_s": 8
+  },
+  "N1024": {
+    "n": 1024,
+    "n_params": 18208,
+    "best": 0.275,
+    "best_ep": 15,
+    "delta_vs_linear": -0.2025,
+    "elapsed_s": 9
+  },
+  "N2048": {
+    "n": 2048,
+    "n_params": 35616,
+    "best": 0.32,
+    "best_ep": 18,
+    "delta_vs_linear": -0.1575,
+    "elapsed_s": 13
+  }
+}

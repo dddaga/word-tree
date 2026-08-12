@@ -1,0 +1,55 @@
+==============================================================================
+vlm_step008 depth x budget  device=cuda  depths=[3]  epochs=25  lr=0.0002  n_eval=3900
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6442.30it/s]
+  9469 train images; 236,725 image-updates per depth
+
+--- depth 3 <- vlm_step008_d3_25ep__5060ti_cuda.pt (trained already, not repeated) ---
+  anchor d6 <- /home/indra/sgnnet_bench/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt
+
+  3859 eval images; 3 arms
+  eval [100/3859] 60s eta 2249s
+  eval [200/3859] 120s eta 2190s
+  eval [300/3859] 179s eta 2129s
+  eval [400/3859] 239s eta 2069s
+  eval [500/3859] 299s eta 2011s
+  eval [600/3859] 359s eta 1950s
+  eval [700/3859] 419s eta 1891s
+  eval [800/3859] 479s eta 1831s
+  eval [900/3859] 539s eta 1772s
+  eval [1000/3859] 599s eta 1713s
+  eval [1100/3859] 659s eta 1654s
+  eval [1200/3859] 719s eta 1594s
+  eval [1300/3859] 779s eta 1534s
+  eval [1400/3859] 839s eta 1474s
+  eval [1500/3859] 899s eta 1414s
+  eval [1600/3859] 959s eta 1354s
+  eval [1700/3859] 1019s eta 1294s
+  eval [1800/3859] 1079s eta 1234s
+  eval [1900/3859] 1139s eta 1174s
+  eval [2000/3859] 1198s eta 1113s
+  eval [2100/3859] 1258s eta 1054s
+  eval [2200/3859] 1318s eta 994s
+  eval [2300/3859] 1377s eta 934s
+  eval [2400/3859] 1437s eta 874s
+  eval [2500/3859] 1497s eta 814s
+  eval [2600/3859] 1556s eta 754s
+  eval [2700/3859] 1616s eta 694s
+  eval [2800/3859] 1676s eta 634s
+  eval [2900/3859] 1736s eta 574s
+  eval [3000/3859] 1796s eta 514s
+  eval [3100/3859] 1855s eta 454s
+  eval [3200/3859] 1915s eta 394s
+  eval [3300/3859] 1975s eta 335s
+  eval [3400/3859] 2034s eta 275s
+  eval [3500/3859] 2094s eta 215s
+  eval [3600/3859] 2154s eta 155s
+  eval [3700/3859] 2214s eta 95s
+  eval [3800/3859] 2274s eta 35s
+
+  arm                  params  %save   top1   same  agree      KL   vis_ms    total   speed
+  teacher_d12     256,484,928   0.00  0.711  1.000  1.000   0.000     25.8     39.9   1.00x
+  distil_d6       213,957,696  16.58  0.713  0.699  0.499   1.973     13.6     27.7   1.44x
+  distil_d3       192,694,080  24.87  0.631  0.609  0.422   2.721      7.5     21.6   1.84x
+  distil_d6      delta +0.0021  b=440 c=432  p=0.81263  boot95 [-0.0127, +0.0174]  -> SHIP
+  distil_d3      delta -0.0796  b=426 c=733  p=0.00000  boot95 [-0.0967, -0.0619]  -> KILLED
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step008_depth_budget_d3_25ep__5060ti_cuda.json

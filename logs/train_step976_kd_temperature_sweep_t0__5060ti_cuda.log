@@ -1,0 +1,58 @@
+
+======================================================================
+Step 976 — KD Temperature Sweep T0 (5060ti CUDA)
+Config: step199 full stack  N=2048 D=16 K_hh=2 K_iter=5
+Protocol: 20ep, 50% data, BATCH=512, seed=42
+Temperatures: [1.0, 2.0, 4.0, 8.0]
+======================================================================
+Loading data/store_aug.h5...
+  train: 9,469  val: 3,925
+
+Soft-label peakedness (sample 0):
+  T=1.0  peak=1.0000  entropy=0.0004
+  T=2.0  peak=0.9892  entropy=0.0762
+  T=4.0  peak=0.7957  entropy=0.9081
+  T=8.0  peak=0.4112  entropy=1.9349
+
+── T=1.0 ──
+    T=1.0 ep 1  val=0.1534  best=0.1534  loss=17.3553  [2s]
+    T=1.0 ep 5  val=0.8471  best=0.8471  loss=0.5713  [9s]
+    T=1.0 ep10  val=0.8894  best=0.8894  loss=0.3821  [19s]
+    T=1.0 ep15  val=0.9029  best=0.9029  loss=0.3227  [28s]
+    T=1.0 ep20  val=0.9024  best=0.9029  loss=0.3142  [37s]
+  DONE T=1.0: best=0.9029 @ep15  elapsed=37.2s
+
+── T=2.0 ──
+    T=2.0 ep 1  val=0.1549  best=0.1549  loss=68.7967  [2s]
+    T=2.0 ep 5  val=0.8484  best=0.8484  loss=1.9667  [9s]
+    T=2.0 ep10  val=0.8874  best=0.8874  loss=1.2653  [18s]
+    T=2.0 ep15  val=0.9062  best=0.9062  loss=1.0487  [28s]
+    T=2.0 ep20  val=0.9045  best=0.9062  loss=1.0146  [37s]
+  DONE T=2.0: best=0.9062 @ep15  elapsed=36.9s
+
+── T=4.0 ──
+    T=4.0 ep 1  val=0.1496  best=0.1496  loss=264.1001  [2s]
+    T=4.0 ep 5  val=0.8242  best=0.8242  loss=5.5935  [9s]
+    T=4.0 ep10  val=0.8693  best=0.8693  loss=3.8474  [18s]
+    T=4.0 ep15  val=0.8833  best=0.8843  loss=3.3453  [28s]
+    T=4.0 ep20  val=0.8823  best=0.8848  loss=3.2556  [37s]
+  DONE T=4.0: best=0.8848 @ep16  elapsed=36.9s
+
+── T=8.0 ──
+    T=8.0 ep 1  val=0.1294  best=0.1294  loss=1002.5399  [2s]
+    T=8.0 ep 5  val=0.6589  best=0.6589  loss=22.8123  [9s]
+    T=8.0 ep10  val=0.7192  best=0.7192  loss=17.3788  [18s]
+    T=8.0 ep15  val=0.7399  best=0.7411  loss=15.3272  [28s]
+    T=8.0 ep20  val=0.7445  best=0.7462  loss=14.8708  [37s]
+  DONE T=8.0: best=0.7462 @ep19  elapsed=36.9s
+
+======================================================================
+STEP 976 SUMMARY
+======================================================================
+  Ref T=1: 0.9029
+  T=2.0:   0.9062  Δref=+0.33pp  NEUTRAL
+  T=4.0:   0.8848  Δref=-1.81pp  HURT
+  T=8.0:   0.7462  Δref=-15.67pp  HURT
+
+→ /home/indra/sgnnet_bench/results/train_step976_kd_temperature_sweep_t0_seed42__5060ti_cuda.json
+======================================================================

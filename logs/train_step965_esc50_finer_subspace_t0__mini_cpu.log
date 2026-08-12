@@ -1,0 +1,158 @@
+
+======================================================================
+step965 — ESC-50 finer subspace routing T0 (20ep, 50% data)
+  Following step963 trend: more blocks = better.
+  Linear: 0.4175  |  Subspace ref (step963 B96): 0.3125
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear(384,50)  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_ref=+10.50pp  Δ_linear=+0.00pp  (linear control)
+────────────────────────────────────────────────────────────
+Ref_b96_s4: B=96 S=4 D_node=16  params=78,546
+  e  1  top1=0.0725  lr=2.98e-03
+  e  2  top1=0.0700  lr=2.93e-03
+  e  3  top1=0.0450  lr=2.84e-03
+  e  4  top1=0.1050  lr=2.71e-03
+  e  5  top1=0.1650  lr=2.56e-03
+  e  6  top1=0.1800  lr=2.38e-03
+  e  7  top1=0.2375  lr=2.18e-03
+  e  8  top1=0.2525  lr=1.97e-03
+  e  9  top1=0.2650  lr=1.74e-03
+  e 10  top1=0.2675  lr=1.51e-03
+  e 11  top1=0.2600  lr=1.27e-03
+  e 12  top1=0.2950  lr=1.04e-03
+  e 13  top1=0.2925  lr=8.26e-04
+  e 14  top1=0.3100  lr=6.26e-04
+  e 15  top1=0.3175  lr=4.48e-04
+  e 16  top1=0.3100  lr=2.96e-04
+  e 17  top1=0.3025  lr=1.73e-04
+  e 18  top1=0.3025  lr=8.32e-05
+  e 19  top1=0.3000  lr=2.84e-05
+  e 20  top1=0.3050  lr=1.00e-05
+  -> best=0.3175 @ep15  Δ_ref=+0.50pp  Δ_linear=-10.00pp  (step963 ref)
+────────────────────────────────────────────────────────────
+A_b192_s2: B=192 S=2 D_node=16  params=156,946
+  e  1  top1=0.0500  lr=2.98e-03
+  e  2  top1=0.0500  lr=2.93e-03
+  e  3  top1=0.0500  lr=2.84e-03
+  e  4  top1=0.1000  lr=2.71e-03
+  e  5  top1=0.1275  lr=2.56e-03
+  e  6  top1=0.1725  lr=2.38e-03
+  e  7  top1=0.2075  lr=2.18e-03
+  e  8  top1=0.2275  lr=1.97e-03
+  e  9  top1=0.2050  lr=1.74e-03
+  e 10  top1=0.3050  lr=1.51e-03
+  e 11  top1=0.2900  lr=1.27e-03
+  e 12  top1=0.2925  lr=1.04e-03
+  e 13  top1=0.3025  lr=8.26e-04
+  e 14  top1=0.3150  lr=6.26e-04
+  e 15  top1=0.3150  lr=4.48e-04
+  e 16  top1=0.3475  lr=2.96e-04
+  e 17  top1=0.3550  lr=1.73e-04
+  e 18  top1=0.3500  lr=8.32e-05
+  e 19  top1=0.3600  lr=2.84e-05
+  e 20  top1=0.3625  lr=1.00e-05
+  -> best=0.3625 @ep20  Δ_ref=+5.00pp  Δ_linear=-5.50pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+B_b384_s1: B=384 S=1 D_node=16  params=313,794
+  e  1  top1=0.0200  lr=2.98e-03
+  e  2  top1=0.0350  lr=2.93e-03
+  e  3  top1=0.0450  lr=2.84e-03
+  e  4  top1=0.0850  lr=2.71e-03
+  e  5  top1=0.0800  lr=2.56e-03
+  e  6  top1=0.0775  lr=2.38e-03
+  e  7  top1=0.1450  lr=2.18e-03
+  e  8  top1=0.1650  lr=1.97e-03
+  e  9  top1=0.1800  lr=1.74e-03
+  e 10  top1=0.2175  lr=1.51e-03
+  e 11  top1=0.2575  lr=1.27e-03
+  e 12  top1=0.2825  lr=1.04e-03
+  e 13  top1=0.2775  lr=8.26e-04
+  e 14  top1=0.2825  lr=6.26e-04
+  e 15  top1=0.3000  lr=4.48e-04
+  e 16  top1=0.3100  lr=2.96e-04
+  e 17  top1=0.3200  lr=1.73e-04
+  e 18  top1=0.3175  lr=8.32e-05
+  e 19  top1=0.3000  lr=2.84e-05
+  e 20  top1=0.3025  lr=1.00e-05
+  -> best=0.3200 @ep17  Δ_ref=+0.75pp  Δ_linear=-9.75pp  INTERESTING
+────────────────────────────────────────────────────────────
+C_b96_d32: B=96 S=4 D_node=32  params=156,946
+  e  1  top1=0.0200  lr=2.98e-03
+  e  2  top1=0.1300  lr=2.93e-03
+  e  3  top1=0.1500  lr=2.84e-03
+  e  4  top1=0.2075  lr=2.71e-03
+  e  5  top1=0.2200  lr=2.56e-03
+  e  6  top1=0.2425  lr=2.38e-03
+  e  7  top1=0.2425  lr=2.18e-03
+  e  8  top1=0.3150  lr=1.97e-03
+  e  9  top1=0.2725  lr=1.74e-03
+  e 10  top1=0.3175  lr=1.51e-03
+  e 11  top1=0.3700  lr=1.27e-03
+  e 12  top1=0.3325  lr=1.04e-03
+  e 13  top1=0.3300  lr=8.26e-04
+  e 14  top1=0.3450  lr=6.26e-04
+  e 15  top1=0.3625  lr=4.48e-04
+  e 16  top1=0.3725  lr=2.96e-04
+  e 17  top1=0.3700  lr=1.73e-04
+  e 18  top1=0.3650  lr=8.32e-05
+  e 19  top1=0.3600  lr=2.84e-05
+  e 20  top1=0.3600  lr=1.00e-05
+  -> best=0.3725 @ep16  Δ_ref=+6.00pp  Δ_linear=-4.50pp  APPROACHING
+────────────────────────────────────────────────────────────
+D_b192_d32: B=192 S=2 D_node=32  params=313,650
+  e  1  top1=0.0475  lr=2.98e-03
+  e  2  top1=0.0725  lr=2.93e-03
+  e  3  top1=0.1425  lr=2.84e-03
+  e  4  top1=0.1425  lr=2.71e-03
+  e  5  top1=0.2350  lr=2.56e-03
+  e  6  top1=0.2900  lr=2.38e-03
+  e  7  top1=0.3050  lr=2.18e-03
+  e  8  top1=0.3200  lr=1.97e-03
+  e  9  top1=0.3550  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.3525  lr=1.27e-03
+  e 12  top1=0.4025  lr=1.04e-03
+  e 13  top1=0.4225  lr=8.26e-04
+  e 14  top1=0.4200  lr=6.26e-04
+  e 15  top1=0.4325  lr=4.48e-04
+  e 16  top1=0.4325  lr=2.96e-04
+  e 17  top1=0.4225  lr=1.73e-04
+  e 18  top1=0.4350  lr=8.32e-05
+  e 19  top1=0.4200  lr=2.84e-05
+  e 20  top1=0.4250  lr=1.00e-05
+  -> best=0.4350 @ep18  Δ_ref=+12.25pp  Δ_linear=+1.75pp  EXCEEDS_LINEAR
+
+======================================================================
+STEP 965 SUMMARY — ESC-50 finer subspace routing T0
+  Linear: 0.4175  |  Subspace ref: 0.3125
+======================================================================
+  Linear         full              best=0.4175  Δ_ref=+10.50pp  Δ_lin=+0.00pp  (linear control)
+  Ref_b96_s4     B=96,S=4,D=16     best=0.3175  Δ_ref=+0.50pp  Δ_lin=-10.00pp  (step963 ref)
+  A_b192_s2      B=192,S=2,D=16    best=0.3625  Δ_ref=+5.00pp  Δ_lin=-5.50pp  ADVANCE→T1
+  B_b384_s1      B=384,S=1,D=16    best=0.3200  Δ_ref=+0.75pp  Δ_lin=-9.75pp  INTERESTING
+  C_b96_d32      B=96,S=4,D=32     best=0.3725  Δ_ref=+6.00pp  Δ_lin=-4.50pp  APPROACHING
+  D_b192_d32     B=192,S=2,D=32    best=0.4350  Δ_ref=+12.25pp  Δ_lin=+1.75pp  EXCEEDS_LINEAR
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step965_esc50_finer_subspace_t0_seed42__mini_cpu.json

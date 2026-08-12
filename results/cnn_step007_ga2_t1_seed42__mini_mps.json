@@ -1,0 +1,25 @@
+{
+  "config": {
+    "channels": [
+      32,
+      64,
+      384
+    ],
+    "dil_rates": [
+      1
+    ],
+    "expansion": 1,
+    "crelu_mask": [
+      true,
+      true,
+      false
+    ]
+  },
+  "best": 0.3543949044585987,
+  "best_ep": 8,
+  "macs_M": 105.90784,
+  "params": 561642,
+  "elapsed_s": 1370,
+  "tier": "T1",
+  "advance": "BELOW_THRESHOLD"
+}

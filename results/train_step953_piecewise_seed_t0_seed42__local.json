@@ -1,0 +1,29 @@
+{
+  "Ref": {
+    "mode": "ref",
+    "use_fourier": true,
+    "n_params": 34976,
+    "best": 0.7758,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "A_piecewise": {
+    "mode": "shared",
+    "use_fourier": true,
+    "n_params": 34992,
+    "best": 0.3093,
+    "best_ep": 1,
+    "delta_vs_ref": -0.4665,
+    "elapsed_s": 4
+  },
+  "D_nofourier": {
+    "mode": "shared",
+    "use_fourier": false,
+    "n_params": 34992,
+    "best": 0.1445,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6313,
+    "elapsed_s": 4
+  }
+}

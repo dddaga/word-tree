@@ -1,0 +1,149 @@
+cnn_step019 EfficientVGG GA T2 | 150ep 100%data | device=mps slot=mini_mps
+Ref T2=77.6%  D_small_s T2=75.8%  | configs: ['GA1', 'GA2', 'GA3', 'GA4']
+Advance: STRONG>=77.6%  EFF-PARETO>=75.8%@<183M
+
+────────────────────────────────────────────────────────────
+GA1: GA#1: C=(32,64,384) k=3 exp=1 crelu  T1=0.7261
+  params=471,274  MACs=85.6M
+  ep  5  val=0.6054  best=0.6054  lr=2.99e-04
+  ep 10  val=0.6859  best=0.6859  lr=2.97e-04
+  ep 15  val=0.7118  best=0.7118  lr=2.93e-04
+  ep 20  val=0.7376  best=0.7376  lr=2.87e-04
+  ep 25  val=0.7544  best=0.7544  lr=2.81e-04
+  ep 30  val=0.7536  best=0.7544  lr=2.72e-04
+  ep 35  val=0.7572  best=0.7572  lr=2.63e-04
+  ep 40  val=0.7557  best=0.7572  lr=2.52e-04
+  ep 45  val=0.7396  best=0.7572  lr=2.40e-04
+  ep 50  val=0.7483  best=0.7572  lr=2.28e-04
+  ep 55  val=0.7490  best=0.7572  lr=2.14e-04
+  ep 60  val=0.7468  best=0.7572  lr=2.00e-04
+  ep 65  val=0.7332  best=0.7572  lr=1.85e-04
+  ep 70  val=0.7414  best=0.7572  lr=1.70e-04
+  ep 75  val=0.7292  best=0.7572  lr=1.55e-04
+  ep 80  val=0.7386  best=0.7572  lr=1.40e-04
+  ep 85  val=0.7424  best=0.7572  lr=1.25e-04
+  ep 90  val=0.7473  best=0.7572  lr=1.10e-04
+  ep 95  val=0.7271  best=0.7572  lr=9.60e-05
+  ep100  val=0.7322  best=0.7572  lr=8.25e-05
+  ep105  val=0.7343  best=0.7572  lr=6.98e-05
+  ep110  val=0.7371  best=0.7572  lr=5.80e-05
+  ep115  val=0.7383  best=0.7572  lr=4.72e-05
+  ep120  val=0.7266  best=0.7572  lr=3.77e-05
+  ep125  val=0.7327  best=0.7572  lr=2.94e-05
+  ep130  val=0.7307  best=0.7572  lr=2.25e-05
+  ep135  val=0.7325  best=0.7572  lr=1.71e-05
+  ep140  val=0.7335  best=0.7572  lr=1.32e-05
+  ep145  val=0.7340  best=0.7572  lr=1.08e-05
+  ep150  val=0.7325  best=0.7572  lr=1.00e-05
+  -> best=0.7572 @ep35  T1->T2=+0.0311  WEAK  (3455s)
+────────────────────────────────────────────────────────────
+GA2: GA#2: C=(32,64,384) k=3 exp=2 crelu  T1=0.7251
+  params=481,514  MACs=98.5M
+  ep  5  val=0.6010  best=0.6010  lr=2.99e-04
+  ep 10  val=0.6861  best=0.6861  lr=2.97e-04
+  ep 15  val=0.7187  best=0.7187  lr=2.93e-04
+  ep 20  val=0.7462  best=0.7462  lr=2.87e-04
+  ep 25  val=0.7725  best=0.7725  lr=2.81e-04
+  ep 30  val=0.7480  best=0.7725  lr=2.72e-04
+  ep 35  val=0.7355  best=0.7725  lr=2.63e-04
+  ep 40  val=0.7549  best=0.7725  lr=2.52e-04
+  ep 45  val=0.7603  best=0.7725  lr=2.40e-04
+  ep 50  val=0.7618  best=0.7725  lr=2.28e-04
+  ep 55  val=0.7473  best=0.7725  lr=2.14e-04
+  ep 60  val=0.7335  best=0.7725  lr=2.00e-04
+  ep 65  val=0.7414  best=0.7725  lr=1.85e-04
+  ep 70  val=0.7302  best=0.7725  lr=1.70e-04
+  ep 75  val=0.7317  best=0.7725  lr=1.55e-04
+  ep 80  val=0.7338  best=0.7725  lr=1.40e-04
+  ep 85  val=0.7419  best=0.7725  lr=1.25e-04
+  ep 90  val=0.7348  best=0.7725  lr=1.10e-04
+  ep 95  val=0.7332  best=0.7725  lr=9.60e-05
+  ep100  val=0.7299  best=0.7725  lr=8.25e-05
+  ep105  val=0.7353  best=0.7725  lr=6.98e-05
+  ep110  val=0.7348  best=0.7725  lr=5.80e-05
+  ep115  val=0.7312  best=0.7725  lr=4.72e-05
+  ep120  val=0.7276  best=0.7725  lr=3.77e-05
+  ep125  val=0.7269  best=0.7725  lr=2.94e-05
+  ep130  val=0.7343  best=0.7725  lr=2.25e-05
+  ep135  val=0.7327  best=0.7725  lr=1.71e-05
+  ep140  val=0.7279  best=0.7725  lr=1.32e-05
+  ep145  val=0.7320  best=0.7725  lr=1.08e-05
+  ep150  val=0.7350  best=0.7725  lr=1.00e-05
+  -> best=0.7725 @ep25  T1->T2=+0.0474  EFF-PARETO  (3290s)
+────────────────────────────────────────────────────────────
+GA3: GA#3: C=(32,96,384) k=3 exp=2 crelu  T1=0.7297
+  params=516,010  MACs=118.0M
+  ep  5  val=0.6357  best=0.6357  lr=2.99e-04
+  ep 10  val=0.6859  best=0.6859  lr=2.97e-04
+  ep 15  val=0.7292  best=0.7292  lr=2.93e-04
+  ep 20  val=0.7167  best=0.7292  lr=2.87e-04
+  ep 25  val=0.7689  best=0.7689  lr=2.81e-04
+  ep 30  val=0.7442  best=0.7689  lr=2.72e-04
+  ep 35  val=0.7613  best=0.7689  lr=2.63e-04
+  ep 40  val=0.7414  best=0.7689  lr=2.52e-04
+  ep 45  val=0.7633  best=0.7689  lr=2.40e-04
+  ep 50  val=0.7536  best=0.7689  lr=2.28e-04
+  ep 55  val=0.7450  best=0.7689  lr=2.14e-04
+  ep 60  val=0.7498  best=0.7689  lr=2.00e-04
+  ep 65  val=0.7343  best=0.7689  lr=1.85e-04
+  ep 70  val=0.7343  best=0.7689  lr=1.70e-04
+  ep 75  val=0.7338  best=0.7689  lr=1.55e-04
+  ep 80  val=0.7399  best=0.7689  lr=1.40e-04
+  ep 85  val=0.7322  best=0.7689  lr=1.25e-04
+  ep 90  val=0.7241  best=0.7689  lr=1.10e-04
+  ep 95  val=0.7195  best=0.7689  lr=9.60e-05
+  ep100  val=0.7159  best=0.7689  lr=8.25e-05
+  ep105  val=0.7195  best=0.7689  lr=6.98e-05
+  ep110  val=0.7210  best=0.7689  lr=5.80e-05
+  ep115  val=0.7180  best=0.7689  lr=4.72e-05
+  ep120  val=0.7251  best=0.7689  lr=3.77e-05
+  ep125  val=0.7197  best=0.7689  lr=2.94e-05
+  ep130  val=0.7200  best=0.7689  lr=2.25e-05
+  ep135  val=0.7180  best=0.7689  lr=1.71e-05
+  ep140  val=0.7180  best=0.7689  lr=1.32e-05
+  ep145  val=0.7190  best=0.7689  lr=1.08e-05
+  ep150  val=0.7205  best=0.7689  lr=1.00e-05
+  -> best=0.7689 @ep25  T1->T2=+0.0392  EFF-PARETO  (3338s)
+────────────────────────────────────────────────────────────
+GA4: GA#4: C=(32,64,256) k=3 exp=1  T1=0.7276
+  params=304,618  MACs=62.9M
+  ep  5  val=0.6038  best=0.6038  lr=2.99e-04
+  ep 10  val=0.6487  best=0.6487  lr=2.97e-04
+  ep 15  val=0.7111  best=0.7111  lr=2.93e-04
+  ep 20  val=0.7391  best=0.7391  lr=2.87e-04
+  ep 25  val=0.7580  best=0.7580  lr=2.81e-04
+  ep 30  val=0.7610  best=0.7610  lr=2.72e-04
+  ep 35  val=0.7353  best=0.7610  lr=2.63e-04
+  ep 40  val=0.7394  best=0.7610  lr=2.52e-04
+  ep 45  val=0.7549  best=0.7610  lr=2.40e-04
+  ep 50  val=0.7442  best=0.7610  lr=2.28e-04
+  ep 55  val=0.7340  best=0.7610  lr=2.14e-04
+  ep 60  val=0.7427  best=0.7610  lr=2.00e-04
+  ep 65  val=0.7353  best=0.7610  lr=1.85e-04
+  ep 70  val=0.7361  best=0.7610  lr=1.70e-04
+  ep 75  val=0.7417  best=0.7610  lr=1.55e-04
+  ep 80  val=0.7371  best=0.7610  lr=1.40e-04
+  ep 85  val=0.7378  best=0.7610  lr=1.25e-04
+  ep 90  val=0.7335  best=0.7610  lr=1.10e-04
+  ep 95  val=0.7279  best=0.7610  lr=9.60e-05
+  ep100  val=0.7355  best=0.7610  lr=8.25e-05
+  ep105  val=0.7276  best=0.7610  lr=6.98e-05
+  ep110  val=0.7317  best=0.7610  lr=5.80e-05
+  ep115  val=0.7312  best=0.7610  lr=4.72e-05
+  ep120  val=0.7299  best=0.7610  lr=3.77e-05
+  ep125  val=0.7327  best=0.7610  lr=2.94e-05
+  ep130  val=0.7325  best=0.7610  lr=2.25e-05
+  ep135  val=0.7264  best=0.7610  lr=1.71e-05
+  ep140  val=0.7282  best=0.7610  lr=1.32e-05
+  ep145  val=0.7282  best=0.7610  lr=1.08e-05
+  ep150  val=0.7292  best=0.7610  lr=1.00e-05
+  -> best=0.7610 @ep30  T1->T2=+0.0334  EFF-PARETO  (3439s)
+
+============================================================
+cnn_step019 SUMMARY (T2)
+============================================================
+  GA1: 0.7572  85.6M  471,274p  T1->T2=+0.0311  WEAK
+  GA2: 0.7725  98.5M  481,514p  T1->T2=+0.0474  EFF-PARETO
+  GA3: 0.7689  118.0M  516,010p  T1->T2=+0.0392  EFF-PARETO
+  GA4: 0.7610  62.9M  304,618p  T1->T2=+0.0334  EFF-PARETO
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step019_ga_t2_seed42__mini_mps.json

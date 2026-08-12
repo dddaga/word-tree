@@ -1,0 +1,541 @@
+{
+  "linear_fitness": 0.603,
+  "all_evals": {
+    "D16_Kin15_Khh2_Ki5_N4096": {
+      "fitness": 0.4181,
+      "delta_vs_linear": -0.1849,
+      "n_params": 71232,
+      "elapsed_s": 712,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 5,
+        "N": 4096
+      },
+      "gen": 0
+    },
+    "D16_Kin15_Khh2_Ki7_N8192": {
+      "fitness": 0.4254,
+      "delta_vs_linear": -0.1776,
+      "n_params": 140864,
+      "elapsed_s": 1727,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 7,
+        "N": 8192
+      },
+      "gen": 0
+    },
+    "D32_Kin15_Khh2_Ki5_N4096": {
+      "fitness": 0.382,
+      "delta_vs_linear": -0.221,
+      "n_params": 138368,
+      "elapsed_s": 1200,
+      "genes": {
+        "D": 32,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 5,
+        "N": 4096
+      },
+      "gen": 0
+    },
+    "D16_Kin10_Khh4_Ki5_N4096": {
+      "fitness": 0.4198,
+      "delta_vs_linear": -0.1832,
+      "n_params": 71232,
+      "elapsed_s": 964,
+      "genes": {
+        "D": 16,
+        "K_in": 10,
+        "K_hh": 4,
+        "K_iter": 5,
+        "N": 4096
+      },
+      "gen": 0
+    },
+    "D16_Kin15_Khh1_Ki7_N8192": {
+      "fitness": 0.4004,
+      "delta_vs_linear": -0.2026,
+      "n_params": 140864,
+      "elapsed_s": 1371,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 1,
+        "K_iter": 7,
+        "N": 8192
+      },
+      "gen": 0
+    },
+    "D16_Kin15_Khh4_Ki10_N4096": {
+      "fitness": 0.3273,
+      "delta_vs_linear": -0.2757,
+      "n_params": 71232,
+      "elapsed_s": 1814,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 4,
+        "K_iter": 10,
+        "N": 4096
+      },
+      "gen": 0
+    },
+    "D32_Kin10_Khh2_Ki7_N2048": {
+      "fitness": 0.2685,
+      "delta_vs_linear": -0.3345,
+      "n_params": 70784,
+      "elapsed_s": 833,
+      "genes": {
+        "D": 32,
+        "K_in": 10,
+        "K_hh": 2,
+        "K_iter": 7,
+        "N": 2048
+      },
+      "gen": 0
+    },
+    "D8_Kin25_Khh4_Ki5_N4096": {
+      "fitness": 0.3941,
+      "delta_vs_linear": -0.2089,
+      "n_params": 37664,
+      "elapsed_s": 466,
+      "genes": {
+        "D": 8,
+        "K_in": 25,
+        "K_hh": 4,
+        "K_iter": 5,
+        "N": 4096
+      },
+      "gen": 0
+    },
+    "D16_Kin15_Khh2_Ki5_N8192": {
+      "fitness": 0.4625,
+      "delta_vs_linear": -0.1405,
+      "n_params": 140864,
+      "elapsed_s": 1212,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 5,
+        "N": 8192
+      },
+      "gen": 1
+    },
+    "D16_Kin15_Khh4_Ki7_N4096": {
+      "fitness": 0.4147,
+      "delta_vs_linear": -0.1883,
+      "n_params": 71232,
+      "elapsed_s": 1270,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 4,
+        "K_iter": 7,
+        "N": 4096
+      },
+      "gen": 1
+    },
+    "D16_Kin15_Khh4_Ki5_N8192": {
+      "fitness": 0.4598,
+      "delta_vs_linear": -0.1432,
+      "n_params": 140864,
+      "elapsed_s": 1827,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 4,
+        "K_iter": 5,
+        "N": 8192
+      },
+      "gen": 1
+    },
+    "D16_Kin15_Khh1_Ki7_N4096": {
+      "fitness": 0.3609,
+      "delta_vs_linear": -0.2421,
+      "n_params": 71232,
+      "elapsed_s": 606,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 1,
+        "K_iter": 7,
+        "N": 4096
+      },
+      "gen": 1
+    },
+    "D16_Kin10_Khh4_Ki7_N4096": {
+      "fitness": 0.4147,
+      "delta_vs_linear": -0.1883,
+      "n_params": 71232,
+      "elapsed_s": 1268,
+      "genes": {
+        "D": 16,
+        "K_in": 10,
+        "K_hh": 4,
+        "K_iter": 7,
+        "N": 4096
+      },
+      "gen": 2
+    },
+    "D32_Kin10_Khh2_Ki5_N8192": {
+      "fitness": 0.4429,
+      "delta_vs_linear": -0.1601,
+      "n_params": 273536,
+      "elapsed_s": 2400,
+      "genes": {
+        "D": 32,
+        "K_in": 10,
+        "K_hh": 2,
+        "K_iter": 5,
+        "N": 8192
+      },
+      "gen": 2
+    },
+    "D8_Kin15_Khh2_Ki10_N4096": {
+      "fitness": 0.1142,
+      "delta_vs_linear": -0.4888,
+      "n_params": 37664,
+      "elapsed_s": 594,
+      "genes": {
+        "D": 8,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 10,
+        "N": 4096
+      },
+      "gen": 3
+    },
+    "D32_Kin15_Khh4_Ki5_N8192": {
+      "fitness": 0.4599,
+      "delta_vs_linear": -0.1431,
+      "n_params": 273536,
+      "elapsed_s": 3626,
+      "genes": {
+        "D": 32,
+        "K_in": 15,
+        "K_hh": 4,
+        "K_iter": 5,
+        "N": 8192
+      },
+      "gen": 3
+    },
+    "D16_Kin15_Khh2_Ki5_N2048": {
+      "fitness": 0.3193,
+      "delta_vs_linear": -0.2837,
+      "n_params": 36416,
+      "elapsed_s": 301,
+      "genes": {
+        "D": 16,
+        "K_in": 15,
+        "K_hh": 2,
+        "K_iter": 5,
+        "N": 2048
+      },
+      "gen": 3
+    }
+  },
+  "gen_populations": {
+    "0": [
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 7,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 32,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 10,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 1,
+          "K_iter": 7,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 10,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 32,
+          "K_in": 10,
+          "K_hh": 2,
+          "K_iter": 7,
+          "N": 2048
+        }
+      },
+      {
+        "genes": {
+          "D": 8,
+          "K_in": 25,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 4096
+        }
+      }
+    ],
+    "1": [
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 7,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 10,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 1,
+          "K_iter": 7,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 7,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 1,
+          "K_iter": 7,
+          "N": 4096
+        }
+      }
+    ],
+    "2": [
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 7,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 10,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 10,
+          "K_hh": 4,
+          "K_iter": 7,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 32,
+          "K_in": 10,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 10,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 4096
+        }
+      }
+    ],
+    "3": [
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 32,
+          "K_in": 10,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 8,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 10,
+          "N": 4096
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 32,
+          "K_in": 15,
+          "K_hh": 4,
+          "K_iter": 5,
+          "N": 8192
+        }
+      },
+      {
+        "genes": {
+          "D": 16,
+          "K_in": 15,
+          "K_hh": 2,
+          "K_iter": 5,
+          "N": 2048
+        }
+      }
+    ]
+  }
+}

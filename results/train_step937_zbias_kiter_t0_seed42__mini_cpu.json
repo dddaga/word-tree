@@ -1,0 +1,26 @@
+{
+  "Ref": {
+    "spec": "ref",
+    "n_params": 34976,
+    "best": 0.9419,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 105
+  },
+  "A_z0": {
+    "spec": "zbias",
+    "n_params": 35056,
+    "best": 0.9419,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 108
+  },
+  "B_zrnd": {
+    "spec": "zbias",
+    "n_params": 35056,
+    "best": 0.9432,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 111
+  }
+}

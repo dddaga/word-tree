@@ -1,0 +1,31 @@
+{
+  "config": {
+    "channels": [
+      64,
+      128,
+      256
+    ],
+    "dil_rates": [
+      1
+    ],
+    "expansion": 2,
+    "crelu_mask": [
+      false,
+      false,
+      false
+    ]
+  },
+  "best": 0.37579617834394907,
+  "best_ep": 37,
+  "macs_M": 213.090048,
+  "params": 550858,
+  "elapsed_s": 1644,
+  "phase1_eps": 20,
+  "phase2_lr": 1e-05,
+  "phase1_best": 0.36789808917197453,
+  "phase2_delta": 0.007898089171974543,
+  "tier": "T1",
+  "vs_ref_t1_pp": 0.58,
+  "vs_efficientvgg_t1_pp": -35.59,
+  "verdict": "C2 \u2014 MultiScaleCNN arch fundamentally limited regardless of CReLU"
+}

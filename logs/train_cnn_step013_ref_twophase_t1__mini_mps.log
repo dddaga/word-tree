@@ -1,0 +1,34 @@
+cnn_step013 MultiScaleCNN Ref T1+twophase | 387,018 params | 181.0M MACs
+Config: C=(64,128,256) exp=2 crelu=(F,F,T) — step006 T0 baseline: 36.82%
+Phase 1: 20ep cosine 3e-4→1e-5
+Phase 2: 55ep fixed LR=1e-05
+Device: mps | Slot: mini_mps
+Diagnostic: GA_2 T1=41.68% (caps at T0). Ref T0=36.82% — still climbing?
+
+  ep  5 [P1@ep5]  val=0.2242  best=0.2242@ep5  lr=2.58e-04
+  ep 10 [P1@ep10]  val=0.2161  best=0.2397@ep9  lr=1.55e-04
+  ep 15 [P1@ep15]  val=0.3376  best=0.3376@ep15  lr=5.25e-05
+  ep 20 [P1@ep20]  val=0.3615  best=0.3615@ep20  lr=1.00e-05
+  → Phase 1 done: best=0.3615 vs Ref T0=0.3682 (BELOW T0 baseline)
+  ── Phase 2 start: LR set to 1e-05 ──
+  ep 25 [P2@ep5]  val=0.3613  best=0.3654@ep22  lr=1.00e-05
+  ep 30 [P2@ep10]  val=0.3577  best=0.3654@ep22  lr=1.00e-05
+  ep 35 [P2@ep15]  val=0.3656  best=0.3656@ep35  lr=1.00e-05
+  ep 40 [P2@ep20]  val=0.3608  best=0.3656@ep35  lr=1.00e-05
+  ep 45 [P2@ep25]  val=0.3648  best=0.3656@ep35  lr=1.00e-05
+  ep 50 [P2@ep30]  val=0.3618  best=0.3656@ep35  lr=1.00e-05
+  ep 55 [P2@ep35]  val=0.3638  best=0.3671@ep51  lr=1.00e-05
+  ep 60 [P2@ep40]  val=0.3674  best=0.3717@ep57  lr=1.00e-05
+  ep 65 [P2@ep45]  val=0.3674  best=0.3717@ep57  lr=1.00e-05
+  ep 70 [P2@ep50]  val=0.3692  best=0.3717@ep57  lr=1.00e-05
+  ep 75 [P2@ep55]  val=0.3697  best=0.3717@ep57  lr=1.00e-05
+
+============================================================
+cnn_step013 MultiScaleCNN Ref T1+twophase RESULT
+  best=0.3717 @ep57  elapsed=1619s
+  Phase 1 best=0.3615  Phase 2 delta=+0.0102
+  vs Ref T0 baseline (36.82%): +0.35pp
+  vs GA_2 T1 (41.68%): -4.51pp
+  Scaling verdict: CAPS EARLY (MultiScaleCNN limited)
+============================================================
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step013_ref_twophase_t1_seed42__mini_mps.json

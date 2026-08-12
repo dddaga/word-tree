@@ -1,0 +1,192 @@
+
+======================================================================
+step961 — ESC-50 N-sweep at K_in=1 T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  K_in=1 (fixed)  D=16  K_hh=2  K_iter=5
+  Hypothesis: K_in=1 (0.26% coverage) preserves compressed embedding.
+  Crossover prediction: N≥512 (coverage_per_dim ≥ 1.0).
+  Linear baseline (step926): 0.4775
+  SGNNET Ref (K_in=25, N=256, step928): 0.3325
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear(384, 50)  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_ref=+8.50pp  Δ_linear=-6.00pp  (linear control)
+────────────────────────────────────────────────────────────
+N64: N=64  K_in=1  assignments=64  coverage_per_dim=0.003
+  params=1,888
+  e  1  top1=0.0125  lr=2.98e-03
+  e  2  top1=0.0250  lr=2.93e-03
+  e  3  top1=0.0300  lr=2.84e-03
+  e  4  top1=0.0325  lr=2.71e-03
+  e  5  top1=0.0400  lr=2.56e-03
+  e  6  top1=0.0375  lr=2.38e-03
+  e  7  top1=0.0475  lr=2.18e-03
+  e  8  top1=0.0425  lr=1.97e-03
+  e  9  top1=0.0475  lr=1.74e-03
+  e 10  top1=0.0475  lr=1.51e-03
+  e 11  top1=0.0375  lr=1.27e-03
+  e 12  top1=0.0475  lr=1.04e-03
+  e 13  top1=0.0550  lr=8.26e-04
+  e 14  top1=0.0550  lr=6.26e-04
+  e 15  top1=0.0550  lr=4.48e-04
+  e 16  top1=0.0500  lr=2.96e-04
+  e 17  top1=0.0525  lr=1.73e-04
+  e 18  top1=0.0500  lr=8.32e-05
+  e 19  top1=0.0525  lr=2.84e-05
+  e 20  top1=0.0525  lr=1.00e-05
+  -> best=0.0550 @ep13  Δ_ref=-27.75pp  Δ_linear=-42.25pp  KILL
+────────────────────────────────────────────────────────────
+N128: N=128  K_in=1  assignments=128  coverage_per_dim=0.003
+  params=2,976
+  e  1  top1=0.0275  lr=2.98e-03
+  e  2  top1=0.0450  lr=2.93e-03
+  e  3  top1=0.0500  lr=2.84e-03
+  e  4  top1=0.0675  lr=2.71e-03
+  e  5  top1=0.0500  lr=2.56e-03
+  e  6  top1=0.0625  lr=2.38e-03
+  e  7  top1=0.0600  lr=2.18e-03
+  e  8  top1=0.0675  lr=1.97e-03
+  e  9  top1=0.0675  lr=1.74e-03
+  e 10  top1=0.0750  lr=1.51e-03
+  e 11  top1=0.0675  lr=1.27e-03
+  e 12  top1=0.0850  lr=1.04e-03
+  e 13  top1=0.0900  lr=8.26e-04
+  e 14  top1=0.0850  lr=6.26e-04
+  e 15  top1=0.0825  lr=4.48e-04
+  e 16  top1=0.0850  lr=2.96e-04
+  e 17  top1=0.0800  lr=1.73e-04
+  e 18  top1=0.0825  lr=8.32e-05
+  e 19  top1=0.0875  lr=2.84e-05
+  e 20  top1=0.0875  lr=1.00e-05
+  -> best=0.0900 @ep13  Δ_ref=-24.25pp  Δ_linear=-38.75pp  KILL
+────────────────────────────────────────────────────────────
+N256: N=256  K_in=1  assignments=256  coverage_per_dim=0.003
+  params=5,152
+  e  1  top1=0.0425  lr=2.98e-03
+  e  2  top1=0.0475  lr=2.93e-03
+  e  3  top1=0.0300  lr=2.84e-03
+  e  4  top1=0.0475  lr=2.71e-03
+  e  5  top1=0.0600  lr=2.56e-03
+  e  6  top1=0.0775  lr=2.38e-03
+  e  7  top1=0.0875  lr=2.18e-03
+  e  8  top1=0.1100  lr=1.97e-03
+  e  9  top1=0.1175  lr=1.74e-03
+  e 10  top1=0.1200  lr=1.51e-03
+  e 11  top1=0.1050  lr=1.27e-03
+  e 12  top1=0.1250  lr=1.04e-03
+  e 13  top1=0.1225  lr=8.26e-04
+  e 14  top1=0.1325  lr=6.26e-04
+  e 15  top1=0.1400  lr=4.48e-04
+  e 16  top1=0.1275  lr=2.96e-04
+  e 17  top1=0.1275  lr=1.73e-04
+  e 18  top1=0.1425  lr=8.32e-05
+  e 19  top1=0.1375  lr=2.84e-05
+  e 20  top1=0.1400  lr=1.00e-05
+  -> best=0.1425 @ep18  Δ_ref=+0.00pp  Δ_linear=-33.50pp  (N=256 reference)
+────────────────────────────────────────────────────────────
+N512: N=512  K_in=1  assignments=512  coverage_per_dim=0.003
+  params=9,504
+  e  1  top1=0.0275  lr=2.98e-03
+  e  2  top1=0.0375  lr=2.93e-03
+  e  3  top1=0.0550  lr=2.84e-03
+  e  4  top1=0.0800  lr=2.71e-03
+  e  5  top1=0.0750  lr=2.56e-03
+  e  6  top1=0.0900  lr=2.38e-03
+  e  7  top1=0.1100  lr=2.18e-03
+  e  8  top1=0.1225  lr=1.97e-03
+  e  9  top1=0.1300  lr=1.74e-03
+  e 10  top1=0.1425  lr=1.51e-03
+  e 11  top1=0.1475  lr=1.27e-03
+  e 12  top1=0.1450  lr=1.04e-03
+  e 13  top1=0.1625  lr=8.26e-04
+  e 14  top1=0.1650  lr=6.26e-04
+  e 15  top1=0.1925  lr=4.48e-04
+  e 16  top1=0.1875  lr=2.96e-04
+  e 17  top1=0.1750  lr=1.73e-04
+  e 18  top1=0.1875  lr=8.32e-05
+  e 19  top1=0.1750  lr=2.84e-05
+  e 20  top1=0.1700  lr=1.00e-05
+  -> best=0.1925 @ep15  Δ_ref=+5.00pp  Δ_linear=-28.50pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+N1024: N=1024  K_in=1  assignments=1024  coverage_per_dim=0.003
+  params=18,208
+  e  1  top1=0.0525  lr=2.98e-03
+  e  2  top1=0.0500  lr=2.93e-03
+  e  3  top1=0.0875  lr=2.84e-03
+  e  4  top1=0.1400  lr=2.71e-03
+  e  5  top1=0.1400  lr=2.56e-03
+  e  6  top1=0.1700  lr=2.38e-03
+  e  7  top1=0.2225  lr=2.18e-03
+  e  8  top1=0.1700  lr=1.97e-03
+  e  9  top1=0.1975  lr=1.74e-03
+  e 10  top1=0.2225  lr=1.51e-03
+  e 11  top1=0.2225  lr=1.27e-03
+  e 12  top1=0.2350  lr=1.04e-03
+  e 13  top1=0.2575  lr=8.26e-04
+  e 14  top1=0.2775  lr=6.26e-04
+  e 15  top1=0.2675  lr=4.48e-04
+  e 16  top1=0.2800  lr=2.96e-04
+  e 17  top1=0.2850  lr=1.73e-04
+  e 18  top1=0.2800  lr=8.32e-05
+  e 19  top1=0.2850  lr=2.84e-05
+  e 20  top1=0.2850  lr=1.00e-05
+  -> best=0.2850 @ep17  Δ_ref=+14.25pp  Δ_linear=-19.25pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+N2048: N=2048  K_in=1  assignments=2048  coverage_per_dim=0.003
+  params=35,616
+  e  1  top1=0.0375  lr=2.98e-03
+  e  2  top1=0.0625  lr=2.93e-03
+  e  3  top1=0.1150  lr=2.84e-03
+  e  4  top1=0.1275  lr=2.71e-03
+  e  5  top1=0.2000  lr=2.56e-03
+  e  6  top1=0.2050  lr=2.38e-03
+  e  7  top1=0.2325  lr=2.18e-03
+  e  8  top1=0.1950  lr=1.97e-03
+  e  9  top1=0.2075  lr=1.74e-03
+  e 10  top1=0.2800  lr=1.51e-03
+  e 11  top1=0.2550  lr=1.27e-03
+  e 12  top1=0.2800  lr=1.04e-03
+  e 13  top1=0.2550  lr=8.26e-04
+  e 14  top1=0.2725  lr=6.26e-04
+  e 15  top1=0.3025  lr=4.48e-04
+  e 16  top1=0.3150  lr=2.96e-04
+  e 17  top1=0.3175  lr=1.73e-04
+  e 18  top1=0.3350  lr=8.32e-05
+  e 19  top1=0.3300  lr=2.84e-05
+  e 20  top1=0.3275  lr=1.00e-05
+  -> best=0.3350 @ep18  Δ_ref=+19.25pp  Δ_linear=-14.25pp  ADVANCE→T1
+
+======================================================================
+STEP 961 SUMMARY — ESC-50 N-sweep at K_in=1 T0
+  Linear baseline: 0.4775  |  SGNNET Ref (K_in=25, N=256): 0.3325
+======================================================================
+  Linear   N=None    cpd=1.000  best=0.4175  Δ_ref=+8.50pp  Δ_lin=-6.00pp  (linear control)
+  N64      N=64      cpd=0.003  best=0.0550  Δ_ref=-27.75pp  Δ_lin=-42.25pp  KILL
+  N128     N=128     cpd=0.003  best=0.0900  Δ_ref=-24.25pp  Δ_lin=-38.75pp  KILL
+  N256     N=256     cpd=0.003  best=0.1425  Δ_ref=+0.00pp  Δ_lin=-33.50pp  (N=256 reference)
+  N512     N=512     cpd=0.003  best=0.1925  Δ_ref=+5.00pp  Δ_lin=-28.50pp  ADVANCE→T1
+  N1024    N=1024    cpd=0.003  best=0.2850  Δ_ref=+14.25pp  Δ_lin=-19.25pp  ADVANCE→T1
+  N2048    N=2048    cpd=0.003  best=0.3350  Δ_ref=+19.25pp  Δ_lin=-14.25pp  ADVANCE→T1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step961_esc50_n_sweep_kin1_t0_seed42__mini_cpu.json

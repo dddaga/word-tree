@@ -1,0 +1,20 @@
+{
+  "Ref": {
+    "beta": null,
+    "alpha_r": null,
+    "n_params": 34976,
+    "best": 0.7758,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "B_\u03b205_\u03b1r1": {
+    "beta": 0.5,
+    "alpha_r": 1.0,
+    "n_params": 34976,
+    "best": 0.5814,
+    "best_ep": 1,
+    "delta_vs_ref": -0.1944,
+    "elapsed_s": 4
+  }
+}

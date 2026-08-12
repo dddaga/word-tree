@@ -1,0 +1,81 @@
+==============================================================================
+vlm_step004 tower distill  device=mps  depth=6  n_train=9469  epochs=25  bs=8  lr=0.0002
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights:  77%|███████▋  | 365/471 [00:00<00:00, 3632.71it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 3830.42it/s]
+  total 256,484,928 params | vision layer 7,087,872 x 12
+    teacher cache 0/9352
+    teacher cache 400/9352
+    teacher cache 800/9352
+    teacher cache 1200/9352
+    teacher cache 1600/9352
+    teacher cache 2000/9352
+    teacher cache 2400/9352
+    teacher cache 2800/9352
+    teacher cache 3200/9352
+    teacher cache 3600/9352
+    teacher cache 4000/9352
+    teacher cache 4400/9352
+    teacher cache 4800/9352
+    teacher cache 5200/9352
+    teacher cache 5600/9352
+    teacher cache 6000/9352
+    teacher cache 6400/9352
+    teacher cache 6800/9352
+    teacher cache 7200/9352
+    teacher cache 7600/9352
+    teacher cache 8000/9352
+    teacher cache 8400/9352
+    teacher cache 8800/9352
+    teacher cache 9200/9352
+    teacher cache done in 878s
+  ep 1/25  rel_mse 0.4058  cosine 0.7989
+  ep 2/25  rel_mse 0.3198  cosine 0.8270
+  ep 3/25  rel_mse 0.3010  cosine 0.8382
+  ep 4/25  rel_mse 0.2860  cosine 0.8469
+  ep 5/25  rel_mse 0.2739  cosine 0.8540
+  ep 6/25  rel_mse 0.2630  cosine 0.8602
+  ep 7/25  rel_mse 0.2527  cosine 0.8661
+  ep 8/25  rel_mse 0.2432  cosine 0.8715
+  ep 9/25  rel_mse 0.2350  cosine 0.8761
+  ep 10/25  rel_mse 0.2271  cosine 0.8806
+  ep 11/25  rel_mse 0.2200  cosine 0.8846
+  ep 12/25  rel_mse 0.2139  cosine 0.8880
+  ep 13/25  rel_mse 0.2089  cosine 0.8908
+  ep 14/25  rel_mse 0.2036  cosine 0.8937
+  ep 15/25  rel_mse 0.1984  cosine 0.8966
+  ep 16/25  rel_mse 0.1938  cosine 0.8991
+  ep 17/25  rel_mse 0.1899  cosine 0.9013
+  ep 18/25  rel_mse 0.1857  cosine 0.9036
+  ep 19/25  rel_mse 0.1821  cosine 0.9055
+  ep 20/25  rel_mse 0.1789  cosine 0.9073
+  ep 21/25  rel_mse 0.1757  cosine 0.9091
+  ep 22/25  rel_mse 0.1726  cosine 0.9108
+  ep 23/25  rel_mse 0.1694  cosine 0.9124
+  ep 24/25  rel_mse 0.1665  cosine 0.9140
+  ep 25/25  rel_mse 0.1639  cosine 0.9154
+  eval [10/200]
+  eval [20/200]
+  eval [30/200]
+  eval [40/200]
+  eval [50/200]
+  eval [60/200]
+  eval [70/200]
+  eval [80/200]
+  eval [90/200]
+  eval [100/200]
+  eval [110/200]
+  eval [120/200]
+  eval [130/200]
+  eval [140/200]
+  eval [150/200]
+  eval [160/200]
+  eval [170/200]
+  eval [180/200]
+  eval [190/200]
+  eval [200/200]
+
+  arm                  params  %save   top1   same  agree      KL   vis_ms  pre_ms    total   speed
+  teacher_d12     256,484,928   0.00  0.685  1.000  1.000   0.000     65.7    14.4     80.1   1.00x
+  naive_d6        213,957,696  16.58  0.135  0.160  0.000  10.823     35.4    14.3     49.7   1.61x
+  distil_d6       213,957,696  16.58  0.740  0.705  0.475   1.986     35.5    14.3     49.8   1.61x
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6__mini_mps.json
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6__mini_mps.pt

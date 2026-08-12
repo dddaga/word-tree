@@ -1,0 +1,129 @@
+
+============================================================
+Phase 1: GA search  pop=10  gen=6
+============================================================
+  gen0 fit=0.3677 MACs=353.0M C=(96,64,384) br=1 dil=1 crelu=(0,1,1) exp=4
+  gen0 fit=0.4080 MACs=273.8M C=(48,64,192) br=2 dil=2 crelu=(1,0,0) exp=4
+  gen0 fit=0.3846 MACs=310.2M C=(32,192,192) br=1 dil=1 crelu=(0,0,1) exp=4
+  gen0 fit=0.4005 MACs=389.5M C=(32,96,192) br=3 dil=4 crelu=(0,0,1) exp=4
+  gen0 fit=0.3780 MACs=347.9M C=(96,128,192) br=2 dil=1 crelu=(1,1,0) exp=1
+  gen0 fit=0.3502 MACs=319.2M C=(64,128,128) br=3 dil=2 crelu=(0,1,1) exp=1
+  gen0 fit=0.3614 MACs=400.4M C=(96,96,192) br=2 dil=1 crelu=(1,0,1) exp=4
+  gen0 fit=0.4407 MACs=314.7M C=(32,128,384) br=2 dil=4 crelu=(1,1,0) exp=1
+  gen0 fit=0.3692 MACs=126.1M C=(64,192,128) br=1 dil=2 crelu=(1,1,1) exp=4
+  gen0 fit=0.3942 MACs=120.5M C=(32,64,128) br=3 dil=2 crelu=(1,0,1) exp=1
+Gen 0 best fit=0.4407 MACs=314.7M
+  gen1 fit=0.4383 MACs=314.7M C=(32,128,384) br=2 dil=4 crelu=(1,1,0) exp=1
+  gen1 fit=0.3913 MACs=273.8M C=(48,64,192) br=2 dil=2 crelu=(1,0,0) exp=4
+  gen1 fit=0.3452 MACs=389.5M C=(32,96,192) br=3 dil=4 crelu=(0,0,1) exp=4
+  gen1 fit=0.3714 MACs=120.5M C=(32,64,128) br=3 dil=2 crelu=(1,0,1) exp=1
+  gen1 fit=0.3921 MACs=435.1M C=(96,96,192) br=3 dil=4 crelu=(1,1,1) exp=4
+  gen1 fit=0.4160 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen1 fit=0.3875 MACs=196.8M C=(32,96,192) br=3 dil=2 crelu=(1,0,1) exp=1
+  gen1 fit=0.3961 MACs=120.5M C=(32,64,128) br=3 dil=4 crelu=(1,0,1) exp=1
+  gen1 fit=0.4132 MACs=138.6M C=(32,96,192) br=2 dil=2 crelu=(1,0,1) exp=1
+  gen1 fit=0.3669 MACs=389.5M C=(32,96,192) br=3 dil=1 crelu=(0,0,1) exp=4
+Gen 1 best fit=0.4383 MACs=314.7M
+  gen2 fit=0.4132 MACs=314.7M C=(32,128,384) br=2 dil=4 crelu=(1,1,0) exp=1
+  gen2 fit=0.4253 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen2 fit=0.4040 MACs=138.6M C=(32,96,192) br=2 dil=2 crelu=(1,0,1) exp=1
+  gen2 fit=0.3876 MACs=120.5M C=(32,64,128) br=3 dil=4 crelu=(1,0,1) exp=1
+  gen2 fit=0.4568 MACs=226.2M C=(32,64,384) br=2 dil=1 crelu=(1,1,1) exp=1
+  gen2 fit=0.3821 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen2 fit=0.4479 MACs=285.8M C=(32,128,384) br=2 dil=4 crelu=(1,1,1) exp=1
+  gen2 fit=0.3762 MACs=139.5M C=(32,128,128) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen2 fit=0.4629 MACs=105.9M C=(32,64,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen2 fit=0.3533 MACs=125.4M C=(32,64,128) br=3 dil=2 crelu=(0,0,1) exp=1
+Gen 2 best fit=0.4629 MACs=105.9M
+  gen3 fit=0.4406 MACs=105.9M C=(32,64,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen3 fit=0.3839 MACs=226.2M C=(32,64,384) br=2 dil=1 crelu=(1,1,1) exp=1
+  gen3 fit=0.4055 MACs=285.8M C=(32,128,384) br=2 dil=4 crelu=(1,1,1) exp=1
+  gen3 fit=0.4106 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen3 fit=0.4053 MACs=203.8M C=(64,64,384) br=1 dil=1 crelu=(1,0,0) exp=2
+  gen3 fit=0.4110 MACs=229.4M C=(32,64,384) br=2 dil=1 crelu=(0,1,1) exp=1
+  gen3 fit=0.4019 MACs=368.9M C=(32,64,384) br=3 dil=4 crelu=(1,1,0) exp=1
+  gen3 fit=0.3814 MACs=367.4M C=(32,96,384) br=3 dil=1 crelu=(0,1,1) exp=1
+  gen3 fit=0.4139 MACs=314.7M C=(32,128,384) br=2 dil=4 crelu=(1,1,0) exp=1
+  gen3 fit=0.4255 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+Gen 3 best fit=0.4406 MACs=105.9M
+  gen4 fit=0.4373 MACs=105.9M C=(32,64,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen4 fit=0.4316 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen4 fit=0.3900 MACs=314.7M C=(32,128,384) br=2 dil=4 crelu=(1,1,0) exp=1
+  gen4 fit=0.4103 MACs=229.4M C=(32,64,384) br=2 dil=1 crelu=(0,1,1) exp=1
+  gen4 fit=0.4246 MACs=317.9M C=(32,128,384) br=2 dil=1 crelu=(0,1,0) exp=1
+  gen4 fit=0.3766 MACs=155.5M C=(32,128,128) br=2 dil=4 crelu=(1,1,0) exp=2
+  gen4 fit=0.4108 MACs=789.8M C=(96,64,384) br=3 dil=1 crelu=(1,1,0) exp=2
+  gen4 fit=0.4379 MACs=129.4M C=(32,128,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen4 fit=0.4651 MACs=93.1M C=(32,64,384) br=1 dil=1 crelu=(0,1,1) exp=1
+  gen4 fit=0.4219 MACs=258.3M C=(32,64,384) br=2 dil=2 crelu=(0,1,0) exp=1
+Gen 4 best fit=0.4651 MACs=93.1M
+  gen5 fit=0.4343 MACs=93.1M C=(32,64,384) br=1 dil=1 crelu=(0,1,1) exp=1
+  gen5 fit=0.3846 MACs=129.4M C=(32,128,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen5 fit=0.4266 MACs=105.9M C=(32,64,384) br=1 dil=4 crelu=(1,1,0) exp=1
+  gen5 fit=0.3670 MACs=285.8M C=(32,128,384) br=2 dil=2 crelu=(1,1,1) exp=1
+  gen5 fit=0.4071 MACs=484.6M C=(96,128,192) br=3 dil=2 crelu=(1,1,1) exp=2
+  gen5 fit=0.4619 MACs=183.2M C=(64,192,384) br=1 dil=1 crelu=(1,1,1) exp=2
+  gen5 fit=0.4122 MACs=114.9M C=(32,128,384) br=1 dil=1 crelu=(1,1,1) exp=1
+  gen5 fit=0.4325 MACs=377.5M C=(32,192,384) br=2 dil=2 crelu=(1,1,1) exp=2
+  gen5 fit=0.4115 MACs=462.4M C=(96,128,384) br=2 dil=2 crelu=(1,1,1) exp=4
+  gen5 fit=0.4472 MACs=103.6M C=(32,96,384) br=1 dil=1 crelu=(0,1,1) exp=1
+Gen 5 best fit=0.4619 MACs=183.2M
+
+GA done. Winners saved → /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step006_ga_results__mini_mps.json
+  #1: fit=0.4651 MACs=93.1M cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 1, 'max_dil': 1, 'crelu_b1': 0, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 1}
+  #2: fit=0.4629 MACs=105.9M cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 1, 'max_dil': 4, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 0, 'expansion': 1}
+  #3: fit=0.4619 MACs=183.2M cfg={'C1': 64, 'C2': 192, 'C3': 384, 'n_br': 1, 'max_dil': 1, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 2}
+  #4: fit=0.4568 MACs=226.2M cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 2, 'max_dil': 1, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 1}
+
+============================================================
+Phase 2: T0 proper eval (20ep, 50% data)
+============================================================
+
+Ref (EfficientVGG): 419,146 params  183.2M MACs
+  ep  5  val=0.1939  best=0.2275
+  ep 10  val=0.2650  best=0.2650
+  ep 15  val=0.3378  best=0.3455
+  ep 20  val=0.3682  best=0.3682
+
+--------------------------------------------------
+GA_1: 488,426 params  93.1M MACs  cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 1, 'max_dil': 1, 'crelu_b1': 0, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 1}
+  ep  5  val=0.2262  best=0.2262
+  ep 10  val=0.2874  best=0.2968
+  ep 15  val=0.3447  best=0.3618
+  ep 20  val=0.3799  best=0.3799
+  -> best=0.3799  Δ_ref=+0.0117  332s
+
+--------------------------------------------------
+GA_2: 561,642 params  105.9M MACs  cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 1, 'max_dil': 4, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 0, 'expansion': 1}
+  ep  5  val=0.1564  best=0.2145
+  ep 10  val=0.2645  best=0.3669
+  ep 15  val=0.3763  best=0.3819
+  ep 20  val=0.4099  best=0.4132
+  -> best=0.4132  Δ_ref=+0.0451  338s
+
+--------------------------------------------------
+GA_3: 611,914 params  183.2M MACs  cfg={'C1': 64, 'C2': 192, 'C3': 384, 'n_br': 1, 'max_dil': 1, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 2}
+  ep  5  val=0.1896  best=0.2076
+  ep 10  val=0.2785  best=0.2785
+  ep 15  val=0.3715  best=0.3715
+  ep 20  val=0.3804  best=0.3804
+  -> best=0.3804  Δ_ref=+0.0122  439s
+
+--------------------------------------------------
+GA_4: 1,046,410 params  226.2M MACs  cfg={'C1': 32, 'C2': 64, 'C3': 384, 'n_br': 2, 'max_dil': 1, 'crelu_b1': 1, 'crelu_b2': 1, 'crelu_b3': 1, 'expansion': 1}
+  ep  5  val=0.2056  best=0.2089
+  ep 10  val=0.2469  best=0.2469
+  ep 15  val=0.3052  best=0.3052
+  ep 20  val=0.3073  best=0.3073
+  -> best=0.3073  Δ_ref=-0.0609  532s
+
+============================================================
+cnn_step006 T0 SUMMARY
+============================================================
+  Ref           419,146p   183.2M  best=0.3682  Δ=+0.0000  ADVANCE
+  GA_1          488,426p    93.1M  best=0.3799  Δ=+0.0117  ADVANCE
+  GA_2          561,642p   105.9M  best=0.4132  Δ=+0.0451  ADVANCE
+  GA_3          611,914p   183.2M  best=0.3804  Δ=+0.0122  ADVANCE
+  GA_4          1,046,410p   226.2M  best=0.3073  Δ=-0.0609  KILL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step006_t0_seed42__mini_mps.json

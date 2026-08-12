@@ -1,0 +1,14 @@
+{
+  "C_N8192": {
+    "desc": "N=8192, K_in=15 \u2014 extend N-scaling curve",
+    "N": 8192,
+    "K_in": 15,
+    "n_params": 139424,
+    "best": 0.8358,
+    "best_ep": 130,
+    "gap_vs_linear": -0.0266,
+    "gain_vs_N2048": 0.0289,
+    "gain_vs_N4096": 0.0105,
+    "elapsed_s": 7745
+  }
+}

@@ -1,0 +1,34 @@
+cnn_step015 MultiScaleCNN NO-CReLU T1 | 550,858 params | 213.1M MACs
+Config: C=(64,128,256) exp=2 crelu=(F,F,F) — full GELU, no C//2 bottleneck
+Phase 1: 20ep cosine 3e-4→1e-5  Phase 2: 55ep LR=1e-05
+Device: mps | Slot: mini_mps
+Baseline: step013 Ref (crelu stage3) T1≈37%. step003 EfficientVGG T1=73.17%
+Verdict threshold: >55% → C1 CONFIRMED (CReLU bottleneck); <40% → C2 (arch limited)
+
+  ep  5 [P1@ep5]  val=0.1605  best=0.2308@ep4  lr=2.58e-04
+  ep 10 [P1@ep10]  val=0.2543  best=0.2543@ep10  lr=1.55e-04
+  ep 15 [P1@ep15]  val=0.3478  best=0.3478@ep15  lr=5.25e-05
+  ep 20 [P1@ep20]  val=0.3679  best=0.3679@ep20  lr=1.00e-05
+  → Phase 1 done: best=0.3679 (vs Ref T0=0.3682)
+  ── Phase 2 start: LR set to 1e-05 ──
+  ep 25 [P2@ep5]  val=0.3692  best=0.3704@ep24  lr=1.00e-05
+  ep 30 [P2@ep10]  val=0.3704  best=0.3727@ep29  lr=1.00e-05
+  ep 35 [P2@ep15]  val=0.3689  best=0.3735@ep34  lr=1.00e-05
+  ep 40 [P2@ep20]  val=0.3720  best=0.3758@ep37  lr=1.00e-05
+  ep 45 [P2@ep25]  val=0.3715  best=0.3758@ep37  lr=1.00e-05
+  ep 50 [P2@ep30]  val=0.3732  best=0.3758@ep37  lr=1.00e-05
+  ep 55 [P2@ep35]  val=0.3722  best=0.3758@ep37  lr=1.00e-05
+  ep 60 [P2@ep40]  val=0.3738  best=0.3758@ep37  lr=1.00e-05
+  ep 65 [P2@ep45]  val=0.3697  best=0.3758@ep37  lr=1.00e-05
+  ep 70 [P2@ep50]  val=0.3671  best=0.3758@ep37  lr=1.00e-05
+  ep 75 [P2@ep55]  val=0.3676  best=0.3758@ep37  lr=1.00e-05
+
+============================================================
+cnn_step015 NO-CReLU T1 RESULT
+  best=0.3758 @ep37  elapsed=1645s
+  Phase 1 best=0.3679  Phase 2 delta=+0.0079
+  vs step013 Ref T1 (~37%): +0.58pp
+  vs EfficientVGG T1 (73.17%): -35.59pp
+  Verdict: C2 — MultiScaleCNN arch fundamentally limited regardless of CReLU
+============================================================
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step015_nocrelu_t1_seed42__mini_mps.json

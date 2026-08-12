@@ -1,0 +1,18 @@
+{
+  "Ref": {
+    "config": "all-local (K_hh=2)",
+    "n_params": 34976,
+    "best": 0.7753,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 5
+  },
+  "A_ge2_kg4": {
+    "config": "global_every=2, K_global=4",
+    "n_params": 34976,
+    "best": 0.1215,
+    "best_ep": 1,
+    "delta_vs_ref": -0.6538,
+    "elapsed_s": 7
+  }
+}

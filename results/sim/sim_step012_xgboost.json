@@ -1,0 +1,31 @@
+{
+  "strategy": "XGBoostStrategy",
+  "backend": "xgboost",
+  "xgb_params": {
+    "n_estimators": 100,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "eval_metric": "logloss",
+    "random_state": 42
+  },
+  "signal": {
+    "prob_threshold": 0.52,
+    "signal_scale": 4.0,
+    "max_weight": 0.15
+  },
+  "universe_size": 57,
+  "models_trained": 56,
+  "val_period": "2022-01-01 to 2023-12-31",
+  "tearsheet": {
+    "total_return_pct": 6.54,
+    "cagr_pct": 3.29,
+    "sharpe": 0.472,
+    "sortino": 0.5,
+    "max_drawdown_pct": -10.54,
+    "win_rate_pct": 32.86,
+    "n_trading_days": 493,
+    "starting_capital": 1000000.0,
+    "ending_nav": 1065352.83
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Ref_dw": {
+    "n_params": 34976,
+    "best": 0.7837,
+    "best_ep": 73,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 528
+  },
+  "A_no_dw": {
+    "n_params": 34976,
+    "best": 0.1596,
+    "best_ep": 37,
+    "delta_vs_ref": -0.6241,
+    "elapsed_s": 387
+  }
+}

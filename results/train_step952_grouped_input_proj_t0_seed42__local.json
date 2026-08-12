@@ -1,0 +1,62 @@
+{
+  "Ref": {
+    "mode": "sum",
+    "n_proj_groups": null,
+    "extra_proj_params": 0,
+    "n_params": 34976,
+    "best": 0.8601,
+    "best_ep": 2,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 13,
+    "verdict": "(baseline)",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5474,
+        "routing_gain": -0.1006,
+        "pr": 2.291,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "A_shared": {
+    "mode": "shared",
+    "n_proj_groups": null,
+    "extra_proj_params": 25,
+    "n_params": 35001,
+    "best": 0.8614,
+    "best_ep": 2,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 13,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.5482,
+        "routing_gain": -0.0998,
+        "pr": 2.292,
+        "dead_frac": 0.0
+      }
+    }
+  },
+  "D_node": {
+    "mode": "node",
+    "n_proj_groups": null,
+    "extra_proj_params": 51200,
+    "n_params": 86176,
+    "best": 0.8614,
+    "best_ep": 2,
+    "delta_vs_ref": 0.0013,
+    "elapsed_s": 13,
+    "verdict": "NEUTRAL",
+    "haki": {
+      "1": {
+        "seed_fisher": 0.648,
+        "final_fisher": 0.548,
+        "routing_gain": -0.1,
+        "pr": 2.292,
+        "dead_frac": 0.0
+      }
+    }
+  }
+}

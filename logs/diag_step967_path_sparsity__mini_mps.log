@@ -1,0 +1,57 @@
+
+======================================================================
+step967 — Path sparsity diagnostic
+  device=mps  dataset=imagenette  seed=42
+======================================================================
+
+  Training 20ep model first...
+  e  1  top1=0.2084
+  e  2  top1=0.3032
+  e  3  top1=0.4925
+  e  4  top1=0.5847
+  e  5  top1=0.7511
+  e  6  top1=0.7738
+  e  7  top1=0.8041
+  e  8  top1=0.8232
+  e  9  top1=0.8161
+  e 10  top1=0.8296
+  e 11  top1=0.8329
+  e 12  top1=0.8418
+  e 13  top1=0.8324
+  e 14  top1=0.8606
+  e 15  top1=0.8650
+  e 16  top1=0.8650
+  e 17  top1=0.8731
+  e 18  top1=0.8718
+  e 19  top1=0.8698
+  e 20  top1=0.8754
+  Checkpoint saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/checkpoints/step967_train_seed42.pt  best=0.8754
+
+  Running path sparsity diagnostic...
+  Collecting activation masks...
+  Val acc: 0.0948
+
+======================================================================
+STEP 967 RESULTS — Path Sparsity Diagnostic
+  val_acc=0.0948
+  mean_act_frac=1.0000  (fraction of 2048 nodes active per input)
+  mean_intra_jaccard=1.0000  (same-class activation overlap)
+  mean_inter_jaccard=1.0000  (cross-class activation overlap)
+  mean_separation=+0.0000  (intra − inter)
+
+  VERDICT: CLASS_AGNOSTIC (sep≤0.02) — step966 builds from scratch
+
+  Per-class separation:
+    class 0: intra=1.000  sep=+0.000
+    class 1: intra=1.000  sep=+0.000
+    class 2: intra=1.000  sep=+0.000
+    class 3: intra=1.000  sep=+0.000
+    class 4: intra=1.000  sep=+0.000
+    class 5: intra=1.000  sep=+0.000
+    class 6: intra=1.000  sep=+0.000
+    class 7: intra=1.000  sep=+0.000
+    class 8: intra=1.000  sep=+0.000
+    class 9: intra=1.000  sep=+0.000
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/diag_step967_path_sparsity_seed42__mini_mps.json
+======================================================================

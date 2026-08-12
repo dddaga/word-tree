@@ -1,0 +1,31 @@
+{
+  "config": {
+    "channels": [
+      64,
+      128,
+      256
+    ],
+    "dil_rates": [
+      1
+    ],
+    "expansion": 2,
+    "crelu_mask": [
+      false,
+      false,
+      true
+    ]
+  },
+  "best": 0.37171974522292994,
+  "best_ep": 57,
+  "macs_M": 180.977408,
+  "params": 387018,
+  "elapsed_s": 1619,
+  "phase1_eps": 20,
+  "phase2_lr": 1e-05,
+  "phase1_best": 0.3615286624203822,
+  "phase2_delta": 0.010191082802547768,
+  "tier": "T1",
+  "vs_ref_t0_pp": 0.35,
+  "vs_ga2_t1_pp": -4.51,
+  "scaling_verdict": "CAPS EARLY (MultiScaleCNN limited)"
+}

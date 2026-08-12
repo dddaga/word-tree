@@ -1,0 +1,18 @@
+{
+  "Ref_a05": {
+    "alpha_reflect": 0.5,
+    "n_params": 34976,
+    "best": 0.7869,
+    "best_ep": 60,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 549
+  },
+  "C_a075": {
+    "alpha_reflect": 0.75,
+    "n_params": 34976,
+    "best": 0.7788,
+    "best_ep": 74,
+    "delta_vs_ref": -0.0081,
+    "elapsed_s": 498
+  }
+}

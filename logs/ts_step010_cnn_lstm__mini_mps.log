@@ -1,0 +1,43 @@
+Loading data from data/ts/raw ...
+Tickers loaded: 63
+Tickers after cross-split filter: 56
+  [2015-01-01:2021-12-31] 56 tickers, 230 common dates
+  [2022-01-01:2023-12-31] 56 tickers, 493 common dates
+Train samples: 169, Val samples: 432
+Parameters: 2,101,272
+ epoch |  train_mse |  val_mae | val_dir_acc | val_sharpe
+---------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 462, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 410, in main
+    train_loss = train_epoch(model, train_loader, optimizer, loss_fn, device)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 325, in train_epoch
+    loss.backward()
+    ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/_tensor.py", line 630, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/autograd/__init__.py", line 364, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+RuntimeError: view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.

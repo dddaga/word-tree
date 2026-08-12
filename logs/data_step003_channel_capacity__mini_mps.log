@@ -1,0 +1,27 @@
+==================================================================
+data_step003 channel x capacity  device=mps  depths=[1, 2, 3, 4]
+/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/frontier/data_step003_channel_capacity.py:59: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  b = pickle.load(open(d / f"data_batch_{i}", "rb"), encoding="bytes")
+/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/frontier/data_step003_channel_capacity.py:62: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  tb = pickle.load(open(d / "test_batch", "rb"), encoding="bytes")
+  train (25000, 3, 32, 32)  val (10000, 3, 32, 32)  [0s]
+  full      d1 best=0.3762 final=0.3239    1,290p    11s [12s]
+  max_only  d1 best=0.3492 final=0.3492    1,290p    10s [23s]
+  min_zero  d1 best=0.3852 final=0.3765    1,290p    10s [33s]
+  full      d2 best=0.5238 final=0.4724   20,234p    16s [50s]
+  max_only  d2 best=0.4850 final=0.4774   20,234p    16s [66s]
+  min_zero  d2 best=0.5098 final=0.4647   20,234p    16s [83s]
+  full      d3 best=0.6360 final=0.6308   94,986p    21s [103s]
+  max_only  d3 best=0.6137 final=0.6137   94,986p    20s [124s]
+  min_zero  d3 best=0.6238 final=0.6238   94,986p    21s [144s]
+  full      d4 best=0.6652 final=0.6559  391,946p    25s [169s]
+  max_only  d4 best=0.6259 final=0.6098  391,946p    24s [193s]
+  min_zero  d4 best=0.6319 final=0.5940  391,946p    24s [217s]
+
+  saturation (best_acc); Δ vs full at each depth:
+  depth       full   max_only   min_zero
+      1 0.3762( base ) 0.3492(-0.027) 0.3852(+0.009)
+      2 0.5238( base ) 0.4850(-0.039) 0.5098(-0.014)
+      3 0.6360( base ) 0.6137(-0.022) 0.6238(-0.012)
+      4 0.6652( base ) 0.6259(-0.039) 0.6319(-0.033)
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/data_step003_channel_capacity__mini_mps.json

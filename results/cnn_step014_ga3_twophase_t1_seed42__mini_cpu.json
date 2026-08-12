@@ -1,0 +1,31 @@
+{
+  "config": {
+    "channels": [
+      64,
+      192,
+      384
+    ],
+    "dil_rates": [
+      1
+    ],
+    "expansion": 2,
+    "crelu_mask": [
+      true,
+      true,
+      true
+    ]
+  },
+  "best": 0.38496815286624203,
+  "best_ep": 30,
+  "macs_M": 183.229056,
+  "params": 611914,
+  "elapsed_s": 1641,
+  "phase1_eps": 20,
+  "phase2_lr": 1e-05,
+  "phase1_best": 0.3803821656050955,
+  "phase2_delta": 0.004585987261146507,
+  "tier": "T1",
+  "vs_ga3_t0_pp": 0.46,
+  "vs_ga2_t1_pp": -3.18,
+  "verdict": "CAPS EARLY (CReLU limits regardless of width)"
+}

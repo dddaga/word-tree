@@ -1,0 +1,108 @@
+{
+  "ga_config": {
+    "device": "auto",
+    "seed": 42,
+    "data_img": "data/imagenette2-320",
+    "data_h5": "data/store.h5",
+    "population": 12,
+    "generations": 6,
+    "top_k": 5,
+    "eval_epochs": 5,
+    "eval_frac": 0.1,
+    "batch": 32
+  },
+  "top_configs": [
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "dw_kernel": 3,
+        "expansion": 1,
+        "use_side_branch": 0,
+        "use_crelu_block3": 1
+      },
+      "ga_fitness": 0.47614010450381966,
+      "ga_acc": 0.4412738853503185,
+      "macs_M": 85.636736,
+      "params": 471274
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "dw_kernel": 3,
+        "expansion": 2,
+        "use_side_branch": 0,
+        "use_crelu_block3": 1
+      },
+      "ga_fitness": 0.46844761237572025,
+      "ga_acc": 0.4402547770700637,
+      "macs_M": 98.481792,
+      "params": 481514
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 96,
+        "C3": 384,
+        "dw_kernel": 3,
+        "expansion": 2,
+        "use_side_branch": 0,
+        "use_crelu_block3": 1
+      },
+      "ga_fitness": 0.46696318185202695,
+      "ga_acc": 0.44687898089171973,
+      "macs_M": 118.031616,
+      "params": 516010
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 256,
+        "dw_kernel": 3,
+        "expansion": 1,
+        "use_side_branch": 0,
+        "use_crelu_block3": 0
+      },
+      "ga_fitness": 0.46641288620361876,
+      "ga_acc": 0.4191082802547771,
+      "macs_M": 62.875648,
+      "params": 304618
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "dw_kernel": 3,
+        "expansion": 2,
+        "use_side_branch": 1,
+        "use_crelu_block3": 1
+      },
+      "ga_fitness": 0.46606023445099365,
+      "ga_acc": 0.43821656050955415,
+      "macs_M": 98.944768,
+      "params": 489130
+    }
+  ],
+  "anchors": {
+    "D_small_s": {
+      "T1": 0.7095,
+      "macs_M": 57.5,
+      "params": 150000
+    },
+    "Ref": {
+      "T1": 0.7317,
+      "macs_M": 183.0,
+      "params": 419000
+    },
+    "F_wide": {
+      "T1": 0.7442,
+      "macs_M": 560.0,
+      "params": 825000
+    }
+  }
+}

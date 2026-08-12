@@ -1,0 +1,34 @@
+scheduler up — slots=['5060ti_cuda', 'mini_mps', 'mini_cpu'], poll=60s
+[03:48:04] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:49:04] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:50:04] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:51:04] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:52:04] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+scheduler up — slots=['5060ti_cuda', 'mini_mps', 'mini_cpu'], poll=60s
+[03:53:01] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:54:01] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:55:01] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:56:01] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+[03:57:01] ERROR: 'utf-8' codec can't decode byte 0xb0 in position 37: invalid start byte
+scheduler up — slots=['5060ti_cuda', 'mini_mps', 'mini_cpu'], poll=60s
+[03:57:14] launch scripts/cnn_compress/cnnc_step001_multibranch_t0.py on mini_mps: rc=3
+ERROR: session created but pane died immediately. Check /Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/cnnc_step001_multibranch_t0__mini_mps.log on local
+error creating tmux (Operation not supported)
+[03:57:15] launch scripts/ffn_baseline/ffn_step001_perchannel_t0.py on mini_cpu: rc=3
+ERROR: session created but pane died immediately. Check /Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/ffn_step001_perchannel_t0__mini_cpu.log on local
+error creating tmux (Operation not supported)
+[04:02:17] launch scripts/cnn_compress/cnnc_step001_multibranch_t0.py on mini_mps: rc=0
+LAUNCHED: sgn-indra-mini_mps-cnnc_step001_multibranch_t0 on mini_mps (host=local)
+  Log: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/cnnc_step001_multibranch_t0__mini_mps.log
+  Monitor: bash scripts/slot_status.sh
+[04:02:18] launch scripts/ffn_baseline/ffn_step001_perchannel_t0.py on mini_cpu: rc=0
+LAUNCHED: sgn-indra-mini_cpu-ffn_step001_perchannel_t0 on mini_cpu (host=local)
+  Log: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/ffn_step001_perchannel_t0__mini_cpu.log
+  Monitor: bash scripts/slot_status.sh
+[04:12:18] done: scripts/ffn_baseline/ffn_step001_perchannel_t0.py
+[04:13:18] done: scripts/cnn_compress/cnnc_step001_multibranch_t0.py
+[04:20:20] launch scripts/cnn_compress/cnnc_step002_isomac_t0.py on mini_mps: rc=0
+LAUNCHED: sgn-indra-mini_mps-cnnc_step002_isomac_t0 on mini_mps (host=local)
+  Log: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/logs/cnnc_step002_isomac_t0__mini_mps.log
+  Monitor: bash scripts/slot_status.sh
+[04:29:20] done: scripts/cnn_compress/cnnc_step002_isomac_t0.py

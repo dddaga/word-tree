@@ -1,0 +1,147 @@
+cnn_step022 GA2+Mixup T2 multi-seed | 150ep 100%data | alpha=0.2
+  mps  slot=mini_mps  params=481,514  MACs=98.5M  seed42=nan  seeds=[1, 2, 3, 42]
+
+──────────────────────────────────────────────────
+Seed=1
+  ep  5  val=0.5699  best=0.5699  lr=2.99e-04
+  ep 10  val=0.6642  best=0.6642  lr=2.97e-04
+  ep 15  val=0.7070  best=0.7070  lr=2.93e-04
+  ep 20  val=0.7205  best=0.7205  lr=2.87e-04
+  ep 25  val=0.7157  best=0.7205  lr=2.81e-04
+  ep 30  val=0.7493  best=0.7493  lr=2.72e-04
+  ep 35  val=0.7582  best=0.7582  lr=2.63e-04
+  ep 40  val=0.7526  best=0.7582  lr=2.52e-04
+  ep 45  val=0.7506  best=0.7582  lr=2.40e-04
+  ep 50  val=0.7659  best=0.7659  lr=2.28e-04
+  ep 55  val=0.7177  best=0.7659  lr=2.14e-04
+  ep 60  val=0.7292  best=0.7659  lr=2.00e-04
+  ep 65  val=0.7585  best=0.7659  lr=1.85e-04
+  ep 70  val=0.7569  best=0.7659  lr=1.70e-04
+  ep 75  val=0.7434  best=0.7659  lr=1.55e-04
+  ep 80  val=0.7554  best=0.7659  lr=1.40e-04
+  ep 85  val=0.7490  best=0.7659  lr=1.25e-04
+  ep 90  val=0.7394  best=0.7659  lr=1.10e-04
+  ep 95  val=0.7496  best=0.7659  lr=9.60e-05
+  ep100  val=0.7429  best=0.7659  lr=8.25e-05
+  ep105  val=0.7394  best=0.7659  lr=6.98e-05
+  ep110  val=0.7366  best=0.7659  lr=5.80e-05
+  ep115  val=0.7468  best=0.7659  lr=4.72e-05
+  ep120  val=0.7465  best=0.7659  lr=3.77e-05
+  ep125  val=0.7432  best=0.7659  lr=2.94e-05
+  ep130  val=0.7434  best=0.7659  lr=2.25e-05
+  ep135  val=0.7501  best=0.7659  lr=1.71e-05
+  ep140  val=0.7383  best=0.7659  lr=1.32e-05
+  ep145  val=0.7450  best=0.7659  lr=1.08e-05
+  ep150  val=0.7439  best=0.7659  lr=1.00e-05
+  -> seed=1  best=0.7659 @ep50  (3718s)
+──────────────────────────────────────────────────
+Seed=2
+  ep  5  val=0.5501  best=0.5501  lr=2.99e-04
+  ep 10  val=0.6897  best=0.6897  lr=2.97e-04
+  ep 15  val=0.7103  best=0.7103  lr=2.93e-04
+  ep 20  val=0.7124  best=0.7124  lr=2.87e-04
+  ep 25  val=0.7641  best=0.7641  lr=2.81e-04
+  ep 30  val=0.7638  best=0.7641  lr=2.72e-04
+  ep 35  val=0.7429  best=0.7641  lr=2.63e-04
+  ep 40  val=0.7554  best=0.7641  lr=2.52e-04
+  ep 45  val=0.7684  best=0.7684  lr=2.40e-04
+  ep 50  val=0.7516  best=0.7684  lr=2.28e-04
+  ep 55  val=0.7676  best=0.7684  lr=2.14e-04
+  ep 60  val=0.7503  best=0.7684  lr=2.00e-04
+  ep 65  val=0.7761  best=0.7761  lr=1.85e-04
+  ep 70  val=0.7687  best=0.7761  lr=1.70e-04
+  ep 75  val=0.7546  best=0.7761  lr=1.55e-04
+  ep 80  val=0.7422  best=0.7761  lr=1.40e-04
+  ep 85  val=0.7633  best=0.7761  lr=1.25e-04
+  ep 90  val=0.7549  best=0.7761  lr=1.10e-04
+  ep 95  val=0.7664  best=0.7761  lr=9.60e-05
+  ep100  val=0.7620  best=0.7761  lr=8.25e-05
+  ep105  val=0.7615  best=0.7761  lr=6.98e-05
+  ep110  val=0.7582  best=0.7761  lr=5.80e-05
+  ep115  val=0.7592  best=0.7761  lr=4.72e-05
+  ep120  val=0.7659  best=0.7761  lr=3.77e-05
+  ep125  val=0.7631  best=0.7761  lr=2.94e-05
+  ep130  val=0.7643  best=0.7761  lr=2.25e-05
+  ep135  val=0.7654  best=0.7761  lr=1.71e-05
+  ep140  val=0.7636  best=0.7761  lr=1.32e-05
+  ep145  val=0.7618  best=0.7761  lr=1.08e-05
+  ep150  val=0.7541  best=0.7761  lr=1.00e-05
+  -> seed=2  best=0.7761 @ep65  (4638s)
+──────────────────────────────────────────────────
+Seed=3
+  ep  5  val=0.5682  best=0.5682  lr=2.99e-04
+  ep 10  val=0.6504  best=0.6504  lr=2.97e-04
+  ep 15  val=0.7004  best=0.7004  lr=2.93e-04
+  ep 20  val=0.7381  best=0.7381  lr=2.87e-04
+  ep 25  val=0.7452  best=0.7452  lr=2.81e-04
+  ep 30  val=0.7391  best=0.7452  lr=2.72e-04
+  ep 35  val=0.7208  best=0.7452  lr=2.63e-04
+  ep 40  val=0.7539  best=0.7539  lr=2.52e-04
+  ep 45  val=0.7582  best=0.7582  lr=2.40e-04
+  ep 50  val=0.7577  best=0.7582  lr=2.28e-04
+  ep 55  val=0.7536  best=0.7582  lr=2.14e-04
+  ep 60  val=0.7704  best=0.7704  lr=2.00e-04
+  ep 65  val=0.7595  best=0.7704  lr=1.85e-04
+  ep 70  val=0.7406  best=0.7704  lr=1.70e-04
+  ep 75  val=0.7518  best=0.7704  lr=1.55e-04
+  ep 80  val=0.7391  best=0.7704  lr=1.40e-04
+  ep 85  val=0.7386  best=0.7704  lr=1.25e-04
+  ep 90  val=0.7508  best=0.7704  lr=1.10e-04
+  ep 95  val=0.7345  best=0.7704  lr=9.60e-05
+  ep100  val=0.7529  best=0.7704  lr=8.25e-05
+  ep105  val=0.7439  best=0.7704  lr=6.98e-05
+  ep110  val=0.7340  best=0.7704  lr=5.80e-05
+  ep115  val=0.7419  best=0.7704  lr=4.72e-05
+  ep120  val=0.7480  best=0.7704  lr=3.77e-05
+  ep125  val=0.7485  best=0.7704  lr=2.94e-05
+  ep130  val=0.7496  best=0.7704  lr=2.25e-05
+  ep135  val=0.7506  best=0.7704  lr=1.71e-05
+  ep140  val=0.7475  best=0.7704  lr=1.32e-05
+  ep145  val=0.7468  best=0.7704  lr=1.08e-05
+  ep150  val=0.7442  best=0.7704  lr=1.00e-05
+  -> seed=3  best=0.7704 @ep60  (5314s)
+──────────────────────────────────────────────────
+Seed=42
+  ep  5  val=0.5868  best=0.5868  lr=2.99e-04
+  ep 10  val=0.6456  best=0.6456  lr=2.97e-04
+  ep 15  val=0.7057  best=0.7057  lr=2.93e-04
+  ep 20  val=0.7468  best=0.7468  lr=2.87e-04
+  ep 25  val=0.7442  best=0.7468  lr=2.81e-04
+  ep 30  val=0.7320  best=0.7468  lr=2.72e-04
+  ep 35  val=0.7353  best=0.7468  lr=2.63e-04
+  ep 40  val=0.7636  best=0.7636  lr=2.52e-04
+  ep 45  val=0.7261  best=0.7636  lr=2.40e-04
+  ep 50  val=0.7806  best=0.7806  lr=2.28e-04
+  ep 55  val=0.7429  best=0.7806  lr=2.14e-04
+  ep 60  val=0.7689  best=0.7806  lr=2.00e-04
+  ep 65  val=0.7554  best=0.7806  lr=1.85e-04
+  ep 70  val=0.7641  best=0.7806  lr=1.70e-04
+  ep 75  val=0.7480  best=0.7806  lr=1.55e-04
+  ep 80  val=0.7595  best=0.7806  lr=1.40e-04
+  ep 85  val=0.7638  best=0.7806  lr=1.25e-04
+  ep 90  val=0.7664  best=0.7806  lr=1.10e-04
+  ep 95  val=0.7564  best=0.7806  lr=9.60e-05
+  ep100  val=0.7610  best=0.7806  lr=8.25e-05
+  ep105  val=0.7465  best=0.7806  lr=6.98e-05
+  ep110  val=0.7503  best=0.7806  lr=5.80e-05
+  ep115  val=0.7501  best=0.7806  lr=4.72e-05
+  ep120  val=0.7541  best=0.7806  lr=3.77e-05
+  ep125  val=0.7485  best=0.7806  lr=2.94e-05
+  ep130  val=0.7562  best=0.7806  lr=2.25e-05
+  ep135  val=0.7541  best=0.7806  lr=1.71e-05
+  ep140  val=0.7582  best=0.7806  lr=1.32e-05
+  ep145  val=0.7552  best=0.7806  lr=1.08e-05
+  ep150  val=0.7516  best=0.7806  lr=1.00e-05
+  -> seed=42  best=0.7806 @ep50  (5804s)
+
+============================================================
+cnn_step022 SUMMARY — GA2+Mixup T2 (alpha=0.2)
+============================================================
+  seed=42: nan
+  seed=1: 0.7659 @ep50  (3718s)
+  seed=2: 0.7761 @ep65  (4638s)
+  seed=3: 0.7704 @ep60  (5314s)
+  seed=42: 0.7806 @ep50  (5804s)
+  mean=0.7732  std=0.0056  n=4
+  -> 77.32% ±0.56%  EFF-PARETO
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step022_ga2_mixup_multiseed_t2__mini_mps.json

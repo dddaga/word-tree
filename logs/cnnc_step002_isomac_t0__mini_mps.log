@@ -1,0 +1,95 @@
+
+========================================================================
+cnnc_step002 T0 iso-MAC  device=mps  epochs=20  seed=42  train=4734  val=3925
+========================================================================
+  Ref (step001, not rerun): params=483,050  MACs=224.0M  acc=0.7557
+  config        params   MACs(M)  desc
+  B_isomac     963,810     236.2  B_multibranch widths x1.44 -> ~224M MACs (3 branches)
+  C_isomac   1,385,302     233.3  B_isomac + CReLU first 2 convs + 1 extra conv/branch
+  Ref_deep     526,794     220.4  Ref MAC budget on depth: 9-conv single branch
+
+------------------------------------------------------------
+B_isomac: B_multibranch widths x1.44 -> ~224M MACs (3 branches)
+  params=963,810  MACs=236.2M
+  ep  1  val=0.4387  best=0.4387  10s
+  ep  2  val=0.5340  best=0.5340  6s
+  ep  3  val=0.5682  best=0.5682  6s
+  ep  4  val=0.5888  best=0.5888  6s
+  ep  5  val=0.6260  best=0.6260  6s
+  ep  6  val=0.6517  best=0.6517  6s
+  ep  7  val=0.6535  best=0.6535  6s
+  ep  8  val=0.6703  best=0.6703  6s
+  ep  9  val=0.7019  best=0.7019  6s
+  ep 10  val=0.7159  best=0.7159  6s
+  ep 11  val=0.7096  best=0.7159  6s
+  ep 12  val=0.7045  best=0.7159  6s
+  ep 13  val=0.7261  best=0.7261  6s
+  ep 14  val=0.7417  best=0.7417  6s
+  ep 15  val=0.7414  best=0.7417  6s
+  ep 16  val=0.7485  best=0.7485  6s
+  ep 17  val=0.7490  best=0.7490  6s
+  ep 18  val=0.7488  best=0.7490  6s
+  ep 19  val=0.7501  best=0.7501  6s
+  ep 20  val=0.7511  best=0.7511  6s
+  -> best=0.7511 @ep20  dRef=-0.46pp  epoch=6s
+
+------------------------------------------------------------
+C_isomac: B_isomac + CReLU first 2 convs + 1 extra conv/branch
+  params=1,385,302  MACs=233.3M
+  ep  1  val=0.3641  best=0.3641  6s
+  ep  2  val=0.4657  best=0.4657  5s
+  ep  3  val=0.5442  best=0.5442  5s
+  ep  4  val=0.5411  best=0.5442  5s
+  ep  5  val=0.6084  best=0.6084  5s
+  ep  6  val=0.5694  best=0.6084  5s
+  ep  7  val=0.6298  best=0.6298  5s
+  ep  8  val=0.6645  best=0.6645  5s
+  ep  9  val=0.6479  best=0.6645  5s
+  ep 10  val=0.7032  best=0.7032  5s
+  ep 11  val=0.7052  best=0.7052  5s
+  ep 12  val=0.7146  best=0.7146  5s
+  ep 13  val=0.7208  best=0.7208  6s
+  ep 14  val=0.7302  best=0.7302  5s
+  ep 15  val=0.7266  best=0.7302  5s
+  ep 16  val=0.7411  best=0.7411  5s
+  ep 17  val=0.7457  best=0.7457  5s
+  ep 18  val=0.7526  best=0.7526  5s
+  ep 19  val=0.7516  best=0.7526  5s
+  ep 20  val=0.7493  best=0.7526  5s
+  -> best=0.7526 @ep18  dRef=-0.31pp  epoch=5s
+
+------------------------------------------------------------
+Ref_deep: Ref MAC budget on depth: 9-conv single branch
+  params=526,794  MACs=220.4M
+  ep  1  val=0.2892  best=0.2892  6s
+  ep  2  val=0.3959  best=0.3959  5s
+  ep  3  val=0.4650  best=0.4650  5s
+  ep  4  val=0.4882  best=0.4882  5s
+  ep  5  val=0.5710  best=0.5710  5s
+  ep  6  val=0.5824  best=0.5824  5s
+  ep  7  val=0.5261  best=0.5824  5s
+  ep  8  val=0.6446  best=0.6446  5s
+  ep  9  val=0.6619  best=0.6619  5s
+  ep 10  val=0.6418  best=0.6619  5s
+  ep 11  val=0.6907  best=0.6907  5s
+  ep 12  val=0.6958  best=0.6958  5s
+  ep 13  val=0.7180  best=0.7180  5s
+  ep 14  val=0.7004  best=0.7180  5s
+  ep 15  val=0.7228  best=0.7228  5s
+  ep 16  val=0.7381  best=0.7381  5s
+  ep 17  val=0.7302  best=0.7381  5s
+  ep 18  val=0.7394  best=0.7394  5s
+  ep 19  val=0.7445  best=0.7445  5s
+  ep 20  val=0.7447  best=0.7447  5s
+  -> best=0.7447 @ep20  dRef=-1.10pp  epoch=5s
+
+========================================================================
+CNNC_STEP002 T0 SUMMARY (iso-MAC ~224M, 20ep, 50% data, dRef vs step001 Ref 0.7557)
+========================================================================
+  config        params   MACs(M)      acc       dRef   s/ep
+  Ref          483,050     224.0   0.7557     +0.00pp      0
+  B_isomac     963,810     236.2   0.7511     -0.46pp      6
+  C_isomac   1,385,302     233.3   0.7526     -0.31pp      5
+  Ref_deep     526,794     220.4   0.7447     -1.10pp      5
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_compress/cnnc_step002_t0_seed42__mini_mps.json

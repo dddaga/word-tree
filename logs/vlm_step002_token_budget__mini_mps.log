@@ -1,0 +1,17 @@
+========================================================================
+vlm_step002 token budget  device=mps  n_images=50
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 9916.01it/s]
+  [10/50] n02102040_1450.JPEG gold=springer ref=tench
+  [20/50] n03000684_16460.JPEG gold=chainsaw ref=chainsaw
+  [30/50] n03394916_37991.JPEG gold=horn ref=tench
+  [40/50] n03425413_18430.JPEG gold=pump ref=pump
+  [50/50] n03888257_12331.JPEG gold=parachute ref=tench
+
+  arm             imgtok    seq   top1   same  agree      KL   vis_ms   pre_ms    total   speed
+  split17_full       832    906  0.660  1.000  1.000   0.000    978.2    147.2   1125.4   1.00x
+  topk_512           512    586  0.680  0.940  0.860   0.202    978.2     63.7   1041.9   1.08x
+  topk_256           256    330  0.680  0.760  0.700   0.588    978.2     38.6   1016.7   1.11x
+  topk_64             64    138  0.440  0.400  0.520   1.957    978.2     21.0    999.2   1.13x
+  stride_64           64    138  0.260  0.240  0.360   3.111    978.2     16.7    994.8   1.13x
+  nosplit_64          64    111  0.740  0.740  0.660   0.604     78.5     17.6     96.1  11.71x
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step002_token_budget__mini_mps.json

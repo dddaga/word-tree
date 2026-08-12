@@ -1,0 +1,101 @@
+
+======================================================================
+step986 — CIFAR-10 N=16384 T1 (75ep, 50% data)
+  device=cpu  epochs=75  seed=42  batch=64
+  N=16384 D=16 K_in=15 K_hh=2 K_iter=5
+  step984 T0: best=80.23% @ep17 (underfit at 20ep)
+  N-scaling: N2048=80.57  N4096=82.53  N8192=83.55
+  Advance: >= 83.55pp → scaling holds
+======================================================================
+
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+params=278,688  train_samples=25000
+  e  1  loss=3.8886  top1=0.6546  lr=2.36e-03
+  e  1  loss=3.8886  task=3.8886  safety=0.0000  top1=0.6546  lr=2.36e-03
+  e  2  loss=1.7651  top1=0.6661  lr=2.36e-03
+  e  3  loss=1.4503  top1=0.7120  lr=2.36e-03
+  e  4  loss=1.2275  top1=0.6408  lr=2.36e-03
+  e  5  loss=1.2007  top1=0.7074  lr=2.36e-03
+  e  6  loss=1.1423  top1=0.7563  lr=2.36e-03
+  e  7  loss=0.8637  top1=0.7702  lr=2.36e-03
+  e  8  loss=1.1021  top1=0.7492  lr=2.36e-03
+  e  9  loss=0.8335  top1=0.7507  lr=2.36e-03
+  e 10  loss=0.8182  top1=0.7599  lr=2.36e-03
+  e 10  loss=0.8182  task=0.8182  safety=0.0000  top1=0.7599  lr=2.36e-03
+  e 11  loss=0.7948  top1=0.7552  lr=2.36e-03
+  e 12  loss=0.9925  top1=0.7569  lr=2.36e-03
+  e 13  loss=0.8342  top1=0.7444  lr=2.36e-03
+  e 14  loss=0.8169  top1=0.7808  lr=2.36e-03
+  e 15  loss=0.7030  top1=0.7289  lr=2.36e-03
+  e 16  loss=0.7247  top1=0.7706  lr=2.36e-03
+  e 17  loss=0.6689  top1=0.7680  lr=2.36e-03
+  e 18  loss=0.6821  top1=0.7655  lr=2.36e-03
+  e 19  loss=0.7021  top1=0.7727  lr=2.36e-03
+  e 20  loss=0.5996  top1=0.7739  lr=2.36e-03
+  e 20  loss=0.5996  task=0.5996  safety=0.0000  top1=0.7739  lr=2.36e-03
+  e 21  loss=0.7312  top1=0.7974  lr=2.36e-03
+  e 22  loss=0.6579  top1=0.7796  lr=2.36e-03
+  e 23  loss=0.5873  top1=0.7333  lr=2.36e-03
+  e 24  loss=0.5899  top1=0.7683  lr=2.36e-03
+  e 25  loss=0.5488  top1=0.7800  lr=2.36e-03
+  e 26  loss=0.5110  top1=0.7799  lr=2.36e-03
+  e 27  loss=0.4986  top1=0.7805  lr=2.36e-03
+  e 28  loss=0.5485  top1=0.7807  lr=2.36e-03
+  e 29  loss=0.6024  top1=0.7833  lr=2.36e-03
+  e 30  loss=0.5325  top1=0.7831  lr=2.36e-03
+  e 30  loss=0.5325  task=0.5325  safety=0.0000  top1=0.7831  lr=2.36e-03
+  e 31  loss=0.5877  top1=0.6538  lr=2.36e-03
+  e 32  loss=0.5669  top1=0.7730  lr=2.36e-03
+  e 33  loss=0.4686  top1=0.7739  lr=2.36e-03
+  e 34  loss=0.4290  top1=0.7914  lr=2.36e-03
+  e 35  loss=0.4393  top1=0.7773  lr=2.36e-03
+  e 36  loss=0.5828  top1=0.7244  lr=2.36e-03
+  e 37  loss=0.4618  top1=0.7040  lr=2.36e-03
+  e 38  loss=0.4271  top1=0.7910  lr=2.36e-03
+  e 39  loss=0.4107  top1=0.7987  lr=2.36e-03
+  e 40  loss=0.4491  top1=0.7483  lr=2.36e-03
+  e 40  loss=0.4491  task=0.4491  safety=0.0000  top1=0.7483  lr=2.36e-03
+  e 41  loss=0.5105  top1=0.7091  lr=2.36e-03
+  e 42  loss=0.4643  top1=0.7582  lr=2.36e-03
+  e 43  loss=0.4149  top1=0.8147  lr=2.36e-03
+  e 44  loss=0.4019  top1=0.7827  lr=2.36e-03
+  e 45  loss=0.4218  top1=0.7599  lr=2.36e-03
+  e 46  loss=0.4400  top1=0.7975  lr=2.36e-03
+  e 47  loss=0.3802  top1=0.7820  lr=2.36e-03
+  e 48  loss=0.2891  top1=0.7993  lr=2.36e-03
+  e 49  loss=0.3880  top1=0.7742  lr=2.36e-03
+  e 50  loss=0.4102  top1=0.7329  lr=2.36e-03
+  e 50  loss=0.4102  task=0.4102  safety=0.0000  top1=0.7329  lr=2.36e-03
+  e 51  loss=0.3523  top1=0.7762  lr=2.36e-03
+  e 52  loss=0.4962  top1=0.8156  lr=2.36e-03
+  e 53  loss=0.4229  top1=0.7670  lr=2.36e-03
+  e 54  loss=0.3308  top1=0.8189  lr=2.36e-03
+  e 55  loss=0.2818  top1=0.8059  lr=2.36e-03
+  e 56  loss=0.3472  top1=0.7596  lr=2.36e-03
+  e 57  loss=0.3648  top1=0.7717  lr=2.36e-03
+  e 58  loss=0.3851  top1=0.8115  lr=2.36e-03
+  e 59  loss=0.3630  top1=0.8083  lr=2.36e-03
+  e 60  loss=0.4025  top1=0.7756  lr=2.36e-03
+  e 60  loss=0.4025  task=0.4025  safety=0.0000  top1=0.7756  lr=2.36e-03
+  e 61  loss=0.2855  top1=0.7997  lr=2.36e-03
+  e 62  loss=0.4074  top1=0.7939  lr=2.36e-03
+  e 63  loss=0.3042  top1=0.7516  lr=2.36e-03
+  e 64  loss=0.2864  top1=0.8159  lr=2.36e-03
+  e 65  loss=0.2900  top1=0.7664  lr=2.36e-03
+  e 66  loss=0.5442  top1=0.7647  lr=2.36e-03
+  e 67  loss=0.1073  top1=0.8259  lr=1.18e-03
+  e 68  loss=0.0383  top1=0.8209  lr=1.18e-03
+  e 69  loss=0.0283  top1=0.8285  lr=1.18e-03
+  e 70  loss=0.0108  top1=0.8237  lr=1.18e-03
+  e 70  loss=0.0108  task=0.0108  safety=0.0000  top1=0.8237  lr=1.18e-03
+  e 71  loss=0.0129  top1=0.8247  lr=1.18e-03
+  e 72  loss=0.0610  top1=0.8157  lr=1.18e-03
+  e 73  loss=0.1544  top1=0.7866  lr=1.18e-03
+  e 74  loss=0.1093  top1=0.8181  lr=1.18e-03
+  e 75  loss=0.0806  top1=0.8144  lr=1.18e-03
+
+======================================================================
+RESULT: best=0.8285 @ep69  elapsed=10672s
+Scaling: 2K=80.57  4K=82.53  8K=83.55  16K(T1)=82.85
+  → NON-MONOTONIC CONFIRMED: N=16384=82.85% < N=8192=83.55% → ceiling hit
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step986_cifar10_n16384_t1_seed42__mini_cpu.json

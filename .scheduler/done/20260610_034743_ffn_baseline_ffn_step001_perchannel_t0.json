@@ -1,0 +1,18 @@
+{
+  "line": "ffn_baseline",
+  "script": "scripts/ffn_baseline/ffn_step001_perchannel_t0.py",
+  "slots": [
+    "mini_mps",
+    "mini_cpu"
+  ],
+  "args": [
+    "--epochs",
+    "75",
+    "--tag",
+    "t1"
+  ],
+  "submitted_at": "2026-06-10 03:47:43",
+  "slot": "mini_cpu",
+  "launched_at": "2026-06-10 04:02:18",
+  "finished_at": "2026-06-10 04:12:18"
+}

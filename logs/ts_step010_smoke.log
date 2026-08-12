@@ -1,0 +1,43 @@
+Loading data from data/ts/raw ...
+Tickers loaded: 63
+  [2015-01-01:2021-12-31] 56 tickers, 230 common dates
+  [2022-01-01:2023-12-31] 63 tickers, 309 common dates
+Train samples: 169, Val samples: 248
+Parameters: 2,101,272
+ epoch |  train_mse |  val_mae | val_dir_acc | val_sharpe
+---------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 454, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 403, in main
+    val_mse, val_dir_acc, val_sharpe, val_mae = eval_epoch(model, val_loader, device)
+                                                ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 341, in eval_epoch
+    pred = model(x)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/ts/ts_step010_cnn_lstm.py", line 248, in forward
+    lstm_out, _ = self.lstm(seq)       # [B, T', hidden]
+                  ~~~~~~~~~^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/rnn.py", line 1118, in forward
+    self.check_forward_args(input, hx, batch_sizes)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/rnn.py", line 1015, in check_forward_args
+    self.check_input(input, batch_sizes)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/nn/modules/rnn.py", line 316, in check_input
+    raise RuntimeError(
+        f"input.size(-1) must be equal to input_size. Expected {self.input_size}, got {input.size(-1)}"
+    )
+RuntimeError: input.size(-1) must be equal to input_size. Expected 3584, got 4032

@@ -1,0 +1,52 @@
+cnn_step025 GA2+Mixup(α=0.2)+LabelSmoothing T1 | 75ep 50%data | seed=42
+GA#2: C=(32,64,384) k=3 exp=2 crelu  params=481,514  MACs=98.5M
+Baseline (step021 α=0.2 no LS): 0.7361  Advance>=+0.5pp: 0.7411
+Testing ε ∈ [0.05, 0.1]  (loss: 0.50·feat + 0.30·dkd + 0.20·ce_ls)
+
+──────────────────────────────────────────────────
+ε=0.05
+  ep  5  val=0.4530  best=0.4530  lr=2.97e-04
+  ep 10  val=0.6033  best=0.6033  lr=2.87e-04
+  ep 15  val=0.6033  best=0.6033  lr=2.72e-04
+  ep 20  val=0.6329  best=0.6329  lr=2.52e-04
+  ep 25  val=0.6604  best=0.6604  lr=2.28e-04
+  ep 30  val=0.6907  best=0.6907  lr=2.00e-04
+  ep 35  val=0.6469  best=0.6907  lr=1.70e-04
+  ep 40  val=0.6950  best=0.6950  lr=1.40e-04
+  ep 45  val=0.7236  best=0.7236  lr=1.10e-04
+  ep 50  val=0.6955  best=0.7236  lr=8.25e-05
+  ep 55  val=0.7172  best=0.7236  lr=5.80e-05
+  ep 60  val=0.7192  best=0.7236  lr=3.77e-05
+  ep 65  val=0.7261  best=0.7261  lr=2.25e-05
+  ep 70  val=0.7251  best=0.7261  lr=1.32e-05
+  ep 75  val=0.7304  best=0.7304  lr=1.00e-05
+  -> ε=0.05  best=0.7304 @ep75  Δ_step021=-0.0057  NO-GAIN  (853s)
+
+──────────────────────────────────────────────────
+ε=0.1
+  ep  5  val=0.4415  best=0.4415  lr=2.97e-04
+  ep 10  val=0.5883  best=0.5883  lr=2.87e-04
+  ep 15  val=0.5789  best=0.5883  lr=2.72e-04
+  ep 20  val=0.6217  best=0.6217  lr=2.52e-04
+  ep 25  val=0.6443  best=0.6443  lr=2.28e-04
+  ep 30  val=0.6775  best=0.6775  lr=2.00e-04
+  ep 35  val=0.6438  best=0.6775  lr=1.70e-04
+  ep 40  val=0.6693  best=0.6775  lr=1.40e-04
+  ep 45  val=0.7006  best=0.7006  lr=1.10e-04
+  ep 50  val=0.6772  best=0.7006  lr=8.25e-05
+  ep 55  val=0.7006  best=0.7006  lr=5.80e-05
+  ep 60  val=0.7004  best=0.7006  lr=3.77e-05
+  ep 65  val=0.7078  best=0.7078  lr=2.25e-05
+  ep 70  val=0.7022  best=0.7078  lr=1.32e-05
+  ep 75  val=0.7068  best=0.7078  lr=1.00e-05
+  -> ε=0.1  best=0.7078 @ep65  Δ_step021=-0.0283  NO-GAIN  (796s)
+
+============================================================
+cnn_step025 SUMMARY — GA2+Mixup(α=0.2)+LS T1
+============================================================
+  step021 baseline (no LS): 0.7361
+  ε=0.05: 0.7304 @ep75  Δ=-0.0057  NO-GAIN
+  ε=0.1: 0.7078 @ep65  Δ=-0.0283  NO-GAIN
+  Best ε: 0.05 → 0.7304
+  -> NO-GAIN — close LS direction
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step025_ga2_mixup_ls_t1__mini_mps.json

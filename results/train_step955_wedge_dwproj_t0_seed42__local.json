@@ -1,0 +1,34 @@
+{
+  "Ref": {
+    "mode": "ref",
+    "n_params": 34976,
+    "best": 0.775,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4
+  },
+  "A_shared": {
+    "mode": "shared",
+    "n_params": 35488,
+    "best": 0.7717,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0033,
+    "elapsed_s": 5
+  },
+  "B_symm": {
+    "mode": "symm",
+    "n_params": 35488,
+    "best": 0.7722,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0028,
+    "elapsed_s": 5
+  },
+  "C_residual": {
+    "mode": "residual",
+    "n_params": 35488,
+    "best": 0.7745,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0005,
+    "elapsed_s": 5
+  }
+}

@@ -1,0 +1,69 @@
+cnn_step018 EfficientVGG GA T1 | 75ep 50%data | device=mps slot=mini_mps
+Ref T1=73.2%  D_small_s T1=71.0%  | configs: ['GA2', 'GA3', 'GA4']
+Advance: STRONG≥73.2%  EFF-PARETO≥71.0%@<183M
+
+────────────────────────────────────────────────────────────
+GA2: GA#2: C=(32,64,384) k=3 exp=2 crelu  T0=0.6833
+  params=481,514  MACs=98.5M
+  ep  5  val=0.5361  best=0.5361  lr=2.97e-04
+  ep 10  val=0.5890  best=0.5890  lr=2.87e-04
+  ep 15  val=0.6268  best=0.6268  lr=2.72e-04
+  ep 20  val=0.6749  best=0.6749  lr=2.52e-04
+  ep 25  val=0.7037  best=0.7037  lr=2.28e-04
+  ep 30  val=0.7131  best=0.7131  lr=2.00e-04
+  ep 35  val=0.6994  best=0.7131  lr=1.70e-04
+  ep 40  val=0.7111  best=0.7131  lr=1.40e-04
+  ep 45  val=0.7146  best=0.7146  lr=1.10e-04
+  ep 50  val=0.7177  best=0.7177  lr=8.25e-05
+  ep 55  val=0.7223  best=0.7223  lr=5.80e-05
+  ep 60  val=0.7200  best=0.7223  lr=3.77e-05
+  ep 65  val=0.7223  best=0.7223  lr=2.25e-05
+  ep 70  val=0.7251  best=0.7251  lr=1.32e-05
+  ep 75  val=0.7210  best=0.7251  lr=1.00e-05
+  -> best=0.7251 @ep70  T0→T1=+0.0418  EFF-PARETO  (999s)
+────────────────────────────────────────────────────────────
+GA3: GA#3: C=(32,96,384) k=3 exp=2 crelu  T0=0.6780
+  params=516,010  MACs=118.0M
+  ep  5  val=0.5177  best=0.5177  lr=2.97e-04
+  ep 10  val=0.6038  best=0.6038  lr=2.87e-04
+  ep 15  val=0.6094  best=0.6094  lr=2.72e-04
+  ep 20  val=0.6981  best=0.6981  lr=2.52e-04
+  ep 25  val=0.6989  best=0.6989  lr=2.28e-04
+  ep 30  val=0.7164  best=0.7164  lr=2.00e-04
+  ep 35  val=0.7027  best=0.7164  lr=1.70e-04
+  ep 40  val=0.6971  best=0.7164  lr=1.40e-04
+  ep 45  val=0.7218  best=0.7218  lr=1.10e-04
+  ep 50  val=0.7162  best=0.7218  lr=8.25e-05
+  ep 55  val=0.7238  best=0.7238  lr=5.80e-05
+  ep 60  val=0.7220  best=0.7238  lr=3.77e-05
+  ep 65  val=0.7264  best=0.7264  lr=2.25e-05
+  ep 70  val=0.7261  best=0.7264  lr=1.32e-05
+  ep 75  val=0.7297  best=0.7297  lr=1.00e-05
+  -> best=0.7297 @ep75  T0→T1=+0.0517  EFF-PARETO  (986s)
+────────────────────────────────────────────────────────────
+GA4: GA#4: C=(32,64,256) k=3 exp=1  T0=0.6566
+  params=304,618  MACs=62.9M
+  ep  5  val=0.4064  best=0.4064  lr=2.97e-04
+  ep 10  val=0.5580  best=0.5580  lr=2.87e-04
+  ep 15  val=0.6527  best=0.6527  lr=2.72e-04
+  ep 20  val=0.6846  best=0.6846  lr=2.52e-04
+  ep 25  val=0.6940  best=0.6940  lr=2.28e-04
+  ep 30  val=0.6999  best=0.6999  lr=2.00e-04
+  ep 35  val=0.7106  best=0.7106  lr=1.70e-04
+  ep 40  val=0.6983  best=0.7106  lr=1.40e-04
+  ep 45  val=0.7185  best=0.7185  lr=1.10e-04
+  ep 50  val=0.7164  best=0.7185  lr=8.25e-05
+  ep 55  val=0.7164  best=0.7185  lr=5.80e-05
+  ep 60  val=0.7243  best=0.7243  lr=3.77e-05
+  ep 65  val=0.7276  best=0.7276  lr=2.25e-05
+  ep 70  val=0.7157  best=0.7276  lr=1.32e-05
+  ep 75  val=0.7200  best=0.7276  lr=1.00e-05
+  -> best=0.7276 @ep65  T0→T1=+0.0710  EFF-PARETO  (949s)
+
+============================================================
+cnn_step018 SUMMARY (T1)
+============================================================
+  GA2: 0.7251  98.5M  481,514p  T0→T1=+0.0418  EFF-PARETO
+  GA3: 0.7297  118.0M  516,010p  T0→T1=+0.0517  EFF-PARETO
+  GA4: 0.7276  62.9M  304,618p  T0→T1=+0.0710  EFF-PARETO
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step018_ga_t1_seed42__mini_mps.json

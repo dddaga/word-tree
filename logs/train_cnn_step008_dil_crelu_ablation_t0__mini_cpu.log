@@ -1,0 +1,50 @@
+cnn_step008 2×2 ablation: dilation × CReLU placement
+Device=cpu  epochs=20  50% data  Ref_T0=0.3682
+Prior results: dil1_crelu_early=41.32%  dil1_crelu_late=37.99%
+
+───────────────────────────────────────────────────────
+dil1_crelu_early: 561,642p  105.9M MACs  dil=(1,)  crelu=(True, True, False)
+  ep  5  val=0.1597  best=0.2191
+  ep 10  val=0.2601  best=0.3641
+  ep 15  val=0.3692  best=0.3699
+  ep 20  val=0.4025  best=0.4056
+  -> best=0.4056  Δ_ref=+0.0374  ADVANCE  (6685s)
+
+───────────────────────────────────────────────────────
+dil4_crelu_early: 561,642p  105.9M MACs  dil=(4,)  crelu=(True, True, False)
+  ep  5  val=0.1750  best=0.2441
+  ep 10  val=0.2739  best=0.3761
+  ep 15  val=0.3791  best=0.3791
+  ep 20  val=0.3921  best=0.3982
+  -> best=0.3982  Δ_ref=+0.0300  ADVANCE  (9490s)
+
+───────────────────────────────────────────────────────
+dil1_crelu_late: 488,426p  93.1M MACs  dil=(1,)  crelu=(False, True, True)
+  ep  5  val=0.2290  best=0.2290
+  ep 10  val=0.2943  best=0.2943
+  ep 15  val=0.3381  best=0.3567
+  ep 20  val=0.3750  best=0.3768
+  -> best=0.3768  Δ_ref=+0.0086  ADVANCE  (6916s)
+
+───────────────────────────────────────────────────────
+dil4_crelu_late: 488,426p  93.1M MACs  dil=(4,)  crelu=(False, True, True)
+  ep  5  val=0.2245  best=0.2278
+  ep 10  val=0.2782  best=0.3019
+  ep 15  val=0.3529  best=0.3638
+  ep 20  val=0.3778  best=0.3783
+  -> best=0.3783  Δ_ref=+0.0101  ADVANCE  (8967s)
+
+=======================================================
+cnn_step008 ABLATION SUMMARY  (Ref_T0=0.3682)
+=======================================================
+  dil1_crelu_early         105.9M  best=0.4056  Δ=+0.0374  ADVANCE
+  dil4_crelu_early         105.9M  best=0.3982  Δ=+0.0300  ADVANCE
+  dil1_crelu_late           93.1M  best=0.3768  Δ=+0.0086  ADVANCE
+  dil4_crelu_late           93.1M  best=0.3783  Δ=+0.0101  ADVANCE
+
+  Dilation effect (early crelu): dil4−dil1 = -0.0074
+  Dilation effect (late crelu):  dil4−dil1 = +0.0015
+  CReLU placement (dil=1): early−late = +0.0288
+  CReLU placement (dil=4): early−late = +0.0199
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step008_ablation_seed42__mini_cpu.json

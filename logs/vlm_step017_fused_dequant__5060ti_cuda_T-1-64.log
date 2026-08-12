@@ -1,0 +1,155 @@
+==================================================================================
+vlm_step017 fused dequant  torch=2.11.0+cu128  triton=3.6.0  cap=(12, 0)  NVIDIA GeForce RTX 5060 Ti
+  shape [T,576] @ [576,49280]  out bytes/elem: i32 4  fp16 2
+
+  --- T=1 ---
+    cuBLAS fp16 0.1470 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.0487 ms
+      cfg (16, 256, 64, 4, 8): 0.0575 ms
+      cfg (32, 128, 64, 4, 4): 0.0505 ms
+      cfg (32, 256, 64, 4, 8): 0.0557 ms
+      cfg (64, 128, 64, 4, 4): 0.0586 ms
+      cfg (64, 256, 64, 4, 8): 0.0637 ms
+      cfg (64, 128, 128, 3, 4): 0.0619 ms
+      cfg (128, 128, 64, 4, 8): 0.1024 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.0482 ms
+      cfg (16, 256, 64, 4, 8): 0.0545 ms
+      cfg (32, 128, 64, 4, 4): 0.0503 ms
+      cfg (32, 256, 64, 4, 8): 0.0586 ms
+      cfg (64, 128, 64, 4, 4): 0.0587 ms
+      cfg (64, 256, 64, 4, 8): 0.0648 ms
+      cfg (64, 128, 128, 3, 4): 0.0606 ms
+      cfg (128, 128, 64, 4, 8): 0.0982 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+  --- T=2 ---
+    cuBLAS fp16 0.1621 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.0482 ms
+      cfg (16, 256, 64, 4, 8): 0.0577 ms
+      cfg (32, 128, 64, 4, 4): 0.0505 ms
+      cfg (32, 256, 64, 4, 8): 0.0557 ms
+      cfg (64, 128, 64, 4, 4): 0.0582 ms
+      cfg (64, 256, 64, 4, 8): 0.0661 ms
+      cfg (64, 128, 128, 3, 4): 0.0621 ms
+      cfg (128, 128, 64, 4, 8): 0.1038 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.0490 ms
+      cfg (16, 256, 64, 4, 8): 0.0548 ms
+      cfg (32, 128, 64, 4, 4): 0.0508 ms
+      cfg (32, 256, 64, 4, 8): 0.0562 ms
+      cfg (64, 128, 64, 4, 4): 0.0583 ms
+      cfg (64, 256, 64, 4, 8): 0.0660 ms
+      cfg (64, 128, 128, 3, 4): 0.0614 ms
+      cfg (128, 128, 64, 4, 8): 0.0994 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+  --- T=3 ---
+    cuBLAS fp16 0.1629 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.0480 ms
+      cfg (16, 256, 64, 4, 8): 0.0573 ms
+      cfg (32, 128, 64, 4, 4): 0.0499 ms
+      cfg (32, 256, 64, 4, 8): 0.0552 ms
+      cfg (64, 128, 64, 4, 4): 0.0575 ms
+      cfg (64, 256, 64, 4, 8): 0.0653 ms
+      cfg (64, 128, 128, 3, 4): 0.0614 ms
+      cfg (128, 128, 64, 4, 8): 0.1031 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.0477 ms
+      cfg (16, 256, 64, 4, 8): 0.0542 ms
+      cfg (32, 128, 64, 4, 4): 0.0497 ms
+      cfg (32, 256, 64, 4, 8): 0.0556 ms
+      cfg (64, 128, 64, 4, 4): 0.0572 ms
+      cfg (64, 256, 64, 4, 8): 0.0647 ms
+      cfg (64, 128, 128, 3, 4): 0.0608 ms
+      cfg (128, 128, 64, 4, 8): 0.0988 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+  --- T=8 ---
+    cuBLAS fp16 0.1664 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.0481 ms
+      cfg (16, 256, 64, 4, 8): 0.0575 ms
+      cfg (32, 128, 64, 4, 4): 0.0498 ms
+      cfg (32, 256, 64, 4, 8): 0.0553 ms
+      cfg (64, 128, 64, 4, 4): 0.0574 ms
+      cfg (64, 256, 64, 4, 8): 0.0652 ms
+      cfg (64, 128, 128, 3, 4): 0.0614 ms
+      cfg (128, 128, 64, 4, 8): 0.1033 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.0482 ms
+      cfg (16, 256, 64, 4, 8): 0.0544 ms
+      cfg (32, 128, 64, 4, 4): 0.0499 ms
+      cfg (32, 256, 64, 4, 8): 0.0559 ms
+      cfg (64, 128, 64, 4, 4): 0.0575 ms
+      cfg (64, 256, 64, 4, 8): 0.0650 ms
+      cfg (64, 128, 128, 3, 4): 0.0610 ms
+      cfg (128, 128, 64, 4, 8): 0.0992 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+  --- T=16 ---
+    cuBLAS fp16 0.1558 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.0494 ms
+      cfg (16, 256, 64, 4, 8): 0.0591 ms
+      cfg (32, 128, 64, 4, 4): 0.0511 ms
+      cfg (32, 256, 64, 4, 8): 0.0566 ms
+      cfg (64, 128, 64, 4, 4): 0.0593 ms
+      cfg (64, 256, 64, 4, 8): 0.0664 ms
+      cfg (64, 128, 128, 3, 4): 0.0626 ms
+      cfg (128, 128, 64, 4, 8): 0.1042 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.0491 ms
+      cfg (16, 256, 64, 4, 8): 0.0552 ms
+      cfg (32, 128, 64, 4, 4): 0.0506 ms
+      cfg (32, 256, 64, 4, 8): 0.0593 ms
+      cfg (64, 128, 64, 4, 4): 0.0588 ms
+      cfg (64, 256, 64, 4, 8): 0.0656 ms
+      cfg (64, 128, 128, 3, 4): 0.0617 ms
+      cfg (128, 128, 64, 4, 8): 0.0996 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+  --- T=64 ---
+    cuBLAS fp16 0.1522 ms
+    triton int8 -> int32 (step015 control):
+      cfg (16, 128, 64, 4, 4): 0.1491 ms
+      cfg (16, 256, 64, 4, 8): 0.1764 ms
+      cfg (32, 128, 64, 4, 4): 0.1084 ms
+      cfg (32, 256, 64, 4, 8): 0.1180 ms
+      cfg (64, 128, 64, 4, 4): 0.1006 ms
+      cfg (64, 256, 64, 4, 8): 0.1067 ms
+      cfg (64, 128, 128, 3, 4): 0.1019 ms
+      cfg (128, 128, 64, 4, 8): 0.1197 ms
+    triton int8 -> fp16 (fused dequant):
+      cfg (16, 128, 64, 4, 4): 0.1366 ms
+      cfg (16, 256, 64, 4, 8): 0.1644 ms
+      cfg (32, 128, 64, 4, 4): 0.0865 ms
+      cfg (32, 256, 64, 4, 8): 0.1046 ms
+      cfg (64, 128, 64, 4, 4): 0.0715 ms
+      cfg (64, 256, 64, 4, 8): 0.0774 ms
+      cfg (64, 128, 128, 3, 4): 0.0747 ms
+      cfg (128, 128, 64, 4, 8): 0.1077 ms
+    fused correctness vs _int_mm+scale: EXACT
+
+==================================================================================
+    T  cuBLAS16   tri_i32   unfused     fused  fus/i32  fus/unf  fus/cuB
+    1    0.1470    0.0487    0.0602    0.0482    1.01x    1.25x    3.05x
+    2    0.1621    0.0482    0.0633    0.0490    0.98x    1.29x    3.31x
+    3    0.1629    0.0480    0.0674    0.0477    1.00x    1.41x    3.41x
+    8    0.1664    0.0481    0.0685    0.0482    1.00x    1.42x    3.45x
+   16    0.1558    0.0494    0.1065    0.0491    1.01x    2.17x    3.17x
+   64    0.1522    0.1006    0.1851    0.0715    1.41x    2.59x    2.13x
+  T=1    best cfg i32=(16, 128, 64, 4, 4) deq=(16, 128, 64, 4, 4)  gate: EXACT
+  T=2    best cfg i32=(16, 128, 64, 4, 4) deq=(16, 128, 64, 4, 4)  gate: EXACT
+  T=3    best cfg i32=(16, 128, 64, 4, 4) deq=(16, 128, 64, 4, 4)  gate: EXACT
+  T=8    best cfg i32=(16, 128, 64, 4, 4) deq=(16, 128, 64, 4, 4)  gate: EXACT
+  T=16   best cfg i32=(16, 128, 64, 4, 4) deq=(16, 128, 64, 4, 4)  gate: EXACT
+  T=64   best cfg i32=(64, 128, 64, 4, 4) deq=(64, 128, 64, 4, 4)  gate: EXACT
+  fus/i32 = the one-variable effect of the epilogue (identical main loop).
+  fus/unf = what a deployment gains by fusing rather than scaling in a second pass.
+  fus/cuB = the number a deployment quotes: int8+dequant vs the fp16 GEMM it replaces.
+  tri_i32 must reproduce step015's column (0.1012 / 0.1519 / 0.4458 at T=64/128/576) --
+  a free cross-session drift gate on the same card, same kernel, same configs.

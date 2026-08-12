@@ -1,0 +1,12 @@
+
+======================================================================
+step982 — CIFAR-10 augmentation T2 (150ep, 100% data)
+  device=mps  epochs=150  seed=42  batch=256
+  T1 result: Ref=0.7860  A_aug=0.7963  Δ=+1.03pp [ADVANCED]
+  Advance T2: A_aug >= Ref + 0.5pp → paper claim
+======================================================================
+
+
+────────────────────────────────────────────────────────────
+Ref: h5=store_cifar10.h5  train=50000  params=34,976  device=mps
+  e  1/150  val=0.0948  best=0.0948  [45s]

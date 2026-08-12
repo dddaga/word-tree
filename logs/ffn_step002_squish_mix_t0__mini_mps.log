@@ -1,0 +1,94 @@
+
+======================================================================
+ffn_step002 — squish-then-MIX per-channel FFN T0 (20ep, 50% Imagenette)
+  device=mps  configs=['b1_A_norm_relu', 'b1_C_norm_bias_relu', 'b5_A_norm_relu', 'b5_C_norm_bias_relu']
+======================================================================
+
+────────────────────────────────────────────────────────────
+b1_A_norm_relu: squish=8 mix=[240]  params=1,186,394 (0.992% FC)  device=mps
+  e  1/75  val=0.6583  best=0.6583  [0s]
+  e  5/75  val=0.9210  best=0.9210  [1s]
+  e 10/75  val=0.9276  best=0.9276  [1s]
+  e 15/75  val=0.9269  best=0.9276  [1s]
+  e 20/75  val=0.9254  best=0.9276  [2s]
+  e 25/75  val=0.9264  best=0.9276  [2s]
+  e 30/75  val=0.9256  best=0.9276  [3s]
+  e 35/75  val=0.9266  best=0.9276  [3s]
+  e 40/75  val=0.9259  best=0.9276  [4s]
+  e 45/75  val=0.9261  best=0.9276  [4s]
+  e 50/75  val=0.9264  best=0.9276  [5s]
+  e 55/75  val=0.9261  best=0.9276  [5s]
+  e 60/75  val=0.9261  best=0.9276  [5s]
+  e 65/75  val=0.9261  best=0.9276  [6s]
+  e 70/75  val=0.9259  best=0.9276  [6s]
+  e 75/75  val=0.9259  best=0.9276  [7s]
+  DONE: best=0.9276 @ep10  params=1,186,394  7s
+
+────────────────────────────────────────────────────────────
+b1_C_norm_bias_relu: squish=8 mix=[240]  params=1,190,490 (0.996% FC)  device=mps
+  e  1/75  val=0.6589  best=0.6589  [0s]
+  e  5/75  val=0.9218  best=0.9218  [0s]
+  e 10/75  val=0.9279  best=0.9279  [1s]
+  e 15/75  val=0.9264  best=0.9279  [1s]
+  e 20/75  val=0.9261  best=0.9279  [2s]
+  e 25/75  val=0.9266  best=0.9279  [2s]
+  e 30/75  val=0.9266  best=0.9279  [3s]
+  e 35/75  val=0.9266  best=0.9279  [3s]
+  e 40/75  val=0.9266  best=0.9279  [4s]
+  e 45/75  val=0.9266  best=0.9279  [4s]
+  e 50/75  val=0.9271  best=0.9279  [5s]
+  e 55/75  val=0.9271  best=0.9279  [5s]
+  e 60/75  val=0.9269  best=0.9279  [6s]
+  e 65/75  val=0.9271  best=0.9279  [6s]
+  e 70/75  val=0.9269  best=0.9279  [7s]
+  e 75/75  val=0.9269  best=0.9279  [7s]
+  DONE: best=0.9279 @ep10  params=1,190,490  7s
+
+────────────────────────────────────────────────────────────
+b5_A_norm_relu: squish=8 mix=[1152, 128]  params=5,069,322 (4.239% FC)  device=mps
+  e  1/75  val=0.7373  best=0.7373  [0s]
+  e  5/75  val=0.9213  best=0.9213  [1s]
+  e 10/75  val=0.9251  best=0.9271  [1s]
+  e 15/75  val=0.9238  best=0.9271  [2s]
+  e 20/75  val=0.9251  best=0.9271  [2s]
+  e 25/75  val=0.9251  best=0.9271  [3s]
+  e 30/75  val=0.9256  best=0.9271  [3s]
+  e 35/75  val=0.9251  best=0.9271  [4s]
+  e 40/75  val=0.9254  best=0.9271  [4s]
+  e 45/75  val=0.9248  best=0.9271  [5s]
+  e 50/75  val=0.9246  best=0.9271  [6s]
+  e 55/75  val=0.9246  best=0.9271  [6s]
+  e 60/75  val=0.9248  best=0.9271  [7s]
+  e 65/75  val=0.9246  best=0.9271  [7s]
+  e 70/75  val=0.9246  best=0.9271  [8s]
+  e 75/75  val=0.9246  best=0.9271  [9s]
+  DONE: best=0.9271 @ep9  params=5,069,322  9s
+
+────────────────────────────────────────────────────────────
+b5_C_norm_bias_relu: squish=8 mix=[1152, 128]  params=5,073,418 (4.242% FC)  device=mps
+  e  1/75  val=0.7371  best=0.7371  [0s]
+  e  5/75  val=0.9197  best=0.9197  [1s]
+  e 10/75  val=0.9248  best=0.9264  [1s]
+  e 15/75  val=0.9246  best=0.9264  [2s]
+  e 20/75  val=0.9261  best=0.9264  [3s]
+  e 25/75  val=0.9248  best=0.9264  [3s]
+  e 30/75  val=0.9248  best=0.9264  [4s]
+  e 35/75  val=0.9246  best=0.9264  [5s]
+  e 40/75  val=0.9241  best=0.9264  [5s]
+  e 45/75  val=0.9241  best=0.9264  [6s]
+  e 50/75  val=0.9246  best=0.9264  [7s]
+  e 55/75  val=0.9246  best=0.9264  [7s]
+  e 60/75  val=0.9246  best=0.9264  [8s]
+  e 65/75  val=0.9246  best=0.9264  [8s]
+  e 70/75  val=0.9248  best=0.9264  [9s]
+  e 75/75  val=0.9248  best=0.9264  [10s]
+  DONE: best=0.9264 @ep9  params=5,073,418  10s
+
+======================================================================
+ffn_step002 SUMMARY (refs: no-mix step001=93.0%, SGNNET=95.95% @35K, ceiling=97.30%)
+  b1_A_norm_relu           0.9276  params=1,186,394 (0.9921%)
+  b1_C_norm_bias_relu      0.9279  params=1,190,490 (0.9955%)
+  b5_A_norm_relu           0.9271  params=5,069,322 (4.239%)
+  b5_C_norm_bias_relu      0.9264  params=5,073,418 (4.2425%)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/ffn_baseline/ffn_step002_squishmix_t1_seed42__mini_mps.json

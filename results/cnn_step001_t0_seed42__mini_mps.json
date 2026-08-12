@@ -1,0 +1,26 @@
+{
+  "Ref": {
+    "desc": "Full EfficientVGG (side branch + CReLU Block3)",
+    "n_params": 419146,
+    "best": 0.7034,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 445
+  },
+  "A_no_side": {
+    "desc": "No side-branch channel attention (CReLU Block3 kept)",
+    "n_params": 387018,
+    "best": 0.6589,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0446,
+    "elapsed_s": 428
+  },
+  "B_vanilla": {
+    "desc": "No side branch, no CReLU \u2014 plain ConvNeXt baseline",
+    "n_params": 550858,
+    "best": 0.6805,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0229,
+    "elapsed_s": 430
+  }
+}

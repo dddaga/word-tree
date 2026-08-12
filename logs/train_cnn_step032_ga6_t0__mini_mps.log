@@ -1,0 +1,15 @@
+cnn_step032 GA6+Mixup T0 | 20ep 50%data | alpha=0.2
+  mps  slot=mini_mps  params=576,714  MACs=197.7M
+  GA6 C=(64, 128, 384) (GA2: 32/64/384, GA5: 48/96/384 → GA6: 64/128/384)
+  Advance>=0.7523 (GA5+Mixup T1 +0.50pp)
+  ep  5  val=0.5350  best=0.5350  lr=2.58e-04
+  ep 10  val=0.6204  best=0.6204  lr=1.55e-04
+  ep 15  val=0.6688  best=0.6688  lr=5.25e-05
+  ep 20  val=0.6864  best=0.6864  lr=1.00e-05
+
+============================================================
+cnn_step032 RESULT — GA6 C=(64, 128, 384) T0
+============================================================
+  best=0.6864 @ep20  Δ_GA5mix=-0.0609  NO-GAIN  (272s)
+  -> NO-GAIN → GA6 width not beneficial
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step032_ga6_t0__mini_mps.json

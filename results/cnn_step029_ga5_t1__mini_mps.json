@@ -1,0 +1,16 @@
+{
+  "best": 0.7472611464968153,
+  "best_ep": 75,
+  "baseline": 0.7361,
+  "delta": 0.011161146496815322,
+  "verdict": "ADVANCE",
+  "elapsed": 923.9772970676422,
+  "mixup_alpha": 0.2,
+  "channels": [
+    48,
+    96,
+    384
+  ],
+  "params": 523482,
+  "macs_M": 141.275648
+}

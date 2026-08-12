@@ -1,0 +1,50 @@
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+
+======================================================================
+step909 — CIFAR-10 N-scaling T3  device=cuda  seed=42
+  CIFAR-10: train=50000  val=10000
+  step882 baseline: linear=86.24%, SGNNET_N2048=80.69% (gap=-5.55pp)
+======================================================================
+
+  config             N   K_in  desc
+  -----------------------------------------------------------------
+  Ref_linear     25088    n/a  nn.Linear(25088→10) — 250,890 params (upper bound)
+  A_N2048_T3      2048     25  N=2048, K_in=25, T3=200ep — extend step882 (was 150ep→80.69%)
+  B_N4096         4096     15  N=4096, K_in=15 — capacity scaling (5.4× CIFAR vs Imagenette)
+
+────────────────────────────────────────────────────────────
+B_N4096: N=4096, K_in=15 — capacity scaling (5.4× CIFAR vs Imagenette)
+  params=69,792  epochs=150
+  e  1  loss=1.7268  task=1.7268  safety=0.0000  top1=0.6978  lr=2.36e-03
+  e 10  loss=0.5460  task=0.5460  safety=0.0000  top1=0.7726  lr=2.36e-03
+  e 20  loss=0.4644  task=0.4644  safety=0.0000  top1=0.8022  lr=2.36e-03
+  ep 25  val=0.8063
+  e 30  loss=0.4480  task=0.4480  safety=0.0000  top1=0.7960  lr=2.36e-03
+  e 40  loss=0.4153  task=0.4153  safety=0.0000  top1=0.7947  lr=2.36e-03
+  ep 50  val=0.7869
+  e 50  loss=0.4006  task=0.4006  safety=0.0000  top1=0.7869  lr=2.36e-03
+  e 60  loss=0.3775  task=0.3775  safety=0.0000  top1=0.8143  lr=2.36e-03
+  e 70  loss=0.3613  task=0.3613  safety=0.0000  top1=0.7845  lr=2.36e-03
+  ep 75  val=0.8013
+  e 80  loss=0.3426  task=0.3426  safety=0.0000  top1=0.8079  lr=2.36e-03
+  e 90  loss=0.3529  task=0.3529  safety=0.0000  top1=0.8130  lr=2.36e-03
+  ep100  val=0.8251
+  e100  loss=0.2745  task=0.2745  safety=0.0000  top1=0.8251  lr=1.18e-03
+  e110  loss=0.2671  task=0.2671  safety=0.0000  top1=0.8196  lr=1.18e-03
+  e120  loss=0.2602  task=0.2602  safety=0.0000  top1=0.8118  lr=1.18e-03
+  ep125  val=0.8162
+  e130  loss=0.2573  task=0.2573  safety=0.0000  top1=0.8147  lr=1.18e-03
+  e140  loss=0.2463  task=0.2463  safety=0.0000  top1=0.8130  lr=1.18e-03
+  ep150  val=0.8120
+  e150  loss=0.2477  task=0.2477  safety=0.0000  top1=0.8120  lr=1.18e-03
+  -> best=0.8253 @ep124  Δ_vs_linear=-3.71pp  Δ_vs_step882=+1.84pp  4347s
+
+======================================================================
+STEP 909 SUMMARY — CIFAR-10 N-scaling
+======================================================================
+  config             params     best    Δ_linear    Δ_s882_N2048
+  B_N4096            69,792   0.8253      -3.71pp         +1.84pp
+
+  step882 reference:  linear=86.24%, SGNNET_N2048=80.69%, gap=-5.55pp
+
+-> /home/indra/sgnnet_bench/results/train_step909_cifar10_n_scaling_seed42__5060ti_cuda.json

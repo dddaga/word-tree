@@ -1,0 +1,24 @@
+{
+  "step": "det_step001",
+  "model": "fasterrcnn_mobilenet_v3_large_fpn",
+  "total_params": 19386354,
+  "submodule_params": {
+    "transform": 0,
+    "backbone": 4414944,
+    "rpn": 609355,
+    "roi_heads": 14362055
+  },
+  "box_head_params": {
+    "box_head": 13895680,
+    "box_predictor": 466375
+  },
+  "box_head_total": 14362055,
+  "box_head_pct_of_model": 74.08,
+  "box_head_in_dim": 12544,
+  "n_classes": 91,
+  "roi_per_img": 1000,
+  "box_head_macs_per_image": 14362055000,
+  "sgnnet_style_head_params": 808795,
+  "sgnnet_pct_of_box_head": 5.63,
+  "elapsed_s": 6.7
+}

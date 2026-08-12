@@ -1,0 +1,65 @@
+{
+  "Ref_dw": {
+    "spec": "ref",
+    "n_params": 34976,
+    "best": 0.9404,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "gate_entropy_mean": null,
+    "elapsed_s": 33
+  },
+  "A_ro_tau1": {
+    "spec": "ro_zscore_1.0",
+    "n_params": 34976,
+    "best": 0.9439,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0036,
+    "gate_entropy_mean": 0.6226,
+    "elapsed_s": 34
+  },
+  "B_ro_tau3": {
+    "spec": "ro_zscore_3.0",
+    "n_params": 34976,
+    "best": 0.9299,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0104,
+    "gate_entropy_mean": 0.4188,
+    "elapsed_s": 33
+  },
+  "C_ro_tau_lrn": {
+    "spec": "ro_zscore_lrn",
+    "n_params": 34977,
+    "best": 0.9457,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0054,
+    "gate_entropy_mean": 0.6226,
+    "elapsed_s": 34
+  },
+  "D_ro_topk25": {
+    "spec": "ro_topk_0.25",
+    "n_params": 34976,
+    "best": 0.9055,
+    "best_ep": 19,
+    "delta_vs_ref": -0.0349,
+    "gate_entropy_mean": 0.0,
+    "elapsed_s": 34
+  },
+  "E_ro_geo": {
+    "spec": "ro_geo",
+    "n_params": 34976,
+    "best": 0.9516,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0112,
+    "gate_entropy_mean": 0.6082,
+    "elapsed_s": 34
+  },
+  "F_ro_norm_gate": {
+    "spec": "ro_norm",
+    "n_params": 34976,
+    "best": 0.933,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0074,
+    "gate_entropy_mean": 0.4636,
+    "elapsed_s": 35
+  }
+}

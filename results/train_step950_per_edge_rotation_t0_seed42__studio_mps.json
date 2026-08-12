@@ -1,0 +1,38 @@
+{
+  "Ref": {
+    "D": 16,
+    "mode": "ref",
+    "n_params": 34976,
+    "best": 0.1952,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 23
+  },
+  "A_shared": {
+    "D": 16,
+    "mode": "shared",
+    "n_params": 35488,
+    "best": 0.1954,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 40
+  },
+  "B_peredge": {
+    "D": 16,
+    "mode": "per_node",
+    "n_params": 1083552,
+    "best": 0.1954,
+    "best_ep": 19,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 28
+  },
+  "C_small_D8": {
+    "D": 8,
+    "mode": "per_node",
+    "n_params": 280656,
+    "best": 0.1353,
+    "best_ep": 15,
+    "delta_vs_ref": -0.0599,
+    "elapsed_s": 25
+  }
+}

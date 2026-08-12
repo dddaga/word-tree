@@ -1,0 +1,487 @@
+
+======================================================================
+step931 — GA Hyperparam Search (ESC-50)  pop=8  gen=4
+  device=mps  T0_epochs=20  seed=42  ga_seed=0
+  mut_rate=0.2  gene_space={'D': [4, 8, 16], 'K_in': [15, 25, 50], 'K_hh': [1, 2, 4, 6], 'K_iter': [3, 5, 7, 10], 'N': [512, 1024, 2048, 4096]}
+  refs: Linear=0.4775  best_so_far=0.3625
+======================================================================
+
+Evaluating Linear baseline...
+  Linear baseline: 0.4775
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generation 0  (8 individuals)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [0] D8_Kin25_Khh2_Ki5_N2048
+    genes: D=8  K_in=25  K_hh=2  K_iter=5  N=2048
+    e  1  top1=0.0575
+    e  2  top1=0.1125
+    e  3  top1=0.1000
+    e  4  top1=0.1275
+    e  5  top1=0.1625
+    e  6  top1=0.2150
+    e  7  top1=0.1700
+    e  8  top1=0.1900
+    e  9  top1=0.2650
+    e 10  top1=0.2775
+    e 11  top1=0.2625
+    e 12  top1=0.2925
+    e 13  top1=0.3225
+    e 14  top1=0.3275
+    e 15  top1=0.3600
+    e 16  top1=0.3450
+    e 17  top1=0.3850
+    e 18  top1=0.3875
+    e 19  top1=0.3875
+    e 20  top1=0.3950
+    → fitness=0.3950  Δ=-8.25pp  params=18,832  5s
+
+  [1] D16_Kin25_Khh2_Ki5_N2048
+    genes: D=16  K_in=25  K_hh=2  K_iter=5  N=2048
+    e  1  top1=0.0300
+    e  2  top1=0.0850
+    e  3  top1=0.0875
+    e  4  top1=0.1375
+    e  5  top1=0.1725
+    e  6  top1=0.1400
+    e  7  top1=0.1650
+    e  8  top1=0.1650
+    e  9  top1=0.1650
+    e 10  top1=0.2100
+    e 11  top1=0.1925
+    e 12  top1=0.2325
+    e 13  top1=0.2300
+    e 14  top1=0.2350
+    e 15  top1=0.2475
+    e 16  top1=0.2700
+    e 17  top1=0.2950
+    e 18  top1=0.3150
+    e 19  top1=0.3100
+    e 20  top1=0.3100
+    → fitness=0.3150  Δ=-16.25pp  params=35,616  12s
+
+  [2] D4_Kin25_Khh1_Ki5_N1024
+    genes: D=4  K_in=25  K_hh=1  K_iter=5  N=1024
+    e  1  top1=0.0600
+    e  2  top1=0.0425
+    e  3  top1=0.0725
+    e  4  top1=0.0850
+    e  5  top1=0.0875
+    e  6  top1=0.0950
+    e  7  top1=0.1050
+    e  8  top1=0.1100
+    e  9  top1=0.1150
+    e 10  top1=0.1550
+    e 11  top1=0.1575
+    e 12  top1=0.1475
+    e 13  top1=0.1600
+    e 14  top1=0.1700
+    e 15  top1=0.1650
+    e 16  top1=0.1850
+    e 17  top1=0.1950
+    e 18  top1=0.1875
+    e 19  top1=0.1975
+    e 20  top1=0.1925
+    → fitness=0.1975  Δ=-28.00pp  params=5,320  2s
+
+  [3] D8_Kin15_Khh2_Ki7_N4096
+    genes: D=8  K_in=15  K_hh=2  K_iter=7  N=4096
+    e  1  top1=0.0750
+    e  2  top1=0.0825
+    e  3  top1=0.1050
+    e  4  top1=0.1175
+    e  5  top1=0.0825
+    e  6  top1=0.1375
+    e  7  top1=0.1425
+    e  8  top1=0.1475
+    e  9  top1=0.1625
+    e 10  top1=0.1725
+    e 11  top1=0.1875
+    e 12  top1=0.1875
+    e 13  top1=0.2300
+    e 14  top1=0.2500
+    e 15  top1=0.2650
+    e 16  top1=0.2875
+    e 17  top1=0.2925
+    e 18  top1=0.2950
+    e 19  top1=0.2900
+    e 20  top1=0.3000
+    → fitness=0.3000  Δ=-17.75pp  params=37,264  23s
+
+  [4] D8_Kin25_Khh1_Ki7_N4096
+    genes: D=8  K_in=25  K_hh=1  K_iter=7  N=4096
+    e  1  top1=0.0350
+    e  2  top1=0.0950
+    e  3  top1=0.0900
+    e  4  top1=0.1200
+    e  5  top1=0.1000
+    e  6  top1=0.1175
+    e  7  top1=0.1375
+    e  8  top1=0.1275
+    e  9  top1=0.1400
+    e 10  top1=0.1700
+    e 11  top1=0.1725
+    e 12  top1=0.1900
+    e 13  top1=0.1800
+    e 14  top1=0.2275
+    e 15  top1=0.2550
+    e 16  top1=0.2550
+    e 17  top1=0.2600
+    e 18  top1=0.2650
+    e 19  top1=0.2675
+    e 20  top1=0.2775
+    → fitness=0.2775  Δ=-20.00pp  params=37,264  18s
+
+  [5] D8_Kin25_Khh6_Ki7_N1024
+    genes: D=8  K_in=25  K_hh=6  K_iter=7  N=1024
+    e  1  top1=0.0125
+    e  2  top1=0.0175
+    e  3  top1=0.0300
+    e  4  top1=0.0350
+    e  5  top1=0.0450
+    e  6  top1=0.0425
+    e  7  top1=0.0700
+    e  8  top1=0.0475
+    e  9  top1=0.0650
+    e 10  top1=0.0625
+    e 11  top1=0.0800
+    e 12  top1=0.1025
+    e 13  top1=0.1300
+    e 14  top1=0.1325
+    e 15  top1=0.1700
+    e 16  top1=0.1625
+    e 17  top1=0.1725
+    e 18  top1=0.1775
+    e 19  top1=0.1750
+    e 20  top1=0.1850
+    → fitness=0.1850  Δ=-29.25pp  params=9,616  13s
+
+  [6] D16_Kin15_Khh4_Ki5_N512
+    genes: D=16  K_in=15  K_hh=4  K_iter=5  N=512
+    e  1  top1=0.0325
+    e  2  top1=0.0725
+    e  3  top1=0.0575
+    e  4  top1=0.0900
+    e  5  top1=0.0975
+    e  6  top1=0.0975
+    e  7  top1=0.0850
+    e  8  top1=0.1225
+    e  9  top1=0.1250
+    e 10  top1=0.1350
+    e 11  top1=0.1325
+    e 12  top1=0.1450
+    e 13  top1=0.1575
+    e 14  top1=0.2050
+    e 15  top1=0.2025
+    e 16  top1=0.2100
+    e 17  top1=0.2125
+    e 18  top1=0.2150
+    e 19  top1=0.2250
+    e 20  top1=0.2300
+    → fitness=0.2300  Δ=-24.75pp  params=9,504  7s
+
+  [7] D16_Kin25_Khh2_Ki7_N512
+    genes: D=16  K_in=25  K_hh=2  K_iter=7  N=512
+    e  1  top1=0.0250
+    e  2  top1=0.0675
+    e  3  top1=0.0650
+    e  4  top1=0.0650
+    e  5  top1=0.0650
+    e  6  top1=0.0750
+    e  7  top1=0.0675
+    e  8  top1=0.1275
+    e  9  top1=0.0950
+    e 10  top1=0.1350
+    e 11  top1=0.1475
+    e 12  top1=0.1950
+    e 13  top1=0.1425
+    e 14  top1=0.2000
+    e 15  top1=0.1825
+    e 16  top1=0.2125
+    e 17  top1=0.2400
+    e 18  top1=0.2625
+    e 19  top1=0.2525
+    e 20  top1=0.2550
+    → fitness=0.2625  Δ=-21.50pp  params=9,504  7s
+
+  Gen 0 ranking:
+  ★ [1] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  Δ=-8.25pp
+    [2] D16_Kin25_Khh2_Ki5_N2048  fitness=0.3150  Δ=-16.25pp
+    [3] D8_Kin15_Khh2_Ki7_N4096  fitness=0.3000  Δ=-17.75pp
+    [4] D8_Kin25_Khh1_Ki7_N4096  fitness=0.2775  Δ=-20.00pp
+    [5] D16_Kin25_Khh2_Ki7_N512  fitness=0.2625  Δ=-21.50pp
+    [6] D16_Kin15_Khh4_Ki5_N512  fitness=0.2300  Δ=-24.75pp
+    [7] D4_Kin25_Khh1_Ki5_N1024  fitness=0.1975  Δ=-28.00pp
+    [8] D8_Kin25_Khh6_Ki7_N1024  fitness=0.1850  Δ=-29.25pp
+
+  Bred generation 1: 8 individuals
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generation 1  (8 individuals)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [0] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  (cached)
+  [1] D16_Kin25_Khh2_Ki5_N2048  fitness=0.3150  (cached)
+  [2] D8_Kin15_Khh2_Ki7_N4096  fitness=0.3000  (cached)
+  [3] D8_Kin25_Khh1_Ki7_N4096  fitness=0.2775  (cached)
+
+  [4] D8_Kin15_Khh2_Ki5_N2048
+    genes: D=8  K_in=15  K_hh=2  K_iter=5  N=2048
+    e  1  top1=0.0475
+    e  2  top1=0.0875
+    e  3  top1=0.1425
+    e  4  top1=0.1650
+    e  5  top1=0.1925
+    e  6  top1=0.2050
+    e  7  top1=0.2125
+    e  8  top1=0.2275
+    e  9  top1=0.2650
+    e 10  top1=0.2750
+    e 11  top1=0.3150
+    e 12  top1=0.3025
+    e 13  top1=0.3325
+    e 14  top1=0.3425
+    e 15  top1=0.3425
+    e 16  top1=0.3625
+    e 17  top1=0.3875
+    e 18  top1=0.4075
+    e 19  top1=0.3925
+    e 20  top1=0.3900
+    → fitness=0.4075  Δ=-7.00pp  params=18,832  9s
+
+  [5] D8_Kin25_Khh1_Ki7_N2048
+    genes: D=8  K_in=25  K_hh=1  K_iter=7  N=2048
+    e  1  top1=0.0450
+    e  2  top1=0.0775
+    e  3  top1=0.0800
+    e  4  top1=0.1075
+    e  5  top1=0.0975
+    e  6  top1=0.1075
+    e  7  top1=0.1125
+    e  8  top1=0.1375
+    e  9  top1=0.1450
+    e 10  top1=0.1650
+    e 11  top1=0.1775
+    e 12  top1=0.1700
+    e 13  top1=0.1975
+    e 14  top1=0.2175
+    e 15  top1=0.2525
+    e 16  top1=0.2425
+    e 17  top1=0.2575
+    e 18  top1=0.2600
+    e 19  top1=0.2525
+    e 20  top1=0.2550
+    → fitness=0.2600  Δ=-21.75pp  params=18,832  10s
+
+  [6] D16_Kin15_Khh2_Ki7_N2048
+    genes: D=16  K_in=15  K_hh=2  K_iter=7  N=2048
+    e  1  top1=0.0400
+    e  2  top1=0.0600
+    e  3  top1=0.1275
+    e  4  top1=0.1700
+    e  5  top1=0.2000
+    e  6  top1=0.2000
+    e  7  top1=0.1750
+    e  8  top1=0.1500
+    e  9  top1=0.2250
+    e 10  top1=0.2875
+    e 11  top1=0.2425
+    e 12  top1=0.2650
+    e 13  top1=0.2800
+    e 14  top1=0.2775
+    e 15  top1=0.3250
+    e 16  top1=0.3425
+    e 17  top1=0.4000
+    e 18  top1=0.4000
+    e 19  top1=0.4150
+    e 20  top1=0.4125
+    → fitness=0.4150  Δ=-6.25pp  params=35,616  24s
+
+  [7] D8_Kin15_Khh4_Ki7_N4096
+    genes: D=8  K_in=15  K_hh=4  K_iter=7  N=4096
+    e  1  top1=0.0400
+    e  2  top1=0.0425
+    e  3  top1=0.0675
+    e  4  top1=0.0750
+    e  5  top1=0.1025
+    e  6  top1=0.0975
+    e  7  top1=0.1350
+    e  8  top1=0.1225
+    e  9  top1=0.1375
+    e 10  top1=0.1875
+    e 11  top1=0.1500
+    e 12  top1=0.1900
+    e 13  top1=0.1950
+    e 14  top1=0.2475
+    e 15  top1=0.2500
+    e 16  top1=0.2850
+    e 17  top1=0.2850
+    e 18  top1=0.3250
+    e 19  top1=0.3275
+    e 20  top1=0.3350
+    → fitness=0.3350  Δ=-14.25pp  params=37,264  38s
+
+  Gen 1 ranking:
+  ★ [1] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [2] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  Δ=-7.00pp
+    [3] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  Δ=-8.25pp
+    [4] D8_Kin15_Khh4_Ki7_N4096  fitness=0.3350  Δ=-14.25pp
+    [5] D16_Kin25_Khh2_Ki5_N2048  fitness=0.3150  Δ=-16.25pp
+    [6] D8_Kin15_Khh2_Ki7_N4096  fitness=0.3000  Δ=-17.75pp
+    [7] D8_Kin25_Khh1_Ki7_N4096  fitness=0.2775  Δ=-20.00pp
+    [8] D8_Kin25_Khh1_Ki7_N2048  fitness=0.2600  Δ=-21.75pp
+
+  Bred generation 2: 8 individuals
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generation 2  (8 individuals)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [0] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  (cached)
+  [1] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  (cached)
+  [2] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  (cached)
+  [3] D8_Kin15_Khh4_Ki7_N4096  fitness=0.3350  (cached)
+  [4] D16_Kin25_Khh2_Ki5_N2048  fitness=0.3150  (cached)
+
+  [5] D8_Kin25_Khh4_Ki7_N2048
+    genes: D=8  K_in=25  K_hh=4  K_iter=7  N=2048
+    e  1  top1=0.0325
+    e  2  top1=0.0525
+    e  3  top1=0.0600
+    e  4  top1=0.0900
+    e  5  top1=0.0975
+    e  6  top1=0.0750
+    e  7  top1=0.1200
+    e  8  top1=0.1500
+    e  9  top1=0.1375
+    e 10  top1=0.1650
+    e 11  top1=0.2275
+    e 12  top1=0.1900
+    e 13  top1=0.2775
+    e 14  top1=0.2550
+    e 15  top1=0.3150
+    e 16  top1=0.3075
+    e 17  top1=0.3600
+    e 18  top1=0.3350
+    e 19  top1=0.3475
+    e 20  top1=0.3550
+    → fitness=0.3600  Δ=-11.75pp  params=18,832  19s
+  [6] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  (cached)
+
+  [7] D8_Kin25_Khh4_Ki7_N4096
+    genes: D=8  K_in=25  K_hh=4  K_iter=7  N=4096
+    e  1  top1=0.0475
+    e  2  top1=0.0350
+    e  3  top1=0.0775
+    e  4  top1=0.0825
+    e  5  top1=0.0975
+    e  6  top1=0.0925
+    e  7  top1=0.1325
+    e  8  top1=0.1250
+    e  9  top1=0.1350
+    e 10  top1=0.1600
+    e 11  top1=0.1650
+    e 12  top1=0.1550
+    e 13  top1=0.1950
+    e 14  top1=0.2225
+    e 15  top1=0.2375
+    e 16  top1=0.2400
+    e 17  top1=0.2875
+    e 18  top1=0.2850
+    e 19  top1=0.2925
+    e 20  top1=0.3000
+    → fitness=0.3000  Δ=-17.75pp  params=37,264  38s
+
+  Gen 2 ranking:
+  ★ [1] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [2] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [3] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  Δ=-7.00pp
+    [4] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  Δ=-8.25pp
+    [5] D8_Kin25_Khh4_Ki7_N2048  fitness=0.3600  Δ=-11.75pp
+    [6] D8_Kin15_Khh4_Ki7_N4096  fitness=0.3350  Δ=-14.25pp
+    [7] D16_Kin25_Khh2_Ki5_N2048  fitness=0.3150  Δ=-16.25pp
+    [8] D8_Kin25_Khh4_Ki7_N4096  fitness=0.3000  Δ=-17.75pp
+
+  Bred generation 3: 8 individuals
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generation 3  (8 individuals)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [0] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  (cached)
+  [1] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  (cached)
+  [2] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  (cached)
+  [3] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  (cached)
+
+  [4] D4_Kin15_Khh2_Ki10_N1024
+    genes: D=4  K_in=15  K_hh=2  K_iter=10  N=1024
+    e  1  top1=0.0150
+    e  2  top1=0.0125
+    e  3  top1=0.0275
+    e  4  top1=0.0325
+    e  5  top1=0.0150
+    e  6  top1=0.0275
+    e  7  top1=0.0150
+    e  8  top1=0.0275
+    e  9  top1=0.0325
+    e 10  top1=0.0325
+    e 11  top1=0.0225
+    e 12  top1=0.0400
+    e 13  top1=0.0400
+    e 14  top1=0.0300
+    e 15  top1=0.0475
+    e 16  top1=0.0300
+    e 17  top1=0.0475
+    e 18  top1=0.0350
+    e 19  top1=0.0225
+    e 20  top1=0.0250
+    → fitness=0.0475  Δ=-43.00pp  params=5,320  7s
+  [5] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  (cached)
+  [6] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  (cached)
+
+  [7] D16_Kin15_Khh2_Ki7_N4096
+    genes: D=16  K_in=15  K_hh=2  K_iter=7  N=4096
+    e  1  top1=0.0425
+    e  2  top1=0.0700
+    e  3  top1=0.1000
+    e  4  top1=0.1075
+    e  5  top1=0.1575
+    e  6  top1=0.0975
+    e  7  top1=0.1375
+    e  8  top1=0.1925
+    e  9  top1=0.1650
+    e 10  top1=0.2200
+    e 11  top1=0.2100
+    e 12  top1=0.2625
+    e 13  top1=0.2025
+    e 14  top1=0.2350
+    e 15  top1=0.2625
+    e 16  top1=0.3100
+    e 17  top1=0.3475
+    e 18  top1=0.3550
+    e 19  top1=0.3675
+    e 20  top1=0.3625
+    → fitness=0.3675  Δ=-11.00pp  params=70,432  49s
+
+  Gen 3 ranking:
+  ★ [1] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [2] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [3] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp
+    [4] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  Δ=-7.00pp
+    [5] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  Δ=-7.00pp
+    [6] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  Δ=-8.25pp
+    [7] D16_Kin15_Khh2_Ki7_N4096  fitness=0.3675  Δ=-11.00pp
+    [8] D4_Kin15_Khh2_Ki10_N1024  fitness=0.0475  Δ=-43.00pp
+
+======================================================================
+STEP 931 SUMMARY — GA Hyperparam Search (ESC-50)
+======================================================================
+  Linear baseline: 0.4775
+  Total individuals evaluated: 16
+
+  Top-5 configs:
+  [1] D16_Kin15_Khh2_Ki7_N2048  fitness=0.4150  Δ=-6.25pp  gen=1  marginal
+  [2] D8_Kin15_Khh2_Ki5_N2048  fitness=0.4075  Δ=-7.00pp  gen=1  marginal
+  [3] D8_Kin25_Khh2_Ki5_N2048  fitness=0.3950  Δ=-8.25pp  gen=0  audio gap persists
+  [4] D16_Kin15_Khh2_Ki7_N4096  fitness=0.3675  Δ=-11.00pp  gen=3  audio gap persists
+  [5] D8_Kin25_Khh4_Ki7_N2048  fitness=0.3600  Δ=-11.75pp  gen=2  audio gap persists
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step931_ga_hyperparam_esc50_seed42__mini_cpu.json

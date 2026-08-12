@@ -1,0 +1,72 @@
+cnn_step023 GA2 Mixup α-sweep T1 | 75ep 50%data | seed=42
+GA#2: C=(32,64,384) k=3 exp=2 crelu  params=481,514  MACs=98.5M
+Baseline (step021 α=0.2): 0.7361  Advance>=+0.5pp: 0.7411
+Testing α ∈ [0.3, 0.4, 0.5]
+
+──────────────────────────────────────────────────
+alpha=0.3
+  ep  5  val=0.4487  best=0.4487  lr=2.97e-04
+  ep 10  val=0.5964  best=0.5964  lr=2.87e-04
+  ep 15  val=0.6023  best=0.6023  lr=2.72e-04
+  ep 20  val=0.6448  best=0.6448  lr=2.52e-04
+  ep 25  val=0.6627  best=0.6627  lr=2.28e-04
+  ep 30  val=0.7006  best=0.7006  lr=2.00e-04
+  ep 35  val=0.6813  best=0.7006  lr=1.70e-04
+  ep 40  val=0.6968  best=0.7006  lr=1.40e-04
+  ep 45  val=0.7215  best=0.7215  lr=1.10e-04
+  ep 50  val=0.7124  best=0.7215  lr=8.25e-05
+  ep 55  val=0.7353  best=0.7353  lr=5.80e-05
+  ep 60  val=0.7338  best=0.7353  lr=3.77e-05
+  ep 65  val=0.7394  best=0.7394  lr=2.25e-05
+  ep 70  val=0.7363  best=0.7394  lr=1.32e-05
+  ep 75  val=0.7424  best=0.7424  lr=1.00e-05
+  -> alpha=0.3  best=0.7424 @ep75  Δ_step021=+0.0063  ADVANCE  (868s)
+
+──────────────────────────────────────────────────
+alpha=0.4
+  ep  5  val=0.4456  best=0.4456  lr=2.97e-04
+  ep 10  val=0.5949  best=0.5949  lr=2.87e-04
+  ep 15  val=0.5924  best=0.5949  lr=2.72e-04
+  ep 20  val=0.6627  best=0.6627  lr=2.52e-04
+  ep 25  val=0.6532  best=0.6627  lr=2.28e-04
+  ep 30  val=0.7052  best=0.7052  lr=2.00e-04
+  ep 35  val=0.6744  best=0.7052  lr=1.70e-04
+  ep 40  val=0.6971  best=0.7052  lr=1.40e-04
+  ep 45  val=0.7187  best=0.7187  lr=1.10e-04
+  ep 50  val=0.6943  best=0.7187  lr=8.25e-05
+  ep 55  val=0.7304  best=0.7304  lr=5.80e-05
+  ep 60  val=0.7292  best=0.7304  lr=3.77e-05
+  ep 65  val=0.7332  best=0.7332  lr=2.25e-05
+  ep 70  val=0.7302  best=0.7332  lr=1.32e-05
+  ep 75  val=0.7358  best=0.7358  lr=1.00e-05
+  -> alpha=0.4  best=0.7358 @ep75  Δ_step021=-0.0003  NO-GAIN  (958s)
+
+──────────────────────────────────────────────────
+alpha=0.5
+  ep  5  val=0.4194  best=0.4194  lr=2.97e-04
+  ep 10  val=0.5748  best=0.5748  lr=2.87e-04
+  ep 15  val=0.5753  best=0.5753  lr=2.72e-04
+  ep 20  val=0.6397  best=0.6397  lr=2.52e-04
+  ep 25  val=0.6403  best=0.6403  lr=2.28e-04
+  ep 30  val=0.6757  best=0.6757  lr=2.00e-04
+  ep 35  val=0.6744  best=0.6757  lr=1.70e-04
+  ep 40  val=0.6874  best=0.6874  lr=1.40e-04
+  ep 45  val=0.7136  best=0.7136  lr=1.10e-04
+  ep 50  val=0.6986  best=0.7136  lr=8.25e-05
+  ep 55  val=0.7282  best=0.7282  lr=5.80e-05
+  ep 60  val=0.7264  best=0.7282  lr=3.77e-05
+  ep 65  val=0.7345  best=0.7345  lr=2.25e-05
+  ep 70  val=0.7332  best=0.7345  lr=1.32e-05
+  ep 75  val=0.7335  best=0.7345  lr=1.00e-05
+  -> alpha=0.5  best=0.7345 @ep65  Δ_step021=-0.0016  NO-GAIN  (1078s)
+
+============================================================
+cnn_step023 SUMMARY — GA2 Mixup α-sweep T1
+============================================================
+  step021 baseline (α=0.2): 0.7361
+  α=0.3: 0.7424 @ep75  Δ=+0.0063  ADVANCE
+  α=0.4: 0.7358 @ep75  Δ=-0.0003  NO-GAIN
+  α=0.5: 0.7345 @ep65  Δ=-0.0016  NO-GAIN
+  Best α: 0.3 → 0.7424
+  -> ADVANCE to T2 multi-seed
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step023_ga2_mixup_alpha_sweep_t1__mini_mps.json

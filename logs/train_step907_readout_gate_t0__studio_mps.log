@@ -1,0 +1,212 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step907 — Input-Conditioned Readout Gate T0 (20ep, 50% data)
+  device=mps  epochs=20  seed=42
+  N=2048/D=16/K_hh=2/K_iter=5
+  Ref context (step898 Ref_dw T0): 0.9396
+  Gate location: AT READOUT (after K_iter steps, before logits)
+  Train=4734  Val=3925
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref_dw: spec=ref  params=34,976
+  e  1  loss=2.4822  top1=0.7748  lr=2.36e-03
+  e  1  loss=2.4822  task=2.4822  safety=0.0000  top1=0.7748  lr=2.36e-03
+  e  2  loss=0.4545  top1=0.8634  lr=2.36e-03
+  e  3  loss=0.2914  top1=0.8823  lr=2.36e-03
+  e  4  loss=0.2204  top1=0.8945  lr=2.36e-03
+  e  5  loss=0.1843  top1=0.9101  lr=2.36e-03
+  e  6  loss=0.1448  top1=0.9080  lr=2.36e-03
+  e  7  loss=0.1295  top1=0.9139  lr=2.36e-03
+  e  8  loss=0.1088  top1=0.9205  lr=2.36e-03
+  e  9  loss=0.0929  top1=0.9266  lr=2.36e-03
+  e 10  loss=0.0829  top1=0.9307  lr=2.36e-03
+  e 10  loss=0.0829  task=0.0829  safety=0.0000  top1=0.9307  lr=2.36e-03
+  e 11  loss=0.0761  top1=0.9304  lr=2.36e-03
+  e 12  loss=0.0682  top1=0.9358  lr=2.36e-03
+  e 13  loss=0.0601  top1=0.9299  lr=2.36e-03
+  e 14  loss=0.0598  top1=0.9332  lr=2.36e-03
+  e 15  loss=0.0514  top1=0.9320  lr=2.36e-03
+  e 16  loss=0.0465  top1=0.9389  lr=2.36e-03
+  e 17  loss=0.0450  top1=0.9361  lr=2.36e-03
+  e 18  loss=0.0432  top1=0.9389  lr=2.36e-03
+  e 19  loss=0.0376  top1=0.9391  lr=2.36e-03
+  e 20  loss=0.0352  top1=0.9404  lr=2.36e-03
+  e 20  loss=0.0352  task=0.0352  safety=0.0000  top1=0.9404  lr=2.36e-03
+  -> best=0.9404 @ep20  Δ=+0.00pp  gate_H=n/a  33s
+────────────────────────────────────────────────────────────
+A_ro_tau1: spec=ro_zscore_1.0  params=34,976
+  e  1  loss=1.8545  top1=0.7597  lr=2.36e-03  gH=0.623
+  e  1  loss=1.8545  task=1.8545  safety=0.0000  top1=0.7597  lr=2.36e-03
+  e  2  loss=0.5325  top1=0.8553  lr=2.36e-03  gH=0.623
+  e  3  loss=0.3382  top1=0.8825  lr=2.36e-03  gH=0.623
+  e  4  loss=0.2636  top1=0.8953  lr=2.36e-03  gH=0.623
+  e  5  loss=0.2106  top1=0.9093  lr=2.36e-03  gH=0.623
+  e  6  loss=0.1755  top1=0.9045  lr=2.36e-03  gH=0.623
+  e  7  loss=0.1723  top1=0.9197  lr=2.36e-03  gH=0.623
+  e  8  loss=0.1393  top1=0.9287  lr=2.36e-03  gH=0.623
+  e  9  loss=0.1169  top1=0.9299  lr=2.36e-03  gH=0.623
+  e 10  loss=0.1086  top1=0.9332  lr=2.36e-03  gH=0.623
+  e 10  loss=0.1086  task=0.1086  safety=0.0000  top1=0.9332  lr=2.36e-03
+  e 11  loss=0.1004  top1=0.9320  lr=2.36e-03  gH=0.623
+  e 12  loss=0.0902  top1=0.9330  lr=2.36e-03  gH=0.623
+  e 13  loss=0.0799  top1=0.9399  lr=2.36e-03  gH=0.623
+  e 14  loss=0.0759  top1=0.9394  lr=2.36e-03  gH=0.623
+  e 15  loss=0.0724  top1=0.9383  lr=2.36e-03  gH=0.623
+  e 16  loss=0.0659  top1=0.9417  lr=2.36e-03  gH=0.623
+  e 17  loss=0.0623  top1=0.9399  lr=2.36e-03  gH=0.623
+  e 18  loss=0.0594  top1=0.9439  lr=2.36e-03  gH=0.623
+  e 19  loss=0.0547  top1=0.9429  lr=2.36e-03  gH=0.623
+  e 20  loss=0.0515  top1=0.9411  lr=2.36e-03  gH=0.623
+  e 20  loss=0.0515  task=0.0515  safety=0.0000  top1=0.9411  lr=2.36e-03
+  -> best=0.9439 @ep18  Δ=+0.36pp  gate_H=0.623  34s
+────────────────────────────────────────────────────────────
+B_ro_tau3: spec=ro_zscore_3.0  params=34,976
+  e  1  loss=2.1336  top1=0.7213  lr=2.36e-03  gH=0.419
+  e  1  loss=2.1336  task=2.1336  safety=0.0000  top1=0.7213  lr=2.36e-03
+  e  2  loss=0.5872  top1=0.8339  lr=2.36e-03  gH=0.419
+  e  3  loss=0.3587  top1=0.8632  lr=2.36e-03  gH=0.419
+  e  4  loss=0.2599  top1=0.8795  lr=2.36e-03  gH=0.419
+  e  5  loss=0.2033  top1=0.8902  lr=2.36e-03  gH=0.419
+  e  6  loss=0.1704  top1=0.8948  lr=2.36e-03  gH=0.419
+  e  7  loss=0.1507  top1=0.9027  lr=2.36e-03  gH=0.419
+  e  8  loss=0.1249  top1=0.9052  lr=2.36e-03  gH=0.419
+  e  9  loss=0.1058  top1=0.9124  lr=2.36e-03  gH=0.419
+  e 10  loss=0.0958  top1=0.9106  lr=2.36e-03  gH=0.419
+  e 10  loss=0.0958  task=0.0958  safety=0.0000  top1=0.9106  lr=2.36e-03
+  e 11  loss=0.0856  top1=0.9139  lr=2.36e-03  gH=0.419
+  e 12  loss=0.0750  top1=0.9200  lr=2.36e-03  gH=0.419
+  e 13  loss=0.0676  top1=0.9243  lr=2.36e-03  gH=0.419
+  e 14  loss=0.0613  top1=0.9228  lr=2.36e-03  gH=0.419
+  e 15  loss=0.0581  top1=0.9251  lr=2.36e-03  gH=0.419
+  e 16  loss=0.0537  top1=0.9261  lr=2.36e-03  gH=0.419
+  e 17  loss=0.0485  top1=0.9279  lr=2.36e-03  gH=0.419
+  e 18  loss=0.0460  top1=0.9261  lr=2.36e-03  gH=0.419
+  e 19  loss=0.0405  top1=0.9299  lr=2.36e-03  gH=0.419
+  e 20  loss=0.0380  top1=0.9266  lr=2.36e-03  gH=0.419
+  e 20  loss=0.0380  task=0.0380  safety=0.0000  top1=0.9266  lr=2.36e-03
+  -> best=0.9299 @ep19  Δ=-1.04pp  gate_H=0.419  33s
+────────────────────────────────────────────────────────────
+C_ro_tau_lrn: spec=ro_zscore_lrn  params=34,977
+  e  1  loss=1.8542  top1=0.7585  lr=2.36e-03  gH=0.623  tau=1.000
+  e  1  loss=1.8542  task=1.8542  safety=0.0000  top1=0.7585  lr=2.36e-03
+  e  2  loss=0.5322  top1=0.8525  lr=2.36e-03  gH=0.623  tau=1.000
+  e  3  loss=0.3387  top1=0.8825  lr=2.36e-03  gH=0.623  tau=1.000
+  e  4  loss=0.2640  top1=0.8950  lr=2.36e-03  gH=0.623  tau=1.000
+  e  5  loss=0.2122  top1=0.9068  lr=2.36e-03  gH=0.623  tau=1.000
+  e  6  loss=0.1767  top1=0.9052  lr=2.36e-03  gH=0.623  tau=1.000
+  e  7  loss=0.1713  top1=0.9177  lr=2.36e-03  gH=0.623  tau=1.000
+  e  8  loss=0.1393  top1=0.9287  lr=2.36e-03  gH=0.623  tau=1.000
+  e  9  loss=0.1175  top1=0.9317  lr=2.36e-03  gH=0.623  tau=1.000
+  e 10  loss=0.1094  top1=0.9335  lr=2.36e-03  gH=0.623  tau=1.000
+  e 10  loss=0.1094  task=0.1094  safety=0.0000  top1=0.9335  lr=2.36e-03
+  e 11  loss=0.1011  top1=0.9350  lr=2.36e-03  gH=0.623  tau=1.000
+  e 12  loss=0.0903  top1=0.9338  lr=2.36e-03  gH=0.623  tau=1.000
+  e 13  loss=0.0804  top1=0.9381  lr=2.36e-03  gH=0.623  tau=1.000
+  e 14  loss=0.0762  top1=0.9383  lr=2.36e-03  gH=0.623  tau=1.000
+  e 15  loss=0.0729  top1=0.9383  lr=2.36e-03  gH=0.623  tau=1.000
+  e 16  loss=0.0659  top1=0.9411  lr=2.36e-03  gH=0.623  tau=1.000
+  e 17  loss=0.0622  top1=0.9432  lr=2.36e-03  gH=0.623  tau=1.000
+  e 18  loss=0.0590  top1=0.9457  lr=2.36e-03  gH=0.623  tau=1.000
+  e 19  loss=0.0543  top1=0.9447  lr=2.36e-03  gH=0.623  tau=1.000
+  e 20  loss=0.0516  top1=0.9417  lr=2.36e-03  gH=0.623  tau=1.000
+  e 20  loss=0.0516  task=0.0516  safety=0.0000  top1=0.9417  lr=2.36e-03
+  -> best=0.9457 @ep18  Δ=+0.54pp  gate_H=0.623  34s
+────────────────────────────────────────────────────────────
+D_ro_topk25: spec=ro_topk_0.25  params=34,976
+  e  1  loss=2.4744  top1=0.6823  lr=2.36e-03  gH=0.000
+  e  1  loss=2.4744  task=2.4744  safety=0.0000  top1=0.6823  lr=2.36e-03
+  e  2  loss=0.7402  top1=0.7952  lr=2.36e-03  gH=0.000
+  e  3  loss=0.4503  top1=0.8255  lr=2.36e-03  gH=0.000
+  e  4  loss=0.3190  top1=0.8438  lr=2.36e-03  gH=0.000
+  e  5  loss=0.2472  top1=0.8578  lr=2.36e-03  gH=0.000
+  e  6  loss=0.2035  top1=0.8662  lr=2.36e-03  gH=0.000
+  e  7  loss=0.1708  top1=0.8729  lr=2.36e-03  gH=0.000
+  e  8  loss=0.1456  top1=0.8805  lr=2.36e-03  gH=0.000
+  e  9  loss=0.1239  top1=0.8838  lr=2.36e-03  gH=0.000
+  e 10  loss=0.1091  top1=0.8854  lr=2.36e-03  gH=0.000
+  e 10  loss=0.1091  task=0.1091  safety=0.0000  top1=0.8854  lr=2.36e-03
+  e 11  loss=0.1001  top1=0.8879  lr=2.36e-03  gH=0.000
+  e 12  loss=0.0884  top1=0.8932  lr=2.36e-03  gH=0.000
+  e 13  loss=0.0775  top1=0.8938  lr=2.36e-03  gH=0.000
+  e 14  loss=0.0708  top1=0.8973  lr=2.36e-03  gH=0.000
+  e 15  loss=0.0667  top1=0.8968  lr=2.36e-03  gH=0.000
+  e 16  loss=0.0592  top1=0.8983  lr=2.36e-03  gH=0.000
+  e 17  loss=0.0546  top1=0.9027  lr=2.36e-03  gH=0.000
+  e 18  loss=0.0505  top1=0.9017  lr=2.36e-03  gH=0.000
+  e 19  loss=0.0464  top1=0.9055  lr=2.36e-03  gH=0.000
+  e 20  loss=0.0441  top1=0.9045  lr=2.36e-03  gH=0.000
+  e 20  loss=0.0441  task=0.0441  safety=0.0000  top1=0.9045  lr=2.36e-03
+  -> best=0.9055 @ep19  Δ=-3.49pp  gate_H=0.000  34s
+────────────────────────────────────────────────────────────
+E_ro_geo: spec=ro_geo  params=34,976
+  e  1  loss=2.0266  top1=0.7952  lr=2.36e-03  gH=0.608
+  e  1  loss=2.0266  task=2.0266  safety=0.0000  top1=0.7952  lr=2.36e-03
+  e  2  loss=0.4677  top1=0.8775  lr=2.36e-03  gH=0.608
+  e  3  loss=0.3095  top1=0.8953  lr=2.36e-03  gH=0.608
+  e  4  loss=0.2427  top1=0.9090  lr=2.36e-03  gH=0.608
+  e  5  loss=0.2023  top1=0.9187  lr=2.36e-03  gH=0.608
+  e  6  loss=0.1648  top1=0.9238  lr=2.36e-03  gH=0.608
+  e  7  loss=0.1518  top1=0.9284  lr=2.36e-03  gH=0.608
+  e  8  loss=0.1319  top1=0.9294  lr=2.36e-03  gH=0.608
+  e  9  loss=0.1158  top1=0.9355  lr=2.36e-03  gH=0.608
+  e 10  loss=0.1063  top1=0.9378  lr=2.36e-03  gH=0.608
+  e 10  loss=0.1063  task=0.1063  safety=0.0000  top1=0.9378  lr=2.36e-03
+  e 11  loss=0.1007  top1=0.9383  lr=2.36e-03  gH=0.608
+  e 12  loss=0.0881  top1=0.9432  lr=2.36e-03  gH=0.608
+  e 13  loss=0.0787  top1=0.9389  lr=2.36e-03  gH=0.608
+  e 14  loss=0.0757  top1=0.9437  lr=2.36e-03  gH=0.608
+  e 15  loss=0.0680  top1=0.9422  lr=2.36e-03  gH=0.608
+  e 16  loss=0.0618  top1=0.9490  lr=2.36e-03  gH=0.608
+  e 17  loss=0.0603  top1=0.9475  lr=2.36e-03  gH=0.608
+  e 18  loss=0.0583  top1=0.9480  lr=2.36e-03  gH=0.608
+  e 19  loss=0.0519  top1=0.9447  lr=2.36e-03  gH=0.608
+  e 20  loss=0.0505  top1=0.9516  lr=2.36e-03  gH=0.608
+  e 20  loss=0.0505  task=0.0505  safety=0.0000  top1=0.9516  lr=2.36e-03
+  -> best=0.9516 @ep20  Δ=+1.12pp  gate_H=0.608  34s
+────────────────────────────────────────────────────────────
+F_ro_norm_gate: spec=ro_norm  params=34,976
+  e  1  loss=1.5935  top1=0.8199  lr=2.36e-03  gH=0.467
+  e  1  loss=1.5935  task=1.5935  safety=0.0000  top1=0.8199  lr=2.36e-03
+  e  2  loss=0.3547  top1=0.8792  lr=2.36e-03  gH=0.466
+  e  3  loss=0.2140  top1=0.8961  lr=2.36e-03  gH=0.465
+  e  4  loss=0.1574  top1=0.9019  lr=2.36e-03  gH=0.465
+  e  5  loss=0.1168  top1=0.9090  lr=2.36e-03  gH=0.464
+  e  6  loss=0.0946  top1=0.9060  lr=2.36e-03  gH=0.464
+  e  7  loss=0.0833  top1=0.9139  lr=2.36e-03  gH=0.463
+  e  8  loss=0.0707  top1=0.9200  lr=2.36e-03  gH=0.463
+  e  9  loss=0.0560  top1=0.9182  lr=2.36e-03  gH=0.463
+  e 10  loss=0.0483  top1=0.9238  lr=2.36e-03  gH=0.463
+  e 10  loss=0.0483  task=0.0483  safety=0.0000  top1=0.9238  lr=2.36e-03
+  e 11  loss=0.0400  top1=0.9251  lr=2.36e-03  gH=0.463
+  e 12  loss=0.0358  top1=0.9297  lr=2.36e-03  gH=0.463
+  e 13  loss=0.0311  top1=0.9231  lr=2.36e-03  gH=0.463
+  e 14  loss=0.0292  top1=0.9294  lr=2.36e-03  gH=0.463
+  e 15  loss=0.0263  top1=0.9271  lr=2.36e-03  gH=0.463
+  e 16  loss=0.0245  top1=0.9302  lr=2.36e-03  gH=0.463
+  e 17  loss=0.0231  top1=0.9292  lr=2.36e-03  gH=0.463
+  e 18  loss=0.0217  top1=0.9325  lr=2.36e-03  gH=0.463
+  e 19  loss=0.0196  top1=0.9304  lr=2.36e-03  gH=0.463
+  e 20  loss=0.0191  top1=0.9330  lr=2.36e-03  gH=0.463
+  e 20  loss=0.0191  task=0.0191  safety=0.0000  top1=0.9330  lr=2.36e-03
+  -> best=0.9330 @ep20  Δ=-0.74pp  gate_H=0.464  35s
+
+======================================================================
+STEP 907 SUMMARY — Input-Conditioned Readout Gate T0
+======================================================================
+  config         spec                   params    best   Δ_vs_Ref     gH  verdict
+  Ref_dw         ref                    34,976  0.9404    +0.00pp    n/a  (baseline)
+  A_ro_tau1      ro_zscore_1.0          34,976  0.9439    +0.36pp  0.623  NEUTRAL
+  B_ro_tau3      ro_zscore_3.0          34,976  0.9299    -1.04pp  0.419  MARGINAL
+  C_ro_tau_lrn   ro_zscore_lrn          34,977  0.9457    +0.54pp  0.623  ADVANCE→T1
+  D_ro_topk25    ro_topk_0.25           34,976  0.9055    -3.49pp  0.000  KILL
+  E_ro_geo       ro_geo                 34,976  0.9516    +1.12pp  0.608  ADVANCE→T1
+  F_ro_norm_gate ro_norm                34,976  0.9330    -0.74pp  0.464  MARGINAL
+
+  Ref T0 context (step898/Ref_dw): 0.9396
+  ADVANCE: ≥+0.5pp → T1 (step910, 75ep/50%).
+  CLOSE: all < −0.5pp → input-conditioned gating direction CLOSED.
+    Paper note: 'SGNNET requires all-node participation in MP.'
+
+-> /Users/admin/ml/dhiraj/qwen2_omni/testing/results/train_step907_readout_gate_t0_seed42__studio_mps.json

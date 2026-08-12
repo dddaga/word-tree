@@ -1,0 +1,40 @@
+
+======================================================================
+step995 — ResNet-18 backbone T0 (20ep, 50% data, N=2048)
+  device=mps  seed=42  batch=64
+  N=2048 D=16 K_in=25 N_IN=25088 (same as VGG16)
+  Advance: T0 best >= 0.85 → backbone-agnostic CONFIRMED
+  Null: T0 best < 0.70 → VGG16 feature-specific
+======================================================================
+
+params=34,976
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+  e  1  loss=22.9474  top1=0.0803  lr=2.36e-03
+  e  1  loss=22.9474  task=22.9474  safety=0.0000  top1=0.0803  lr=2.36e-03
+  e  2  loss=8.7489  top1=0.1228  lr=2.36e-03
+  e  3  loss=5.4327  top1=0.1470  lr=2.36e-03
+  e  4  loss=3.1858  top1=0.1511  lr=2.36e-03
+  e  5  loss=2.6178  top1=0.1697  lr=2.36e-03
+  e  6  loss=2.5391  top1=0.1832  lr=2.36e-03
+  e  7  loss=2.4742  top1=0.1834  lr=2.36e-03
+  e  8  loss=2.4064  top1=0.1975  lr=2.36e-03
+  e  9  loss=2.3592  top1=0.2087  lr=2.36e-03
+  e 10  loss=2.3005  top1=0.2466  lr=2.36e-03
+  e 10  loss=2.3005  task=2.3005  safety=0.0000  top1=0.2466  lr=2.36e-03
+  e 11  loss=2.2403  top1=0.2548  lr=2.36e-03
+  e 12  loss=2.2019  top1=0.2596  lr=2.36e-03
+  e 13  loss=2.1731  top1=0.2629  lr=2.36e-03
+  e 14  loss=2.1369  top1=0.2538  lr=2.36e-03
+  e 15  loss=2.0970  top1=0.2861  lr=2.36e-03
+  e 16  loss=2.0707  top1=0.2910  lr=2.36e-03
+  e 17  loss=2.0531  top1=0.2785  lr=2.36e-03
+  e 18  loss=2.0398  top1=0.3047  lr=2.36e-03
+  e 19  loss=2.0130  top1=0.3070  lr=2.36e-03
+  e 20  loss=1.9900  top1=0.3034  lr=2.36e-03
+  e 20  loss=1.9900  task=1.9900  safety=0.0000  top1=0.3034  lr=2.36e-03
+
+======================================================================
+RESULT: best=0.3070 @ep19  elapsed=54s
+VGG16 T0 ref ~91.57%
+  → VGG16-SPECIFIC: routing requires VGG feature geometry
+→ /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step995_resnet18_t0_seed42__mini_mps.json

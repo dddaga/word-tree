@@ -1,0 +1,15 @@
+{
+  "line": "cnn_compress",
+  "script": "scripts/cnn_compress/cnnc_step001_multibranch_t0.py",
+  "slots": [
+    "mini_mps"
+  ],
+  "args": [
+    "--tag",
+    "t0"
+  ],
+  "submitted_at": "2026-06-10 03:54:09",
+  "slot": "mini_mps",
+  "launched_at": "2026-06-10 04:02:17",
+  "finished_at": "2026-06-10 04:13:18"
+}

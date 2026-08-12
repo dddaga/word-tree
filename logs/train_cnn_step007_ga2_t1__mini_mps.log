@@ -1,0 +1,28 @@
+cnn_step007 GA_2 T1 | 561,642 params | 105.9M MACs | 75ep 50% data
+Config: {'channels': (32, 64, 384), 'dil_rates': (1,), 'expansion': 1, 'crelu_mask': (True, True, False)}
+Device: mps | Slot: mini_mps
+Advance threshold (vs Ref T2=77.35%): >= 76.85%
+
+  ep  5  val=0.1600  best=0.2140@ep4
+  ep 10  val=0.2408  best=0.3544@ep8
+  ep 15  val=0.3055  best=0.3544@ep8
+  ep 20  val=0.2461  best=0.3544@ep8
+  ep 25  val=0.2777  best=0.3544@ep8
+  ep 30  val=0.2805  best=0.3544@ep8
+  ep 35  val=0.2683  best=0.3544@ep8
+  ep 40  val=0.2512  best=0.3544@ep8
+  ep 45  val=0.2487  best=0.3544@ep8
+  ep 50  val=0.2454  best=0.3544@ep8
+  ep 55  val=0.2410  best=0.3544@ep8
+  ep 60  val=0.2469  best=0.3544@ep8
+  ep 65  val=0.2438  best=0.3544@ep8
+  ep 70  val=0.2466  best=0.3544@ep8
+  ep 75  val=0.2515  best=0.3544@ep8
+
+============================================================
+cnn_step007 GA_2 T1 RESULT
+  best=0.3544 @ep8  elapsed=1370s
+  MACs=105.9M  params=561,642
+  vs Ref T2=77.35%: -41.91pp  → BELOW_THRESHOLD
+============================================================
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step007_ga2_t1_seed42__mini_mps.json

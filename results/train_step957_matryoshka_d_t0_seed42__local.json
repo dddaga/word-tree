@@ -1,0 +1,24 @@
+{
+  "Ref": {
+    "spec": "None",
+    "n_params": 34976,
+    "best": 0.7738,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 7,
+    "pr_log": {
+      "final": 1.835
+    }
+  },
+  "A_uniform": {
+    "spec": "([2, 4, 8], 1.0)",
+    "n_params": 35116,
+    "best": 0.7676,
+    "best_ep": 1,
+    "delta_vs_ref": -0.0061,
+    "elapsed_s": 7,
+    "pr_log": {
+      "1": 2.222
+    }
+  }
+}

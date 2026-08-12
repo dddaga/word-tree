@@ -1,0 +1,5 @@
+CNN step037 wall-time bench — device=mps batch=32 repeats=200
+  GA5 (dw, low-MAC)      MACs=  141.3M  params= 523,482  wall= 13.855 ms/inf
+  Dense-ctrl (hi-MAC)    MACs=  200.8M  params= 562,506  wall= 20.898 ms/inf
+  MAC ratio dense/GA5 = 1.42x  →  wall ratio = 1.51x  →  MACs PREDICT latency
+Saved /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/bench_cnn_step037_walltime__mini_mps.json

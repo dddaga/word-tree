@@ -1,0 +1,41 @@
+{
+  "Ref": {
+    "mode": "l2_normalize",
+    "n_params": 34976,
+    "best": 0.7743,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 4,
+    "pr_log": {
+      "1": 1.8369
+    },
+    "pr_ep1": 1.8369,
+    "pr_final": 1.8369
+  },
+  "A_layernorm": {
+    "mode": "layernorm",
+    "n_params": 35008,
+    "best": 0.669,
+    "best_ep": 1,
+    "delta_vs_ref": -0.1052,
+    "elapsed_s": 3,
+    "pr_log": {
+      "1": 3.5731
+    },
+    "pr_ep1": 3.5731,
+    "pr_final": 3.5731
+  },
+  "B_rmsnorm": {
+    "mode": "rmsnorm",
+    "n_params": 34976,
+    "best": 0.4851,
+    "best_ep": 1,
+    "delta_vs_ref": -0.2892,
+    "elapsed_s": 3,
+    "pr_log": {
+      "1": 2.7167
+    },
+    "pr_ep1": 2.7167,
+    "pr_final": 2.7167
+  }
+}

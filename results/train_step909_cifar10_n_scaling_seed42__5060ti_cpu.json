@@ -1,0 +1,12 @@
+{
+  "Ref_linear": {
+    "kind": "linear",
+    "desc": "nn.Linear(25088\u219210) \u2014 250,890 params (upper bound)",
+    "n_params": 250890,
+    "best": 0.8615,
+    "best_ep": 70,
+    "delta_vs_linear_s882": -0.0009,
+    "delta_vs_sgnnet_s882": null,
+    "elapsed_s": 247
+  }
+}

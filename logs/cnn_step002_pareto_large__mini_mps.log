@@ -1,0 +1,64 @@
+
+========================================================================
+CNN step002 Pareto T0  device=mps  epochs=20  seed=42
+  train=4734  val=3925  batch=32
+========================================================================
+
+  config           params   MACs(M)  %VGG16conv desc
+  ----------------------------------------------------------------------
+  D_small_s       149,674      57.5      0.391%  small + side branch: 32/64/128
+  Ref             419,146     183.2      1.246%  ref: 64/128/256 k=7 (step001 Ref)
+  E_expand4       501,066     286.0      1.945%  ref channels + expansion=4
+  F_wide          825,482     559.8      3.808%  wide early: 128/256/256 k=7
+  ----------------------------------------------------------------------
+  VGG16-conv     14,700,000   14700.0    100.000%  (teacher reference)
+
+────────────────────────────────────────────────────────────
+D_small_s: small + side branch: 32/64/128
+  params=149,674  MACs=57.5M (1.02% params, 0.391% FLOPs)
+  ep  5  val=0.4117  best=0.4117
+  ep 10  val=0.5503  best=0.5503
+  ep 15  val=0.5916  best=0.5949
+  ep 20  val=0.6099  best=0.6099
+  -> best=0.6099 @ep20  Δ_vs_Ref=+0.00pp  345s
+────────────────────────────────────────────────────────────
+Ref: ref: 64/128/256 k=7 (step001 Ref)
+  params=419,146  MACs=183.2M (2.85% params, 1.246% FLOPs)
+  ep  5  val=0.5098  best=0.5098
+  ep 10  val=0.6359  best=0.6359
+  ep 15  val=0.6846  best=0.6846
+  ep 20  val=0.7034  best=0.7034
+  -> best=0.7034 @ep20  Δ_vs_Ref=+0.00pp  442s
+────────────────────────────────────────────────────────────
+E_expand4: ref channels + expansion=4
+  params=501,066  MACs=286.0M (3.41% params, 1.945% FLOPs)
+  ep  5  val=0.4803  best=0.4803
+  ep 10  val=0.6390  best=0.6397
+  ep 15  val=0.6749  best=0.6818
+  ep 20  val=0.7022  best=0.7022
+  -> best=0.7022 @ep20  Δ_vs_Ref=-0.13pp  462s
+────────────────────────────────────────────────────────────
+F_wide: wide early: 128/256/256 k=7
+  params=825,482  MACs=559.8M (5.62% params, 3.808% FLOPs)
+  ep  5  val=0.5215  best=0.5460
+  ep 10  val=0.6772  best=0.6772
+  ep 15  val=0.7096  best=0.7096
+  ep 20  val=0.7264  best=0.7274
+  -> best=0.7274 @ep19  Δ_vs_Ref=+2.39pp  671s
+
+========================================================================
+CNN STEP002 PARETO SUMMARY — T0 (20ep, 50% data)
+========================================================================
+  config           params   MACs(M)     acc    Δ_Ref  efficiency
+  ----------------------------------------------------------------------
+  D_small_s       149,674      57.5  0.6099   +0.00pp  acc/MACs=1.061 %/M
+  Ref             419,146     183.2  0.7034   +0.00pp  acc/MACs=0.384 %/M
+  E_expand4       501,066     286.0  0.7022   -0.13pp  acc/MACs=0.246 %/M
+  F_wide          825,482     559.8  0.7274   +2.39pp  acc/MACs=0.130 %/M
+
+  Pareto front (non-dominated):
+    ★ D_small_s      acc=0.6099  MACs=57.5M  params=149,674
+    ★ Ref            acc=0.7034  MACs=183.2M  params=419,146
+    ★ F_wide         acc=0.7274  MACs=559.8M  params=825,482
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step002_pareto_t0_seed42__mini_mps.json

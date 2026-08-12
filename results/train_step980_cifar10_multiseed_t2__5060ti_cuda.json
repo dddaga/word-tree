@@ -1,0 +1,23 @@
+[
+  {
+    "seed": 0,
+    "top1_best": 0.8043,
+    "best_epoch": 134,
+    "n_params": 34976,
+    "elapsed_s": 442
+  },
+  {
+    "seed": 1,
+    "top1_best": 0.8056,
+    "best_epoch": 132,
+    "n_params": 34976,
+    "elapsed_s": 439
+  },
+  {
+    "seed": 42,
+    "top1_best": 0.8073,
+    "best_epoch": 134,
+    "n_params": 34976,
+    "elapsed_s": 440
+  }
+]

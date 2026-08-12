@@ -1,0 +1,39 @@
+{
+  "Ref": {
+    "desc": "step001 reference (reused, not rerun)",
+    "n_params": 483050,
+    "macs_M": 224.0,
+    "best": 0.7557,
+    "delta_vs_ref": 0.0
+  },
+  "B_isomac": {
+    "desc": "B_multibranch widths x1.44 -> ~224M MACs (3 branches)",
+    "n_params": 963810,
+    "macs_M": 236.2,
+    "best": 0.7511,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0046,
+    "epoch_time_s": 6.2,
+    "acc_per_Mmac": 0.0032
+  },
+  "C_isomac": {
+    "desc": "B_isomac + CReLU first 2 convs + 1 extra conv/branch",
+    "n_params": 1385302,
+    "macs_M": 233.3,
+    "best": 0.7526,
+    "best_ep": 18,
+    "delta_vs_ref": -0.0031,
+    "epoch_time_s": 5.4,
+    "acc_per_Mmac": 0.0032
+  },
+  "Ref_deep": {
+    "desc": "Ref MAC budget on depth: 9-conv single branch",
+    "n_params": 526794,
+    "macs_M": 220.4,
+    "best": 0.7447,
+    "best_ep": 20,
+    "delta_vs_ref": -0.011,
+    "epoch_time_s": 5.2,
+    "acc_per_Mmac": 0.0034
+  }
+}

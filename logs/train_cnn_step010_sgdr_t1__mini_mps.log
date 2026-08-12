@@ -1,0 +1,15 @@
+cnn_step010 GA_2 T1+SGDR | 561,642 params | 105.9M MACs
+Schedule: SGDR T_0=20 T_mult=1 → 3 cycles over 75ep
+Device: mps | Slot: mini_mps
+T0 baseline: 41.32% (20ep). Advance: >= 76.85% (Ref T2 77.35% −0.5pp)
+
+  ep  5  val=0.1564  best=0.2145@ep4  lr=2.58e-04
+  ep 10  val=0.2645  best=0.3669@ep8  lr=1.55e-04
+  ep 15  val=0.3763  best=0.3819@ep14  lr=5.25e-05
+  ep 20  val=0.4099  best=0.4132@ep19  lr=3.00e-04 ← cycle end
+  ep 25  val=0.2746  best=0.4132@ep19  lr=2.58e-04
+  ep 30  val=0.3304  best=0.4132@ep19  lr=1.55e-04
+  ep 35  val=0.3343  best=0.4132@ep19  lr=5.25e-05
+  ep 40  val=0.3361  best=0.4132@ep19  lr=3.00e-04 ← cycle end
+  ep 45  val=0.2749  best=0.4132@ep19  lr=2.58e-04
+  ep 50  val=0.2459  best=0.4132@ep19  lr=1.55e-04

@@ -1,0 +1,11 @@
+
+======================================================================
+step966 — backward reward scoring T0 (20ep, 50% data)
+  Aux loss: KL(softmax(Z_norms/τ) || decay^BFS_dist[y])
+  Lambda: annealed λ0→0 over 20 epochs.
+  Dual-axis advance: accuracy ≥−0.5pp AND separation improvement >+0.05
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: decay=None  λ0=0.0  alpha_ahebb=1.0
+  params=34,976

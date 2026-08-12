@@ -1,0 +1,47 @@
+{
+  "Linear": {
+    "model_type": "linear",
+    "n_params": 2508901,
+    "routing_macs": 0,
+    "best": 0.6478,
+    "best_ep": 10,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 50
+  },
+  "MLP_256": {
+    "model_type": "mlp",
+    "n_params": 6448485,
+    "routing_macs": 0,
+    "best": 0.6424,
+    "best_ep": 5,
+    "delta_vs_linear": -0.0054,
+    "elapsed_s": 91
+  },
+  "MLP_512": {
+    "model_type": "mlp",
+    "n_params": 12896869,
+    "routing_macs": 0,
+    "best": 0.6473,
+    "best_ep": 4,
+    "delta_vs_linear": -0.0005,
+    "elapsed_s": 175
+  },
+  "SGNNET_can": {
+    "model_type": "sgnnet",
+    "n_params": 36416,
+    "routing_macs": 655360,
+    "best": 0.354,
+    "best_ep": 74,
+    "delta_vs_linear": -0.2938,
+    "elapsed_s": 1117
+  },
+  "SGNNET_N4096": {
+    "model_type": "sgnnet",
+    "n_params": 71232,
+    "routing_macs": 1310720,
+    "best": 0.4057,
+    "best_ep": 73,
+    "delta_vs_linear": -0.2421,
+    "elapsed_s": 1951
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "best": 0.7360509554140128,
+  "best_ep": 65,
+  "baseline": 0.7251,
+  "delta": 0.010950955414012808,
+  "verdict": "ADVANCE",
+  "elapsed": 842.6967189311981,
+  "mixup_alpha": 0.2
+}

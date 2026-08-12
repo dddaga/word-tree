@@ -1,0 +1,32 @@
+{
+  "Lin_VGG": {
+    "best": 0.9676433121019108,
+    "best_ep": 9,
+    "n_params": 250890,
+    "elapsed_s": 9
+  },
+  "RandProj_N2048_D16": {
+    "best": 0.1335031847133758,
+    "best_ep": 7,
+    "n_params": 170,
+    "elapsed_s": 9
+  },
+  "RandProj_N2048_D64": {
+    "best": 0.17121019108280255,
+    "best_ep": 6,
+    "n_params": 650,
+    "elapsed_s": 8
+  },
+  "RandProj_N256_D16": {
+    "best": 0.18547770700636942,
+    "best_ep": 19,
+    "n_params": 170,
+    "elapsed_s": 7
+  },
+  "RandProj_concat": {
+    "best": 0.957452229299363,
+    "best_ep": 5,
+    "n_params": 40970,
+    "elapsed_s": 8
+  }
+}

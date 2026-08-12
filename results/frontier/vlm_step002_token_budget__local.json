@@ -1,0 +1,81 @@
+{
+  "step": "vlm_step002",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cpu",
+  "n_images": 3,
+  "question": "Which one is in this image: tench, springer, cassette, chainsaw, church, horn, truck, pump, golf, parachute? Answer with one word.",
+  "arms": {
+    "split17_full": {
+      "image_tokens": 1088,
+      "seq_len": 1171,
+      "top1": 0.3333333333333333,
+      "same_class_as_full": 1.0,
+      "agree_with_full": 1.0,
+      "kl_vs_full": 0.0,
+      "vision_ms": 1746.57,
+      "prefill_ms": 189.01,
+      "total_ms": 1935.57,
+      "speedup": 1.0
+    },
+    "topk_512": {
+      "image_tokens": 512,
+      "seq_len": 595,
+      "top1": 0.3333333333333333,
+      "same_class_as_full": 0.3333333333333333,
+      "agree_with_full": 0.3333333333333333,
+      "kl_vs_full": 0.9624924125770727,
+      "vision_ms": 1746.57,
+      "prefill_ms": 118.61,
+      "total_ms": 1865.18,
+      "speedup": 1.038
+    },
+    "topk_256": {
+      "image_tokens": 256,
+      "seq_len": 339,
+      "top1": 0.3333333333333333,
+      "same_class_as_full": 0.6666666666666666,
+      "agree_with_full": 0.3333333333333333,
+      "kl_vs_full": 0.6667798260847727,
+      "vision_ms": 1746.57,
+      "prefill_ms": 81.25,
+      "total_ms": 1827.82,
+      "speedup": 1.059
+    },
+    "topk_64": {
+      "image_tokens": 64,
+      "seq_len": 147,
+      "top1": 0.3333333333333333,
+      "same_class_as_full": 0.3333333333333333,
+      "agree_with_full": 0.0,
+      "kl_vs_full": 2.9882611433664956,
+      "vision_ms": 1746.57,
+      "prefill_ms": 52.66,
+      "total_ms": 1799.22,
+      "speedup": 1.076
+    },
+    "stride_64": {
+      "image_tokens": 64,
+      "seq_len": 147,
+      "top1": 0.0,
+      "same_class_as_full": 0.0,
+      "agree_with_full": 0.0,
+      "kl_vs_full": 8.638813177744547,
+      "vision_ms": 1746.57,
+      "prefill_ms": 52.37,
+      "total_ms": 1798.94,
+      "speedup": 1.076
+    },
+    "nosplit_64": {
+      "image_tokens": 64,
+      "seq_len": 111,
+      "top1": 0.3333333333333333,
+      "same_class_as_full": 1.0,
+      "agree_with_full": 0.0,
+      "kl_vs_full": 0.9894100427627563,
+      "vision_ms": 133.87,
+      "prefill_ms": 45.83,
+      "total_ms": 179.7,
+      "speedup": 10.771
+    }
+  }
+}

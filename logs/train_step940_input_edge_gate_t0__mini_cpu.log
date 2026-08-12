@@ -1,0 +1,124 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step940 — Input edge reweighting T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  N=2048/D=16/K_hh=2/K_iter=5
+  AH era ref (step36): +2.34pp at D=64 w/o AntiHebb
+  Ref context (step907/Ref_dw): 0.9396
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: spec=ref  tau=1.0  learn_tau=False  params=34,976
+  e  1  top1=0.7738  lr=2.36e-03
+  e  1  loss=2.4822  task=2.4822  safety=0.0000  top1=0.7738  lr=2.36e-03
+  e  2  top1=0.8668  lr=2.36e-03
+  e  3  top1=0.8846  lr=2.36e-03
+  e  4  top1=0.8950  lr=2.36e-03
+  e  5  top1=0.9126  lr=2.36e-03
+  e  6  top1=0.9088  lr=2.36e-03
+  e  7  top1=0.9157  lr=2.36e-03
+  e  8  top1=0.9182  lr=2.36e-03
+  e  9  top1=0.9287  lr=2.36e-03
+  e 10  top1=0.9335  lr=2.36e-03
+  e 10  loss=0.0812  task=0.0812  safety=0.0000  top1=0.9335  lr=2.36e-03
+  e 11  top1=0.9279  lr=2.36e-03
+  e 12  top1=0.9335  lr=2.36e-03
+  e 13  top1=0.9276  lr=2.36e-03
+  e 14  top1=0.9340  lr=2.36e-03
+  e 15  top1=0.9307  lr=2.36e-03
+  e 16  top1=0.9386  lr=2.36e-03
+  e 17  top1=0.9371  lr=2.36e-03
+  e 18  top1=0.9399  lr=2.36e-03
+  e 19  top1=0.9378  lr=2.36e-03
+  e 20  top1=0.9399  lr=2.36e-03
+  e 20  loss=0.0348  task=0.0348  safety=0.0000  top1=0.9399  lr=2.36e-03
+  -> best=0.9399 @ep18  Δ=+0.00pp  71s
+────────────────────────────────────────────────────────────
+A_tau1: spec=gate  tau=1.0  learn_tau=False  params=34,976
+  e  1  top1=0.7098  lr=2.36e-03
+  e  1  loss=2.9598  task=2.9598  safety=0.0000  top1=0.7098  lr=2.36e-03
+  e  2  top1=0.8324  lr=2.36e-03
+  e  3  top1=0.8673  lr=2.36e-03
+  e  4  top1=0.8808  lr=2.36e-03
+  e  5  top1=0.8973  lr=2.36e-03
+  e  6  top1=0.9065  lr=2.36e-03
+  e  7  top1=0.9126  lr=2.36e-03
+  e  8  top1=0.9172  lr=2.36e-03
+  e  9  top1=0.9195  lr=2.36e-03
+  e 10  top1=0.9231  lr=2.36e-03
+  e 10  loss=0.1373  task=0.1373  safety=0.0000  top1=0.9231  lr=2.36e-03
+  e 11  top1=0.9248  lr=2.36e-03
+  e 12  top1=0.9254  lr=2.36e-03
+  e 13  top1=0.9259  lr=2.36e-03
+  e 14  top1=0.9322  lr=2.36e-03
+  e 15  top1=0.9266  lr=2.36e-03
+  e 16  top1=0.9361  lr=2.36e-03
+  e 17  top1=0.9348  lr=2.36e-03
+  e 18  top1=0.9353  lr=2.36e-03
+  e 19  top1=0.9338  lr=2.36e-03
+  e 20  top1=0.9401  lr=2.36e-03
+  e 20  loss=0.0654  task=0.0654  safety=0.0000  top1=0.9401  lr=2.36e-03
+  -> best=0.9401 @ep20  Δ=+0.03pp  77s
+────────────────────────────────────────────────────────────
+B_tau3: spec=gate  tau=3.0  learn_tau=False  params=34,976
+  e  1  top1=0.6301  lr=2.36e-03
+  e  1  loss=3.2485  task=3.2485  safety=0.0000  top1=0.6301  lr=2.36e-03
+  e  2  top1=0.8046  lr=2.36e-03
+  e  3  top1=0.8622  lr=2.36e-03
+  e  4  top1=0.8818  lr=2.36e-03
+  e  5  top1=0.8940  lr=2.36e-03
+  e  6  top1=0.8994  lr=2.36e-03
+  e  7  top1=0.9098  lr=2.36e-03
+  e  8  top1=0.9118  lr=2.36e-03
+  e  9  top1=0.9129  lr=2.36e-03
+  e 10  top1=0.9210  lr=2.36e-03
+  e 10  loss=0.1540  task=0.1540  safety=0.0000  top1=0.9210  lr=2.36e-03
+  e 11  top1=0.9215  lr=2.36e-03
+  e 12  top1=0.9228  lr=2.36e-03
+  e 13  top1=0.9197  lr=2.36e-03
+  e 14  top1=0.9292  lr=2.36e-03
+  e 15  top1=0.9241  lr=2.36e-03
+  e 16  top1=0.9310  lr=2.36e-03
+  e 17  top1=0.9312  lr=2.36e-03
+  e 18  top1=0.9343  lr=2.36e-03
+  e 19  top1=0.9294  lr=2.36e-03
+  e 20  top1=0.9386  lr=2.36e-03
+  e 20  loss=0.0815  task=0.0815  safety=0.0000  top1=0.9386  lr=2.36e-03
+  -> best=0.9386 @ep20  Δ=-0.13pp  77s
+────────────────────────────────────────────────────────────
+C_tau_lr: spec=gate  tau=1.0  learn_tau=True  params=34,977
+  e  1  top1=0.7096  lr=2.36e-03
+  e  1  loss=2.9598  task=2.9598  safety=0.0000  top1=0.7096  lr=2.36e-03
+  e  2  top1=0.8308  lr=2.36e-03
+  e  3  top1=0.8680  lr=2.36e-03
+  e  4  top1=0.8803  lr=2.36e-03
+  e  5  top1=0.8978  lr=2.36e-03
+  e  6  top1=0.9050  lr=2.36e-03
+  e  7  top1=0.9113  lr=2.36e-03
+  e  8  top1=0.9162  lr=2.36e-03
+  e  9  top1=0.9180  lr=2.36e-03
+  e 10  top1=0.9248  lr=2.36e-03
+  e 10  loss=0.1375  task=0.1375  safety=0.0000  top1=0.9248  lr=2.36e-03
+  e 11  top1=0.9236  lr=2.36e-03
+  e 12  top1=0.9254  lr=2.36e-03
+  e 13  top1=0.9238  lr=2.36e-03
+  e 14  top1=0.9345  lr=2.36e-03
+  e 15  top1=0.9256  lr=2.36e-03
+  e 16  top1=0.9348  lr=2.36e-03
+  e 17  top1=0.9345  lr=2.36e-03
+  e 18  top1=0.9338  lr=2.36e-03
+  e 19  top1=0.9327  lr=2.36e-03
+  e 20  top1=0.9401  lr=2.36e-03
+  e 20  loss=0.0648  task=0.0648  safety=0.0000  top1=0.9401  lr=2.36e-03
+  -> best=0.9401 @ep20  Δ=+0.03pp  85s
+
+======================================================================
+STEP 940 SUMMARY — Input edge reweighting T0
+======================================================================
+  Ref            params=34,976  best=0.9399  Δ=+0.00pp  (baseline)
+  A_tau1         params=34,976  best=0.9401  Δ=+0.03pp  NEUTRAL
+  B_tau3         params=34,976  best=0.9386  Δ=-0.13pp  NEUTRAL
+  C_tau_lr       params=34,977  best=0.9401  Δ=+0.03pp  NEUTRAL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step940_input_edge_gate_t0_seed42__mini_cpu.json

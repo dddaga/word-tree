@@ -1,0 +1,26 @@
+cnn_step021 GA2 T1+Mixup | 75ep 50%data | alpha=0.2 | device=mps
+GA#2: C=(32,64,384) k=3 exp=2 crelu  params=481,514  MACs=98.5M
+Baseline T1=0.7251  Advance>=+0.5pp=0.7301
+
+  ep  5  val=0.4099  best=0.4099  lr=2.97e-04
+  ep 10  val=0.5215  best=0.5215  lr=2.87e-04
+  ep 15  val=0.6298  best=0.6298  lr=2.72e-04
+  ep 20  val=0.6578  best=0.6578  lr=2.52e-04
+  ep 25  val=0.6754  best=0.6754  lr=2.28e-04
+  ep 30  val=0.6938  best=0.6938  lr=2.00e-04
+  ep 35  val=0.7088  best=0.7088  lr=1.70e-04
+  ep 40  val=0.7167  best=0.7167  lr=1.40e-04
+  ep 45  val=0.7022  best=0.7167  lr=1.10e-04
+  ep 50  val=0.7144  best=0.7167  lr=8.25e-05
+  ep 55  val=0.7220  best=0.7220  lr=5.80e-05
+  ep 60  val=0.7276  best=0.7276  lr=3.77e-05
+  ep 65  val=0.7361  best=0.7361  lr=2.25e-05
+  ep 70  val=0.7279  best=0.7361  lr=1.32e-05
+  ep 75  val=0.7259  best=0.7361  lr=1.00e-05
+
+============================================================
+cnn_step021 RESULT — GA2 T1+Mixup(alpha=0.2)
+============================================================
+  best=0.7361 @ep65  Δ_baseline=+0.0110  ADVANCE
+  elapsed=843s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step021_ga2_mixup_t1__mini_mps.json

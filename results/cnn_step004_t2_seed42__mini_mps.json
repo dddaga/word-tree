@@ -1,0 +1,24 @@
+{
+  "Ref": {
+    "desc": "ref: 64/128/256 k=7",
+    "n_params": 419146,
+    "macs_M": 183.2,
+    "best": 0.7735,
+    "best_ep": 22,
+    "delta_vs_ref": 0.0,
+    "t1_acc": 0.7317,
+    "t1_to_t2_delta": 0.0418,
+    "elapsed_s": 5611
+  },
+  "D_small_s": {
+    "desc": "small+side: 32/64/128 k=7",
+    "n_params": 149674,
+    "macs_M": 57.5,
+    "best": 0.7452,
+    "best_ep": 41,
+    "delta_vs_ref": -0.0283,
+    "t1_acc": 0.7096,
+    "t1_to_t2_delta": 0.0356,
+    "elapsed_s": 4223
+  }
+}

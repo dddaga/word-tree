@@ -1,0 +1,51 @@
+==============================================================================
+vlm_step006 eval scale  device=mps  depth=6  n_eval=3900  seed=42  split=val
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 9669.07it/s]
+  loaded student <- /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt
+  3859 eval images
+  eval [100/3859]  39s  eta 1456s
+  eval [200/3859]  78s  eta 1424s
+  eval [300/3859]  117s  eta 1389s
+  eval [400/3859]  156s  eta 1352s
+  eval [500/3859]  196s  eta 1315s
+  eval [600/3859]  235s  eta 1276s
+  eval [700/3859]  274s  eta 1238s
+  eval [800/3859]  314s  eta 1200s
+  eval [900/3859]  353s  eta 1161s
+  eval [1000/3859]  393s  eta 1122s
+  eval [1100/3859]  432s  eta 1083s
+  eval [1200/3859]  471s  eta 1044s
+  eval [1300/3859]  510s  eta 1004s
+  eval [1400/3859]  549s  eta 965s
+  eval [1500/3859]  589s  eta 926s
+  eval [1600/3859]  628s  eta 887s
+  eval [1700/3859]  667s  eta 847s
+  eval [1800/3859]  707s  eta 808s
+  eval [1900/3859]  746s  eta 769s
+  eval [2000/3859]  785s  eta 730s
+  eval [2100/3859]  824s  eta 690s
+  eval [2200/3859]  864s  eta 651s
+  eval [2300/3859]  903s  eta 612s
+  eval [2400/3859]  942s  eta 572s
+  eval [2500/3859]  981s  eta 533s
+  eval [2600/3859]  1020s  eta 494s
+  eval [2700/3859]  1059s  eta 455s
+  eval [2800/3859]  1098s  eta 415s
+  eval [2900/3859]  1137s  eta 376s
+  eval [3000/3859]  1177s  eta 337s
+  eval [3100/3859]  1216s  eta 298s
+  eval [3200/3859]  1255s  eta 258s
+  eval [3300/3859]  1294s  eta 219s
+  eval [3400/3859]  1333s  eta 180s
+  eval [3500/3859]  1372s  eta 141s
+  eval [3600/3859]  1411s  eta 102s
+  eval [3700/3859]  1450s  eta 62s
+  eval [3800/3859]  1490s  eta 23s
+
+  arm                  params  %save   top1   same  agree      KL   vis_ms  pre_ms    total   speed
+  teacher_d12     256,484,928   0.00  0.711  1.000  1.000   0.000     64.9    14.3     79.2   1.00x
+  distil_d6       213,957,696  16.58  0.713  0.699  0.499   1.973     35.0    14.5     49.6   1.60x
+
+  McNemar: student-only-right b=440  teacher-only-right c=432  delta +0.0021  p=0.81263  boot95 [-0.0127, +0.0174]
+  VERDICT: NOT significant
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step006_eval_scale_d6_n3900_s42_val__mini_mps.json

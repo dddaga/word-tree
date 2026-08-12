@@ -1,0 +1,642 @@
+INFO:     Will watch for changes in these directories: ['/Volumes/T9/IndraAstra/dhiraj/neuro_graph']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [3035] using StatReload
+INFO:     Started server process [3037]
+INFO:     Waiting for application startup.
+2026-04-19 21:07:43,763 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-19 21:07:43,763 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49744 - "GET /api/universe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/experiments?limit=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49748 - "GET /api/ticker/RELIANCE?start=2024-01-01&end=2024-01-10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49762 - "GET /api/universe HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/universe HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/universe HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=200 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=200 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "POST /api/experiments/run HTTP/1.1" 422 Unprocessable Entity
+INFO:     100.118.41.46:0 - "GET /api/experiments?limit=10 HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/experiments?status=running HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "POST /api/experiments/run HTTP/1.1" 422 Unprocessable Entity
+INFO:     100.118.41.46:0 - "GET /api/universe HTTP/1.1" 200 OK
+INFO:     100.118.41.46:0 - "GET /api/universe HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'scripts/train_step937_zbias_kiter_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3037]
+INFO:     Started server process [85208]
+INFO:     Waiting for application startup.
+2026-04-20 07:30:45,905 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 07:30:45,905 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step937_zbias_kiter_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85208]
+INFO:     Started server process [85294]
+INFO:     Waiting for application startup.
+2026-04-20 07:30:56,194 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 07:30:56,194 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/analyze_step943_activation_postmortem.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85294]
+INFO:     Started server process [85960]
+INFO:     Waiting for application startup.
+2026-04-20 07:35:24,982 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 07:35:24,983 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/analyze_step943_activation_postmortem.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85960]
+INFO:     Started server process [86111]
+INFO:     Waiting for application startup.
+2026-04-20 07:36:04,102 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 07:36:04,103 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step950_per_edge_rotation_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86111]
+INFO:     Started server process [91717]
+INFO:     Waiting for application startup.
+2026-04-20 08:11:50,284 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 08:11:50,284 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step951_kin_purity_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91717]
+INFO:     Started server process [94081]
+INFO:     Waiting for application startup.
+2026-04-20 08:24:14,348 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 08:24:14,349 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step951_kin_purity_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94081]
+INFO:     Started server process [94210]
+INFO:     Waiting for application startup.
+2026-04-20 08:24:42,519 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 08:24:42,520 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step952_grouped_input_proj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94210]
+INFO:     Started server process [94845]
+INFO:     Waiting for application startup.
+2026-04-20 08:29:24,138 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 08:29:24,138 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step952_grouped_input_proj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94845]
+INFO:     Started server process [94861]
+INFO:     Waiting for application startup.
+2026-04-20 08:29:31,366 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-20 08:29:31,367 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step954_kin60_t1.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94861]
+INFO:     Started server process [21673]
+INFO:     Waiting for application startup.
+2026-04-21 09:39:08,998 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 09:39:08,998 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step953_piecewise_seed_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21673]
+INFO:     Started server process [41117]
+INFO:     Waiting for application startup.
+2026-04-21 12:10:07,203 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:10:07,203 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step953_piecewise_seed_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41117]
+INFO:     Started server process [41226]
+INFO:     Waiting for application startup.
+2026-04-21 12:10:38,907 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:10:38,907 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step955_wedge_dwproj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41226]
+INFO:     Started server process [41486]
+INFO:     Waiting for application startup.
+2026-04-21 12:12:14,381 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:12:14,382 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step955_wedge_dwproj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41486]
+INFO:     Started server process [41499]
+INFO:     Waiting for application startup.
+2026-04-21 12:12:20,499 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:12:20,499 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step955_wedge_dwproj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41499]
+INFO:     Started server process [41530]
+INFO:     Waiting for application startup.
+2026-04-21 12:12:31,520 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:12:31,520 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step955_wedge_dwproj_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41530]
+INFO:     Started server process [41552]
+INFO:     Waiting for application startup.
+2026-04-21 12:12:42,520 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:12:42,520 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step935_moe_topology_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [41552]
+INFO:     Started server process [47836]
+INFO:     Waiting for application startup.
+2026-04-21 12:59:14,552 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:59:14,553 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step957_matryoshka_d_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [47836]
+INFO:     Started server process [47892]
+INFO:     Waiting for application startup.
+2026-04-21 12:59:25,405 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:59:25,406 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step958_layernorm_routing_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [47892]
+INFO:     Started server process [47958]
+INFO:     Waiting for application startup.
+2026-04-21 12:59:46,415 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 12:59:46,415 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step958_layernorm_routing_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [47958]
+INFO:     Started server process [48174]
+INFO:     Waiting for application startup.
+2026-04-21 13:00:45,508 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 13:00:45,509 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step958_layernorm_routing_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [48174]
+INFO:     Started server process [48528]
+INFO:     Waiting for application startup.
+2026-04-21 13:02:34,130 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 13:02:34,132 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step965_adiabatic_update_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [48528]
+INFO:     Started server process [78590]
+INFO:     Waiting for application startup.
+2026-04-21 16:57:47,096 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 16:57:47,097 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'src/sgnnet/haki.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [78590]
+INFO:     Started server process [78648]
+INFO:     Waiting for application startup.
+2026-04-21 16:58:15,233 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 16:58:15,233 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step966_backward_reward_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [78648]
+INFO:     Started server process [17634]
+INFO:     Waiting for application startup.
+2026-04-21 21:38:26,929 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:38:26,929 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/diag_step967_path_sparsity.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [17634]
+INFO:     Started server process [18415]
+INFO:     Waiting for application startup.
+2026-04-21 21:41:38,160 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:41:38,160 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/diag_step967_path_sparsity.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18415]
+INFO:     Started server process [18493]
+INFO:     Waiting for application startup.
+2026-04-21 21:42:03,145 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:42:03,145 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/diag_step967_path_sparsity.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18493]
+INFO:     Started server process [18521]
+INFO:     Waiting for application startup.
+2026-04-21 21:42:16,492 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:42:16,493 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/diag_step967_path_sparsity.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18521]
+INFO:     Started server process [18550]
+INFO:     Waiting for application startup.
+2026-04-21 21:42:27,069 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:42:27,069 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step966_backward_reward_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18550]
+INFO:     Started server process [18629]
+INFO:     Waiting for application startup.
+2026-04-21 21:42:52,265 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:42:52,265 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step966_backward_reward_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18629]
+INFO:     Started server process [18645]
+INFO:     Waiting for application startup.
+2026-04-21 21:42:59,441 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:42:59,441 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step966_backward_reward_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18645]
+INFO:     Started server process [18661]
+INFO:     Waiting for application startup.
+2026-04-21 21:43:07,221 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:43:07,222 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step966_backward_reward_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18661]
+INFO:     Started server process [18693]
+INFO:     Waiting for application startup.
+2026-04-21 21:43:21,608 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 21:43:21,608 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step969_threshold_grad_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18693]
+INFO:     Started server process [26087]
+INFO:     Waiting for application startup.
+2026-04-21 22:32:07,039 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 22:32:07,040 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step969_threshold_grad_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26087]
+INFO:     Started server process [26109]
+INFO:     Waiting for application startup.
+2026-04-21 22:32:18,168 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 22:32:18,169 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step972_kd_teacher_vggfc_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26109]
+INFO:     Started server process [35245]
+INFO:     Waiting for application startup.
+2026-04-21 23:29:19,125 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:29:19,125 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step90_g2_group_topology_n4096.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35245]
+INFO:     Started server process [35448]
+INFO:     Waiting for application startup.
+2026-04-21 23:30:49,274 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:30:49,275 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35448]
+INFO:     Started server process [35694]
+INFO:     Waiting for application startup.
+2026-04-21 23:31:58,315 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:31:58,316 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35694]
+INFO:     Started server process [35734]
+INFO:     Waiting for application startup.
+2026-04-21 23:32:18,481 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:32:18,482 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35734]
+INFO:     Started server process [35758]
+INFO:     Waiting for application startup.
+2026-04-21 23:32:26,106 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:32:26,106 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35758]
+INFO:     Started server process [35866]
+INFO:     Waiting for application startup.
+2026-04-21 23:32:54,276 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-21 23:32:54,276 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35866]
+INFO:     Started server process [92026]
+INFO:     Waiting for application startup.
+2026-04-22 06:52:48,960 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 06:52:48,960 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [92026]
+INFO:     Started server process [92048]
+INFO:     Waiting for application startup.
+2026-04-22 06:52:59,695 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 06:52:59,696 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step973_adiabatic_kl_scout.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [92048]
+INFO:     Started server process [93087]
+INFO:     Waiting for application startup.
+2026-04-22 06:58:52,689 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 06:58:52,690 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [93087]
+INFO:     Started server process [9184]
+INFO:     Waiting for application startup.
+2026-04-22 08:52:12,752 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:52:12,753 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9184]
+INFO:     Started server process [9197]
+INFO:     Waiting for application startup.
+2026-04-22 08:52:18,844 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:52:18,844 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9197]
+INFO:     Started server process [9219]
+INFO:     Waiting for application startup.
+2026-04-22 08:52:29,217 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:52:29,217 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9219]
+INFO:     Started server process [9236]
+INFO:     Waiting for application startup.
+2026-04-22 08:52:36,842 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:52:36,842 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9236]
+INFO:     Started server process [9273]
+INFO:     Waiting for application startup.
+2026-04-22 08:52:55,283 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:52:55,283 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9273]
+INFO:     Started server process [9295]
+INFO:     Waiting for application startup.
+2026-04-22 08:53:05,778 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:53:05,779 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9295]
+INFO:     Started server process [9329]
+INFO:     Waiting for application startup.
+2026-04-22 08:53:22,189 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:53:22,189 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step971_quant_scout_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9329]
+INFO:     Started server process [9405]
+INFO:     Waiting for application startup.
+2026-04-22 08:53:47,951 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 08:53:47,952 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/qwen_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9405]
+INFO:     Started server process [60998]
+INFO:     Waiting for application startup.
+2026-04-22 16:45:33,115 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 16:45:33,115 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/qwen_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [60998]
+INFO:     Started server process [61008]
+INFO:     Waiting for application startup.
+2026-04-22 16:45:39,885 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 16:45:39,885 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step978_random_features_baseline.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [61008]
+INFO:     Started server process [69316]
+INFO:     Waiting for application startup.
+2026-04-22 17:48:42,297 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 17:48:42,298 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step978_random_features_baseline.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [69316]
+INFO:     Started server process [69641]
+INFO:     Waiting for application startup.
+2026-04-22 17:50:01,854 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 17:50:01,854 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step916_cifar10_kiter_sweep_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [69641]
+INFO:     Started server process [72270]
+INFO:     Waiting for application startup.
+2026-04-22 18:09:19,461 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:09:19,462 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step916_cifar10_kiter_sweep_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72270]
+INFO:     Started server process [72281]
+INFO:     Waiting for application startup.
+2026-04-22 18:09:26,445 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:09:26,445 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step916_cifar10_kiter_sweep_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72281]
+INFO:     Started server process [72376]
+INFO:     Waiting for application startup.
+2026-04-22 18:09:58,244 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:09:58,244 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step916_cifar10_kiter_sweep_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72376]
+INFO:     Started server process [72597]
+INFO:     Waiting for application startup.
+2026-04-22 18:12:20,802 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:12:20,802 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step916_cifar10_kiter_sweep_t0.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72597]
+INFO:     Started server process [72696]
+INFO:     Waiting for application startup.
+2026-04-22 18:12:41,036 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:12:41,037 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'scripts/train_step979_cifar10_multiseed_t1.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72696]
+INFO:     Started server process [73582]
+INFO:     Waiting for application startup.
+2026-04-22 18:18:29,020 INFO Skip ts_step003_ma_baseline.json: top-level is list, not dict
+2026-04-22 18:18:29,021 INFO Seeded 0 experiments from results JSONs
+INFO:     Application startup complete.

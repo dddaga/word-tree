@@ -1,0 +1,42 @@
+{
+  "Ref_a05": {
+    "alpha_reflect": 0.5,
+    "n_params": 34976,
+    "best": 0.7577,
+    "best_ep": 16,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 147
+  },
+  "A_a00": {
+    "alpha_reflect": 0.0,
+    "n_params": 34976,
+    "best": 0.7528,
+    "best_ep": 18,
+    "delta_vs_ref": -0.0049,
+    "elapsed_s": 147
+  },
+  "B_a025": {
+    "alpha_reflect": 0.25,
+    "n_params": 34976,
+    "best": 0.7526,
+    "best_ep": 15,
+    "delta_vs_ref": -0.0051,
+    "elapsed_s": 147
+  },
+  "C_a075": {
+    "alpha_reflect": 0.75,
+    "n_params": 34976,
+    "best": 0.7629,
+    "best_ep": 18,
+    "delta_vs_ref": 0.0052,
+    "elapsed_s": 147
+  },
+  "D_a10": {
+    "alpha_reflect": 1.0,
+    "n_params": 34976,
+    "best": 0.7376,
+    "best_ep": 18,
+    "delta_vs_ref": -0.0201,
+    "elapsed_s": 136
+  }
+}

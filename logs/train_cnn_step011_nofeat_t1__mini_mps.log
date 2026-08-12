@@ -1,0 +1,11 @@
+cnn_step011 GA_2 T1+nofeat | 561,642 params | 105.9M MACs
+Loss: wf=0 (NO FEAT COSINE), wd=0.3 (×16 KL), wc=0.2 (CE)
+Schedule: cosine T_max=75 eta_min=1e-5
+Device: mps | Slot: mini_mps
+Baseline: step007 (wf=0.5) best=35.44%@ep8. If monotone → B2 confirmed.
+
+  ep  5  val=0.2171  best=0.2693@ep4  lr=2.97e-04
+  ep 10  val=0.2899  best=0.3661@ep8  lr=2.87e-04
+  ep 15  val=0.3312  best=0.3661@ep8  lr=2.72e-04
+  ep 20  val=0.2415  best=0.3661@ep8  lr=2.52e-04
+  ep 25  val=0.2639  best=0.3661@ep8  lr=2.28e-04

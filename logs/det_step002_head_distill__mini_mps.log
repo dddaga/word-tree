@@ -1,0 +1,15 @@
+==================================================================
+det_step002 head distill  train_dev=mps  model=fasterrcnn_mobilenet_v3_large_fpn
+  harvested torch.Size([12000, 12544]) ROI feats  (1468 foreground)  teacher_head=14,362,055p [6s]
+  dense_reinit  agree=0.9902 fg_agree=0.9605 bbox_mse=0.0222 14,362,055p [13s]
+  lowrank_r256  agree=0.9885 fg_agree=0.9339 bbox_mse=0.0402 3,394,247p [17s]
+  sgn_r128k32   agree=0.9846 fg_agree=0.9421 bbox_mse=0.0591 1,680,967p [20s]
+  sgn_r64k16    agree=0.9819 fg_agree=0.9087 bbox_mse=0.1041   836,615p [23s]
+
+  teacher_head=14,362,055p  (1468/12000 fg ROIs)
+  config          agree fg_agree  bbox_mse     params  %teach
+  dense_reinit   0.9902   0.9605    0.0222 14,362,055 100.000%
+  lowrank_r256   0.9885   0.9339    0.0402  3,394,247 23.633%
+  sgn_r128k32    0.9846   0.9421    0.0591  1,680,967 11.704%
+  sgn_r64k16     0.9819   0.9087    0.1041    836,615  5.825%
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/det_step002_head_distill__mini_mps.json

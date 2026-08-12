@@ -1,0 +1,128 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step990 — Additive dynamic connectivity T0 (20ep, 50% data, Imagenette)
+  N=512 D=16 K_iter=5 K_in=25  (O(N²) cdist; N=512 tractable)
+  Additive form: Z = normalize(Z_static + alpha * Z_dyn)
+  Gate-death theorem covers multiplicative only — this form untested.
+  device=mps  epochs=20  seed=42  batch=512
+  Advance: any config >= Ref +0.5pp
+======================================================================
+
+
+────────────────────────────────────────────────────────────
+Config: Ref  params=8,864  device=mps
+  e  1  loss=3.9105  top1=0.1065  lr=2.36e-03
+  e  1  loss=3.9105  task=3.9105  safety=0.0000  top1=0.1065  lr=2.36e-03
+  e  2  loss=2.4631  top1=0.1488  lr=2.36e-03
+  e  3  loss=2.2386  top1=0.2025  lr=2.36e-03
+  e  4  loss=2.0995  top1=0.2589  lr=2.36e-03
+  e  5  loss=2.0114  top1=0.3297  lr=2.36e-03
+  e  6  loss=1.9406  top1=0.3666  lr=2.36e-03
+  e  7  loss=1.8836  top1=0.4138  lr=2.36e-03
+  e  8  loss=1.8283  top1=0.4543  lr=2.36e-03
+  e  9  loss=1.7909  top1=0.4915  lr=2.36e-03
+  e 10  loss=1.7546  top1=0.5073  lr=2.36e-03
+  e 10  loss=1.7546  task=1.7546  safety=0.0000  top1=0.5073  lr=2.36e-03
+  e 11  loss=1.7198  top1=0.5167  lr=2.36e-03
+  e 12  loss=1.7074  top1=0.5521  lr=2.36e-03
+  e 13  loss=1.6750  top1=0.5710  lr=2.36e-03
+  e 14  loss=1.6427  top1=0.5712  lr=2.36e-03
+  e 15  loss=1.6287  top1=0.5669  lr=2.36e-03
+  e 16  loss=1.6108  top1=0.5880  lr=2.36e-03
+  e 17  loss=1.5911  top1=0.5829  lr=2.36e-03
+  e 18  loss=1.5689  top1=0.6005  lr=2.36e-03
+  e 19  loss=1.5509  top1=0.6112  lr=2.36e-03
+  e 20  loss=1.5372  top1=0.6127  lr=2.36e-03
+  e 20  loss=1.5372  task=1.5372  safety=0.0000  top1=0.6127  lr=2.36e-03
+  DONE: best=0.6127 @ep20  19s
+
+────────────────────────────────────────────────────────────
+Config: A_additive_10  params=8,864  device=mps
+  e  1  loss=3.9029  top1=0.1017  lr=2.36e-03
+  e  1  loss=3.9029  task=3.9029  safety=0.0000  top1=0.1017  lr=2.36e-03
+  e  2  loss=2.4568  top1=0.1511  lr=2.36e-03
+  e  3  loss=2.2345  top1=0.2089  lr=2.36e-03
+  e  4  loss=2.1013  top1=0.2583  lr=2.36e-03
+  e  5  loss=2.0032  top1=0.3338  lr=2.36e-03
+  e  6  loss=1.9401  top1=0.3715  lr=2.36e-03
+  e  7  loss=1.8900  top1=0.4191  lr=2.36e-03
+  e  8  loss=1.8367  top1=0.4423  lr=2.36e-03
+  e  9  loss=1.7939  top1=0.4708  lr=2.36e-03
+  e 10  loss=1.7631  top1=0.5029  lr=2.36e-03
+  e 10  loss=1.7631  task=1.7631  safety=0.0000  top1=0.5029  lr=2.36e-03
+  e 11  loss=1.7284  top1=0.5218  lr=2.36e-03
+  e 12  loss=1.6968  top1=0.5455  lr=2.36e-03
+  e 13  loss=1.6799  top1=0.5628  lr=2.36e-03
+  e 14  loss=1.6495  top1=0.5745  lr=2.36e-03
+  e 15  loss=1.6212  top1=0.5839  lr=2.36e-03
+  e 16  loss=1.6064  top1=0.5878  lr=2.36e-03
+  e 17  loss=1.5920  top1=0.6094  lr=2.36e-03
+  e 18  loss=1.5812  top1=0.6138  lr=2.36e-03
+  e 19  loss=1.5603  top1=0.6117  lr=2.36e-03
+  e 20  loss=1.5491  top1=0.6194  lr=2.36e-03
+  e 20  loss=1.5491  task=1.5491  safety=0.0000  top1=0.6194  lr=2.36e-03
+  DONE: best=0.6194 @ep20  370s
+
+────────────────────────────────────────────────────────────
+Config: B_additive_05  params=8,864  device=mps
+  e  1  loss=3.8836  top1=0.1050  lr=2.36e-03
+  e  1  loss=3.8836  task=3.8836  safety=0.0000  top1=0.1050  lr=2.36e-03
+  e  2  loss=2.4623  top1=0.1536  lr=2.36e-03
+  e  3  loss=2.2239  top1=0.2038  lr=2.36e-03
+  e  4  loss=2.1050  top1=0.2525  lr=2.36e-03
+  e  5  loss=2.0087  top1=0.3299  lr=2.36e-03
+  e  6  loss=1.9377  top1=0.3633  lr=2.36e-03
+  e  7  loss=1.8825  top1=0.4224  lr=2.36e-03
+  e  8  loss=1.8365  top1=0.4563  lr=2.36e-03
+  e  9  loss=1.7940  top1=0.4871  lr=2.36e-03
+  e 10  loss=1.7649  top1=0.5060  lr=2.36e-03
+  e 10  loss=1.7649  task=1.7649  safety=0.0000  top1=0.5060  lr=2.36e-03
+  e 11  loss=1.7250  top1=0.5220  lr=2.36e-03
+  e 12  loss=1.6944  top1=0.5462  lr=2.36e-03
+  e 13  loss=1.6703  top1=0.5422  lr=2.36e-03
+  e 14  loss=1.6431  top1=0.5687  lr=2.36e-03
+  e 15  loss=1.6201  top1=0.5921  lr=2.36e-03
+  e 16  loss=1.5976  top1=0.6048  lr=2.36e-03
+  e 17  loss=1.5874  top1=0.5783  lr=2.36e-03
+  e 18  loss=1.5680  top1=0.6161  lr=2.36e-03
+  e 19  loss=1.5499  top1=0.6278  lr=2.36e-03
+  e 20  loss=1.5244  top1=0.6250  lr=2.36e-03
+  e 20  loss=1.5244  task=1.5244  safety=0.0000  top1=0.6250  lr=2.36e-03
+  DONE: best=0.6278 @ep19  304s
+
+────────────────────────────────────────────────────────────
+Config: C_learned_alpha  params=8,865  device=mps
+  e  1  loss=3.8999  top1=0.1029  lr=2.36e-03
+  e  1  loss=3.8999  task=3.8999  safety=0.0000  top1=0.1029  lr=2.36e-03
+  e  2  loss=2.4649  top1=0.1503  lr=2.36e-03
+  e  3  loss=2.2330  top1=0.2048  lr=2.36e-03
+  e  4  loss=2.0985  top1=0.2538  lr=2.36e-03
+  e  5  loss=2.0084  top1=0.3310  lr=2.36e-03
+  e  6  loss=1.9400  top1=0.3682  lr=2.36e-03
+  e  7  loss=1.8812  top1=0.4268  lr=2.36e-03
+  e  8  loss=1.8326  top1=0.4561  lr=2.36e-03
+  e  9  loss=1.7868  top1=0.4772  lr=2.36e-03
+  e 10  loss=1.7577  top1=0.5078  lr=2.36e-03
+  e 10  loss=1.7577  task=1.7577  safety=0.0000  top1=0.5078  lr=2.36e-03
+  e 11  loss=1.7242  top1=0.5116  lr=2.36e-03
+  e 12  loss=1.7069  top1=0.5315  lr=2.36e-03
+  e 13  loss=1.6797  top1=0.5618  lr=2.36e-03
+  e 14  loss=1.6521  top1=0.5638  lr=2.36e-03
+  e 15  loss=1.6380  top1=0.5674  lr=2.36e-03
+  e 16  loss=1.6123  top1=0.5636  lr=2.36e-03
+  e 17  loss=1.6003  top1=0.5654  lr=2.36e-03
+  e 18  loss=1.5755  top1=0.6064  lr=2.36e-03
+  e 19  loss=1.5645  top1=0.6117  lr=2.36e-03
+  e 20  loss=1.5426  top1=0.6242  lr=2.36e-03
+  e 20  loss=1.5426  task=1.5426  safety=0.0000  top1=0.6242  lr=2.36e-03
+  DONE: best=0.6242 @ep20  306s
+
+======================================================================
+step990 SUMMARY  (Ref=0.6127  N=512)
+  Ref                             0.6127  (+0.0000)  Ref
+  A_additive_10                   0.6194  (+0.0067)  ADVANCE→T1
+  B_additive_05                   0.6278  (+0.0151)  ADVANCE→T1
+  C_learned_alpha                 0.6242  (+0.0115)  ADVANCE→T1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step990_additive_dynamic_t0_seed42__mini_mps.json

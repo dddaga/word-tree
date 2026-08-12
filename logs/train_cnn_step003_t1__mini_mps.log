@@ -1,0 +1,87 @@
+
+========================================================================
+CNN step003 T1  device=mps  epochs=75  seed=42
+  train=4734  val=3925  batch=32
+========================================================================
+
+  config          params   MACs(M)  %VGG16conv  desc
+  ----------------------------------------------------------------------
+  Ref            419,146     183.2      1.246%  ref: 64/128/256 k=7
+  F_wide         825,482     559.8      3.808%  wide: 128/256/256 k=7
+  D_small_s      149,674      57.5      0.391%  small+side: 32/64/128 k=7
+  ----------------------------------------------------------------------
+  VGG16-conv   14,700,000   14700.0    100.000%  (teacher reference)
+
+────────────────────────────────────────────────────────────
+Ref: ref: 64/128/256 k=7  T0=0.7034
+  params=419,146  MACs=183.2M
+  ep  5  val=0.5090  best=0.5090
+  ep 10  val=0.6461  best=0.6461
+  ep 15  val=0.6805  best=0.6831
+  ep 20  val=0.6767  best=0.7172
+  ep 25  val=0.7083  best=0.7172
+  ep 30  val=0.7317  best=0.7317
+  ep 35  val=0.7068  best=0.7317
+  ep 40  val=0.7108  best=0.7317
+  ep 45  val=0.7182  best=0.7317
+  ep 50  val=0.7106  best=0.7317
+  ep 55  val=0.7111  best=0.7317
+  ep 60  val=0.7131  best=0.7317
+  ep 65  val=0.7093  best=0.7317
+  ep 70  val=0.7121  best=0.7317
+  ep 75  val=0.7108  best=0.7317
+  -> best=0.7317 @ep30  Δ_vs_Ref=+0.00pp  2015s
+
+────────────────────────────────────────────────────────────
+F_wide: wide: 128/256/256 k=7  T0=0.7274
+  params=825,482  MACs=559.8M
+  ep  5  val=0.5208  best=0.5485
+  ep 10  val=0.6841  best=0.6841
+  ep 15  val=0.7220  best=0.7220
+  ep 20  val=0.7442  best=0.7442
+  ep 25  val=0.7343  best=0.7442
+  ep 30  val=0.7320  best=0.7442
+  ep 35  val=0.7284  best=0.7442
+  ep 40  val=0.7279  best=0.7442
+  ep 45  val=0.7254  best=0.7442
+  ep 50  val=0.7144  best=0.7442
+  ep 55  val=0.7136  best=0.7442
+  ep 60  val=0.7215  best=0.7442
+  ep 65  val=0.7213  best=0.7442
+  ep 70  val=0.7180  best=0.7442
+  ep 75  val=0.7172  best=0.7442
+  -> best=0.7442 @ep20  Δ_vs_Ref=+1.25pp  3226s
+
+────────────────────────────────────────────────────────────
+D_small_s: small+side: 32/64/128 k=7  T0=0.6099
+  params=149,674  MACs=57.5M
+  ep  5  val=0.4112  best=0.4112
+  ep 10  val=0.5539  best=0.5539
+  ep 15  val=0.5755  best=0.6148
+  ep 20  val=0.6484  best=0.6484
+  ep 25  val=0.6634  best=0.6701
+  ep 30  val=0.6759  best=0.6764
+  ep 35  val=0.6864  best=0.6876
+  ep 40  val=0.6887  best=0.7009
+  ep 45  val=0.6948  best=0.7009
+  ep 50  val=0.6927  best=0.7039
+  ep 55  val=0.7073  best=0.7073
+  ep 60  val=0.6999  best=0.7073
+  ep 65  val=0.7088  best=0.7088
+  ep 70  val=0.7060  best=0.7096
+  ep 75  val=0.7093  best=0.7096
+  -> best=0.7096 @ep69  Δ_vs_Ref=-2.22pp  1806s
+
+========================================================================
+CNN STEP003 T1 SUMMARY — (75ep, 50% data)
+========================================================================
+  config          params   MACs(M)      acc       Δ_Ref    T0→T1 gain  efficiency
+  --------------------------------------------------------------------------------
+  Ref            419,146     183.2   0.7317      +0.00pp        +2.8pp  acc/MACs=0.004 %/M
+  F_wide         825,482     559.8   0.7442      +1.25pp        +1.7pp  acc/MACs=0.001 %/M
+  D_small_s      149,674      57.5   0.7096      -2.22pp       +10.0pp  acc/MACs=0.012 %/M
+
+  H3 check: D_small_s vs Ref — 2.2pp gap, 3.2× fewer MACs
+           T0 gap was 9.4pp → T1 gap = 2.2pp  (narrowed)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step003_t1_seed42__mini_mps.json

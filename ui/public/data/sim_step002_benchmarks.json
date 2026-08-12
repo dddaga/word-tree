@@ -1,0 +1,70 @@
+{
+  "NiftyIndexStrategy": {
+    "total_return_pct": -4.54,
+    "cagr_pct": -2.35,
+    "sharpe": -0.717,
+    "sortino": -0.124,
+    "max_drawdown_pct": -7.52,
+    "win_rate_pct": 1.62,
+    "n_trading_days": 493,
+    "starting_capital": 1000000.0,
+    "ending_nav": 953798.32,
+    "vs_benchmark": {
+      "bench_cagr_pct": 11.3,
+      "bench_sharpe": 0.833,
+      "alpha_cagr_pp": -13.64,
+      "information_ratio": -1.018
+    }
+  },
+  "BuyAndHoldStrategy": {
+    "total_return_pct": 23.9,
+    "cagr_pct": 11.58,
+    "sharpe": 0.908,
+    "sortino": 1.153,
+    "max_drawdown_pct": -20.99,
+    "win_rate_pct": 55.38,
+    "n_trading_days": 493,
+    "starting_capital": 1000000.0,
+    "ending_nav": 1237947.99,
+    "vs_benchmark": {
+      "bench_cagr_pct": 11.3,
+      "bench_sharpe": 0.833,
+      "alpha_cagr_pp": 0.28,
+      "information_ratio": 0.008
+    }
+  },
+  "MACrossStrategy": {
+    "total_return_pct": 28.32,
+    "cagr_pct": 13.59,
+    "sharpe": 1.112,
+    "sortino": 1.438,
+    "max_drawdown_pct": -17.43,
+    "win_rate_pct": 49.09,
+    "n_trading_days": 493,
+    "starting_capital": 1000000.0,
+    "ending_nav": 1283206.94,
+    "vs_benchmark": {
+      "bench_cagr_pct": 11.3,
+      "bench_sharpe": 0.833,
+      "alpha_cagr_pp": 2.3,
+      "information_ratio": 0.166
+    }
+  },
+  "RandomSignalStrategy": {
+    "total_return_pct": 15.83,
+    "cagr_pct": 7.8,
+    "sharpe": 0.635,
+    "sortino": 0.8,
+    "max_drawdown_pct": -23.59,
+    "win_rate_pct": 57.4,
+    "n_trading_days": 493,
+    "starting_capital": 1000000.0,
+    "ending_nav": 1157304.58,
+    "vs_benchmark": {
+      "bench_cagr_pct": 11.3,
+      "bench_sharpe": 0.833,
+      "alpha_cagr_pp": -3.5,
+      "information_ratio": -0.53
+    }
+  }
+}

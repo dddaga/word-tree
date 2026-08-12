@@ -1,0 +1,25 @@
+==================================================================
+llm_step002 FFN KD-replacement  layer=1  device=mps
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 20240.54it/s]
+Token indices sequence length is longer than the specified maximum sequence length for this model (2415650 > 1024). Running this sequence through the model will result in indexing errors
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+  teacher ppl=63.053  zero-FFN floor ppl=64.524  (layer 1)
+    lr64         ep1/3 ppl=86.544 kd=55.8563 [25s]
+    lr64         ep2/3 ppl=84.058 kd=54.5415 [50s]
+    lr64         ep3/3 ppl=82.101 kd=50.7246 [74s]
+    lr256        ep1/3 ppl=83.824 kd=50.1124 [24s]
+    lr256        ep2/3 ppl=80.595 kd=47.1998 [49s]
+    lr256        ep3/3 ppl=80.146 kd=55.0781 [73s]
+    sparse256k32 ep1/3 ppl=84.205 kd=48.7276 [25s]
+    sparse256k32 ep2/3 ppl=81.924 kd=49.2942 [49s]
+    sparse256k32 ep3/3 ppl=79.027 kd=44.4190 [73s]
+    dense_reinit ep1/3 ppl=78.804 kd=44.0217 [25s]
+    dense_reinit ep2/3 ppl=78.035 kd=45.8753 [50s]
+    dense_reinit ep3/3 ppl=78.046 kd=50.4174 [74s]
+
+  teacher=63.05  zero-floor=64.52
+  lr64         ppl=  82.387     99,136p (  2.1% FFN)
+  lr256        ppl=  80.199    394,240p (  8.3% FFN)
+  sparse256k32 ppl=  79.792    394,240p (  8.3% FFN)
+  dense_reinit ppl=  77.533  4,722,432p (100.0% FFN)
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/llm_step002_ffn_kd_L1__mini_mps.json

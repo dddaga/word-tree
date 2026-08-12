@@ -1,0 +1,76 @@
+
+======================================================================
+ffn_step001 — per-channel FFN T0 (20ep, 50% Imagenette)
+  device=mps  configs=['b1_A_norm_relu', 'b1_B_norm_rrelu', 'b1_C_norm_bias_rrelu', 'b5_A_norm_relu', 'b5_B_norm_rrelu', 'b5_C_norm_bias_rrelu']
+======================================================================
+
+────────────────────────────────────────────────────────────
+b1_A_norm_relu: widths=[49, 28, 20, 8]  params=1,112,074 (0.930% FC)  device=mps
+  e  1/20  val=0.5320  best=0.5320  [0s]
+  e  5/20  val=0.9208  best=0.9208  [1s]
+  e 10/20  val=0.9261  best=0.9271  [2s]
+  e 15/20  val=0.9279  best=0.9279  [3s]
+  e 20/20  val=0.9276  best=0.9279  [3s]
+  DONE: best=0.9279 @ep15  final=0.9276  3s
+  sparsity/layer=[0.582, 0.5848, 0.5972]  dense=2.22M  eff=1.79M
+
+────────────────────────────────────────────────────────────
+b1_B_norm_rrelu: widths=[49, 28, 20, 8]  params=1,112,074 (0.930% FC)  device=mps
+  e  1/20  val=0.5903  best=0.5903  [0s]
+  e  5/20  val=0.9187  best=0.9187  [1s]
+  e 10/20  val=0.9236  best=0.9236  [2s]
+  e 15/20  val=0.9246  best=0.9246  [3s]
+  e 20/20  val=0.9243  best=0.9246  [4s]
+  DONE: best=0.9246 @ep12  final=0.9243  4s
+  sparsity/layer=[0.5816, 0.5829, 0.5877]  dense=2.22M  eff=1.80M
+
+────────────────────────────────────────────────────────────
+b1_C_norm_bias_rrelu: widths=[49, 28, 20, 8]  params=1,140,746 (0.954% FC)  device=mps
+  e  1/20  val=0.6206  best=0.6206  [0s]
+  e  5/20  val=0.9238  best=0.9238  [1s]
+  e 10/20  val=0.9274  best=0.9279  [2s]
+  e 15/20  val=0.9282  best=0.9282  [3s]
+  e 20/20  val=0.9284  best=0.9284  [4s]
+  DONE: best=0.9284 @ep17  final=0.9284  4s
+  sparsity/layer=[0.5011, 0.5019, 0.5122]  dense=2.28M  eff=1.85M
+
+────────────────────────────────────────────────────────────
+b5_A_norm_relu: widths=[49, 84, 60, 32, 8]  params=5,842,954 (4.886% FC)  device=mps
+  e  1/20  val=0.6701  best=0.6701  [1s]
+  e  5/20  val=0.9241  best=0.9241  [3s]
+  e 10/20  val=0.9279  best=0.9294  [5s]
+  e 15/20  val=0.9287  best=0.9294  [6s]
+  e 20/20  val=0.9289  best=0.9294  [8s]
+  DONE: best=0.9294 @ep8  final=0.9289  8s
+  sparsity/layer=[0.5818, 0.5846, 0.5892, 0.6137]  dense=11.69M  eff=7.38M
+
+────────────────────────────────────────────────────────────
+b5_B_norm_rrelu: widths=[49, 84, 60, 32, 8]  params=5,842,954 (4.886% FC)  device=mps
+  e  1/20  val=0.6403  best=0.6403  [0s]
+  e  5/20  val=0.9238  best=0.9238  [2s]
+  e 10/20  val=0.9233  best=0.9246  [5s]
+  e 15/20  val=0.9238  best=0.9246  [7s]
+  e 20/20  val=0.9238  best=0.9246  [9s]
+  DONE: best=0.9246 @ep7  final=0.9238  9s
+  sparsity/layer=[0.5816, 0.5835, 0.5852, 0.599]  dense=11.69M  eff=7.38M
+
+────────────────────────────────────────────────────────────
+b5_C_norm_bias_rrelu: widths=[49, 84, 60, 32, 8]  params=5,937,162 (4.965% FC)  device=mps
+  e  1/20  val=0.6999  best=0.6999  [1s]
+  e  5/20  val=0.9213  best=0.9218  [3s]
+  e 10/20  val=0.9279  best=0.9289  [5s]
+  e 15/20  val=0.9292  best=0.9292  [8s]
+  e 20/20  val=0.9292  best=0.9292  [11s]
+  DONE: best=0.9292 @ep13  final=0.9292  11s
+  sparsity/layer=[0.4993, 0.504, 0.5063, 0.5244]  dense=11.87M  eff=7.99M
+
+======================================================================
+ffn_step001 SUMMARY  (SGNNET refs: step605=95.95% @35K, ceiling=97.30%)
+  b1_A_norm_relu         0.9279  params=1,112,074 (0.9299%)  eff_flops=1.79M
+  b1_B_norm_rrelu        0.9246  params=1,112,074 (0.9299%)  eff_flops=1.80M
+  b1_C_norm_bias_rrelu   0.9284  params=1,140,746 (0.9539%)  eff_flops=1.85M
+  b5_A_norm_relu         0.9294  params=5,842,954 (4.886%)  eff_flops=7.38M
+  b5_B_norm_rrelu        0.9246  params=5,842,954 (4.886%)  eff_flops=7.38M
+  b5_C_norm_bias_rrelu   0.9292  params=5,937,162 (4.9647%)  eff_flops=7.99M
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/ffn_baseline/ffn_step001_perchannel_t0_seed42__mini_mps.json

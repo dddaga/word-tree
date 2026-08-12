@@ -1,0 +1,189 @@
+{
+  "step": "vlm_step006",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cpu",
+  "depth": 6,
+  "ckpt": "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt",
+  "n_eval": 20,
+  "seed": 42,
+  "split": "val",
+  "total_params": 256484928,
+  "vision_layer_params": 7087872,
+  "mcnemar": {
+    "student_right_teacher_wrong": 2,
+    "teacher_right_student_wrong": 3,
+    "p_two_sided": 1.0,
+    "delta_top1": -0.05,
+    "boot95_lo": -0.25,
+    "boot95_hi": 0.15000000000000002,
+    "n_boot": 200
+  },
+  "arms": {
+    "teacher_d12": {
+      "params": 256484928,
+      "params_saved_pct": 0.0,
+      "top1": 0.7,
+      "same_class_as_teacher": 1.0,
+      "agree_with_teacher": 1.0,
+      "kl_vs_teacher": 0.0,
+      "vision_ms": 112.05,
+      "prefill_ms": 41.78,
+      "total_ms": 153.83,
+      "speedup": 1.0
+    },
+    "distil_d6": {
+      "params": 213957696,
+      "params_saved_pct": 16.58,
+      "top1": 0.65,
+      "same_class_as_teacher": 0.6,
+      "agree_with_teacher": 0.55,
+      "kl_vs_teacher": 2.123171438276768,
+      "vision_ms": 57.72,
+      "prefill_ms": 41.47,
+      "total_ms": 99.18,
+      "speedup": 1.551
+    }
+  },
+  "records": [
+    {
+      "wnid": "n03394916",
+      "gold": 5,
+      "path": "n03394916_7000.JPEG",
+      "teacher_d12": 5,
+      "distil_d6": 3
+    },
+    {
+      "wnid": "n03425413",
+      "gold": 7,
+      "path": "n03425413_23251.JPEG",
+      "teacher_d12": 0,
+      "distil_d6": 2
+    },
+    {
+      "wnid": "n03394916",
+      "gold": 5,
+      "path": "n03394916_55411.JPEG",
+      "teacher_d12": 5,
+      "distil_d6": 5
+    },
+    {
+      "wnid": "n03028079",
+      "gold": 4,
+      "path": "n03028079_8382.JPEG",
+      "teacher_d12": 3,
+      "distil_d6": 4
+    },
+    {
+      "wnid": "n03425413",
+      "gold": 7,
+      "path": "n03425413_18430.JPEG",
+      "teacher_d12": 7,
+      "distil_d6": 3
+    },
+    {
+      "wnid": "n01440764",
+      "gold": 0,
+      "path": "n01440764_11650.JPEG",
+      "teacher_d12": 0,
+      "distil_d6": 1
+    },
+    {
+      "wnid": "n03417042",
+      "gold": 6,
+      "path": "n03417042_5301.JPEG",
+      "teacher_d12": 3,
+      "distil_d6": 6
+    },
+    {
+      "wnid": "n02979186",
+      "gold": 2,
+      "path": "n02979186_16382.JPEG",
+      "teacher_d12": 2,
+      "distil_d6": 2
+    },
+    {
+      "wnid": "n03888257",
+      "gold": 9,
+      "path": "n03888257_1222.JPEG",
+      "teacher_d12": 9,
+      "distil_d6": 9
+    },
+    {
+      "wnid": "n02102040",
+      "gold": 1,
+      "path": "ILSVRC2012_val_00036282.JPEG",
+      "teacher_d12": 2,
+      "distil_d6": 3
+    },
+    {
+      "wnid": "n03445777",
+      "gold": 8,
+      "path": "n03445777_10042.JPEG",
+      "teacher_d12": 3,
+      "distil_d6": 5
+    },
+    {
+      "wnid": "n02979186",
+      "gold": 2,
+      "path": "n02979186_18131.JPEG",
+      "teacher_d12": 2,
+      "distil_d6": 2
+    },
+    {
+      "wnid": "n03028079",
+      "gold": 4,
+      "path": "n03028079_12090.JPEG",
+      "teacher_d12": 4,
+      "distil_d6": 4
+    },
+    {
+      "wnid": "n03888257",
+      "gold": 9,
+      "path": "n03888257_18742.JPEG",
+      "teacher_d12": 9,
+      "distil_d6": 9
+    },
+    {
+      "wnid": "n02102040",
+      "gold": 1,
+      "path": "n02102040_8330.JPEG",
+      "teacher_d12": 1,
+      "distil_d6": 1
+    },
+    {
+      "wnid": "n03417042",
+      "gold": 6,
+      "path": "n03417042_11602.JPEG",
+      "teacher_d12": 6,
+      "distil_d6": 6
+    },
+    {
+      "wnid": "n03000684",
+      "gold": 3,
+      "path": "n03000684_16280.JPEG",
+      "teacher_d12": 3,
+      "distil_d6": 3
+    },
+    {
+      "wnid": "n01440764",
+      "gold": 0,
+      "path": "n01440764_8052.JPEG",
+      "teacher_d12": 1,
+      "distil_d6": 1
+    },
+    {
+      "wnid": "n03445777",
+      "gold": 8,
+      "path": "n03445777_10071.JPEG",
+      "teacher_d12": 8,
+      "distil_d6": 8
+    },
+    {
+      "wnid": "n03000684",
+      "gold": 3,
+      "path": "n03000684_13982.JPEG",
+      "teacher_d12": 3,
+      "distil_d6": 3
+    }
+  ]
+}

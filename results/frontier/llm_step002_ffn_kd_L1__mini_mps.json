@@ -1,0 +1,47 @@
+{
+  "step": "llm_step002",
+  "model": "gpt2",
+  "layer": 1,
+  "device": "mps",
+  "teacher_ppl": 63.0533,
+  "zero_floor_ppl": 64.5243,
+  "dense_ffn_params": 4722432,
+  "configs": {
+    "lr64": {
+      "config": "lr64",
+      "layer": 1,
+      "n_params": 99136,
+      "pct_dense_ffn": 2.1,
+      "final_ppl": 82.387,
+      "recovery_vs_baseline": 0.7653,
+      "elapsed_s": 75.3
+    },
+    "lr256": {
+      "config": "lr256",
+      "layer": 1,
+      "n_params": 394240,
+      "pct_dense_ffn": 8.35,
+      "final_ppl": 80.1988,
+      "recovery_vs_baseline": 0.7862,
+      "elapsed_s": 74.3
+    },
+    "sparse256k32": {
+      "config": "sparse256k32",
+      "layer": 1,
+      "n_params": 394240,
+      "pct_dense_ffn": 8.35,
+      "final_ppl": 79.7918,
+      "recovery_vs_baseline": 0.7902,
+      "elapsed_s": 74.8
+    },
+    "dense_reinit": {
+      "config": "dense_reinit",
+      "layer": 1,
+      "n_params": 4722432,
+      "pct_dense_ffn": 100.0,
+      "final_ppl": 77.5332,
+      "recovery_vs_baseline": 0.8132,
+      "elapsed_s": 75.8
+    }
+  }
+}

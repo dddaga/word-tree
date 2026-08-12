@@ -1,0 +1,11 @@
+{
+  "Ref": {
+    "D": 16,
+    "mode": "ref",
+    "n_params": 34976,
+    "best": 0.1417,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 9
+  }
+}

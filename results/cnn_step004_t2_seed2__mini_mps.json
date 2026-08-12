@@ -1,0 +1,35 @@
+{
+  "Ref": {
+    "desc": "ref: 64/128/256 k=7",
+    "n_params": 419146,
+    "macs_M": 183.2,
+    "best": 0.7773,
+    "best_ep": 27,
+    "delta_vs_ref": 0.0,
+    "t1_acc": 0.7317,
+    "t1_to_t2_delta": 0.0456,
+    "elapsed_s": 5139
+  },
+  "D_small_s": {
+    "desc": "small+side: 32/64/128 k=7",
+    "n_params": 149674,
+    "macs_M": 57.5,
+    "best": 0.7564,
+    "best_ep": 45,
+    "delta_vs_ref": -0.0209,
+    "t1_acc": 0.7096,
+    "t1_to_t2_delta": 0.0468,
+    "elapsed_s": 3720
+  },
+  "F_wide": {
+    "desc": "wide: 128/256/256 k=7",
+    "n_params": 825482,
+    "macs_M": 559.8,
+    "best": 0.7931,
+    "best_ep": 21,
+    "delta_vs_ref": 0.0158,
+    "t1_acc": 0.7442,
+    "t1_to_t2_delta": 0.0489,
+    "elapsed_s": 8160
+  }
+}

@@ -1,0 +1,27 @@
+======================================================================
+vlm_step001 role profile — HuggingFaceTB/SmolVLM-256M-Instruct  via AutoModelForImageTextToText
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 8815.73it/s]
+
+  total (tied-deduped) = 256,484,928 params   tied tensors skipped: 0
+
+  role                       params   %model  example
+  TRANSFORM_TEXT        106,168,320   41.39%  model.text_model.layers.0.self_attn.q_proj.w
+  TRANSFORM_VISION       85,017,600   33.15%  model.vision_model.encoder.layers.0.self_att
+  EMBEDDING              29,762,304   11.60%  model.vision_model.embeddings.patch_embeddin
+  READOUT_LMHEAD         28,385,280   11.07%  lm_head.weight(49280, 576)
+  READOUT_PROJECTOR       7,077,888    2.76%  model.connector.modality_projection.proj.wei
+  NORM                       73,536    0.03%  model.vision_model.encoder.layers.0.layer_no
+
+  submodule                              params   %model
+  model.text_model                  134,588,736   52.47%
+  model.vision_model                 86,433,024   33.70%
+  lm_head.weight                     28,385,280   11.07%
+  model.connector                     7,077,888    2.76%
+
+  SGNNET-ADDRESSABLE (readout) share = 13.83% (35,463,168 params) <- Amdahl ceiling for readout-only prune
+    dense_lowrank_r256   ->  229,391,067 params  (10.56% smaller, 1.118x)
+    sgn_topk_r128k32     ->  225,170,950 params  (12.21% smaller, 1.139x)
+    sgn_topk_r64k16      ->  223,078,623 params  (13.03% smaller, 1.150x)
+
+  vision-token cost: 1 image = 1135 tokens (seq 4 -> 1139)
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step001_role_profile__mini_mps.json

@@ -1,0 +1,142 @@
+
+======================================================================
+ffn_step001 — per-channel FFN T0 (20ep, 50% Imagenette)
+  device=cpu  configs=['b1_A_norm_relu', 'b1_B_norm_rrelu', 'b1_C_norm_bias_rrelu', 'b5_A_norm_relu', 'b5_B_norm_rrelu', 'b5_C_norm_bias_rrelu']
+======================================================================
+
+────────────────────────────────────────────────────────────
+b1_A_norm_relu: widths=[49, 28, 20, 8]  params=1,112,074 (0.930% FC)  device=cpu
+  e  1/75  val=0.3605  best=0.3605  [0s]
+  e  5/75  val=0.9014  best=0.9014  [2s]
+  e 10/75  val=0.9251  best=0.9251  [5s]
+  e 15/75  val=0.9251  best=0.9264  [8s]
+  e 20/75  val=0.9294  best=0.9294  [10s]
+  e 25/75  val=0.9284  best=0.9294  [12s]
+  e 30/75  val=0.9276  best=0.9294  [14s]
+  e 35/75  val=0.9264  best=0.9294  [17s]
+  e 40/75  val=0.9261  best=0.9294  [19s]
+  e 45/75  val=0.9259  best=0.9294  [22s]
+  e 50/75  val=0.9251  best=0.9294  [25s]
+  e 55/75  val=0.9251  best=0.9294  [28s]
+  e 60/75  val=0.9251  best=0.9294  [31s]
+  e 65/75  val=0.9254  best=0.9294  [33s]
+  e 70/75  val=0.9254  best=0.9294  [36s]
+  e 75/75  val=0.9254  best=0.9294  [39s]
+  DONE: best=0.9294 @ep20  final=0.9254  39s
+  sparsity/layer=[0.5817, 0.5843, 0.5999]  dense=2.22M  eff=1.79M
+
+────────────────────────────────────────────────────────────
+b1_B_norm_rrelu: widths=[49, 28, 20, 8]  params=1,112,074 (0.930% FC)  device=cpu
+  e  1/75  val=0.3633  best=0.3633  [1s]
+  e  5/75  val=0.8983  best=0.8983  [4s]
+  e 10/75  val=0.9177  best=0.9187  [8s]
+  e 15/75  val=0.9228  best=0.9228  [12s]
+  e 20/75  val=0.9243  best=0.9243  [16s]
+  e 25/75  val=0.9251  best=0.9251  [20s]
+  e 30/75  val=0.9254  best=0.9254  [23s]
+  e 35/75  val=0.9246  best=0.9254  [27s]
+  e 40/75  val=0.9246  best=0.9254  [31s]
+  e 45/75  val=0.9248  best=0.9254  [35s]
+  e 50/75  val=0.9248  best=0.9254  [39s]
+  e 55/75  val=0.9248  best=0.9254  [43s]
+  e 60/75  val=0.9246  best=0.9254  [47s]
+  e 65/75  val=0.9248  best=0.9254  [51s]
+  e 70/75  val=0.9248  best=0.9254  [55s]
+  e 75/75  val=0.9248  best=0.9254  [59s]
+  DONE: best=0.9254 @ep30  final=0.9248  59s
+  sparsity/layer=[0.5814, 0.5825, 0.5897]  dense=2.22M  eff=1.80M
+
+────────────────────────────────────────────────────────────
+b1_C_norm_bias_rrelu: widths=[49, 28, 20, 8]  params=1,140,746 (0.954% FC)  device=cpu
+  e  1/75  val=0.4864  best=0.4864  [1s]
+  e  5/75  val=0.9113  best=0.9113  [4s]
+  e 10/75  val=0.9223  best=0.9284  [8s]
+  e 15/75  val=0.9261  best=0.9284  [12s]
+  e 20/75  val=0.9271  best=0.9284  [16s]
+  e 25/75  val=0.9276  best=0.9284  [20s]
+  e 30/75  val=0.9289  best=0.9297  [24s]
+  e 35/75  val=0.9292  best=0.9297  [28s]
+  e 40/75  val=0.9299  best=0.9299  [32s]
+  e 45/75  val=0.9297  best=0.9299  [36s]
+  e 50/75  val=0.9297  best=0.9299  [40s]
+  e 55/75  val=0.9304  best=0.9304  [43s]
+  e 60/75  val=0.9302  best=0.9304  [47s]
+  e 65/75  val=0.9304  best=0.9304  [51s]
+  e 70/75  val=0.9304  best=0.9304  [55s]
+  e 75/75  val=0.9304  best=0.9304  [59s]
+  DONE: best=0.9304 @ep55  final=0.9304  59s
+  sparsity/layer=[0.502, 0.5031, 0.513]  dense=2.28M  eff=1.85M
+
+────────────────────────────────────────────────────────────
+b5_A_norm_relu: widths=[49, 84, 60, 32, 8]  params=5,842,954 (4.886% FC)  device=cpu
+  e  1/75  val=0.4492  best=0.4492  [1s]
+  e  5/75  val=0.9124  best=0.9124  [7s]
+  e 10/75  val=0.9289  best=0.9289  [14s]
+  e 15/75  val=0.9297  best=0.9304  [21s]
+  e 20/75  val=0.9289  best=0.9304  [28s]
+  e 25/75  val=0.9284  best=0.9304  [34s]
+  e 30/75  val=0.9279  best=0.9304  [41s]
+  e 35/75  val=0.9282  best=0.9304  [48s]
+  e 40/75  val=0.9271  best=0.9304  [55s]
+  e 45/75  val=0.9266  best=0.9304  [62s]
+  e 50/75  val=0.9261  best=0.9304  [69s]
+  e 55/75  val=0.9264  best=0.9304  [76s]
+  e 60/75  val=0.9264  best=0.9304  [83s]
+  e 65/75  val=0.9261  best=0.9304  [91s]
+  e 70/75  val=0.9261  best=0.9304  [98s]
+  e 75/75  val=0.9259  best=0.9304  [105s]
+  DONE: best=0.9304 @ep11  final=0.9259  105s
+  sparsity/layer=[0.5816, 0.584, 0.5882, 0.614]  dense=11.69M  eff=7.38M
+
+────────────────────────────────────────────────────────────
+b5_B_norm_rrelu: widths=[49, 84, 60, 32, 8]  params=5,842,954 (4.886% FC)  device=cpu
+  e  1/75  val=0.4194  best=0.4194  [2s]
+  e  5/75  val=0.9032  best=0.9032  [11s]
+  e 10/75  val=0.9213  best=0.9213  [22s]
+  e 15/75  val=0.9218  best=0.9218  [32s]
+  e 20/75  val=0.9215  best=0.9225  [43s]
+  e 25/75  val=0.9228  best=0.9228  [54s]
+  e 30/75  val=0.9223  best=0.9228  [65s]
+  e 35/75  val=0.9208  best=0.9228  [75s]
+  e 40/75  val=0.9213  best=0.9228  [85s]
+  e 45/75  val=0.9218  best=0.9228  [96s]
+  e 50/75  val=0.9213  best=0.9228  [106s]
+  e 55/75  val=0.9210  best=0.9228  [116s]
+  e 60/75  val=0.9210  best=0.9228  [126s]
+  e 65/75  val=0.9210  best=0.9228  [137s]
+  e 70/75  val=0.9210  best=0.9228  [147s]
+  e 75/75  val=0.9208  best=0.9228  [157s]
+  DONE: best=0.9228 @ep25  final=0.9208  158s
+  sparsity/layer=[0.5814, 0.5828, 0.5839, 0.599]  dense=11.69M  eff=7.39M
+
+────────────────────────────────────────────────────────────
+b5_C_norm_bias_rrelu: widths=[49, 84, 60, 32, 8]  params=5,937,162 (4.965% FC)  device=cpu
+  e  1/75  val=0.3572  best=0.3572  [2s]
+  e  5/75  val=0.9167  best=0.9167  [11s]
+  e 10/75  val=0.9241  best=0.9256  [22s]
+  e 15/75  val=0.9246  best=0.9259  [32s]
+  e 20/75  val=0.9259  best=0.9259  [43s]
+  e 25/75  val=0.9269  best=0.9269  [53s]
+  e 30/75  val=0.9287  best=0.9287  [64s]
+  e 35/75  val=0.9287  best=0.9287  [75s]
+  e 40/75  val=0.9294  best=0.9297  [85s]
+  e 45/75  val=0.9297  best=0.9297  [95s]
+  e 50/75  val=0.9294  best=0.9297  [106s]
+  e 55/75  val=0.9294  best=0.9297  [116s]
+  e 60/75  val=0.9294  best=0.9297  [127s]
+  e 65/75  val=0.9294  best=0.9297  [137s]
+  e 70/75  val=0.9294  best=0.9297  [148s]
+  e 75/75  val=0.9294  best=0.9297  [158s]
+  DONE: best=0.9297 @ep39  final=0.9294  158s
+  sparsity/layer=[0.4993, 0.5034, 0.505, 0.524]  dense=11.87M  eff=7.99M
+
+======================================================================
+ffn_step001 SUMMARY  (SGNNET refs: step605=95.95% @35K, ceiling=97.30%)
+  b1_A_norm_relu         0.9294  params=1,112,074 (0.9299%)  eff_flops=1.79M
+  b1_B_norm_rrelu        0.9254  params=1,112,074 (0.9299%)  eff_flops=1.80M
+  b1_C_norm_bias_rrelu   0.9304  params=1,140,746 (0.9539%)  eff_flops=1.85M
+  b5_A_norm_relu         0.9304  params=5,842,954 (4.886%)  eff_flops=7.38M
+  b5_B_norm_rrelu        0.9228  params=5,842,954 (4.886%)  eff_flops=7.39M
+  b5_C_norm_bias_rrelu   0.9297  params=5,937,162 (4.9647%)  eff_flops=7.99M
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/ffn_baseline/ffn_step001_perchannel_t1_seed42__mini_cpu.json

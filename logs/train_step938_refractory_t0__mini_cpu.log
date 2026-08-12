@@ -1,0 +1,124 @@
+Dataset loaded into RAM: train=9469  val=3925  (1.34 GB features)
+
+======================================================================
+step938 — Refractory neurons T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  N=2048/D=16/K_hh=2/K_iter=5
+  AH era ref (step16E): +4.31pp at D=16/N=512/β=0.7/α_r=2.0
+  Ref context (step907/Ref_dw): 0.9396
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: spec=ref  β=None  α_r=None  params=34,976
+  e  1  top1=0.7743  lr=2.36e-03
+  e  1  loss=2.4823  task=2.4823  safety=0.0000  top1=0.7743  lr=2.36e-03
+  e  2  top1=0.8660  lr=2.36e-03
+  e  3  top1=0.8846  lr=2.36e-03
+  e  4  top1=0.8961  lr=2.36e-03
+  e  5  top1=0.9129  lr=2.36e-03
+  e  6  top1=0.9106  lr=2.36e-03
+  e  7  top1=0.9157  lr=2.36e-03
+  e  8  top1=0.9203  lr=2.36e-03
+  e  9  top1=0.9274  lr=2.36e-03
+  e 10  top1=0.9310  lr=2.36e-03
+  e 10  loss=0.0830  task=0.0830  safety=0.0000  top1=0.9310  lr=2.36e-03
+  e 11  top1=0.9297  lr=2.36e-03
+  e 12  top1=0.9338  lr=2.36e-03
+  e 13  top1=0.9287  lr=2.36e-03
+  e 14  top1=0.9355  lr=2.36e-03
+  e 15  top1=0.9338  lr=2.36e-03
+  e 16  top1=0.9376  lr=2.36e-03
+  e 17  top1=0.9361  lr=2.36e-03
+  e 18  top1=0.9386  lr=2.36e-03
+  e 19  top1=0.9381  lr=2.36e-03
+  e 20  top1=0.9389  lr=2.36e-03
+  e 20  loss=0.0350  task=0.0350  safety=0.0000  top1=0.9389  lr=2.36e-03
+  -> best=0.9389 @ep20  Δ=+0.00pp  99s
+────────────────────────────────────────────────────────────
+A_β07_αr2: spec=refractory  β=0.7  α_r=2.0  params=34,976
+  e  1  top1=0.2527  lr=2.36e-03
+  e  1  loss=8.8728  task=8.8728  safety=0.0000  top1=0.2527  lr=2.36e-03
+  e  2  top1=0.4545  lr=2.36e-03
+  e  3  top1=0.6334  lr=2.36e-03
+  e  4  top1=0.7327  lr=2.36e-03
+  e  5  top1=0.7857  lr=2.36e-03
+  e  6  top1=0.7941  lr=2.36e-03
+  e  7  top1=0.8436  lr=2.36e-03
+  e  8  top1=0.8578  lr=2.36e-03
+  e  9  top1=0.8622  lr=2.36e-03
+  e 10  top1=0.8869  lr=2.36e-03
+  e 10  loss=0.4822  task=0.4822  safety=0.0000  top1=0.8869  lr=2.36e-03
+  e 11  top1=0.8869  lr=2.36e-03
+  e 12  top1=0.8910  lr=2.36e-03
+  e 13  top1=0.8973  lr=2.36e-03
+  e 14  top1=0.9070  lr=2.36e-03
+  e 15  top1=0.9078  lr=2.36e-03
+  e 16  top1=0.9139  lr=2.36e-03
+  e 17  top1=0.9103  lr=2.36e-03
+  e 18  top1=0.9167  lr=2.36e-03
+  e 19  top1=0.9149  lr=2.36e-03
+  e 20  top1=0.9195  lr=2.36e-03
+  e 20  loss=0.2730  task=0.2730  safety=0.0000  top1=0.9195  lr=2.36e-03
+  -> best=0.9195 @ep20  Δ=-1.94pp  106s
+────────────────────────────────────────────────────────────
+B_β05_αr1: spec=refractory  β=0.5  α_r=1.0  params=34,976
+  e  1  top1=0.5817  lr=2.36e-03
+  e  1  loss=3.8262  task=3.8262  safety=0.0000  top1=0.5817  lr=2.36e-03
+  e  2  top1=0.8150  lr=2.36e-03
+  e  3  top1=0.8604  lr=2.36e-03
+  e  4  top1=0.8871  lr=2.36e-03
+  e  5  top1=0.8978  lr=2.36e-03
+  e  6  top1=0.8981  lr=2.36e-03
+  e  7  top1=0.9118  lr=2.36e-03
+  e  8  top1=0.9220  lr=2.36e-03
+  e  9  top1=0.9195  lr=2.36e-03
+  e 10  top1=0.9259  lr=2.36e-03
+  e 10  loss=0.1954  task=0.1954  safety=0.0000  top1=0.9259  lr=2.36e-03
+  e 11  top1=0.9200  lr=2.36e-03
+  e 12  top1=0.9241  lr=2.36e-03
+  e 13  top1=0.9210  lr=2.36e-03
+  e 14  top1=0.9304  lr=2.36e-03
+  e 15  top1=0.9261  lr=2.36e-03
+  e 16  top1=0.9332  lr=2.36e-03
+  e 17  top1=0.9330  lr=2.36e-03
+  e 18  top1=0.9332  lr=2.36e-03
+  e 19  top1=0.9325  lr=2.36e-03
+  e 20  top1=0.9386  lr=2.36e-03
+  e 20  loss=0.1053  task=0.1053  safety=0.0000  top1=0.9386  lr=2.36e-03
+  -> best=0.9386 @ep20  Δ=-0.03pp  108s
+────────────────────────────────────────────────────────────
+C_β09_αr1: spec=refractory  β=0.9  α_r=1.0  params=34,976
+  e  1  top1=0.4504  lr=2.36e-03
+  e  1  loss=4.8392  task=4.8392  safety=0.0000  top1=0.4504  lr=2.36e-03
+  e  2  top1=0.7312  lr=2.36e-03
+  e  3  top1=0.8107  lr=2.36e-03
+  e  4  top1=0.8583  lr=2.36e-03
+  e  5  top1=0.8859  lr=2.36e-03
+  e  6  top1=0.8795  lr=2.36e-03
+  e  7  top1=0.9065  lr=2.36e-03
+  e  8  top1=0.9146  lr=2.36e-03
+  e  9  top1=0.9141  lr=2.36e-03
+  e 10  top1=0.9228  lr=2.36e-03
+  e 10  loss=0.2444  task=0.2444  safety=0.0000  top1=0.9228  lr=2.36e-03
+  e 11  top1=0.9175  lr=2.36e-03
+  e 12  top1=0.9218  lr=2.36e-03
+  e 13  top1=0.9256  lr=2.36e-03
+  e 14  top1=0.9271  lr=2.36e-03
+  e 15  top1=0.9292  lr=2.36e-03
+  e 16  top1=0.9327  lr=2.36e-03
+  e 17  top1=0.9327  lr=2.36e-03
+  e 18  top1=0.9343  lr=2.36e-03
+  e 19  top1=0.9350  lr=2.36e-03
+  e 20  top1=0.9361  lr=2.36e-03
+  e 20  loss=0.1371  task=0.1371  safety=0.0000  top1=0.9361  lr=2.36e-03
+  -> best=0.9361 @ep20  Δ=-0.28pp  111s
+
+======================================================================
+STEP 938 SUMMARY — Refractory neurons T0
+======================================================================
+  Ref            params=34,976  best=0.9389  Δ=+0.00pp  (baseline)
+  A_β07_αr2      params=34,976  best=0.9195  Δ=-1.94pp  KILL
+  B_β05_αr1      params=34,976  best=0.9386  Δ=-0.03pp  NEUTRAL
+  C_β09_αr1      params=34,976  best=0.9361  Δ=-0.28pp  NEUTRAL
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step938_refractory_t0_seed42__mini_cpu.json

@@ -1,0 +1,33 @@
+cnn_step014 GA_3 T1+twophase | 611,914 params | 183.2M MACs
+Config: C=(64,192,384) crelu=(T,T,T) exp=2(ignored) — step006 T0=38.04%
+Phase 1: 20ep cosine 3e-4→1e-5  Phase 2: 55ep LR=1e-05
+Device: mps | Slot: mini_cpu
+Key test: GA_3 T1 vs GA_2 T1=41.68% and step013 Ref T1=?
+
+  ep  5 [P1@ep5]  val=0.1896  best=0.2076@ep4  lr=2.58e-04
+  ep 10 [P1@ep10]  val=0.2785  best=0.2785@ep10  lr=1.55e-04
+  ep 15 [P1@ep15]  val=0.3715  best=0.3715@ep15  lr=5.25e-05
+  ep 20 [P1@ep20]  val=0.3804  best=0.3804@ep20  lr=1.00e-05
+  → Phase 1 done: best=0.3804 vs GA_3 T0=0.3804 (MATCH)
+  ── Phase 2 start: LR set to 1e-05 ──
+  ep 25 [P2@ep5]  val=0.3794  best=0.3809@ep23  lr=1.00e-05
+  ep 30 [P2@ep10]  val=0.3850  best=0.3850@ep30  lr=1.00e-05
+  ep 35 [P2@ep15]  val=0.3814  best=0.3850@ep30  lr=1.00e-05
+  ep 40 [P2@ep20]  val=0.3809  best=0.3850@ep30  lr=1.00e-05
+  ep 45 [P2@ep25]  val=0.3829  best=0.3850@ep30  lr=1.00e-05
+  ep 50 [P2@ep30]  val=0.3799  best=0.3850@ep30  lr=1.00e-05
+  ep 55 [P2@ep35]  val=0.3796  best=0.3850@ep30  lr=1.00e-05
+  ep 60 [P2@ep40]  val=0.3794  best=0.3850@ep30  lr=1.00e-05
+  ep 65 [P2@ep45]  val=0.3738  best=0.3850@ep30  lr=1.00e-05
+  ep 70 [P2@ep50]  val=0.3773  best=0.3850@ep30  lr=1.00e-05
+  ep 75 [P2@ep55]  val=0.3748  best=0.3850@ep30  lr=1.00e-05
+
+============================================================
+cnn_step014 GA_3 T1+twophase RESULT
+  best=0.3850 @ep30  elapsed=1642s
+  Phase 1 best=0.3804  Phase 2 delta=+0.0046
+  vs GA_3 T0 (38.04%): +0.46pp
+  vs GA_2 T1 (41.68%): -3.18pp
+  Verdict: CAPS EARLY (CReLU limits regardless of width)
+============================================================
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step014_ga3_twophase_t1_seed42__mini_cpu.json

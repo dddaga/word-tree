@@ -1,0 +1,91 @@
+{
+  "step": "vlm_step001",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "total_params": 256484928,
+  "tied_skipped": 0,
+  "roles": {
+    "EMBEDDING": {
+      "params": 29762304,
+      "tensors": 4,
+      "examples": [
+        "model.vision_model.embeddings.patch_embedding.weight(768, 3, 16, 16)",
+        "model.vision_model.embeddings.patch_embedding.bias(768,)",
+        "model.vision_model.embeddings.position_embedding.weight(1024, 768)"
+      ]
+    },
+    "TRANSFORM_VISION": {
+      "params": 85017600,
+      "tensors": 144,
+      "examples": [
+        "model.vision_model.encoder.layers.0.self_attn.k_proj.weight(768, 768)",
+        "model.vision_model.encoder.layers.0.self_attn.k_proj.bias(768,)",
+        "model.vision_model.encoder.layers.0.self_attn.v_proj.weight(768, 768)"
+      ]
+    },
+    "NORM": {
+      "params": 73536,
+      "tensors": 111,
+      "examples": [
+        "model.vision_model.encoder.layers.0.layer_norm1.weight(768,)",
+        "model.vision_model.encoder.layers.0.layer_norm1.bias(768,)",
+        "model.vision_model.encoder.layers.0.layer_norm2.weight(768,)"
+      ]
+    },
+    "READOUT_PROJECTOR": {
+      "params": 7077888,
+      "tensors": 1,
+      "examples": [
+        "model.connector.modality_projection.proj.weight(576, 12288)"
+      ]
+    },
+    "TRANSFORM_TEXT": {
+      "params": 106168320,
+      "tensors": 210,
+      "examples": [
+        "model.text_model.layers.0.self_attn.q_proj.weight(576, 576)",
+        "model.text_model.layers.0.self_attn.k_proj.weight(192, 576)",
+        "model.text_model.layers.0.self_attn.v_proj.weight(192, 576)"
+      ]
+    },
+    "READOUT_LMHEAD": {
+      "params": 28385280,
+      "tensors": 1,
+      "examples": [
+        "lm_head.weight(49280, 576)"
+      ]
+    }
+  },
+  "submodules": {
+    "model.vision_model": 86433024,
+    "model.connector": 7077888,
+    "model.text_model": 134588736,
+    "lm_head.weight": 28385280
+  },
+  "amdahl": {
+    "readout_params": 35463168,
+    "readout_share": 0.1383,
+    "projections": {
+      "dense_lowrank_r256": {
+        "model_params_after": 229391067,
+        "whole_model_reduction_pct": 10.564,
+        "compression_x": 1.118
+      },
+      "sgn_topk_r128k32": {
+        "model_params_after": 225170950,
+        "whole_model_reduction_pct": 12.209,
+        "compression_x": 1.139
+      },
+      "sgn_topk_r64k16": {
+        "model_params_after": 223078623,
+        "whole_model_reduction_pct": 13.025,
+        "compression_x": 1.15
+      }
+    }
+  },
+  "token_probe": {
+    "seq_len_with_image": 1139,
+    "seq_len_text_only": 4,
+    "image_token_cost": 1135
+  },
+  "measured_ratios_source": "det_step002/003"
+}

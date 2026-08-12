@@ -1,0 +1,10 @@
+{
+  "best": 0.7380891719745223,
+  "best_ep": 65,
+  "delta": 0.001989171974522308,
+  "verdict": "NO-GAIN",
+  "elapsed": 814.256031036377,
+  "cutmix_alpha": 0.2,
+  "baseline_step021": 0.7361,
+  "advance_threshold": 0.7411
+}

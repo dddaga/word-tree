@@ -1,0 +1,29 @@
+{
+  "Ref": {
+    "p": 1.0,
+    "p_D": 16,
+    "n_params": 34976,
+    "best": 0.7748,
+    "best_ep": 1,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 6
+  },
+  "A_p025": {
+    "p": 0.25,
+    "p_D": 4,
+    "n_params": 34976,
+    "best": 0.4869,
+    "best_ep": 1,
+    "delta_vs_ref": -0.2879,
+    "elapsed_s": 4
+  },
+  "B_p050": {
+    "p": 0.5,
+    "p_D": 8,
+    "n_params": 34976,
+    "best": 0.6594,
+    "best_ep": 1,
+    "delta_vs_ref": -0.1154,
+    "elapsed_s": 3
+  }
+}

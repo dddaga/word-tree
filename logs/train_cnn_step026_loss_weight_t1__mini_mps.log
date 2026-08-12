@@ -1,0 +1,51 @@
+cnn_step026 GA2+Mixup(α=0.2) Loss Weight Ablation T1 | 75ep 50%data | seed=42
+GA#2: C=(32,64,384) k=3 exp=2 crelu  params=481,514  MACs=98.5M
+Baseline (step021, feat=0.50 dkd=0.30 ce=0.20): 0.7361  Advance>=0.7411
+
+──────────────────────────────────────────────────
+Config A: feat=0.3 dkd=0.5 ce=0.2
+  ep  5  val=0.4227  best=0.4227  lr=2.97e-04
+  ep 10  val=0.5722  best=0.5722  lr=2.87e-04
+  ep 15  val=0.5552  best=0.5722  lr=2.72e-04
+  ep 20  val=0.5975  best=0.5975  lr=2.52e-04
+  ep 25  val=0.6375  best=0.6375  lr=2.28e-04
+  ep 30  val=0.6583  best=0.6583  lr=2.00e-04
+  ep 35  val=0.6459  best=0.6583  lr=1.70e-04
+  ep 40  val=0.6451  best=0.6583  lr=1.40e-04
+  ep 45  val=0.6800  best=0.6800  lr=1.10e-04
+  ep 50  val=0.6540  best=0.6800  lr=8.25e-05
+  ep 55  val=0.6780  best=0.6800  lr=5.80e-05
+  ep 60  val=0.6680  best=0.6800  lr=3.77e-05
+  ep 65  val=0.6820  best=0.6820  lr=2.25e-05
+  ep 70  val=0.6846  best=0.6846  lr=1.32e-05
+  ep 75  val=0.6884  best=0.6884  lr=1.00e-05
+  -> A  best=0.6884 @ep75  Δ_step021=-0.0477  NO-GAIN  (844s)
+
+──────────────────────────────────────────────────
+Config B: feat=0.2 dkd=0.6 ce=0.2
+  ep  5  val=0.3085  best=0.3085  lr=2.97e-04
+  ep 10  val=0.4479  best=0.4479  lr=2.87e-04
+  ep 15  val=0.4894  best=0.4894  lr=2.72e-04
+  ep 20  val=0.5697  best=0.5697  lr=2.52e-04
+  ep 25  val=0.5868  best=0.5868  lr=2.28e-04
+  ep 30  val=0.6324  best=0.6324  lr=2.00e-04
+  ep 35  val=0.6089  best=0.6324  lr=1.70e-04
+  ep 40  val=0.6143  best=0.6324  lr=1.40e-04
+  ep 45  val=0.6454  best=0.6454  lr=1.10e-04
+  ep 50  val=0.6260  best=0.6454  lr=8.25e-05
+  ep 55  val=0.6413  best=0.6454  lr=5.80e-05
+  ep 60  val=0.6298  best=0.6454  lr=3.77e-05
+  ep 65  val=0.6469  best=0.6469  lr=2.25e-05
+  ep 70  val=0.6459  best=0.6469  lr=1.32e-05
+  ep 75  val=0.6471  best=0.6471  lr=1.00e-05
+  -> B  best=0.6471 @ep75  Δ_step021=-0.0890  NO-GAIN  (791s)
+
+============================================================
+cnn_step026 SUMMARY — Loss Weight Ablation T1
+============================================================
+  Baseline (feat=0.50 dkd=0.30 ce=0.20): 0.7361
+  A (feat=0.3 dkd=0.5 ce=0.2): 0.6884 @ep75  Δ=-0.0477  NO-GAIN
+  B (feat=0.2 dkd=0.6 ce=0.2): 0.6471 @ep75  Δ=-0.0890  NO-GAIN
+  Best: A → 0.6884
+  -> NO-GAIN — close loss-weight direction
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step026_loss_weight_t1__mini_mps.json

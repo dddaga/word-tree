@@ -1,0 +1,159 @@
+
+======================================================================
+step963 — ESC-50 subspace routing T0 (20ep, 50% data)
+  device=cpu  epochs=20  seed=42
+  Route over B semantic subspace nodes (each sees S-d block of embedding).
+  Linear: 0.4175  |  Sparse ref: 0.1425
+======================================================================
+
+────────────────────────────────────────────────────────────
+Linear: Linear(384, 50)  params=19,250
+  e  1  top1=0.0625  lr=2.98e-03
+  e  2  top1=0.1475  lr=2.93e-03
+  e  3  top1=0.1625  lr=2.84e-03
+  e  4  top1=0.2650  lr=2.71e-03
+  e  5  top1=0.2750  lr=2.56e-03
+  e  6  top1=0.3200  lr=2.38e-03
+  e  7  top1=0.3625  lr=2.18e-03
+  e  8  top1=0.3600  lr=1.97e-03
+  e  9  top1=0.3575  lr=1.74e-03
+  e 10  top1=0.4025  lr=1.51e-03
+  e 11  top1=0.4025  lr=1.27e-03
+  e 12  top1=0.4050  lr=1.04e-03
+  e 13  top1=0.4100  lr=8.26e-04
+  e 14  top1=0.4125  lr=6.26e-04
+  e 15  top1=0.4100  lr=4.48e-04
+  e 16  top1=0.4075  lr=2.96e-04
+  e 17  top1=0.4175  lr=1.73e-04
+  e 18  top1=0.4175  lr=8.32e-05
+  e 19  top1=0.4175  lr=2.84e-05
+  e 20  top1=0.4150  lr=1.00e-05
+  -> best=0.4175 @ep17  Δ_sparse=+27.50pp  Δ_linear=+0.00pp  (linear control)
+────────────────────────────────────────────────────────────
+A_b24_s16: B=24 blocks × S=16-d → 24 nodes  D_node=16  params=19,914
+  e  1  top1=0.0350  lr=2.98e-03
+  e  2  top1=0.0425  lr=2.93e-03
+  e  3  top1=0.0900  lr=2.84e-03
+  e  4  top1=0.0850  lr=2.71e-03
+  e  5  top1=0.0800  lr=2.56e-03
+  e  6  top1=0.0650  lr=2.38e-03
+  e  7  top1=0.1425  lr=2.18e-03
+  e  8  top1=0.1225  lr=1.97e-03
+  e  9  top1=0.1725  lr=1.74e-03
+  e 10  top1=0.2000  lr=1.51e-03
+  e 11  top1=0.1875  lr=1.27e-03
+  e 12  top1=0.1825  lr=1.04e-03
+  e 13  top1=0.1875  lr=8.26e-04
+  e 14  top1=0.1950  lr=6.26e-04
+  e 15  top1=0.2100  lr=4.48e-04
+  e 16  top1=0.2100  lr=2.96e-04
+  e 17  top1=0.2150  lr=1.73e-04
+  e 18  top1=0.2225  lr=8.32e-05
+  e 19  top1=0.2250  lr=2.84e-05
+  e 20  top1=0.2250  lr=1.00e-05
+  -> best=0.2250 @ep19  Δ_sparse=+8.25pp  Δ_linear=-19.25pp  INTERESTING
+────────────────────────────────────────────────────────────
+B_b16_s24: B=16 blocks × S=24-d → 16 nodes  D_node=16  params=13,506
+  e  1  top1=0.0275  lr=2.98e-03
+  e  2  top1=0.0350  lr=2.93e-03
+  e  3  top1=0.0625  lr=2.84e-03
+  e  4  top1=0.0775  lr=2.71e-03
+  e  5  top1=0.1100  lr=2.56e-03
+  e  6  top1=0.1000  lr=2.38e-03
+  e  7  top1=0.1150  lr=2.18e-03
+  e  8  top1=0.1200  lr=1.97e-03
+  e  9  top1=0.1650  lr=1.74e-03
+  e 10  top1=0.1825  lr=1.51e-03
+  e 11  top1=0.1625  lr=1.27e-03
+  e 12  top1=0.1425  lr=1.04e-03
+  e 13  top1=0.1650  lr=8.26e-04
+  e 14  top1=0.1900  lr=6.26e-04
+  e 15  top1=0.1950  lr=4.48e-04
+  e 16  top1=0.1900  lr=2.96e-04
+  e 17  top1=0.1900  lr=1.73e-04
+  e 18  top1=0.1900  lr=8.32e-05
+  e 19  top1=0.1850  lr=2.84e-05
+  e 20  top1=0.1875  lr=1.00e-05
+  -> best=0.1950 @ep15  Δ_sparse=+5.25pp  Δ_linear=-22.25pp  INTERESTING
+────────────────────────────────────────────────────────────
+C_b48_s8: B=48 blocks × S=8-d → 48 nodes  D_node=16  params=39,394
+  e  1  top1=0.0225  lr=2.98e-03
+  e  2  top1=0.0425  lr=2.93e-03
+  e  3  top1=0.0950  lr=2.84e-03
+  e  4  top1=0.0775  lr=2.71e-03
+  e  5  top1=0.1475  lr=2.56e-03
+  e  6  top1=0.1400  lr=2.38e-03
+  e  7  top1=0.1750  lr=2.18e-03
+  e  8  top1=0.2125  lr=1.97e-03
+  e  9  top1=0.1900  lr=1.74e-03
+  e 10  top1=0.2225  lr=1.51e-03
+  e 11  top1=0.2000  lr=1.27e-03
+  e 12  top1=0.2200  lr=1.04e-03
+  e 13  top1=0.2525  lr=8.26e-04
+  e 14  top1=0.2450  lr=6.26e-04
+  e 15  top1=0.2650  lr=4.48e-04
+  e 16  top1=0.2650  lr=2.96e-04
+  e 17  top1=0.2525  lr=1.73e-04
+  e 18  top1=0.2550  lr=8.32e-05
+  e 19  top1=0.2550  lr=2.84e-05
+  e 20  top1=0.2550  lr=1.00e-05
+  -> best=0.2650 @ep15  Δ_sparse=+12.25pp  Δ_linear=-15.25pp  ADVANCE→T1
+────────────────────────────────────────────────────────────
+D_b12_s32: B=12 blocks × S=32-d → 12 nodes  D_node=16  params=10,366
+  e  1  top1=0.0425  lr=2.98e-03
+  e  2  top1=0.0350  lr=2.93e-03
+  e  3  top1=0.0600  lr=2.84e-03
+  e  4  top1=0.0675  lr=2.71e-03
+  e  5  top1=0.0775  lr=2.56e-03
+  e  6  top1=0.0950  lr=2.38e-03
+  e  7  top1=0.1100  lr=2.18e-03
+  e  8  top1=0.1175  lr=1.97e-03
+  e  9  top1=0.1075  lr=1.74e-03
+  e 10  top1=0.1175  lr=1.51e-03
+  e 11  top1=0.1325  lr=1.27e-03
+  e 12  top1=0.1375  lr=1.04e-03
+  e 13  top1=0.1400  lr=8.26e-04
+  e 14  top1=0.1500  lr=6.26e-04
+  e 15  top1=0.1550  lr=4.48e-04
+  e 16  top1=0.1525  lr=2.96e-04
+  e 17  top1=0.1700  lr=1.73e-04
+  e 18  top1=0.1675  lr=8.32e-05
+  e 19  top1=0.1675  lr=2.84e-05
+  e 20  top1=0.1675  lr=1.00e-05
+  -> best=0.1700 @ep17  Δ_sparse=+2.75pp  Δ_linear=-24.75pp  NEUTRAL
+────────────────────────────────────────────────────────────
+E_b96_s4: B=96 blocks × S=4-d → 96 nodes  D_node=16  params=78,546
+  e  1  top1=0.0725  lr=2.98e-03
+  e  2  top1=0.0700  lr=2.93e-03
+  e  3  top1=0.0450  lr=2.84e-03
+  e  4  top1=0.1050  lr=2.71e-03
+  e  5  top1=0.1700  lr=2.56e-03
+  e  6  top1=0.1875  lr=2.38e-03
+  e  7  top1=0.2375  lr=2.18e-03
+  e  8  top1=0.2500  lr=1.97e-03
+  e  9  top1=0.2475  lr=1.74e-03
+  e 10  top1=0.2775  lr=1.51e-03
+  e 11  top1=0.2725  lr=1.27e-03
+  e 12  top1=0.2900  lr=1.04e-03
+  e 13  top1=0.2925  lr=8.26e-04
+  e 14  top1=0.3000  lr=6.26e-04
+  e 15  top1=0.3075  lr=4.48e-04
+  e 16  top1=0.3125  lr=2.96e-04
+  e 17  top1=0.3075  lr=1.73e-04
+  e 18  top1=0.3050  lr=8.32e-05
+  e 19  top1=0.3050  lr=2.84e-05
+  e 20  top1=0.3050  lr=1.00e-05
+  -> best=0.3125 @ep16  Δ_sparse=+17.00pp  Δ_linear=-10.50pp  ADVANCE→T1
+
+======================================================================
+STEP 963 SUMMARY — ESC-50 subspace routing T0
+  Linear: 0.4175  |  Sparse ref: 0.1425
+======================================================================
+  Linear         full        best=0.4175  Δ_sparse=+27.50pp  Δ_lin=+0.00pp  (linear control)
+  A_b24_s16      B=24,S=16   best=0.2250  Δ_sparse=+8.25pp  Δ_lin=-19.25pp  INTERESTING
+  B_b16_s24      B=16,S=24   best=0.1950  Δ_sparse=+5.25pp  Δ_lin=-22.25pp  INTERESTING
+  C_b48_s8       B=48,S=8    best=0.2650  Δ_sparse=+12.25pp  Δ_lin=-15.25pp  ADVANCE→T1
+  D_b12_s32      B=12,S=32   best=0.1700  Δ_sparse=+2.75pp  Δ_lin=-24.75pp  NEUTRAL
+  E_b96_s4       B=96,S=4    best=0.3125  Δ_sparse=+17.00pp  Δ_lin=-10.50pp  ADVANCE→T1
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step963_esc50_subspace_routing_t0_seed42__mini_cpu.json

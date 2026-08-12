@@ -1,0 +1,34 @@
+{
+  "Ref_k5": {
+    "k_iter": 5,
+    "n_params": 34976,
+    "best": 0.7572,
+    "best_ep": 14,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 312
+  },
+  "A_k3": {
+    "k_iter": 3,
+    "n_params": 34976,
+    "best": 0.736,
+    "best_ep": 15,
+    "delta_vs_ref": -0.0212,
+    "elapsed_s": 200
+  },
+  "B_k10": {
+    "k_iter": 10,
+    "n_params": 34976,
+    "best": 0.6018,
+    "best_ep": 18,
+    "delta_vs_ref": -0.1554,
+    "elapsed_s": 571
+  },
+  "C_k15": {
+    "k_iter": 15,
+    "n_params": 34976,
+    "best": 0.1575,
+    "best_ep": 12,
+    "delta_vs_ref": -0.5997,
+    "elapsed_s": 976
+  }
+}

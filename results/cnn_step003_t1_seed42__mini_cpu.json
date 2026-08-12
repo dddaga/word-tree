@@ -1,0 +1,12 @@
+{
+  "B_tiny_k7": {
+    "desc": "tiny: 16/32/64 k=7",
+    "n_params": 59130,
+    "macs_M": 20.0,
+    "best": 0.6344,
+    "best_ep": 71,
+    "delta_vs_ref": 0.0,
+    "t0_acc": 0.4099,
+    "elapsed_s": 8236
+  }
+}

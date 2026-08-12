@@ -1,0 +1,68 @@
+
+========================================================================
+CNN step004 T2  device=mps  epochs=150  seed=42
+  train=9469 (100% — T2 full dataset)  val=3925  batch=32
+========================================================================
+
+  config          params   MACs(M)  %VGG16conv    T1_acc  desc
+  --------------------------------------------------------------------------------
+  Ref            419,146     183.2      1.246%    0.7317  ref: 64/128/256 k=7
+  D_small_s      149,674      57.5      0.391%    0.7096  small+side: 32/64/128 k=7
+  --------------------------------------------------------------------------------
+  VGG16-conv   14,700,000   14700.0    100.000%       N/A  (teacher reference)
+
+────────────────────────────────────────────────────────────
+Ref: ref: 64/128/256 k=7  T1=0.7317
+  params=419,146  MACs=183.2M  (1.246% of VGG16-conv)
+  ep 10  val=0.7057  best=0.7131
+  ep 20  val=0.7524  best=0.7564
+  ep 30  val=0.7608  best=0.7735
+  ep 40  val=0.7595  best=0.7735
+  ep 50  val=0.7231  best=0.7735
+  ep 60  val=0.7292  best=0.7735
+  ep 70  val=0.7169  best=0.7735
+  ep 80  val=0.7136  best=0.7735
+  ep 90  val=0.7269  best=0.7735
+  ep100  val=0.7197  best=0.7735
+  ep110  val=0.7190  best=0.7735
+  ep120  val=0.7180  best=0.7735
+  ep130  val=0.7185  best=0.7735
+  ep140  val=0.7195  best=0.7735
+  ep150  val=0.7177  best=0.7735
+  -> best=0.7735 @ep22  Δ_vs_Ref=+0.00pp  T1→T2=+4.18pp  5611s
+
+────────────────────────────────────────────────────────────
+D_small_s: small+side: 32/64/128 k=7  T1=0.7096
+  params=149,674  MACs=57.5M  (0.391% of VGG16-conv)
+  ep 10  val=0.6566  best=0.6566
+  ep 20  val=0.7011  best=0.7075
+  ep 30  val=0.7210  best=0.7302
+  ep 40  val=0.7378  best=0.7424
+  ep 50  val=0.7261  best=0.7452
+  ep 60  val=0.7315  best=0.7452
+  ep 70  val=0.7322  best=0.7452
+  ep 80  val=0.7246  best=0.7452
+  ep 90  val=0.7287  best=0.7452
+  ep100  val=0.7282  best=0.7452
+  ep110  val=0.7187  best=0.7452
+  ep120  val=0.7213  best=0.7452
+  ep130  val=0.7218  best=0.7452
+  ep140  val=0.7218  best=0.7452
+  ep150  val=0.7238  best=0.7452
+  -> best=0.7452 @ep41  Δ_vs_Ref=-2.83pp  T1→T2=+3.56pp  4223s
+
+========================================================================
+CNN STEP004 T2 SUMMARY — (150ep, 100% data)
+========================================================================
+  config          params   MACs(M)   T1_acc   T2_acc       Δ_Ref     T1→T2  efficiency
+  ------------------------------------------------------------------------------------------
+  Ref            419,146     183.2   0.7317   0.7735      +0.00pp   +4.18pp  acc/MACs=0.004 %/M
+  D_small_s      149,674      57.5   0.7096   0.7452      -2.83pp   +3.56pp  acc/MACs=0.013 %/M
+
+  Paper Pareto (D_small_s vs Ref):
+    Accuracy gap:  2.83pp
+    MACs ratio:    3.2× fewer
+    Params ratio:  2.8× fewer
+    Advance basis: efficiency-Pareto (not accuracy threshold)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step004_t2_seed42__mini_mps.json

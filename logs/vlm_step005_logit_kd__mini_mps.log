@@ -1,0 +1,32 @@
+==============================================================================
+vlm_step005 logit-KD  device=mps  depth=6  alpha=1.0  beta=0.1  n_train=2000  epochs=10
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 9805.13it/s]
+  total 256,484,928 params | vision layer 7,087,872 x 12
+    teacher cache 0/2000
+    teacher cache 400/2000
+    teacher cache 800/2000
+    teacher cache 1200/2000
+    teacher cache 1600/2000
+    teacher cache done in 223s
+  ep 1/10  rel_mse 0.7403  kl 3.5420  cosine 0.6845  tok_agree 0.1555
+  ep 2/10  rel_mse 0.4372  kl 2.5561  cosine 0.7519  tok_agree 0.2600
+  ep 3/10  rel_mse 0.4213  kl 2.1554  cosine 0.7620  tok_agree 0.3565
+  ep 4/10  rel_mse 0.4162  kl 1.9709  cosine 0.7655  tok_agree 0.3985
+  ep 5/10  rel_mse 0.4111  kl 1.8281  cosine 0.7685  tok_agree 0.4260
+  ep 6/10  rel_mse 0.4095  kl 1.7201  cosine 0.7696  tok_agree 0.4675
+  ep 7/10  rel_mse 0.4035  kl 1.5578  cosine 0.7733  tok_agree 0.4880
+  ep 8/10  rel_mse 0.4001  kl 1.4592  cosine 0.7755  tok_agree 0.5240
+  ep 9/10  rel_mse 0.3994  kl 1.4161  cosine 0.7761  tok_agree 0.5315
+  ep 10/10  rel_mse 0.4029  kl 1.5280  cosine 0.7737  tok_agree 0.4920
+  eval [10/50]
+  eval [20/50]
+  eval [30/50]
+  eval [40/50]
+  eval [50/50]
+
+  arm                  params  %save   top1   same  agree      KL   vis_ms  pre_ms    total   speed
+  teacher_d12     256,484,928   0.00  0.740  1.000  1.000   0.000     66.2    14.4     80.6   1.00x
+  naive_d6        213,957,696  16.58  0.120  0.140  0.000  10.669     35.7    14.3     50.1   1.61x
+  kd_d6           213,957,696  16.58  0.420  0.440  0.280   2.614     35.7    14.3     50.1   1.61x
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step005_logit_kd_d6_a1_b0.1__mini_mps.json
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step005_logit_kd_d6_a1_b0.1__mini_mps.pt

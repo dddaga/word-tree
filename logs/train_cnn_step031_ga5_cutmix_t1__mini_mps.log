@@ -1,0 +1,26 @@
+cnn_step031 GA5+CutMix T1 | 75ep 50%data | alpha=0.2
+  mps  slot=mini_mps  params=523,482  MACs=141.3M
+  Baseline=0.7473 (GA5+Mixup T1)  Advance>=0.7523
+  GA2+CutMix T1 ref=0.7381 (step027, +0.20pp vs GA2+Mixup)
+  ep  5  val=0.3605  best=0.3605  lr=2.97e-04
+  ep 10  val=0.5307  best=0.5307  lr=2.87e-04
+  ep 15  val=0.6025  best=0.6025  lr=2.72e-04
+  ep 20  val=0.6377  best=0.6377  lr=2.52e-04
+  ep 25  val=0.6673  best=0.6673  lr=2.28e-04
+  ep 30  val=0.6782  best=0.6782  lr=2.00e-04
+  ep 35  val=0.6884  best=0.6884  lr=1.70e-04
+  ep 40  val=0.7052  best=0.7052  lr=1.40e-04
+  ep 45  val=0.7055  best=0.7055  lr=1.10e-04
+  ep 50  val=0.7294  best=0.7294  lr=8.25e-05
+  ep 55  val=0.7317  best=0.7317  lr=5.80e-05
+  ep 60  val=0.7322  best=0.7322  lr=3.77e-05
+  ep 65  val=0.7363  best=0.7363  lr=2.25e-05
+  ep 70  val=0.7445  best=0.7445  lr=1.32e-05
+  ep 75  val=0.7518  best=0.7518  lr=1.00e-05
+
+============================================================
+cnn_step031 RESULT — GA5+CutMix T1
+============================================================
+  best=0.7518 @ep75  Δ_GA5mix=+0.0045  NO-GAIN  (893s)
+  -> NO-GAIN → CutMix no improvement over Mixup at GA5 scale
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step031_ga5_cutmix_t1__mini_mps.json

@@ -1,0 +1,28 @@
+{
+  "configs": {
+    "A": {
+      "best": 0.6884076433121019,
+      "best_ep": 75,
+      "delta": -0.04769235668789806,
+      "verdict": "NO-GAIN",
+      "elapsed": 843.5472667217255,
+      "feat_w": 0.3,
+      "dkd_w": 0.5,
+      "ce_w": 0.2
+    },
+    "B": {
+      "best": 0.6471337579617834,
+      "best_ep": 75,
+      "delta": -0.08896624203821657,
+      "verdict": "NO-GAIN",
+      "elapsed": 790.7420802116394,
+      "feat_w": 0.2,
+      "dkd_w": 0.6,
+      "ce_w": 0.2
+    }
+  },
+  "best_config": "A",
+  "mixup_alpha": 0.2,
+  "baseline_step021": 0.7361,
+  "advance_threshold": 0.7411
+}

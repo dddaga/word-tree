@@ -1,0 +1,12 @@
+{
+  "step": "step995",
+  "tier": "T0",
+  "backbone": "ResNet-18",
+  "config": "N=2048 D=16 K_in=25 K_hh=2 K_iter=5",
+  "epochs": 20,
+  "n_params": 34976,
+  "best": 0.307,
+  "best_ep": 19,
+  "elapsed_s": 53.6,
+  "vgg16_t0_ref": 0.9157
+}

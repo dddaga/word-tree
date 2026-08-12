@@ -1,0 +1,29 @@
+{
+  "Ref": {
+    "beta": null,
+    "alpha_r": null,
+    "n_params": 34976,
+    "best": 0.9557,
+    "best_ep": 74,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 657
+  },
+  "B_\u03b205_\u03b1r1": {
+    "beta": 0.5,
+    "alpha_r": 1.0,
+    "n_params": 34976,
+    "best": 0.9559,
+    "best_ep": 64,
+    "delta_vs_ref": 0.0003,
+    "elapsed_s": 478
+  },
+  "C_\u03b209_\u03b1r1": {
+    "beta": 0.9,
+    "alpha_r": 1.0,
+    "n_params": 34976,
+    "best": 0.9521,
+    "best_ep": 54,
+    "delta_vs_ref": -0.0036,
+    "elapsed_s": 831
+  }
+}

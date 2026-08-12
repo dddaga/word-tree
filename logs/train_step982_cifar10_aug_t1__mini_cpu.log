@@ -1,0 +1,191 @@
+
+======================================================================
+step982 — CIFAR-10 augmentation T1 (75ep, 50% data)
+  device=cpu  epochs=75  seed=42
+  N=2048 D=16 K_in=25 K_hh=2 K_iter=5
+  OOM fix: trains configs SEQUENTIALLY, releases RAM between each
+  Ref: clean 50K train → 25K @ 50%
+  A_aug: aug 100K train → 50K @ 50%
+======================================================================
+
+Dataset loaded into RAM: train=50000  val=10000  (6.02 GB features)
+────────────────────────────────────────────────────────────
+Ref: h5=store_cifar10.h5  train_samples=25000  params=34,976
+  e  1  loss=1.6858  top1=0.5979  lr=2.36e-03
+  e  1  loss=1.6858  task=1.6858  safety=0.0000  top1=0.5979  lr=2.36e-03
+  e  2  loss=1.0368  top1=0.6134  lr=2.36e-03
+  e  3  loss=0.9147  top1=0.6904  lr=2.36e-03
+  e  4  loss=0.8401  top1=0.7041  lr=2.36e-03
+  e  5  loss=0.8026  top1=0.6915  lr=2.36e-03
+  e  6  loss=0.7617  top1=0.7141  lr=2.36e-03
+  e  7  loss=0.7187  top1=0.7275  lr=2.36e-03
+  e  8  loss=0.7223  top1=0.7107  lr=2.36e-03
+  e  9  loss=0.6983  top1=0.7170  lr=2.36e-03
+  e 10  loss=0.6957  top1=0.7265  lr=2.36e-03
+  e 10  loss=0.6957  task=0.6957  safety=0.0000  top1=0.7265  lr=2.36e-03
+  e 11  loss=0.6854  top1=0.7278  lr=2.36e-03
+  e 12  loss=0.6651  top1=0.7560  lr=2.36e-03
+  e 13  loss=0.6517  top1=0.7406  lr=2.36e-03
+  e 14  loss=0.6527  top1=0.7392  lr=2.36e-03
+  e 15  loss=0.6210  top1=0.7512  lr=2.36e-03
+  e 16  loss=0.6033  top1=0.7577  lr=2.36e-03
+  e 17  loss=0.6099  top1=0.7398  lr=2.36e-03
+  e 18  loss=0.6127  top1=0.7550  lr=2.36e-03
+  e 19  loss=0.6244  top1=0.7506  lr=2.36e-03
+  e 20  loss=0.6122  top1=0.7300  lr=2.36e-03
+  e 20  loss=0.6122  task=0.6122  safety=0.0000  top1=0.7300  lr=2.36e-03
+  e 21  loss=0.5946  top1=0.7581  lr=2.36e-03
+  e 22  loss=0.5932  top1=0.7299  lr=2.36e-03
+  e 23  loss=0.5898  top1=0.7460  lr=2.36e-03
+  e 24  loss=0.5776  top1=0.7438  lr=2.36e-03
+  e 25  loss=0.5878  top1=0.7422  lr=2.36e-03
+  e 26  loss=0.5704  top1=0.7635  lr=2.36e-03
+  e 27  loss=0.5615  top1=0.7652  lr=2.36e-03
+  e 28  loss=0.5568  top1=0.7529  lr=2.36e-03
+  e 29  loss=0.5785  top1=0.7730  lr=2.36e-03
+  e 30  loss=0.5477  top1=0.7661  lr=2.36e-03
+  e 30  loss=0.5477  task=0.5477  safety=0.0000  top1=0.7661  lr=2.36e-03
+  e 31  loss=0.5448  top1=0.7658  lr=2.36e-03
+  e 32  loss=0.5443  top1=0.7574  lr=2.36e-03
+  e 33  loss=0.5519  top1=0.7526  lr=2.36e-03
+  e 34  loss=0.5505  top1=0.7526  lr=2.36e-03
+  e 35  loss=0.5401  top1=0.7738  lr=2.36e-03
+  e 36  loss=0.5501  top1=0.7708  lr=2.36e-03
+  e 37  loss=0.5281  top1=0.7794  lr=2.36e-03
+  e 38  loss=0.5358  top1=0.7714  lr=2.36e-03
+  e 39  loss=0.5272  top1=0.7601  lr=2.36e-03
+  e 40  loss=0.5335  top1=0.7525  lr=2.36e-03
+  e 40  loss=0.5335  task=0.5335  safety=0.0000  top1=0.7525  lr=2.36e-03
+  e 41  loss=0.5367  top1=0.7629  lr=2.36e-03
+  e 42  loss=0.5250  top1=0.7671  lr=2.36e-03
+  e 43  loss=0.5250  top1=0.7752  lr=2.36e-03
+  e 44  loss=0.5186  top1=0.7676  lr=2.36e-03
+  e 45  loss=0.5080  top1=0.7673  lr=2.36e-03
+  e 46  loss=0.5164  top1=0.7728  lr=2.36e-03
+  e 47  loss=0.5088  top1=0.7595  lr=2.36e-03
+  e 48  loss=0.5067  top1=0.7620  lr=2.36e-03
+  e 49  loss=0.5183  top1=0.7602  lr=2.36e-03
+  e 50  loss=0.4989  top1=0.7533  lr=2.36e-03
+  e 50  loss=0.4989  task=0.4989  safety=0.0000  top1=0.7533  lr=2.36e-03
+  e 51  loss=0.5083  top1=0.7764  lr=2.36e-03
+  e 52  loss=0.5022  top1=0.7682  lr=2.36e-03
+  e 53  loss=0.4883  top1=0.7656  lr=2.36e-03
+  e 54  loss=0.4926  top1=0.7379  lr=2.36e-03
+  e 55  loss=0.5189  top1=0.7549  lr=2.36e-03
+  e 56  loss=0.4959  top1=0.7623  lr=2.36e-03
+  e 57  loss=0.4895  top1=0.7598  lr=2.36e-03
+  e 58  loss=0.4993  top1=0.7749  lr=2.36e-03
+  e 59  loss=0.4956  top1=0.7680  lr=2.36e-03
+  e 60  loss=0.4846  top1=0.7795  lr=2.36e-03
+  e 60  loss=0.4846  task=0.4846  safety=0.0000  top1=0.7795  lr=2.36e-03
+  e 61  loss=0.4860  top1=0.7760  lr=2.36e-03
+  e 62  loss=0.4935  top1=0.7608  lr=2.36e-03
+  e 63  loss=0.4799  top1=0.7721  lr=2.36e-03
+  e 64  loss=0.4794  top1=0.7620  lr=2.36e-03
+  e 65  loss=0.4806  top1=0.7719  lr=2.36e-03
+  e 66  loss=0.4815  top1=0.7779  lr=2.36e-03
+  e 67  loss=0.4827  top1=0.7656  lr=2.36e-03
+  e 68  loss=0.4774  top1=0.7670  lr=2.36e-03
+  e 69  loss=0.4763  top1=0.7786  lr=2.36e-03
+  e 70  loss=0.4765  top1=0.7782  lr=2.36e-03
+  e 70  loss=0.4765  task=0.4765  safety=0.0000  top1=0.7782  lr=2.36e-03
+  e 71  loss=0.4740  top1=0.7726  lr=2.36e-03
+  e 72  loss=0.4676  top1=0.7647  lr=2.36e-03
+  e 73  loss=0.4735  top1=0.7637  lr=2.36e-03
+  e 74  loss=0.4766  top1=0.7860  lr=2.36e-03
+  e 75  loss=0.4579  top1=0.7614  lr=2.36e-03
+  → best=0.7860 @ep74  Δ=+0.0000  [REF]
+  → elapsed=1603s
+Dataset loaded into RAM: train=100000  val=10000  (11.04 GB features)
+────────────────────────────────────────────────────────────
+A_aug: h5=store_cifar10_aug.h5  train_samples=50000  params=34,976
+  e  1  loss=1.3780  top1=0.6651  lr=2.36e-03
+  e  1  loss=1.3780  task=1.3780  safety=0.0000  top1=0.6651  lr=2.36e-03
+  e  2  loss=0.8881  top1=0.7118  lr=2.36e-03
+  e  3  loss=0.8030  top1=0.7071  lr=2.36e-03
+  e  4  loss=0.7587  top1=0.7358  lr=2.36e-03
+  e  5  loss=0.7244  top1=0.7064  lr=2.36e-03
+  e  6  loss=0.6987  top1=0.7347  lr=2.36e-03
+  e  7  loss=0.6867  top1=0.7076  lr=2.36e-03
+  e  8  loss=0.6700  top1=0.7587  lr=2.36e-03
+  e  9  loss=0.6557  top1=0.7549  lr=2.36e-03
+  e 10  loss=0.6418  top1=0.7521  lr=2.36e-03
+  e 10  loss=0.6418  task=0.6418  safety=0.0000  top1=0.7521  lr=2.36e-03
+  e 11  loss=0.6339  top1=0.7435  lr=2.36e-03
+  e 12  loss=0.6261  top1=0.7617  lr=2.36e-03
+  e 13  loss=0.6201  top1=0.7611  lr=2.36e-03
+  e 14  loss=0.6057  top1=0.7578  lr=2.36e-03
+  e 15  loss=0.6018  top1=0.7265  lr=2.36e-03
+  e 16  loss=0.5985  top1=0.7160  lr=2.36e-03
+  e 17  loss=0.6017  top1=0.7747  lr=2.36e-03
+  e 18  loss=0.5835  top1=0.7716  lr=2.36e-03
+  e 19  loss=0.5787  top1=0.7703  lr=2.36e-03
+  e 20  loss=0.5812  top1=0.7682  lr=2.36e-03
+  e 20  loss=0.5812  task=0.5812  safety=0.0000  top1=0.7682  lr=2.36e-03
+  e 21  loss=0.5799  top1=0.7589  lr=2.36e-03
+  e 22  loss=0.5764  top1=0.7490  lr=2.36e-03
+  e 23  loss=0.5783  top1=0.7522  lr=2.36e-03
+  e 24  loss=0.5661  top1=0.7588  lr=2.36e-03
+  e 25  loss=0.5586  top1=0.7864  lr=2.36e-03
+  e 26  loss=0.5670  top1=0.7770  lr=2.36e-03
+  e 27  loss=0.5599  top1=0.7619  lr=2.36e-03
+  e 28  loss=0.5537  top1=0.7737  lr=2.36e-03
+  e 29  loss=0.5576  top1=0.7675  lr=2.36e-03
+  e 30  loss=0.5517  top1=0.7756  lr=2.36e-03
+  e 30  loss=0.5517  task=0.5517  safety=0.0000  top1=0.7756  lr=2.36e-03
+  e 31  loss=0.5464  top1=0.7666  lr=2.36e-03
+  e 32  loss=0.5497  top1=0.7815  lr=2.36e-03
+  e 33  loss=0.5427  top1=0.7642  lr=2.36e-03
+  e 34  loss=0.5453  top1=0.7811  lr=2.36e-03
+  e 35  loss=0.5398  top1=0.7823  lr=2.36e-03
+  e 36  loss=0.5394  top1=0.7745  lr=2.36e-03
+  e 37  loss=0.5356  top1=0.7651  lr=2.36e-03
+  e 38  loss=0.5415  top1=0.7782  lr=2.36e-03
+  e 39  loss=0.5356  top1=0.7771  lr=2.36e-03
+  e 40  loss=0.5319  top1=0.7660  lr=2.36e-03
+  e 40  loss=0.5319  task=0.5319  safety=0.0000  top1=0.7660  lr=2.36e-03
+  e 41  loss=0.5266  top1=0.7879  lr=2.36e-03
+  e 42  loss=0.5242  top1=0.7627  lr=2.36e-03
+  e 43  loss=0.5154  top1=0.7771  lr=2.36e-03
+  e 44  loss=0.5140  top1=0.7829  lr=2.36e-03
+  e 45  loss=0.5179  top1=0.7724  lr=2.36e-03
+  e 46  loss=0.5195  top1=0.7828  lr=2.36e-03
+  e 47  loss=0.5137  top1=0.7756  lr=2.36e-03
+  e 48  loss=0.5253  top1=0.7770  lr=2.36e-03
+  e 49  loss=0.5172  top1=0.7923  lr=2.36e-03
+  e 50  loss=0.5159  top1=0.7571  lr=2.36e-03
+  e 50  loss=0.5159  task=0.5159  safety=0.0000  top1=0.7571  lr=2.36e-03
+  e 51  loss=0.5091  top1=0.7686  lr=2.36e-03
+  e 52  loss=0.5115  top1=0.7963  lr=2.36e-03
+  e 53  loss=0.5082  top1=0.7688  lr=2.36e-03
+  e 54  loss=0.5018  top1=0.7742  lr=2.36e-03
+  e 55  loss=0.5015  top1=0.7861  lr=2.36e-03
+  e 56  loss=0.5126  top1=0.7852  lr=2.36e-03
+  e 57  loss=0.5046  top1=0.7856  lr=2.36e-03
+  e 58  loss=0.5000  top1=0.7823  lr=2.36e-03
+  e 59  loss=0.4979  top1=0.7619  lr=2.36e-03
+  e 60  loss=0.4987  top1=0.7562  lr=2.36e-03
+  e 60  loss=0.4987  task=0.4987  safety=0.0000  top1=0.7562  lr=2.36e-03
+  e 61  loss=0.5016  top1=0.7670  lr=2.36e-03
+  e 62  loss=0.5036  top1=0.7821  lr=2.36e-03
+  e 63  loss=0.5010  top1=0.7890  lr=2.36e-03
+  e 64  loss=0.4963  top1=0.7923  lr=2.36e-03
+  e 65  loss=0.5030  top1=0.7759  lr=2.36e-03
+  e 66  loss=0.5000  top1=0.7893  lr=2.36e-03
+  e 67  loss=0.4946  top1=0.7877  lr=2.36e-03
+  e 68  loss=0.4936  top1=0.7832  lr=2.36e-03
+  e 69  loss=0.4893  top1=0.7919  lr=2.36e-03
+  e 70  loss=0.4842  top1=0.7857  lr=2.36e-03
+  e 70  loss=0.4842  task=0.4842  safety=0.0000  top1=0.7857  lr=2.36e-03
+  e 71  loss=0.4914  top1=0.7830  lr=2.36e-03
+  e 72  loss=0.4901  top1=0.7805  lr=2.36e-03
+  e 73  loss=0.4911  top1=0.7819  lr=2.36e-03
+  e 74  loss=0.4885  top1=0.7861  lr=2.36e-03
+  e 75  loss=0.4901  top1=0.7862  lr=2.36e-03
+  → best=0.7963 @ep52  Δ=+0.0103  [ADVANCE]
+  → elapsed=2427s
+
+Results saved: /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step982_cifar10_aug_t1_seed42__mini_cpu.json
+
+SUMMARY: Ref=0.7860  A_aug=0.7963  Δ=+0.0103
+  → ADVANCE to T2 (+1.03%)

@@ -1,0 +1,64 @@
+{
+  "winners": [
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "n_br": 1,
+        "max_dil": 1,
+        "crelu_b1": 0,
+        "crelu_b2": 1,
+        "crelu_b3": 1,
+        "expansion": 1
+      },
+      "ga_fitness": 0.46510853447539735,
+      "macs_M": 93.062784
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "n_br": 1,
+        "max_dil": 4,
+        "crelu_b1": 1,
+        "crelu_b2": 1,
+        "crelu_b3": 0,
+        "expansion": 1
+      },
+      "ga_fitness": 0.46290142923494193,
+      "macs_M": 105.90784
+    },
+    {
+      "config": {
+        "C1": 64,
+        "C2": 192,
+        "C3": 384,
+        "n_br": 1,
+        "max_dil": 1,
+        "crelu_b1": 1,
+        "crelu_b2": 1,
+        "crelu_b3": 1,
+        "expansion": 2
+      },
+      "ga_fitness": 0.46190350263770946,
+      "macs_M": 183.229056
+    },
+    {
+      "config": {
+        "C1": 32,
+        "C2": 64,
+        "C3": 384,
+        "n_br": 2,
+        "max_dil": 1,
+        "crelu_b1": 1,
+        "crelu_b2": 1,
+        "crelu_b3": 1,
+        "expansion": 1
+      },
+      "ga_fitness": 0.45677327162801806,
+      "macs_M": 226.154624
+    }
+  ]
+}

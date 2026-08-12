@@ -1,0 +1,42 @@
+{
+  "Ref": {
+    "spec": "ref",
+    "beta": null,
+    "alpha_r": null,
+    "n_params": 34976,
+    "best": 0.9389,
+    "best_ep": 20,
+    "delta_vs_ref": 0.0,
+    "elapsed_s": 99
+  },
+  "A_\u03b207_\u03b1r2": {
+    "spec": "refractory",
+    "beta": 0.7,
+    "alpha_r": 2.0,
+    "n_params": 34976,
+    "best": 0.9195,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0194,
+    "elapsed_s": 106
+  },
+  "B_\u03b205_\u03b1r1": {
+    "spec": "refractory",
+    "beta": 0.5,
+    "alpha_r": 1.0,
+    "n_params": 34976,
+    "best": 0.9386,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0003,
+    "elapsed_s": 108
+  },
+  "C_\u03b209_\u03b1r1": {
+    "spec": "refractory",
+    "beta": 0.9,
+    "alpha_r": 1.0,
+    "n_params": 34976,
+    "best": 0.9361,
+    "best_ep": 20,
+    "delta_vs_ref": -0.0028,
+    "elapsed_s": 111
+  }
+}

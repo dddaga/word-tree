@@ -1,0 +1,99 @@
+==============================================================================
+vlm_step007 domain split  device=mps  depth=6  epochs=50  lr=0.0002
+  SEEN ['tench', 'cassette', 'church', 'truck', 'golf']
+  HELD ['springer', 'chainsaw', 'horn', 'pump', 'parachute']
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 9353.02it/s]
+  control student <- /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt
+  4809 train images from 5 classes; 240,450 image-updates
+    teacher cache 0/4809
+    teacher cache 400/4809
+    teacher cache 800/4809
+    teacher cache 1200/4809
+    teacher cache 1600/4809
+    teacher cache 2000/4809
+    teacher cache 2400/4809
+    teacher cache 2800/4809
+    teacher cache 3200/4809
+    teacher cache 3600/4809
+    teacher cache 4000/4809
+    teacher cache 4400/4809
+    teacher cache 4800/4809
+    teacher cache done in 450s
+  ep 1/50  rel_mse 0.4473  cosine 0.7978
+  ep 2/50  rel_mse 0.3157  cosine 0.8294
+  ep 3/50  rel_mse 0.2969  cosine 0.8405
+  ep 4/50  rel_mse 0.2832  cosine 0.8485
+  ep 5/50  rel_mse 0.2701  cosine 0.8561
+  ep 6/50  rel_mse 0.2583  cosine 0.8629
+  ep 7/50  rel_mse 0.2475  cosine 0.8691
+  ep 8/50  rel_mse 0.2379  cosine 0.8746
+  ep 9/50  rel_mse 0.2290  cosine 0.8795
+  ep 10/50  rel_mse 0.2206  cosine 0.8842
+  ep 11/50  rel_mse 0.2126  cosine 0.8887
+  ep 12/50  rel_mse 0.2071  cosine 0.8918
+  ep 13/50  rel_mse 0.2005  cosine 0.8954
+  ep 14/50  rel_mse 0.1949  cosine 0.8986
+  ep 15/50  rel_mse 0.1897  cosine 0.9014
+  ep 16/50  rel_mse 0.1848  cosine 0.9041
+  ep 17/50  rel_mse 0.1804  cosine 0.9065
+  ep 18/50  rel_mse 0.1760  cosine 0.9089
+  ep 19/50  rel_mse 0.1721  cosine 0.9110
+  ep 20/50  rel_mse 0.1680  cosine 0.9132
+  ep 21/50  rel_mse 0.1641  cosine 0.9153
+  ep 22/50  rel_mse 0.1606  cosine 0.9172
+  ep 23/50  rel_mse 0.1577  cosine 0.9188
+  ep 24/50  rel_mse 0.1549  cosine 0.9203
+  ep 25/50  rel_mse 0.1512  cosine 0.9223
+  ep 26/50  rel_mse 0.1486  cosine 0.9237
+  ep 27/50  rel_mse 0.1462  cosine 0.9249
+  ep 28/50  rel_mse 0.1435  cosine 0.9264
+  ep 29/50  rel_mse 0.1408  cosine 0.9278
+  ep 30/50  rel_mse 0.1385  cosine 0.9291
+  ep 31/50  rel_mse 0.1363  cosine 0.9303
+  ep 32/50  rel_mse 0.1344  cosine 0.9313
+  ep 33/50  rel_mse 0.1320  cosine 0.9325
+  ep 34/50  rel_mse 0.1299  cosine 0.9335
+  ep 35/50  rel_mse 0.1281  cosine 0.9345
+  ep 36/50  rel_mse 0.1260  cosine 0.9356
+  ep 37/50  rel_mse 0.1244  cosine 0.9365
+  ep 38/50  rel_mse 0.1229  cosine 0.9373
+  ep 39/50  rel_mse 0.1210  cosine 0.9383
+  ep 40/50  rel_mse 0.1194  cosine 0.9391
+  ep 41/50  rel_mse 0.1180  cosine 0.9399
+  ep 42/50  rel_mse 0.1171  cosine 0.9404
+  ep 43/50  rel_mse 0.1158  cosine 0.9411
+  ep 44/50  rel_mse 0.1136  cosine 0.9421
+  ep 45/50  rel_mse 0.1116  cosine 0.9431
+  ep 46/50  rel_mse 0.1104  cosine 0.9437
+  ep 47/50  rel_mse 0.1096  cosine 0.9442
+  ep 48/50  rel_mse 0.1091  cosine 0.9445
+  ep 49/50  rel_mse 0.1082  cosine 0.9450
+  ep 50/50  rel_mse 0.1071  cosine 0.9456
+  eval seen [100/1000] 58s eta 521s
+  eval seen [200/1000] 115s eta 460s
+  eval seen [300/1000] 172s eta 402s
+  eval seen [400/1000] 230s eta 345s
+  eval seen [500/1000] 287s eta 287s
+  eval seen [600/1000] 344s eta 230s
+  eval seen [700/1000] 402s eta 172s
+  eval seen [800/1000] 460s eta 115s
+  eval seen [900/1000] 518s eta 58s
+  eval seen [1000/1000] 576s eta 0s
+  eval held [100/1000] 59s eta 531s
+  eval held [200/1000] 116s eta 463s
+  eval held [300/1000] 172s eta 402s
+  eval held [400/1000] 229s eta 343s
+  eval held [500/1000] 285s eta 285s
+  eval held [600/1000] 342s eta 228s
+  eval held [700/1000] 401s eta 172s
+  eval held [800/1000] 458s eta 115s
+  eval held [900/1000] 515s eta 57s
+  eval held [1000/1000] 573s eta 0s
+  seen  seen5_d6     n=1000  top1 0.706 vs teacher 0.742  delta -0.0360  b=76 c=112  p=0.01050  boot95 [-0.0620, -0.0100]
+  seen  all10_d6     n=1000  top1 0.703 vs teacher 0.742  delta -0.0390  b=95 c=134  p=0.01187  boot95 [-0.0680, -0.0100]
+  held  seen5_d6     n=1000  top1 0.168 vs teacher 0.683  delta -0.5150  b=5 c=520  p=0.00000  boot95 [-0.5470, -0.4830]
+  held  all10_d6     n=1000  top1 0.739 vs teacher 0.683  delta +0.0560  b=139 c=83  p=0.00021  boot95 [+0.0270, +0.0850]
+
+  interaction (seen delta - held delta): seen5 student +0.4790   all-10 control -0.0950
+  VERDICT: domain-scoped parity -- drone MUST distil on target-domain frames
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step007_domain_split_d6_50ep__mini_mps.json

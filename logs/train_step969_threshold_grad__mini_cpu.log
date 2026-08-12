@@ -1,0 +1,172 @@
+/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+  Data: 9469 train (50%) / 3925 val / 148 batches/ep
+
+======================================================================
+step969 — Gradient Threshold Firing (selective vs full reset)
+  device=cpu  seed=42  epochs=20  frac=0.5
+  SELECTIVE: fire independently, zero only fired params' grad
+  FULL:      fire, then reset ALL params' grad (fresh start)
+======================================================================
+  Threshold calibration over 10 batches (1 params):
+    τ_lo (p50 per-param max|g|) = 5.81e+02
+    τ_hi (p90 per-param max|g|) = 5.81e+02
+
+────────────────────────────────────────────────────────────
+Ref: mode=ref  τ_key=None  τ=5.81e+02  lr=0.003  params=32,928
+/Volumes/T9/IndraAstra/dhiraj/neuro_graph/d_env/lib/python3.14/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+  ep  1  acc=0.1473  best=0.1473  Δref=-80.79pp  fire=100.0%  τ=5.81e+02  [4.5s]
+  ep  2  acc=0.1740  best=0.1740  Δref=-78.12pp  fire=100.0%  τ=5.81e+02  [9.2s]
+  ep  3  acc=0.2059  best=0.2059  Δref=-74.93pp  fire=100.0%  τ=5.81e+02  [13.6s]
+  ep  4  acc=0.1908  best=0.2059  Δref=-76.44pp  fire=100.0%  τ=5.81e+02  [18.0s]
+  ep  5  acc=0.2392  best=0.2392  Δref=-71.60pp  fire=100.0%  τ=5.81e+02  [22.5s]
+  ep  6  acc=0.2586  best=0.2586  Δref=-69.66pp  fire=100.0%  τ=5.81e+02  [26.9s]
+  ep  7  acc=0.2925  best=0.2925  Δref=-66.27pp  fire=100.0%  τ=5.81e+02  [31.5s]
+  ep  8  acc=0.3042  best=0.3042  Δref=-65.10pp  fire=100.0%  τ=5.81e+02  [36.0s]
+  ep  9  acc=0.2650  best=0.3042  Δref=-69.02pp  fire=100.0%  τ=5.81e+02  [40.5s]
+  ep 10  acc=0.2884  best=0.3042  Δref=-66.68pp  fire=100.0%  τ=5.81e+02  [44.9s]
+  ep 11  acc=0.2670  best=0.3042  Δref=-68.82pp  fire=100.0%  τ=5.81e+02  [49.3s]
+  ep 12  acc=0.2861  best=0.3042  Δref=-66.91pp  fire=100.0%  τ=5.81e+02  [53.9s]
+  ep 13  acc=0.2589  best=0.3042  Δref=-69.63pp  fire=100.0%  τ=5.81e+02  [58.3s]
+  ep 14  acc=0.3088  best=0.3088  Δref=-64.64pp  fire=100.0%  τ=5.81e+02  [62.8s]
+  ep 15  acc=0.3101  best=0.3101  Δref=-64.51pp  fire=100.0%  τ=5.81e+02  [67.3s]
+  ep 16  acc=0.3457  best=0.3457  Δref=-60.95pp  fire=100.0%  τ=5.81e+02  [71.8s]
+  ep 17  acc=0.3141  best=0.3457  Δref=-64.11pp  fire=100.0%  τ=5.81e+02  [76.3s]
+  ep 18  acc=0.3870  best=0.3870  Δref=-56.82pp  fire=100.0%  τ=5.81e+02  [80.8s]
+  ep 19  acc=0.3383  best=0.3870  Δref=-61.69pp  fire=100.0%  τ=5.81e+02  [85.3s]
+  ep 20  acc=0.3620  best=0.3870  Δref=-59.32pp  fire=100.0%  τ=5.81e+02  [89.8s]
+  DONE: best=0.3870  Δref=-56.82pp  avg_fire=100.0%  89.8s
+
+────────────────────────────────────────────────────────────
+GTF_sel_lo: mode=selective  τ_key=lo  τ=5.81e+02  lr=0.003  params=32,928
+  ep  1  acc=0.1271  best=0.1271  Δref=-82.81pp  fire=3.4%  τ=5.81e+02  [4.3s]
+  ep  2  acc=0.1042  best=0.1271  Δref=-85.10pp  fire=0.7%  τ=5.81e+02  [8.8s]
+  ep  3  acc=0.1470  best=0.1470  Δref=-80.82pp  fire=0.7%  τ=5.81e+02  [13.2s]
+  ep  4  acc=0.1004  best=0.1470  Δref=-85.48pp  fire=0.7%  τ=5.81e+02  [17.5s]
+  ep  5  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.7%  τ=5.81e+02  [22.0s]
+  ep  6  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.0%  τ=5.81e+02  [26.2s]
+  ep  7  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.7%  τ=5.81e+02  [29.9s]
+  ep  8  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [33.5s]
+  ep  9  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [37.3s]
+  ep 10  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.7%  τ=5.81e+02  [41.7s]
+  ep 11  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.0%  τ=5.81e+02  [46.1s]
+  ep 12  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.7%  τ=5.81e+02  [50.5s]
+  ep 13  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.0%  τ=5.81e+02  [55.0s]
+  ep 14  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.7%  τ=5.81e+02  [59.4s]
+  ep 15  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.0%  τ=5.81e+02  [63.9s]
+  ep 16  acc=0.0917  best=0.1470  Δref=-86.35pp  fire=0.7%  τ=5.81e+02  [68.3s]
+  ep 17  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.7%  τ=5.81e+02  [72.8s]
+  ep 18  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [77.2s]
+  ep 19  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [81.6s]
+  ep 20  acc=0.1108  best=0.1470  Δref=-84.44pp  fire=0.7%  τ=5.81e+02  [86.1s]
+  DONE: best=0.1470  Δref=-80.82pp  avg_fire=0.5%  86.1s
+
+────────────────────────────────────────────────────────────
+GTF_sel_hi: mode=selective  τ_key=hi  τ=5.81e+02  lr=0.003  params=32,928
+  ep  1  acc=0.1271  best=0.1271  Δref=-82.81pp  fire=3.4%  τ=5.81e+02  [4.4s]
+  ep  2  acc=0.1042  best=0.1271  Δref=-85.10pp  fire=0.7%  τ=5.81e+02  [8.8s]
+  ep  3  acc=0.1470  best=0.1470  Δref=-80.82pp  fire=0.7%  τ=5.81e+02  [13.3s]
+  ep  4  acc=0.1004  best=0.1470  Δref=-85.48pp  fire=0.7%  τ=5.81e+02  [17.7s]
+  ep  5  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.7%  τ=5.81e+02  [22.1s]
+  ep  6  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.0%  τ=5.81e+02  [26.4s]
+  ep  7  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.7%  τ=5.81e+02  [31.0s]
+  ep  8  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [35.4s]
+  ep  9  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [39.5s]
+  ep 10  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.7%  τ=5.81e+02  [43.2s]
+  ep 11  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.0%  τ=5.81e+02  [46.8s]
+  ep 12  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.7%  τ=5.81e+02  [50.6s]
+  ep 13  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.0%  τ=5.81e+02  [55.1s]
+  ep 14  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.7%  τ=5.81e+02  [59.5s]
+  ep 15  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.0%  τ=5.81e+02  [63.9s]
+  ep 16  acc=0.0917  best=0.1470  Δref=-86.35pp  fire=0.7%  τ=5.81e+02  [68.3s]
+  ep 17  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.7%  τ=5.81e+02  [72.7s]
+  ep 18  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [77.2s]
+  ep 19  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [81.5s]
+  ep 20  acc=0.1108  best=0.1470  Δref=-84.44pp  fire=0.7%  τ=5.81e+02  [85.9s]
+  DONE: best=0.1470  Δref=-80.82pp  avg_fire=0.5%  85.9s
+
+────────────────────────────────────────────────────────────
+GTF_full_lo: mode=full  τ_key=lo  τ=5.81e+02  lr=0.003  params=32,928
+  ep  1  acc=0.1271  best=0.1271  Δref=-82.81pp  fire=3.4%  τ=5.81e+02  [4.5s]
+  ep  2  acc=0.1042  best=0.1271  Δref=-85.10pp  fire=0.7%  τ=5.81e+02  [8.8s]
+  ep  3  acc=0.1470  best=0.1470  Δref=-80.82pp  fire=0.7%  τ=5.81e+02  [13.1s]
+  ep  4  acc=0.1004  best=0.1470  Δref=-85.48pp  fire=0.7%  τ=5.81e+02  [17.5s]
+  ep  5  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.7%  τ=5.81e+02  [21.9s]
+  ep  6  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.0%  τ=5.81e+02  [26.3s]
+  ep  7  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.7%  τ=5.81e+02  [30.6s]
+  ep  8  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [35.1s]
+  ep  9  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [39.5s]
+  ep 10  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.7%  τ=5.81e+02  [43.9s]
+  ep 11  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.0%  τ=5.81e+02  [48.3s]
+  ep 12  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.7%  τ=5.81e+02  [52.7s]
+  ep 13  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.0%  τ=5.81e+02  [57.0s]
+  ep 14  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.7%  τ=5.81e+02  [61.4s]
+  ep 15  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.0%  τ=5.81e+02  [65.8s]
+  ep 16  acc=0.0917  best=0.1470  Δref=-86.35pp  fire=0.7%  τ=5.81e+02  [70.4s]
+  ep 17  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.7%  τ=5.81e+02  [74.8s]
+  ep 18  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [79.2s]
+  ep 19  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [83.5s]
+  ep 20  acc=0.1108  best=0.1470  Δref=-84.44pp  fire=0.7%  τ=5.81e+02  [87.9s]
+  DONE: best=0.1470  Δref=-80.82pp  avg_fire=0.5%  87.9s
+
+────────────────────────────────────────────────────────────
+GTF_full_hi: mode=full  τ_key=hi  τ=5.81e+02  lr=0.003  params=32,928
+  ep  1  acc=0.1271  best=0.1271  Δref=-82.81pp  fire=3.4%  τ=5.81e+02  [4.5s]
+  ep  2  acc=0.1042  best=0.1271  Δref=-85.10pp  fire=0.7%  τ=5.81e+02  [8.9s]
+  ep  3  acc=0.1470  best=0.1470  Δref=-80.82pp  fire=0.7%  τ=5.81e+02  [13.3s]
+  ep  4  acc=0.1004  best=0.1470  Δref=-85.48pp  fire=0.7%  τ=5.81e+02  [17.7s]
+  ep  5  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.7%  τ=5.81e+02  [22.1s]
+  ep  6  acc=0.1083  best=0.1470  Δref=-84.69pp  fire=0.0%  τ=5.81e+02  [26.5s]
+  ep  7  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.7%  τ=5.81e+02  [30.9s]
+  ep  8  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [35.3s]
+  ep  9  acc=0.1312  best=0.1470  Δref=-82.40pp  fire=0.0%  τ=5.81e+02  [39.9s]
+  ep 10  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.7%  τ=5.81e+02  [44.3s]
+  ep 11  acc=0.0930  best=0.1470  Δref=-86.22pp  fire=0.0%  τ=5.81e+02  [50.4s]
+  ep 12  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.7%  τ=5.81e+02  [55.8s]
+  ep 13  acc=0.1327  best=0.1470  Δref=-82.25pp  fire=0.0%  τ=5.81e+02  [60.4s]
+  ep 14  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.7%  τ=5.81e+02  [64.8s]
+  ep 15  acc=0.1439  best=0.1470  Δref=-81.13pp  fire=0.0%  τ=5.81e+02  [69.3s]
+  ep 16  acc=0.0917  best=0.1470  Δref=-86.35pp  fire=0.7%  τ=5.81e+02  [73.7s]
+  ep 17  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.7%  τ=5.81e+02  [78.1s]
+  ep 18  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [82.5s]
+  ep 19  acc=0.1422  best=0.1470  Δref=-81.30pp  fire=0.0%  τ=5.81e+02  [86.8s]
+  ep 20  acc=0.1108  best=0.1470  Δref=-84.44pp  fire=0.7%  τ=5.81e+02  [90.5s]
+  DONE: best=0.1470  Δref=-80.82pp  avg_fire=0.5%  90.5s
+
+────────────────────────────────────────────────────────────
+GTF_sel_adaptive: mode=selective  τ_key=adaptive  τ=5.81e+02  lr=0.003  params=32,928
+  ep  1  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=8.55e+03  [3.7s]
+  ep  2  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.71e+04  [7.5s]
+  ep  3  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=2.56e+04  [12.0s]
+  ep  4  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=3.42e+04  [16.5s]
+  ep  5  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=4.27e+04  [21.0s]
+  ep  6  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=5.13e+04  [25.5s]
+  ep  7  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=5.98e+04  [29.9s]
+  ep  8  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=6.84e+04  [34.4s]
+  ep  9  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=7.69e+04  [38.9s]
+  ep 10  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=8.55e+04  [43.4s]
+  ep 11  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=9.40e+04  [47.9s]
+  ep 12  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.03e+05  [52.3s]
+  ep 13  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.11e+05  [56.8s]
+  ep 14  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.20e+05  [61.3s]
+  ep 15  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.28e+05  [65.8s]
+  ep 16  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.37e+05  [70.3s]
+  ep 17  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.45e+05  [74.7s]
+  ep 18  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.54e+05  [79.3s]
+  ep 19  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.62e+05  [83.8s]
+  ep 20  acc=0.1019  best=0.1019  Δref=-85.33pp  fire=0.0%  τ=1.71e+05  [88.3s]
+  DONE: best=0.1019  Δref=-85.33pp  avg_fire=0.0%  88.3s
+
+======================================================================
+STEP 969 SUMMARY
+  τ_lo=5.81e+02  τ_hi=5.81e+02
+======================================================================
+  Ref                     best=0.3870  Δref=-56.82pp  avg_fire=100.0%
+  GTF_sel_lo              best=0.1470  Δref=-80.82pp  avg_fire=0.5%
+  GTF_sel_hi              best=0.1470  Δref=-80.82pp  avg_fire=0.5%
+  GTF_full_lo             best=0.1470  Δref=-80.82pp  avg_fire=0.5%
+  GTF_full_hi             best=0.1470  Δref=-80.82pp  avg_fire=0.5%
+  GTF_sel_adaptive        best=0.1019  Δref=-85.33pp  avg_fire=0.0%
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step969_threshold_grad_seed42__mini_cpu.json

@@ -1,0 +1,26 @@
+cnn_step027 GA2+CutMix(α=0.2) T1 | 75ep 50%data | seed=42
+GA#2: C=(32,64,384) k=3 exp=2 crelu  params=481,514  MACs=98.5M
+Loss: 0.50·feat_cos + 0.30·dkd + 0.20·ce (feat_cos weight unchanged)
+Baseline (step021 GA2+Mixup T1): 0.7361  Advance>=0.7411
+  ep  5  val=0.3348  best=0.3348  lr=2.97e-04
+  ep 10  val=0.4313  best=0.4313  lr=2.87e-04
+  ep 15  val=0.5743  best=0.5743  lr=2.72e-04
+  ep 20  val=0.5898  best=0.5898  lr=2.52e-04
+  ep 25  val=0.6268  best=0.6268  lr=2.28e-04
+  ep 30  val=0.6566  best=0.6566  lr=2.00e-04
+  ep 35  val=0.6899  best=0.6899  lr=1.70e-04
+  ep 40  val=0.6825  best=0.6899  lr=1.40e-04
+  ep 45  val=0.6800  best=0.6899  lr=1.10e-04
+  ep 50  val=0.7124  best=0.7124  lr=8.25e-05
+  ep 55  val=0.7228  best=0.7228  lr=5.80e-05
+  ep 60  val=0.7210  best=0.7228  lr=3.77e-05
+  ep 65  val=0.7381  best=0.7381  lr=2.25e-05
+  ep 70  val=0.7381  best=0.7381  lr=1.32e-05
+  ep 75  val=0.7368  best=0.7381  lr=1.00e-05
+
+============================================================
+cnn_step027 RESULT — GA2+CutMix(α=0.2) T1
+============================================================
+  best=0.7381 @ep65  Δ_step021=+0.0020  NO-GAIN  (814s)
+  -> NO-GAIN — CutMix no better than Mixup
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step027_cutmix_t1__mini_mps.json

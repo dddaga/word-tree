@@ -1,0 +1,44 @@
+{
+  "step": "det_step002",
+  "model": "fasterrcnn_mobilenet_v3_large_fpn",
+  "device": "mps",
+  "n_roi": 12000,
+  "n_fg": 1468,
+  "n_cls": 91,
+  "n_bb": 364,
+  "teacher_head_params": 14362055,
+  "configs": [
+    {
+      "config": "dense_reinit",
+      "params": 14362055,
+      "cls_agreement": 0.9902,
+      "fg_agreement": 0.9605,
+      "bbox_mse": 0.02219,
+      "pct_of_teacher": 100.0
+    },
+    {
+      "config": "lowrank_r256",
+      "params": 3394247,
+      "cls_agreement": 0.9885,
+      "fg_agreement": 0.9339,
+      "bbox_mse": 0.04023,
+      "pct_of_teacher": 23.633
+    },
+    {
+      "config": "sgn_r128k32",
+      "params": 1680967,
+      "cls_agreement": 0.9846,
+      "fg_agreement": 0.9421,
+      "bbox_mse": 0.05914,
+      "pct_of_teacher": 11.704
+    },
+    {
+      "config": "sgn_r64k16",
+      "params": 836615,
+      "cls_agreement": 0.9819,
+      "fg_agreement": 0.9087,
+      "bbox_mse": 0.10407,
+      "pct_of_teacher": 5.825
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+
+======================================================================
+CNN step001 T0  device=mps  epochs=20  seed=42
+  train=4734  val=3925  batch=32
+======================================================================
+
+────────────────────────────────────────────────────────────
+Ref: Full EfficientVGG (side branch + CReLU Block3)  params=419,146
+  ep  5  val=0.5098  best=0.5098
+  ep 10  val=0.6359  best=0.6359
+  ep 15  val=0.6846  best=0.6846
+  ep 20  val=0.7034  best=0.7034
+  -> best=0.7034 @ep20  Δ_vs_Ref=+0.00pp  445s
+────────────────────────────────────────────────────────────
+A_no_side: No side-branch channel attention (CReLU Block3 kept)  params=387,018
+  ep  5  val=0.4591  best=0.4685
+  ep 10  val=0.5796  best=0.5957
+  ep 15  val=0.6306  best=0.6425
+  ep 20  val=0.6589  best=0.6589
+  -> best=0.6589 @ep20  Δ_vs_Ref=-4.46pp  428s
+────────────────────────────────────────────────────────────
+B_vanilla: No side branch, no CReLU — plain ConvNeXt baseline  params=550,858
+  ep  5  val=0.4815  best=0.4815
+  ep 10  val=0.6224  best=0.6224
+  ep 15  val=0.6586  best=0.6637
+  ep 20  val=0.6805  best=0.6805
+  -> best=0.6805 @ep20  Δ_vs_Ref=-2.29pp  430s
+
+======================================================================
+CNN STEP001 T0 SUMMARY
+======================================================================
+  config           params    best   Δ_vs_Ref
+  Ref             419,146  0.7034     +0.00pp
+  A_no_side       387,018  0.6589     -4.46pp
+  B_vanilla       550,858  0.6805     -2.29pp
+
+  Teacher (VGG16 conv): ~14.7M params, 97.7% Imagenette
+  Student (Ref):         419,146 params (2.85% of VGG16 conv)
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_step001_t0_seed42__mini_mps.json

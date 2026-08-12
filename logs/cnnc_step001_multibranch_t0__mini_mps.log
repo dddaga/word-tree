@@ -1,0 +1,120 @@
+
+========================================================================
+cnnc_step001 T0  device=mps  epochs=20  seed=42  train=4734  val=3925
+========================================================================
+  config            params   MACs(M)  desc
+  Ref              483,050     224.0  single-branch plain downsampling stack
+  A_global         509,850     210.4  Ref + 16x-down global-context branch (channel-wise FC)
+  B_multibranch    476,122     110.9  3 branches: full-res / 4x-down / 16x-down global
+  C_crelu          463,930      94.1  B + CReLU in first 2 convs of every branch
+
+------------------------------------------------------------
+Ref: single-branch plain downsampling stack
+  params=483,050  MACs=224.0M
+  ep  1  val=0.3419  best=0.3419  11s
+  ep  2  val=0.4724  best=0.4724  5s
+  ep  3  val=0.5445  best=0.5445  5s
+  ep  4  val=0.5855  best=0.5855  5s
+  ep  5  val=0.6013  best=0.6013  5s
+  ep  6  val=0.6545  best=0.6545  5s
+  ep  7  val=0.6423  best=0.6545  5s
+  ep  8  val=0.6479  best=0.6545  5s
+  ep  9  val=0.6706  best=0.6706  5s
+  ep 10  val=0.7065  best=0.7065  5s
+  ep 11  val=0.7029  best=0.7065  5s
+  ep 12  val=0.7037  best=0.7065  5s
+  ep 13  val=0.7325  best=0.7325  5s
+  ep 14  val=0.7335  best=0.7335  5s
+  ep 15  val=0.7271  best=0.7335  5s
+  ep 16  val=0.7343  best=0.7343  5s
+  ep 17  val=0.7406  best=0.7406  5s
+  ep 18  val=0.7478  best=0.7478  5s
+  ep 19  val=0.7557  best=0.7557  5s
+  ep 20  val=0.7521  best=0.7557  5s
+  -> best=0.7557 @ep19  dRef=+0.00pp  epoch=5s
+
+------------------------------------------------------------
+A_global: Ref + 16x-down global-context branch (channel-wise FC)
+  params=509,850  MACs=210.4M
+  ep  1  val=0.3088  best=0.3088  6s
+  ep  2  val=0.4708  best=0.4708  5s
+  ep  3  val=0.4703  best=0.4708  5s
+  ep  4  val=0.5676  best=0.5676  5s
+  ep  5  val=0.6046  best=0.6046  5s
+  ep  6  val=0.6186  best=0.6186  5s
+  ep  7  val=0.6390  best=0.6390  5s
+  ep  8  val=0.6583  best=0.6583  5s
+  ep  9  val=0.6448  best=0.6583  5s
+  ep 10  val=0.6820  best=0.6820  5s
+  ep 11  val=0.6820  best=0.6820  5s
+  ep 12  val=0.6892  best=0.6892  5s
+  ep 13  val=0.6945  best=0.6945  5s
+  ep 14  val=0.6904  best=0.6945  5s
+  ep 15  val=0.7164  best=0.7164  5s
+  ep 16  val=0.7162  best=0.7164  5s
+  ep 17  val=0.7154  best=0.7164  5s
+  ep 18  val=0.7269  best=0.7269  5s
+  ep 19  val=0.7231  best=0.7269  5s
+  ep 20  val=0.7225  best=0.7269  5s
+  -> best=0.7269 @ep18  dRef=-2.88pp  epoch=5s
+
+------------------------------------------------------------
+B_multibranch: 3 branches: full-res / 4x-down / 16x-down global
+  params=476,122  MACs=110.9M
+  ep  1  val=0.3725  best=0.3725  7s
+  ep  2  val=0.4568  best=0.4568  4s
+  ep  3  val=0.5289  best=0.5289  4s
+  ep  4  val=0.5839  best=0.5839  4s
+  ep  5  val=0.6130  best=0.6130  4s
+  ep  6  val=0.6346  best=0.6346  4s
+  ep  7  val=0.6454  best=0.6454  4s
+  ep  8  val=0.6688  best=0.6688  4s
+  ep  9  val=0.6744  best=0.6744  4s
+  ep 10  val=0.6767  best=0.6767  4s
+  ep 11  val=0.6971  best=0.6971  4s
+  ep 12  val=0.7118  best=0.7118  4s
+  ep 13  val=0.7116  best=0.7118  4s
+  ep 14  val=0.7136  best=0.7136  4s
+  ep 15  val=0.7149  best=0.7149  4s
+  ep 16  val=0.7180  best=0.7180  4s
+  ep 17  val=0.7340  best=0.7340  4s
+  ep 18  val=0.7310  best=0.7340  4s
+  ep 19  val=0.7363  best=0.7363  4s
+  ep 20  val=0.7297  best=0.7363  4s
+  -> best=0.7363 @ep19  dRef=-1.94pp  epoch=4s
+
+------------------------------------------------------------
+C_crelu: B + CReLU in first 2 convs of every branch
+  params=463,930  MACs=94.1M
+  ep  1  val=0.3636  best=0.3636  5s
+  ep  2  val=0.4777  best=0.4777  4s
+  ep  3  val=0.5233  best=0.5233  4s
+  ep  4  val=0.5722  best=0.5722  4s
+  ep  5  val=0.5992  best=0.5992  4s
+  ep  6  val=0.6252  best=0.6252  4s
+  ep  7  val=0.6578  best=0.6578  4s
+  ep  8  val=0.6604  best=0.6604  4s
+  ep  9  val=0.6762  best=0.6762  4s
+  ep 10  val=0.6685  best=0.6762  4s
+  ep 11  val=0.6512  best=0.6762  4s
+  ep 12  val=0.7065  best=0.7065  4s
+  ep 13  val=0.7098  best=0.7098  4s
+  ep 14  val=0.7152  best=0.7152  4s
+  ep 15  val=0.7185  best=0.7185  4s
+  ep 16  val=0.7220  best=0.7220  4s
+  ep 17  val=0.7269  best=0.7269  4s
+  ep 18  val=0.7315  best=0.7315  4s
+  ep 19  val=0.7353  best=0.7353  3s
+  ep 20  val=0.7317  best=0.7353  4s
+  -> best=0.7353 @ep19  dRef=-2.04pp  epoch=4s
+
+========================================================================
+CNNC_STEP001 T0 SUMMARY (20ep, 50% data)
+========================================================================
+  config            params   MACs(M)      acc       dRef   s/ep
+  Ref              483,050     224.0   0.7557     +0.00pp      5
+  A_global         509,850     210.4   0.7269     -2.88pp      5
+  B_multibranch    476,122     110.9   0.7363     -1.94pp      4
+  C_crelu          463,930      94.1   0.7353     -2.04pp      4
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/cnn_compress/cnnc_step001_t0_seed42__mini_mps.json

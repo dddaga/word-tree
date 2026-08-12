@@ -1,0 +1,422 @@
+{
+  "step": "vlm_step010",
+  "device": "cpu",
+  "depth": 6,
+  "ckpt": "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step004_tower_distill_d6_25ep9k__mini_mps.pt",
+  "arms": [
+    "fp32",
+    "int8_row",
+    "int4_row",
+    "int8_tensor"
+  ],
+  "n_eval": 20,
+  "seed": 42,
+  "cells": {
+    "d12_fp32": {
+      "depth": 12,
+      "arm": "fp32",
+      "top1": 0.7,
+      "agree_with_ref": 1.0,
+      "kl_vs_ref": 0.0,
+      "vision_ms": 112.6,
+      "prefill_ms": 41.74,
+      "tables_bytes": 227082240,
+      "model_bytes": 1025939712
+    },
+    "d12_int8_row": {
+      "depth": 12,
+      "arm": "int8_row",
+      "top1": 0.7,
+      "agree_with_ref": 1.0,
+      "kl_vs_ref": 0.0013589047695859336,
+      "vision_ms": 112.39,
+      "prefill_ms": 41.45,
+      "tables_bytes": 57164800,
+      "model_bytes": 856022272
+    },
+    "d12_int4_row": {
+      "depth": 12,
+      "arm": "int4_row",
+      "top1": 0.6,
+      "agree_with_ref": 0.9,
+      "kl_vs_ref": 0.5263599153608084,
+      "vision_ms": 111.92,
+      "prefill_ms": 41.38,
+      "tables_bytes": 28779520,
+      "model_bytes": 827636992
+    },
+    "d12_int8_tensor": {
+      "depth": 12,
+      "arm": "int8_tensor",
+      "top1": 0.7,
+      "agree_with_ref": 0.95,
+      "kl_vs_ref": 0.023924787796568127,
+      "vision_ms": 112.18,
+      "prefill_ms": 41.45,
+      "tables_bytes": 56770568,
+      "model_bytes": 855628040
+    },
+    "d6_fp32": {
+      "depth": 6,
+      "arm": "fp32",
+      "top1": 0.65,
+      "agree_with_ref": 0.6,
+      "kl_vs_ref": 2.123171438276768,
+      "vision_ms": 57.88,
+      "prefill_ms": 41.46,
+      "tables_bytes": 227082240,
+      "model_bytes": 1025939712
+    },
+    "d6_int8_row": {
+      "depth": 6,
+      "arm": "int8_row",
+      "top1": 0.65,
+      "agree_with_ref": 0.6,
+      "kl_vs_ref": 2.126522644236684,
+      "vision_ms": 58.12,
+      "prefill_ms": 41.41,
+      "tables_bytes": 57164800,
+      "model_bytes": 856022272
+    },
+    "d6_int4_row": {
+      "depth": 6,
+      "arm": "int4_row",
+      "top1": 0.65,
+      "agree_with_ref": 0.6,
+      "kl_vs_ref": 2.576785559207201,
+      "vision_ms": 57.79,
+      "prefill_ms": 41.48,
+      "tables_bytes": 28779520,
+      "model_bytes": 827636992
+    },
+    "d6_int8_tensor": {
+      "depth": 6,
+      "arm": "int8_tensor",
+      "top1": 0.65,
+      "agree_with_ref": 0.6,
+      "kl_vs_ref": 2.143848637677729,
+      "vision_ms": 57.78,
+      "prefill_ms": 41.47,
+      "tables_bytes": 56770568,
+      "model_bytes": 855628040
+    }
+  },
+  "ship": {
+    "d12_int8_row": {
+      "delta": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 0,
+      "p_two_sided": 1.0,
+      "verdict": "SHIP"
+    },
+    "d12_int4_row": {
+      "delta": -0.1,
+      "boot95_lo": -0.25,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 2,
+      "p_two_sided": 0.5,
+      "verdict": "INCONCLUSIVE at this n"
+    },
+    "d12_int8_tensor": {
+      "delta": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 0,
+      "p_two_sided": 1.0,
+      "verdict": "SHIP"
+    },
+    "d6_int8_row": {
+      "delta": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 0,
+      "p_two_sided": 1.0,
+      "verdict": "SHIP"
+    },
+    "d6_int4_row": {
+      "delta": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 0,
+      "p_two_sided": 1.0,
+      "verdict": "SHIP"
+    },
+    "d6_int8_tensor": {
+      "delta": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "b": 0,
+      "c": 0,
+      "p_two_sided": 1.0,
+      "verdict": "SHIP"
+    }
+  },
+  "interactions": {
+    "int8_row": {
+      "I": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "verdict": "ORTHOGONAL -- levers compound"
+    },
+    "int4_row": {
+      "I": 0.1,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.25,
+      "verdict": "INCONCLUSIVE at this n"
+    },
+    "int8_tensor": {
+      "I": 0.0,
+      "boot95_lo": 0.0,
+      "boot95_hi": 0.0,
+      "verdict": "ORTHOGONAL -- levers compound"
+    }
+  },
+  "records": [
+    {
+      "gold": 5,
+      "path": "n03394916_7000.JPEG",
+      "d12_fp32": 5,
+      "d12_int8_row": 5,
+      "d12_int4_row": 5,
+      "d12_int8_tensor": 5,
+      "d6_fp32": 3,
+      "d6_int8_row": 3,
+      "d6_int4_row": 3,
+      "d6_int8_tensor": 3
+    },
+    {
+      "gold": 7,
+      "path": "n03425413_23251.JPEG",
+      "d12_fp32": 0,
+      "d12_int8_row": 0,
+      "d12_int4_row": 0,
+      "d12_int8_tensor": 0,
+      "d6_fp32": 2,
+      "d6_int8_row": 2,
+      "d6_int4_row": 2,
+      "d6_int8_tensor": 2
+    },
+    {
+      "gold": 5,
+      "path": "n03394916_55411.JPEG",
+      "d12_fp32": 5,
+      "d12_int8_row": 5,
+      "d12_int4_row": 5,
+      "d12_int8_tensor": 5,
+      "d6_fp32": 5,
+      "d6_int8_row": 5,
+      "d6_int4_row": 5,
+      "d6_int8_tensor": 5
+    },
+    {
+      "gold": 4,
+      "path": "n03028079_8382.JPEG",
+      "d12_fp32": 3,
+      "d12_int8_row": 3,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 4,
+      "d6_int8_row": 4,
+      "d6_int4_row": 4,
+      "d6_int8_tensor": 4
+    },
+    {
+      "gold": 7,
+      "path": "n03425413_18430.JPEG",
+      "d12_fp32": 7,
+      "d12_int8_row": 7,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 7,
+      "d6_fp32": 3,
+      "d6_int8_row": 3,
+      "d6_int4_row": 3,
+      "d6_int8_tensor": 3
+    },
+    {
+      "gold": 0,
+      "path": "n01440764_11650.JPEG",
+      "d12_fp32": 0,
+      "d12_int8_row": 0,
+      "d12_int4_row": 0,
+      "d12_int8_tensor": 0,
+      "d6_fp32": 1,
+      "d6_int8_row": 1,
+      "d6_int4_row": 1,
+      "d6_int8_tensor": 1
+    },
+    {
+      "gold": 6,
+      "path": "n03417042_5301.JPEG",
+      "d12_fp32": 3,
+      "d12_int8_row": 3,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 6,
+      "d6_int8_row": 6,
+      "d6_int4_row": 6,
+      "d6_int8_tensor": 6
+    },
+    {
+      "gold": 2,
+      "path": "n02979186_16382.JPEG",
+      "d12_fp32": 2,
+      "d12_int8_row": 2,
+      "d12_int4_row": 2,
+      "d12_int8_tensor": 2,
+      "d6_fp32": 2,
+      "d6_int8_row": 2,
+      "d6_int4_row": 2,
+      "d6_int8_tensor": 2
+    },
+    {
+      "gold": 9,
+      "path": "n03888257_1222.JPEG",
+      "d12_fp32": 9,
+      "d12_int8_row": 9,
+      "d12_int4_row": 9,
+      "d12_int8_tensor": 9,
+      "d6_fp32": 9,
+      "d6_int8_row": 9,
+      "d6_int4_row": 9,
+      "d6_int8_tensor": 9
+    },
+    {
+      "gold": 1,
+      "path": "ILSVRC2012_val_00036282.JPEG",
+      "d12_fp32": 2,
+      "d12_int8_row": 2,
+      "d12_int4_row": 2,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 3,
+      "d6_int8_row": 3,
+      "d6_int4_row": 2,
+      "d6_int8_tensor": 3
+    },
+    {
+      "gold": 8,
+      "path": "n03445777_10042.JPEG",
+      "d12_fp32": 3,
+      "d12_int8_row": 3,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 5,
+      "d6_int8_row": 5,
+      "d6_int4_row": 5,
+      "d6_int8_tensor": 5
+    },
+    {
+      "gold": 2,
+      "path": "n02979186_18131.JPEG",
+      "d12_fp32": 2,
+      "d12_int8_row": 2,
+      "d12_int4_row": 2,
+      "d12_int8_tensor": 2,
+      "d6_fp32": 2,
+      "d6_int8_row": 2,
+      "d6_int4_row": 2,
+      "d6_int8_tensor": 2
+    },
+    {
+      "gold": 4,
+      "path": "n03028079_12090.JPEG",
+      "d12_fp32": 4,
+      "d12_int8_row": 4,
+      "d12_int4_row": 4,
+      "d12_int8_tensor": 4,
+      "d6_fp32": 4,
+      "d6_int8_row": 4,
+      "d6_int4_row": 4,
+      "d6_int8_tensor": 4
+    },
+    {
+      "gold": 9,
+      "path": "n03888257_18742.JPEG",
+      "d12_fp32": 9,
+      "d12_int8_row": 9,
+      "d12_int4_row": 9,
+      "d12_int8_tensor": 9,
+      "d6_fp32": 9,
+      "d6_int8_row": 9,
+      "d6_int4_row": 9,
+      "d6_int8_tensor": 9
+    },
+    {
+      "gold": 1,
+      "path": "n02102040_8330.JPEG",
+      "d12_fp32": 1,
+      "d12_int8_row": 1,
+      "d12_int4_row": 1,
+      "d12_int8_tensor": 1,
+      "d6_fp32": 1,
+      "d6_int8_row": 1,
+      "d6_int4_row": 1,
+      "d6_int8_tensor": 1
+    },
+    {
+      "gold": 6,
+      "path": "n03417042_11602.JPEG",
+      "d12_fp32": 6,
+      "d12_int8_row": 6,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 6,
+      "d6_fp32": 6,
+      "d6_int8_row": 6,
+      "d6_int4_row": 6,
+      "d6_int8_tensor": 6
+    },
+    {
+      "gold": 3,
+      "path": "n03000684_16280.JPEG",
+      "d12_fp32": 3,
+      "d12_int8_row": 3,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 3,
+      "d6_int8_row": 3,
+      "d6_int4_row": 3,
+      "d6_int8_tensor": 3
+    },
+    {
+      "gold": 0,
+      "path": "n01440764_8052.JPEG",
+      "d12_fp32": 1,
+      "d12_int8_row": 1,
+      "d12_int4_row": 1,
+      "d12_int8_tensor": 1,
+      "d6_fp32": 1,
+      "d6_int8_row": 1,
+      "d6_int4_row": 3,
+      "d6_int8_tensor": 1
+    },
+    {
+      "gold": 8,
+      "path": "n03445777_10071.JPEG",
+      "d12_fp32": 8,
+      "d12_int8_row": 8,
+      "d12_int4_row": 8,
+      "d12_int8_tensor": 8,
+      "d6_fp32": 8,
+      "d6_int8_row": 8,
+      "d6_int4_row": 8,
+      "d6_int8_tensor": 8
+    },
+    {
+      "gold": 3,
+      "path": "n03000684_13982.JPEG",
+      "d12_fp32": 3,
+      "d12_int8_row": 3,
+      "d12_int4_row": 3,
+      "d12_int8_tensor": 3,
+      "d6_fp32": 3,
+      "d6_int8_row": 3,
+      "d6_int4_row": 3,
+      "d6_int8_tensor": 3
+    }
+  ]
+}

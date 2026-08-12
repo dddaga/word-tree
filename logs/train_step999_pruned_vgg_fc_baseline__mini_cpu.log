@@ -1,0 +1,11 @@
+VGG_FC total weights=119,578,624  target=34,976  kept=34,980 (sparsity=0.99971)
+  ep  0 val=0.1017 best=0.1017
+  ep  5 val=0.0910 best=0.1017
+  ep 10 val=0.0910 best=0.1017
+  ep 15 val=0.0910 best=0.1017
+  ep 20 val=0.0910 best=0.1017
+  ep 25 val=0.0910 best=0.1017
+  ep 30 val=0.0910 best=0.1017
+  ep 35 val=0.0910 best=0.1017
+BEST pruned VGG_FC @ 34,980 params = 0.1017  (vs SGNNET champion 95.95%)
+Saved /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/train_step999_pruned_vgg_fc__studio_mps.json

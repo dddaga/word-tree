@@ -1,0 +1,92 @@
+{
+  "Linear": {
+    "K_hh": null,
+    "K_iter": null,
+    "n_params": 19250,
+    "best": 0.4775,
+    "best_ep": 17,
+    "delta_vs_linear": 0.0,
+    "elapsed_s": 0
+  },
+  "K1I3": {
+    "K_hh": 1,
+    "K_iter": 3,
+    "n_params": 18832,
+    "best": 0.2525,
+    "best_ep": 18,
+    "delta_vs_linear": -0.225,
+    "elapsed_s": 5
+  },
+  "K1I5": {
+    "K_hh": 1,
+    "K_iter": 5,
+    "n_params": 18832,
+    "best": 0.325,
+    "best_ep": 18,
+    "delta_vs_linear": -0.1525,
+    "elapsed_s": 8
+  },
+  "K1I7": {
+    "K_hh": 1,
+    "K_iter": 7,
+    "n_params": 18832,
+    "best": 0.2975,
+    "best_ep": 18,
+    "delta_vs_linear": -0.18,
+    "elapsed_s": 11
+  },
+  "K2I3": {
+    "K_hh": 2,
+    "K_iter": 3,
+    "n_params": 18832,
+    "best": 0.2825,
+    "best_ep": 19,
+    "delta_vs_linear": -0.195,
+    "elapsed_s": 7
+  },
+  "K2I5": {
+    "K_hh": 2,
+    "K_iter": 5,
+    "n_params": 18832,
+    "best": 0.375,
+    "best_ep": 20,
+    "delta_vs_linear": -0.1025,
+    "elapsed_s": 11
+  },
+  "K2I7": {
+    "K_hh": 2,
+    "K_iter": 7,
+    "n_params": 18832,
+    "best": 0.3275,
+    "best_ep": 20,
+    "delta_vs_linear": -0.15,
+    "elapsed_s": 15
+  },
+  "K4I3": {
+    "K_hh": 4,
+    "K_iter": 3,
+    "n_params": 18832,
+    "best": 0.24,
+    "best_ep": 16,
+    "delta_vs_linear": -0.2375,
+    "elapsed_s": 9
+  },
+  "K4I5": {
+    "K_hh": 4,
+    "K_iter": 5,
+    "n_params": 18832,
+    "best": 0.385,
+    "best_ep": 19,
+    "delta_vs_linear": -0.0925,
+    "elapsed_s": 15
+  },
+  "K4I7": {
+    "K_hh": 4,
+    "K_iter": 7,
+    "n_params": 18832,
+    "best": 0.335,
+    "best_ep": 17,
+    "delta_vs_linear": -0.1425,
+    "elapsed_s": 20
+  }
+}
