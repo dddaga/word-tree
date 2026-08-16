@@ -1,0 +1,117 @@
+{
+  "step": "seg_step015",
+  "device": "mps",
+  "slot": "mini_mps",
+  "res": 128,
+  "repeats": 200,
+  "warmup": 30,
+  "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+  "rows": [
+    {
+      "arm": "E9",
+      "params": 374680,
+      "gmacs": 0.2636,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 0.9582,
+          "ms_per_frame": 0.9582,
+          "p10": 0.9224,
+          "p90": 0.9843,
+          "peak_mem_mb": 11.3
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 5.4944,
+          "ms_per_frame": 0.1717,
+          "p10": 5.4487,
+          "p90": 5.5809,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    },
+    {
+      "arm": "E7",
+      "params": 851816,
+      "gmacs": 0.8757,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 0.8105,
+          "ms_per_frame": 0.8105,
+          "p10": 0.801,
+          "p90": 0.8587,
+          "peak_mem_mb": 53.2
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 11.6906,
+          "ms_per_frame": 0.3653,
+          "p10": 11.6273,
+          "p90": 11.7737,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    },
+    {
+      "arm": "E10",
+      "params": 1545528,
+      "gmacs": 1.8653,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 1.209,
+          "ms_per_frame": 1.209,
+          "p10": 1.168,
+          "p90": 1.2187,
+          "peak_mem_mb": 53.2
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 21.1861,
+          "ms_per_frame": 0.6621,
+          "p10": 21.1118,
+          "p90": 21.2727,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    },
+    {
+      "arm": "E2",
+      "params": 2455816,
+      "gmacs": 3.2324,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 1.6166,
+          "ms_per_frame": 1.6166,
+          "p10": 1.5767,
+          "p90": 1.6396,
+          "peak_mem_mb": 53.2
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 31.7982,
+          "ms_per_frame": 0.9937,
+          "p10": 31.7201,
+          "p90": 31.9102,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "b1": {
+      "latency_ratio": 1.9946,
+      "mac_ratio": 3.6912,
+      "efficiency": 0.5404,
+      "branch": "b partially compute-bound"
+    },
+    "b32": {
+      "latency_ratio": 2.7202,
+      "mac_ratio": 3.6912,
+      "efficiency": 0.7369,
+      "branch": "b partially compute-bound"
+    }
+  }
+}

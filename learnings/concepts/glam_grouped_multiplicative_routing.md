@@ -91,6 +91,25 @@ FLOPs); survivors add wall-time + peak memory via `bench_step608`. An arm losing
 winning params/FLOPs/energy stays alive. T0→T1→T2 gain compression is severe
 (+1.12→+0.18pp, step907→911) — no claim off T0/T1 alone.
 
+## Results (moved to sibling detail files — this file stays the spec/index)
+
+- **[glam_results_imagenette.md](glam_results_imagenette.md)** — saturated-ceiling Imagenette VGG16
+  runs: T0 scout (step001), T0 competitive un-strawed (step002), tier ladder to **T2 97.68 ±0.05 @
+  47,370 params (0.040% FC)**, mechanism-2 affinity (step003), key×value sigmoid gate (step004).
+- **[glam_results_scale_capacity.md](glam_results_scale_capacity.md)** — headroom + scale: CIFAR-10
+  depth-below-ceiling (step005), mechanism-4 slope-anneal energy CLOSED (step006), class-count
+  scale-invariance T1-confirmed→**T2-OVERTURNED** (gap −1.47→−3.14pp), backbone-invariance
+  (ResNet-18), and the capacity-scaling probe (gap STRUCTURAL, M floor-only, residual
+  class-count-dependent).
+
+**Headline verdict (CONFIRMED):** **locality / shared-pool structured projection is the ENTIRE
+algorithm.** All four user mechanisms faithfully tested: (1) locality VALIDATED T0→T1→T2; (2)
+selectivity/affinity NEUTRAL; (3) mul/key×value NEUTRAL (raw product collapses, sigmoid-key ties);
+(4) slope-anneal energy NEUTRAL-negative; depth REJECTED. Honest Pareto: matches dense ceiling where
+saturated (Imagenette), near-free ~1.5pp under dense at low class count (CIFAR-10, capacity-
+recoverable), structural ~2pp floor at high class count (CIFAR-100). Shipped primitive = shared-pool
+FC-head replacement; scaling carries the d_out FRONTIER, not one champion (PAPER_CAMPAIGN.md).
+
 ## Instrumentation (from run 1)
 
 Affinity/gate entropy per epoch (template `train_step904_node_gating_t0.py`), dead-expert

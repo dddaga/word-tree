@@ -1,0 +1,70 @@
+
+======================================================================
+glam_step008 — MERGE CIFAR-100 cross-chunk merge T0 (75ep, 50%)  seeds=[42, 43, 44]
+  device=cpu  100 classes, VGG16 25088-dim (same backbone)
+======================================================================
+
+────────────────────────────────────────────────────────────
+MERGE r=0 act=gelu  params=73,636 (0.0616% FC)  store=data/store_cifar100.h5  device=cpu
+  e  1/75  val=0.0797  best=0.0797  [1s]
+  e  5/75  val=0.4835  best=0.4835  [4s]
+  e 10/75  val=0.4913  best=0.5015  [8s]
+  e 15/75  val=0.4794  best=0.5015  [11s]
+  e 20/75  val=0.4631  best=0.5015  [15s]
+  e 25/75  val=0.4628  best=0.5015  [19s]
+  e 30/75  val=0.4599  best=0.5015  [22s]
+  e 35/75  val=0.4594  best=0.5015  [25s]
+  e 40/75  val=0.4585  best=0.5015  [28s]
+  e 45/75  val=0.4580  best=0.5015  [32s]
+  e 50/75  val=0.4589  best=0.5015  [35s]
+  e 55/75  val=0.4578  best=0.5015  [39s]
+  e 60/75  val=0.4589  best=0.5015  [43s]
+  e 65/75  val=0.4590  best=0.5015  [46s]
+  e 70/75  val=0.4586  best=0.5015  [50s]
+  e 75/75  val=0.4591  best=0.5015  [54s]
+  DONE: best=0.5015 @ep7  params=73,636  54s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step008_MERGE_add_post_r0_ro16_lowro_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+MERGE r=0 act=gelu  params=73,636 (0.0616% FC)  store=data/store_cifar100.h5  device=cpu
+  e  1/75  val=0.0760  best=0.0760  [1s]
+  e  5/75  val=0.4633  best=0.4633  [4s]
+  e 10/75  val=0.4813  best=0.4889  [7s]
+  e 15/75  val=0.4661  best=0.4889  [11s]
+  e 20/75  val=0.4557  best=0.4889  [15s]
+  e 25/75  val=0.4440  best=0.4889  [19s]
+  e 30/75  val=0.4479  best=0.4889  [22s]
+  e 35/75  val=0.4479  best=0.4889  [25s]
+  e 40/75  val=0.4471  best=0.4889  [28s]
+  e 45/75  val=0.4470  best=0.4889  [31s]
+  e 50/75  val=0.4456  best=0.4889  [34s]
+  e 55/75  val=0.4463  best=0.4889  [37s]
+  e 60/75  val=0.4466  best=0.4889  [40s]
+  e 65/75  val=0.4477  best=0.4889  [43s]
+  e 70/75  val=0.4472  best=0.4889  [46s]
+  e 75/75  val=0.4471  best=0.4889  [49s]
+  DONE: best=0.4889 @ep7  params=73,636  49s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step008_MERGE_add_post_r0_ro16_lowro_seed43__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+MERGE r=0 act=gelu  params=73,636 (0.0616% FC)  store=data/store_cifar100.h5  device=cpu
+  e  1/75  val=0.0669  best=0.0669  [1s]
+  e  5/75  val=0.4660  best=0.4660  [3s]
+  e 10/75  val=0.4863  best=0.4987  [6s]
+  e 15/75  val=0.4661  best=0.4987  [9s]
+  e 20/75  val=0.4583  best=0.4987  [12s]
+  e 25/75  val=0.4497  best=0.4987  [15s]
+  e 30/75  val=0.4510  best=0.4987  [18s]
+  e 35/75  val=0.4523  best=0.4987  [21s]
+  e 40/75  val=0.4485  best=0.4987  [23s]
+  e 45/75  val=0.4487  best=0.4987  [26s]
+  e 50/75  val=0.4476  best=0.4987  [29s]
+  e 55/75  val=0.4476  best=0.4987  [32s]
+  e 60/75  val=0.4484  best=0.4987  [35s]
+  e 65/75  val=0.4488  best=0.4987  [38s]
+  e 70/75  val=0.4483  best=0.4987  [41s]
+  e 75/75  val=0.4485  best=0.4987  [44s]
+  DONE: best=0.4987 @ep8  params=73,636  44s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step008_MERGE_add_post_r0_ro16_lowro_seed44__mini_cpu.json
+
+MERGE SUMMARY: mean=0.4964 sd=0.0054  n=3  seeds=[42, 43, 44]

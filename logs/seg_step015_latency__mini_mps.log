@@ -1,0 +1,19 @@
+
+==============================================================================
+seg_step015 latency Pareto — mps  res=128  repeats=200
+  macOS-26.6-arm64-arm-64bit-Mach-O
+==============================================================================
+  E9   b1      0.958 ms/fwd     0.958 ms/frame  [p10 0.922 p90 0.984]  mem 11 MB  0.2636G
+  E9   b32     5.494 ms/fwd     0.172 ms/frame  [p10 5.449 p90 5.581]  mem 1119 MB  0.2636G
+  E7   b1      0.810 ms/fwd     0.810 ms/frame  [p10 0.801 p90 0.859]  mem 53 MB  0.8757G
+  E7   b32    11.691 ms/fwd     0.365 ms/frame  [p10 11.627 p90 11.774]  mem 1119 MB  0.8757G
+  E10  b1      1.209 ms/fwd     1.209 ms/frame  [p10 1.168 p90 1.219]  mem 53 MB  1.8653G
+  E10  b32    21.186 ms/fwd     0.662 ms/frame  [p10 21.112 p90 21.273]  mem 1119 MB  1.8653G
+  E2   b1      1.617 ms/fwd     1.617 ms/frame  [p10 1.577 p90 1.640]  mem 53 MB  3.2324G
+  E2   b32    31.798 ms/fwd     0.994 ms/frame  [p10 31.720 p90 31.910]  mem 1119 MB  3.2324G
+
+  MAC ratio E2/E7 = 3.6912x
+  b1   latency ratio 1.9946x  ->  54.0% of the MAC ratio  -> branch b partially compute-bound
+  b32  latency ratio 2.7202x  ->  73.7% of the MAC ratio  -> branch b partially compute-bound
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step015_lat__mini_mps.json

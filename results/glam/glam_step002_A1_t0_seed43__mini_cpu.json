@@ -1,0 +1,55 @@
+{
+  "step": "glam_step002",
+  "seed": 43,
+  "arm": "A1",
+  "cells": [
+    {
+      "arm": "A1",
+      "L": 1,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 47370,
+      "pct_fc": 0.0396,
+      "best": 0.9682,
+      "best_ep": 12,
+      "dense_flops": 94740,
+      "elapsed_s": 2.9
+    },
+    {
+      "arm": "A1",
+      "L": 1,
+      "d_out": 32,
+      "M": 16,
+      "n_params": 189450,
+      "pct_fc": 0.1584,
+      "best": 0.9722,
+      "best_ep": 13,
+      "dense_flops": 378900,
+      "elapsed_s": 5.2
+    },
+    {
+      "arm": "A1",
+      "L": 2,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 48522,
+      "pct_fc": 0.0406,
+      "best": 0.9679,
+      "best_ep": 16,
+      "dense_flops": 97044,
+      "elapsed_s": 4.6
+    },
+    {
+      "arm": "A1",
+      "L": 2,
+      "d_out": 32,
+      "M": 16,
+      "n_params": 206346,
+      "pct_fc": 0.1725,
+      "best": 0.9738,
+      "best_ep": 8,
+      "dense_flops": 412692,
+      "elapsed_s": 9.2
+    }
+  ]
+}

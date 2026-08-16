@@ -1,0 +1,89 @@
+{
+  "step": "seg_step022",
+  "tag": "t1",
+  "bar_pp": 1.2,
+  "arm": "H1",
+  "alpha": 2.0,
+  "beta": 1.0,
+  "epochs": 60,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "cells": {
+    "full": {
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.267,
+          "best_ep": 42
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2744,
+          "best_ep": 39
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2519,
+          "best_ep": 21
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2663,
+          "best_ep": 24
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.265,
+          "best_ep": 34
+        }
+      ],
+      "params": 851816,
+      "gmac": 0.8757,
+      "mean": 0.2649,
+      "std": 0.0081,
+      "delta_pp": 0.0,
+      "verdict": "BASE"
+    },
+    "lean": {
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2639,
+          "best_ep": 42
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2679,
+          "best_ep": 44
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.26,
+          "best_ep": 34
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2532,
+          "best_ep": 52
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.264,
+          "best_ep": 32
+        }
+      ],
+      "params": 731624,
+      "gmac": 0.845,
+      "mean": 0.2618,
+      "std": 0.0056,
+      "delta_pp": -0.31,
+      "verdict": "WIN(pareto)"
+    }
+  },
+  "note": "rebuilt from logs/seg/seg_step022_pyramid_t1__mini_mps.log; the run completed all 10 runs but the JSON write failed with EPERM (volume fault). elapsed_s and per-class final metrics not recoverable."
+}

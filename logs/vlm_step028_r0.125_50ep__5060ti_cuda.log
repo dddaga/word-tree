@@ -1,0 +1,86 @@
+==============================================================================
+vlm_step023 MLP width  device=cuda  depth=12->6  ratios=[0.125]  n_train=9352 epochs=50
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 5641.19it/s]
+  9269 train / 500 eval images
+  GATE validity  teacher d12 top1 0.7040 vs 0.711 -> PASS   tower params 85.05M (mlp intermediate 3072)
+    teacher cache 0/9269
+    teacher cache 400/9269
+    teacher cache 800/9269
+    teacher cache 1200/9269
+    teacher cache 1600/9269
+    teacher cache 2000/9269
+    teacher cache 2400/9269
+    teacher cache 2800/9269
+    teacher cache 3200/9269
+    teacher cache 3600/9269
+    teacher cache 4000/9269
+    teacher cache 4400/9269
+    teacher cache 4800/9269
+    teacher cache 5200/9269
+    teacher cache 5600/9269
+    teacher cache 6000/9269
+    teacher cache 6400/9269
+    teacher cache 6800/9269
+    teacher cache 7200/9269
+    teacher cache 7600/9269
+    teacher cache 8000/9269
+    teacher cache 8400/9269
+    teacher cache 8800/9269
+    teacher cache 9200/9269
+    teacher cache done in 789s
+
+=== mlp ratio 0.125 (3072 -> 384 intermediate) ===
+  naive (sliced, no training)  top1 0.1000   tower params 17.74M (0.209x)
+  ep 1/50  rel_mse 0.4405  cosine 0.7756
+  ep 2/50  rel_mse 0.3664  cosine 0.7988
+  ep 3/50  rel_mse 0.3529  cosine 0.8071
+  ep 4/50  rel_mse 0.3432  cosine 0.8129
+  ep 5/50  rel_mse 0.3355  cosine 0.8175
+  ep 6/50  rel_mse 0.3287  cosine 0.8216
+  ep 7/50  rel_mse 0.3229  cosine 0.8250
+  ep 8/50  rel_mse 0.3177  cosine 0.8280
+  ep 9/50  rel_mse 0.3127  cosine 0.8310
+  ep 10/50  rel_mse 0.3078  cosine 0.8339
+  ep 11/50  rel_mse 0.3035  cosine 0.8364
+  ep 12/50  rel_mse 0.2984  cosine 0.8394
+  ep 13/50  rel_mse 0.2943  cosine 0.8417
+  ep 14/50  rel_mse 0.2898  cosine 0.8443
+  ep 15/50  rel_mse 0.2856  cosine 0.8468
+  ep 16/50  rel_mse 0.2817  cosine 0.8490
+  ep 17/50  rel_mse 0.2776  cosine 0.8514
+  ep 18/50  rel_mse 0.2738  cosine 0.8536
+  ep 19/50  rel_mse 0.2700  cosine 0.8558
+  ep 20/50  rel_mse 0.2665  cosine 0.8578
+  ep 21/50  rel_mse 0.2632  cosine 0.8597
+  ep 22/50  rel_mse 0.2599  cosine 0.8616
+  ep 23/50  rel_mse 0.2567  cosine 0.8634
+  ep 24/50  rel_mse 0.2540  cosine 0.8650
+  ep 25/50  rel_mse 0.2516  cosine 0.8664
+  ep 26/50  rel_mse 0.2484  cosine 0.8682
+  ep 27/50  rel_mse 0.2456  cosine 0.8698
+  ep 28/50  rel_mse 0.2435  cosine 0.8710
+  ep 29/50  rel_mse 0.2411  cosine 0.8724
+  ep 30/50  rel_mse 0.2385  cosine 0.8738
+  ep 31/50  rel_mse 0.2362  cosine 0.8751
+  ep 32/50  rel_mse 0.2343  cosine 0.8762
+  ep 33/50  rel_mse 0.2317  cosine 0.8776
+  ep 34/50  rel_mse 0.2296  cosine 0.8788
+  ep 35/50  rel_mse 0.2278  cosine 0.8799
+  ep 36/50  rel_mse 0.2258  cosine 0.8810
+  ep 37/50  rel_mse 0.2241  cosine 0.8819
+  ep 38/50  rel_mse 0.2221  cosine 0.8831
+  ep 39/50  rel_mse 0.2204  cosine 0.8840
+  ep 40/50  rel_mse 0.2182  cosine 0.8852
+  ep 41/50  rel_mse 0.2167  cosine 0.8861
+  ep 42/50  rel_mse 0.2152  cosine 0.8869
+  ep 43/50  rel_mse 0.2138  cosine 0.8877
+  ep 44/50  rel_mse 0.2122  cosine 0.8886
+  ep 45/50  rel_mse 0.2107  cosine 0.8895
+  ep 46/50  rel_mse 0.2092  cosine 0.8903
+  ep 47/50  rel_mse 0.2078  cosine 0.8910
+  ep 48/50  rel_mse 0.2065  cosine 0.8918
+  ep 49/50  rel_mse 0.2053  cosine 0.8925
+  ep 50/50  rel_mse 0.2041  cosine 0.8931
+  distilled top1 0.6680  (+3.60pp below teacher, +56.80pp over naive) -> PARTIAL
+  tower 26.20 -> 27.36 ms (0.96x), params 17.74M (0.209x)
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step023_mlp_width_r0.125_e50_t9352_n500_d6__5060ti_cuda.json

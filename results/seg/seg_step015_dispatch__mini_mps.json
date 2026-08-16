@@ -1,0 +1,81 @@
+{
+  "step": "seg_step015",
+  "device": "mps",
+  "slot": "mini_mps",
+  "res": 128,
+  "repeats": 200,
+  "warmup": 30,
+  "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+  "rows": [
+    {
+      "arm": "E7",
+      "params": 851816,
+      "gmacs": 0.8757,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 0.8552,
+          "ms_per_frame": 0.8552,
+          "p10": 0.84,
+          "p90": 0.9064,
+          "peak_mem_mb": 44.8
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 11.6926,
+          "ms_per_frame": 0.3654,
+          "p10": 11.6411,
+          "p90": 11.782,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    },
+    {
+      "arm": "E11",
+      "params": 1109736,
+      "gmacs": 0.8461,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 0.8705,
+          "ms_per_frame": 0.8705,
+          "p10": 0.824,
+          "p90": 0.8827,
+          "peak_mem_mb": 44.8
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 11.6614,
+          "ms_per_frame": 0.3644,
+          "p10": 11.5013,
+          "p90": 11.8265,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    },
+    {
+      "arm": "E12",
+      "params": 1091144,
+      "gmacs": 0.8164,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 0.9105,
+          "ms_per_frame": 0.9105,
+          "p10": 0.8975,
+          "p90": 0.9199,
+          "peak_mem_mb": 53.2
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 12.2625,
+          "ms_per_frame": 0.3832,
+          "p10": 12.197,
+          "p90": 12.3537,
+          "peak_mem_mb": 1118.6
+        }
+      ]
+    }
+  ],
+  "verdict": {}
+}

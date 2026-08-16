@@ -1,0 +1,294 @@
+{
+  "step": "seg_step022",
+  "bar_pp": 1.2,
+  "arm": "H1",
+  "alpha": 2.0,
+  "beta": 1.0,
+  "epochs": 1,
+  "seeds": [
+    42
+  ],
+  "teacher_arm": "E2",
+  "student_arm": "E7",
+  "grid": 16,
+  "res": 128,
+  "device": "mps",
+  "elapsed_s": 10.2,
+  "cells": {
+    "full": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10543202174206574,
+          "best_ep": 1,
+          "n_params": 851816,
+          "macs": 875692032,
+          "final": {
+            "bce": 0.7764090538024903,
+            "mAP": 0.10543202174206574,
+            "ap_per_class": {
+              "person": 0.1163,
+              "vehicle": 0.0211,
+              "animal": NaN,
+              "object": 0.1789
+            }
+          }
+        }
+      ],
+      "mean": 0.10543202174206574,
+      "std": 0.0,
+      "n_params": 851816,
+      "gmacs": 0.8757,
+      "delta_pp": 0.0,
+      "verdict": "BASE"
+    },
+    "no_pool": {
+      "branches": [
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10270851353804271,
+          "best_ep": 1,
+          "n_params": 842920,
+          "macs": 873463808,
+          "final": {
+            "bce": 0.8587562561035156,
+            "mAP": 0.10270851353804271,
+            "ap_per_class": {
+              "person": 0.1161,
+              "vehicle": 0.0317,
+              "animal": NaN,
+              "object": 0.1603
+            }
+          }
+        }
+      ],
+      "mean": 0.10270851353804271,
+      "std": 0.0,
+      "n_params": 842920,
+      "gmacs": 0.8735,
+      "delta_pp": -0.2723508204023034,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d1": {
+      "branches": [
+        "pool",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10541409129897754,
+          "best_ep": 1,
+          "n_params": 740520,
+          "macs": 847249408,
+          "final": {
+            "bce": 0.7882481098175049,
+            "mAP": 0.10541409129897754,
+            "ap_per_class": {
+              "person": 0.1272,
+              "vehicle": 0.0387,
+              "animal": NaN,
+              "object": 0.1504
+            }
+          }
+        }
+      ],
+      "mean": 0.10541409129897754,
+      "std": 0.0,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -0.001793044308820435,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d4": {
+      "branches": [
+        "pool",
+        "d1",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10164415960510571,
+          "best_ep": 1,
+          "n_params": 740520,
+          "macs": 847249408,
+          "final": {
+            "bce": 0.7820319175720215,
+            "mAP": 0.10164415960510571,
+            "ap_per_class": {
+              "person": 0.1275,
+              "vehicle": 0.0431,
+              "animal": NaN,
+              "object": 0.1344
+            }
+          }
+        }
+      ],
+      "mean": 0.10164415960510571,
+      "std": 0.0,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -0.37878621369600296,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d8": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10545979936917622,
+          "best_ep": 1,
+          "n_params": 740520,
+          "macs": 847249408,
+          "final": {
+            "bce": 0.7839020252227783,
+            "mAP": 0.10545979936917622,
+            "ap_per_class": {
+              "person": 0.1342,
+              "vehicle": 0.0492,
+              "animal": NaN,
+              "object": 0.1329
+            }
+          }
+        }
+      ],
+      "mean": 0.10545979936917622,
+      "std": 0.0,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": 0.0027777627110481262,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d16": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10980104779203732,
+          "best_ep": 1,
+          "n_params": 740520,
+          "macs": 847249408,
+          "final": {
+            "bce": 0.7926540374755859,
+            "mAP": 0.10980104779203732,
+            "ap_per_class": {
+              "person": 0.1361,
+              "vehicle": 0.0566,
+              "animal": NaN,
+              "object": 0.1367
+            }
+          }
+        }
+      ],
+      "mean": 0.10980104779203732,
+      "std": 0.0,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": 0.43690260499715805,
+      "verdict": "WIN(pareto)"
+    },
+    "gap_cat": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "cat",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10706057709952195,
+          "best_ep": 1,
+          "n_params": 860712,
+          "macs": 875831296,
+          "final": {
+            "bce": 0.7934003829956054,
+            "mAP": 0.10706057709952195,
+            "ap_per_class": {
+              "person": 0.1147,
+              "vehicle": 0.0246,
+              "animal": NaN,
+              "object": 0.1819
+            }
+          }
+        }
+      ],
+      "mean": 0.10706057709952195,
+      "std": 0.0,
+      "n_params": 860712,
+      "gmacs": 0.8758,
+      "delta_pp": 0.16285553574562073,
+      "verdict": "NEUTRAL"
+    },
+    "gap_se": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "se",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.10410697075227897,
+          "best_ep": 1,
+          "n_params": 893096,
+          "macs": 875732992,
+          "final": {
+            "bce": 0.8436363220214844,
+            "mAP": 0.10410697075227897,
+            "ap_per_class": {
+              "person": 0.1352,
+              "vehicle": 0.0237,
+              "animal": NaN,
+              "object": 0.1534
+            }
+          }
+        }
+      ],
+      "mean": 0.10410697075227897,
+      "std": 0.0,
+      "n_params": 893096,
+      "gmacs": 0.8757,
+      "delta_pp": -0.13250509897867746,
+      "verdict": "NEUTRAL"
+    }
+  }
+}

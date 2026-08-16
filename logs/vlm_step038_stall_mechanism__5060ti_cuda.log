@@ -1,0 +1,56 @@
+==============================================================================
+vlm_step038 stall mechanism  device=cuda  mode=compile  arms=['rebuild', 'soak']  R=16  n_eval=500
+PYTORCH_CUDA_ALLOC_CONF=(default)
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17971.66it/s]
+  rebuild rep0  top1 0.6880  tower   3.97  prefill   4.03  reserved 606->606 MB  retries 0  wall 58.9s  load1 1.07
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15971.52it/s]
+  rebuild rep1  top1 0.6880  tower   4.00  prefill   4.21  reserved 628->628 MB  retries 0  wall 58.0s  load1 1.02
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16135.50it/s]
+  rebuild rep2  top1 0.6880  tower   4.02  prefill   4.17  reserved 628->628 MB  retries 0  wall 58.0s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16622.64it/s]
+  rebuild rep3  top1 0.6880  tower   4.08  prefill   4.17  reserved 628->628 MB  retries 0  wall 58.0s  load1 0.95
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15968.68it/s]
+  rebuild rep4  top1 0.6880  tower   4.04  prefill   4.24  reserved 628->628 MB  retries 0  wall 58.4s  load1 1.04
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16347.94it/s]
+  rebuild rep5  top1 0.6880  tower   4.05  prefill   4.21  reserved 628->628 MB  retries 0  wall 58.3s  load1 1.02
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17026.50it/s]
+  rebuild rep6  top1 0.6880  tower   4.05  prefill   4.21  reserved 628->628 MB  retries 0  wall 58.3s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17502.28it/s]
+  rebuild rep7  top1 0.6880  tower   4.06  prefill   4.22  reserved 628->628 MB  retries 0  wall 58.2s  load1 1.07
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17856.33it/s]
+  rebuild rep8  top1 0.6880  tower   4.05  prefill   4.21  reserved 628->628 MB  retries 0  wall 59.2s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17457.58it/s]
+  rebuild rep9  top1 0.6880  tower   4.07  prefill   4.28  reserved 628->628 MB  retries 0  wall 58.3s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19118.90it/s]
+  rebuild rep10  top1 0.6880  tower   4.08  prefill   4.22  reserved 628->628 MB  retries 0  wall 58.4s  load1 1.04
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18760.85it/s]
+  rebuild rep11  top1 0.6880  tower   4.06  prefill   4.20  reserved 628->628 MB  retries 0  wall 59.4s  load1 1.04
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17646.74it/s]
+  rebuild rep12  top1 0.6880  tower   4.09  prefill   4.18  reserved 628->628 MB  retries 0  wall 58.7s  load1 0.99
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16775.22it/s]
+  rebuild rep13  top1 0.6880  tower   4.09  prefill   4.27  reserved 628->628 MB  retries 0  wall 58.4s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16058.24it/s]
+  rebuild rep14  top1 0.6880  tower   4.08  prefill   4.28  reserved 628->628 MB  retries 0  wall 58.4s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17787.84it/s]
+  rebuild rep15  top1 0.6880  tower   4.06  prefill   4.20  reserved 628->628 MB  retries 0  wall 59.8s  load1 1.00
+    rebuild: 0/16 departures (gate 4.5 ms), 0 stalls >=50 ms, 0 alloc retries
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15722.13it/s]
+  soak rep0  top1 0.6880  tower   4.06  prefill   4.21  reserved 592->592 MB  retries 0  wall 58.1s  load1 0.98
+  soak rep1  top1 0.6880  tower   4.05  prefill   4.21  reserved 592->592 MB  retries 0  wall 59.4s  load1 0.99
+  soak rep2  top1 0.6880  tower   4.06  prefill   4.22  reserved 592->592 MB  retries 0  wall 59.3s  load1 1.00
+  soak rep3  top1 0.6880  tower   4.07  prefill   4.22  reserved 592->592 MB  retries 0  wall 59.3s  load1 1.06
+  soak rep4  top1 0.6880  tower   4.09  prefill   4.28  reserved 592->592 MB  retries 0  wall 55.4s  load1 1.02
+  soak rep5  top1 0.6880  tower   4.08  prefill   4.28  reserved 592->592 MB  retries 0  wall 55.4s  load1 1.01
+  soak rep6  top1 0.6880  tower   4.07  prefill   4.27  reserved 592->592 MB  retries 0  wall 56.1s  load1 1.00
+  soak rep7  top1 0.6880  tower   4.08  prefill   4.25  reserved 592->592 MB  retries 0  wall 59.1s  load1 1.00
+  soak rep8  top1 0.6880  tower   4.08  prefill   4.25  reserved 592->592 MB  retries 0  wall 59.4s  load1 1.00
+  soak rep9  top1 0.6880  tower   4.08  prefill   4.24  reserved 592->592 MB  retries 0  wall 59.6s  load1 1.00
+  soak rep10  top1 0.6880  tower   4.09  prefill   4.21  reserved 592->592 MB  retries 0  wall 55.7s  load1 1.00
+  soak rep11  top1 0.6880  tower   4.09  prefill   4.22  reserved 592->592 MB  retries 0  wall 55.7s  load1 1.00
+  soak rep12  top1 0.6880  tower   4.08  prefill   4.22  reserved 592->592 MB  retries 0  wall 55.7s  load1 1.07
+  soak rep13  top1 0.6880  tower   4.07  prefill   4.21  reserved 592->592 MB  retries 0  wall 55.5s  load1 1.02
+  soak rep14  top1 0.6880  tower   4.06  prefill   4.20  reserved 592->592 MB  retries 0  wall 55.6s  load1 1.01
+  soak rep15  top1 0.6880  tower   4.07  prefill   4.20  reserved 592->592 MB  retries 0  wall 58.4s  load1 1.07
+    soak: 0/16 departures (gate 4.5 ms), 0 stalls >=50 ms, 0 alloc retries
+      soak CLEAN at R=16: pre-registered read is EVAL-PROTOCOL ARTIFACT. Bounds a rate, NOT a mechanism (section 51/53) -- state the power.
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step038_stall_mechanism_bf16_rebuild-soak_r16_n500__5060ti_cuda.json

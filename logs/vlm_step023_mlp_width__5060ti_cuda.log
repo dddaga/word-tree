@@ -1,0 +1,50 @@
+==============================================================================
+vlm_step023 MLP width  device=cuda  depth=12  ratios=[0.5, 0.25]  n_train=1000 epochs=15
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6512.27it/s]
+  1000 train / 500 eval images
+  GATE validity  teacher d12 top1 0.7040 vs 0.711 -> PASS   tower params 85.05M (mlp intermediate 3072)
+    teacher cache 0/1000
+    teacher cache 400/1000
+    teacher cache 800/1000
+    teacher cache done in 85s
+
+=== mlp ratio 0.5 (3072 -> 1536 intermediate) ===
+  naive (sliced, no training)  top1 0.1160   tower params 56.72M (0.667x)
+  ep 1/15  rel_mse 0.5695  cosine 0.7367
+  ep 2/15  rel_mse 0.3837  cosine 0.7876
+  ep 3/15  rel_mse 0.3695  cosine 0.7964
+  ep 4/15  rel_mse 0.3551  cosine 0.8053
+  ep 5/15  rel_mse 0.3421  cosine 0.8132
+  ep 6/15  rel_mse 0.3293  cosine 0.8206
+  ep 7/15  rel_mse 0.3151  cosine 0.8291
+  ep 8/15  rel_mse 0.3005  cosine 0.8377
+  ep 9/15  rel_mse 0.2885  cosine 0.8449
+  ep 10/15  rel_mse 0.2769  cosine 0.8517
+  ep 11/15  rel_mse 0.2678  cosine 0.8570
+  ep 12/15  rel_mse 0.2589  cosine 0.8621
+  ep 13/15  rel_mse 0.2508  cosine 0.8668
+  ep 14/15  rel_mse 0.2425  cosine 0.8718
+  ep 15/15  rel_mse 0.2357  cosine 0.8758
+  distilled top1 0.5500  (+15.40pp below teacher, +43.40pp over naive) -> LOSS
+  tower 26.22 -> 20.41 ms (1.28x), params 56.72M (0.667x)
+
+=== mlp ratio 0.25 (3072 -> 768 intermediate) ===
+  naive (sliced, no training)  top1 0.0860   tower params 42.56M (0.500x)
+  ep 1/15  rel_mse 0.5819  cosine 0.7336
+  ep 2/15  rel_mse 0.3945  cosine 0.7810
+  ep 3/15  rel_mse 0.3851  cosine 0.7870
+  ep 4/15  rel_mse 0.3778  cosine 0.7917
+  ep 5/15  rel_mse 0.3696  cosine 0.7967
+  ep 6/15  rel_mse 0.3599  cosine 0.8023
+  ep 7/15  rel_mse 0.3501  cosine 0.8081
+  ep 8/15  rel_mse 0.3436  cosine 0.8122
+  ep 9/15  rel_mse 0.3358  cosine 0.8168
+  ep 10/15  rel_mse 0.3275  cosine 0.8220
+  ep 11/15  rel_mse 0.3170  cosine 0.8280
+  ep 12/15  rel_mse 0.3090  cosine 0.8327
+  ep 13/15  rel_mse 0.3011  cosine 0.8374
+  ep 14/15  rel_mse 0.2923  cosine 0.8429
+  ep 15/15  rel_mse 0.2852  cosine 0.8471
+  distilled top1 0.4360  (+26.80pp below teacher, +35.00pp over naive) -> LOSS
+  tower 26.22 -> 17.76 ms (1.48x), params 42.56M (0.500x)
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step023_mlp_width_r0.5-0.25_e15_t1000_n500__5060ti_cuda.json

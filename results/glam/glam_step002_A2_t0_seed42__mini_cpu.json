@@ -1,0 +1,151 @@
+{
+  "step": "glam_step002",
+  "seed": 42,
+  "arm": "A2",
+  "cells": [
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 47370,
+      "pct_fc": 0.0396,
+      "best": 0.9501,
+      "best_ep": 11,
+      "dense_flops": 94740,
+      "elapsed_s": 3.7
+    },
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 8,
+      "M": 64,
+      "n_params": 66570,
+      "pct_fc": 0.0557,
+      "best": 0.9437,
+      "best_ep": 5,
+      "dense_flops": 133140,
+      "elapsed_s": 3.6
+    },
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 16,
+      "M": 16,
+      "n_params": 94730,
+      "pct_fc": 0.0792,
+      "best": 0.9562,
+      "best_ep": 6,
+      "dense_flops": 189460,
+      "elapsed_s": 4.6
+    },
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 16,
+      "M": 64,
+      "n_params": 133130,
+      "pct_fc": 0.1113,
+      "best": 0.959,
+      "best_ep": 9,
+      "dense_flops": 266260,
+      "elapsed_s": 4.6
+    },
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 32,
+      "M": 16,
+      "n_params": 189450,
+      "pct_fc": 0.1584,
+      "best": 0.9603,
+      "best_ep": 17,
+      "dense_flops": 378900,
+      "elapsed_s": 6.9
+    },
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 32,
+      "M": 64,
+      "n_params": 266250,
+      "pct_fc": 0.2226,
+      "best": 0.9562,
+      "best_ep": 6,
+      "dense_flops": 532500,
+      "elapsed_s": 7.0
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 48522,
+      "pct_fc": 0.0406,
+      "best": 0.8866,
+      "best_ep": 19,
+      "dense_flops": 97044,
+      "elapsed_s": 6.2
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 8,
+      "M": 64,
+      "n_params": 71178,
+      "pct_fc": 0.0595,
+      "best": 0.8854,
+      "best_ep": 11,
+      "dense_flops": 142356,
+      "elapsed_s": 6.3
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 16,
+      "M": 16,
+      "n_params": 99082,
+      "pct_fc": 0.0829,
+      "best": 0.9103,
+      "best_ep": 15,
+      "dense_flops": 198164,
+      "elapsed_s": 8.4
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 16,
+      "M": 64,
+      "n_params": 150538,
+      "pct_fc": 0.1259,
+      "best": 0.8989,
+      "best_ep": 6,
+      "dense_flops": 301076,
+      "elapsed_s": 8.4
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 32,
+      "M": 16,
+      "n_params": 206346,
+      "pct_fc": 0.1725,
+      "best": 0.9124,
+      "best_ep": 15,
+      "dense_flops": 412692,
+      "elapsed_s": 12.6
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 32,
+      "M": 64,
+      "n_params": 333834,
+      "pct_fc": 0.2792,
+      "best": 0.9075,
+      "best_ep": 9,
+      "dense_flops": 667668,
+      "elapsed_s": 12.7
+    }
+  ]
+}

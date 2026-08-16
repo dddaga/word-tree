@@ -1,0 +1,17 @@
+{
+  "step": "glam_step008",
+  "arm": "MERGE",
+  "M": 16,
+  "d_out": 8,
+  "rank": 32,
+  "merge_act": "gelu",
+  "n_merge": 1,
+  "n_params": 448868,
+  "pct_fc": 0.3753,
+  "best": 0.6417,
+  "best_ep": 11,
+  "dense_flops": 897736,
+  "elapsed_s": 12.4,
+  "store": "data/store_cifar100.h5",
+  "seed": 42
+}

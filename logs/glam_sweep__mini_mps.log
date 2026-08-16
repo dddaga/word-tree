@@ -1,0 +1,326 @@
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E0 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E0  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0550  bce=0.3027  best=0.0550  [7s]
+  e  5/20  mAP=0.1706  bce=0.1050  best=0.1706  [32s]
+  e 10/20  mAP=0.2177  bce=0.0965  best=0.2177  [65s]
+  e 15/20  mAP=0.2197  bce=0.1053  best=0.2200  [97s]
+  e 20/20  mAP=0.2075  bce=0.1102  best=0.2200  [130s]
+  DONE: best_mAP=0.2200 @ep11  {'person': 0.2309, 'vehicle': 0.0844, 'animal': 0.1237, 'object': 0.3909}  131s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E0_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E0 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E0  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0562  bce=0.2511  best=0.0562  [7s]
+  e  5/20  mAP=0.1745  bce=0.1031  best=0.1745  [33s]
+  e 10/20  mAP=0.2166  bce=0.0988  best=0.2166  [65s]
+  e 15/20  mAP=0.2411  bce=0.1046  best=0.2475  [98s]
+  e 20/20  mAP=0.2391  bce=0.1106  best=0.2475  [130s]
+  DONE: best_mAP=0.2475 @ep14  {'person': 0.3391, 'vehicle': 0.1125, 'animal': 0.1459, 'object': 0.3588}  131s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E0_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E0 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E0  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0555  bce=0.2541  best=0.0555  [7s]
+  e  5/20  mAP=0.1955  bce=0.0995  best=0.1955  [33s]
+  e 10/20  mAP=0.2397  bce=0.0924  best=0.2397  [65s]
+  e 15/20  mAP=0.2291  bce=0.1052  best=0.2460  [98s]
+  e 20/20  mAP=0.2205  bce=0.1085  best=0.2460  [130s]
+  DONE: best_mAP=0.2460 @ep13  {'person': 0.3113, 'vehicle': 0.0524, 'animal': 0.1346, 'object': 0.3837}  131s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E0_t0_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E1 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E1  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=8,961,800  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0538  bce=0.1887  best=0.0538  [12s]
+  e  5/20  mAP=0.0790  bce=0.1160  best=0.0790  [58s]
+  e 10/20  mAP=0.1072  bce=0.1097  best=0.1072  [115s]
+  e 15/20  mAP=0.1292  bce=0.1066  best=0.1292  [172s]
+  e 20/20  mAP=0.1378  bce=0.1044  best=0.1384  [229s]
+  DONE: best_mAP=0.1384 @ep19  {'person': 0.1628, 'vehicle': 0.0284, 'animal': 0.0445, 'object': 0.3156}  229s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E1_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E1 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E1  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=8,961,800  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0467  bce=0.2022  best=0.0467  [12s]
+  e  5/20  mAP=0.0746  bce=0.1176  best=0.0746  [57s]
+  e 10/20  mAP=0.1059  bce=0.1090  best=0.1059  [114s]
+  e 15/20  mAP=0.1434  bce=0.1037  best=0.1434  [171s]
+  e 20/20  mAP=0.1454  bce=0.1025  best=0.1454  [228s]
+  DONE: best_mAP=0.1454 @ep20  {'person': 0.1886, 'vehicle': 0.0278, 'animal': 0.0859, 'object': 0.2793}  229s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E1_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E1 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E1  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=8,961,800  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0530  bce=0.1895  best=0.0530  [12s]
+  e  5/20  mAP=0.0666  bce=0.1164  best=0.0691  [57s]
+  e 10/20  mAP=0.0943  bce=0.1138  best=0.0943  [114s]
+  e 15/20  mAP=0.1395  bce=0.1040  best=0.1395  [171s]
+  e 20/20  mAP=0.1479  bce=0.1017  best=0.1479  [228s]
+  DONE: best_mAP=0.1479 @ep20  {'person': 0.1944, 'vehicle': 0.0315, 'animal': 0.0908, 'object': 0.2749}  229s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E1_t0_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E2 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E2  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=2,195,656  MACs/frame=3.232G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0532  bce=0.2359  best=0.0532  [5s]
+  e  5/20  mAP=0.1418  bce=0.1073  best=0.1418  [26s]
+  e 10/20  mAP=0.2150  bce=0.0960  best=0.2150  [51s]
+  e 15/20  mAP=0.2261  bce=0.0946  best=0.2274  [76s]
+  e 20/20  mAP=0.2166  bce=0.0970  best=0.2274  [102s]
+  DONE: best_mAP=0.2274 @ep12  {'person': 0.3276, 'vehicle': 0.0888, 'animal': 0.0837, 'object': 0.3662}  102s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E2_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E2 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E2  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=2,195,656  MACs/frame=3.232G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0548  bce=0.2534  best=0.0548  [5s]
+  e  5/20  mAP=0.1610  bce=0.1054  best=0.1610  [26s]
+  e 10/20  mAP=0.2057  bce=0.0993  best=0.2172  [51s]
+  e 15/20  mAP=0.2310  bce=0.0947  best=0.2398  [76s]
+  e 20/20  mAP=0.2344  bce=0.0964  best=0.2398  [102s]
+  DONE: best_mAP=0.2398 @ep14  {'person': 0.3384, 'vehicle': 0.071, 'animal': 0.1422, 'object': 0.386}  102s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E2_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E2 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E2  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=2,195,656  MACs/frame=3.232G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0521  bce=0.2550  best=0.0521  [5s]
+  e  5/20  mAP=0.1589  bce=0.1043  best=0.1589  [26s]
+  e 10/20  mAP=0.2168  bce=0.0958  best=0.2168  [51s]
+  e 15/20  mAP=0.2374  bce=0.0931  best=0.2374  [76s]
+  e 20/20  mAP=0.2300  bce=0.0961  best=0.2374  [102s]
+  DONE: best_mAP=0.2374 @ep15  {'person': 0.3534, 'vehicle': 0.0769, 'animal': 0.0986, 'object': 0.3911}  102s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E2_t0_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E3 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E3  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=2,630,248  MACs/frame=1.331G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0522  bce=0.1975  best=0.0522  [5s]
+  e  5/20  mAP=0.0706  bce=0.1169  best=0.0706  [21s]
+  e 10/20  mAP=0.1047  bce=0.1089  best=0.1047  [40s]
+  e 15/20  mAP=0.1353  bce=0.1038  best=0.1353  [60s]
+  e 20/20  mAP=0.1376  bce=0.1025  best=0.1381  [80s]
+  DONE: best_mAP=0.1381 @ep18  {'person': 0.1813, 'vehicle': 0.0303, 'animal': 0.0711, 'object': 0.2677}  80s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E3_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E3 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E3  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=2,630,248  MACs/frame=1.331G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0485  bce=0.2082  best=0.0485  [4s]
+  e  5/20  mAP=0.0964  bce=0.1142  best=0.0964  [20s]
+  e 10/20  mAP=0.1122  bce=0.1071  best=0.1216  [40s]
+  e 15/20  mAP=0.1462  bce=0.1022  best=0.1462  [60s]
+  e 20/20  mAP=0.1545  bce=0.1003  best=0.1551  [80s]
+  DONE: best_mAP=0.1551 @ep16  {'person': 0.2078, 'vehicle': 0.0282, 'animal': 0.0806, 'object': 0.3013}  80s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E3_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E3 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E3  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=2,630,248  MACs/frame=1.331G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0511  bce=0.2176  best=0.0511  [4s]
+  e  5/20  mAP=0.0901  bce=0.1132  best=0.0901  [20s]
+  e 10/20  mAP=0.1278  bce=0.1052  best=0.1278  [40s]
+  e 15/20  mAP=0.1468  bce=0.1029  best=0.1468  [60s]
+  e 20/20  mAP=0.1420  bce=0.1015  best=0.1468  [80s]
+  DONE: best_mAP=0.1468 @ep15  {'person': 0.183, 'vehicle': 0.0284, 'animal': 0.0751, 'object': 0.2817}  80s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E3_t0_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E4 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E4  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=2,200,584  MACs/frame=0.896G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0538  bce=0.2311  best=0.0538  [7s]
+  e  5/20  mAP=0.0605  bce=0.1176  best=0.0605  [29s]
+  e 10/20  mAP=0.0913  bce=0.1131  best=0.0913  [57s]
+  e 15/20  mAP=0.1120  bce=0.1096  best=0.1147  [85s]
+  e 20/20  mAP=0.1229  bce=0.1085  best=0.1239  [114s]
+  DONE: best_mAP=0.1239 @ep17  {'person': 0.1204, 'vehicle': 0.0292, 'animal': 0.1048, 'object': 0.2371}  114s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E4_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E4 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E4  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=2,200,584  MACs/frame=0.896G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0485  bce=0.2499  best=0.0485  [6s]
+  e  5/20  mAP=0.0630  bce=0.1177  best=0.0630  [29s]
+  e 10/20  mAP=0.1158  bce=0.1103  best=0.1158  [57s]
+  e 15/20  mAP=0.1421  bce=0.1057  best=0.1421  [85s]
+  e 20/20  mAP=0.1505  bce=0.1048  best=0.1505  [113s]
+  DONE: best_mAP=0.1505 @ep20  {'person': 0.1635, 'vehicle': 0.0452, 'animal': 0.1187, 'object': 0.2745}  114s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E4_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E4 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E4  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=2,200,584  MACs/frame=0.896G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0536  bce=0.2342  best=0.0536  [6s]
+  e  5/20  mAP=0.0597  bce=0.1171  best=0.0597  [29s]
+  e 10/20  mAP=0.0860  bce=0.1142  best=0.0860  [57s]
+  e 15/20  mAP=0.1181  bce=0.1105  best=0.1181  [85s]
+  e 20/20  mAP=0.1282  bce=0.1084  best=0.1284  [113s]
+  DONE: best_mAP=0.1284 @ep19  {'person': 0.1352, 'vehicle': 0.0459, 'animal': 0.0968, 'object': 0.2349}  114s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E4_t0_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E5 --seed 42 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E5  128px -> 16x16, C=4 x K=2
+  device=mps  seed=42
+======================================================================
+  trainable=8,961,800  MACs/frame=2.611G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0569  bce=0.1906  best=0.0569  [7s]
+  e  5/20  mAP=0.0821  bce=0.1148  best=0.0821  [31s]
+  e 10/20  mAP=0.1296  bce=0.1066  best=0.1296  [62s]
+  e 15/20  mAP=0.1471  bce=0.1042  best=0.1471  [93s]
+  e 20/20  mAP=0.1504  bce=0.1030  best=0.1521  [124s]
+  DONE: best_mAP=0.1521 @ep18  {'person': 0.1862, 'vehicle': 0.0181, 'animal': 0.1009, 'object': 0.2965}  125s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E5_t0_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E5 --seed 43 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E5  128px -> 16x16, C=4 x K=2
+  device=mps  seed=43
+======================================================================
+  trainable=8,961,800  MACs/frame=2.611G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0538  bce=0.2024  best=0.0538  [7s]
+  e  5/20  mAP=0.0922  bce=0.1139  best=0.0922  [31s]
+  e 10/20  mAP=0.1255  bce=0.1046  best=0.1255  [62s]
+  e 15/20  mAP=0.1454  bce=0.1017  best=0.1463  [93s]
+  e 20/20  mAP=0.1501  bce=0.1026  best=0.1554  [124s]
+  DONE: best_mAP=0.1554 @ep16  {'person': 0.2173, 'vehicle': 0.0189, 'animal': 0.0396, 'object': 0.3247}  125s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E5_t0_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step002_encoder_flops.py --arm E5 --seed 44 --device mps
+######################################################################
+
+======================================================================
+seg_step002 — E5  128px -> 16x16, C=4 x K=2
+  device=mps  seed=44
+======================================================================
+  trainable=8,961,800  MACs/frame=2.611G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0562  bce=0.1899  best=0.0562  [6s]
+  e  5/20  mAP=0.0870  bce=0.1138  best=0.0870  [31s]
+  e 10/20  mAP=0.1272  bce=0.1042  best=0.1287  [62s]
+  e 15/20  mAP=0.1287  bce=0.1064  best=0.1343  [93s]
+  e 20/20  mAP=0.1288  bce=0.1071  best=0.1357  [124s]
+  DONE: best_mAP=0.1357 @ep16  {'person': 0.1576, 'vehicle': 0.0448, 'animal': 0.0396, 'object': 0.2731}  125s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step002_E5_t0_seed44__mini_mps.json
+
+SWEEP DONE  18 cells  2376s  failures=none

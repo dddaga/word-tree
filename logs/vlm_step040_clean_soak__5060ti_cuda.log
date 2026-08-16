@@ -1,0 +1,56 @@
+==============================================================================
+vlm_step040 clean soak  device=cuda  mode=compile  arms=['rebuild', 'soak']  R=16  n_eval=500  (NO per-image CUDA instrumentation)
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16044.81it/s]
+  rebuild rep0  top1 0.6880  tower   3.99  prefill   4.55 (img med  4.04  img max  250.58)  wall 58.7s  load1 0.84  <== DEPARTURE, stall img67 251 ms
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19471.66it/s]
+  rebuild rep1  top1 0.6880  tower   4.01  prefill   4.20 (img med  4.16  img max    5.05)  wall 57.9s  load1 0.93
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18661.25it/s]
+  rebuild rep2  top1 0.6880  tower   4.04  prefill   4.18 (img med  4.14  img max    5.07)  wall 57.9s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16781.35it/s]
+  rebuild rep3  top1 0.6880  tower   4.07  prefill   4.99 (img med  4.16  img max  402.40)  wall 57.7s  load1 0.97  <== DEPARTURE, stall img175 402 ms
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15583.60it/s]
+  rebuild rep4  top1 0.6880  tower   4.07  prefill   4.25 (img med  4.20  img max    5.30)  wall 58.0s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16556.74it/s]
+  rebuild rep5  top1 0.6880  tower   4.07  prefill   5.22 (img med  4.20  img max  499.82)  wall 58.0s  load1 0.98  <== DEPARTURE, stall img139 500 ms
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16645.61it/s]
+  rebuild rep6  top1 0.6880  tower   4.07  prefill   4.18 (img med  4.14  img max    5.18)  wall 58.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16829.53it/s]
+  rebuild rep7  top1 0.6880  tower   4.08  prefill   4.21 (img med  4.17  img max    5.11)  wall 58.0s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16298.30it/s]
+  rebuild rep8  top1 0.6880  tower   4.08  prefill   4.19 (img med  4.14  img max    5.22)  wall 58.8s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17575.62it/s]
+  rebuild rep9  top1 0.6880  tower   4.07  prefill   4.27 (img med  4.23  img max    5.24)  wall 58.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 27715.28it/s]
+  rebuild rep10  top1 0.6880  tower   4.09  prefill   5.70 (img med  4.20  img max  736.62)  wall 58.2s  load1 1.02  <== DEPARTURE, stall img248 737 ms
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18912.07it/s]
+  rebuild rep11  top1 0.6880  tower   4.07  prefill   5.83 (img med  4.20  img max  805.60)  wall 59.5s  load1 0.98  <== DEPARTURE, stall img320 806 ms
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18351.47it/s]
+  rebuild rep12  top1 0.6880  tower   4.09  prefill   4.19 (img med  4.15  img max    5.22)  wall 58.7s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15729.02it/s]
+  rebuild rep13  top1 0.6880  tower   4.11  prefill   4.26 (img med  4.21  img max    5.37)  wall 58.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18857.37it/s]
+  rebuild rep14  top1 0.6880  tower   4.09  prefill   4.27 (img med  4.22  img max    5.29)  wall 58.2s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17874.42it/s]
+  rebuild rep15  top1 0.6880  tower   4.10  prefill   4.21 (img med  4.16  img max    5.24)  wall 59.6s  load1 1.02
+    rebuild: 5/16 departures (gate 4.5 ms) at reps [0, 3, 5, 10, 11]; known indices [0, 3, 5, 10, 11]
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 12956.76it/s]
+  soak rep0  top1 0.6880  tower   4.08  prefill   4.21 (img med  4.16  img max    5.22)  wall 57.9s  load1 0.98
+  soak rep1  top1 0.6880  tower   4.08  prefill   4.19 (img med  4.16  img max    5.02)  wall 59.2s  load1 1.00
+  soak rep2  top1 0.6880  tower   4.08  prefill   4.19 (img med  4.17  img max    4.61)  wall 59.1s  load1 1.07
+  soak rep3  top1 0.6880  tower   4.08  prefill   4.20 (img med  4.18  img max    4.43)  wall 59.5s  load1 1.02
+  soak rep4  top1 0.6880  tower   4.09  prefill   4.26 (img med  4.23  img max    5.12)  wall 55.1s  load1 1.01
+  soak rep5  top1 0.6880  tower   4.09  prefill   4.25 (img med  4.23  img max    4.51)  wall 55.0s  load1 1.00
+  soak rep6  top1 0.6880  tower   4.08  prefill   4.25 (img med  4.23  img max    4.56)  wall 55.5s  load1 1.00
+  soak rep7  top1 0.6880  tower   4.09  prefill   4.24 (img med  4.22  img max    4.43)  wall 58.9s  load1 1.00
+  soak rep8  top1 0.6880  tower   4.08  prefill   4.23 (img med  4.21  img max    5.94)  wall 59.2s  load1 1.00
+  soak rep9  top1 0.6880  tower   4.09  prefill   4.23 (img med  4.21  img max    4.85)  wall 59.9s  load1 1.00
+  soak rep10  top1 0.6880  tower   4.09  prefill   4.25 (img med  4.23  img max    4.53)  wall 55.3s  load1 1.00
+  soak rep11  top1 0.6880  tower   4.09  prefill   4.25 (img med  4.23  img max    5.04)  wall 55.3s  load1 1.08
+  soak rep12  top1 0.6880  tower   4.09  prefill   4.26 (img med  4.24  img max    4.55)  wall 55.3s  load1 1.13
+  soak rep13  top1 0.6880  tower   4.09  prefill   4.24 (img med  4.22  img max    4.50)  wall 55.1s  load1 1.10
+  soak rep14  top1 0.6880  tower   4.08  prefill   4.24 (img med  4.23  img max    4.49)  wall 55.2s  load1 1.04
+  soak rep15  top1 0.6880  tower   4.09  prefill   4.22 (img med  4.20  img max    4.39)  wall 59.4s  load1 1.01
+    soak: 0/16 departures (gate 4.5 ms) at reps []; known indices [0, 3, 5, 10, 11]
+
+  control OK (5/16 at [0, 3, 5, 10, 11]). soak 0/16: EVAL-PROTOCOL ARTIFACT -- bounds a RATE, not a mechanism.
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step040_clean_soak_bf16_rebuild-soak_r16_n500__5060ti_cuda.json

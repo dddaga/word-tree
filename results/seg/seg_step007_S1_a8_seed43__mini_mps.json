@@ -1,0 +1,26 @@
+{
+  "step": "seg_step007",
+  "arm": "S1",
+  "teacher_arm": "E2",
+  "student_arm": "E7",
+  "alpha": 8.0,
+  "temp": 2.0,
+  "epochs": 60,
+  "n_params": 851816,
+  "macs": 875692032,
+  "gmacs": 0.8757,
+  "best_mAP": 0.2232,
+  "best_ep": 21,
+  "final": {
+    "bce": 0.10944528102874757,
+    "mAP": 0.21001235954463482,
+    "ap_per_class": {
+      "person": 0.2544,
+      "vehicle": 0.0663,
+      "animal": 0.1753,
+      "object": 0.3441
+    }
+  },
+  "seed": 43,
+  "elapsed_s": 176.1
+}

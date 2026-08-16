@@ -1,0 +1,14 @@
+
+======================================================================
+seg_step001 — B0  128px -> 16x16 grid, C=4 x K=2
+  device=cpu  decor_lambda=0.0  mfpm=True
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0537  bce=0.2988  best=0.0537  [94s]
+  e  5/20  mAP=0.1672  bce=0.1036  best=0.1672  [478s]
+  e 10/20  mAP=0.2159  bce=0.0959  best=0.2159  [911s]
+  e 15/20  mAP=0.2147  bce=0.1069  best=0.2304  [1346s]
+  e 20/20  mAP=0.2058  bce=0.1098  best=0.2304  [1776s]
+  DONE: best_mAP=0.2304 @ep11  {'person': 0.2637, 'vehicle': 0.0306, 'animal': 0.1617, 'object': 0.3671}  1788s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step001_B0_t0dev_seed42__mini_cpu.json

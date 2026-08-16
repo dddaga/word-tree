@@ -103,15 +103,19 @@ def train_or_resume(ev, ckpt, train, targets, depth, epochs, bs, lr, device, tf=
     return st, hist
 
 
-def train_student(ev, train, targets, depth, epochs, bs, lr, device, tf=None):
+def train_student(ev, train, targets, depth, epochs, bs, lr, device, tf=None, student=None):
     """Train a depth-truncated copy of the tower to match the teacher's post-connector features.
 
     Everything else (patch embeddings, post_layernorm, connector, text model) stays frozen -- the
     student is the ONLY thing that moves, so an accuracy change is attributable to it. The loss is
     relative MSE, mse(s,t) / mean(t^2), which is scale-free and therefore comparable across depths.
+
+    `student` overrides the default depth-truncated init with a caller-built ModuleList (added at
+    vlm_step023, which slices the tower's MLP width and so cannot use new_student). Passing None
+    keeps the exact prior behaviour, so every earlier arm's numbers are unaffected.
     """
     ev.m.requires_grad_(False)
-    student = new_student(ev, depth, device).train()
+    student = (new_student(ev, depth, device) if student is None else student.to(device)).train()
     student.requires_grad_(True)
     opt = torch.optim.AdamW(student.parameters(), lr=lr, weight_decay=0.01)
     hist = []

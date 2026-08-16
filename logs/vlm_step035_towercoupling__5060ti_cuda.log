@@ -1,0 +1,42 @@
++ cd /home/indra/sgnnet_bench
++ export SGN_SLOT=5060ti_cuda PYTHONPATH=vlm_libs
++ SGN_SLOT=5060ti_cuda
++ PYTHONPATH=vlm_libs
++ for spec in "0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _nograph_r0.5" "0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _nograph_r0.25"
++ set -- 0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _nograph_r0.5
++ venv/bin/python3 scripts/frontier/vlm_step033_cudagraph.py --modes compile --towers student --ratio 0.5 --ckpt vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt --tag_suffix _nograph_r0.5 --repeats 5 --n_eval 500
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['compile']  towers=['student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15792.01it/s]
+  compile_student rep0  top1 0.6940  tower   4.33  prefill   4.11  e2e   8.44 ms  wall 58.8s  load1 0.91
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16407.13it/s]
+  compile_student rep1  top1 0.6940  tower   4.35  prefill   4.17  e2e   8.52 ms  wall 58.2s  load1 0.95
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16483.38it/s]
+  compile_student rep2  top1 0.6940  tower   4.39  prefill   5.03  e2e   9.42 ms  wall 57.0s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18605.36it/s]
+  compile_student rep3  top1 0.6940  tower   4.37  prefill   5.06  e2e   9.43 ms  wall 58.0s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19397.48it/s]
+  compile_student rep4  top1 0.6940  tower   4.38  prefill   5.20  e2e   9.58 ms  wall 58.4s  load1 0.97
+    compile_student          vision_ms   median   4.37  min   4.33  max   4.39  tail  0.03
+    compile_student          prefill_ms  median   5.03  min   4.11  max   5.20  tail  0.17
+    compile_student          end2end_ms  median   9.42  min   8.44  max   9.58  tail  0.16
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_compile_student_r5_n500_nograph_r0.5__5060ti_cuda.json
++ for spec in "0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _nograph_r0.5" "0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _nograph_r0.25"
++ set -- 0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _nograph_r0.25
++ venv/bin/python3 scripts/frontier/vlm_step033_cudagraph.py --modes compile --towers student --ratio 0.25 --ckpt vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt --tag_suffix _nograph_r0.25 --repeats 5 --n_eval 500
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['compile']  towers=['student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16245.09it/s]
+  compile_student rep0  top1 0.6880  tower   3.98  prefill   4.53  e2e   8.51 ms  wall 58.6s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18601.86it/s]
+  compile_student rep1  top1 0.6880  tower   4.01  prefill   4.19  e2e   8.19 ms  wall 57.8s  load1 0.95
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18567.24it/s]
+  compile_student rep2  top1 0.6880  tower   4.03  prefill   4.16  e2e   8.19 ms  wall 57.9s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16233.75it/s]
+  compile_student rep3  top1 0.6880  tower   4.06  prefill   4.96  e2e   9.02 ms  wall 57.8s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 13745.79it/s]
+  compile_student rep4  top1 0.6880  tower   4.04  prefill   4.22  e2e   8.27 ms  wall 57.8s  load1 0.99
+    compile_student          vision_ms   median   4.03  min   3.98  max   4.06  tail  0.03
+    compile_student          prefill_ms  median   4.22  min   4.16  max   4.96  tail  0.74
+    compile_student          end2end_ms  median   8.27  min   8.19  max   9.02  tail  0.75
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_compile_student_r5_n500_nograph_r0.25__5060ti_cuda.json

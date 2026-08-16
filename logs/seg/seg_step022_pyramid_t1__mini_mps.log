@@ -1,0 +1,113 @@
+
+======================================================================
+seg_step022 pyramid  cells=['full', 'lean']  seeds=[42, 43, 44, 45, 46]
+  E2 -> E7  arm=H1 alpha=2.0 beta=1.0  device=mps
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+    e  1/60  mAP=0.0559  best=0.0559  [5s]
+    e 10/60  mAP=0.2259  best=0.2259  [49s]
+    e 20/60  mAP=0.2269  best=0.2585  [98s]
+    e 30/60  mAP=0.2449  best=0.2585  [147s]
+    e 40/60  mAP=0.2441  best=0.2628  [196s]
+    e 50/60  mAP=0.2490  best=0.2670  [245s]
+    e 60/60  mAP=0.2510  best=0.2670  [294s]
+  full      seed42  best_mAP=0.2670 @ep42  851,816p 0.8757G  [294s]
+    e  1/60  mAP=0.0547  best=0.0547  [5s]
+    e 10/60  mAP=0.2054  best=0.2205  [49s]
+    e 20/60  mAP=0.2371  best=0.2545  [98s]
+    e 30/60  mAP=0.2568  best=0.2721  [147s]
+    e 40/60  mAP=0.2645  best=0.2744  [196s]
+    e 50/60  mAP=0.2523  best=0.2744  [245s]
+    e 60/60  mAP=0.2584  best=0.2744  [294s]
+  full      seed43  best_mAP=0.2744 @ep39  851,816p 0.8757G  [294s]
+    e  1/60  mAP=0.0556  best=0.0556  [5s]
+    e 10/60  mAP=0.2086  best=0.2156  [49s]
+    e 20/60  mAP=0.2484  best=0.2484  [98s]
+    e 30/60  mAP=0.2447  best=0.2519  [147s]
+    e 40/60  mAP=0.2476  best=0.2519  [196s]
+    e 50/60  mAP=0.2391  best=0.2519  [245s]
+    e 60/60  mAP=0.2374  best=0.2519  [294s]
+  full      seed44  best_mAP=0.2519 @ep21  851,816p 0.8757G  [294s]
+    e  1/60  mAP=0.0557  best=0.0557  [5s]
+    e 10/60  mAP=0.2125  best=0.2125  [49s]
+    e 20/60  mAP=0.2191  best=0.2501  [98s]
+    e 30/60  mAP=0.2508  best=0.2663  [147s]
+    e 40/60  mAP=0.2427  best=0.2663  [196s]
+    e 50/60  mAP=0.2546  best=0.2663  [245s]
+    e 60/60  mAP=0.2526  best=0.2663  [294s]
+  full      seed45  best_mAP=0.2663 @ep24  851,816p 0.8757G  [294s]
+    e  1/60  mAP=0.0542  best=0.0542  [5s]
+    e 10/60  mAP=0.2085  best=0.2146  [49s]
+    e 20/60  mAP=0.2453  best=0.2522  [98s]
+    e 30/60  mAP=0.2583  best=0.2585  [147s]
+    e 40/60  mAP=0.2635  best=0.2650  [196s]
+    e 50/60  mAP=0.2530  best=0.2650  [245s]
+    e 60/60  mAP=0.2543  best=0.2650  [294s]
+  full      seed46  best_mAP=0.2650 @ep34  851,816p 0.8757G  [294s]
+  -> full      mean=0.2649 +-0.0081
+    e  1/60  mAP=0.0554  best=0.0554  [5s]
+    e 10/60  mAP=0.2035  best=0.2035  [47s]
+    e 20/60  mAP=0.2172  best=0.2473  [94s]
+    e 30/60  mAP=0.2372  best=0.2473  [141s]
+    e 40/60  mAP=0.2550  best=0.2559  [187s]
+    e 50/60  mAP=0.2538  best=0.2639  [234s]
+    e 60/60  mAP=0.2555  best=0.2639  [281s]
+  lean      seed42  best_mAP=0.2639 @ep42  731,624p 0.8450G  [281s]
+    e  1/60  mAP=0.0566  best=0.0566  [5s]
+    e 10/60  mAP=0.1846  best=0.1930  [47s]
+    e 20/60  mAP=0.2296  best=0.2367  [93s]
+    e 30/60  mAP=0.2557  best=0.2652  [140s]
+    e 40/60  mAP=0.2667  best=0.2667  [187s]
+    e 50/60  mAP=0.2579  best=0.2679  [234s]
+    e 60/60  mAP=0.2626  best=0.2679  [280s]
+  lean      seed43  best_mAP=0.2679 @ep44  731,624p 0.8450G  [281s]
+    e  1/60  mAP=0.0537  best=0.0537  [5s]
+    e 10/60  mAP=0.1959  best=0.2035  [47s]
+    e 20/60  mAP=0.2495  best=0.2495  [93s]
+    e 30/60  mAP=0.2498  best=0.2498  [140s]
+    e 40/60  mAP=0.2535  best=0.2600  [187s]
+    e 50/60  mAP=0.2510  best=0.2600  [234s]
+    e 60/60  mAP=0.2505  best=0.2600  [280s]
+  lean      seed44  best_mAP=0.2600 @ep34  731,624p 0.8450G  [281s]
+    e  1/60  mAP=0.0554  best=0.0554  [5s]
+    e 10/60  mAP=0.1901  best=0.1901  [47s]
+    e 20/60  mAP=0.2196  best=0.2296  [93s]
+    e 30/60  mAP=0.2428  best=0.2497  [140s]
+    e 40/60  mAP=0.2393  best=0.2518  [187s]
+    e 50/60  mAP=0.2528  best=0.2528  [234s]
+    e 60/60  mAP=0.2504  best=0.2532  [281s]
+  lean      seed45  best_mAP=0.2532 @ep52  731,624p 0.8450G  [281s]
+    e  1/60  mAP=0.0537  best=0.0537  [5s]
+    e 10/60  mAP=0.1953  best=0.1953  [47s]
+    e 20/60  mAP=0.2403  best=0.2481  [93s]
+    e 30/60  mAP=0.2552  best=0.2552  [140s]
+    e 40/60  mAP=0.2591  best=0.2640  [187s]
+    e 50/60  mAP=0.2523  best=0.2640  [234s]
+    e 60/60  mAP=0.2552  best=0.2640  [281s]
+  lean      seed46  best_mAP=0.2640 @ep32  731,624p 0.8450G  [281s]
+  -> lean      mean=0.2618 +-0.0056
+
+cell           mean      +-    d_pp     params    GMAC  verdict
+full         0.2649  0.0081   +0.00    851,816  0.8757  BASE
+lean         0.2618  0.0056   -0.31    731,624  0.8450  WIN(pareto)
+Traceback (most recent call last):
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step022_pyramid.py", line 184, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step022_pyramid.py", line 173, in main
+    OUT.write_text(json.dumps({"step": "seg_step022", "bar_pp": BAR_PP, "arm": args.arm,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                               "alpha": args.alpha, "beta": args.beta, "epochs": args.epochs,
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                               "elapsed_s": round(time.time() - t_all, 1),
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                               "cells": cells}, indent=2))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 809, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted: '/Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step022_t1__mini_mps.json'

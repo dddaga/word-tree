@@ -1,0 +1,112 @@
+{
+  "step": "seg_step020",
+  "device": "cpu",
+  "slot": "mini_mps",
+  "seeds": [
+    42
+  ],
+  "suffixes": [
+    "_dec05",
+    "_dec00"
+  ],
+  "pos_thresh": 0.5,
+  "floor": {
+    "per_class": {
+      "person": {
+        "n_pos": 4880,
+        "balance": 0.6713,
+        "spec": 0.968
+      },
+      "vehicle": {
+        "n_pos": 499,
+        "balance": 0.5611,
+        "spec": 0.9392
+      },
+      "animal": {
+        "n_pos": 987,
+        "balance": 0.7558,
+        "spec": 0.9529
+      },
+      "object": {
+        "n_pos": 7442,
+        "balance": 0.4606,
+        "spec": 0.9315
+      }
+    },
+    "balance": 0.6122,
+    "spec": 0.9479
+  },
+  "rows": {
+    "_dec05": [
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.9672,
+            "spec": 0.5325
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.501,
+            "spec": 0.763
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6403,
+            "spec": 0.7943
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.9597,
+            "spec": 0.7326
+          }
+        },
+        "balance": 0.7671,
+        "spec": 0.7056
+      }
+    ],
+    "_dec00": [
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.641,
+            "spec": 0.3655
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.7335,
+            "spec": 0.9005
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6079,
+            "spec": 0.5849
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.8933,
+            "spec": 0.5333
+          }
+        },
+        "balance": 0.7189,
+        "spec": 0.596
+      }
+    ]
+  },
+  "d_spec": {
+    "mean": 0.1096,
+    "sd": 0.0,
+    "t": Infinity,
+    "n": 1,
+    "pos": 1
+  },
+  "d_balance": {
+    "mean": 0.0482,
+    "sd": 0.0,
+    "t": Infinity,
+    "n": 1,
+    "pos": 1
+  },
+  "branch": "a decorrelation EARNS its keep on explainability"
+}

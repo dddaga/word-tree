@@ -15,7 +15,7 @@ RAM threshold before launch: Mac Mini ≥20 GB. `vm_stat | grep -E 'free|inactiv
 **5060ti:** CUDA only. Ryzen 5 7500F CPU is 5.5× slower than Mac Mini CPU (M4 AMX vs x86 AVX) — removed from rotation.
 **Studio:** removed from active slots.
 
-**STRICT:** All launches through `scripts/launch_slot.sh <slot> <script> [args]`. The wrapper enforces lock files, cleans stale sessions, prevents collisions between teammates. No bare `tmux new-session`, no `nohup`, no `&`.
+**STRICT:** All launches through `scripts/launch_slot.sh <slot> <script> [args]`. The wrapper enforces lock files, cleans stale sessions, prevents collisions between teammates. No bare `herdr` session, no `nohup`, no `&`.
 
 **Session prefix:** `${SGNNET_USER:-$(whoami)}-<step_name>`. Undocumented (non-prefixed) sessions may belong to a colleague using a legacy launch — leave them if alive, clean them up if dead.
 
@@ -51,6 +51,6 @@ Every training script integrates `src.training.diagnostics.TrainingDiagnostics(m
 Loss/accuracy are lagging indicators. Diagnostics reveal why training works or fails — enabling data-driven next-experiment design.
 
 ## Training Monitor
-Cron every 20 min, recurring. Created at session start. The cron prompt MUST launch a **background Agent** (`run_in_background=true`) for all tmux/ssh checks — never run these inline in the main context (pollutes conversation). Agent returns `SILENT` when idle; main context sees only notable events.
+Cron every 20 min, recurring. Created at session start. The cron prompt MUST launch a **background Agent** (`run_in_background=true`) for all herdr/ssh checks — never run these inline in the main context (pollutes conversation). Agent returns `SILENT` when idle; main context sees only notable events.
 
 **Self-termination rule (MANDATORY):** The cron agent must check if all slots are FREE/DONE. If all slots idle AND no new result files in the last 30 min → call `CronDelete` with the cron's own ID and return `SILENT`. Pass the cron ID into the prompt when creating it so the agent can self-delete. Example prompt suffix: `"If all slots are FREE/DONE and no experiments are running, call CronDelete with id=<CRON_ID> to cancel this monitor, then return SILENT."`

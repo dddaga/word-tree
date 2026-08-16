@@ -1,0 +1,16 @@
+k=  2  LOC_R0=0.9550  R1s0.9=0.9300 Δrd=-2.50  LIN=0.9400 Δbb=+1.50 px=3.4
+k=  5  LOC_R0=0.9120  R1s0.9=0.9040 Δrd=-0.80  LIN=0.9160 Δbb=-0.40 px=4.7
+k= 10  LOC_R0=0.8900  R1s0.9=0.8820 Δrd=-0.80  LIN=0.8980 Δbb=-0.80 px=5.3
+k= 20  LOC_R0=0.8045  R1s0.9=0.7890 Δrd=-1.55  LIN=0.7995 Δbb=+0.50 px=5.7
+k= 40  LOC_R0=0.7520  R1s0.9=0.7272 Δrd=-2.48  LIN=0.7598 Δbb=-0.78 px=5.9
+k= 70  LOC_R0=0.6981  R1s0.9=0.6584 Δrd=-3.97  LIN=0.6979 Δbb=+0.02 px=6.0
+k=100  LOC_R0=0.6376  R1s0.9=0.5829 Δrd=-5.47  LIN=0.6351 Δbb=+0.25 px=6.0
+WROTE /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/ktraj_t0_seed3__mini_cpu.json
+k=  2  LOC_R0=0.9800  R1s0.9=0.9800 Δrd=+0.00  LIN=0.9800 Δbb=+0.00 px=3.4
+k=  5  LOC_R0=0.9140  R1s0.9=0.8880 Δrd=-2.60  LIN=0.9160 Δbb=-0.20 px=4.7
+k= 10  LOC_R0=0.8770  R1s0.9=0.8630 Δrd=-1.40  LIN=0.8660 Δbb=+1.10 px=5.3
+k= 20  LOC_R0=0.8390  R1s0.9=0.8210 Δrd=-1.80  LIN=0.8300 Δbb=+0.90 px=5.7
+k= 40  LOC_R0=0.7288  R1s0.9=0.6953 Δrd=-3.35  LIN=0.7232 Δbb=+0.56 px=5.9
+k= 70  LOC_R0=0.6819  R1s0.9=0.6389 Δrd=-4.30  LIN=0.6781 Δbb=+0.38 px=6.0
+k=100  LOC_R0=0.6388  R1s0.9=0.5841 Δrd=-5.47  LIN=0.6308 Δbb=+0.80 px=6.0
+WROTE /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/ktraj_t0_seed4__mini_cpu.json

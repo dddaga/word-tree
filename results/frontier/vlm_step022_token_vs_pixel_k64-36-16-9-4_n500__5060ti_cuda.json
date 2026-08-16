@@ -1,0 +1,59 @@
+{
+  "step": "vlm_step022",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cuda",
+  "depth": 12,
+  "pixels": 512,
+  "n_eval": 500,
+  "seed": 42,
+  "split": "val",
+  "anchor": 0.711,
+  "step021_distilled_r256": 0.298,
+  "cells": {
+    "64": {
+      "tokens": 64,
+      "n": 500,
+      "top1": 0.704,
+      "vision_ms": 26.211380506807473,
+      "prefill_ms": 14.095037309627514,
+      "step020_top1": 0.704,
+      "pixel_cost_pp": 0.0
+    },
+    "36": {
+      "tokens": 36,
+      "n": 500,
+      "top1": 0.572,
+      "vision_ms": 25.71664545882959,
+      "prefill_ms": 13.93187048198888,
+      "step020_top1": 0.456,
+      "pixel_cost_pp": 11.599999999999994
+    },
+    "16": {
+      "tokens": 16,
+      "n": 500,
+      "top1": 0.416,
+      "vision_ms": 25.719231659604702,
+      "prefill_ms": 13.87313056376297,
+      "step020_top1": 0.16,
+      "pixel_cost_pp": 25.6
+    },
+    "9": {
+      "tokens": 9,
+      "n": 500,
+      "top1": 0.258,
+      "vision_ms": 25.725943352503236,
+      "prefill_ms": 13.569826745952014,
+      "step020_top1": 0.094,
+      "pixel_cost_pp": 16.400000000000002
+    },
+    "4": {
+      "tokens": 4,
+      "n": 500,
+      "top1": 0.178,
+      "vision_ms": 25.72321018949151,
+      "prefill_ms": 13.903942924400326,
+      "step020_top1": 0.106,
+      "pixel_cost_pp": 7.199999999999999
+    }
+  }
+}

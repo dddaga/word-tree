@@ -1,0 +1,12 @@
+{
+  "model": "plain_linear",
+  "store": "data/store.h5",
+  "C": 10,
+  "n_params": 250890,
+  "best": 0.9701910614967346,
+  "best_ep": 12,
+  "epochs": 20,
+  "data_frac": 0.5,
+  "seed": 42,
+  "elapsed_s": 1.1
+}

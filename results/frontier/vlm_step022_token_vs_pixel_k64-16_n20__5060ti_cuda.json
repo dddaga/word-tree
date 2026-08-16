@@ -1,0 +1,32 @@
+{
+  "step": "vlm_step022",
+  "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+  "device": "cuda",
+  "depth": 12,
+  "pixels": 512,
+  "n_eval": 20,
+  "seed": 42,
+  "split": "val",
+  "anchor": 0.711,
+  "step021_distilled_r256": 0.298,
+  "cells": {
+    "64": {
+      "tokens": 64,
+      "n": 20,
+      "top1": 0.7,
+      "vision_ms": 42.824508096964564,
+      "prefill_ms": 18.01853299693903,
+      "step020_top1": 0.704,
+      "pixel_cost_pp": -0.40000000000000036
+    },
+    "16": {
+      "tokens": 16,
+      "n": 20,
+      "top1": 0.45,
+      "vision_ms": 29.71730599674629,
+      "prefill_ms": 13.74322445190046,
+      "step020_top1": 0.16,
+      "pixel_cost_pp": 29.000000000000004
+    }
+  }
+}

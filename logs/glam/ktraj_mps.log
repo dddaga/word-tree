@@ -1,0 +1,24 @@
+k=  2  LOC_R0=0.9900  R1s0.9=0.9850 Δrd=-0.50  LIN=0.9900 Δbb=+0.00 px=3.4
+k=  5  LOC_R0=0.9560  R1s0.9=0.9440 Δrd=-1.20  LIN=0.9520 Δbb=+0.40 px=4.7
+k= 10  LOC_R0=0.9160  R1s0.9=0.9020 Δrd=-1.40  LIN=0.9160 Δbb=+0.00 px=5.3
+k= 20  LOC_R0=0.8465  R1s0.9=0.8400 Δrd=-0.65  LIN=0.8570 Δbb=-1.05 px=5.7
+k= 40  LOC_R0=0.7402  R1s0.9=0.7103 Δrd=-2.99  LIN=0.7502 Δbb=-1.00 px=5.9
+k= 70  LOC_R0=0.6789  R1s0.9=0.6301 Δrd=-4.88  LIN=0.6734 Δbb=+0.55 px=6.0
+k=100  LOC_R0=0.6356  R1s0.9=0.5817 Δrd=-5.39  LIN=0.6360 Δbb=-0.04 px=6.0
+WROTE /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/ktraj_t0_seed0__mini_mps.json
+k=  2  LOC_R0=0.9350  R1s0.9=0.9350 Δrd=+0.00  LIN=0.9550 Δbb=-2.00 px=3.4
+k=  5  LOC_R0=0.9660  R1s0.9=0.9620 Δrd=-0.40  LIN=0.9780 Δbb=-1.20 px=4.7
+k= 10  LOC_R0=0.9040  R1s0.9=0.8970 Δrd=-0.70  LIN=0.9020 Δbb=+0.20 px=5.3
+k= 20  LOC_R0=0.8625  R1s0.9=0.8450 Δrd=-1.75  LIN=0.8655 Δbb=-0.30 px=5.7
+k= 40  LOC_R0=0.7873  R1s0.9=0.7618 Δrd=-2.55  LIN=0.7880 Δbb=-0.07 px=5.9
+k= 70  LOC_R0=0.6984  R1s0.9=0.6549 Δrd=-4.35  LIN=0.7034 Δbb=-0.50 px=6.0
+k=100  LOC_R0=0.6415  R1s0.9=0.5840 Δrd=-5.75  LIN=0.6343 Δbb=+0.72 px=6.0
+WROTE /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/ktraj_t0_seed1__mini_mps.json
+k=  2  LOC_R0=0.9950  R1s0.9=0.9900 Δrd=-0.50  LIN=0.9950 Δbb=+0.00 px=3.4
+k=  5  LOC_R0=0.9280  R1s0.9=0.9060 Δrd=-2.20  LIN=0.9300 Δbb=-0.20 px=4.7
+k= 10  LOC_R0=0.8500  R1s0.9=0.8370 Δrd=-1.30  LIN=0.8540 Δbb=-0.40 px=5.3
+k= 20  LOC_R0=0.8100  R1s0.9=0.7960 Δrd=-1.40  LIN=0.8305 Δbb=-2.05 px=5.7
+k= 40  LOC_R0=0.7755  R1s0.9=0.7410 Δrd=-3.45  LIN=0.7742 Δbb=+0.13 px=5.9
+k= 70  LOC_R0=0.7011  R1s0.9=0.6576 Δrd=-4.35  LIN=0.7007 Δbb=+0.04 px=6.0
+k=100  LOC_R0=0.6318  R1s0.9=0.5814 Δrd=-5.04  LIN=0.6335 Δbb=-0.17 px=6.0
+WROTE /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/ktraj_t0_seed2__mini_mps.json

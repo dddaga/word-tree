@@ -1,0 +1,324 @@
+{
+  "step": "seg_step020",
+  "device": "cpu",
+  "slot": "mini_mps",
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "suffixes": [
+    "_dec05",
+    "_dec00"
+  ],
+  "pos_thresh": 0.5,
+  "floor": {
+    "per_class": {
+      "person": {
+        "n_pos": 4880,
+        "balance": 0.6713,
+        "spec": 0.968
+      },
+      "vehicle": {
+        "n_pos": 499,
+        "balance": 0.5611,
+        "spec": 0.9392
+      },
+      "animal": {
+        "n_pos": 987,
+        "balance": 0.7558,
+        "spec": 0.9529
+      },
+      "object": {
+        "n_pos": 7442,
+        "balance": 0.4606,
+        "spec": 0.9315
+      }
+    },
+    "balance": 0.6122,
+    "spec": 0.9479
+  },
+  "rows": {
+    "_dec05": [
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.9672,
+            "spec": 0.5325
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.501,
+            "spec": 0.763
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6403,
+            "spec": 0.7943
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.9597,
+            "spec": 0.7326
+          }
+        },
+        "balance": 0.7671,
+        "spec": 0.7056
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.707,
+            "spec": 0.5702
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.8377,
+            "spec": 0.4433
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6484,
+            "spec": 0.8183
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.8508,
+            "spec": 0.6611
+          }
+        },
+        "balance": 0.761,
+        "spec": 0.6232
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.4418,
+            "spec": 0.4974
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.9379,
+            "spec": 0.6771
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6768,
+            "spec": 0.7986
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.7224,
+            "spec": 0.5716
+          }
+        },
+        "balance": 0.6947,
+        "spec": 0.6362
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.5627,
+            "spec": 0.4612
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.2044,
+            "spec": 0.886
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.7356,
+            "spec": 0.8006
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.6805,
+            "spec": 0.6096
+          }
+        },
+        "balance": 0.5458,
+        "spec": 0.6894
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.6857,
+            "spec": 0.5308
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.9699,
+            "spec": 0.5355
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.7173,
+            "spec": 0.8619
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.9452,
+            "spec": 0.6007
+          }
+        },
+        "balance": 0.8295,
+        "spec": 0.6322
+      }
+    ],
+    "_dec00": [
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.641,
+            "spec": 0.3655
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.7335,
+            "spec": 0.9005
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6079,
+            "spec": 0.5849
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.8933,
+            "spec": 0.5333
+          }
+        },
+        "balance": 0.7189,
+        "spec": 0.596
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.6332,
+            "spec": 0.4818
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.9339,
+            "spec": 0.7074
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.7335,
+            "spec": 0.4678
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.6082,
+            "spec": 0.619
+          }
+        },
+        "balance": 0.7272,
+        "spec": 0.569
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.9795,
+            "spec": 0.3276
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.8537,
+            "spec": 0.5737
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.5106,
+            "spec": 0.4928
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.9562,
+            "spec": 0.5819
+          }
+        },
+        "balance": 0.825,
+        "spec": 0.494
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.957,
+            "spec": 0.3877
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.2365,
+            "spec": 0.6962
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6302,
+            "spec": 0.5829
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.6635,
+            "spec": 0.5233
+          }
+        },
+        "balance": 0.6218,
+        "spec": 0.5475
+      },
+      {
+        "per_class": {
+          "person": {
+            "n_pos": 4880,
+            "balance": 0.552,
+            "spec": 0.3359
+          },
+          "vehicle": {
+            "n_pos": 499,
+            "balance": 0.9098,
+            "spec": 0.6005
+          },
+          "animal": {
+            "n_pos": 987,
+            "balance": 0.6707,
+            "spec": 0.5157
+          },
+          "object": {
+            "n_pos": 7442,
+            "balance": 0.9694,
+            "spec": 0.448
+          }
+        },
+        "balance": 0.7755,
+        "spec": 0.475
+      }
+    ]
+  },
+  "d_spec": {
+    "mean": 0.121,
+    "sd": 0.0412,
+    "t": 6.569,
+    "n": 5,
+    "pos": 5
+  },
+  "d_balance": {
+    "mean": -0.0141,
+    "sd": 0.0839,
+    "t": -0.375,
+    "n": 5,
+    "pos": 3
+  },
+  "branch": "b CONFIRMED NULL on explainability too \u2014 drop the mechanism"
+}

@@ -1,0 +1,16 @@
+
+======================================================================
+glam_step005 — LOCL2 CIFAR-10 depth-below-ceiling T0 (20ep, 50%)
+  device=mps  Linear-head CIFAR-10 ref = 86.24%
+======================================================================
+
+────────────────────────────────────────────────────────────
+LOCL2  params=48,522 (0.0406% FC)  store=data/store_cifar10.h5  device=mps
+  e  1/20  val=0.7763  best=0.7763  [1s]
+  e  5/20  val=0.8376  best=0.8410  [3s]
+  e 10/20  val=0.8437  best=0.8437  [5s]
+  e 15/20  val=0.8457  best=0.8464  [7s]
+  e 20/20  val=0.8456  best=0.8464  [10s]
+  DONE: best=0.8464 @ep13  params=48,522  10s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step005_LOCL2_t0_seed42__mini_mps.json

@@ -1,0 +1,57 @@
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['compile', 'reduce-overhead']  towers=['teacher', 'student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15828.32it/s]
+  compile_teacher rep0  top1 0.7040  tower   8.99  prefill   4.11  e2e  13.10 ms  wall 60.9s  load1 0.80
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18556.25it/s]
+  compile_teacher rep1  top1 0.7040  tower   9.08  prefill   4.15  e2e  13.23 ms  wall 60.8s  load1 0.93
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15732.52it/s]
+  compile_teacher rep2  top1 0.7040  tower   9.04  prefill   4.23  e2e  13.26 ms  wall 60.4s  load1 1.03
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17419.40it/s]
+  compile_teacher rep3  top1 0.7040  tower   9.06  prefill   4.17  e2e  13.23 ms  wall 60.4s  load1 0.99
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15552.56it/s]
+  compile_teacher rep4  top1 0.7040  tower   9.07  prefill   4.25  e2e  13.32 ms  wall 60.4s  load1 0.98
+    compile_teacher          vision_ms   median   9.06  min   8.99  max   9.08  tail  0.02
+    compile_teacher          prefill_ms  median   4.17  min   4.11  max   4.25  tail  0.07
+    compile_teacher          end2end_ms  median  13.23  min  13.10  max  13.32  tail  0.09
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16151.72it/s]
+  compile_student rep0  top1 0.6880  tower   4.00  prefill   4.26  e2e   8.26 ms  wall 57.9s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16772.52it/s]
+  compile_student rep1  top1 0.6880  tower   4.05  prefill   5.43  e2e   9.48 ms  wall 58.2s  load1 1.09
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16120.75it/s]
+  compile_student rep2  top1 0.6880  tower   4.06  prefill   4.18  e2e   8.25 ms  wall 58.0s  load1 1.11
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16483.11it/s]
+  compile_student rep3  top1 0.6880  tower   4.08  prefill   4.27  e2e   8.36 ms  wall 58.0s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19349.98it/s]
+  compile_student rep4  top1 0.6880  tower   4.09  prefill   5.65  e2e   9.75 ms  wall 58.4s  load1 1.06
+    compile_student          vision_ms   median   4.06  min   4.00  max   4.09  tail  0.03
+    compile_student          prefill_ms  median   4.27  min   4.18  max   5.65  tail  1.38
+    compile_student          end2end_ms  median   8.36  min   8.25  max   9.75  tail  1.39
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15480.65it/s]
+  reduce-overhead_teacher rep0  top1 0.7020  tower   8.89  prefill   2.82  e2e  11.71 ms  wall 54.2s  load1 1.02
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19281.43it/s]
+  reduce-overhead_teacher rep1  top1 0.7020  tower   8.91  prefill   2.82  e2e  11.73 ms  wall 52.3s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16281.51it/s]
+  reduce-overhead_teacher rep2  top1 0.7020  tower   8.90  prefill   2.73  e2e  11.64 ms  wall 52.3s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18186.58it/s]
+  reduce-overhead_teacher rep3  top1 0.7020  tower   8.89  prefill   2.73  e2e  11.63 ms  wall 50.5s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17436.16it/s]
+  reduce-overhead_teacher rep4  top1 0.7020  tower   8.94  prefill   2.80  e2e  11.74 ms  wall 52.3s  load1 1.09
+    reduce-overhead_teacher  vision_ms   median   8.90  min   8.89  max   8.94  tail  0.03
+    reduce-overhead_teacher  prefill_ms  median   2.80  min   2.73  max   2.82  tail  0.02
+    reduce-overhead_teacher  end2end_ms  median  11.71  min  11.63  max  11.74  tail  0.02
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15933.65it/s]
+  reduce-overhead_student rep0  top1 0.6880  tower   4.00  prefill   2.73  e2e   6.73 ms  wall 49.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15832.76it/s]
+  reduce-overhead_student rep1  top1 0.6880  tower   4.01  prefill   2.73  e2e   6.74 ms  wall 51.6s  load1 0.99
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15821.48it/s]
+  reduce-overhead_student rep2  top1 0.6880  tower   4.01  prefill   2.74  e2e   6.74 ms  wall 49.8s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18954.71it/s]
+  reduce-overhead_student rep3  top1 0.6880  tower   4.01  prefill   2.80  e2e   6.80 ms  wall 49.8s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15379.30it/s]
+  reduce-overhead_student rep4  top1 0.6880  tower   4.00  prefill   2.73  e2e   6.73 ms  wall 47.8s  load1 0.96
+    reduce-overhead_student  vision_ms   median   4.01  min   4.00  max   4.01  tail  0.00
+    reduce-overhead_student  prefill_ms  median   2.73  min   2.73  max   2.80  tail  0.06
+    reduce-overhead_student  end2end_ms  median   6.74  min   6.73  max   6.80  tail  0.06
+  reduce-overhead_teacher vs compile: top1 delta 0.0020 (gate 0.02)  median gain +1.38 ms  tail gain +0.05 ms -> WIN
+  reduce-overhead_student vs compile: top1 delta 0.0000 (gate 0.02)  median gain +1.54 ms  tail gain +1.32 ms -> WIN
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_compile-reduceoverhead_teacher-student_r5_n500__5060ti_cuda.json

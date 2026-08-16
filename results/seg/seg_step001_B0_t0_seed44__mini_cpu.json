@@ -1,0 +1,28 @@
+{
+  "step": "seg_step001",
+  "arm": "B0",
+  "res": 128,
+  "grid": 16,
+  "k": 2,
+  "mfpm": true,
+  "decor_lambda": 0.0,
+  "n_params": 7226312,
+  "macs": 4897505280,
+  "gmacs": 4.8975,
+  "best_mAP": 0.2421,
+  "best_ep": 10,
+  "final": {
+    "bce": 0.11043480014801026,
+    "mAP": 0.20764886308461428,
+    "ap_per_class": {
+      "person": 0.3429,
+      "vehicle": 0.0403,
+      "animal": 0.0891,
+      "object": 0.3583
+    }
+  },
+  "n_train": 2000,
+  "n_val": 500,
+  "elapsed_s": 1468.6,
+  "seed": 44
+}

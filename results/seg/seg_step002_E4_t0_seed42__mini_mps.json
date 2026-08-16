@@ -1,0 +1,29 @@
+{
+  "step": "seg_step002",
+  "arm": "E4",
+  "lever": {
+    "sep": true
+  },
+  "pretrained": false,
+  "res": 128,
+  "grid": 16,
+  "k": 2,
+  "decor_lambda": 0.05,
+  "n_params": 2200584,
+  "macs": 896335872,
+  "gmacs": 0.8963,
+  "best_mAP": 0.1239,
+  "best_ep": 17,
+  "final": {
+    "bce": 0.10852344226837159,
+    "mAP": 0.1228772196918726,
+    "ap_per_class": {
+      "person": 0.1204,
+      "vehicle": 0.0292,
+      "animal": 0.1048,
+      "object": 0.2371
+    }
+  },
+  "elapsed_s": 114.1,
+  "seed": 42
+}

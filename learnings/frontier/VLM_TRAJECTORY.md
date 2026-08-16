@@ -58,7 +58,7 @@ image-splitting: 17 tiles × 64). A VLM's drone cost is **token-bound, not param
 
 That reframes the SGNNET top-k idea onto an axis where it can actually pay:
 
-- **WEIGHT axis (det_step003, CONFIRMED liability):** hard top-k masking does not shrink a dense
+- **WEIGHT axis (det_step003, CONFIRMED on MPS / HYPOTHESIS on CUDA — MPS-only bench):** hard top-k masking does not shrink a dense
   matmul. MACs track *rank*, not *k*; the sort cost exceeded the rank-halving saving, so
   `sgn_topk_r128k32` was **slower** than `lowrank_r256` at half the params.
 - **TOKEN axis (this branch):** dropping a token genuinely removes work — a shorter sequence is

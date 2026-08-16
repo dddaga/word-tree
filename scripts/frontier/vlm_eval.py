@@ -21,6 +21,7 @@ import time
 
 import torch
 import torch.nn as nn
+from PIL import Image
 
 WNID2LABEL = {"n01440764": "tench", "n02102040": "springer", "n02979186": "cassette",
               "n03000684": "chainsaw", "n03028079": "church", "n03394916": "horn",
@@ -177,3 +178,23 @@ class VLMEval:
         emb, pos = self.merge(b, feats)
         lg, pred, pre_ms = self.forward(self.prune(emb, pos, feats, k))
         return lg, pred, vis_ms, pre_ms
+
+
+def evaluate(ev, val):
+    """Top-1 + timings over `val`. Moved here from vlm_step023 at vlm_step031, which re-scores an
+    already-written-up checkpoint and must use the SAME path -- a copy could drift from the quoted
+    numbers. `correct` is the per-image hit vector in fixed sample_images order, so arms stay paired
+    image-by-image; McNemar needs that pairing and cannot reconstruct it after the fact.
+    """
+    ok = vis = pre = 0.0
+    correct = []
+    for path, wnid in val:
+        b = ev.batch(Image.open(path).convert("RGB"))
+        feats, v = ev.encode(b)
+        emb, _ = ev.merge(b, feats)
+        _, pred, p = ev.forward(emb)
+        hit = LABELS[pred] == WNID2LABEL[wnid]
+        correct.append(int(hit))
+        ok += hit; vis += v; pre += p
+    n = len(val)
+    return {"top1": ok / n, "vision_ms": vis / n, "prefill_ms": pre / n, "n": n, "correct": correct}

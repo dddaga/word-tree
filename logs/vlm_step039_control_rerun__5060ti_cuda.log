@@ -1,0 +1,41 @@
+==============================================================================
+vlm_step037 tail shape  device=cuda  dtype=bf16  modes=['compile']  R=16  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18218.61it/s]
+  compile rep0  top1 0.6880  tower   3.97  prefill   4.55 (img med  4.04  img max  250.59)  wall 58.7s  load1 0.92  <== DEPARTURE
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15644.19it/s]
+  compile rep1  top1 0.6880  tower   3.99  prefill   4.19 (img med  4.16  img max    5.25)  wall 57.9s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16938.04it/s]
+  compile rep2  top1 0.6880  tower   4.02  prefill   4.18 (img med  4.14  img max    5.03)  wall 57.9s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17257.49it/s]
+  compile rep3  top1 0.6880  tower   4.06  prefill   4.99 (img med  4.16  img max  403.19)  wall 55.2s  load1 0.97  <== DEPARTURE
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17221.24it/s]
+  compile rep4  top1 0.6880  tower   4.05  prefill   4.24 (img med  4.20  img max    5.19)  wall 57.7s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18559.91it/s]
+  compile rep5  top1 0.6880  tower   4.05  prefill   5.24 (img med  4.19  img max  513.86)  wall 58.1s  load1 0.97  <== DEPARTURE
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17710.50it/s]
+  compile rep6  top1 0.6880  tower   4.04  prefill   4.18 (img med  4.14  img max    5.17)  wall 58.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16878.41it/s]
+  compile rep7  top1 0.6880  tower   4.06  prefill   4.20 (img med  4.16  img max    5.20)  wall 58.0s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16019.31it/s]
+  compile rep8  top1 0.6880  tower   4.04  prefill   4.19 (img med  4.14  img max    5.25)  wall 58.2s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19067.96it/s]
+  compile rep9  top1 0.6880  tower   4.07  prefill   4.27 (img med  4.23  img max    5.37)  wall 58.1s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 29534.70it/s]
+  compile rep10  top1 0.6880  tower   4.08  prefill   5.71 (img med  4.21  img max  738.63)  wall 58.2s  load1 0.97  <== DEPARTURE
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18733.27it/s]
+  compile rep11  top1 0.6880  tower   4.07  prefill   5.83 (img med  4.18  img max  808.56)  wall 59.2s  load1 0.97  <== DEPARTURE
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18550.15it/s]
+  compile rep12  top1 0.6880  tower   4.08  prefill   4.18 (img med  4.13  img max    5.21)  wall 58.7s  load1 1.11
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17049.28it/s]
+  compile rep13  top1 0.6880  tower   4.09  prefill   4.26 (img med  4.22  img max    5.24)  wall 58.2s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15474.95it/s]
+  compile rep14  top1 0.6880  tower   4.07  prefill   4.28 (img med  4.24  img max    5.58)  wall 58.2s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15619.21it/s]
+  compile rep15  top1 0.6880  tower   4.08  prefill   4.22 (img med  4.18  img max    5.22)  wall 59.8s  load1 0.98
+    compile: 5/16 departures (gate 4.5 ms)
+      pass 4.55 ms  excess 175 ms  max image 250.6 ms  top-image share 1.40  median-shift share -0.35 -> SPIKE
+      pass 4.99 ms  excess 395 ms  max image 403.2 ms  top-image share 1.01  median-shift share -0.01 -> SPIKE
+      pass 5.24 ms  excess 520 ms  max image 513.9 ms  top-image share 0.98  median-shift share 0.02 -> SPIKE
+      pass 5.71 ms  excess 755 ms  max image 738.6 ms  top-image share 0.97  median-shift share 0.03 -> SPIKE
+      pass 5.83 ms  excess 813 ms  max image 808.6 ms  top-image share 0.99  median-shift share 0.01 -> SPIKE
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step037_tail_shape_bf16_compile_r16_n500_rerun__5060ti_cuda.json

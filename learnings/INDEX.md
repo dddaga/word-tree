@@ -32,6 +32,8 @@
 | [[soft_routing_hnsw]] | [concepts/soft_routing_hnsw.md](concepts/soft_routing_hnsw.md) | HYPOTHESIS | Dense training (softmax) → HNSW inference (β-annealed); replaces conn_hh entirely; step855 scripted |
 | [[activation_retention]] | [concepts/activation_retention.md](concepts/activation_retention.md) | HYPOTHESIS | Z_t = α·Z_{t-1} + route(...); recurrent SGNNET; step306 killed static/decay/norm_cons — new context needed |
 | [[streaming_input]] | [concepts/streaming_input.md](concepts/streaming_input.md) | HYPOTHESIS | Cascading progressive seed; partial features at inference; latency-accuracy tradeoff |
+| [[glam_grouped_multiplicative_routing]] | [concepts/glam_grouped_multiplicative_routing.md](concepts/glam_grouped_multiplicative_routing.md) | CONFIRMED (T0, parallel line) | New stackable layer. Locality (shared-pool projection) = 96.96%±0.10 @ 47K params (0.04% FC), Pareto-dominates FFN-head & beats SGNNET champ. Mul net-negative (compounds w/ depth), add neutral. Needs T1/T2 for paper |
+| [[glam_readout_sparsity_generality]] | [concepts/glam_readout_sparsity_generality.md](concepts/glam_readout_sparsity_generality.md) | CONFIRMED (T0, generality) | Weight-RReLU-on-readout DEMOTED: anneal inert (=known STE/LTP pruning), "free compress" is C=10-over-param artifact (s0.9 Δ −0.22→−5.78pp as readout gets rank-loaded). Regime-specific deploy win, NOT general. Real win = LOC backbone. |
 
 ## New Infrastructure (2026-04-10)
 

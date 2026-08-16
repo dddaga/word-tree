@@ -1,0 +1,19 @@
+{
+  "step": "glam_step010",
+  "arm": "A1",
+  "d_out": 4,
+  "M": 16,
+  "doubles": true,
+  "n_params": 412900,
+  "pct_fc": 0.3453,
+  "best": 0.6331,
+  "best_ep": 10,
+  "zero_frac": 0.5,
+  "rrelu": [
+    0.05,
+    0.33
+  ],
+  "elapsed_s": 12.5,
+  "store": "data/store_cifar100.h5",
+  "seed": 42
+}

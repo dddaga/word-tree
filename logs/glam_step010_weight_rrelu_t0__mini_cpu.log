@@ -1,0 +1,75 @@
+
+======================================================================
+glam_step010 — weight-RReLU readout Imagenette T0 (20ep, 50%)  sweep=True  seeds=[42]
+  device=cpu  store=data/store_cifar100.h5
+======================================================================
+
+────────────────────────────────────────────────────────────
+R0 sparsity=0.7 rand=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5159  best=0.5159  zero_frac=0.000  α=1  [1s]
+  e  5/20  val=0.6255  best=0.6255  zero_frac=0.000  α=0.2336  [3s]
+  e 10/20  val=0.6369  best=0.6385  zero_frac=0.000  α=0.03793  [6s]
+  e 15/20  val=0.6391  best=0.6392  zero_frac=0.000  α=0.006158  [9s]
+  e 20/20  val=0.6395  best=0.6397  zero_frac=0.000  α=0.001  [12s]
+  DONE: best=0.6397 @ep17  zero_frac=0.000  eff_params=416,100  12s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R0_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R1 sparsity=0.9 rand=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.4550  best=0.4550  zero_frac=0.900  α=1  [2s]
+  e  5/20  val=0.5388  best=0.5388  zero_frac=0.900  α=0.2336  [11s]
+  e 10/20  val=0.5778  best=0.5778  zero_frac=0.900  α=0.03793  [21s]
+  e 15/20  val=0.5803  best=0.5819  zero_frac=0.900  α=0.006158  [32s]
+  e 20/20  val=0.5815  best=0.5819  zero_frac=0.900  α=0.001  [43s]
+  DONE: best=0.5819 @ep14  zero_frac=0.900  eff_params=47,461  43s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R1_s0.9_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R2 sparsity=0.9 rand=True  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.4550  best=0.4550  zero_frac=0.900  α=1  [2s]
+  e  5/20  val=0.5192  best=0.5192  zero_frac=0.900  α=0.2336  [11s]
+  e 10/20  val=0.5791  best=0.5791  zero_frac=0.900  α=0.03793  [22s]
+  e 15/20  val=0.5781  best=0.5791  zero_frac=0.900  α=0.006158  [33s]
+  e 20/20  val=0.5792  best=0.5795  zero_frac=0.900  α=0.001  [44s]
+  DONE: best=0.5795 @ep18  zero_frac=0.900  eff_params=47,461  44s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R2_s0.9_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R1 sparsity=0.95 rand=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.3810  best=0.3810  zero_frac=0.950  α=1  [2s]
+  e  5/20  val=0.4212  best=0.4212  zero_frac=0.950  α=0.2336  [11s]
+  e 10/20  val=0.5151  best=0.5151  zero_frac=0.950  α=0.03793  [22s]
+  e 15/20  val=0.5295  best=0.5295  zero_frac=0.950  α=0.006158  [32s]
+  e 20/20  val=0.5293  best=0.5302  zero_frac=0.950  α=0.001  [43s]
+  DONE: best=0.5302 @ep17  zero_frac=0.950  eff_params=26,981  43s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R1_s0.95_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R2 sparsity=0.95 rand=True  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.3810  best=0.3810  zero_frac=0.950  α=1  [2s]
+  e  5/20  val=0.3859  best=0.3925  zero_frac=0.950  α=0.2336  [11s]
+  e 10/20  val=0.5111  best=0.5111  zero_frac=0.950  α=0.03793  [22s]
+  e 15/20  val=0.5275  best=0.5279  zero_frac=0.950  α=0.006158  [33s]
+  e 20/20  val=0.5311  best=0.5318  zero_frac=0.950  α=0.001  [44s]
+  DONE: best=0.5318 @ep17  zero_frac=0.950  eff_params=26,981  44s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R2_s0.95_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R1 sparsity=0.97 rand=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.3294  best=0.3294  zero_frac=0.970  α=1  [2s]
+  e  5/20  val=0.2961  best=0.3294  zero_frac=0.970  α=0.2336  [12s]
+  e 10/20  val=0.4487  best=0.4487  zero_frac=0.970  α=0.03793  [24s]
+  e 15/20  val=0.4875  best=0.4875  zero_frac=0.970  α=0.006158  [36s]
+  e 20/20  val=0.4901  best=0.4912  zero_frac=0.970  α=0.001  [48s]
+  DONE: best=0.4912 @ep16  zero_frac=0.970  eff_params=18,789  48s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R1_s0.97_t0c100_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+R2 sparsity=0.97 rand=True  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.3294  best=0.3294  zero_frac=0.970  α=1  [2s]
+  e  5/20  val=0.2680  best=0.3294  zero_frac=0.970  α=0.2336  [11s]
+  e 10/20  val=0.4321  best=0.4321  zero_frac=0.970  α=0.03793  [22s]
+  e 15/20  val=0.4749  best=0.4749  zero_frac=0.970  α=0.006158  [33s]
+  e 20/20  val=0.4780  best=0.4790  zero_frac=0.970  α=0.001  [44s]
+  DONE: best=0.4790 @ep16  zero_frac=0.970  eff_params=18,788  44s
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_R2_s0.97_t0c100_seed42__mini_cpu.json

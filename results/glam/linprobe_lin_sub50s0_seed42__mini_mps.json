@@ -1,0 +1,12 @@
+{
+  "model": "plain_linear",
+  "store": "data/store_cifar100_sub50_s0.h5",
+  "C": 50,
+  "n_params": 1254450,
+  "best": 0.7405999898910522,
+  "best_ep": 18,
+  "epochs": 20,
+  "data_frac": 0.5,
+  "seed": 42,
+  "elapsed_s": 1.9
+}

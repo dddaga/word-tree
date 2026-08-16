@@ -1,0 +1,96 @@
+
+======================================================================
+glam_step001 — arms ['A1', 'A2', 'A3', 'A4', 'A4b', 'A5', 'A7det', 'A8'] T0 (20ep, 50% Imagenette)
+  device=cpu  Ref_dw~94.0%
+======================================================================
+
+────────────────────────────────────────────────────────────
+A1: {'gsz': 1, 'within_op': 'add', 'selectivity': False}  L=1 M=16 anneal=False decor_w=0.01
+  params=6,490 (0.0054% FC)  device=cpu
+  e  1/20  val=0.0943  best=0.0943  [0s]
+  e  5/20  val=0.4143  best=0.4143  [1s]
+  e 10/20  val=0.5946  best=0.5946  [1s]
+  e 15/20  val=0.6392  best=0.6392  [2s]
+  e 20/20  val=0.6494  best=0.6494  [3s]
+  DONE: best=0.6494 @ep20  params=6,490  3s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A1_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A2: {'gsz': 2, 'within_op': 'mul', 'selectivity': False}  L=1 M=16 anneal=False decor_w=0.01
+  params=6,490 (0.0054% FC)  device=cpu
+  e  1/20  val=0.1019  best=0.1019  [0s]
+  e  5/20  val=0.3506  best=0.3506  [1s]
+  e 10/20  val=0.4879  best=0.4879  [2s]
+  e 15/20  val=0.5353  best=0.5353  [3s]
+  e 20/20  val=0.5445  best=0.5445  [4s]
+  DONE: best=0.5445 @ep19  params=6,490  4s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A2_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A3: {'gsz': 2, 'within_op': 'add', 'selectivity': False}  L=1 M=16 anneal=False decor_w=0.01
+  params=6,490 (0.0054% FC)  device=cpu
+  e  1/20  val=0.0971  best=0.0971  [0s]
+  e  5/20  val=0.4158  best=0.4158  [1s]
+  e 10/20  val=0.5939  best=0.5939  [2s]
+  e 15/20  val=0.6364  best=0.6364  [2s]
+  e 20/20  val=0.6482  best=0.6482  [3s]
+  DONE: best=0.6482 @ep18  params=6,490  3s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A3_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A4: {'gsz': 2, 'within_op': 'mul', 'selectivity': True}  L=1 M=16 anneal=False decor_w=0.0
+  params=7,274 (0.0061% FC)  device=cpu
+  e  1/20  val=0.1037  best=0.1037  [0s]
+  e  5/20  val=0.2186  best=0.2186  [2s]
+  e 10/20  val=0.3534  best=0.3534  [3s]
+  e 15/20  val=0.4122  best=0.4122  [5s]
+  e 20/20  val=0.4199  best=0.4201  [7s]
+  DONE: best=0.4201 @ep18  params=7,274  7s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A4_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A4b: {'gsz': 2, 'within_op': 'mul', 'selectivity': True}  L=1 M=16 anneal=False decor_w=0.01
+  params=7,274 (0.0061% FC)  device=cpu
+  e  1/20  val=0.1037  best=0.1037  [0s]
+  e  5/20  val=0.2189  best=0.2189  [2s]
+  e 10/20  val=0.3552  best=0.3552  [4s]
+  e 15/20  val=0.4132  best=0.4132  [6s]
+  e 20/20  val=0.4199  best=0.4199  [7s]
+  DONE: best=0.4199 @ep20  params=7,274  7s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A4b_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A5: {'gsz': 2, 'within_op': 'mul', 'selectivity': True}  L=1 M=16 anneal=False decor_w=0.01
+  params=7,274 (0.0061% FC)  device=cpu
+  e  1/20  val=0.1037  best=0.1037  [0s]
+  e  5/20  val=0.2189  best=0.2189  [2s]
+  e 10/20  val=0.3552  best=0.3552  [4s]
+  e 15/20  val=0.4132  best=0.4132  [6s]
+  e 20/20  val=0.4199  best=0.4199  [7s]
+  DONE: best=0.4199 @ep20  params=7,274  7s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A5_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A7det: {'gsz': 2, 'within_op': 'mul', 'selectivity': True}  L=1 M=16 anneal=True decor_w=0.01
+  params=7,274 (0.0061% FC)  device=cpu
+  e  1/20  val=0.1103  best=0.1103  slope=1.0e+00  [0s]
+  e  5/20  val=0.2196  best=0.2196  slope=8.9e-02  [2s]
+  e 10/20  val=0.3358  best=0.3358  slope=4.3e-03  [4s]
+  e 15/20  val=0.3829  best=0.3829  slope=2.1e-04  [5s]
+  e 20/20  val=0.3896  best=0.3896  slope=1.0e-05  [7s]
+  DONE: best=0.3896 @ep19  params=7,274  7s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A7det_t0_seed42__mini_cpu.json
+
+────────────────────────────────────────────────────────────
+A8: {'gsz': 2, 'within_op': 'mul', 'selectivity': True}  L=2 M=16 anneal=False decor_w=0.01
+  params=8,554 (0.0072% FC)  device=cpu
+  e  1/20  val=0.1062  best=0.1062  [1s]
+  e  5/20  val=0.3141  best=0.3141  [3s]
+  e 10/20  val=0.4385  best=0.4385  [6s]
+  e 15/20  val=0.4729  best=0.4729  [9s]
+  e 20/20  val=0.4762  best=0.4769  [12s]
+  DONE: best=0.4769 @ep17  params=8,554  12s
+  -> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step001_A8_t0_seed42__mini_cpu.json
+
+======================================================================
+glam_step001 LADDER DONE (Ref_dw~94.0%)

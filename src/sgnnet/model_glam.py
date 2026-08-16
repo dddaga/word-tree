@@ -140,14 +140,16 @@ class GLAMNet(nn.Module):
     def __init__(self, in_dim: int = 25088, n_out: int = 10, L: int = 1,
                  P: int = 512, d_out: int = 8, M: int = 16, G: int = 512,
                  gsz: int = 2, within_op: str = "mul", across_op: str = "concat",
-                 selectivity: bool = False, seed: int = 42):
+                 selectivity: bool = False, seed: int = 42, collapse_last: bool = True):
         super().__init__()
         torch.manual_seed(seed)
         layers = []
         cur = in_dim
         for li in range(L):
             last = li == L - 1
-            a_op = "add" if (last and L > 1) else across_op
+            # collapse_last=True: final layer -> add (small readout). False: stay wide
+            # (concat) into the readout so depth doesn't re-introduce the terminal straw.
+            a_op = "add" if (last and L > 1 and collapse_last) else across_op
             p = P if li == 0 else min(G, cur)
             p = max(1, next(d for d in range(p, 0, -1) if cur % d == 0))  # largest divisor <= p
             lyr = GLAMLayer(cur, P=p, d_out=d_out, M=M, G=G, gsz=gsz,

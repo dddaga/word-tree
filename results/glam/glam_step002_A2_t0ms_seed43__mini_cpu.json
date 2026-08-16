@@ -1,0 +1,31 @@
+{
+  "step": "glam_step002",
+  "seed": 43,
+  "arm": "A2",
+  "cells": [
+    {
+      "arm": "A2",
+      "L": 1,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 47370,
+      "pct_fc": 0.0396,
+      "best": 0.9501,
+      "best_ep": 12,
+      "dense_flops": 94740,
+      "elapsed_s": 3.7
+    },
+    {
+      "arm": "A2",
+      "L": 2,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 48522,
+      "pct_fc": 0.0406,
+      "best": 0.8999,
+      "best_ep": 19,
+      "dense_flops": 97044,
+      "elapsed_s": 5.9
+    }
+  ]
+}

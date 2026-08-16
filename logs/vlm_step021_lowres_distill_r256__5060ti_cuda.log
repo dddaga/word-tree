@@ -1,0 +1,44 @@
+==============================================================================
+vlm_step021 low-res distill  device=cuda  depth=12  res=[256, 384]  n_train=1000 epochs=15
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6469.79it/s]
+  1000 train / 500 eval images
+  GATE validity  teacher d12@512 top1 0.7040 vs 0.711 -> PASS
+    teacher cache 0/1000
+    teacher cache 200/1000
+    teacher cache 400/1000
+    teacher cache 600/1000
+    teacher cache 800/1000
+    teacher cache done in 85s
+
+=== res 256 (16 tokens) ===
+  naive (stock tower, no training)  top1 0.1600
+  ep 1/15  rel_mse 0.1683  cosine 0.9164
+  ep 2/15  rel_mse 0.1295  cosine 0.9345
+  ep 3/15  rel_mse 0.1113  cosine 0.9441
+  ep 4/15  rel_mse 0.1026  cosine 0.9491
+  ep 5/15  rel_mse 0.0954  cosine 0.9535
+  ep 6/15  rel_mse 0.0877  cosine 0.9570
+  ep 7/15  rel_mse 0.0812  cosine 0.9604
+  ep 8/15  rel_mse 0.0753  cosine 0.9632
+  ep 9/15  rel_mse 0.0732  cosine 0.9644
+  ep 10/15  rel_mse 0.0685  cosine 0.9665
+  ep 11/15  rel_mse 0.0655  cosine 0.9681
+  ep 12/15  rel_mse 0.0639  cosine 0.9694
+  ep 13/15  rel_mse 0.0635  cosine 0.9705
+  ep 14/15  rel_mse 0.0585  cosine 0.9725
+  ep 15/15  rel_mse 0.0545  cosine 0.9738
+  distilled top1 0.2980  (+13.80pp over naive) -> PARTIAL
+  vs teacher 0.7040 @ 26.17 ms; student 9.01 ms (2.90x tower)
+
+=== res 384 (36 tokens) ===
+  naive (stock tower, no training)  top1 0.4560
+Traceback (most recent call last):
+  File "/home/indra/sgnnet_bench/scripts/frontier/vlm_step021_lowres_distill.py", line 197, in <module>
+    main()
+  File "/home/indra/sgnnet_bench/scripts/frontier/vlm_step021_lowres_distill.py", line 167, in main
+    targets = [pool_to(t.float(), tokens).half() for t in tgt512]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/indra/sgnnet_bench/scripts/frontier/vlm_step021_lowres_distill.py", line 111, in pool_to
+    assert g * g == n and k * k == tokens and g % k == 0, f"{n} -> {tokens} not a clean pool"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 64 -> 36 not a clean pool

@@ -1,0 +1,46 @@
+==============================================================================
+vlm_step022 token-vs-pixel  device=cuda  depth=12 STOCK  tokens=[64, 36, 16, 9, 4]  n_eval=500  pixels=512 FULL
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6459.74it/s]
+  500 eval images; 5 cells
+  --- k=64 tokens (512 px, pooled) ---
+    [100/500] 21s eta 85s
+    [200/500] 42s eta 63s
+    [300/500] 63s eta 42s
+    [400/500] 84s eta 21s
+    [500/500] 105s eta 0s
+  --- k=36 tokens (512 px, pooled) ---
+    [100/500] 21s eta 83s
+    [200/500] 42s eta 62s
+    [300/500] 63s eta 42s
+    [400/500] 83s eta 21s
+    [500/500] 104s eta 0s
+  --- k=16 tokens (512 px, pooled) ---
+    [100/500] 21s eta 83s
+    [200/500] 42s eta 63s
+    [300/500] 63s eta 42s
+    [400/500] 83s eta 21s
+    [500/500] 104s eta 0s
+  --- k=9 tokens (512 px, pooled) ---
+    [100/500] 21s eta 83s
+    [200/500] 42s eta 63s
+    [300/500] 63s eta 42s
+    [400/500] 83s eta 21s
+    [500/500] 104s eta 0s
+  --- k=4 tokens (512 px, pooled) ---
+    [100/500] 21s eta 84s
+    [200/500] 42s eta 63s
+    [300/500] 63s eta 42s
+    [400/500] 84s eta 21s
+    [500/500] 105s eta 0s
+
+  k   oracle  step020@k   pixel_cost_pp   (oracle - res-cell at same tokens)
+   64  0.7040   0.7040        +0.00
+   36  0.5720   0.4560       +11.60
+   16  0.4160   0.1600       +25.60
+    9  0.2580   0.0940       +16.40
+    4  0.1780   0.1060        +7.20
+
+  GATE validity  k=64 (identity pool) top1 0.7040 vs 0.711 -> PASS
+  CALL  oracle@16 = 0.4160 vs step021 distilled 0.2980 -> MIXED -- both contribute; report both, force neither
+  LIMIT: bounds AVERAGE-POOLED token budgets, not all possible k-token encodings.
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step022_token_vs_pixel_k64-36-16-9-4_n500__5060ti_cuda.json

@@ -1,0 +1,16 @@
+
+======================================================================
+glam_step005 — KV CIFAR-10 depth-below-ceiling T0 (20ep, 50%)
+  device=cpu  Linear-head CIFAR-10 ref = 86.24%
+======================================================================
+
+────────────────────────────────────────────────────────────
+KV  params=54,570 (0.0456% FC)  store=data/store_cifar10.h5  device=cpu
+  e  1/20  val=0.7750  best=0.7750  [1s]
+  e  5/20  val=0.8468  best=0.8568  [6s]
+  e 10/20  val=0.8551  best=0.8568  [11s]
+  e 15/20  val=0.8540  best=0.8568  [16s]
+  e 20/20  val=0.8537  best=0.8568  [21s]
+  DONE: best=0.8568 @ep4  params=54,570  21s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step005_KV_t0_seed42__mini_cpu.json

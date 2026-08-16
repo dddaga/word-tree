@@ -1,0 +1,287 @@
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A0 --seed 42 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A0 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A0 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5095  best=0.5095  [1s]
+  e  5/20  val=0.6325  best=0.6325  [3s]
+  e 10/20  val=0.6391  best=0.6399  [7s]
+  e 15/20  val=0.6410  best=0.6412  [11s]
+  e 20/20  val=0.6422  best=0.6426  [14s]
+  DONE: best=0.6426 @ep16  params=416,100  zero_frac=0.000  14s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A0_d8_t0_seed42__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A0 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A0 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A0 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5113  best=0.5113  [1s]
+  e  5/20  val=0.6277  best=0.6277  [4s]
+  e 10/20  val=0.6366  best=0.6371  [7s]
+  e 15/20  val=0.6375  best=0.6376  [10s]
+  e 20/20  val=0.6378  best=0.6379  [13s]
+  DONE: best=0.6379 @ep17  params=416,100  zero_frac=0.000  13s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A0_d8_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A0 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A0 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A0 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5053  best=0.5053  [1s]
+  e  5/20  val=0.6302  best=0.6302  [3s]
+  e 10/20  val=0.6450  best=0.6457  [6s]
+  e 15/20  val=0.6444  best=0.6457  [10s]
+  e 20/20  val=0.6451  best=0.6458  [14s]
+  DONE: best=0.6458 @ep17  params=416,100  zero_frac=0.000  14s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A0_d8_t0_seed44__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 42 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5612  best=0.5612  [1s]
+  e  5/20  val=0.6405  best=0.6405  [5s]
+  e 10/20  val=0.6458  best=0.6472  [9s]
+  e 15/20  val=0.6475  best=0.6484  [13s]
+  e 20/20  val=0.6473  best=0.6484  [17s]
+  DONE: best=0.6484 @ep12  params=825,700  zero_frac=0.500  17s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d8_t0_seed42__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5430  best=0.5430  [1s]
+  e  5/20  val=0.6368  best=0.6368  [5s]
+  e 10/20  val=0.6441  best=0.6444  [11s]
+  e 15/20  val=0.6462  best=0.6469  [15s]
+  e 20/20  val=0.6460  best=0.6469  [20s]
+  DONE: best=0.6469 @ep14  params=825,700  zero_frac=0.500  20s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d8_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5499  best=0.5499  [1s]
+  e  5/20  val=0.6391  best=0.6391  [5s]
+  e 10/20  val=0.6489  best=0.6489  [9s]
+  e 15/20  val=0.6468  best=0.6489  [13s]
+  e 20/20  val=0.6478  best=0.6489  [17s]
+  DONE: best=0.6489 @ep10  params=825,700  zero_frac=0.500  17s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d8_t0_seed44__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A2 --seed 42 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A2 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A2 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5190  best=0.5190  [1s]
+  e  5/20  val=0.6336  best=0.6336  [5s]
+  e 10/20  val=0.6369  best=0.6396  [10s]
+  e 15/20  val=0.6412  best=0.6412  [14s]
+  e 20/20  val=0.6409  best=0.6412  [19s]
+  DONE: best=0.6412 @ep15  params=416,100  zero_frac=0.000  19s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A2_d8_t0_seed42__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A2 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A2 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A2 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5234  best=0.5234  [1s]
+  e  5/20  val=0.6307  best=0.6307  [5s]
+  e 10/20  val=0.6367  best=0.6382  [10s]
+  e 15/20  val=0.6378  best=0.6396  [14s]
+  e 20/20  val=0.6380  best=0.6396  [19s]
+  DONE: best=0.6396 @ep11  params=416,100  zero_frac=0.000  19s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A2_d8_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A2 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A2 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A2 d_out=8 doubles=False  params=416,100 (0.3479% FC)  device=cpu
+  e  1/20  val=0.5150  best=0.5150  [1s]
+  e  5/20  val=0.6315  best=0.6315  [5s]
+  e 10/20  val=0.6433  best=0.6438  [10s]
+  e 15/20  val=0.6425  best=0.6438  [15s]
+  e 20/20  val=0.6431  best=0.6438  [19s]
+  DONE: best=0.6438 @ep7  params=416,100  zero_frac=0.000  19s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A2_d8_t0_seed44__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A3 --seed 42 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A3 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A3 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5660  best=0.5660  [1s]
+  e  5/20  val=0.6369  best=0.6369  [6s]
+  e 10/20  val=0.6440  best=0.6440  [11s]
+  e 15/20  val=0.6438  best=0.6443  [17s]
+  e 20/20  val=0.6449  best=0.6453  [23s]
+  DONE: best=0.6453 @ep18  params=825,700  zero_frac=0.254  23s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A3_d8_t0_seed42__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A3 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A3 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A3 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5489  best=0.5489  [1s]
+  e  5/20  val=0.6324  best=0.6324  [6s]
+  e 10/20  val=0.6414  best=0.6418  [12s]
+  e 15/20  val=0.6419  best=0.6431  [18s]
+  e 20/20  val=0.6424  best=0.6431  [24s]
+  DONE: best=0.6431 @ep14  params=825,700  zero_frac=0.250  24s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A3_d8_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A3 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+glam_step010 — A3 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A3 d_out=8 doubles=True  params=825,700 (0.6905% FC)  device=cpu
+  e  1/20  val=0.5573  best=0.5573  [1s]
+  e  5/20  val=0.6372  best=0.6372  [6s]
+  e 10/20  val=0.6460  best=0.6460  [12s]
+  e 15/20  val=0.6487  best=0.6487  [18s]
+  e 20/20  val=0.6488  best=0.6488  [24s]
+  DONE: best=0.6488 @ep19  params=825,700  zero_frac=0.248  24s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A3_d8_t0_seed44__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 42 --device cpu --d_out=4
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=4 doubles=True  params=412,900 (0.3453% FC)  device=cpu
+  e  1/20  val=0.5027  best=0.5027  [1s]
+  e  5/20  val=0.6269  best=0.6269  [3s]
+  e 10/20  val=0.6331  best=0.6331  [6s]
+  e 15/20  val=0.6330  best=0.6331  [9s]
+  e 20/20  val=0.6330  best=0.6331  [13s]
+  DONE: best=0.6331 @ep10  params=412,900  zero_frac=0.500  13s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d4_t0_seed42__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 43 --device cpu --d_out=4
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=4 doubles=True  params=412,900 (0.3453% FC)  device=cpu
+  e  1/20  val=0.5089  best=0.5089  [1s]
+  e  5/20  val=0.6224  best=0.6224  [3s]
+  e 10/20  val=0.6319  best=0.6319  [6s]
+  e 15/20  val=0.6316  best=0.6323  [9s]
+  e 20/20  val=0.6315  best=0.6323  [12s]
+  DONE: best=0.6323 @ep11  params=412,900  zero_frac=0.500  12s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d4_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/glam/glam_step010_crelu_t0.py --arm A1 --seed 44 --device cpu --d_out=4
+######################################################################
+
+======================================================================
+glam_step010 — A1 activation CIFAR-100 T0 (20ep, 50%)
+======================================================================
+
+------------------------------------------------------------
+A1 d_out=4 doubles=True  params=412,900 (0.3453% FC)  device=cpu
+  e  1/20  val=0.4977  best=0.4977  [1s]
+  e  5/20  val=0.6178  best=0.6178  [3s]
+  e 10/20  val=0.6312  best=0.6312  [6s]
+  e 15/20  val=0.6304  best=0.6320  [9s]
+  e 20/20  val=0.6315  best=0.6320  [13s]
+  DONE: best=0.6320 @ep13  params=412,900  zero_frac=0.500  13s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step010_A1_d4_t0_seed44__mini_cpu.json
+
+SWEEP DONE  15 cells  413s  failures=none

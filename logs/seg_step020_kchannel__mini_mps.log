@@ -1,0 +1,222 @@
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 42 --device mps --decor_lambda 0.05 --save_ckpt --ckpt_suffix _dec05 --tag k_dec05
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=42
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0559  best=0.0559  [5s]
+    e 10/60  mAP=0.2259  best=0.2259  [50s]
+    e 20/60  mAP=0.2269  best=0.2585  [99s]
+    e 30/60  mAP=0.2449  best=0.2585  [148s]
+    e 40/60  mAP=0.2441  best=0.2628  [197s]
+    e 50/60  mAP=0.2490  best=0.2670  [246s]
+    e 60/60  mAP=0.2510  best=0.2670  [295s]
+  saved teacher checkpoint teacher_E7_e60_seed42_dec05__mini_mps.pt  best_mAP=0.2670
+  DONE: best_mAP=0.2670 @ep42  {'person': 0.3273, 'vehicle': 0.1357, 'animal': 0.1729, 'object': 0.3682}  296s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec05_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 43 --device mps --decor_lambda 0.05 --save_ckpt --ckpt_suffix _dec05 --tag k_dec05
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=43
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0547  best=0.0547  [5s]
+    e 10/60  mAP=0.2054  best=0.2205  [49s]
+    e 20/60  mAP=0.2371  best=0.2545  [98s]
+    e 30/60  mAP=0.2568  best=0.2721  [147s]
+    e 40/60  mAP=0.2645  best=0.2744  [196s]
+    e 50/60  mAP=0.2523  best=0.2744  [245s]
+    e 60/60  mAP=0.2584  best=0.2744  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed43_dec05__mini_mps.pt  best_mAP=0.2744
+  DONE: best_mAP=0.2744 @ep39  {'person': 0.3535, 'vehicle': 0.1289, 'animal': 0.179, 'object': 0.3721}  294s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec05_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 44 --device mps --decor_lambda 0.05 --save_ckpt --ckpt_suffix _dec05 --tag k_dec05
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=44
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0556  best=0.0556  [5s]
+    e 10/60  mAP=0.2086  best=0.2156  [49s]
+    e 20/60  mAP=0.2484  best=0.2484  [98s]
+    e 30/60  mAP=0.2447  best=0.2519  [147s]
+    e 40/60  mAP=0.2476  best=0.2519  [196s]
+    e 50/60  mAP=0.2391  best=0.2519  [245s]
+    e 60/60  mAP=0.2374  best=0.2519  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed44_dec05__mini_mps.pt  best_mAP=0.2519
+  DONE: best_mAP=0.2519 @ep21  {'person': 0.3066, 'vehicle': 0.1201, 'animal': 0.148, 'object': 0.3749}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec05_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 45 --device mps --decor_lambda 0.05 --save_ckpt --ckpt_suffix _dec05 --tag k_dec05
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=45
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0557  best=0.0557  [5s]
+    e 10/60  mAP=0.2125  best=0.2125  [49s]
+    e 20/60  mAP=0.2191  best=0.2501  [98s]
+    e 30/60  mAP=0.2508  best=0.2663  [147s]
+    e 40/60  mAP=0.2427  best=0.2663  [196s]
+    e 50/60  mAP=0.2546  best=0.2663  [245s]
+    e 60/60  mAP=0.2526  best=0.2663  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed45_dec05__mini_mps.pt  best_mAP=0.2663
+  DONE: best_mAP=0.2663 @ep24  {'person': 0.3392, 'vehicle': 0.1427, 'animal': 0.1719, 'object': 0.3567}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec05_seed45__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 46 --device mps --decor_lambda 0.05 --save_ckpt --ckpt_suffix _dec05 --tag k_dec05
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=46
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0542  best=0.0542  [5s]
+    e 10/60  mAP=0.2085  best=0.2146  [49s]
+    e 20/60  mAP=0.2453  best=0.2522  [98s]
+    e 30/60  mAP=0.2583  best=0.2585  [147s]
+    e 40/60  mAP=0.2635  best=0.2650  [196s]
+    e 50/60  mAP=0.2530  best=0.2650  [245s]
+    e 60/60  mAP=0.2543  best=0.2650  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed46_dec05__mini_mps.pt  best_mAP=0.2650
+  DONE: best_mAP=0.2650 @ep34  {'person': 0.3401, 'vehicle': 0.1387, 'animal': 0.1614, 'object': 0.3769}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec05_seed46__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 42 --device mps --decor_lambda 0.0 --save_ckpt --ckpt_suffix _dec00 --tag k_dec00
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=42
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0574  best=0.0574  [5s]
+    e 10/60  mAP=0.2235  best=0.2235  [49s]
+    e 20/60  mAP=0.2219  best=0.2553  [98s]
+    e 30/60  mAP=0.2438  best=0.2553  [147s]
+    e 40/60  mAP=0.2555  best=0.2659  [196s]
+    e 50/60  mAP=0.2593  best=0.2756  [245s]
+    e 60/60  mAP=0.2607  best=0.2756  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed42_dec00__mini_mps.pt  best_mAP=0.2756
+  DONE: best_mAP=0.2756 @ep42  {'person': 0.3287, 'vehicle': 0.1412, 'animal': 0.2061, 'object': 0.367}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec00_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 43 --device mps --decor_lambda 0.0 --save_ckpt --ckpt_suffix _dec00 --tag k_dec00
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=43
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0563  best=0.0563  [5s]
+    e 10/60  mAP=0.2035  best=0.2084  [49s]
+    e 20/60  mAP=0.2314  best=0.2473  [99s]
+    e 30/60  mAP=0.2467  best=0.2657  [148s]
+    e 40/60  mAP=0.2553  best=0.2657  [197s]
+    e 50/60  mAP=0.2449  best=0.2657  [246s]
+    e 60/60  mAP=0.2496  best=0.2657  [295s]
+  saved teacher checkpoint teacher_E7_e60_seed43_dec00__mini_mps.pt  best_mAP=0.2657
+  DONE: best_mAP=0.2657 @ep22  {'person': 0.3468, 'vehicle': 0.1327, 'animal': 0.1436, 'object': 0.3753}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec00_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 44 --device mps --decor_lambda 0.0 --save_ckpt --ckpt_suffix _dec00 --tag k_dec00
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=44
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0573  best=0.0573  [5s]
+    e 10/60  mAP=0.2105  best=0.2184  [49s]
+    e 20/60  mAP=0.2526  best=0.2526  [98s]
+    e 30/60  mAP=0.2470  best=0.2526  [147s]
+    e 40/60  mAP=0.2551  best=0.2591  [196s]
+    e 50/60  mAP=0.2456  best=0.2591  [245s]
+    e 60/60  mAP=0.2436  best=0.2591  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed44_dec00__mini_mps.pt  best_mAP=0.2591
+  DONE: best_mAP=0.2591 @ep34  {'person': 0.33, 'vehicle': 0.1298, 'animal': 0.1423, 'object': 0.3723}  294s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec00_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 45 --device mps --decor_lambda 0.0 --save_ckpt --ckpt_suffix _dec00 --tag k_dec00
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=45
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0568  best=0.0568  [5s]
+    e 10/60  mAP=0.2170  best=0.2170  [49s]
+    e 20/60  mAP=0.2439  best=0.2730  [98s]
+    e 30/60  mAP=0.2636  best=0.2811  [147s]
+    e 40/60  mAP=0.2648  best=0.2813  [196s]
+    e 50/60  mAP=0.2735  best=0.2813  [246s]
+    e 60/60  mAP=0.2736  best=0.2813  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed45_dec00__mini_mps.pt  best_mAP=0.2813
+  DONE: best_mAP=0.2813 @ep33  {'person': 0.3395, 'vehicle': 0.1616, 'animal': 0.2285, 'object': 0.3647}  295s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec00_seed45__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step010_feature_hint.py --arm H1 --seed 46 --device mps --decor_lambda 0.0 --save_ckpt --ckpt_suffix _dec00 --tag k_dec00
+######################################################################
+
+======================================================================
+seg_step010 — H1  E2 -> E7  alpha=2.0 beta=1.0
+  device=mps  seed=46
+======================================================================
+  teacher teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0556  best=0.0556  [5s]
+    e 10/60  mAP=0.2156  best=0.2156  [49s]
+    e 20/60  mAP=0.2450  best=0.2546  [98s]
+    e 30/60  mAP=0.2575  best=0.2624  [147s]
+    e 40/60  mAP=0.2642  best=0.2685  [196s]
+    e 50/60  mAP=0.2553  best=0.2685  [245s]
+    e 60/60  mAP=0.2571  best=0.2685  [294s]
+  saved teacher checkpoint teacher_E7_e60_seed46_dec00__mini_mps.pt  best_mAP=0.2685
+  DONE: best_mAP=0.2685 @ep32  {'person': 0.319, 'vehicle': 0.1409, 'animal': 0.1976, 'object': 0.3708}  294s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step010_H1_k_dec00_seed46__mini_mps.json
+
+SWEEP DONE  10 cells  2981s  failures=none

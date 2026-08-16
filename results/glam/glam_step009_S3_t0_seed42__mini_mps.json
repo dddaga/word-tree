@@ -1,0 +1,14 @@
+{
+  "step": "glam_step009",
+  "arm": "S3",
+  "gate": "sigmoid",
+  "d_out": 8,
+  "M": 16,
+  "n_params": 416100,
+  "pct_fc": 0.3479,
+  "best": 0.6442,
+  "best_ep": 9,
+  "elapsed_s": 7.1,
+  "store": "data/store_cifar100.h5",
+  "seed": 42
+}

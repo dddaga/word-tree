@@ -1,0 +1,16 @@
+
+======================================================================
+glam_step006 — CTRL slope-anneal ENERGY T0 (20ep, 50%)
+  device=cpu  ref: GLAM-LOC 96.96% @47K; plain-ReLU zero_frac ~0.50-0.52
+======================================================================
+
+────────────────────────────────────────────────────────────
+CTRL  params=47,370 (0.0396% FC)  store=data/store.h5  device=cpu
+  e  1/20  slope=0.01  val=0.9096  zero_frac=0.5166  best=0.9096  [0s]
+  e  5/20  slope=0.01  val=0.9676  zero_frac=0.4712  best=0.9676  [1s]
+  e 10/20  slope=0.01  val=0.9697  zero_frac=0.4258  best=0.9697  [1s]
+  e 15/20  slope=0.01  val=0.9694  zero_frac=0.4069  best=0.9702  [2s]
+  e 20/20  slope=0.01  val=0.9694  zero_frac=0.4023  best=0.9702  [3s]
+  DONE: best=0.9702 @ep11  final_zero_frac=0.4023  params=47,370  3s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/glam/glam_step006_CTRL_t0_seed42__mini_cpu.json

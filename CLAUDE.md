@@ -30,7 +30,7 @@ Rules: (1) post-hoc failure explanations = `HYPOTHESIS`, not facts. (2) "KILLED"
 ## Session Start
 1. `mcp__graphiti__search_memory_facts("recent experiments results running", group_ids=["dhiraj"])`
 2. Read `learnings/EXPERIMENT_QUEUE.md`
-3. `scripts/slot_status.sh` — verify queue matches real tmux state; investigate ghost `RUNNING` entries before launching replacements.
+3. `scripts/slot_status.sh` — verify queue matches real herdr state; investigate ghost `RUNNING` entries before launching replacements.
 4. **Meditation check** — read `learnings/meditations/TRACKER.md`. If DONE count since last meditation ≥ 25, surface one-line notice. Don't auto-run; user decides. Protocol: `.claude/skills/sgnnet-meditation/SKILL.md`.
 5. Create training monitor cron (5 min, recurring, background Agent — see CLAUDE_reference.md "Training Monitor"). 5060ti completes T1 in ~2-4 min; 20 min missed most completions.
 

@@ -1,0 +1,163 @@
+{
+  "step": "seg_step015",
+  "device": "cuda",
+  "slot": "5060ti_cuda",
+  "res": 128,
+  "repeats": 200,
+  "warmup": 30,
+  "platform": "Linux-6.17.0-23-generic-x86_64-with-glibc2.39",
+  "rows": [
+    {
+      "arm": "E9",
+      "params": 374680,
+      "gmacs": 0.2636,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 2.5528,
+          "ms_per_frame": 2.5528,
+          "p10": 2.5423,
+          "p90": 2.5712,
+          "peak_mem_mb": 3.8
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 7.4479,
+          "ms_per_frame": 0.2327,
+          "p10": 3.1888,
+          "p90": 7.4828,
+          "peak_mem_mb": 142.0
+        }
+      ]
+    },
+    {
+      "arm": "E7",
+      "params": 851816,
+      "gmacs": 0.8757,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 2.6702,
+          "ms_per_frame": 2.6702,
+          "p10": 0.4352,
+          "p90": 2.6875,
+          "peak_mem_mb": 12.0
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 16.3391,
+          "ms_per_frame": 0.5106,
+          "p10": 10.8663,
+          "p90": 16.3923,
+          "peak_mem_mb": 278.2
+        }
+      ]
+    },
+    {
+      "arm": "E11",
+      "params": 1109736,
+      "gmacs": 0.8461,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 2.662,
+          "ms_per_frame": 2.662,
+          "p10": 2.653,
+          "p90": 2.68,
+          "peak_mem_mb": 10.1
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 15.7543,
+          "ms_per_frame": 0.4923,
+          "p10": 8.0112,
+          "p90": 15.8008,
+          "peak_mem_mb": 186.9
+        }
+      ]
+    },
+    {
+      "arm": "E12",
+      "params": 1091144,
+      "gmacs": 0.8164,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 2.6439,
+          "ms_per_frame": 2.6439,
+          "p10": 0.4114,
+          "p90": 2.6633,
+          "peak_mem_mb": 11.9
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 16.294,
+          "ms_per_frame": 0.5092,
+          "p10": 9.9793,
+          "p90": 16.3442,
+          "peak_mem_mb": 245.5
+        }
+      ]
+    },
+    {
+      "arm": "E10",
+      "params": 1545528,
+      "gmacs": 1.8653,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 2.8931,
+          "ms_per_frame": 2.8931,
+          "p10": 2.885,
+          "p90": 2.9104,
+          "peak_mem_mb": 19.0
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 29.3229,
+          "ms_per_frame": 0.9163,
+          "p10": 22.5441,
+          "p90": 29.411,
+          "peak_mem_mb": 415.2
+        }
+      ]
+    },
+    {
+      "arm": "E2",
+      "params": 2455816,
+      "gmacs": 3.2324,
+      "timings": [
+        {
+          "batch": 1,
+          "ms_per_forward": 3.0116,
+          "ms_per_frame": 3.0116,
+          "p10": 3.0024,
+          "p90": 3.0301,
+          "peak_mem_mb": 26.9
+        },
+        {
+          "batch": 32,
+          "ms_per_forward": 41.814,
+          "ms_per_frame": 1.3067,
+          "p10": 34.0838,
+          "p90": 41.9014,
+          "peak_mem_mb": 553.1
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "b1": {
+      "latency_ratio": 1.1279,
+      "mac_ratio": 3.6912,
+      "efficiency": 0.3056,
+      "branch": "c MACs do NOT predict latency"
+    },
+    "b32": {
+      "latency_ratio": 2.5591,
+      "mac_ratio": 3.6912,
+      "efficiency": 0.6933,
+      "branch": "b partially compute-bound"
+    }
+  }
+}

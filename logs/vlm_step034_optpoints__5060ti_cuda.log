@@ -1,0 +1,61 @@
++ cd /home/indra/sgnnet_bench
++ export SGN_SLOT=5060ti_cuda PYTHONPATH=vlm_libs
++ SGN_SLOT=5060ti_cuda
++ PYTHONPATH=vlm_libs
++ for spec in "0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _r0.5" "0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _r0.25" "0.125 vlm_step023_mlp_r0.125_r0.125_e50_t9352_n500_d6.pt _r0.125"
++ set -- 0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _r0.5
++ venv/bin/python3 scripts/frontier/vlm_step033_cudagraph.py --modes reduce-overhead --towers student --ratio 0.5 --ckpt vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt --tag_suffix _r0.5 --repeats 5 --n_eval 500
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['reduce-overhead']  towers=['student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18946.90it/s]
+  reduce-overhead_student rep0  top1 0.6940  tower   4.26  prefill   2.67  e2e   6.93 ms  wall 51.6s  load1 0.72
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18846.58it/s]
+  reduce-overhead_student rep1  top1 0.6940  tower   4.28  prefill   2.72  e2e   7.00 ms  wall 50.1s  load1 0.89
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19051.23it/s]
+  reduce-overhead_student rep2  top1 0.6940  tower   4.30  prefill   2.77  e2e   7.07 ms  wall 49.9s  load1 0.94
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17626.74it/s]
+  reduce-overhead_student rep3  top1 0.6940  tower   4.31  prefill   2.73  e2e   7.04 ms  wall 49.2s  load1 0.98
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15941.36it/s]
+  reduce-overhead_student rep4  top1 0.6940  tower   4.31  prefill   2.78  e2e   7.09 ms  wall 48.9s  load1 1.02
+    reduce-overhead_student  vision_ms   median   4.30  min   4.26  max   4.31  tail  0.00
+    reduce-overhead_student  prefill_ms  median   2.73  min   2.67  max   2.78  tail  0.05
+    reduce-overhead_student  end2end_ms  median   7.04  min   6.93  max   7.09  tail  0.05
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_reduceoverhead_student_r5_n500_r0.5__5060ti_cuda.json
++ for spec in "0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _r0.5" "0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _r0.25" "0.125 vlm_step023_mlp_r0.125_r0.125_e50_t9352_n500_d6.pt _r0.125"
++ set -- 0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _r0.25
++ venv/bin/python3 scripts/frontier/vlm_step033_cudagraph.py --modes reduce-overhead --towers student --ratio 0.25 --ckpt vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt --tag_suffix _r0.25 --repeats 5 --n_eval 500
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['reduce-overhead']  towers=['student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16295.75it/s]
+  reduce-overhead_student rep0  top1 0.6880  tower   3.90  prefill   2.69  e2e   6.58 ms  wall 51.5s  load1 1.07
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15889.30it/s]
+  reduce-overhead_student rep1  top1 0.6880  tower   3.96  prefill   2.72  e2e   6.68 ms  wall 49.9s  load1 1.08
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 21133.50it/s]
+  reduce-overhead_student rep2  top1 0.6880  tower   3.94  prefill   2.72  e2e   6.66 ms  wall 49.6s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 19898.44it/s]
+  reduce-overhead_student rep3  top1 0.6880  tower   3.94  prefill   2.72  e2e   6.66 ms  wall 49.5s  load1 0.97
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15923.50it/s]
+  reduce-overhead_student rep4  top1 0.6880  tower   3.96  prefill   2.78  e2e   6.74 ms  wall 49.7s  load1 0.97
+    reduce-overhead_student  vision_ms   median   3.94  min   3.90  max   3.96  tail  0.02
+    reduce-overhead_student  prefill_ms  median   2.72  min   2.69  max   2.78  tail  0.06
+    reduce-overhead_student  end2end_ms  median   6.66  min   6.58  max   6.74  tail  0.07
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_reduceoverhead_student_r5_n500_r0.25__5060ti_cuda.json
++ for spec in "0.5 vlm_step023_mlp_r0.5_r0.5_e25_t9352_n500_d6.pt _r0.5" "0.25 vlm_step023_mlp_r0.25_r0.25_e50_t9352_n500_d6.pt _r0.25" "0.125 vlm_step023_mlp_r0.125_r0.125_e50_t9352_n500_d6.pt _r0.125"
++ set -- 0.125 vlm_step023_mlp_r0.125_r0.125_e50_t9352_n500_d6.pt _r0.125
++ venv/bin/python3 scripts/frontier/vlm_step033_cudagraph.py --modes reduce-overhead --towers student --ratio 0.125 --ckpt vlm_step023_mlp_r0.125_r0.125_e50_t9352_n500_d6.pt --tag_suffix _r0.125 --repeats 5 --n_eval 500
+==============================================================================
+vlm_step033 cudagraph  device=cuda  dtype=bf16  modes=['reduce-overhead']  towers=['student']  R=5  n_eval=500
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 17458.20it/s]
+  reduce-overhead_student rep0  top1 0.6740  tower   3.77  prefill   2.67  e2e   6.43 ms  wall 51.3s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18225.84it/s]
+  reduce-overhead_student rep1  top1 0.6740  tower   3.80  prefill   2.71  e2e   6.51 ms  wall 49.8s  load1 0.96
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16442.77it/s]
+  reduce-overhead_student rep2  top1 0.6740  tower   3.82  prefill   3.60  e2e   7.41 ms  wall 49.8s  load1 1.00
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 15674.11it/s]
+  reduce-overhead_student rep3  top1 0.6740  tower   3.81  prefill   2.72  e2e   6.52 ms  wall 48.8s  load1 1.01
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 18906.28it/s]
+  reduce-overhead_student rep4  top1 0.6740  tower   3.82  prefill   2.81  e2e   6.63 ms  wall 48.9s  load1 0.98
+    reduce-overhead_student  vision_ms   median   3.81  min   3.77  max   3.82  tail  0.02
+    reduce-overhead_student  prefill_ms  median   2.72  min   2.67  max   3.60  tail  0.88
+    reduce-overhead_student  end2end_ms  median   6.52  min   6.43  max   7.41  tail  0.89
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step033_cudagraph_bf16_reduceoverhead_student_r5_n500_r0.125__5060ti_cuda.json

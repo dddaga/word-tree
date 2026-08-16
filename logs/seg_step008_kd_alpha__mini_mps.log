@@ -1,0 +1,212 @@
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 42 --device mps --alpha 2.0 --tag a2
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=2.0 T=2.0
+  device=mps  seed=42
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0539  best=0.0539  [3s]
+    e 10/60  mAP=0.1471  best=0.1471  [30s]
+    e 20/60  mAP=0.2039  best=0.2039  [59s]
+    e 30/60  mAP=0.2000  best=0.2041  [88s]
+    e 40/60  mAP=0.2086  best=0.2181  [118s]
+    e 50/60  mAP=0.2156  best=0.2181  [147s]
+    e 60/60  mAP=0.2137  best=0.2181  [176s]
+  DONE: best_mAP=0.2181 @ep37  {'person': 0.2798, 'vehicle': 0.0645, 'animal': 0.1594, 'object': 0.3512}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a2_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 43 --device mps --alpha 2.0 --tag a2
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=2.0 T=2.0
+  device=mps  seed=43
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0538  best=0.0538  [3s]
+    e 10/60  mAP=0.1515  best=0.1515  [30s]
+    e 20/60  mAP=0.2010  best=0.2116  [59s]
+    e 30/60  mAP=0.2250  best=0.2338  [88s]
+    e 40/60  mAP=0.2284  best=0.2350  [118s]
+    e 50/60  mAP=0.2282  best=0.2350  [147s]
+    e 60/60  mAP=0.2280  best=0.2350  [176s]
+  DONE: best_mAP=0.2350 @ep37  {'person': 0.2358, 'vehicle': 0.0583, 'animal': 0.2839, 'object': 0.3339}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a2_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 44 --device mps --alpha 2.0 --tag a2
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=2.0 T=2.0
+  device=mps  seed=44
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0549  best=0.0549  [3s]
+    e 10/60  mAP=0.1669  best=0.1669  [30s]
+    e 20/60  mAP=0.2141  best=0.2141  [59s]
+    e 30/60  mAP=0.1912  best=0.2141  [88s]
+    e 40/60  mAP=0.2061  best=0.2141  [118s]
+    e 50/60  mAP=0.2070  best=0.2141  [147s]
+    e 60/60  mAP=0.2077  best=0.2141  [176s]
+  DONE: best_mAP=0.2141 @ep20  {'person': 0.2585, 'vehicle': 0.0662, 'animal': 0.1699, 'object': 0.3361}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a2_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 45 --device mps --alpha 2.0 --tag a2
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=2.0 T=2.0
+  device=mps  seed=45
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0563  best=0.0563  [3s]
+    e 10/60  mAP=0.1524  best=0.1538  [30s]
+    e 20/60  mAP=0.2072  best=0.2081  [59s]
+    e 30/60  mAP=0.2332  best=0.2428  [88s]
+    e 40/60  mAP=0.2475  best=0.2475  [118s]
+    e 50/60  mAP=0.2373  best=0.2475  [147s]
+    e 60/60  mAP=0.2386  best=0.2475  [176s]
+  DONE: best_mAP=0.2475 @ep40  {'person': 0.3187, 'vehicle': 0.0515, 'animal': 0.2262, 'object': 0.3582}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a2_seed45__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 46 --device mps --alpha 2.0 --tag a2
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=2.0 T=2.0
+  device=mps  seed=46
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0556  best=0.0556  [3s]
+    e 10/60  mAP=0.1424  best=0.1424  [29s]
+    e 20/60  mAP=0.2124  best=0.2129  [59s]
+    e 30/60  mAP=0.2027  best=0.2279  [88s]
+    e 40/60  mAP=0.2155  best=0.2279  [117s]
+    e 50/60  mAP=0.2197  best=0.2279  [147s]
+    e 60/60  mAP=0.2177  best=0.2279  [176s]
+  DONE: best_mAP=0.2279 @ep26  {'person': 0.267, 'vehicle': 0.074, 'animal': 0.1751, 'object': 0.3547}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a2_seed46__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 42 --device mps --alpha 8.0 --tag a8
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=8.0 T=2.0
+  device=mps  seed=42
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0558  best=0.0558  [3s]
+    e 10/60  mAP=0.1347  best=0.1417  [30s]
+    e 20/60  mAP=0.2122  best=0.2209  [59s]
+    e 30/60  mAP=0.2192  best=0.2245  [88s]
+    e 40/60  mAP=0.2289  best=0.2356  [118s]
+    e 50/60  mAP=0.2347  best=0.2356  [147s]
+    e 60/60  mAP=0.2324  best=0.2356  [176s]
+  DONE: best_mAP=0.2356 @ep33  {'person': 0.2446, 'vehicle': 0.0828, 'animal': 0.231, 'object': 0.3711}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a8_seed42__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 43 --device mps --alpha 8.0 --tag a8
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=8.0 T=2.0
+  device=mps  seed=43
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0551  best=0.0551  [3s]
+    e 10/60  mAP=0.1552  best=0.1552  [30s]
+    e 20/60  mAP=0.2197  best=0.2197  [59s]
+    e 30/60  mAP=0.1958  best=0.2232  [88s]
+    e 40/60  mAP=0.2123  best=0.2232  [117s]
+    e 50/60  mAP=0.2104  best=0.2232  [147s]
+    e 60/60  mAP=0.2100  best=0.2232  [176s]
+  DONE: best_mAP=0.2232 @ep21  {'person': 0.2544, 'vehicle': 0.0663, 'animal': 0.1753, 'object': 0.3441}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a8_seed43__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 44 --device mps --alpha 8.0 --tag a8
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=8.0 T=2.0
+  device=mps  seed=44
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0565  best=0.0565  [3s]
+    e 10/60  mAP=0.1606  best=0.1606  [30s]
+    e 20/60  mAP=0.2056  best=0.2056  [59s]
+    e 30/60  mAP=0.2090  best=0.2242  [89s]
+    e 40/60  mAP=0.2229  best=0.2296  [118s]
+    e 50/60  mAP=0.2292  best=0.2363  [148s]
+    e 60/60  mAP=0.2323  best=0.2363  [177s]
+  DONE: best_mAP=0.2363 @ep45  {'person': 0.235, 'vehicle': 0.0871, 'animal': 0.203, 'object': 0.4042}  177s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a8_seed44__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 45 --device mps --alpha 8.0 --tag a8
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=8.0 T=2.0
+  device=mps  seed=45
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0577  best=0.0577  [3s]
+    e 10/60  mAP=0.1491  best=0.1603  [30s]
+    e 20/60  mAP=0.2064  best=0.2185  [59s]
+    e 30/60  mAP=0.2156  best=0.2274  [88s]
+    e 40/60  mAP=0.2195  best=0.2281  [117s]
+    e 50/60  mAP=0.2176  best=0.2281  [147s]
+    e 60/60  mAP=0.2181  best=0.2281  [176s]
+  DONE: best_mAP=0.2281 @ep32  {'person': 0.2604, 'vehicle': 0.0556, 'animal': 0.2148, 'object': 0.3415}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a8_seed45__mini_mps.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step007_distill.py --arm S1 --seed 46 --device mps --alpha 8.0 --tag a8
+######################################################################
+
+======================================================================
+seg_step007 — S1  E2 -> E7  alpha=8.0 T=2.0
+  device=mps  seed=46
+======================================================================
+  teacher loaded teacher_E2_e60_seed42__mini_mps.pt  best_mAP=0.2650
+  student trainable=851,816  MACs/frame=0.8757G  (ceiling 1.0G)
+    e  1/60  mAP=0.0565  best=0.0565  [3s]
+    e 10/60  mAP=0.1415  best=0.1415  [30s]
+    e 20/60  mAP=0.2032  best=0.2085  [59s]
+    e 30/60  mAP=0.2057  best=0.2188  [88s]
+    e 40/60  mAP=0.2193  best=0.2203  [118s]
+    e 50/60  mAP=0.2222  best=0.2226  [147s]
+    e 60/60  mAP=0.2218  best=0.2226  [176s]
+  DONE: best_mAP=0.2226 @ep43  {'person': 0.2678, 'vehicle': 0.0728, 'animal': 0.1777, 'object': 0.3688}  176s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step007_S1_a8_seed46__mini_mps.json
+
+SWEEP DONE  10 cells  1819s  failures=none

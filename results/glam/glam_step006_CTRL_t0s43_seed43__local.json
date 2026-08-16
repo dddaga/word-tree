@@ -1,0 +1,138 @@
+{
+  "step": "glam_step006",
+  "arm": "CTRL",
+  "M": 16,
+  "d_out": 8,
+  "n_params": 47370,
+  "pct_fc": 0.0396,
+  "best": 0.9682,
+  "best_ep": 12,
+  "zero_frac_at_best": 0.404,
+  "final_zero_frac": 0.403,
+  "dense_flops": 94740,
+  "elapsed_s": 2.7,
+  "store": "data/store.h5",
+  "seed": 43,
+  "per_epoch": [
+    {
+      "ep": 1,
+      "train_slope": 0.01,
+      "val": 0.8897,
+      "zero_frac": 0.5378
+    },
+    {
+      "ep": 2,
+      "train_slope": 0.01,
+      "val": 0.9536,
+      "zero_frac": 0.5091
+    },
+    {
+      "ep": 3,
+      "train_slope": 0.01,
+      "val": 0.9623,
+      "zero_frac": 0.492
+    },
+    {
+      "ep": 4,
+      "train_slope": 0.01,
+      "val": 0.9643,
+      "zero_frac": 0.4759
+    },
+    {
+      "ep": 5,
+      "train_slope": 0.01,
+      "val": 0.9656,
+      "zero_frac": 0.4551
+    },
+    {
+      "ep": 6,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.4468
+    },
+    {
+      "ep": 7,
+      "train_slope": 0.01,
+      "val": 0.9654,
+      "zero_frac": 0.4293
+    },
+    {
+      "ep": 8,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.416
+    },
+    {
+      "ep": 9,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.4156
+    },
+    {
+      "ep": 10,
+      "train_slope": 0.01,
+      "val": 0.9676,
+      "zero_frac": 0.4084
+    },
+    {
+      "ep": 11,
+      "train_slope": 0.01,
+      "val": 0.9671,
+      "zero_frac": 0.4054
+    },
+    {
+      "ep": 12,
+      "train_slope": 0.01,
+      "val": 0.9682,
+      "zero_frac": 0.404
+    },
+    {
+      "ep": 13,
+      "train_slope": 0.01,
+      "val": 0.9674,
+      "zero_frac": 0.404
+    },
+    {
+      "ep": 14,
+      "train_slope": 0.01,
+      "val": 0.9676,
+      "zero_frac": 0.4046
+    },
+    {
+      "ep": 15,
+      "train_slope": 0.01,
+      "val": 0.9676,
+      "zero_frac": 0.404
+    },
+    {
+      "ep": 16,
+      "train_slope": 0.01,
+      "val": 0.9664,
+      "zero_frac": 0.4021
+    },
+    {
+      "ep": 17,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.4032
+    },
+    {
+      "ep": 18,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.403
+    },
+    {
+      "ep": 19,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.403
+    },
+    {
+      "ep": 20,
+      "train_slope": 0.01,
+      "val": 0.9666,
+      "zero_frac": 0.403
+    }
+  ]
+}

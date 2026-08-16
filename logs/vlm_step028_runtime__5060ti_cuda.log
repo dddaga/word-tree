@@ -1,0 +1,29 @@
+==============================================================================
+vlm_step028 runtime  device=cuda  dtypes=['fp32', 'bf16']  modes=['eager', 'compile']  n_eval=500  student=d6 x r0.25
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6163.59it/s]
+  GATE validity  fp32 eager teacher top1 0.7040 vs 0.704 -> PASS
+  fp32_eager_teacher       top1 0.7040  tower  25.72  prefill  13.77  e2e  39.49 ms  params 85.05M
+  fp32_eager_student       top1 0.6840  tower   9.52  prefill  13.92  e2e  23.45 ms  params 21.28M
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 6150.31it/s]
+W0814 19:42:41.134000 198482 venv/lib/python3.12/site-packages/torch/_inductor/utils.py:1731] [4/0_1] Not enough SMs to use max_autotune_gemm mode
+/home/indra/sgnnet_bench/venv/lib/python3.12/site-packages/torch/_inductor/compile_fx.py:322: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+  fp32_compile_teacher     top1 0.7040  tower  24.92  prefill   9.45  e2e  34.37 ms  params 85.05M
+  fp32_compile_student     top1 0.6840  tower   9.56  prefill   8.27  e2e  17.82 ms  params 21.28M
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16251.78it/s]
+  bf16_eager_teacher       top1 0.7040  tower   8.13  prefill  11.00  e2e  19.13 ms  params 85.05M
+  bf16_eager_student       top1 0.6880  tower   3.28  prefill  11.02  e2e  14.31 ms  params 21.28M
+Loading weights:   0%|          | 0/471 [00:00<?, ?it/s]Loading weights: 100%|██████████| 471/471 [00:00<00:00, 16719.00it/s]
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8] torch._dynamo hit config.recompile_limit (8)
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8]    function: 'wrapper' (/home/indra/sgnnet_bench/vlm_libs/transformers/utils/output_capturing.py:217)
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8]    last reason: 1/7: len(kwargs) == 3                                         # outputs = func(self, *args, **kwargs)  # vlm_libs/transformers/utils/output_capturing.py:248 in wrapper
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8] User stack trace:
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8]   File "/home/indra/sgnnet_bench/vlm_libs/transformers/utils/output_capturing.py", line 248, in wrapper
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8]     outputs = func(self, *args, **kwargs)
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8] To log all recompilation reasons, use TORCH_LOGS="recompiles".
+W0814 19:49:41.817000 198482 venv/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1743] [1/8] To diagnose recompilation issues, see https://docs.pytorch.org/docs/main/user_guide/torch_compiler/compile/programming_model.recompilation.html
+  bf16_compile_teacher     top1 0.6980  tower   8.99  prefill   4.21  e2e  13.20 ms  params 85.05M
+  bf16_compile_student     top1 0.6860  tower   3.67  prefill   4.28  e2e   7.95 ms  params 21.28M
+
+  best prefill (accuracy-clean cells only) 4.21 ms vs fp32-eager 13.77 ms -> WIN
+-> /home/indra/sgnnet_bench/results/frontier/vlm_step028_runtime_fp32-bf16_eager-compile_n500__5060ti_cuda.json

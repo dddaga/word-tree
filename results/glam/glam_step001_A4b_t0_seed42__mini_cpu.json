@@ -1,0 +1,23 @@
+{
+  "step": "glam_step001",
+  "seed": 42,
+  "arm": "A4b",
+  "result": {
+    "arm": "A4b",
+    "config": {
+      "gsz": 2,
+      "within_op": "mul",
+      "selectivity": true
+    },
+    "L": 1,
+    "M": 16,
+    "anneal": false,
+    "decor_w": 0.01,
+    "n_params": 7274,
+    "pct_fc": 0.0061,
+    "best": 0.4199,
+    "best_ep": 20,
+    "dense_flops": 14548,
+    "elapsed_s": 7.4
+  }
+}

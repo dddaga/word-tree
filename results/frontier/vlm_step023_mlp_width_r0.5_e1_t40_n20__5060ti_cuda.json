@@ -1,0 +1,48 @@
+{
+  "step": "vlm_step023",
+  "depth": 12,
+  "anchor": 0.711,
+  "intermediate": 3072,
+  "n_train": 40,
+  "epochs": 1,
+  "lr": 0.0001,
+  "seed": 42,
+  "device": "cuda",
+  "cells": {
+    "teacher": {
+      "top1": 0.7,
+      "vision_ms": 38.84191989636747,
+      "prefill_ms": 18.251839349977672,
+      "n": 20,
+      "tower_params": 85054464
+    },
+    "0.5": {
+      "intermediate": 1536,
+      "naive": {
+        "top1": 0.2,
+        "vision_ms": 20.210653499816544,
+        "prefill_ms": 13.49409740214469,
+        "n": 20
+      },
+      "distilled": {
+        "top1": 0.1,
+        "vision_ms": 20.306262897793204,
+        "prefill_ms": 13.450636250490788,
+        "n": 20
+      },
+      "gap_pp": 60.0,
+      "gain_over_naive_pp": -10.0,
+      "verdict": "LOSS",
+      "tower_params": 56724480,
+      "param_ratio": 0.6669194929028064,
+      "hist": [
+        {
+          "epoch": 1,
+          "rel_mse": 3.839182138442993,
+          "cosine": 0.2575467213988304
+        }
+      ],
+      "tower_speedup": 1.912804935692458
+    }
+  }
+}

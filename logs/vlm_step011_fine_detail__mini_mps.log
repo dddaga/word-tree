@@ -65,3 +65,80 @@ vlm_step011 fine detail  device=mps  depth=6  scales=[1.0, 0.5, 0.25]  n_eval=39
     [3800/3859] 795s eta 12s
   --- d6_f100 ---
     [200/3859] 36s eta 650s
+    [400/3859] 71s eta 618s
+    [600/3859] 108s eta 589s
+    [800/3859] 145s eta 553s
+    [1000/3859] 181s eta 517s
+    [1200/3859] 217s eta 482s
+    [1400/3859] 254s eta 446s
+    [1600/3859] 290s eta 410s
+    [1800/3859] 326s eta 373s
+    [2000/3859] 365s eta 339s
+    [2200/3859] 409s eta 309s
+    [2400/3859] 445s eta 271s
+    [2600/3859] 481s eta 233s
+    [2800/3859] 517s eta 196s
+    [3000/3859] 553s eta 158s
+    [3200/3859] 588s eta 121s
+    [3400/3859] 624s eta 84s
+    [3600/3859] 659s eta 47s
+    [3800/3859] 695s eta 11s
+  --- d6_f50 ---
+    [200/3859] 36s eta 658s
+    [400/3859] 72s eta 619s
+    [600/3859] 107s eta 584s
+    [800/3859] 143s eta 547s
+    [1000/3859] 179s eta 511s
+    [1200/3859] 214s eta 475s
+    [1400/3859] 250s eta 439s
+    [1600/3859] 286s eta 404s
+    [1800/3859] 322s eta 368s
+    [2000/3859] 358s eta 332s
+    [2200/3859] 393s eta 297s
+    [2400/3859] 429s eta 261s
+    [2600/3859] 472s eta 228s
+    [2800/3859] 515s eta 195s
+    [3000/3859] 560s eta 160s
+    [3200/3859] 597s eta 123s
+    [3400/3859] 632s eta 85s
+    [3600/3859] 668s eta 48s
+    [3800/3859] 705s eta 11s
+  --- d6_f25 ---
+    [200/3859] 42s eta 776s
+    [400/3859] 82s eta 710s
+    [600/3859] 122s eta 661s
+    [800/3859] 165s eta 631s
+    [1000/3859] 202s eta 576s
+    [1200/3859] 239s eta 531s
+    [1400/3859] 277s eta 487s
+    [1600/3859] 317s eta 448s
+    [1800/3859] 354s eta 405s
+    [2000/3859] 390s eta 363s
+    [2200/3859] 426s eta 321s
+    [2400/3859] 465s eta 282s
+    [2600/3859] 504s eta 244s
+    [2800/3859] 540s eta 204s
+    [3000/3859] 576s eta 165s
+    [3200/3859] 612s eta 126s
+    [3400/3859] 647s eta 87s
+    [3600/3859] 688s eta 50s
+    [3800/3859] 730s eta 11s
+
+  cell           top1  agree      KL   vis_ms   pre_ms
+  d12_f100      0.711  1.000   0.000     65.7     14.6
+  d12_f50       0.672  0.705   1.498     64.9     14.5
+  d12_f25       0.494  0.554   2.673     64.8     14.5
+  d6_f100       0.720  0.685   2.068     35.4     14.4
+  d6_f50        0.666  0.670   2.218     35.9     14.6
+  d6_f25        0.423  0.504   3.023     36.6     14.8
+
+  cost of shrinking, per depth (DESCRIPTIVE ONLY -- confounded by the gray padding)
+  d12_f50      d -0.0389  boot95 [-0.0536, -0.0244]  b=331 c=481 p=0.00000
+  d12_f25      d -0.2166  boot95 [-0.2330, -0.2001]  b=198 c=1034 p=0.00000
+  d6_f50       d -0.0531  boot95 [-0.0674, -0.0389]  b=287 c=492 p=0.00000
+  d6_f25       d -0.2967  boot95 [-0.3130, -0.2801]  b=119 c=1264 p=0.00000
+
+  double difference I(f) = [d6 shrink cost] - [d12 shrink cost]  <- THE CALL
+  f=0.5    I -0.0143  boot95 [-0.0334, +0.0052]  -> INCONCLUSIVE at this n
+  f=0.25   I -0.0801  boot95 [-0.1003, -0.0593]  -> SUB-ADDITIVE -- shrinking the object costs the truncated tower more
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/frontier/vlm_step011_fine_detail_d6_f100-f50-f25__mini_mps.json

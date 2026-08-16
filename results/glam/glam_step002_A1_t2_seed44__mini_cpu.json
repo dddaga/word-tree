@@ -1,0 +1,19 @@
+{
+  "step": "glam_step002",
+  "seed": 44,
+  "arm": "A1",
+  "cells": [
+    {
+      "arm": "A1",
+      "L": 1,
+      "d_out": 8,
+      "M": 16,
+      "n_params": 47370,
+      "pct_fc": 0.0396,
+      "best": 0.9771,
+      "best_ep": 21,
+      "dense_flops": 94740,
+      "elapsed_s": 33.2
+    }
+  ]
+}

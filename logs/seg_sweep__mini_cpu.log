@@ -1,0 +1,74 @@
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step001_coarse_heatmap.py --arm B0 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+seg_step001 — B0  128px -> 16x16 grid, C=4 x K=2
+  device=cpu  decor_lambda=0.0  mfpm=True
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0571  bce=0.2507  best=0.0571  [74s]
+  e  5/20  mAP=0.1745  bce=0.1016  best=0.1745  [370s]
+  e 10/20  mAP=0.2215  bce=0.0969  best=0.2367  [737s]
+  e 15/20  mAP=0.2360  bce=0.1015  best=0.2426  [1106s]
+  e 20/20  mAP=0.2193  bce=0.1078  best=0.2426  [1478s]
+  DONE: best_mAP=0.2426 @ep13  {'person': 0.3342, 'vehicle': 0.0561, 'animal': 0.114, 'object': 0.3728}  1489s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step001_B0_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step001_coarse_heatmap.py --arm B0 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+seg_step001 — B0  128px -> 16x16 grid, C=4 x K=2
+  device=cpu  decor_lambda=0.0  mfpm=True
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0568  bce=0.2530  best=0.0568  [75s]
+  e  5/20  mAP=0.1881  bce=0.1001  best=0.1881  [391s]
+  e 10/20  mAP=0.2421  bce=0.0948  best=0.2421  [765s]
+  e 15/20  mAP=0.2101  bce=0.1072  best=0.2421  [1116s]
+  e 20/20  mAP=0.2076  bce=0.1104  best=0.2421  [1458s]
+  DONE: best_mAP=0.2421 @ep10  {'person': 0.3429, 'vehicle': 0.0403, 'animal': 0.0891, 'object': 0.3583}  1469s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step001_B0_t0_seed44__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step001_coarse_heatmap.py --arm B1 --seed 43 --device cpu
+######################################################################
+
+======================================================================
+seg_step001 — B1  128px -> 16x16 grid, C=4 x K=2
+  device=cpu  decor_lambda=0.05  mfpm=True
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0556  bce=0.2513  best=0.0556  [71s]
+  e  5/20  mAP=0.1799  bce=0.1021  best=0.1799  [372s]
+  e 10/20  mAP=0.2633  bce=0.0954  best=0.2633  [750s]
+  e 15/20  mAP=0.2654  bce=0.1044  best=0.2747  [1128s]
+  e 20/20  mAP=0.2622  bce=0.1073  best=0.2747  [1501s]
+  DONE: best_mAP=0.2747 @ep14  {'person': 0.3654, 'vehicle': 0.0841, 'animal': 0.1953, 'object': 0.404}  1513s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step001_B1_t0_seed43__mini_cpu.json
+
+######################################################################
+# /Volumes/T9/IndraAstra/dhiraj/neuro_graph/scripts/seg/seg_step001_coarse_heatmap.py --arm B1 --seed 44 --device cpu
+######################################################################
+
+======================================================================
+seg_step001 — B1  128px -> 16x16 grid, C=4 x K=2
+  device=cpu  decor_lambda=0.05  mfpm=True
+======================================================================
+  trainable=7,226,312  MACs/frame=4.898G  (drone ceiling 1.0G)  train=2000 val=500
+  e  1/20  mAP=0.0551  bce=0.2543  best=0.0551  [87s]
+  e  5/20  mAP=0.1920  bce=0.0997  best=0.1920  [469s]
+  e 10/20  mAP=0.2291  bce=0.0960  best=0.2291  [906s]
+  e 15/20  mAP=0.2496  bce=0.1027  best=0.2499  [1342s]
+  e 20/20  mAP=0.2406  bce=0.1065  best=0.2499  [1774s]
+  DONE: best_mAP=0.2499 @ep13  {'person': 0.354, 'vehicle': 0.0902, 'animal': 0.1388, 'object': 0.3795}  1788s
+
+-> /Volumes/T9/IndraAstra/dhiraj/neuro_graph/results/seg/seg_step001_B1_t0_seed44__mini_cpu.json
+
+SWEEP DONE  4 cells  6268s  failures=none

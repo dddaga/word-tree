@@ -1,0 +1,14 @@
+{
+  "step": "glam_step005",
+  "arm": "LIN",
+  "M": 16,
+  "d_out": 8,
+  "n_params": 250890,
+  "pct_fc": 0.2098,
+  "best": 0.8804,
+  "best_ep": 4,
+  "dense_flops": 501780,
+  "elapsed_s": 88.1,
+  "store": "data/store_cifar10.h5",
+  "seed": 43
+}

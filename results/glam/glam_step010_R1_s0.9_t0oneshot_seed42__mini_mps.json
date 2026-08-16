@@ -1,0 +1,14 @@
+{
+  "step": "glam_step010",
+  "arm": "R1",
+  "sparsity": 0.9,
+  "randomized": false,
+  "n_params": 47370,
+  "eff_params": 10506,
+  "zero_frac": 0.9,
+  "pct_fc": 0.0396,
+  "best": 0.9238,
+  "best_ep": 4,
+  "elapsed_s": 2.9,
+  "seed": 42
+}

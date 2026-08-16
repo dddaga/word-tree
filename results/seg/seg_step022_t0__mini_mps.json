@@ -1,0 +1,442 @@
+{
+  "step": "seg_step022",
+  "bar_pp": 1.2,
+  "arm": "H1",
+  "alpha": 2.0,
+  "beta": 1.0,
+  "epochs": 60,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "teacher_arm": "E2",
+  "student_arm": "E7",
+  "grid": 16,
+  "res": 128,
+  "device": "mps",
+  "note": "rebuilt from log after a smoke-test run overwrote the original file; per-run numbers are verbatim from logs/seg/seg_step022_pyramid_t0__mini_mps.log, elapsed_s and per-class final metrics were not recoverable",
+  "cells": {
+    "full": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.267,
+          "best_ep": 42,
+          "n_params": 851816,
+          "macs": 875700000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2744,
+          "best_ep": 39,
+          "n_params": 851816,
+          "macs": 875700000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2519,
+          "best_ep": 21,
+          "n_params": 851816,
+          "macs": 875700000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2663,
+          "best_ep": 24,
+          "n_params": 851816,
+          "macs": 875700000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.265,
+          "best_ep": 34,
+          "n_params": 851816,
+          "macs": 875700000
+        }
+      ],
+      "mean": 0.26492,
+      "std": 0.008149049024272699,
+      "n_params": 851816,
+      "gmacs": 0.8757,
+      "delta_pp": 0.0,
+      "verdict": "BASE"
+    },
+    "no_pool": {
+      "branches": [
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2639,
+          "best_ep": 31,
+          "n_params": 842920,
+          "macs": 873500000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2676,
+          "best_ep": 36,
+          "n_params": 842920,
+          "macs": 873500000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2655,
+          "best_ep": 40,
+          "n_params": 842920,
+          "macs": 873500000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2577,
+          "best_ep": 24,
+          "n_params": 842920,
+          "macs": 873500000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2809,
+          "best_ep": 32,
+          "n_params": 842920,
+          "macs": 873500000
+        }
+      ],
+      "mean": 0.26712,
+      "std": 0.00854177967404919,
+      "n_params": 842920,
+      "gmacs": 0.8735,
+      "delta_pp": 0.22000000000000353,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d1": {
+      "branches": [
+        "pool",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2648,
+          "best_ep": 42,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.267,
+          "best_ep": 26,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2573,
+          "best_ep": 40,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2452,
+          "best_ep": 23,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2699,
+          "best_ep": 21,
+          "n_params": 740520,
+          "macs": 847200000
+        }
+      ],
+      "mean": 0.26083999999999996,
+      "std": 0.009910247221941535,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -0.4080000000000028,
+      "verdict": "WIN(pareto)"
+    },
+    "no_d4": {
+      "branches": [
+        "pool",
+        "d1",
+        "d8",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2488,
+          "best_ep": 42,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2378,
+          "best_ep": 26,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2439,
+          "best_ep": 34,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2442,
+          "best_ep": 50,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2451,
+          "best_ep": 21,
+          "n_params": 740520,
+          "macs": 847200000
+        }
+      ],
+      "mean": 0.24396,
+      "std": 0.003960176763731634,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -2.095999999999998,
+      "verdict": "LOSS"
+    },
+    "no_d8": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d16"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2498,
+          "best_ep": 31,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2511,
+          "best_ep": 44,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.25,
+          "best_ep": 34,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2518,
+          "best_ep": 23,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2419,
+          "best_ep": 30,
+          "n_params": 740520,
+          "macs": 847200000
+        }
+      ],
+      "mean": 0.24892,
+      "std": 0.004008366250731089,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -1.5999999999999988,
+      "verdict": "LOSS"
+    },
+    "no_d16": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8"
+      ],
+      "gap": "none",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2476,
+          "best_ep": 42,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2574,
+          "best_ep": 22,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2552,
+          "best_ep": 34,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2491,
+          "best_ep": 23,
+          "n_params": 740520,
+          "macs": 847200000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2581,
+          "best_ep": 49,
+          "n_params": 740520,
+          "macs": 847200000
+        }
+      ],
+      "mean": 0.25348,
+      "std": 0.0048329080272647516,
+      "n_params": 740520,
+      "gmacs": 0.8472,
+      "delta_pp": -1.1440000000000006,
+      "verdict": "WIN(pareto)"
+    },
+    "gap_cat": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "cat",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2605,
+          "best_ep": 44,
+          "n_params": 860712,
+          "macs": 875800000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2746,
+          "best_ep": 26,
+          "n_params": 860712,
+          "macs": 875800000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2597,
+          "best_ep": 34,
+          "n_params": 860712,
+          "macs": 875800000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.2609,
+          "best_ep": 24,
+          "n_params": 860712,
+          "macs": 875800000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2631,
+          "best_ep": 21,
+          "n_params": 860712,
+          "macs": 875800000
+        }
+      ],
+      "mean": 0.26376,
+      "std": 0.006189345684319146,
+      "n_params": 860712,
+      "gmacs": 0.8758,
+      "delta_pp": -0.11599999999999944,
+      "verdict": "NEUTRAL"
+    },
+    "gap_se": {
+      "branches": [
+        "pool",
+        "d1",
+        "d4",
+        "d8",
+        "d16"
+      ],
+      "gap": "se",
+      "runs": [
+        {
+          "seed": 42,
+          "best_mAP": 0.2601,
+          "best_ep": 42,
+          "n_params": 893096,
+          "macs": 875700000
+        },
+        {
+          "seed": 43,
+          "best_mAP": 0.2885,
+          "best_ep": 45,
+          "n_params": 893096,
+          "macs": 875700000
+        },
+        {
+          "seed": 44,
+          "best_mAP": 0.2685,
+          "best_ep": 34,
+          "n_params": 893096,
+          "macs": 875700000
+        },
+        {
+          "seed": 45,
+          "best_mAP": 0.258,
+          "best_ep": 24,
+          "n_params": 893096,
+          "macs": 875700000
+        },
+        {
+          "seed": 46,
+          "best_mAP": 0.2654,
+          "best_ep": 32,
+          "n_params": 893096,
+          "macs": 875700000
+        }
+      ],
+      "mean": 0.2681,
+      "std": 0.012141046083431185,
+      "n_params": 893096,
+      "gmacs": 0.8757,
+      "delta_pp": 0.3180000000000016,
+      "verdict": "NEUTRAL"
+    }
+  }
+}
